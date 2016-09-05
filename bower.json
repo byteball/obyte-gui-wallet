@@ -1,0 +1,27 @@
+{
+  "name": "byteball",
+  "keywords": [
+    "byteball",
+    "wallet",
+    "multisignature"
+  ],
+  "dependencies": {
+    "angular": "1.4.6",
+    "angular-foundation": "0.7.0",
+    "angular-gettext": "2.1.0",
+    "angular-touch": "1.4.6",
+    "angular-carousel": "*",
+    "angular-moment": "0.10.1",
+    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
+    "angular-ui-router": "0.2.15",
+    "angular-ui-switch": "0.1.1",
+    "animate.css": "3.4.0",
+    "fastclick": "1.0.6",
+    "foundation": "5.5.2",
+    "foundation-icon-fonts": "*",
+    "moment": "2.10.3",
+    "ng-lodash": "0.2.3",
+    "qrcode-decoder-js": "*"
+  }
+}
+

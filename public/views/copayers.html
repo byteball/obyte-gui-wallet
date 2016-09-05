@@ -1,0 +1,34 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="">
+</div>
+
+<div class="content" ng-controller="copayersController as copayers" ng-init="copayers.init()">
+  <div>
+    <div class="row m10t text-center">
+      <div class="large-12 columns">
+        <h1 translate>Approve wallet creation on other devices</h1>
+      </div>
+    </div>
+
+    <h4 class="title oh m0">
+      <span translate>Waiting for co-signers</span>
+      <span class="text-gray right">
+        [ <span translate>{{index.m}}-of-{{index.n}}</span> ]
+      </span>
+    </h4>
+    <div class="p10 line-b" ng-include="'views/includes/copayers.html'"></div>
+    <div ng-if="!index.isComplete" class="p10 line-b m20b">
+      <p class="size-12 m0">
+      <i class="fi-loop"></i>
+      <span translate>Waiting...</span>
+      </p>
+    </div>
+  </div>
+
+
+</div>
+
+
+<div class="extra-margin-bottom"></div>

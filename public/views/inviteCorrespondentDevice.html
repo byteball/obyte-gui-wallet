@@ -1,0 +1,38 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Invite new device'; goBackToState = 'addCorrespondentDevice'; showCamera = true; ">
+</div>
+
+
+
+<div ng-controller="inviteCorrespondentDeviceController">
+
+    
+
+    <div class="m20b">
+
+      <div class="text-center">
+        <div class="columns m10t" >
+            <div ng-click="copyCode()">
+                <qrcode size="220" version="5" data="byteball:{{code}}"></qrcode>
+            </div>
+            <div class="m10t" >
+                Scan the above QR code using the other device, or send this pairing code to the other device:
+                <!--textarea onClick="var self=this; setTimeout(function(){self.select(); console.log('click');}, 100)" readonly ng-class="{'enable_text_select': !isCordova}">{{code}}</textarea-->
+                <div class="secret m10t m20b enable_text_select">{{code}}</div>
+            </div>
+          <div class="row">
+              <input type="button" 
+                     class="button expand outline dark-gray round" 
+                     ng-click="newAddress = ''; cancelAddCorrespondent()"
+                     value="{{'Done'|translate}}">
+          </div>
+        </div>
+      
+      </div>
+
+    </div>
+
+    <div class="extra-margin-bottom"></div>
+</div>

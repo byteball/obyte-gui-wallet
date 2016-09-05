@@ -1,0 +1,145 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Wallet Information'; goBackToState = 'preferencesAdvanced'">
+</div>
+
+<div class="content preferences" ng-controller="preferencesInformation as info" ng-init="info.init()">
+    <h4 class="title m0" translate>Wallet Information</h4>
+
+    <ul class="no-bullet m0 size-14">
+      <li class="line-b p20 oh">
+        <span translate>Wallet Name (at creation)</span>
+        <span class="right text-gray">
+          {{walletName}}
+        </span>
+      </li>
+
+
+      <li class="line-b p20 oh">
+        <span translate>Wallet Id</span>
+        <span class="right text-gray enable_text_select">
+          {{walletId}}
+        </span>
+      </li>
+
+      <li class="line-b p20 oh">
+        <span translate>Wallet Configuration (m-n)</span>
+        <span class="right text-gray">
+          {{M}}-{{N}}
+        </span>
+      </li>
+
+
+
+       <li class="line-b p20 oh">
+        <span translate>Wallet Network</span>
+        <span class="right text-gray">
+          {{network}}
+        </span>
+      </li>
+
+
+      <li class="line-b p20 oh">
+        <span translate>Derivation Strategy</span>
+        <span class="right text-gray">
+          {{derivationStrategy}}
+        </span>
+      </li>
+
+      <li class="line-b p20 oh" ng-show="index.externalSource">
+        <span>Hardware Wallet</span>
+        <span class="right text-gray capitalize">
+          {{index.externalSource}}
+        </span>
+      </li>
+
+      <li class="line-b p20 oh" ng-show="!index.externalSource && !index.canSign">
+        <span translate></span>
+        <span class="right text-gray capitalize">
+          No private key
+        </span>
+      </li>
+ 
+      <li class="line-b p20 oh" ng-show="index.account">
+        <span translate>Account</span> ({{derivationStrategy}})
+        <span class="right text-gray">
+          #{{index.account}}
+        </span>
+      </li>
+
+
+
+    <h4 class="title m0" translate>Co-signers</h4>
+      <li ng-repeat="copayer in index.copayers">
+        <span class="size-12" ng-show="copayer.me">
+          <i class="icon-contact size-24 m10r"></i>{{'Me'|translate}} <i class="fi-check m5 right"></i>
+        </span>
+        <span class="size-12 text-gray" ng-show="!copayer.me">
+          <i class="icon-contact size-24 m10r"></i> {{copayer.name}}<i class="fi-check m5 right"></i>
+        </span>
+      </li>
+
+    <h4 class="title m0" translate>Extended Public Keys</h4>
+      <li  ng-repeat="copayer in index.copayers">
+        <div class="row collapse">
+          <div class="small-4 columns">{{copayer.name||'Me'|translate}}</div>
+          <div class="small-8 columns oh text-gray">
+            <div class="ellipsis enable_text_select">{{copayer.extended_pubkey}}</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    
+    <ul class="no-bullet m0 size-14" ng-show="addrs">
+    <h4 class="title m0" translate>Last Wallet Addresses</h4>
+      <li  ng-repeat="a in addrs" class="oh">
+          <div class="enable_text_select ellipsis">
+            {{a.address}} 
+          </div>
+          <div class="text-gray size-12 right enable_text_select">
+            {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
+          </div>
+      </li>
+      <li class="line-b p10 text-centered text-gray size-12">
+        <span translate>Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.</span>
+      </li>
+
+      <li class="line-b p20" >
+          <button ng-show="index.isCordova" class="black round small expand" 
+            ng-style="{'background-color':index.backgroundColor}" 
+            ng-click="info.sendAddrs()"
+            ng-disabled="info.loading">
+            <i class="fi-mail"></i>
+            <span translate>Send addresses by email</span>
+          </button>
+      </li>
+    </ul>
+
+    <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
+      <div ng-if="index.balanceByAddress[0]">
+        <h4 class="title m0" translate>Balance By Address</h4>
+        <li class="line-b p20 oh"  ng-repeat="a in index.balanceByAddress">
+          <div class="enable_text_select ellipsis">
+            {{a.address}} 
+          </div>
+          <div class="text-gray text-right">
+            {{a.amount}} bytes 
+          </div>
+        </li>
+      </div>
+    </ul>
+
+    <!--ul class="no-bullet m0 size-14">
+      <h4 class="title m0" translate>Transaction history</h4>
+      <li class="line-b p20 oh">
+        <button class="black round small expand"  ng-style="{'background-color':index.backgroundColor}" ng-click="info.clearTransactionHistory();">
+          <span translate>Clear history</span>
+        </button>
+      </li>
+    </ul-->
+
+    <h4></h4>
+
+    <div class="extra-margin-bottom"></div>
+</div>

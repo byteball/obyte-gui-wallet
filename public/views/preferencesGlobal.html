@@ -1,0 +1,100 @@
+
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Global preferences'; closeToHome = true; noColor = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
+  <h4></h4>
+  <ul class="no-bullet m0 ">
+    <li  ng-click="$root.go('preferencesDeviceName')">
+      <div class="right text-gray">
+        {{prefGlobal.deviceName}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Device name</div>
+    </li>
+
+    <li  ng-click="$root.go('preferencesHub')">
+      <div class="right text-gray">
+        {{prefGlobal.hub}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Hub</div>
+    </li>
+
+    <li ng-click="$root.go('preferencesLanguage')">
+      <div class="right text-gray">
+        {{prefGlobal.currentLanguageName|translate}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Language</div>
+    </li>
+    <li ng-click="$root.go('preferencesUnit')">
+      <div class="right text-gray">
+        {{prefGlobal.unitName}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Unit</div>
+    </li>
+  </ul>
+    
+  <div ng-show="index.usePushNotifications">
+    <h4></h4>
+    <ul class="no-bullet m0">
+      <li>
+        <switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" class="green right"></switch>
+        <div translate>Enable push notifications</div>
+      </li>
+    </ul>
+  </div>
+    
+  <h4></h4>
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('witnesses')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <div translate>Witnesses</div>
+    </li>
+  </ul>
+    
+  <h4 translate>Device address</h4>
+  <ul class="no-bullet m0 enable_text_select">
+    <li>
+      <div>{{prefGlobal.myDeviceAddress}}</div>
+    </li>
+  </ul>
+    
+    <h4 translate>Spending Restrictions</h4>
+    <ul class="no-bullet m0">
+      <li>
+        <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
+        <div translate>Request Password</div>
+      </li>
+    </ul>
+    
+  <h4></h4>
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <span class="text-warning" ng-show="index.needsBackup">
+          <i class="fi-alert"></i><span translate>Still not done</span>
+        </span>
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Backup</div>
+    </li>
+  </ul>
+    
+  <h4></h4>
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('about')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <div translate>About Byteball</div>
+    </li>
+  </ul>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>

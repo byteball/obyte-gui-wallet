@@ -1,0 +1,62 @@
+
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Preferences'; closeToHome = true">
+</div>
+
+
+<div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
+
+  <h4></h4>
+  <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
+
+
+    <li  ng-click="$root.go('preferencesAlias')">
+      <div class="right text-gray">
+        {{index.alias||index.walletName}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Wallet Alias</div>
+    </li>
+
+
+    <li ng-click="$root.go('preferencesColor')">
+      <div class="right text-gray">
+        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>      
+      <div translate>Color</div>
+    </li>
+
+    <li ng-show="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        {{preferences.externalSource}} 
+        <!-- (Accont {{preferences.externalAccount}}) -->
+      </div>
+      <div translate>Hardware wallet</div>
+    </li> 
+
+    <h4>
+    </h4>
+ 
+    <li ng-click="$root.go('preferencesAdvanced')">
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <div translate>Advanced</div>
+    </li>
+  </ul>
+  <div ng-show="!index.noFocusedWallet && index.canSign && preferences.touchidAvailable">
+    <h4 translate  ng-show="index.canSign">
+      Spending Restrictions
+    </h4>
+    <ul class="no-bullet m0">
+      <li  ng-show="preferences.touchidAvailable">
+        <switch id="touchid" name="touchid" ng-model="touchid" class="green right"></switch>
+        <div translate>Scan Fingerprint</div>
+      </li>
+    </ul>
+  </div>
+  <h4></h4>
+
+</div>
+<div class="extra-margin-bottom"></div>

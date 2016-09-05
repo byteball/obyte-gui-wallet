@@ -1,0 +1,19 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Hub'; goBackToState = 'preferencesGlobal'">
+</div>
+
+<div class="content preferences" ng-controller="preferencesHubController as prefHub">
+
+
+  <h4></h4>
+  <form name="settingsHubForm" ng-submit="prefHub.save()" class="columns">
+    <label><span translate>Hub URL</span></label>
+    <input type="text" id="hub" type="text" name="hub" ng-model="prefHub.hub">
+    <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+  </form>
+    <div class="text-gray size-12 text-center" translate>The hub for receiving messages from other devices.
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

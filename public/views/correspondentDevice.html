@@ -1,0 +1,218 @@
+
+<div ng-controller="correspondentDeviceController">
+
+<!--div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection=correspondent.name; goBackToState = 'correspondentDevices'; showCamera = true">
+</div-->
+
+  <nav class="tab-bar">
+    <section class="left-small">
+    <a
+      ng-click="$root.go('correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">{{'Back'|translate}}</span>
+    </a>
+    </section>
+
+    <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+      {{correspondent.name}}
+    </h1>
+    </section>
+      
+    <section class="right-small" ng-click="editCorrespondent()">
+      <a href class="p10">
+        <span class="text-close" translate>Edit</span>
+      </a>
+    </section>
+  </nav>
+
+<style>
+    .right-side{
+        margin-left:auto;
+        margin-right:0px;
+    }
+    .left-side{
+        margin-left:0px;
+        margin-right:auto;
+    }
+    .send-form{
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
+        height: 150px;
+    }
+    .message-log{
+        position: absolute;
+        width: 100%;
+        bottom: 150px;
+        top: 45px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /*margin-top: 10px;*/
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        font-size: 13px;
+        border-bottom: 1px solid #E9E9EC;
+    }
+    .chat-message{
+        width:100%;
+        margin-top: 10px;
+    }
+    /*.chat-message:last-child{
+        margin-bottom: 10px;
+    }*/
+    .bubble{
+        padding: 10px 15px;
+        margin: 0px 15px;
+        border-radius: 18px;
+        position: relative;
+        max-width: 80%;
+        text-align: left;
+        /*display: inline-block;*/
+        word-wrap: break-word;
+    }
+    
+
+/*
+Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
+*/
+.clear {
+  clear: both;
+}
+
+.from-me {
+  color: white;
+  background: #0B93F6;
+  float: right;
+}
+.from-me:before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: -2px;
+  right: -7px;
+  height: 20px;
+  border-right: 20px solid #0B93F6;
+  border-bottom-left-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+  transform: translate(0, -2px);
+}
+.from-me:after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  bottom: -2px;
+  right: -56px;
+  width: 26px;
+  height: 20px;
+  background: white;
+  border-bottom-left-radius: 10px;
+  -webkit-transform: translate(-30px, -2px);
+  transform: translate(-30px, -2px);
+}
+.from-me a {
+    color: white;
+}
+.bubble a.payment {
+    text-decoration: underline;
+}
+
+.from-them {
+  background: #E5E5EA;
+  color: black;
+  float: left;
+}
+.from-them:before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: -2px;
+  left: -7px;
+  height: 20px;
+  border-left: 20px solid #E5E5EA;
+  border-bottom-right-radius: 16px 14px;
+  -webkit-transform: translate(0, -2px);
+  transform: translate(0, -2px);
+}
+.from-them:after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  bottom: -2px;
+  left: 4px;
+  width: 26px;
+  height: 20px;
+  background: white;
+  border-bottom-right-radius: 10px;
+  -webkit-transform: translate(-30px, -2px);
+  transform: translate(-30px, -2px);
+}
+
+
+</style>
+
+    
+  <div class="onGoingProcess" ng-show="onGoingProcess">
+    <div class="onGoingProcess-content" ng-style="{'background-color':backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      {{onGoingProcess|translate}}...
+    </div>
+  </div>
+
+    <!--div class="columns m20t m20b" -->
+      <!--div ng-click="editCorrespondent()" class="pointer"> 
+        {{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
+        <div class="right text-gray"><i class="icon-arrow-right3 size-24"></i></div>
+        <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
+      </div-->
+
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents">
+        <div class="chat-message" ng-repeat="messageEvent in messageEvents">
+            <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
+              <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
+              <div ng-class="messageEvent.bIncoming ? 'from-them' : 'from-me'" class="bubble" dynamic="messageEvent.message"></div>
+            <!--/div-->
+            <div class="clear"></div>
+        </div>
+      </div>
+        
+        <form name="chatForm" class="send-form columns" no-validate>
+          <div class="size-12 m10b" ng-show="!error">Text message to {{correspondent.name}}:</div>
+          <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
+          <input type="text" id="message" name="message" ng-model="message" autofocus autocomplete="off" required>
+          <div class="row">
+            <div class="large-4 medium-4 small-4 columns adaptive">
+              <button type="button"
+                     class="button expand round outline dark-gray tiny" 
+                     ng-click="insertMyAddress()">Insert my address</button>
+            </div>
+            <div class="large-4 medium-4 small-4 columns adaptive">
+              <button type="button"
+                     class="button expand round outline dark-gray tiny" 
+                     ng-click="requestPayment()">Request payment</button>
+            </div>
+            <div class="large-4 medium-4 small-4 columns adaptive">
+              <input type="submit" 
+                     class="button expand round" 
+                     value="{{'Send'}}"
+                     ng-disabled="!chatForm.$valid"
+                     style="padding-top: 15px; padding-bottom: 15px"
+                     ng-style="{'background-color':backgroundColor}" 
+                     ng-click="send()">
+            </div>
+          </div>
+        </form>
+    <!--/div-->
+      
+
+
+    <div class="extra-margin-bottom"></div>
+</div>

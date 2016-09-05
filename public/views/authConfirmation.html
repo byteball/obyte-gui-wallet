@@ -1,0 +1,30 @@
+
+    
+<div class="m20tp p20h text-center" ng-controller="authConfirmationController">
+  <div class="row">
+      
+    <h2 class="text-center m20b">{{question}}</h2>
+      
+    <div class="size-10">
+        <span class="db text-bold">
+            <span translate>Select your identity</span> <small translate>(The site won't see your balance and no money will be spent)</small>
+        </span>
+        <select class="m10t" ng-model="walletId" ng-options="wallet.id as wallet.name for wallet in index.getWallets()"></select>
+    </div>
+      
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="button expand round primary" ng-disabled="loading"  ng-click="yes()">
+        <i class="fi-check"></i> <span translate>Yes</span>
+      </button>
+    </div>
+    <div class="large-6 medium-6 small-6 columns">
+      <button class="button expand round warning" ng-disabled="loading"  ng-click="no()">
+        <i class="fi-x"></i> <span class="tu" translate>No</span>
+      </button>
+    </div>
+      
+  </div>
+</div>
+
+
+<div class="extra-margin-bottom"></div>

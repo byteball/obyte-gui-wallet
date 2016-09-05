@@ -1,0 +1,10 @@
+<ul class="no-bullet m0">
+  <li class="" ng-repeat="copayer in index.copayers">
+  <span class="size-12" ng-show="copayer.me">
+    <i class="fi-check m5r"></i> {{'Me'|translate}}
+  </span>
+  <span class="size-12 text-gray" ng-show="!copayer.me">
+    <i class="m5r" ng-class="copayer.approval_date ? 'fi-check' : 'fi-clock'"></i> {{copayer.name}} ({{copayer.device_address.substr(0,4)}}...)
+  </span>
+  </li>
+</ul>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="css/foundation.css">
+  <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
+  <link rel="stylesheet" type="text/css" href="css/byteball.css">
+  <title>Byteball - decentralized value</title>
+  <link rel="shortcut icon" href="img/icons/favicon-white.ico">
+</head>
+<body ng-cloak class="ng-cloak">
+
+  <div class="page" 
+    ng-controller="indexController as index" 
+    ng-swipe-disable-mouse 
+    ng-swipe-left="index.closeMenu()"
+    ng-swipe-right="index.swipeRight()">
+
+    <div class="off-canvas-wrap" id="off-canvas-wrap">
+      <div class="inner-wrap">
+        <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
+
+        <div notifications="right top"></div> 
+        <div ng-include="'views/includes/password.html'" ng-if="index.askPassword"></div>
+        <div ng-include="'views/includes/alert.html'" ng-if="index.showAlert"></div>
+        <div id="sectionContainer">
+          <div id="mainSection">
+            <section ui-view="main"
+              ng-class="{
+                'main': index.hasProfile
+              }"></section>
+          </div>
+        </div>
+        <a class="close-menu" ng-click="index.closeMenu()"></a>
+
+      </div>
+    </div>
+  </div>
+  
+  <script>console.log("starting scripts...");</script>
+  <script src="angular.js"></script>
+
+  <!-- DO NOT DELETE THIS COMMET  -->
+  <!-- PLACEHOLDER: CORDOVA SRIPT -->
+
+  <script src="byteball.js"></script>
+  <script>console.log("done scripts");</script>
+
+</body>
+</html>

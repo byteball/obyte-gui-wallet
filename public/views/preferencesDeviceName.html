@@ -1,0 +1,19 @@
+<div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Device name'; goBackToState = 'preferencesGlobal'">
+</div>
+
+<div class="content preferences" ng-controller="preferencesDeviceNameController as prefDeviceName">
+
+
+  <h4></h4>
+  <form name="settingsDeviceNameForm" ng-submit="prefDeviceName.save()" class="columns">
+    <label><span translate>Device name</span></label>
+    <input type="text" id="deviceName" type="text" name="deviceName" ng-model="prefDeviceName.deviceName">
+    <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+  </form>
+    <div class="text-gray size-12 text-center" translate>Device name is visible to other devices you communicate with.
+  </div>
+</div>
+<div class="extra-margin-bottom"></div>

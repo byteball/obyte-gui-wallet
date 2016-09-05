@@ -1,0 +1,16 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Witnesses'; goBackToState = 'preferencesGlobal'">
+</div>
+
+<div class="content preferences" ng-controller="preferencesWitnessesController as wc">
+ 
+    <ul class="no-bullet m0">
+      <li ng-repeat="witness in wc.witnesses" ng-click="wc.edit(witness)">
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+        {{witness}}
+      </li>
+    </ul>
+
+</div>

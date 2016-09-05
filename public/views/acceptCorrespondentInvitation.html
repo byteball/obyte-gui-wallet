@@ -1,0 +1,66 @@
+<!--div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Accept invitation'; goBackToState = 'addCorrespondentDevice'; showCamera = true">
+</div-->
+
+<div ng-controller="acceptCorrespondentInvitationController">
+
+<nav class="tab-bar">
+  <section class="left-small">
+    <a
+      ng-click="$root.go('addCorrespondentDevice')"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">{{'Back'|translate}}</span>
+    </a>
+  </section>
+
+  <section class="right-small">
+    <qr-scanner on-scan="onQrCodeScanned(data)" before-scan="beforeQrCodeScan()"></qr-scanner>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+      {{'Accept invitation'|translate}}
+    </h1>
+  </section>
+</nav>
+
+
+
+    
+  <div class="onGoingProcess" ng-show="onGoingProcess">
+    <div class="onGoingProcess-content" ng-style="{'background-color':backgroundColor}">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      {{onGoingProcess|translate}}...
+    </div>
+  </div>
+
+
+    <div class="columns m20t m20b" >
+        <form name="pairingCodeForm" class="p10" no-validate>
+        Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device.
+          <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
+          <input type="text" id="code" name="code" ng-model="code" required>
+          <div class="row">
+            <div>
+              <input type="submit" 
+                     class="button expand round" 
+                     value="{{'Pair'|translate}}"
+                     ng-disabled="!pairingCodeForm.$valid"
+                     ng-style="{'background-color':backgroundColor}" 
+                     ng-click="pair()">
+            </div>
+          </div>
+        </form>
+    </div>
+      
+
+
+    <div class="extra-margin-bottom"></div>
+</div>
