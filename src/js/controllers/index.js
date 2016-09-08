@@ -9,9 +9,11 @@ var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 var eventBus = require('byteballcore/event_bus.js');
 var objectHash = require('byteballcore/object_hash.js');
 var ecdsaSig = require('byteballcore/signature.js');
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService) {
+  breadcrumbs.add('index.js');
   var self = this;
   self.isCordova = isCordova;
   self.isSafari = isMobile.Safari();
@@ -58,7 +60,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         network.findOutboundPeerOrConnect(bug_sink_url, function(err, ws){
             if (err)
                 return;
-            network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: error_object.stack || error_object});
+			breadcrumbs.add('bugreport');
+			var description = error_object.stack || JSON.stringify(error_object, null, '\t');
+			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
+			description += "UA: "+navigator.userAgent+"\n";
+			description += "Program: "+conf.program+' '+conf.program_version+"\n";
+            network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
     
@@ -851,7 +858,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
 
-    client.getTxHistory(self.arrBalances[self.assetIndex].asset, function(txs) {
+    client.getTxHistory(self.arrBalances[self.assetIndex].asset, function onGotTxHistory(txs) {
         var newHistory = self.processNewTxs(txs);
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
@@ -888,7 +895,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.txHistoryError = false;
     self.updatingTxHistory[walletId] = true;
 
-    $timeout(function() {
+    $timeout(function onUpdateHistoryTimeout() {
       self.updateLocalTxHistory(fc, function(err) {
         self.updatingTxHistory[walletId] = false;
         if (err)

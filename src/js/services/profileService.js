@@ -2,6 +2,7 @@
 
 var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 var device = require('byteballcore/device.js');
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, pushNotificationsService, isCordova, gettext, gettextCatalog, nodeWebkit, uxLanguage) {
@@ -311,6 +312,7 @@ angular.module('copayApp.services')
             else $log.debug('Unsubscribed from push notifications service');
         });*/
         $log.debug('Deleting Wallet:', fc.credentials.walletName);
+        breadcrumbs.add('Deleting Wallet: ' + fc.credentials.walletName);
 
         root.profile.credentials = lodash.reject(root.profile.credentials, {
             walletId: walletId
