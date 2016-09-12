@@ -2,7 +2,7 @@
   "name": "byteball-test",
   "description": "A wallet for decentralized value",
   "author": "Byteball",
-  "version": "0.2",
+  "version": "0.3.0",
   "keywords": [
     "wallet",
     "byteball",

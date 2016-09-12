@@ -252,7 +252,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 		console.log("argv: "+gui.App.argv);
 		if (gui.App.argv[0]){
 			// wait till the wallet fully loads
-			var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
+			var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 				setTimeout(function(){
 					handleUri(gui.App.argv[0]);
 				}, 100);
@@ -273,7 +273,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 		//console.log("go service: setting temp handleOpenURL");
 		//window.handleOpenURL = tempHandleUri;
 		// wait till the wallet fully loads
-		var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
+		var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 			console.log("setting permanent handleOpenURL");
 			window.handleOpenURL = handleUri;
 			if (window.open_url){ // use cached url at startup

@@ -96,6 +96,7 @@ angular.module('copayApp.services')
 
     function unlockWalletAndInitDevice(){
         // wait till the wallet fully loads
+		breadcrumbs.add('unlockWalletAndInitDevice');
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
             root.insistUnlockFC(null, function(){
@@ -105,11 +106,13 @@ angular.module('copayApp.services')
                 var config = configService.getSync();
                 root.focusedClient.initDeviceProperties(
                     root.focusedClient.credentials.xPrivKey, root.profile.my_device_address, config.hub, config.deviceName);
+				$rootScope.$emit('Local/BalanceUpdatedAndWalletUnlocked');
             });
         });
     }
     
     root.bindProfile = function(profile, cb) {
+		breadcrumbs.add('bindProfile');
         root.profile = profile;
         configService.get(function(err) {
             $log.debug('Preferences read');
@@ -150,8 +153,10 @@ angular.module('copayApp.services')
     };
 
     root.loadAndBindProfile = function(cb) {
+	  breadcrumbs.add('loadAndBindProfile');
       storageService.getDisclaimerFlag(function(err, val) {
         if (!val) {
+		  breadcrumbs.add('Non agreed disclaimer');
           return cb(new Error('NONAGREEDDISCLAIMER: Non agreed disclaimer'));
         } else {
           storageService.getProfile(function(err, profile) {
@@ -160,6 +165,7 @@ angular.module('copayApp.services')
               return cb(err);
             }
             if (!profile) {
+				breadcrumbs.add('no profile');
                 return cb(new Error('NOPROFILE: No profile'));
             } else {
               $log.debug('Profile read');

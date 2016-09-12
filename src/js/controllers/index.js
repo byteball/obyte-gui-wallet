@@ -435,6 +435,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.setFocusedWallet = function() {
     var fc = profileService.focusedClient;
     if (!fc) return;
+	  
+	breadcrumbs.add('setFocusedWallet '+fc.credentials.walletId);
 
     // Clean status
     self.totalBalanceBytes = null;
@@ -600,6 +602,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             self.setBalance(assocBalances);
             // Notify external addons or plugins
             $rootScope.$emit('Local/BalanceUpdated', assocBalances);
+			if (!self.isPrivKeyEncrypted)
+				$rootScope.$emit('Local/BalanceUpdatedAndWalletUnlocked');
         });
         
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
@@ -640,13 +644,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     
   self.openWallet = function() {
-      console.log("index.openWallet called");
+    console.log("index.openWallet called");
     var fc = profileService.focusedClient;
+	breadcrumbs.add('openWallet '+fc.credentials.walletId);
     $timeout(function() {
       //$rootScope.$apply();
       self.setOngoingProcess('openingWallet', true);
       self.updateError = false;
-      fc.openWallet(function(err, walletStatus) {
+      fc.openWallet(function onOpenedWallet(err, walletStatus) {
         self.setOngoingProcess('openingWallet', false);
         if (err)
             throw "impossible error from openWallet";
@@ -809,7 +814,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     $timeout(function() {
       fc.getTxHistory(self.arrBalances[self.assetIndex].asset, function(txs) {
-        self.setOngoingProcess('generatingCSV', false);
+          self.setOngoingProcess('generatingCSV', false);
           $log.debug('Wallet Transaction History:', txs);
 
           self.bytesToUnit = 1 / self.unitToBytes;
@@ -848,7 +853,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             link.setAttribute("download", filename);
             link.click();
           }
-        $rootScope.$apply();
+          $rootScope.$apply();
       });
     });
   };
@@ -857,7 +862,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
-
+	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
     client.getTxHistory(self.arrBalances[self.assetIndex].asset, function onGotTxHistory(txs) {
         var newHistory = self.processNewTxs(txs);
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
