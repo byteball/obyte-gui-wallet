@@ -287,5 +287,6 @@ module.exports = function(grunt) {
   grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
   grunt.registerTask('linux', ['copy:linux', 'compress:linux64']);
   grunt.registerTask('deb', ['debian_package:linux64']);
-  grunt.registerTask('inno', ['innosetup_compiler:win64']);
+  grunt.registerTask('inno64', ['innosetup_compiler:win64']);
+  grunt.registerTask('inno32', ['innosetup_compiler:win32']);
 };

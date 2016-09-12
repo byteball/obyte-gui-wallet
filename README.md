@@ -62,7 +62,7 @@ Then run Byteball desktop client:
 
 - `grunt desktop`
 - copy `node_modules` into the app bundle ../byteballbuilds/Byteball/win64, except those that are important only for development (karma, grunt, jasmine)
-- `grunt inno`
+- `grunt inno64`
 
 ### Linux
 
