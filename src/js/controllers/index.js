@@ -577,10 +577,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var fc = profileService.focusedClient;
     if (!fc) 
-        return;
+        return breadcrumbs.add('updateAll no fc');
 
     if (!fc.isComplete())
-        return;
+        return breadcrumbs.add('updateAll not complete yet');
       
     // reconnect if lost connection
     device.loginToHub();
@@ -721,6 +721,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.arrBalances.push(balanceInfo);
     }
     self.assetIndex = self.assetIndex || 0;
+	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
 
       /*
     // SAT
@@ -863,6 +864,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
+	if (!client.isComplete())
+		return console.log('fc incomplete yet');
     client.getTxHistory(self.arrBalances[self.assetIndex].asset, function onGotTxHistory(txs) {
         var newHistory = self.processNewTxs(txs);
         $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
