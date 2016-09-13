@@ -4,7 +4,7 @@ Apple takes cautious approach to new cryptocurrencies and didn't approve our app
 
 1. Download [Xcode](https://itunes.apple.com/en/app/xcode/id497799835?mt=12) (4GB), if not already.
 1. Sign up for [Apple Developer Program](https://developer.apple.com/) (if not already), it's free.
-1. Download [Byteball Xcode project](../../releases/download/v0.1.1/ios-xcode-project.zip), it contains all the source code necessary to build.
+1. Download [Byteball Xcode project](../../releases/download/v0.3.0/ios-xcode-project.zip), it contains all the source code necessary to build.
 1. Unzip and open Byteball.xcodeproj in Xcode.
 1. Connect your iPhone to your Mac via USB.
 1. Build Byteball by clicking Play button in Xcode.
