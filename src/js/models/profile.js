@@ -43,8 +43,8 @@ Profile.fromObj = function(obj) {
 
 	if (!obj.xPrivKey && !obj.xPrivKeyEncrypted)
 		throw Error("no xPrivKey, even encrypted");
-	if (!obj.mnemonic && !obj.mnemonicEncrypted)
-		throw Error("no mnemonic, even encrypted");
+//	if (!obj.mnemonic && !obj.mnemonicEncrypted)
+//		throw Error("no mnemonic, even encrypted");
 	if (!obj.tempDeviceKey)
 		throw Error("no tempDeviceKey");
 	x.xPrivKey = obj.xPrivKey;
