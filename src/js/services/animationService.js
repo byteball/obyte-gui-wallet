@@ -51,7 +51,8 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
     var cleanUp = function() {
       if (cleanedUp) return;
       cleanedUp = true;
-      e2.parentNode.removeChild(e2);
+	  if (e2.parentNode) // sometimes it is null
+		  e2.parentNode.removeChild(e2);
       e2.innerHTML = "";
       e.className = '';
       cachedBackPanel = null;
