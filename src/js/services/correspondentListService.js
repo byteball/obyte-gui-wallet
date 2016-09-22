@@ -12,7 +12,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
-			body = nl2br(body);
+			body = text2html(body);
 			console.log("body with markup: "+body);
 			addMessageEvent(true, from_address, body, bAnotherCorrespondent);
 		});
@@ -35,8 +35,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		return text.replace(/\b[2-7A-Z]{32}\b(?!\?(amount|asset|device_address))/g, function(address){
 			if (!ValidationUtils.isValidAddress(address))
 				return address;
-			if (arrMyAddresses.indexOf(address) >= 0)
-				return address;
+		//	if (arrMyAddresses.indexOf(address) >= 0)
+		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
 			return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
@@ -45,8 +45,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g, function(str, address, query_string){ // payment description within [] is ignored
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
-			if (arrMyAddresses.indexOf(address) >= 0)
-				return str;
+		//	if (arrMyAddresses.indexOf(address) >= 0)
+		//		return str;
 			var assocParams = URI.parseQueryString(query_string, '&amp;');
 			// device address where to send private payload to.  Not used for now, will send to correspondent's device address
 			var device_address = assocParams['device_address'] || ''; 
@@ -72,12 +72,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				amountStr += amount + ' of ' + asset;
 			return '<a ng-click="sendPayment(\''+address+'\', '+amount+', \''+asset+'\', \''+device_address+'\')">'+amountStr+'</a>';
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
-			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')">'+description+'</a>';
+			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		});
 	}
 	
-	function nl2br(text){
-		return text.replace(/\r/g, '').replace(/\n/g, '<br>');
+	function text2html(text){
+		return text.replace(/\r/g, '').replace(/\n/g, '<br>').replace(/\t/g, ' &nbsp; &nbsp; ');
 	}
 	
 	function escapeHtml(text){
@@ -85,7 +85,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeHtmlAndInsertBr(text){
-		return nl2br(escapeHtml(text));
+		return text2html(escapeHtml(text));
 	}
 	
 	function escapeQuotes(text){
