@@ -114,12 +114,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.updateTxHistory();
     });*/
 
-    eventBus.on("new_my_transaction", function(){
+    eventBus.on("new_my_transactions", function(){
         self.updateAll();
         self.updateTxHistory();
     });
 
-    eventBus.on("my_transaction_became_stable", function(){
+    eventBus.on("my_transactions_became_stable", function(){
         self.updateAll();
         self.updateTxHistory();
     });
