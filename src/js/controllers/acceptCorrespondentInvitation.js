@@ -16,7 +16,6 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 
 	$scope.onQrCodeScanned = function(data, pairingCodeForm) {
 		console.log("onQrCodeScanned", data);
-		data = data.replace('byteball:', '');
 		handleCode(data);
 	};
 
@@ -27,6 +26,7 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 	};
 
 	function handleCode(code){
+		code = code.replace(/^byteball:/i, '');
 		var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#([\w\/+]+)$/);
 		if (!matches)
 			return setError("Invalid pairing code");
