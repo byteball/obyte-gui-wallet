@@ -115,16 +115,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });*/
 
     eventBus.on("new_my_transactions", function(){
+		breadcrumbs.add('new_my_transactions');
         self.updateAll();
         self.updateTxHistory();
     });
 
     eventBus.on("my_transactions_became_stable", function(){
+		breadcrumbs.add('my_transactions_became_stable');
         self.updateAll();
         self.updateTxHistory();
     });
 
     eventBus.on("maybe_new_transactions", function(){
+		breadcrumbs.add('maybe_new_transactions');
         self.updateAll();
         self.updateTxHistory();
     });
@@ -615,6 +618,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
         if (opts.triggerTxUpdate) {
             $timeout(function() {
+				breadcrumbs.add('triggerTxUpdate');
                 self.updateTxHistory();
             }, 1);
         }
@@ -863,6 +867,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
+	if (self.arrBalances.length === 0)
+		return sendBugReport('simulated: no balances', new Error());
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
@@ -918,9 +924,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.updateHistory();
   }, 1000);
 
-  self.throttledUpdateHistory = lodash.throttle(function() {
-    self.updateHistory();
-  }, 5000);
+//  self.throttledUpdateHistory = lodash.throttle(function() {
+//    self.updateHistory();
+//  }, 5000);
     
 //    self.onMouseDown = function(){
 //        console.log('== mousedown');
@@ -1116,11 +1122,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   $rootScope.$on('Local/UnitSettingUpdated', function(event) {
+	breadcrumbs.add('UnitSettingUpdated');
     self.updateAll();
     self.updateTxHistory();
   });
 
   $rootScope.$on('Local/NeedFreshHistory', function(event) {
+	breadcrumbs.add('NeedFreshHistory');
     self.updateHistory();
   });
 
@@ -1130,15 +1138,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  self.debouncedUpdate = lodash.throttle(function() {
-    self.updateAll({
-      quiet: true
-    });
-    self.updateTxHistory();
-  }, 4000, {
-    leading: false,
-    trailing: true
-  });
+//  self.debouncedUpdate = lodash.throttle(function() {
+//    self.updateAll({
+//      quiet: true
+//    });
+//    self.updateTxHistory();
+//  }, 4000, {
+//    leading: false,
+//    trailing: true
+//  });
 
   $rootScope.$on('Local/Resume', function(event) {
 	$log.debug('### Resume event');
@@ -1189,6 +1197,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 
   $rootScope.$on('NewOutgoingTx', function() {
+	breadcrumbs.add('NewOutgoingTx');
     self.updateAll({
       walletStatus: null,
       untilItChanges: true,
