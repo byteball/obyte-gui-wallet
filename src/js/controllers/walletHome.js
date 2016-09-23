@@ -575,9 +575,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         console.log("asset "+asset);
         var address = form.address.$modelValue;
         var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
-        var amount = parseInt(form.amount.$modelValue.toFixed(0));
+        var amount = form.amount.$modelValue;
         if (asset === "base")
             amount *= unitToBytes;
+		amount = Math.round(amount);
 
         requestTouchid(function(err) {
             if (err) {
