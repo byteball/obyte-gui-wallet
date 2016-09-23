@@ -496,7 +496,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $rootScope.$digest();
         });
 
-        if (fc.isPrivKeyExternal()) {
+		self.needsBackup = false;
+		self.openWallet();
+        /*if (fc.isPrivKeyExternal()) {
             self.needsBackup = false;
             self.openWallet();
         } else {
@@ -504,7 +506,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
               self.needsBackup = self.network == 'testnet' ? false : !val;
               self.openWallet();
             });
-        }
+        }*/
     });
   };
 
