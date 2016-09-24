@@ -125,7 +125,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 				console.log("request: "+JSON.stringify(objRequest));
 				if (objRequest.type === 'address'){
 					root.send(function(){
-						$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset || 'base');
+						$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
 					});
 				}
 				else if (objRequest.type === 'pairing'){
