@@ -646,6 +646,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     if (amount) {
+		if (asset === 'base')
+			amount /= this.unitToBytes;
         form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
         this.lockAmount = true;
