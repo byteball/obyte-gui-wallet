@@ -632,22 +632,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var assocDeviceAddressesByPaymentAddress = {};
 
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
+	this.resetError();
     var form = $scope.sendForm;
     if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
         form.address.$render();
         this.lockAddress = true;
-        if (recipient_device_address)
+        if (recipient_device_address) // must be already paired
             assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
     }
 
     if (amount) {
         form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
-        form.amount.$render();
         this.lockAmount = true;
     }
+	else{
+		this.lockAmount = false;
+		form.amount.$pristine = true;
+		form.amount.$setViewValue('');
+	}
+	form.amount.$render();
 
     if (comment) {
         form.comment.$setViewValue(comment);
@@ -660,8 +666,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (assetIndex < 0)
             throw Error("failed to find asset index of asset "+asset);
         $scope.index.assetIndex = assetIndex;
+		this.lockAsset = true;
     }
-
+	else
+		this.lockAsset = false;
   };
 
 
@@ -669,6 +677,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.resetForm = function() {
     this.resetError();
 
+	this.lockAsset = false;
     this.lockAddress = false;
     this.lockAmount = false;
     this.hideAdvSend = true;
