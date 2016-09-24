@@ -31,6 +31,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.$digest();
 	}
 	
+	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
+	
 	function highlightActions(text, arrMyAddresses){
 		return text.replace(/\b[2-7A-Z]{32}\b(?!\?(amount|asset|device_address))/g, function(address){
 			if (!ValidationUtils.isValidAddress(address))
@@ -42,38 +44,60 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
-		}).replace(/\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g, function(str, address, query_string){ // payment description within [] is ignored
+		}).replace(payment_request_regexp, function(str, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return str;
-			var assocParams = URI.parseQueryString(query_string, '&amp;');
-			// device address where to send private payload to.  Not used for now, will send to correspondent's device address
-			var device_address = assocParams['device_address'] || ''; 
-			var strAmount = assocParams['amount'];
-			if (!strAmount)
+			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
+			if (!objPaymentRequest)
 				return str;
-			var amount = parseInt(strAmount);
-			if (amount + '' !== strAmount)
-				return str;
-			var asset = assocParams['asset'] || 'base';
-			console.log("asset="+asset);
-			if (asset !== 'base' && asset.length !== 44) // invalid asset
-				return str;
-			var amountStr = 'Payment request: ';
-			if (asset === 'base'){
-				var walletSettings = configService.getSync().wallet.settings;
-				var unitToBytes = walletSettings.unitToBytes;
-				var amountInUnits = amount / unitToBytes;
-				var unitName = walletSettings.unitName;
-				amountStr += amountInUnits+' '+unitName;
-			}
-			else
-				amountStr += amount + ' of ' + asset;
-			return '<a ng-click="sendPayment(\''+address+'\', '+amount+', \''+asset+'\', \''+device_address+'\')">'+amountStr+'</a>';
+			return '<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\')">'+objPaymentRequest.amountStr+'</a>';
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
 			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		});
+	}
+	
+	function formatOutgoingMessage(text){
+		return escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, address, query_string){
+			if (!ValidationUtils.isValidAddress(address))
+				return str;
+			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
+			if (!objPaymentRequest)
+				return str;
+			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+		});
+	}
+	
+	function parsePaymentRequestQueryString(query_string){
+		var assocParams = URI.parseQueryString(query_string, '&amp;');
+		var strAmount = assocParams['amount'];
+		if (!strAmount)
+			return null;
+		var amount = parseInt(strAmount);
+		if (amount + '' !== strAmount)
+			return null;
+		var asset = assocParams['asset'] || 'base';
+		console.log("asset="+asset);
+		if (asset !== 'base' && asset.length !== 44) // invalid asset
+			return null;
+		var device_address = assocParams['device_address'] || ''; 
+		var amountStr = 'Payment request: ';
+		if (asset === 'base'){
+			var walletSettings = configService.getSync().wallet.settings;
+			var unitToBytes = walletSettings.unitToBytes;
+			var amountInUnits = amount / unitToBytes;
+			var unitName = walletSettings.unitName;
+			amountStr += amountInUnits+' '+unitName;
+		}
+		else
+			amountStr += amount + ' of ' + asset;
+		return {
+			amount: amount,
+			asset: asset,
+			device_address: device_address,
+			amountStr: amountStr
+		};
 	}
 	
 	function text2html(text){
@@ -161,7 +185,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	
 	root.setCurrentCorrespondent = setCurrentCorrespondent;
-	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
+	root.formatOutgoingMessage = formatOutgoingMessage;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){

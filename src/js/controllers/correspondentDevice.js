@@ -27,7 +27,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			ifOk: function(){
 				setOngoingProcess();
 				//$scope.messageEvents.push({bIncoming: false, message: $sce.trustAsHtml($scope.message)});
-				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.escapeHtmlAndInsertBr($scope.message)});
+				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.formatOutgoingMessage($scope.message)});
 				$scope.message = "";
 				$scope.$apply();
 			},
