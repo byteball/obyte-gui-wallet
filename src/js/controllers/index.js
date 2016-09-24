@@ -1,6 +1,7 @@
 'use strict';
 
 var async = require('async');
+var constants = require('byteballcore/constants.js');
 var mutex = require('byteballcore/mutex.js');
 var device = require('byteballcore/device.js');
 var bbWallet = require('byteballcore/wallet.js');
@@ -15,6 +16,7 @@ var Bitcore = require('bitcore-lib');
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService) {
   breadcrumbs.add('index.js');
   var self = this;
+  self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
   self.isCordova = isCordova;
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
@@ -305,7 +307,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                         var arrDestinations = [];
                         for (var asset in assocAmountByAssetAndAddress){
 							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
-                            var currency = (asset !== "base") ? ("of asset "+formatted_asset) : "bytes";
+                            var currency = (asset !== "base") 
+								? (asset === constants.BLACKBYTES_ASSET ? "blackbytes" : "of asset "+formatted_asset) 
+								: "bytes";
                             for (var address in assocAmountByAssetAndAddress[asset])
                                 arrDestinations.push(assocAmountByAssetAndAddress[asset][address] + " " + currency + " to " + address);
                         }

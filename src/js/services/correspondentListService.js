@@ -1,5 +1,6 @@
 'use strict';
 
+var constants = require('byteballcore/constants.js');
 var device = require('byteballcore/device.js');
 var URI = require('byteballcore/uri.js');
 var eventBus = require('byteballcore/event_bus.js');
@@ -82,16 +83,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (asset !== 'base' && asset.length !== 44) // invalid asset
 			return null;
 		var device_address = assocParams['device_address'] || ''; 
-		var amountStr = 'Payment request: ';
-		if (asset === 'base'){
-			var walletSettings = configService.getSync().wallet.settings;
-			var unitToBytes = walletSettings.unitToBytes;
-			var amountInUnits = amount / unitToBytes;
-			var unitName = walletSettings.unitName;
-			amountStr += amountInUnits+' '+unitName;
-		}
-		else
-			amountStr += amount + ' of ' + asset;
+		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
@@ -135,6 +127,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			amount /= unitToBytes;
 			return amount + ' ' + unitName;
 		}
+		else if (asset === constants.BLACKBYTES_ASSET)
+			return amount + ' blackbytes';
 		else
 			return amount + ' of ' + asset;
 	}

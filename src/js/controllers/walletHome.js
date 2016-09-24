@@ -1,5 +1,6 @@
 'use strict';
 
+var constants = require('byteballcore/constants.js');
 var eventBus = require('byteballcore/event_bus.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
@@ -351,7 +352,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             throw Error("no asset");
         var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitToBytes).toFixed(0)) : amount;
         $timeout(function() {
-            $scope.customizedAmountUnit = amount + ' ' + ((asset === 'base') ? $scope.unitName : 'of ' + asset);
+            $scope.customizedAmountUnit = 
+				amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? 'blackbytes' : 'of ' + asset));
             $scope.amountInSmallestUnits = amountInSmallestUnits;
             $scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
         }, 1);

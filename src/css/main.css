@@ -1234,6 +1234,11 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
     }
 }
 
+.of-blackbytes{
+    font-size: 20px;
+    margin-top: -10px;
+}
+
 .splash .container-image {
   padding: 2rem 0;
 }
