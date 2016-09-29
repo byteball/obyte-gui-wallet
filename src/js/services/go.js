@@ -239,15 +239,18 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 	}
 	
 	if (gui){ // nwjs
-		gui.App.on('open', function(commandLine) {
-			console.log("Open url: " + commandLine);
-			if (commandLine){
-				var file = extractByteballArgFromCommandLine(commandLine);
-				if (!file)
-					return console.log("no byteball: arg found");
-				handleUri(file);
-				gui.Window.get().focus();
-			}
+		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
+			removeListenerForOnopen();
+			gui.App.on('open', function(commandLine) {
+				console.log("Open url: " + commandLine);
+				if (commandLine){
+					var file = extractByteballArgFromCommandLine(commandLine);
+					if (!file)
+						return console.log("no byteball: arg found");
+					handleUri(file);
+					gui.Window.get().focus();
+				}
+			});
 		});
 		console.log("argv: "+gui.App.argv);
 		if (gui.App.argv[0]){
