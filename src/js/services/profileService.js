@@ -253,8 +253,8 @@ angular.module('copayApp.services')
                 return cb(err);
             var config = configService.getSync();
             var tempDeviceKey = device.genPrivKey();
-            device.setTempKeys(tempDeviceKey, null, saveTempKeys);
-            walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
+			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
+			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Wallet');
             walletClient.createWallet(walletName, 1, 1, {
                 network: 'livenet'
@@ -272,6 +272,7 @@ angular.module('copayApp.services')
                     tempDeviceKey: tempDeviceKey.toString('base64'),
                     my_device_address: device.getMyDeviceAddress()
                 });
+				device.setTempKeys(tempDeviceKey, null, saveTempKeys);
                 return cb(null, p);
             });
         });
