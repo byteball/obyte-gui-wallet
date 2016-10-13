@@ -1321,12 +1321,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 /*/////////////////// SPINNER ////////////////////*/
 
-#history .spinner, #receive .spinner {
+#history .spinner, #receive .spinner, #send .spinner {
   height: 46px;
 }
 
 #history .spinner > div,
-#receive .spinner > div
+#receive .spinner > div,
+#send .spinner > div
 {
   background-color: #7A8C9E;
 }

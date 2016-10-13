@@ -260,6 +260,17 @@
 
     -->
     <div id="send" class="send tab-view">
+    	<div class="row m20t text-center" ng-show="home.current_payment_key">
+        <div class="columns large-12 medium-12 small-12">
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div>
+      </div>
       <div>
         <h4 class="title m0">
 
@@ -394,7 +405,7 @@
                 <a ng-click="home.resetForm(sendForm)" class="button expand outline dark-gray round" translate>Cancel</a>
               </div>
               <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="sendForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
                   ng-style="{'background-color':index.backgroundColor}"  translate>
                   Send
                 </button>
