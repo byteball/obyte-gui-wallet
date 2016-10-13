@@ -247,4 +247,23 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	}
+}).directive('bindToHeight', function ($window) {
+	return {
+		restrict: 'A',
+		link: function (scope, elem, attrs) {
+			var attributes = scope.$eval(attrs['bindToHeight']);
+			var targetElem = angular.element(document.querySelector(attributes[1]));
+
+			// Watch for changes
+			scope.$watch(function () {
+				return targetElem[0].clientHeight;
+			},
+			function (newValue, oldValue) {
+				if (newValue != oldValue) {
+					elem.css(attributes[0], newValue + 'px');
+					elem[0].scrollTop = elem[0].scrollHeight;
+				}
+			});
+		}
+	};
 });
