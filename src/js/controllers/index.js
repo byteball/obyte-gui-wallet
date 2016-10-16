@@ -874,7 +874,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
 	if (self.arrBalances.length === 0)
-		return sendBugReport('simulated: no balances', new Error());
+		return console.log('updateLocalTxHistory: no balances yet');
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
