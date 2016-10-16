@@ -346,6 +346,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
 
       $scope.submitForm = function(form) {
+		if ($scope.index.arrBalances.length === 0)
+			return console.log('openCustomizedAmountModal: no balances yet');
         var amount = form.amount.$modelValue;
         var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
         if (!asset)
@@ -538,6 +540,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.submitForm = function() {
+	if ($scope.index.arrBalances.length === 0)
+		return console.log('send payment: no balances yet');
     var fc = profileService.focusedClient;
     var unitToBytes = this.unitToBytes;
 
