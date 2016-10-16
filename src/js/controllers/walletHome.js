@@ -261,7 +261,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       m.addClass(animationService.modalAnimated.slideOutDown);
     });
 
-    modalInstance.result.then(function(addr) {
+    modalInstance.result.then(function onDestModalDone(addr) {
       if (addr) {
         self.setForm(addr);
       }
@@ -636,6 +636,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
     var form = $scope.sendForm;
+	if (!form.address) // disappeared?
+		return;
     if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
