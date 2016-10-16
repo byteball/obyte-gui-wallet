@@ -221,7 +221,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+		breadcrumbs.add('openDestinationAddressModal cancel');
+		$modalInstance.dismiss('cancel');
       };
 
       $scope.selectWallet = function(walletId, walletName) {
@@ -235,6 +236,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
           if (err) {
             self.error = err;
+			breadcrumbs.add('openDestinationAddressModal getAddress err: '+err);
             $modalInstance.dismiss('cancel');
             return;
           }
@@ -251,7 +253,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('openDestinationAddressModal on closeModal');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {
@@ -372,7 +375,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+		breadcrumbs.add('openCustomizedAmountModal: cancel');
+		$modalInstance.dismiss('cancel');
       };
     };
 
@@ -384,7 +388,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('openCustomizedAmountModal: on closeModal');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {
@@ -802,7 +807,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('on closeModal tx details');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {
