@@ -99,7 +99,9 @@ angular.module('copayApp.services')
 		breadcrumbs.add('unlockWalletAndInitDevice');
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
+			breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
             root.insistUnlockFC(null, function(){
+				breadcrumbs.add('unlockWalletAndInitDevice unlocked');
                 if (!root.focusedClient.credentials.xPrivKey)
                     throw Error("xPrivKey still not set after unlock");
                 console.log('unlocked: '+root.focusedClient.credentials.xPrivKey);
@@ -591,6 +593,7 @@ angular.module('copayApp.services')
 		var fc = root.focusedClient;
         try {
           fc.unlock(password);
+		  breadcrumbs.add('unlocked '+fc.credentials.walletId);
         } catch (e) {
           $log.debug(e);
           return cb({
@@ -603,6 +606,7 @@ angular.module('copayApp.services')
             $log.debug('Locking wallet automatically');
 			try {
 				fc.lock();
+				breadcrumbs.add('locked '+fc.credentials.walletId);
 			} catch (e) {};
           };
         }, 30*1000);
