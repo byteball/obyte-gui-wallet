@@ -601,7 +601,9 @@ angular.module('copayApp.services')
           console.log('time to auto-lock wallet', fc.credentials);
           if (fc.hasPrivKeyEncrypted()) {
             $log.debug('Locking wallet automatically');
-            root.lockFC();
+			try {
+				fc.lock();
+			} catch (e) {};
           };
         }, 30*1000);
         return cb();
