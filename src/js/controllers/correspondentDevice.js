@@ -39,10 +39,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.insertMyAddress = function(){
+		if (!fc.credentials.isComplete())
+			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
 		issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
+		if (!fc.credentials.isComplete())
+			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
 		issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
