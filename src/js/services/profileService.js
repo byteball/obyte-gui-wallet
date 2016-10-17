@@ -635,6 +635,7 @@ angular.module('copayApp.services')
         return {
           m: c.m,
           n: c.n,
+		  is_complete: (c.publicKeyRing && c.publicKeyRing.length === c.n),
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
@@ -642,7 +643,7 @@ angular.module('copayApp.services')
         };
       });
       ret = lodash.filter(ret, function(w) {
-        return (w.network == network);
+        return (w.network == network && w.is_complete);
       });
       return lodash.sortBy(ret, 'name');
     };
