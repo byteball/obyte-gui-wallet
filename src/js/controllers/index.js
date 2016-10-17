@@ -154,22 +154,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         device.readCorrespondent(device_address, function(correspondent){
             notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
         });
-        // focus the wallet before deleting it
-        profileService.setAndStoreFocus(walletId, function(){
-            profileService.deleteWalletFC({}, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    // may change focus to a wallet that is different from the one that was focused when the event arrived
-                    var newFocusedWalletId = Object.keys(profileService.walletClients)[0];
-                    if (newFocusedWalletId)
-                        profileService.setAndStoreFocus(newFocusedWalletId, function(){});
-                    else
-                        go.walletHome(); 
-                }
-            });
-        });
+		profileService.deleteWallet({client: client}, function(err) {
+			if (err)
+				console.log(err);
+		});
     });
 
     eventBus.on("wallet_completed", function(walletId){

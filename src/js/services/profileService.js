@@ -313,15 +313,15 @@ angular.module('copayApp.services')
       return root.walletClients[walletId];
     };
 
-    root.deleteWalletFC = function(opts, cb) {
-        var fc = root.focusedClient;
-        var walletId = fc.credentials.walletId;
+    root.deleteWallet = function(opts, cb) {
+        var client = opts.client || root.focusedClient;
+        var walletId = client.credentials.walletId;
         /*pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
             if (err) $log.warn('Unsubscription error: ' + err.message);
             else $log.debug('Unsubscribed from push notifications service');
         });*/
-        $log.debug('Deleting Wallet:', fc.credentials.walletName);
-        breadcrumbs.add('Deleting Wallet: ' + fc.credentials.walletName);
+        $log.debug('Deleting Wallet:', client.credentials.walletName);
+        breadcrumbs.add('Deleting Wallet: ' + client.credentials.walletName);
 
         root.profile.credentials = lodash.reject(root.profile.credentials, {
             walletId: walletId
