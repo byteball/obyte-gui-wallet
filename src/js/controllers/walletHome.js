@@ -231,7 +231,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $timeout(function() {
           $scope.$apply();
         });
-        addressService.getAddress(walletId, false, function(err, addr) {
+        addressService.getAddress(walletId, false, function onGotAddress(err, addr) {
           $scope.gettingAddress = false;
 
           if (err) {
@@ -646,7 +646,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	this.resetError();
     var form = $scope.sendForm;
 	if (!form.address) // disappeared?
-		return;
+		return console.log('form.address has disappeared');
     if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
