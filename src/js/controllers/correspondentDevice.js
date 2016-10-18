@@ -39,10 +39,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.insertMyAddress = function(){
+		if (!fc.credentials.isComplete())
+			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
 		issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
+		if (!fc.credentials.isComplete())
+			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
 		issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
@@ -146,6 +150,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 
 			$scope.submitForm = function(form) {
+				if ($scope.index.arrBalances.length === 0)
+					return console.log('showRequestPaymentModal: no balances yet');
 				var amount = form.amount.$modelValue;
 				//var asset = form.asset.$modelValue;
 				var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;

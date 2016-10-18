@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('copayersController',
         var fc = profileService.focusedClient;
         var walletName = fc.credentials.walletName;
 
-        profileService.deleteWalletFC({}, function(err) {
+        profileService.deleteWallet({}, function(err) {
           if (err) {
             this.error = err.message || err;
             console.log(err);

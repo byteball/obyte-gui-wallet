@@ -221,7 +221,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+		breadcrumbs.add('openDestinationAddressModal cancel');
+		$modalInstance.dismiss('cancel');
       };
 
       $scope.selectWallet = function(walletId, walletName) {
@@ -230,11 +231,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $timeout(function() {
           $scope.$apply();
         });
-        addressService.getAddress(walletId, false, function(err, addr) {
+        addressService.getAddress(walletId, false, function onGotAddress(err, addr) {
           $scope.gettingAddress = false;
 
           if (err) {
             self.error = err;
+			breadcrumbs.add('openDestinationAddressModal getAddress err: '+err);
             $modalInstance.dismiss('cancel');
             return;
           }
@@ -251,7 +253,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('openDestinationAddressModal on closeModal');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {
@@ -261,7 +264,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       m.addClass(animationService.modalAnimated.slideOutDown);
     });
 
-    modalInstance.result.then(function(addr) {
+    modalInstance.result.then(function onDestModalDone(addr) {
       if (addr) {
         self.setForm(addr);
       }
@@ -346,6 +349,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         });
 
       $scope.submitForm = function(form) {
+		if ($scope.index.arrBalances.length === 0)
+			return console.log('openCustomizedAmountModal: no balances yet');
         var amount = form.amount.$modelValue;
         var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
         if (!asset)
@@ -370,7 +375,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+		breadcrumbs.add('openCustomizedAmountModal: cancel');
+		$modalInstance.dismiss('cancel');
       };
     };
 
@@ -382,7 +388,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('openCustomizedAmountModal: on closeModal');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {
@@ -538,6 +545,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   this.submitForm = function() {
+	if ($scope.index.arrBalances.length === 0)
+		return console.log('send payment: no balances yet');
     var fc = profileService.focusedClient;
     var unitToBytes = this.unitToBytes;
 
@@ -636,6 +645,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
     var form = $scope.sendForm;
+	if (!form.address) // disappeared?
+		return console.log('form.address has disappeared');
     if (to) {
         form.address.$setViewValue(to);
         form.address.$isValid = true;
@@ -796,7 +807,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     });
 
     var disableCloseModal = $rootScope.$on('closeModal', function() {
-      modalInstance.dismiss('cancel');
+		breadcrumbs.add('on closeModal tx details');
+		modalInstance.dismiss('cancel');
     });
 
     modalInstance.result.finally(function() {

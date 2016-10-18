@@ -99,7 +99,9 @@ angular.module('copayApp.services')
 		breadcrumbs.add('unlockWalletAndInitDevice');
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
+			breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
             root.insistUnlockFC(null, function(){
+				breadcrumbs.add('unlockWalletAndInitDevice unlocked');
                 if (!root.focusedClient.credentials.xPrivKey)
                     throw Error("xPrivKey still not set after unlock");
                 console.log('unlocked: '+root.focusedClient.credentials.xPrivKey);
@@ -253,8 +255,8 @@ angular.module('copayApp.services')
                 return cb(err);
             var config = configService.getSync();
             var tempDeviceKey = device.genPrivKey();
-            device.setTempKeys(tempDeviceKey, null, saveTempKeys);
-            walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
+			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
+			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Wallet');
             walletClient.createWallet(walletName, 1, 1, {
                 network: 'livenet'
@@ -272,6 +274,7 @@ angular.module('copayApp.services')
                     tempDeviceKey: tempDeviceKey.toString('base64'),
                     my_device_address: device.getMyDeviceAddress()
                 });
+				device.setTempKeys(tempDeviceKey, null, saveTempKeys);
                 return cb(null, p);
             });
         });
@@ -310,15 +313,15 @@ angular.module('copayApp.services')
       return root.walletClients[walletId];
     };
 
-    root.deleteWalletFC = function(opts, cb) {
-        var fc = root.focusedClient;
-        var walletId = fc.credentials.walletId;
+    root.deleteWallet = function(opts, cb) {
+        var client = opts.client || root.focusedClient;
+        var walletId = client.credentials.walletId;
         /*pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
             if (err) $log.warn('Unsubscription error: ' + err.message);
             else $log.debug('Unsubscribed from push notifications service');
         });*/
-        $log.debug('Deleting Wallet:', fc.credentials.walletName);
-        breadcrumbs.add('Deleting Wallet: ' + fc.credentials.walletName);
+        $log.debug('Deleting Wallet:', client.credentials.walletName);
+        breadcrumbs.add('Deleting Wallet: ' + client.credentials.walletName);
 
         root.profile.credentials = lodash.reject(root.profile.credentials, {
             walletId: walletId
@@ -580,7 +583,6 @@ angular.module('copayApp.services')
     };
 
     root.unlockFC = function(error_message, cb) {
-      var fc = root.focusedClient;
       $log.debug('Wallet is encrypted');
       $rootScope.$emit('Local/NeedsPassword', false, error_message, function(err2, password) {
         if (err2 || !password) {
@@ -588,8 +590,10 @@ angular.module('copayApp.services')
             message: (err2 || gettext('Password needed'))
           });
         }
+		var fc = root.focusedClient;
         try {
           fc.unlock(password);
+		  breadcrumbs.add('unlocked '+fc.credentials.walletId);
         } catch (e) {
           $log.debug(e);
           return cb({
@@ -600,7 +604,10 @@ angular.module('copayApp.services')
           console.log('time to auto-lock wallet', fc.credentials);
           if (fc.hasPrivKeyEncrypted()) {
             $log.debug('Locking wallet automatically');
-            root.lockFC();
+			try {
+				fc.lock();
+				breadcrumbs.add('locked '+fc.credentials.walletId);
+			} catch (e) {};
           };
         }, 30*1000);
         return cb();
@@ -628,6 +635,7 @@ angular.module('copayApp.services')
         return {
           m: c.m,
           n: c.n,
+		  is_complete: (c.publicKeyRing && c.publicKeyRing.length === c.n),
           name: config.aliasFor[c.walletId] || c.walletName,
           id: c.walletId,
           network: c.network,
@@ -635,7 +643,7 @@ angular.module('copayApp.services')
         };
       });
       ret = lodash.filter(ret, function(w) {
-        return (w.network == network);
+        return (w.network == network && w.is_complete);
       });
       return lodash.sortBy(ret, 'name');
     };

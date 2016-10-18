@@ -154,22 +154,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         device.readCorrespondent(device_address, function(correspondent){
             notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
         });
-        // focus the wallet before deleting it
-        profileService.setAndStoreFocus(walletId, function(){
-            profileService.deleteWalletFC({}, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    // may change focus to a wallet that is different from the one that was focused when the event arrived
-                    var newFocusedWalletId = Object.keys(profileService.walletClients)[0];
-                    if (newFocusedWalletId)
-                        profileService.setAndStoreFocus(newFocusedWalletId, function(){});
-                    else
-                        go.walletHome(); 
-                }
-            });
-        });
+		profileService.deleteWallet({client: client}, function(err) {
+			if (err)
+				console.log(err);
+		});
     });
 
     eventBus.on("wallet_completed", function(walletId){
@@ -874,7 +862,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
     var walletId = client.credentials.walletId;
 	if (self.arrBalances.length === 0)
-		return sendBugReport('simulated: no balances', new Error());
+		return console.log('updateLocalTxHistory: no balances yet');
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
