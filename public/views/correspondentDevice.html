@@ -41,7 +41,10 @@
         position: absolute;
         width: 100%;
         bottom: 0px;
-        height: 150px;
+        min-height: 150px;
+        border-top: 1px solid #E9E9EC;
+        background-color: white;
+        z-index: 10;
     }
     .message-log{
         position: absolute;
@@ -54,7 +57,6 @@
         margin-bottom: 20px;
         padding-bottom: 10px;
         font-size: 13px;
-        border-bottom: 1px solid #E9E9EC;
     }
     .chat-message{
         width:100%;
@@ -177,7 +179,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents">
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']">
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
@@ -190,7 +192,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <form name="chatForm" class="send-form columns" no-validate>
           <div class="size-12 m10b" ng-show="!error">Text message to {{correspondent.name}}:</div>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
-          <input type="text" id="message" name="message" ng-model="message" autofocus autocomplete="off" required>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()"></textarea>
           <div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">
               <button type="button"

@@ -6,6 +6,7 @@ var modules = [
   'angular-carousel',
   'mm.foundation',
   'monospaced.qrcode',
+  'monospaced.elastic',
   'gettext',
   'ngLodash',
   'uiSwitch',
