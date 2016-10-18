@@ -7,9 +7,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash) {
 	
 	var self = this;
-	if (nw) {
-		var win = nw.Window.get();
-	}
 	console.log("correspondentDeviceController");
 	
 	var fc = profileService.focusedClient;
@@ -86,31 +83,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.editCorrespondent = function() {
 		go.path('editCorrespondentDevice');
 	};
-
-	if (nw) {
-		$scope.stopCountingNewMessages = function() {
-			$scope.newMessagesCount=0;
-			$scope.counterEnabled = false;
-		}
-		$scope.stopCountingNewMessages();
-		win.on('focus', function(){$scope.stopCountingNewMessages();$scope.$apply();});
-		win.on('blur', function(){$scope.counterEnabled = true;});
-		$scope.$watch('newMessagesCount', function(count) {
-			if (count) {
-				win.setBadgeLabel(""+count);
-			} else {
-				win.setBadgeLabel("");
-			}
-		});
-		$scope.$watchCollection('messageEvents', function (newMessages, oldMessages) {
-			if (!$scope.counterEnabled) return;
-			var diffArray = lodash.difference(newMessages, oldMessages)
-			if (diffArray.length)
-				for (var i in diffArray) {
-					if (diffArray[i].bIncoming) $scope.newMessagesCount++;
-				}
-		});
-	}
 
 	function setError(error){
 		console.log("send error:", error);
