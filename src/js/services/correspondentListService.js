@@ -9,6 +9,24 @@ var walletGeneral = require('byteballcore/wallet_general.js');
 
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go) {
 	var root = {};
+
+	if (nw) {
+		var win = nw.Window.get();
+		function stopCountingNewMessages() {
+			$rootScope.newMessagesCount=0;
+			$rootScope.counterEnabled = false;
+		}
+		stopCountingNewMessages();
+		win.on('focus', function(){stopCountingNewMessages();$rootScope.$apply();});
+		win.on('blur', function(){$rootScope.counterEnabled = true;});
+		$rootScope.$watch('newMessagesCount', function(count) {
+			if (count) {
+				win.setBadgeLabel(""+count);
+			} else {
+				win.setBadgeLabel("");
+			}
+		});
+	}
 	
 	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
@@ -30,6 +48,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$state.reload();
 		else
 			$rootScope.$digest();
+		if ($rootScope.counterEnabled && bIncoming) {
+			$rootScope.newMessagesCount++;			
+		}
 	}
 	
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored

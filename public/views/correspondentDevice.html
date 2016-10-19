@@ -192,7 +192,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <form name="chatForm" class="send-form columns" no-validate>
           <div class="size-12 m10b" ng-show="!error">Text message to {{correspondent.name}}:</div>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()"></textarea>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" style="min-height:30px;"></textarea>
           <div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">
               <button type="button"
