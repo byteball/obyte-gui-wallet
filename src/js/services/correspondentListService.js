@@ -48,8 +48,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$state.reload();
 		else
 			$rootScope.$digest();
-		if ($rootScope.counterEnabled) {
-			if (bIncoming) $rootScope.newMessagesCount++;			
+		if ($rootScope.counterEnabled && bIncoming) {
+			$rootScope.newMessagesCount++;			
 		}
 	}
 	
