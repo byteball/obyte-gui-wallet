@@ -83,8 +83,16 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
     });
     
+    var catchups_num_at_start = -1;
     eventBus.on('catching_up_started', function(){
-        self.setOngoingProcess('Syncing', true);
+        self.setOngoingProcess('Syncing', true, "0%");
+    });
+    eventBus.on('catchups_left', function(num){
+    	if (catchups_num_at_start === -1) {
+    		catchups_num_at_start = num;
+    	}
+    	var percent = Math.round((catchups_num_at_start - num) / catchups_num_at_start * 100);
+        self.setOngoingProcess('Syncing', true, "" + percent + "%");
     });
     eventBus.on('catching_up_done', function(){
         self.setOngoingProcess('Syncing', false);
@@ -409,7 +417,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.tab = 'walletHome';
 
 
-  self.setOngoingProcess = function(processName, isOn) {
+  self.setOngoingProcess = function(processName, isOn, suffix) {
     $log.debug('onGoingProcess', processName, isOn);
     self[processName] = isOn;
     self.onGoingProcess[processName] = isOn;
@@ -422,6 +430,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     // The first one
     self.onGoingProcessName = name;
+    self.onGoingProcessSuffix = suffix ? suffix : "";
     $timeout(function() {
       $rootScope.$apply();
     });
