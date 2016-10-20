@@ -10,7 +10,7 @@ var walletGeneral = require('byteballcore/wallet_general.js');
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go) {
 	var root = {};
 
-	if (nw) {
+	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
 		function stopCountingNewMessages() {
 			$rootScope.newMessagesCount=0;
