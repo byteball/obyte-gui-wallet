@@ -97,6 +97,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     eventBus.on('catching_up_done', function(){
         self.setOngoingProcess('Syncing', false);
+        self.syncProgress = "";
     });
     eventBus.on('refresh_light_started', function(){
 		console.log('refresh_light_started');
