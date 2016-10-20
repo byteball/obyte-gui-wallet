@@ -619,8 +619,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 // if multisig, it might take very long before the callback is called
                 //self.setOngoingProcess();
                 delete self.current_payment_key;
-                if (err)
+                if (err){
+					if (err.match(/device address/))
+						err = "This is a private asset, please send it only by clicking links from chat";
                     return self.setSendError(err);
+				}
                 self.resetForm();
                 $rootScope.$emit("NewOutgoingTx");
                 if (recipient_device_address) // show payment in chat window
