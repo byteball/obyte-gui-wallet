@@ -83,11 +83,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
     });
     
+    var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
+        self.syncProgress = "0%";
+    });
+    eventBus.on('catchup_balls_left', function(count_left){
+    	if (catchup_balls_at_start === -1) {
+    		catchup_balls_at_start = count_left;
+    	}
+    	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
+        self.syncProgress = "" + percent + "%";
     });
     eventBus.on('catching_up_done', function(){
         self.setOngoingProcess('Syncing', false);
+        self.syncProgress = "";
     });
     eventBus.on('refresh_light_started', function(){
 		console.log('refresh_light_started');
