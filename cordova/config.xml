@@ -32,6 +32,7 @@
 	<preference name="KeepRunning" value="false"/>
 	<preference name="android-minSdkVersion" value="19" />
 	<preference name="deployment-target" value="9.0" />
+	<preference name="AndroidLaunchMode" value="singleTask" />
     
     <platform name="ios">
       <!-- iOS 8.0+ -->
