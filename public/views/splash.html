@@ -13,47 +13,78 @@
 	ng-init="splash.init()" 
 	ng-controller="splashController as splash">
 	<div ng-if="!index.hasProfile">
-		<div class="row">
-			<div class="medium-centered small-centered large-centered columns">
-				<div class="m20t">
-					<span class="text-bold size-16 text-white" translate>WELCOME TO BYTEBALL</span>
-					<p class="text-gray size-14 m0 text-light" translate>A wallet for decentralized value</p>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="container-image large-3 medium-3 small-3 medium-centered small-centered large-centered columns">
-				<img src="img/icon-splash.png" alt="icon" width="100%">
-			</div>
-		</div>
-		<div class="text-center size-12 text-warning" ng-show="splash.error && !splash.creatingProfile">
-			{{splash.error|translate}}. <span translate>Retrying...</span>
-		</div>
-		<div class="onGoingProcess" ng-show="splash.creatingProfile">
-			<div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
-				<div class="spinner">
-					<div class="rect1"></div>
-					<div class="rect2"></div>
-					<div class="rect3"></div>
-					<div class="rect4"></div>
-					<div class="rect5"></div>
-				</div>
-				<span translate>Creating Profile...</span>
-			</div>
-		</div>
-		<div class="row" ng-show="!splash.creatingProfile">
-			<div class="start-button large-8 medium-8 small-8 medium-centered small-centered large-centered columns">
-				
-				<label><span class="text-gray" translate>Please name this device</span></label>
-				<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
+		<div ng-if="splash.step === 'wallet_type'">
+			<div class="row text-left" style="margin-top: 40px">
+				<div class="start-button large-10 medium-10 small-10 medium-centered small-centered large-centered columns">
+
+					<label><span class="text-white size-14" translate>Please choose the type of this wallet</span></label>
+					<p class="text-gray size-14 m0 text-light" translate>This choice cannot be changed later</p>
 					
-				<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
-					GET STARTED
-				</button>
-				<!--
-				<p class="text-gray m5b size-12" translate>Already have a wallet?</p>
-				<button  ng-click="splash.create(true)" class="button round outline dark-gray tiny" ng-disabled="!splash.deviceName" translate>Import backup </button>
-				-->
+					<div class="m20t">
+						<input type="radio" name="wallet_type" value="full" ng-model="splash.wallet_type" id="wallet_type_full">
+						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Full wallet</label>
+						<p class="text-gray size-14 m0 text-light" translate>
+							The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours.
+						</p>
+					</div>
+					
+					<div class="m20t">
+						<input type="radio" name="wallet_type" value="light" ng-model="splash.wallet_type" id="wallet_type_light">
+						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_light" translate>Light wallet</label>
+						<p class="text-gray size-14 m0 text-light" translate>
+							The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately.
+						</p>
+					</div>
+					
+					<button ng-click="splash.setWalletType()" class="button black expand round size-12 text-spacing m20t" translate>
+						CONTINUE
+					</button>
+				</div>
+			</div>
+		</div>
+		<div ng-if="splash.step === 'device_name'">
+			<div class="row">
+				<div class="medium-centered small-centered large-centered columns">
+					<div class="m20t">
+						<span class="text-bold size-16 text-white" translate>WELCOME TO BYTEBALL</span>
+						<p class="text-gray size-14 m0 text-light" translate>A wallet for decentralized value</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="container-image large-3 medium-3 small-3 medium-centered small-centered large-centered columns">
+					<img src="img/icon-splash.png" alt="icon" width="100%">
+				</div>
+			</div>
+			<div class="text-center size-12 text-warning" ng-show="splash.error && !splash.creatingProfile">
+				{{splash.error|translate}}. <span translate>Retrying...</span>
+			</div>
+			<div class="onGoingProcess" ng-show="splash.creatingProfile">
+				<div class="onGoingProcess-content" ng-style="{'background-color':'#222'}">
+					<div class="spinner">
+						<div class="rect1"></div>
+						<div class="rect2"></div>
+						<div class="rect3"></div>
+						<div class="rect4"></div>
+						<div class="rect5"></div>
+					</div>
+					<span translate>Creating Profile...</span>
+				</div>
+			</div>
+			<div class="row" ng-show="!splash.creatingProfile">
+				<div class="start-button large-8 medium-8 small-8 medium-centered small-centered large-centered columns">
+
+					<label><span class="text-gray" translate>Please name this device</span></label>
+					<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
+
+					<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
+						GET STARTED
+					</button>
+					<!--
+					<p class="text-gray m5b size-12" translate>Already have a wallet?</p>
+					<button  ng-click="splash.create(true)" class="button round outline dark-gray tiny" ng-disabled="!splash.deviceName" translate>Import backup </button>
+					-->
+				</div>
 			</div>
 		</div>
 	</div>

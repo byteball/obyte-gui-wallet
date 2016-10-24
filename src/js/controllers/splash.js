@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('splashController',
-  function($scope, $timeout, $log, configService, profileService, storageService, go) {
+  function($scope, $timeout, $log, configService, profileService, storageService, go, isCordova) {
 	
 	var self = this;
 	
 	function saveDeviceName(){
 		console.log('saveDeviceName: '+self.deviceName);
+		var device = require('byteballcore/device.js');
 		device.setDeviceName(self.deviceName);
 		var opts = {deviceName: self.deviceName};
 		configService.set(opts, function(err) {
@@ -21,6 +22,26 @@ angular.module('copayApp.controllers').controller('splashController',
 		self.deviceName = config.deviceName;
 	});
 	
+	this.step = isCordova ? 'device_name' : 'wallet_type';
+	this.wallet_type = 'light';
+	
+	this.setWalletType = function(){
+		var bLight = (self.wallet_type === 'light');
+		if (!bLight){
+			self.step = 'device_name';
+			return;
+		}
+		var fs = require('fs'+'');
+		var desktopApp = require('byteballcore/desktop_app.js');
+		var appDataDir = desktopApp.getAppDataDir();
+		var userConfFile = appDataDir + '/conf.json';
+		fs.writeFile(userConfFile, JSON.stringify({bLight: bLight}, null, '\t'), 'utf8', function(err){
+			if (err)
+				throw Error('failed to write conf.json: '+err);
+			self.step = 'device_name';
+			$scope.$apply();
+		});
+	};
 	
 	this.create = function(noWallet) {
 		self.creatingProfile = true;
@@ -32,7 +53,7 @@ angular.module('copayApp.controllers').controller('splashController',
 					self.creatingProfile = false;
 					$log.warn(err);
 					self.error = err;
-					self.$apply();
+					$scope.$apply();
 					$timeout(function() {
 						self.create(noWallet);
 					}, 3000);
