@@ -1,13 +1,12 @@
 'use strict';
 
-var myWitnesses = require('byteballcore/my_witnesses.js');
-
 angular.module('copayApp.controllers').controller('preferencesWitnessesController',
   function($scope, go, witnessListService) {
     var self = this;
     this.witnesses = [];
     console.log('preferencesWitnessesController');
     
+	var myWitnesses = require('byteballcore/my_witnesses.js');
     myWitnesses.readMyWitnesses(function(arrWitnesses){
         self.witnesses = arrWitnesses;
         $scope.$apply();

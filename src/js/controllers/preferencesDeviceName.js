@@ -1,7 +1,5 @@
 'use strict';
 
-var device = require('byteballcore/device.js');
-
 angular.module('copayApp.controllers').controller('preferencesDeviceNameController',
   function($scope, $timeout, configService, go) {
     var config = configService.getSync();
@@ -9,6 +7,7 @@ angular.module('copayApp.controllers').controller('preferencesDeviceNameControll
 
     this.save = function() {
       var self = this;
+	  var device = require('byteballcore/device.js');
       device.setDeviceName(self.deviceName);
       var opts = {deviceName: self.deviceName};
 

@@ -1,14 +1,14 @@
 'use strict';
 
 var constants = require('byteballcore/constants.js');
-var device = require('byteballcore/device.js');
 var URI = require('byteballcore/uri.js');
 var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
-var walletGeneral = require('byteballcore/wallet_general.js');
+
 
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go) {
 	var root = {};
+	var device = require('byteballcore/device.js');
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
@@ -29,6 +29,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
+		var walletGeneral = require('byteballcore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);

@@ -1,7 +1,5 @@
 'use strict';
 
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-var device = require('byteballcore/device.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 angular.module('copayApp.services')
@@ -126,6 +124,8 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
+					require('byteballcore/wallet.js');
+					var device = require('byteballcore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
                     if (root.profile.xPrivKeyEncrypted){
@@ -254,6 +254,7 @@ angular.module('copayApp.services')
             if (err)
                 return cb(err);
             var config = configService.getSync();
+			var device = require('byteballcore/device.js');
             var tempDeviceKey = device.genPrivKey();
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
@@ -283,6 +284,7 @@ angular.module('copayApp.services')
     // create additional wallet (the first wallet is created in _createNewProfile())
     root.createWallet = function(opts, cb) {
         $log.debug('Creating Wallet:', opts);
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readNextAccount(function(account){
             console.log("next account = "+account);
             if (!opts.extendedPrivateKey && !opts.mnemonic){

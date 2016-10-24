@@ -1,8 +1,5 @@
 'use strict';
 
-var device = require('byteballcore/device.js');
-var lightWallet = require('byteballcore/light_wallet.js');
-
 angular.module('copayApp.controllers').controller('preferencesHubController',
   function($scope, $timeout, configService, go) {
     var config = configService.getSync();
@@ -10,6 +7,8 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
 
     this.save = function() {
       var self = this;
+	  var device = require('byteballcore/device.js');
+	  var lightWallet = require('byteballcore/light_wallet.js');
       device.setDeviceHub(self.hub);
       lightWallet.setLightVendorHost(self.hub);
       var opts = {hub: self.hub};

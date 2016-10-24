@@ -3,10 +3,6 @@
 var async = require('async');
 var constants = require('byteballcore/constants.js');
 var mutex = require('byteballcore/mutex.js');
-var device = require('byteballcore/device.js');
-var bbWallet = require('byteballcore/wallet.js');
-var lightWallet = require('byteballcore/light_wallet.js');
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 var eventBus = require('byteballcore/event_bus.js');
 var objectHash = require('byteballcore/object_hash.js');
 var ecdsaSig = require('byteballcore/signature.js');
@@ -35,6 +31,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     
     function updatePublicKeyRing(walletClient, onDone){
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(walletClient.credentials.walletId, function(arrCosigners){
             var arrApprovedDevices = arrCosigners.
                 filter(function(cosigner){ return cosigner.approval_date; }).
@@ -115,6 +112,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     eventBus.on("refused_to_sign", function(device_address){
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Refused'), correspondent.name + " refused to sign the transaction");
         });
@@ -151,6 +149,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return;
         var walletName = client.credentials.walletName;
         updatePublicKeyRing(client);
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" approved by "+correspondent.name);
         });
@@ -161,6 +160,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (!client) // already deleted (maybe declined by another device)
             return;
         var walletName = client.credentials.walletName;
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
         });
@@ -186,6 +186,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
     // in arrOtherCosigners, 'other' is relative to the initiator
     eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners){
+		var device = require('byteballcore/device.js');
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -257,6 +259,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             console.log("refused signature");
         }
         
+		var bbWallet = require('byteballcore/wallet.js');
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         var unit = objUnit.unit;
         var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
         mutex.lock(["signing_request-"+unit], function(unlock){
@@ -493,6 +497,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setAddressbook();
 
         console.log("reading cosigners");
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
             $rootScope.$digest();
@@ -590,6 +595,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return breadcrumbs.add('updateAll not complete yet');
       
     // reconnect if lost connection
+	var device = require('byteballcore/device.js');
     device.loginToHub();
 
     $timeout(function() {
@@ -948,6 +954,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (self.assetIndex !== self.oldAssetIndex) // it was a swipe
                 return console.log("== swipe");
             console.log('== updateHistoryFromNetwork');
+			var lightWallet = require('byteballcore/light_wallet.js');
             lightWallet.refreshLightClientHistory();
         }, 500);
     }, 5000);
@@ -1154,6 +1161,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
 	$log.debug('### Resume event');
+	var lightWallet = require('byteballcore/light_wallet.js');
 	lightWallet.refreshLightClientHistory();
 	//self.debouncedUpdate();
   });

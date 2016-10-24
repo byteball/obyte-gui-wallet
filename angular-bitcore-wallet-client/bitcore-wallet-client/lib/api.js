@@ -10,7 +10,7 @@ if (process.browser){
 		conf.program += ' '+window.cordova.platformId;
 }
 
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+var walletDefinedByKeys;
 var ecdsaSig = require('byteballcore/signature.js');
 
 var _ = require('lodash');
@@ -36,18 +36,15 @@ var Errors = require('./errors/errordefinitions');
  * @constructor
  */
 function API(opts) {
-  opts = opts || {};
+	opts = opts || {};
+	this.verbose = !!opts.verbose;
+	this.timeout = opts.timeout || 50000;
+	walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 
-  this.verbose = !!opts.verbose;
-
-  this.timeout = opts.timeout || 50000;
-
-
-  if (this.verbose) {
-    log.setLevel('debug');
-  } else {
-    log.setLevel('info');
-  }
+	if (this.verbose)
+		log.setLevel('debug');
+	else
+		log.setLevel('info');
 };
 util.inherits(API, events.EventEmitter);
 

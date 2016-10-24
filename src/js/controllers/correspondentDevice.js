@@ -1,7 +1,7 @@
 'use strict';
 
-var device = require('byteballcore/device.js');
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+
+
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash) {
@@ -23,6 +23,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.send = function() {
 		$scope.error = null;
 		setOngoingProcess("sending");
+		var device = require('byteballcore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "text", $scope.message, {
 			ifOk: function(){
 				setOngoingProcess();
@@ -96,6 +97,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			myPaymentAddress = addressInfo.address; // cache it in case we need to insert again
 			onDone();

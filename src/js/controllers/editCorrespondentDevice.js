@@ -1,7 +1,5 @@
 'use strict';
 
-var device = require('byteballcore/device.js');
-
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
   function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService) {
 	
@@ -18,6 +16,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		$scope.error = null;
 		correspondent.name = $scope.name;
 		correspondent.hub = $scope.hub;
+		var device = require('byteballcore/device.js');
 		device.updateCorrespondentProps(correspondent, function(){
 			go.path('correspondentDevice');
 		});
