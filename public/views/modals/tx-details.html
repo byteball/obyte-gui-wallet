@@ -48,6 +48,11 @@
         <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
       </span>
     </li>
+	  
+    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
+      <div class="text-gray small-2 columns"><span translate>From</span>:</div>
+	  <div class="right small-10 columns enable_text_select ellipsis"><div ng-repeat="address in btx.arrPayerAddresses" class="right">{{address}}</div></div>
+    </li>
 
     <div class="line-b" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
       ng-repeat="output in btx.outputs"
