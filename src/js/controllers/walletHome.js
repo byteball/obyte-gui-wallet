@@ -643,7 +643,20 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
 
-  var assocDeviceAddressesByPaymentAddress = {};
+	var assocDeviceAddressesByPaymentAddress = {};
+	
+	this.canSendPayment = function(){
+		if ($scope.index.arrBalances.length === 0) // no balances yet, assume can send
+			return true;
+		if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
+			return true;
+		var form = $scope.sendForm;
+		if (!form.address) // disappeared
+			return true;
+        var address = form.address.$modelValue;
+        var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+		return !!recipient_device_address;
+	};
 
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();

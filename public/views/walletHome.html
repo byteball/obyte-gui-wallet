@@ -289,7 +289,7 @@
             </div>
         </h4>
       </div>
-      <div class="row m20t">
+      <div class="row m20t" ng-show="home.canSendPayment()">
         <div class="large-12 large-centered columns">
           <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
@@ -414,6 +414,9 @@
             </div>
           </form>
         </div>
+      </div>
+      <div class="row columns m20t" ng-hide="home.canSendPayment()">
+		  This is a private asset, please send it only by clicking links in the chat.
       </div>
       <div class="extra-margin-bottom"></div>
     </div> <!-- END Send -->
