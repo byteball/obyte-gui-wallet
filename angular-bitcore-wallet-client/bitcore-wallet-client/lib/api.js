@@ -6,8 +6,6 @@ if (process.browser){
 	var appPackageJson = require('../../../package.json');
 	conf.program = appPackageJson.name;
 	conf.program_version = appPackageJson.version;
-	if (window && window.cordova)
-		conf.program += ' '+window.cordova.platformId;
 }
 
 var walletDefinedByKeys;
