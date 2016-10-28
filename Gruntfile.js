@@ -194,7 +194,7 @@ module.exports = function(grunt) {
           macIcns: './public/img/icons/icon-white-outline.icns',
           winIco: './public/img/icons/icon-white-outline.ico',
           exeIco: './public/img/icons/icon-white-outline.ico',
-          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
+          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball-test']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
       },
       src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
     },

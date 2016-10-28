@@ -142,10 +142,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	}
 	
 	function extractByteballArgFromCommandLine(commandLine){
+		var conf = require('byteballcore/conf.js');
+		var re = new RegExp('^'+conf.program+':', 'i');
 		var arrParts = commandLine.split(' '); // on windows includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim();
-			if (part.match(/^byteball:/))
+			if (part.match(re))
 				return part;
 		}
 		return null;

@@ -15,7 +15,7 @@
       <div class="text-center">
         <div class="columns m10t" >
             <div ng-click="copyCode()">
-                <qrcode size="220" version="5" data="byteball:{{code}}"></qrcode>
+                <qrcode size="220" version="{{qr_version}}" data="{{protocol}}:{{code}}"></qrcode>
             </div>
             <div class="m10t" >
                 Scan the above QR code using the other device, or send this pairing code to the other device:

@@ -97,7 +97,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
 
-	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
+	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball-test
 	checkOK
 
 #	cordova plugin add cordova-plugin-inappbrowser

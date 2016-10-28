@@ -3,9 +3,9 @@
   version="0.4.1"
   android-versionCode="7"
   ios-CFBundleVersion="0.4.1">
-    <name>Byteball</name>
+    <name>Byteball test</name>
     <description>
-      Byteball wallet.
+      Byteball wallet for testnet.
     </description>
     <author email="byteball@byteball.org" href="https://byteball.org">
         Byteball

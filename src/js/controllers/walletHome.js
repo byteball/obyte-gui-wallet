@@ -7,6 +7,8 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService) {
 
   var self = this;
+  var conf = require('byteballcore/conf.js');
+  this.protocol = conf.program;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
@@ -145,7 +147,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $timeout(function() {
           var form = addressbookForm;
           if (data && form) {
-            data = data.replace('byteball:', '');
+            data = data.replace(self.protocol+':', '');
             form.address.$setViewValue(data);
             form.address.$isValid = true;
             form.address.$render();
@@ -318,7 +320,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
       }
-      window.plugins.socialsharing.share('byteball:' + addr, null, null, null);
+      window.plugins.socialsharing.share(self.protocol+':' + addr, null, null, null);
     }
   };
 
@@ -334,6 +336,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.unitDecimals = self.unitDecimals;
         $scope.isCordova = isCordova;
         $scope.buttonLabel = 'Generate QR Code';
+		$scope.protocol = conf.program;
 
 
       Object.defineProperty($scope,
@@ -764,7 +767,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.resetError();
     if (!value) return '';
 
-    if (value.indexOf('byteball:') === 0)
+    if (value.indexOf(self.protocol+':') === 0)
       return this.setFromUri(value);
     else
       return value;
