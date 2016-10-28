@@ -1,7 +1,6 @@
 'use strict';
 
 var constants = require('byteballcore/constants.js');
-var URI = require('byteballcore/uri.js');
 var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
@@ -93,6 +92,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
+		var URI = require('byteballcore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
 		if (!strAmount)
