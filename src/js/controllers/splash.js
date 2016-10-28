@@ -38,6 +38,9 @@ angular.module('copayApp.controllers').controller('splashController',
 		fs.writeFile(userConfFile, JSON.stringify({bLight: bLight}, null, '\t'), 'utf8', function(err){
 			if (err)
 				throw Error('failed to write conf.json: '+err);
+			var conf = require('byteballcore/conf.js');
+			if (!conf.bLight)
+				throw Error("Failed to switch to light, please restart the app");
 			self.step = 'device_name';
 			$scope.$apply();
 		});
