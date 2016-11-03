@@ -61,7 +61,7 @@ angular.module('copayApp.controllers').controller('authConfirmationController',
 
         var signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
             var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
-            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.profile.xPrivKey); // todo unlock the key if encrypted
+            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey); // todo unlock the key if encrypted
             var privateKey = xPrivKey.derive(path).privateKey;
             //var privKeyBuf = privateKey.toBuffer();
             var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47

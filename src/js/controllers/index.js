@@ -241,7 +241,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                     createAndSendSignature();
                 });
             }
-            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.profile.xPrivKey);
+            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey);
             var privateKey = xPrivKey.derive(path).privateKey;
             console.log("priv key:", privateKey);
             //var privKeyBuf = privateKey.toBuffer();
