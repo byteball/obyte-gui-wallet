@@ -196,25 +196,33 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             requestApproval(question, {
                 ifYes: function(){
                     console.log("===== YES CLICKED")
-                    walletDefinedByKeys.readNextAccount(function(account){
-                        var walletClient = bwcService.getClient();
-                        //walletClient.seedFromExtendedPrivateKey(profileService.profile.xPrivKey, account);
-                        walletClient.seedFromMnemonic(profileService.profile.mnemonic, {account: account});
-                        walletDefinedByKeys.approveWallet(
-                            walletId, walletClient.credentials.xPubKey, account, arrWalletDefinitionTemplate, arrOtherCosigners, 
-                            function(){
-                                walletClient.credentials.walletId = walletId;
-                                walletClient.credentials.network = 'livenet';
-                                var n = arrDeviceAddresses.length;
-                                var m = arrWalletDefinitionTemplate[1].required || n;
-                                walletClient.credentials.addWalletInfo(walletName, m, n);
-                                updatePublicKeyRing(walletClient);
-                                profileService._addWalletClient(walletClient, {}, function(){
-                                    console.log("switched to newly approved wallet "+walletId);
-                                });
-                            }
-                        );
-                    });
+					var createNewWallet = function(){
+						walletDefinedByKeys.readNextAccount(function(account){
+							var walletClient = bwcService.getClient();
+							if (!profileService.focusedClient.credentials.xPrivKey)
+								throw Error("no profileService.focusedClient.credentials.xPrivKeyin createNewWallet");
+							walletClient.seedFromExtendedPrivateKey(profileService.focusedClient.credentials.xPrivKey, account);
+							//walletClient.seedFromMnemonic(profileService.profile.mnemonic, {account: account});
+							walletDefinedByKeys.approveWallet(
+								walletId, walletClient.credentials.xPubKey, account, arrWalletDefinitionTemplate, arrOtherCosigners, 
+								function(){
+									walletClient.credentials.walletId = walletId;
+									walletClient.credentials.network = 'livenet';
+									var n = arrDeviceAddresses.length;
+									var m = arrWalletDefinitionTemplate[1].required || n;
+									walletClient.credentials.addWalletInfo(walletName, m, n);
+									updatePublicKeyRing(walletClient);
+									profileService._addWalletClient(walletClient, {}, function(){
+										console.log("switched to newly approved wallet "+walletId);
+									});
+								}
+							);
+						});
+					};
+					if (profileService.focusedClient.credentials.xPrivKey)
+						createNewWallet();
+					else
+						profileService.insistUnlockFC(null, createNewWallet);
                 },
                 ifNo: function(){
                     console.log("===== NO CLICKED")
