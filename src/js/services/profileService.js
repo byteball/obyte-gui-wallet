@@ -284,12 +284,22 @@ angular.module('copayApp.services')
     // create additional wallet (the first wallet is created in _createNewProfile())
     root.createWallet = function(opts, cb) {
         $log.debug('Creating Wallet:', opts);
+		if (!root.focusedClient.credentials.xPrivKey){ // locked
+			root.unlockFC(null, function(err){
+				if (err)
+					return cb(err.message);
+				root.createWallet(opts, cb);
+			});
+			return console.log('need password to create new wallet');
+		}
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readNextAccount(function(account){
             console.log("next account = "+account);
             if (!opts.extendedPrivateKey && !opts.mnemonic){
-                $log.debug("reusing xPrivKey from profile");
-                opts.extendedPrivateKey = root.profile.xPrivKey;
+				if (!root.focusedClient.credentials.xPrivKey)
+					throw Error("no root.focusedClient.credentials.xPrivKey");
+                $log.debug("reusing xPrivKey from focused client");
+                opts.extendedPrivateKey = root.focusedClient.credentials.xPrivKey;
                 opts.mnemonic = root.profile.mnemonic;
                 opts.account = account;
             }
