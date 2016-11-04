@@ -23,12 +23,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.send = function() {
 		$scope.error = null;
 		setOngoingProcess("sending");
+		var message = $scope.message; // save in var as $scope.message may disappear while we are sending the message over the network
 		var device = require('byteballcore/device.js');
-		device.sendMessageToDevice(correspondent.device_address, "text", $scope.message, {
+		device.sendMessageToDevice(correspondent.device_address, "text", message, {
 			ifOk: function(){
 				setOngoingProcess();
 				//$scope.messageEvents.push({bIncoming: false, message: $sce.trustAsHtml($scope.message)});
-				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.formatOutgoingMessage($scope.message)});
+				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(message)});
 				$scope.message = "";
 				$scope.$apply();
 			},
