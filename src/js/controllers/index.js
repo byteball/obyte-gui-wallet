@@ -95,6 +95,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.syncProgress = "" + percent + "%";
     });
     eventBus.on('catching_up_done', function(){
+		catchup_balls_at_start = -1;
         self.setOngoingProcess('Syncing', false);
         self.syncProgress = "";
     });
