@@ -3,7 +3,7 @@
 
 #define MyAppName "Byteball test"
 #define MyAppPackageName "Byteball test"
-#define MyAppVersion "0.5.0"
+#define MyAppVersion "0.6.0"
 #define MyAppPublisher "Byteball"
 #define MyAppURL "https://byteball.org"
 #define MyAppExeName "Byteball test.exe"
