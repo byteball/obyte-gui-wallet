@@ -67,6 +67,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
+	
+	self.sendBugReport = sendBugReport;
     
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);

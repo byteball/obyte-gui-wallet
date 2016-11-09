@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
+  var indexScope = $scope.index;
   $scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     
   // INIT
@@ -814,7 +815,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.cancel = function() {
 		breadcrumbs.add('dismiss tx details');
-        $modalInstance.dismiss('cancel');
+		try{
+			$modalInstance.dismiss('cancel');
+		}
+		catch(e){
+			indexScope.sendBugReport('simulated in dismiss tx details', e);
+		}
       };
 
     };
