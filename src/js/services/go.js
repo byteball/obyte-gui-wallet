@@ -220,7 +220,7 @@ Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/icon-white-outline.iconset/icon_256x256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/byteball;\n\
+MimeType=x-scheme-handler/"+package.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			if (err)
