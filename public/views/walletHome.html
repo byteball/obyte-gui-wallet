@@ -74,7 +74,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1">[TESTNET]</div>
+	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
           <div ng-if="!index.anyOnGoingProcess || 1">
