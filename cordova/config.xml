@@ -3,7 +3,7 @@
   version="0.6.0"
   android-versionCode="9"
   ios-CFBundleVersion="0.6.0">
-    <name>Byteball test</name>
+    <name>Byteball TN</name>
     <description>
       Byteball wallet for testnet.
     </description>
