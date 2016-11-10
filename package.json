@@ -1,8 +1,8 @@
 {
-  "name": "byteball-test",
+  "name": "byteball-tn",
   "description": "A wallet for decentralized value",
   "author": "Byteball",
-  "version": "0.6.0",
+  "version": "0.6.0t",
   "keywords": [
     "wallet",
     "byteball",
