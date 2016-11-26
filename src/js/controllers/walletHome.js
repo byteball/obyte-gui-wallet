@@ -667,7 +667,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
     var form = $scope.sendForm;
-	if (!form.address) // disappeared?
+	if (!form || !form.address) // disappeared?
 		return console.log('form.address has disappeared');
     if (to) {
         form.address.$setViewValue(to);
