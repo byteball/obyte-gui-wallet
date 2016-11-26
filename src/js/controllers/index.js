@@ -61,6 +61,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 return;
 			breadcrumbs.add('bugreport');
 			var description = error_object.stack || JSON.stringify(error_object, null, '\t');
+			if (error_object.bIgnore)
+				description += "\n(ignored)";
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Program: "+conf.program+' '+conf.program_version+"\n";
@@ -73,6 +75,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
+		if (error_object && error_object.bIgnore)
+			return;
         self.showErrorPopup(error_message, function() {
             if (self.isCordova && navigator && navigator.app) // android
                 navigator.app.exitApp();
