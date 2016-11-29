@@ -107,16 +107,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.hideMenuBar = false;
   });
 
-  var requestTouchid = function(cb) {
-    var fc = profileService.focusedClient;
-    config.touchIdFor = config.touchIdFor || {};
-    if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId]) {
-      $rootScope.$emit('Local/RequestTouchid', cb);
-    } else {
-      return cb();
-    }
-  };
-
     //$rootScope.$digest();
 
   var accept_msg = gettextCatalog.getString('Accept');
@@ -597,7 +587,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             amount *= unitToBytes;
 		amount = Math.round(amount);
 
-        requestTouchid(function(err) {
+        profileService.requestTouchid(function(err) {
             if (err) {
                 profileService.lockFC();
                 //self.setOngoingProcess();
