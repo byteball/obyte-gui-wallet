@@ -129,7 +129,13 @@ angular.module('copayApp.directives')
 
               $scope.cancel = function() {
                 _scanStop();
-                $modalInstance.dismiss('cancel');
+				try{
+                	$modalInstance.dismiss('cancel');
+				}
+				catch(e){
+					e.bIgnore = true;
+					throw e;
+				}
               };
             };
 

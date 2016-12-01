@@ -505,10 +505,20 @@ API.prototype.createAddress = function(is_change, cb) {
 };
 
 API.prototype.sendPayment = function(asset, to_address, amount, arrSigningDeviceAddresses, recipient_device_address, cb) {
+	this.sendMultiPayment({
+		asset: asset,
+		to_address: to_address,
+		amount: amount,
+		arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+		recipient_device_address: recipient_device_address
+	}, cb);
+}
+
+API.prototype.sendMultiPayment = function(opts, cb) {
     var self = this;
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     
-    var signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
+    opts.signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
         var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
         var xPrivKey = new Bitcore.HDPrivateKey.fromString(self.credentials.xPrivKey);
         var privateKey = xPrivKey.derive(path).privateKey;
@@ -519,15 +529,9 @@ API.prototype.sendPayment = function(asset, to_address, amount, arrSigningDevice
     
     // create a new change address or select first unused one
     walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
-        var change_address = objAddr.address;
-        walletDefinedByKeys.sendPaymentFromWallet(
-            asset, self.credentials.walletId, to_address, amount, change_address, 
-            arrSigningDeviceAddresses, recipient_device_address, 
-            signWithLocalPrivateKey, 
-            function(err){
-                cb(err);
-            }
-        );
+        opts.change_address = objAddr.address;
+		opts.wallet = self.credentials.walletId;
+        walletDefinedByKeys.sendMultiPaymentFromWallet(opts, cb);
     });
 };
 

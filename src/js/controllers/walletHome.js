@@ -107,16 +107,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.hideMenuBar = false;
   });
 
-  var requestTouchid = function(cb) {
-    var fc = profileService.focusedClient;
-    config.touchIdFor = config.touchIdFor || {};
-    if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId]) {
-      $rootScope.$emit('Local/RequestTouchid', cb);
-    } else {
-      return cb();
-    }
-  };
-
     //$rootScope.$digest();
 
   var accept_msg = gettextCatalog.getString('Accept');
@@ -597,7 +587,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             amount *= unitToBytes;
 		amount = Math.round(amount);
 
-        requestTouchid(function(err) {
+        profileService.requestTouchid(function(err) {
             if (err) {
                 profileService.lockFC();
                 //self.setOngoingProcess();
@@ -667,7 +657,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
     var form = $scope.sendForm;
-	if (!form.address) // disappeared?
+	if (!form || !form.address) // disappeared?
 		return console.log('form.address has disappeared');
     if (to) {
         form.address.$setViewValue(to);
