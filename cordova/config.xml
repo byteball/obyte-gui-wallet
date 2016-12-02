@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.byteball.wallet" 
+<widget id="org.byteball.wallet.testnet" 
   version="0.6.0"
   android-versionCode="99"
   ios-CFBundleVersion="0.6.0">
-    <name>Byteball test</name>
+    <name>Byteball TN</name>
     <description>
       Byteball wallet for testnet.
     </description>
