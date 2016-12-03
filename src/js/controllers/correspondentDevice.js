@@ -24,6 +24,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.send = function() {
 		$scope.error = null;
+		if (!$scope.message)
+			return;
 		setOngoingProcess("sending");
 		var message = lodash.clone($scope.message); // save in var as $scope.message may disappear while we are sending the message over the network
 		var device = require('byteballcore/device.js');
