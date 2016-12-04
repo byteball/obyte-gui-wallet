@@ -88,12 +88,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
     self.setOngoingProcess(name);
   });
-    
-    eventBus.on("new_wallet_address", function(new_address){
+	
+	function onNewWalletAddress(new_address){
         console.log("==== NEW ADDRESSS "+new_address);
         self.addr = {};
         self.setAddress();
-    });
+    }
+    
+    eventBus.on("new_wallet_address", onNewWalletAddress);
 
   $scope.$on('$destroy', function() {
     console.log("walletHome $destroy");
@@ -105,6 +107,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableResumeListener();
     disableOngoingProcessListener();
     $rootScope.hideMenuBar = false;
+	eventBus.removeListener("new_wallet_address", onNewWalletAddress);
   });
 
     //$rootScope.$digest();
