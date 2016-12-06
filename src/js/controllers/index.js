@@ -71,6 +71,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
 	
 	self.sendBugReport = sendBugReport;
+	
+	if (isCordova && constants.version === '1.0'){
+        var db = require('byteballcore/db.js');
+		db.query("SELECT 1 FROM units WHERE version!=? LIMIT 1", [constants.version], function(rows){
+			if (rows.length > 0){
+				self.showErrorPopup("Looks like you have testnet data.  Please remove the app and reinstall.", function() {
+					if (navigator && navigator.app) // android
+						navigator.app.exitApp();
+					// ios doesn't exit
+				});
+			}
+		});
+	}
     
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);
