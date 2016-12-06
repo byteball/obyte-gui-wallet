@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.byteball.wallet.testnet" 
+<widget id="org.byteball.wallet" 
   version="0.7.1"
   android-versionCode="101"
   ios-CFBundleVersion="0.7.1">
-    <name>Byteball TN</name>
+    <name>Byteball</name>
     <description>
-      Byteball wallet for testnet.
+      Byteball wallet.
     </description>
     <author email="byteball@byteball.org" href="https://byteball.org">
         Byteball
