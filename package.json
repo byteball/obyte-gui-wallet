@@ -42,7 +42,7 @@
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git",
+    "byteballcore": "git+https://github.com/byteball/byteballcore.git#livenet",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
     "bip38": "^1.4.0",
