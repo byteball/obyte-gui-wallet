@@ -650,7 +650,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
 			return true;
 		var form = $scope.sendForm;
-		if (!form.address) // disappeared
+		if (!form || !form.address) // disappeared
 			return true;
         var address = form.address.$modelValue;
         var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
