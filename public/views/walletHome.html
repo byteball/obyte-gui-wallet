@@ -440,6 +440,11 @@
           </div>
         </div>
       </div>
+      <div ng-show="index.arrBalances.length > 1">
+        <h4 class="title m0" style="padding:0 10px;">
+            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? balance.totalStr : balance.total.toLocaleString() + (balance.asset === index.BLACKBYTES_ASSET ? ' blackbytes' : ' of ' + balance.asset)) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateTxHistory()"></select>
+        </h4>
+      </div>
       <div class="row m20t text-center" ng-show="index.updatingTxHistory[index.walletId]">
         <div class="columns large-12 medium-12 small-12">
           <div class="spinner">
