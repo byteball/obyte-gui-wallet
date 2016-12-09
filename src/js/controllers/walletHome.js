@@ -7,10 +7,13 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService) {
 
   var self = this;
+  var conf = require('byteballcore/conf.js');
+  this.protocol = conf.program;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
+  var indexScope = $scope.index;
   $scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     
   // INIT
@@ -27,6 +30,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.isMobile = isMobile.any();
   this.addr = {};
+  this.isTestnet = constants.version.match(/t$/);
+  this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
@@ -83,12 +88,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
     self.setOngoingProcess(name);
   });
-    
-    eventBus.on("new_wallet_address", function(new_address){
+	
+	function onNewWalletAddress(new_address){
         console.log("==== NEW ADDRESSS "+new_address);
         self.addr = {};
         self.setAddress();
-    });
+    }
+    
+    eventBus.on("new_wallet_address", onNewWalletAddress);
 
   $scope.$on('$destroy', function() {
     console.log("walletHome $destroy");
@@ -100,17 +107,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     disableResumeListener();
     disableOngoingProcessListener();
     $rootScope.hideMenuBar = false;
+	eventBus.removeListener("new_wallet_address", onNewWalletAddress);
   });
-
-  var requestTouchid = function(cb) {
-    var fc = profileService.focusedClient;
-    config.touchIdFor = config.touchIdFor || {};
-    if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId]) {
-      $rootScope.$emit('Local/RequestTouchid', cb);
-    } else {
-      return cb();
-    }
-  };
 
     //$rootScope.$digest();
 
@@ -145,7 +143,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $timeout(function() {
           var form = addressbookForm;
           if (data && form) {
-            data = data.replace('byteball:', '');
+            data = data.replace(self.protocol+':', '');
             form.address.$setViewValue(data);
             form.address.$isValid = true;
             form.address.$render();
@@ -318,7 +316,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       if (isMobile.Android() || isMobile.Windows()) {
         window.ignoreMobilePause = true;
       }
-      window.plugins.socialsharing.share('byteball:' + addr, null, null, null);
+      window.plugins.socialsharing.share(self.protocol+':' + addr, null, null, null);
     }
   };
 
@@ -334,6 +332,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.unitDecimals = self.unitDecimals;
         $scope.isCordova = isCordova;
         $scope.buttonLabel = 'Generate QR Code';
+		$scope.protocol = conf.program;
 
 
       Object.defineProperty($scope,
@@ -591,7 +590,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             amount *= unitToBytes;
 		amount = Math.round(amount);
 
-        requestTouchid(function(err) {
+        profileService.requestTouchid(function(err) {
             if (err) {
                 profileService.lockFC();
                 //self.setOngoingProcess();
@@ -619,8 +618,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 // if multisig, it might take very long before the callback is called
                 //self.setOngoingProcess();
                 delete self.current_payment_key;
-                if (err)
+                if (err){
+					if (err.match(/device address/))
+						err = "This is a private asset, please send it only by clicking links from chat";
                     return self.setSendError(err);
+				}
                 self.resetForm();
                 $rootScope.$emit("NewOutgoingTx");
                 if (recipient_device_address) // show payment in chat window
@@ -640,12 +642,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
 
-  var assocDeviceAddressesByPaymentAddress = {};
+	var assocDeviceAddressesByPaymentAddress = {};
+	
+	this.canSendPayment = function(){
+		if ($scope.index.arrBalances.length === 0) // no balances yet, assume can send
+			return true;
+		if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
+			return true;
+		var form = $scope.sendForm;
+		if (!form || !form.address) // disappeared
+			return true;
+        var address = form.address.$modelValue;
+        var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+		return !!recipient_device_address;
+	};
 
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
     var form = $scope.sendForm;
-	if (!form.address) // disappeared?
+	if (!form || !form.address) // disappeared?
 		return console.log('form.address has disappeared');
     if (to) {
         form.address.$setViewValue(to);
@@ -748,7 +763,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     this.resetError();
     if (!value) return '';
 
-    if (value.indexOf('byteball:') === 0)
+    if (value.indexOf(self.protocol+':') === 0)
       return this.setFromUri(value);
     else
       return value;
@@ -795,7 +810,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
       $scope.cancel = function() {
 		breadcrumbs.add('dismiss tx details');
-        $modalInstance.dismiss('cancel');
+		try{
+			$modalInstance.dismiss('cancel');
+		}
+		catch(e){
+			indexScope.sendBugReport('simulated in dismiss tx details', e);
+		}
       };
 
     };

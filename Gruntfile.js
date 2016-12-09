@@ -160,7 +160,7 @@ module.exports = function(grunt) {
 		options: {timestamp: true, mode: true},
         files: [
           {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball test/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball test/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball-TN/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
     },
@@ -187,14 +187,14 @@ module.exports = function(grunt) {
           //platforms: ['win','osx64','linux'],
           //platforms: ['osx64'],
           platforms: [getPlatform()],
-          appName: 'Byteball test',
+          appName: 'Byteball-TN',
           buildDir: '../byteballbuilds',
           version: '0.14.7',
           zip: false,
           macIcns: './public/img/icons/icon-white-outline.icns',
           winIco: './public/img/icons/icon-white-outline.ico',
           exeIco: './public/img/icons/icon-white-outline.ico',
-          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
+          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball-tn']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
       },
       src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
     },
@@ -213,7 +213,7 @@ module.exports = function(grunt) {
           archive: '../byteballbuilds/byteball-linux64.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Byteball test/linux64/',
+        cwd: '../byteballbuilds/Byteball-TN/linux64/',
         src: ['**/*'],
         dest: 'byteball-linux64/'
       }

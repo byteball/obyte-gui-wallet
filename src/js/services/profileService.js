@@ -1,7 +1,5 @@
 'use strict';
 
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-var device = require('byteballcore/device.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 angular.module('copayApp.services')
@@ -126,6 +124,8 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
+					require('byteballcore/wallet.js');
+					var device = require('byteballcore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
                     if (root.profile.xPrivKeyEncrypted){
@@ -254,6 +254,7 @@ angular.module('copayApp.services')
             if (err)
                 return cb(err);
             var config = configService.getSync();
+			var device = require('byteballcore/device.js');
             var tempDeviceKey = device.genPrivKey();
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
@@ -283,11 +284,22 @@ angular.module('copayApp.services')
     // create additional wallet (the first wallet is created in _createNewProfile())
     root.createWallet = function(opts, cb) {
         $log.debug('Creating Wallet:', opts);
+		if (!root.focusedClient.credentials.xPrivKey){ // locked
+			root.unlockFC(null, function(err){
+				if (err)
+					return cb(err.message);
+				root.createWallet(opts, cb);
+			});
+			return console.log('need password to create new wallet');
+		}
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readNextAccount(function(account){
             console.log("next account = "+account);
             if (!opts.extendedPrivateKey && !opts.mnemonic){
-                $log.debug("reusing xPrivKey from profile");
-                opts.extendedPrivateKey = root.profile.xPrivKey;
+				if (!root.focusedClient.credentials.xPrivKey)
+					throw Error("no root.focusedClient.credentials.xPrivKey");
+                $log.debug("reusing xPrivKey from focused client");
+                opts.extendedPrivateKey = root.focusedClient.credentials.xPrivKey;
                 opts.mnemonic = root.profile.mnemonic;
                 opts.account = account;
             }
@@ -648,6 +660,17 @@ angular.module('copayApp.services')
       return lodash.sortBy(ret, 'name');
     };
 
+	
+	
+	root.requestTouchid = function(cb) {
+		var fc = root.focusedClient;
+		var config = configService.getSync();
+		config.touchIdFor = config.touchIdFor || {};
+		if (window.touchidAvailable && config.touchIdFor[fc.credentials.walletId])
+			$rootScope.$emit('Local/RequestTouchid', cb);
+		else
+			return cb();
+	};
 
 
 

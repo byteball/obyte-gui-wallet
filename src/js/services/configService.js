@@ -18,13 +18,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  '#7A8C9E',
 	];
 	
+  var constants = require('byteballcore/constants.js');
   var defaultConfig = {
 	// wallet limits
 	limits: {
 		totalCosigners: 6
 	},
 
-	hub: 'byteball.org/bb',
+	hub: (constants.alt === '2' && constants.version.match(/t$/)) ? 'byteball.org/bb-test' : 'byteball.org/bb',
 	  
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),

@@ -47,7 +47,7 @@
       <span translate ng-show="index.onGoingProcessName == 'scanning'">Scanning Wallet funds...</span>
       <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
       <span translate ng-show="index.onGoingProcessName == 'generatingCSV'">Generating .csv file...</span>
-      <span translate ng-show="index.onGoingProcessName == 'Syncing'">Syncing...</span>
+      <span translate ng-show="index.onGoingProcessName == 'Syncing'">Syncing... {{index.syncProgress}}</span>
     </div>
   </div>
 
@@ -74,7 +74,7 @@
     -->
 
     <div id="walletHome" class="walletHome tab-view tab-in">
-	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1">[TESTNET]</div>
+	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
           <div ng-if="!index.anyOnGoingProcess || 1">
@@ -200,7 +200,7 @@
               </div>
 
               <div class="text-center" ng-click="home.copyAddress(home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
-                <qrcode size="220" data="byteball:{{home.addr[index.walletId]}}"></qrcode>
+                <qrcode size="220" data="{{home.protocol}}:{{home.addr[index.walletId]}}"></qrcode>
                 <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                   <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
                     <div class="spinner" style="margin-top:80px">
@@ -289,7 +289,7 @@
             </div>
         </h4>
       </div>
-      <div class="row m20t">
+      <div class="row m20t" ng-show="home.canSendPayment()">
         <div class="large-12 large-centered columns">
           <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
@@ -414,6 +414,9 @@
             </div>
           </form>
         </div>
+      </div>
+      <div class="row columns m20t" ng-hide="home.canSendPayment()">
+		  This is a private asset, please send it only by clicking links in the chat.
       </div>
       <div class="extra-margin-bottom"></div>
     </div> <!-- END Send -->

@@ -1,5 +1,7 @@
 'use strict';
 
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
+
 angular.module('copayApp.directives')
     .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'gettextCatalog',
       function($rootScope, $timeout, $modal, isCordova, gettextCatalog) {
@@ -94,6 +96,7 @@ angular.module('copayApp.directives')
               };
 
               var _videoError = function(err) {
+				breadcrumbs.add('qr scanner video error');
                 $scope.cancel();
               };
 
@@ -128,8 +131,15 @@ angular.module('copayApp.directives')
               };
 
               $scope.cancel = function() {
+				breadcrumbs.add('qr scanner cancel');
                 _scanStop();
-                $modalInstance.dismiss('cancel');
+				try{
+                	$modalInstance.dismiss('cancel');
+				}
+				catch(e){
+					e.bIgnore = true;
+					throw e;
+				}
               };
             };
 

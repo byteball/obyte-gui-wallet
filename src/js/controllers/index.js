@@ -3,10 +3,6 @@
 var async = require('async');
 var constants = require('byteballcore/constants.js');
 var mutex = require('byteballcore/mutex.js');
-var device = require('byteballcore/device.js');
-var bbWallet = require('byteballcore/wallet.js');
-var lightWallet = require('byteballcore/light_wallet.js');
-var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 var eventBus = require('byteballcore/event_bus.js');
 var objectHash = require('byteballcore/object_hash.js');
 var ecdsaSig = require('byteballcore/signature.js');
@@ -35,6 +31,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     
     function updatePublicKeyRing(walletClient, onDone){
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(walletClient.credentials.walletId, function(arrCosigners){
             var arrApprovedDevices = arrCosigners.
                 filter(function(cosigner){ return cosigner.approval_date; }).
@@ -64,16 +61,35 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 return;
 			breadcrumbs.add('bugreport');
 			var description = error_object.stack || JSON.stringify(error_object, null, '\t');
+			if (error_object.bIgnore)
+				description += "\n(ignored)";
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Program: "+conf.program+' '+conf.program_version+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
+	
+	self.sendBugReport = sendBugReport;
+	
+	if (isCordova && constants.version === '1.0'){
+        var db = require('byteballcore/db.js');
+		db.query("SELECT 1 FROM units WHERE version!=? LIMIT 1", [constants.version], function(rows){
+			if (rows.length > 0){
+				self.showErrorPopup("Looks like you have testnet data.  Please remove the app and reinstall.", function() {
+					if (navigator && navigator.app) // android
+						navigator.app.exitApp();
+					// ios doesn't exit
+				});
+			}
+		});
+	}
     
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
+		if (error_object && error_object.bIgnore)
+			return;
         self.showErrorPopup(error_message, function() {
             if (self.isCordova && navigator && navigator.app) // android
                 navigator.app.exitApp();
@@ -83,11 +99,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
     });
     
+    var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
+        self.syncProgress = "0%";
+    });
+    eventBus.on('catchup_balls_left', function(count_left){
+    	if (catchup_balls_at_start === -1) {
+    		catchup_balls_at_start = count_left;
+    	}
+    	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
+        self.syncProgress = "" + percent + "%";
     });
     eventBus.on('catching_up_done', function(){
+		catchup_balls_at_start = -1;
         self.setOngoingProcess('Syncing', false);
+        self.syncProgress = "";
     });
     eventBus.on('refresh_light_started', function(){
 		console.log('refresh_light_started');
@@ -105,6 +132,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     eventBus.on("refused_to_sign", function(device_address){
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Refused'), correspondent.name + " refused to sign the transaction");
         });
@@ -141,6 +169,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return;
         var walletName = client.credentials.walletName;
         updatePublicKeyRing(client);
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" approved by "+correspondent.name);
         });
@@ -151,6 +180,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (!client) // already deleted (maybe declined by another device)
             return;
         var walletName = client.credentials.walletName;
+		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
         });
@@ -176,6 +206,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
     // in arrOtherCosigners, 'other' is relative to the initiator
     eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners){
+		var device = require('byteballcore/device.js');
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -184,25 +216,33 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             requestApproval(question, {
                 ifYes: function(){
                     console.log("===== YES CLICKED")
-                    walletDefinedByKeys.readNextAccount(function(account){
-                        var walletClient = bwcService.getClient();
-                        //walletClient.seedFromExtendedPrivateKey(profileService.profile.xPrivKey, account);
-                        walletClient.seedFromMnemonic(profileService.profile.mnemonic, {account: account});
-                        walletDefinedByKeys.approveWallet(
-                            walletId, walletClient.credentials.xPubKey, account, arrWalletDefinitionTemplate, arrOtherCosigners, 
-                            function(){
-                                walletClient.credentials.walletId = walletId;
-                                walletClient.credentials.network = 'livenet';
-                                var n = arrDeviceAddresses.length;
-                                var m = arrWalletDefinitionTemplate[1].required || n;
-                                walletClient.credentials.addWalletInfo(walletName, m, n);
-                                updatePublicKeyRing(walletClient);
-                                profileService._addWalletClient(walletClient, {}, function(){
-                                    console.log("switched to newly approved wallet "+walletId);
-                                });
-                            }
-                        );
-                    });
+					var createNewWallet = function(){
+						walletDefinedByKeys.readNextAccount(function(account){
+							var walletClient = bwcService.getClient();
+							if (!profileService.focusedClient.credentials.xPrivKey)
+								throw Error("no profileService.focusedClient.credentials.xPrivKeyin createNewWallet");
+							walletClient.seedFromExtendedPrivateKey(profileService.focusedClient.credentials.xPrivKey, account);
+							//walletClient.seedFromMnemonic(profileService.profile.mnemonic, {account: account});
+							walletDefinedByKeys.approveWallet(
+								walletId, walletClient.credentials.xPubKey, account, arrWalletDefinitionTemplate, arrOtherCosigners, 
+								function(){
+									walletClient.credentials.walletId = walletId;
+									walletClient.credentials.network = 'livenet';
+									var n = arrDeviceAddresses.length;
+									var m = arrWalletDefinitionTemplate[1].required || n;
+									walletClient.credentials.addWalletInfo(walletName, m, n);
+									updatePublicKeyRing(walletClient);
+									profileService._addWalletClient(walletClient, {}, function(){
+										console.log("switched to newly approved wallet "+walletId);
+									});
+								}
+							);
+						});
+					};
+					if (profileService.focusedClient.credentials.xPrivKey)
+						createNewWallet();
+					else
+						profileService.insistUnlockFC(null, createNewWallet);
                 },
                 ifNo: function(){
                     console.log("===== NO CLICKED")
@@ -229,7 +269,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                     createAndSendSignature();
                 });
             }
-            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.profile.xPrivKey);
+            var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey);
             var privateKey = xPrivKey.derive(path).privateKey;
             console.log("priv key:", privateKey);
             //var privKeyBuf = privateKey.toBuffer();
@@ -247,6 +287,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             console.log("refused signature");
         }
         
+		var bbWallet = require('byteballcore/wallet.js');
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         var unit = objUnit.unit;
         var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
         mutex.lock(["signing_request-"+unit], function(unlock){
@@ -483,6 +525,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setAddressbook();
 
         console.log("reading cosigners");
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
             $rootScope.$digest();
@@ -580,6 +623,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return breadcrumbs.add('updateAll not complete yet');
       
     // reconnect if lost connection
+	var device = require('byteballcore/device.js');
     device.loginToHub();
 
     $timeout(function() {
@@ -938,6 +982,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (self.assetIndex !== self.oldAssetIndex) // it was a swipe
                 return console.log("== swipe");
             console.log('== updateHistoryFromNetwork');
+			var lightWallet = require('byteballcore/light_wallet.js');
             lightWallet.refreshLightClientHistory();
         }, 500);
     }, 5000);
@@ -1144,6 +1189,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
 	$log.debug('### Resume event');
+	var lightWallet = require('byteballcore/light_wallet.js');
 	lightWallet.refreshLightClientHistory();
 	//self.debouncedUpdate();
   });

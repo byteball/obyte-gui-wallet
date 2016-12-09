@@ -142,10 +142,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	}
 	
 	function extractByteballArgFromCommandLine(commandLine){
+		var conf = require('byteballcore/conf.js');
+		var re = new RegExp('^'+conf.program+':', 'i');
 		var arrParts = commandLine.split(' '); // on windows includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim();
-			if (part.match(/^byteball:/))
+			if (part.match(re))
 				return part;
 		}
 		return null;
@@ -209,7 +211,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var path = require('path'+'');
 		var child_process = require('child_process'+'');
 		var package = require('../package.json'+''); // relative to html root
-		fs.writeFile(process.env.HOME + '/.local/share/applications/'+package.name+'.desktop', "[Desktop Entry]\n\
+		var applicationsDir = process.env.HOME + '/.local/share/applications';
+		fs.mkdir(applicationsDir, parseInt('700', 8), function(err){
+			console.log('mkdir applications: '+err);
+			fs.writeFile(applicationsDir + '/' +package.name+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
 Name="+package.name+"\n\
@@ -218,15 +223,16 @@ Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/icon-white-outline.iconset/icon_256x256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/byteball;\n\
+MimeType=x-scheme-handler/"+package.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
-			if (err)
-				throw Error("failed to write desktop file: "+err);
-			child_process.exec('update-desktop-database ~/.local/share/applications', function(err){
 				if (err)
-					throw Error("failed to exec update-desktop-database: "+err);
-				console.log(".desktop done");
+					throw Error("failed to write desktop file: "+err);
+				child_process.exec('update-desktop-database ~/.local/share/applications', function(err){
+					if (err)
+						throw Error("failed to exec update-desktop-database: "+err);
+					console.log(".desktop done");
+				});
 			});
 		});
 	}

@@ -38,7 +38,9 @@ angular.module('copayApp.directives')
             }
 
             // byteball uri
-			var arrMatches = value.match(/^byteball:([A-Z2-7]{32})\b/);
+			var conf = require('byteballcore/conf.js');
+			var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
+			var arrMatches = value.match(re);
             if (arrMatches) {
               ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(arrMatches[1]));
               return value;
