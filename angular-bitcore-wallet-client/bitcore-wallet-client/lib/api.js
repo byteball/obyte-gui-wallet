@@ -535,15 +535,15 @@ API.prototype.sendMultiPayment = function(opts, cb) {
     });
 };
 
-API.prototype.getMainAddresses = function(opts, cb) {
+API.prototype.getAddresses = function(opts, cb) {
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
-    walletDefinedByKeys.readExternalAddresses(this.credentials.walletId, opts, function(arrAddressInfos){
+    walletDefinedByKeys.readAddresses(this.credentials.walletId, opts, function(arrAddressInfos){
         cb(null, arrAddressInfos.map(function(addressInfo){
             return {
                 address: addressInfo.address,
                 createdOn: addressInfo.creation_ts,
-                path: "m/44'/" + coin + "'/" + self.credentials.account + "'/0/"+addressInfo.address_index
+                path: "m/44'/" + coin + "'/" + self.credentials.account + "'/"+addressInfo.is_change+"/"+addressInfo.address_index
             };
         }));
     });
