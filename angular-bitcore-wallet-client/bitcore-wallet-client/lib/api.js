@@ -504,6 +504,7 @@ API.prototype.createAddress = function(is_change, cb) {
 
 };
 
+/*
 API.prototype.sendPayment = function(asset, to_address, amount, arrSigningDeviceAddresses, recipient_device_address, cb) {
 	this.sendMultiPayment({
 		asset: asset,
@@ -512,11 +513,12 @@ API.prototype.sendPayment = function(asset, to_address, amount, arrSigningDevice
 		arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 		recipient_device_address: recipient_device_address
 	}, cb);
-}
+}*/
 
 API.prototype.sendMultiPayment = function(opts, cb) {
     var self = this;
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
+	var Wallet = require('byteballcore/wallet.js');
     
     opts.signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
         var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
@@ -527,12 +529,24 @@ API.prototype.sendMultiPayment = function(opts, cb) {
         handleSig(ecdsaSig.sign(text_to_sign, privKeyBuf));
     };
     
-    // create a new change address or select first unused one
-    walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
-        opts.change_address = objAddr.address;
-		opts.wallet = self.credentials.walletId;
-        walletDefinedByKeys.sendMultiPaymentFromWallet(opts, cb);
-    });
+	if (opts.shared_address){
+		opts.paying_addresses = [opts.shared_address];
+		opts.change_address = opts.shared_address;
+		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		walletDefinedByAddresses.readRequiredCosigners(opts.shared_address, opts.arrSigningDeviceAddresses, function(arrSigningAddresses){
+			if (arrSigningAddresses.length > 0)
+				opts.signing_addresses = arrSigningAddresses;
+			Wallet.sendMultiPayment(opts, cb);
+		});
+	}
+	else{
+		// create a new change address or select first unused one
+		walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
+			opts.change_address = objAddr.address;
+			opts.wallet = self.credentials.walletId;
+			Wallet.sendMultiPayment(opts, cb);
+		});
+	}
 };
 
 API.prototype.getAddresses = function(opts, cb) {
@@ -555,22 +569,23 @@ API.prototype.getAddresses = function(opts, cb) {
  *
  * @param {Callback} cb
  */
-API.prototype.getBalance = function(cb) {
-  $.checkState(this.credentials && this.credentials.isComplete());
-  walletDefinedByKeys.readBalance(this.credentials.walletId, function(assocBalances){
-      cb(null, assocBalances/* {
-          totalConfirmedAmount: stable_balance,
-          totalAmount: stable_balance + pending_balance,
-          pendingAmount: pending_balance
-      }*/);
-  });
+API.prototype.getBalance = function(shared_address, cb) {
+	var Wallet = require('byteballcore/wallet.js');
+	$.checkState(this.credentials && this.credentials.isComplete());
+	var walletId = this.credentials.walletId;
+	Wallet.readBalance(shared_address || walletId, function(assocBalances){
+		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
+			cb(null, assocBalances, assocSharedBalances);
+		});
+	});
 };
 
-API.prototype.getTxHistory = function(asset, cb) {
-  $.checkState(this.credentials && this.credentials.isComplete());
-  walletDefinedByKeys.readTransactionHistory(this.credentials.walletId, asset, function(arrTransactions){
-      cb(arrTransactions);
-  });
+API.prototype.getTxHistory = function(asset, shared_address, cb) {
+	var Wallet = require('byteballcore/wallet.js');
+	$.checkState(this.credentials && this.credentials.isComplete());
+	Wallet.readTransactionHistory(shared_address || this.credentials.walletId, asset, function(arrTransactions){
+		cb(arrTransactions);
+	});
 };
 
 API.prototype.initDeviceProperties = function(xPrivKey, device_address, hub, deviceName) {

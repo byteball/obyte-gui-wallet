@@ -1,0 +1,42 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Select subwallet
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch">
+
+
+	<ul class="no-bullet subwallets">
+		<li class="line-b" ng-class="{'selected': !indexCtl.shared_address}">
+			<a ng-click="selectSubwallet()" class="db oh">
+				<div class="avatar-wallet">{{(indexCtl.alias || indexCtl.walletName) | limitTo: 1}}</div>
+				<div class="ellipsis name-wallet text-bold">{{(indexCtl.alias || indexCtl.walletName)}}</div>
+				<div class="size-12">
+					<span ng-if="asset == 'base'">{{mainWalletBalanceInfo.totalStr}}</span>
+					<span ng-if="asset != 'base'">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
+				</div>
+			</a>
+		</li>
+		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px">
+			<a ng-click="selectSubwallet(sw.shared_address)" class="db oh">
+				<div class="avatar-wallet">{{sw.shared_address | limitTo: 1}}</div>
+				<div class="ellipsis name-wallet text-bold">{{sw.shared_address}}</div>
+				<div class="size-12">
+					<span ng-if="asset == 'base'">{{sw.totalStr}}</span>
+					<span ng-if="asset != 'base'">{{ws.total.toLocaleString()}}</span>
+				</div>
+			</a>
+		</li>
+	</ul>
+
+
+	<div class="extra-margin-bottom"></div>
+</div>

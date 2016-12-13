@@ -184,6 +184,52 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return amount + ' of ' + asset;
 	}
 		
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys){
+		function parse(arrSubdefinition){
+			var op = arrSubdefinition[0];
+			var args = arrSubdefinition[1];
+			switch(op){
+				case 'sig':
+					var pubkey = args.pubkey;
+					return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+pubkey);
+				case 'address':
+					var address = args;
+					return 'signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
+				case 'cosigned by':
+					var address = args;
+					return 'co-signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
+				case 'or':
+				case 'and':
+					return args.map(parseAndIndent).join('<span class="size-18">'+op+'</span>');
+				case 'r of set':
+					return 'at least '+args.required+' of the following is true:<br>'+args.set.map(parseAndIndent).join(',');
+				case 'weighted and':
+					return 'the total weight of the true conditions below is at least '+args.required+':<br>'+args.set.map(function(arg){
+						return arg.weight+': '+parseAndIndent(arg.value);
+					}).join(',');
+				case 'in data feed':
+					var arrAddresses = args[0];
+					var feed_name = args[1];
+					var relation = args[2];
+					var value = args[3];
+					if (feed_name === 'timestamp' && relation === '>')
+						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
+					return JSON.stringify(arrSubdefinition);
+				case 'has':
+					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
+						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
+					return JSON.stringify(arrSubdefinition);
+
+				default:
+					return JSON.stringify(arrSubdefinition);
+			}
+		}
+		function parseAndIndent(arrSubdefinition){
+			return '<div class="indent">'+parse(arrSubdefinition)+'</div>\n';
+		}
+		return parse(arrDefinition, 0);
+	}
+		
 	console.log("correspondentListService");
 	
 	eventBus.on("text", function(from_address, body){
@@ -233,6 +279,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.getAmountText = getAmountText;
 	root.setCurrentCorrespondent = setCurrentCorrespondent;
 	root.formatOutgoingMessage = formatOutgoingMessage;
+	root.getHumanReadableDefinition = getHumanReadableDefinition;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
