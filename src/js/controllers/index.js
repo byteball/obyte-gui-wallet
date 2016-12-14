@@ -704,7 +704,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
         
         self.otherWallets = lodash.filter(profileService.getWallets(self.network), function(w) {
-            return w.id != self.walletId;
+            return (w.id != self.walletId || self.shared_address);
         });
 
 
