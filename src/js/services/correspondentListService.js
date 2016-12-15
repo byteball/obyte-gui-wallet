@@ -175,7 +175,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var walletSettings = configService.getSync().wallet.settings;
 			var unitToBytes = walletSettings.unitToBytes;
 			var unitName = walletSettings.unitName;
-			amount /= unitToBytes;
+			if (amount !== 'all')
+				amount /= unitToBytes;
 			return amount + ' ' + unitName;
 		}
 		else if (asset === constants.BLACKBYTES_ASSET)

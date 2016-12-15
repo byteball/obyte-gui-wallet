@@ -611,6 +611,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     var form = $scope.sendForm;
+	if (self.bSendAll)
+		form.amount.$setValidity('validAmount', true);
     if (form.$invalid) {
         this.error = gettext('Unable to send transaction proposal');
         return;
@@ -677,6 +679,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				asset: asset,
 				to_address: address,
 				amount: amount,
+				send_all: self.bSendAll,
 				arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 				recipient_device_address: recipient_device_address
 			};
@@ -692,7 +695,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 self.resetForm();
                 $rootScope.$emit("NewOutgoingTx");
                 if (recipient_device_address) // show payment in chat window
-                    eventBus.emit('sent_payment', recipient_device_address, amount, asset);
+                    eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset);
                 else // redirect to history
                     $rootScope.$emit('Local/SetTab', 'history');
             });
@@ -780,6 +783,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
+	this.bSendAll = false;
 
     var form = $scope.sendForm;
 
@@ -804,6 +808,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
+	this.setSendAll = function(){
+		var form = $scope.sendForm;
+		if (!form || !form.amount) // disappeared?
+			return console.log('form.amount has disappeared');
+		if (indexScope.arrBalances[indexScope.assetIndex].asset === 'base'){
+			this._amount = null;
+			this.bSendAll = true;
+			form.amount.$setViewValue('');
+			form.amount.$setValidity('validAmount', true);
+			form.amount.$render();
+		}
+		else{
+			form.amount.$setViewValue(''+indexScope.arrBalances[indexScope.assetIndex].stable);
+			form.amount.$render();
+		}
+		//console.log('done setsendall')
+		/*$timeout(function() {
+			$rootScope.$digest();
+			console.log('-- amount invalid? '+form.amount.$invalid);
+			console.log('-- form invalid? '+form.$invalid);
+		}, 1);*/
+	};
 
 
   this.setFromUri = function(uri) {
