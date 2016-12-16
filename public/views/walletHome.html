@@ -89,18 +89,20 @@
             </div>
 
             <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex">
-                <li ng-click='index.updateAll(); index.onClick(); index.updateHistoryFromNetwork()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
-                    <strong class="size-36" ng-if="balance.asset == 'base'">{{balance.totalStr}}</strong>
-                    <div ng-if="balance.asset != 'base'">
-                        <div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
-                        <div class="of-blackbytes" ng-if="balance.asset == index.BLACKBYTES_ASSET">blackbytes</div>
-                        <div class="of-asset" ng-if="balance.asset != index.BLACKBYTES_ASSET">of {{balance.asset}}</div>
-                    </div>
-                    <div class="size-14" ng-if="balance.pending">
-                        <span translate>Including pending confirmation</span>:
-                        <span ng-if="balance.asset == 'base'">{{balance.pendingStr}}</span>
-                        <span ng-if="balance.asset != 'base'">{{balance.pending.toLocaleString()}}</span>
-                    </div>
+                <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
+					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
+						<strong class="size-36" ng-if="balance.asset == 'base'">{{balance.totalStr}}</strong>
+						<div ng-if="balance.asset != 'base'">
+							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
+							<div class="of-blackbytes" ng-if="balance.asset == index.BLACKBYTES_ASSET">blackbytes</div>
+							<div class="of-asset" ng-if="balance.asset != index.BLACKBYTES_ASSET">of {{balance.asset}}</div>
+						</div>
+						<div class="size-14" ng-if="balance.pending">
+							<span translate>Including pending confirmation</span>:
+							<span ng-if="balance.asset == 'base'">{{balance.pendingStr}}</span>
+							<span ng-if="balance.asset != 'base'">{{balance.pending.toLocaleString()}}</span>
+						</div>
+					</div>
                     <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
