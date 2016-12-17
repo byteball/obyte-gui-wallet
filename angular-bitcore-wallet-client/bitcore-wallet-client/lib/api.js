@@ -583,7 +583,12 @@ API.prototype.getBalance = function(shared_address, cb) {
 API.prototype.getTxHistory = function(asset, shared_address, cb) {
 	var Wallet = require('byteballcore/wallet.js');
 	$.checkState(this.credentials && this.credentials.isComplete());
-	Wallet.readTransactionHistory(shared_address || this.credentials.walletId, asset, function(arrTransactions){
+	var opts = {asset: asset};
+	if (shared_address)
+		opts.address = shared_address;
+	else
+		opts.wallet = this.credentials.walletId;
+	Wallet.readTransactionHistory(opts, function(arrTransactions){
 		cb(arrTransactions);
 	});
 };
