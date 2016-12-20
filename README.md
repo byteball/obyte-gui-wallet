@@ -24,7 +24,7 @@ npm install -g bower
 npm install -g grunt-cli
 ```
 
-Download and install [NW.js](http://nwjs.io/downloads/).  Versions 4.x and 6.x work equally well.
+Download and install [NW.js](http://nwjs.io/downloads/).  Version 0.14.7 is recommended.
 
 Build Byteball:
 

@@ -19,7 +19,7 @@
   <div ng-show="wordsC.mnemonicWords || (wordsC.credentialsEncrypted && !wordsC.deleted)">
     <div class="row">
         <div class="m10t columns size-14 text-gray">
-            <span translate>To restore your wallets, you will need a full backup of Byteball settings.  Just the wallet seed is not enough.</span>
+            <span translate>{{wordsC.text}}</span>
         </div>
     </div>
     <!--div class="row"  ng-show="index.n==1">
@@ -50,8 +50,8 @@
         <div class="m10t columns">
           <a class="button outline light-gray expand tiny" ng-click="wordsC.toggle()">
             <i class="fi-widget m3r"></i>
-            <span translate ng-hide="wordsC.show">Show Wallet Seed</span>
-            <span translate ng-hide="!wordsC.show">Hide Wallet Seed</span>
+            <span translate ng-hide="wordsC.show">Show the Wallet Seed Anyway</span>
+            <span translate ng-hide="!wordsC.show">Hide the Wallet Seed</span>
             <i ng-if="!wordsC.show" class="icon-arrow-down4"></i>
             <i ng-if="wordsC.show" class="icon-arrow-up4"></i>
           </a>

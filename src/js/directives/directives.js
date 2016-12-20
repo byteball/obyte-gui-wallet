@@ -87,6 +87,13 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
+			//console.log('-- scope', ctrl);
+			/*if (scope.home && scope.home.bSendAll){
+				console.log('-- send all');
+				ctrl.$setValidity('validAmount', true);
+				return value;
+			}*/
+			//console.log('-- amount');
             var settings = configService.getSync().wallet.settings;
             var vNum = Number((value * settings.unitToBytes).toFixed(0));
 

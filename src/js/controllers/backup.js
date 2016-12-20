@@ -1,13 +1,22 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('wordsController',
-  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, $log) {
+  function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, $log, isCordova) {
 
     var msg = gettext('Are you sure you want to delete the backup words?');
     var successMsg = gettext('Backup words deleted');
     var self = this;
     self.show = false;
     var fc = profileService.focusedClient;
+	
+	if (isCordova)
+		self.text = "To ptotect your funds, please use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer.  Just the wallet seed is not enough.";
+	else{
+		var desktopApp = require('byteballcore/desktop_app.js'+'');
+		var appDataDir = desktopApp.getAppDataDir();
+		self.text = "To restore your wallets, you will need a full backup of Byteball data at "+appDataDir+".  Better yet, use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your smartphone.  Just the wallet seed is not enough.";
+	}
+
 
     if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
     else {

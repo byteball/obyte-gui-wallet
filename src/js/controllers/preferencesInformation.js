@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       $scope.N = c.n;
       $scope.addrs = null;
 
-      fc.getMainAddresses({
+      fc.getAddresses({
         doNotVerify: true
       }, function(err, addrs) {
         if (err) {
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       };
 
       $timeout(function() {
-        fc.getMainAddresses({
+        fc.getAddresses({
           doNotVerify: true
         }, function(err, addrs) {
           self.loading = false;
@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
             return;
           };
 
-          var body = 'Byteball Wallet "' + $scope.walletName + '" Addresses\n  Only Main Addresses are  shown.\n\n';
+          var body = 'Byteball Wallet "' + $scope.walletName + '" Addresses.\n\n';
           body += "\n";
           body += addrs.map(function(v) {
             return ('* ' + v.address + ' ' + v.path + ' ' + formatDate(v.createdOn));

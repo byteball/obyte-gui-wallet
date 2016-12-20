@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.backgroundColor = fc.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
-	var myPaymentAddress;
+	var myPaymentAddress = indexScope.shared_address;
 	document.chatForm.message.focus();
 	
 	if (!correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
@@ -107,7 +107,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.arrMovements = objMultiPaymentRequest.payments.map(function(objPayment){
 					var text = correspondentListService.getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + objPayment.address;
 					if (assocSharedDestinationAddresses[objPayment.address])
-						text += ' (shared address, see below)';
+						text += ' (smart address, see below)';
 					return text;
 				});
 			};
@@ -144,7 +144,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: getHumanReadableDefinition(arrDefinition, arrMyAddresses, [])
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [])
 								});
 							}
 							cb();
@@ -303,52 +303,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			}
 			parse(arrDefinition);
 			return Object.keys(assocAddresses);
-		}
-		
-		function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys){
-			function parse(arrSubdefinition){
-				var op = arrSubdefinition[0];
-				var args = arrSubdefinition[1];
-				switch(op){
-					case 'sig':
-						var pubkey = args.pubkey;
-						return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+pubkey);
-					case 'address':
-						var address = args;
-						return 'signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
-					case 'cosigned by':
-						var address = args;
-						return 'co-signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
-					case 'or':
-					case 'and':
-						return args.map(parseAndIndent).join(op);
-					case 'r of set':
-						return 'at least '+args.required+' of the following is true:<br>'+args.set.map(parseAndIndent).join(',');
-					case 'weighted and':
-						return 'the total weight of the true conditions below is at least '+args.required+':<br>'+args.set.map(function(arg){
-							return arg.weight+': '+parseAndIndent(arg.value);
-						}).join(',');
-					case 'in data feed':
-						var arrAddresses = args[0];
-						var feed_name = args[1];
-						var relation = args[2];
-						var value = args[3];
-						if (feed_name === 'timestamp' && relation === '>')
-							return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-						return JSON.stringify(arrSubdefinition);
-					case 'has':
-						if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
-							return 'sends at least ' + correspondentListService.getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
-						return JSON.stringify(arrSubdefinition);
-						
-					default:
-						return JSON.stringify(arrSubdefinition);
-				}
-			}
-			function parseAndIndent(arrSubdefinition){
-				return '<div class="indent">'+parse(arrSubdefinition)+'</div>\n';
-			}
-			return parse(arrDefinition, 0);
 		}
 		
 		var modalInstance = $modal.open({

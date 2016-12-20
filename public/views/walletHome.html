@@ -89,17 +89,27 @@
             </div>
 
             <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex">
-                <li ng-click='index.updateAll(); index.onClick(); index.updateHistoryFromNetwork()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
-                    <strong class="size-36" ng-if="balance.asset == 'base'">{{balance.totalStr}}</strong>
-                    <div ng-if="balance.asset != 'base'">
-                        <div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
-                        <div class="of-blackbytes" ng-if="balance.asset == index.BLACKBYTES_ASSET">blackbytes</div>
-                        <div class="of-asset" ng-if="balance.asset != index.BLACKBYTES_ASSET">of {{balance.asset}}</div>
-                    </div>
-                    <div class="size-14" ng-if="balance.pending">
-                        <span translate>Including pending confirmation</span>:
-                        <span ng-if="balance.asset == 'base'">{{balance.pendingStr}}</span>
-                        <span ng-if="balance.asset != 'base'">{{balance.pending.toLocaleString()}}</span>
+                <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
+					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
+						<strong class="size-36" ng-if="balance.asset == 'base'">{{balance.totalStr}}</strong>
+						<div ng-if="balance.asset != 'base'">
+							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
+							<div class="of-blackbytes" ng-if="balance.asset == index.BLACKBYTES_ASSET">blackbytes</div>
+							<div class="of-asset" ng-if="balance.asset != index.BLACKBYTES_ASSET">of {{balance.asset}}</div>
+						</div>
+						<div class="size-14" ng-if="balance.pending">
+							<span translate>Including pending confirmation</span>:
+							<span ng-if="balance.asset == 'base'">{{balance.pendingStr}}</span>
+							<span ng-if="balance.asset != 'base'">{{balance.pending.toLocaleString()}}</span>
+						</div>
+					</div>
+                    <div class="size-14" ng-if="balance.shared">
+						<a ng-click="index.openSubwalletModal()">
+							<span translate>Also</span>
+							<span ng-if="balance.asset == 'base'">{{balance.sharedStr}}</span>
+							<span ng-if="balance.asset != 'base'">{{balance.shared.toLocaleString()}}</span>
+							<span translate>in smart wallets</span>
+						</a>
                     </div>
                 </li>
             </ul>
@@ -118,28 +128,22 @@
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
               <i class="fi-widget size-18 vm wallet-settings"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
+            <a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
+              <i class="fi-eye size-24 vm wallet-settings"></i>
+              <span class="show-for-medium-up" translate>Definition</span>
+            </a>
           </div>
           <div class="wallet-info">
-            <div ng-show="index.isShared">
               <p class="m0">
-              {{(index.alias || index.walletName)}}
+              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
               </p>
               <div class="size-12 text-gray">
                 <span ng-include="'views/includes/walletInfo.html'"></span>
               </div>
-            </div>
-            <div ng-show="!index.isShared">
-              <p class="m0">
-              {{(index.alias || index.walletName)}}
-              </p>
-              <div class="size-12 text-gray">
-                <span ng-include="'views/includes/walletInfo.html'"></span>
-              </div>
-            </div>
           </div>
         </div>
       </div> <!-- oh -->
@@ -214,7 +218,7 @@
                 </div>
                 <div class="m10t" >
                   <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
-                    {{home.generatingAddress ? '...' : home.addr[index.walletId]}}
+                    {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
                 </div>
@@ -235,7 +239,7 @@
             </div>
           </div>
         </div>
-        <div class="row m20t">
+        <div class="row m20t" ng-if="!index.shared_address">
           <div class="large-12 columns">
             <button class="button black expand round m0" ng-click="home.setAddress(true)"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
@@ -285,7 +289,7 @@
                 <span class="db text-bold">
                     <span translate>Available Balance</span>:
                 </span>
-                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? balance.totalStr : balance.total.toLocaleString() + (balance.asset === index.BLACKBYTES_ASSET ? ' blackbytes' : ' of ' + balance.asset)) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset"></select>
+                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? balance.totalStr : balance.total.toLocaleString() + (balance.asset === index.BLACKBYTES_ASSET ? ' blackbytes' : ' of ' + balance.asset)) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
             </div>
         </h4>
       </div>
@@ -340,9 +344,10 @@
                 <div>
                   <label for="amount">
                     <span translate>Amount</span>
+					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll" style="text-transform: none; margin-left: 10px">Send all</a>
                   </label>
                   <div class="input">
-                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount required autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount ng-required="!home.bSendAll" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">blackbytes</a>
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>

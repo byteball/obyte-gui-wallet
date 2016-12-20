@@ -101,12 +101,9 @@
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
           </div>
       </li>
-      <li class="line-b p10 text-centered text-gray size-12">
-        <span translate>Only Main (not change) addresses are shown. The addresses on this list were not verified locally at this time.</span>
-      </li>
 
-      <li class="line-b p20" >
-          <button ng-show="index.isCordova" class="black round small expand" 
+      <li class="line-b p20" ng-show="index.isCordova">
+          <button class="black round small expand" 
             ng-style="{'background-color':index.backgroundColor}" 
             ng-click="info.sendAddrs()"
             ng-disabled="info.loading">

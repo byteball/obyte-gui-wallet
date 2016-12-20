@@ -35,7 +35,7 @@ angular.module('copayApp.services')
         }
         else {
             var client = profileService.getClient(walletId);
-            client.getMainAddresses({reverse: true, limit : 1}, function(err, addr) {
+            client.getAddresses({reverse: true, limit: 1, is_change: 0}, function(err, addr) {
                 if (err)
                     return cb(err);
                 if (addr.length > 0)
