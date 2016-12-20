@@ -14,7 +14,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
-		go.path('correspondentDevice');
+		go.path('correspondentDevices.correspondentDevice');
 	};
 
 	$scope.toggleEditCorrespondentList = function() {
@@ -30,7 +30,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 
 	$scope.beginAddCorrespondent = function() {
 		console.log("beginAddCorrespondent");
-		go.path('addCorrespondentDevice');
+		go.path('correspondentDevices.addCorrespondentDevice');
 	};
 
 

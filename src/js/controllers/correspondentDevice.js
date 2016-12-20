@@ -4,7 +4,7 @@
 
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect) {
 	
 	var self = this;
 	console.log("correspondentDeviceController");
@@ -379,7 +379,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.editCorrespondent = function() {
-		go.path('editCorrespondentDevice');
+		go.path('correspondentDevices.editCorrespondentDevice');
 	};
 
 	function setError(error){
@@ -500,6 +500,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	};
+
+	$scope.goToCorrespondentDevices = function() {
+		$deepStateRedirect.reset('correspondentDevices');
+		go.path('correspondentDevices');
+	}
 	
 }).directive('sendPayment', function($compile){
 	console.log("sendPayment directive");

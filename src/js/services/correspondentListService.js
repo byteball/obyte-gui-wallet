@@ -42,8 +42,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		root.messageEventsByCorrespondent[peer_address].push({bIncoming: bIncoming, message: body});
-		if (!$state.is('correspondentDevice'))
-			go.path('correspondentDevice');
+		if (!$state.is('correspondentDevices.correspondentDevice'))
+			go.path('correspondentDevices.correspondentDevice');
 		else if (bAnotherCorrespondent)
 			$state.reload();
 		else
@@ -209,7 +209,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on('paired', function(device_address){
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // refresh the list
-		if (!$state.is('correspondentDevice'))
+		if (!$state.is('correspondentDevices.correspondentDevice'))
 			return;
 		if (!root.currentCorrespondent)
 			return;
@@ -262,8 +262,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			// open chat window with the newly added correspondent
 			device.readCorrespondent(device_address, function(correspondent){
 				root.currentCorrespondent = correspondent;
-				if (!$state.is('correspondentDevice'))
-					go.path('correspondentDevice');
+				if (!$state.is('correspondentDevices.correspondentDevice'))
+					go.path('correspondentDevices.correspondentDevice');
 				else
 					$state.reload();
 			});

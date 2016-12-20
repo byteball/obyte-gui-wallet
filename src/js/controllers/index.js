@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
+  self.$state = $state;
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -441,6 +442,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'title': gettext('History'),
     'icon': 'icon-history',
     'link': 'history'
+  }, {
+    'title': gettext('Chat'),
+    'icon': 'icon-bubble',
+    'new_state': 'correspondentDevices'
   }];
 
   self.addonViews = addonManager.addonViews();
@@ -558,6 +563,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
         tab.open();
         return;
+      } else if (tab.new_state) {
+      	self.tab = tab.link;
+      	go.path(tab.new_state);
+      	return;
       } else {
         return self.setTab(tab.link, reset, tries, switchState);
       }
@@ -578,7 +587,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var changeTab = function() {
       if (document.getElementById(self.tab)) {
-        document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+        document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
         var old = document.getElementById('menu-' + self.tab);
         if (old) {
           old.className = '';

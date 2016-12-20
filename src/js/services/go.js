@@ -2,7 +2,7 @@
 
 var eventBus = require('byteballcore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit, notification, gettextCatalog, authService) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -104,7 +104,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	// Global go. This should be in a better place TODO
 	// We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
-	$rootScope.go = function(path) {
+	$rootScope.go = function(path, resetState) {
+		if (resetState) $deepStateRedirect.reset(resetState);
 		root.path(path);
 	};
 

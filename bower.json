@@ -23,5 +23,8 @@
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
     "angular-elastic": "^2.5.1"
+  },
+  "devDependencies": {
+    "ui-router-extras": "^0.1.3"
   }
 }

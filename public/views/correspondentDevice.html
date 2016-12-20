@@ -10,7 +10,7 @@
   <nav class="tab-bar">
     <section class="left-small">
     <a
-      ng-click="$root.go('correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="goToCorrespondentDevices()"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
     </section>
@@ -40,11 +40,12 @@
     .send-form{
         position: absolute;
         width: 100%;
+        padding-bottom: 58px;
         bottom: 0px;
         min-height: 150px;
         border-top: 1px solid #E9E9EC;
         background-color: white;
-        z-index: 10;
+        z-index: 5;
     }
     .message-log{
         position: absolute;
@@ -221,3 +222,4 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
     <div class="extra-margin-bottom"></div>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
