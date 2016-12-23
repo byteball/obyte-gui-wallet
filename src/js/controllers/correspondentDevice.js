@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
 	var indexScope = $scope.index;
+	$rootScope.tab = $scope.index.tab = 'chat';
 	$scope.backgroundColor = fc.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
@@ -494,14 +495,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 }).directive('scrollBottom', function ($timeout) { // based on http://plnkr.co/edit/H6tFjw1590jHT28Uihcx?p=preview
 	return {
-		scope: {
-			scrollBottom: "="
-		},
 		link: function (scope, element) {
-			scope.$watchCollection('scrollBottom', function (newValue) {
+			scope.$watchCollection('messageEvents', function (newValue) {
 				if (newValue)
 					$timeout(function(){
 						element[0].scrollTop = element[0].scrollHeight;
+						if (!scope.newMsgCounterEnabled) scope.newMessagesCount[scope.correspondent.device_address] = 0;
 					}, 100);
 			});
 		}

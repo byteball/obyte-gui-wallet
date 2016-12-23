@@ -500,7 +500,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }, {
     'title': gettext('Chat'),
     'icon': 'icon-bubble',
-    'new_state': 'correspondentDevices'
+    'new_state': 'correspondentDevices',
+    'link': 'chat'
   }];
 
   self.addonViews = addonManager.addonViews();
@@ -615,12 +616,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (typeof tab == 'object') {
       if (tab.open) {
         if (tab.link) {
-          self.tab = tab.link;
+          $rootScope.tab = self.tab = tab.link;
         }
         tab.open();
         return;
       } else if (tab.new_state) {
-      	self.tab = tab.link;
+      	$rootScope.tab = self.tab = tab.link;
       	go.path(tab.new_state);
       	return;
       } else {
@@ -639,7 +640,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
 
     if (!self.tab || !$state.is('walletHome'))
-      self.tab = 'walletHome';
+      $rootScope.tab = self.tab = 'walletHome';
 
     var changeTab = function() {
       if (document.getElementById(self.tab)) {
@@ -658,7 +659,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      self.tab = tab;
+      $rootScope.tab = self.tab = tab;
       $rootScope.$emit('Local/TabChanged', tab);
     };
 
