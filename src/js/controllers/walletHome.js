@@ -115,6 +115,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var accept_msg = gettextCatalog.getString('Accept');
   var cancel_msg = gettextCatalog.getString('Cancel');
   var confirm_msg = gettextCatalog.getString('Confirm');
+	
+	
 
   $scope.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
@@ -268,6 +270,58 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       }
     });
   };
+	
+	
+	
+	
+  $scope.openSharedAddressDefinitionModal = function(address) {
+    $rootScope.modalOpened = true;
+    var fc = profileService.focusedClient;
+
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+      $scope.color = fc.backgroundColor;
+	  $scope.address = address;
+	  
+	  var walletGeneral = require('byteballcore/wallet_general.js');
+	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+	  walletGeneral.readMyAddresses(function(arrMyAddresses){
+		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition){
+			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, []);
+			  $scope.$apply();
+		  });
+	  });
+		
+      $scope.cancel = function() {
+		breadcrumbs.add('openSharedAddressDefinitionModal cancel');
+		$modalInstance.dismiss('cancel');
+      };
+
+    };
+
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/address-definition.html',
+      windowClass: animationService.modalAnimated.slideUp,
+      controller: ModalInstanceCtrl,
+    });
+
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+		breadcrumbs.add('openSharedAddressDefinitionModal on closeModal');
+		modalInstance.dismiss('cancel');
+    });
+
+    modalInstance.result.finally(function() {
+      $rootScope.modalOpened = false;
+      disableCloseModal();
+      var m = angular.element(document.getElementsByClassName('reveal-modal'));
+      m.addClass(animationService.modalAnimated.slideOutDown);
+    });
+
+  };
+	
+	
+	
+	
+	
 
   this.openTxpModal = function(tx, copayers) {
       // deleted, maybe restore from copay sometime later
@@ -281,9 +335,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       return;
 
     // Address already set?
-    if (!forceNew && self.addr[fc.credentials.walletId]) {
+    if (!forceNew && self.addr[fc.credentials.walletId])
       return;
-    }
+    
+	if (indexScope.shared_address && forceNew)
+		throw Error('attempt to generate for shared address');
 
     self.generatingAddress = true;
     $timeout(function() {
@@ -555,6 +611,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     var form = $scope.sendForm;
+	if (self.bSendAll)
+		form.amount.$setValidity('validAmount', true);
     if (form.$invalid) {
         this.error = gettext('Unable to send transaction proposal');
         return;
@@ -608,13 +666,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                     if (copayer.me || copayer.signs)
                         arrSigningDeviceAddresses.push(copayer.device_address);
                 });
+			else if (fc.credentials.n === 1 && indexScope.shared_address) // require only our signature (fix it)
+				arrSigningDeviceAddresses = [indexScope.copayers[0].device_address];
             var current_payment_key = ''+asset+address+amount;
             if (current_payment_key === self.current_payment_key){
                 $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
                 return;
             }
             self.current_payment_key = current_payment_key;
-            fc.sendPayment(asset, address, amount, arrSigningDeviceAddresses, recipient_device_address, function(err){
+			var opts = {
+				shared_address: indexScope.shared_address,
+				asset: asset,
+				to_address: address,
+				amount: amount,
+				send_all: self.bSendAll,
+				arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+				recipient_device_address: recipient_device_address
+			};
+            fc.sendMultiPayment(opts, function(err){
                 // if multisig, it might take very long before the callback is called
                 //self.setOngoingProcess();
                 delete self.current_payment_key;
@@ -626,7 +695,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 self.resetForm();
                 $rootScope.$emit("NewOutgoingTx");
                 if (recipient_device_address) // show payment in chat window
-                    eventBus.emit('sent_payment', recipient_device_address, amount, asset);
+                    eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset);
                 else // redirect to history
                     $rootScope.$emit('Local/SetTab', 'history');
             });
@@ -650,7 +719,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
 			return true;
 		var form = $scope.sendForm;
-		if (!form.address) // disappeared
+		if (!form || !form.address) // disappeared
 			return true;
         var address = form.address.$modelValue;
         var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
@@ -714,6 +783,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $scope.currentSpendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
 
     this._amount = this._address = null;
+	this.bSendAll = false;
 
     var form = $scope.sendForm;
 
@@ -738,6 +808,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 1);
   };
 
+	this.setSendAll = function(){
+		var form = $scope.sendForm;
+		if (!form || !form.amount) // disappeared?
+			return console.log('form.amount has disappeared');
+		if (indexScope.arrBalances[indexScope.assetIndex].asset === 'base'){
+			this._amount = null;
+			this.bSendAll = true;
+			form.amount.$setViewValue('');
+			form.amount.$setValidity('validAmount', true);
+			form.amount.$render();
+		}
+		else{
+			form.amount.$setViewValue(''+indexScope.arrBalances[indexScope.assetIndex].stable);
+			form.amount.$render();
+		}
+		//console.log('done setsendall')
+		/*$timeout(function() {
+			$rootScope.$digest();
+			console.log('-- amount invalid? '+form.amount.$invalid);
+			console.log('-- form invalid? '+form.$invalid);
+		}, 1);*/
+	};
 
 
   this.setFromUri = function(uri) {
@@ -788,7 +880,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.btx = btx;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
-      $scope.isShared = fc.credentials.n > 1;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);

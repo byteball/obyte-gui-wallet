@@ -168,10 +168,15 @@ _:-ms-fullscreen, :root .main {
 .amount {
   width: 100%;
   text-align: center;
-  padding: 2.5rem 1rem 1.5rem 1rem;
+  padding: 2.5rem 1rem 0.5rem 1rem;
   margin-bottom: 11px;
   color: #fff;
-  height: 175px;
+  height: 200px;
+}
+
+.amount a{
+	color: #fff;
+	text-decoration: underline;
 }
 
 .scroll-section {
