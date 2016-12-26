@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesWitnessesController',
-  function($scope, go, witnessListService) {
+  function($scope, go, witnessListService, autoUpdatingWitnessesList, localStorageService){
     var self = this;
     this.witnesses = [];
     console.log('preferencesWitnessesController');
-    
-	var myWitnesses = require('byteballcore/my_witnesses.js');
+
+    $scope.autoUpdWitnessesList = autoUpdatingWitnessesList.autoUpdate;
+
+    var myWitnesses = require('byteballcore/my_witnesses.js');
     myWitnesses.readMyWitnesses(function(arrWitnesses){
         self.witnesses = arrWitnesses;
         $scope.$apply();
@@ -14,7 +16,22 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
     });
 
     this.edit = function(witness) {
-        witnessListService.currentWitness = witness;
-        go.path('preferencesEditWitness');
+      if ($scope.autoUpdWitnessesList) return;
+
+      witnessListService.currentWitness = witness;
+      go.path('preferencesEditWitness');
     };
+
+
+    var unwatchAutoUpdWitnessesList = $scope.$watch('autoUpdWitnessesList', function(val){
+      autoUpdatingWitnessesList.setAutoUpdate(val);
+
+      if (val) {
+        autoUpdatingWitnessesList.checkChangeWitnesses();
+      }
+    });
+
+    $scope.$on('$destroy', function(){
+      unwatchAutoUpdWitnessesList();
+    });
   });

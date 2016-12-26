@@ -12,6 +12,12 @@
     <label><span translate>Hub URL</span></label>
     <input type="text" id="hub" type="text" name="hub" ng-model="prefHub.hub">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+    <ul class="no-bullet m0">
+      <li>
+        <switch name="autoUpdWitnessesList" ng-model="autoUpdWitnessesList" class="green right"></switch>
+        <div>Automatically update the list of witnesses</div>
+      </li>
+    </ul>
   </form>
     <div class="text-gray size-12 text-center" translate>The hub for receiving messages from other devices.
   </div>

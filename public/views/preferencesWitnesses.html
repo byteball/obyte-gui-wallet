@@ -5,7 +5,12 @@
 </div>
 
 <div class="content preferences" ng-controller="preferencesWitnessesController as wc">
- 
+	<ul class="no-bullet m0">
+		<li>
+			<switch name="autoUpdWitnessesList" ng-model="autoUpdWitnessesList" class="green right"></switch>
+			<div>Automatically update the list of witnesses</div>
+		</li>
+	</ul>
     <ul class="no-bullet m0">
       <li ng-repeat="witness in wc.witnesses" ng-click="wc.edit(witness)">
         <i class="icon-arrow-right3 size-24 right text-gray"></i>  

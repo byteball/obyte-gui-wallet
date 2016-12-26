@@ -1,0 +1,31 @@
+<h1 class="text-center">New witnesses</h1>
+<div>
+    <div ng-repeat="n in addWitnesses" class="listWitnesses">
+        <div class="delWitnesses">{{delWitnesses[$index]}}</div>
+        <div class="addWitnesses">{{n}}</div>
+    </div>
+    <div style="margin-top: 30px">
+        <button class="button black expand round m0" style="background-color: #4A90E2"
+                ng-click="replace()">
+            Replace
+        </button>
+    </div>
+    <div style="margin-top: 20px">
+        <button class="button black expand round m0" ng-click="later()">Later</button>
+    </div>
+</div>
+
+<style>
+    .listWitnesses {
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .delWitnesses {
+        color: red;
+    }
+
+    .addWitnesses {
+        color: green;
+    }
+</style>
