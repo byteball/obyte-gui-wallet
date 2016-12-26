@@ -180,7 +180,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMessagesCount[correspondent.device_address] = 0">
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']">
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->

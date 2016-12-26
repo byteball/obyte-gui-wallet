@@ -26,7 +26,9 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		$scope.selectedCorrespondentList[addr] = $scope.selectedCorrespondentList[addr] ? false : true;
 	};
 
-
+	$scope.newMsgByAddressComparator = function(correspondent) {
+	      return -($scope.newMessagesCount[correspondent.device_address]|0);
+	};
 
 	$scope.beginAddCorrespondent = function() {
 		console.log("beginAddCorrespondent");

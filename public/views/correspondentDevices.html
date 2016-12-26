@@ -1,27 +1,7 @@
 <div ng-controller="correspondentDevicesController">
-  <nav class="tab-bar">
-    <section class="left-small">
-      <a ng-show="!editCorrespondentList" ng-click="cancel()" class="p10">
-        <span class="text-close" translate>Close</span>
-      </a>
-    </section>
-
-    <!--section class="right-small" ng-click="toggleEditCorrespondentList()">
-      <a ng-show="!editCorrespondentList" href class="p10">
-        <span class="text-close" translate>Edit</span>
-      </a>
-      <a ng-show="editCorrespondentList" href class="p10">
-        <span class="text-close" translate>Done</span>
-      </a>
-    </section-->
-  </nav>
-
-  <div class="modal-content fix-modals-touch">
-    
-
     <div class="m20b">
       <ul class="no-bullet m0" ng-init="readList()">
-        <li class="p10 line-b" ng-repeat="correspondent in list">
+        <li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
             class="removeCorrespondentList" 
             ng-click="remove(correspondent.device_address)" translate>Remove</a>
@@ -47,6 +27,5 @@
 
     </div>
     <div class="extra-margin-bottom"></div>
-  </div>
 </div>
 <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

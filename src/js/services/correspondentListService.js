@@ -54,9 +54,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$stickyState.reset('correspondentDevices.correspondentDevice');
 			go.path('correspondentDevices.correspondentDevice');
 		}
-		else if (bAnotherCorrespondent) {
+		/*else if (bAnotherCorrespondent) {
 			$state.reload();
-		}
+		}*/
 		else
 			$rootScope.$digest();
 	}

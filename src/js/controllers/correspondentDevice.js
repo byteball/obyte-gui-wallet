@@ -23,6 +23,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
 	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
 
+	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
+		if (!$scope.newMsgCounterEnabled) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+	});
+
 	$scope.send = function() {
 		$scope.error = null;
 		if (!$scope.message)
@@ -500,7 +504,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (newValue)
 					$timeout(function(){
 						element[0].scrollTop = element[0].scrollHeight;
-						if (!scope.newMsgCounterEnabled) scope.newMessagesCount[scope.correspondent.device_address] = 0;
 					}, 100);
 			});
 		}
