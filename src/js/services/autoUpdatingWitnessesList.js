@@ -14,39 +14,35 @@ angular.module('copayApp.services')
   root.checkChangeWitnesses = function(){
     if (!root.autoUpdate) return;
 
-    device.getWsConnect(function(err, ws){
-      if (err) return console.log('getWsConnect err:', err);
-
-      network.sendRequest(ws, 'get_witnesses', null, false, function(ws, request, arrWitnessesFromHub){
-        if (arrWitnessesFromHub) {
-          myWitnesses.readMyWitnesses(function(arrWitnesses){
-            root.addWitnesses = [];
-            root.delWitnesses = [];
-            arrWitnesses.forEach(function(witness){
-              if (arrWitnessesFromHub.indexOf(witness) == -1) {
-                root.delWitnesses.push(witness);
-              }
-            });
-            arrWitnessesFromHub.forEach(function(witness){
-              if (arrWitnesses.indexOf(witness) == -1) {
-                root.addWitnesses.push(witness);
-              }
-            });
-            if (root.addWitnesses.length != 0) {
-              $modal.open({
-                templateUrl: 'views/modals/newWitnesses.html',
-                controller: 'autoUpdatingWitnessesList'
-              });
+    network.getWitnessesFromHub(function(arrWitnessesFromHub){
+      if (arrWitnessesFromHub) {
+        myWitnesses.readMyWitnesses(function(arrWitnesses){
+          root.addWitnesses = [];
+          root.delWitnesses = [];
+          arrWitnesses.forEach(function(witness){
+            if (arrWitnessesFromHub.indexOf(witness) == -1) {
+              root.delWitnesses.push(witness);
             }
-            if (root.tmrNextCheck) $timeout.cancel(root.tmrNextCheck);
-            root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
-          }, 'ignore');
-        }
-        else {
+          });
+          arrWitnessesFromHub.forEach(function(witness){
+            if (arrWitnesses.indexOf(witness) == -1) {
+              root.addWitnesses.push(witness);
+            }
+          });
+          if (root.addWitnesses.length != 0) {
+            $modal.open({
+              templateUrl: 'views/modals/newWitnesses.html',
+              controller: 'autoUpdatingWitnessesList'
+            });
+          }
           if (root.tmrNextCheck) $timeout.cancel(root.tmrNextCheck);
-          root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60);
-        }
-      });
+          root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
+        }, 'ignore');
+      }
+      else {
+        if (root.tmrNextCheck) $timeout.cancel(root.tmrNextCheck);
+        root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60);
+      }
     });
   };
 
