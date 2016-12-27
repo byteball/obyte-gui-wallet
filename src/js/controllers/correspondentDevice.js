@@ -4,7 +4,7 @@
 
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect, $state) {
 	
 	var self = this;
 	console.log("correspondentDeviceController");
@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
 
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
 	});
 
 	$scope.send = function() {
