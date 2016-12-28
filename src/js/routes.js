@@ -212,7 +212,7 @@ angular
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'chat@': {
+          'dialog': {
             templateUrl: 'views/correspondentDevice.html'
           },
         }
@@ -222,7 +222,7 @@ angular
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'chat@': {
+          'dialog': {
             templateUrl: 'views/editCorrespondentDevice.html'
           },
         }
@@ -231,7 +231,7 @@ angular
       url: '/addCorrespondentDevice',
       needProfile: true,
       views: {
-        'chat@': {
+        'dialog': {
           templateUrl: 'views/addCorrespondentDevice.html'
         },
       }
@@ -241,7 +241,7 @@ angular
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'chat@': {
+          'dialog': {
             templateUrl: 'views/inviteCorrespondentDevice.html'
           },
         }
@@ -251,7 +251,7 @@ angular
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'chat@': {
+          'dialog': {
             templateUrl: 'views/acceptCorrespondentInvitation.html'
           },
         }

@@ -520,9 +520,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				return targetElem[0].clientHeight;
 			},
 			function (newValue, oldValue) {
-				if (newValue != oldValue) {
+				if (newValue != oldValue && newValue != 0) {
 					elem.css(attributes[0], newValue + 'px');
-					elem[0].scrollTop = elem[0].scrollHeight;
+					//elem[0].scrollTop = elem[0].scrollHeight;
 				}
 			});
 		}

@@ -180,7 +180,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMessagesCount[correspondent.device_address] = 0">
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
@@ -190,7 +190,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         </div>
       </div>
         
-        <form name="chatForm" class="send-form columns" no-validate>
+        <form name="chatForm" class="send-form columns" no-validate ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
           <div class="size-12 m10b" ng-show="!error">Text message to {{correspondent.name}}:</div>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" style="min-height:30px;"></textarea>
