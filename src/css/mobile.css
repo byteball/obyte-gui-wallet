@@ -55,14 +55,14 @@ body {
 
 /* Fix IE 10 */
 .extra-margin-bottom {
-  display: block
-  height: 75px
-  overflow: hidden
-  clear: both
+  display: block;
+  height: 75px;
+  overflow: hidden;
+  clear: both;
 }
 
 .main {
-  height: 99%
+  height: 99%;
   overflow: auto
 }
 

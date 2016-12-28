@@ -6,8 +6,6 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
   $scope.addWitnesses = autoUpdatingWitnessesList.addWitnesses;
   $scope.delWitnesses = autoUpdatingWitnessesList.delWitnesses;
 
-  var body = angular.element($document[0].body);
-  body.css({position: 'relative', overflow: 'auto'});
 
   $scope.replace = function(){
     var oldWitnesses = $scope.delWitnesses;
@@ -21,7 +19,6 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
         if (l < n) {
           replaceWitness(n++, oldWitnesses, newWitnesses)
         } else {
-          body.css({position: '', overflow: ''});
           $modalInstance.close('closed result');
         }
       });
@@ -31,7 +28,6 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
   };
 
   $scope.later = function(){
-    body.css({position: '', overflow: ''});
     $modalInstance.close('closed result');
   };
 });

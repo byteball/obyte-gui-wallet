@@ -1,3 +1,11 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="later()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+</nav>
+<div class="modal-content fix-modals-touch">
 <h1 class="text-center">New witnesses</h1>
 <div>
     <div ng-repeat="n in addWitnesses" class="listWitnesses">
@@ -13,6 +21,8 @@
     <div style="margin-top: 20px">
         <button class="button black expand round m0" ng-click="later()">Later</button>
     </div>
+</div>
+  <div class="extra-margin-bottom"></div>
 </div>
 
 <style>
