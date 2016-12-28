@@ -259,10 +259,10 @@ ul.copayer-list img {
 .bottombar-item .badge, .correspondentlist_badge {
 	top: 3px;
 	right: 3px;
-	font-size: 0.7em;
-	padding: 3px 7px;
+	font-size: 0.6em;
+	padding: 2px 7px;
 	background-color: red;
-	border-radius: 10px;
+	border-radius: 9px;
 	color: white;
 }
 
