@@ -25,7 +25,7 @@ angular.module('copayApp.services')
 
           if (root.addWitnesses.length != 0) {
             $modal.open({
-              templateUrl: 'views/modals/newWitnesses.html',
+              templateUrl: 'views/modals/approveNewWitnesses.html',
               controller: 'approveNewWitnesses'
             });
           }
