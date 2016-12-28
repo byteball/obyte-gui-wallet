@@ -1,62 +1,57 @@
 'use strict';
 
 var device = require('byteballcore/device.js');
-var network = require('byteballcore/network.js');
 var myWitnesses = require('byteballcore/my_witnesses.js');
 
 angular.module('copayApp.services')
-.factory('autoUpdatingWitnessesList', function($timeout, $modal, localStorageService){
+.factory('autoUpdatingWitnessesList', function($timeout, $modal, configService){
   var root = {};
 
   root.autoUpdate = true;
-  root.tmrNextCheck = null;
+  root.timerNextCheck = null;
 
   root.checkChangeWitnesses = function(){
     if (!root.autoUpdate) return;
 
-    network.getWitnessesFromHub(function(arrWitnessesFromHub){
+    device.getWitnessesFromHub(function(err, arrWitnessesFromHub){
       if (arrWitnessesFromHub) {
         myWitnesses.readMyWitnesses(function(arrWitnesses){
-          root.addWitnesses = [];
-          root.delWitnesses = [];
-          arrWitnesses.forEach(function(witness){
-            if (arrWitnessesFromHub.indexOf(witness) == -1) {
-              root.delWitnesses.push(witness);
-            }
+          root.addWitnesses = arrWitnessesFromHub.filter(function(witness){
+            return arrWitnesses.indexOf(witness) == -1;
           });
-          arrWitnessesFromHub.forEach(function(witness){
-            if (arrWitnesses.indexOf(witness) == -1) {
-              root.addWitnesses.push(witness);
-            }
+          root.delWitnesses = arrWitnesses.filter(function(witness){
+            return arrWitnessesFromHub.indexOf(witness) == -1;
           });
+
           if (root.addWitnesses.length != 0) {
             $modal.open({
               templateUrl: 'views/modals/newWitnesses.html',
-              controller: 'autoUpdatingWitnessesList'
+              controller: 'approveNewWitnesses'
             });
           }
-          if (root.tmrNextCheck) $timeout.cancel(root.tmrNextCheck);
-          root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
+          if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
+          root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
         }, 'ignore');
       }
       else {
-        if (root.tmrNextCheck) $timeout.cancel(root.tmrNextCheck);
-        root.tmrNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60);
+        if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
+        root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60);
       }
     });
   };
 
   root.setAutoUpdate = function(bUpdate){
-    localStorageService.set('autoUpdateWitnessesList', bUpdate, function(){
+    configService.set({autoUpdateWitnessesList: bUpdate},function(){
     });
     root.autoUpdate = bUpdate;
   };
 
-  localStorageService.get('autoUpdateWitnessesList', function(err, autoUpdate){
-    if (autoUpdate === null) {
+  configService.get(function(err, conf){
+    if (conf.autoUpdateWitnessesList === undefined) {
       root.setAutoUpdate(true);
+    } else {
+      root.autoUpdate = conf.autoUpdateWitnessesList;
     }
-    root.autoUpdate = autoUpdate;
     root.checkChangeWitnesses();
   });
 

@@ -17,7 +17,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  '#FF599E',
 	  '#7A8C9E',
 	];
-	
+
   var constants = require('byteballcore/constants.js');
   var defaultConfig = {
 	// wallet limits
@@ -26,10 +26,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	},
 
 	hub: (constants.alt === '2' && constants.version.match(/t$/)) ? 'byteball.org/bb-test' : 'byteball.org/bb',
-	  
+
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
-	  
+
 	getDeviceName: function(){
 		return isCordova ? cordova.plugins.deviceName.name : require('os').hostname();
 	},
@@ -55,7 +55,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	rates: {
 	  url: 'https://insight.bitpay.com:443/api/rates',
 	},
-	  
+
 	pushNotifications: {
 	  enabled: true,
 	  config: {
@@ -72,6 +72,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		windows: {},
 	  }
 	},
+  autoUpdateWitnessesList: true
   };
 
   var configCache = null;
