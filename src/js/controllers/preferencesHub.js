@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
     var initHubEdit = false;
     this.hub = config.hub;
 
+    this.currentAutoUpdWitnessesList = autoUpdatingWitnessesList.autoUpdate;
     $scope.autoUpdWitnessesList = autoUpdatingWitnessesList.autoUpdate;
 
     this.save = function() {
@@ -25,7 +26,9 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
           go.path('preferencesGlobal');
         }, 50);
       });
-
+      if (this.currentAutoUpdWitnessesList != $scope.autoUpdWitnessesList) {
+        autoUpdatingWitnessesList.setAutoUpdate($scope.autoUpdWitnessesList);
+      }
     };
 
     var unwatchEditHub = $scope.$watch(angular.bind(this, function(){
@@ -33,23 +36,14 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
     }), function(){
       if (initHubEdit) {
         $scope.autoUpdWitnessesList = false;
-        autoUpdatingWitnessesList.setAutoUpdate(false);
       }
       else {
         initHubEdit = true;
       }
     });
 
-    var unwatchAutoUpdWitnessesList = $scope.$watch('autoUpdWitnessesList', function(val){
-      autoUpdatingWitnessesList.setAutoUpdate(val);
-
-      if (val) {
-        autoUpdatingWitnessesList.checkChangeWitnesses();
-      }
-    });
 
     $scope.$on('$destroy', function(){
-      unwatchAutoUpdWitnessesList();
       unwatchEditHub();
     });
   });
