@@ -63,7 +63,7 @@ body {
 
 .main {
   height: 99%;
-  overflow: auto
+  overflow: auto;
 }
 
 /* Fix IE 11 */
@@ -604,7 +604,7 @@ to prevent collapsing during animation*/
 .modal-content {
   position: fixed;
   overflow-y: auto;
-  height: 100%;
+  bottom: 0;
   width: 100%;
   top: 45px;
   padding-bottom: 33px;
