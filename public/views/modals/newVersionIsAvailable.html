@@ -4,22 +4,20 @@
 </div>
 <h1 class="text-center">New version is available!</h1>
 <h3 class="text-center">
-    <div id="buttons">
-        <button class="button black expand round m0" style="background-color: #4A90E2"
-                ng-click="openDownloadLink()">
-            Download
-        </button>
-        <button class="button black expand round m0" ng-click="later()">Later</button>
+    <div id="buttons" class="row">
+        <div class="columns small-6">
+          <button class="button black expand round m0" style="background-color: #4A90E2"
+                  ng-click="openDownloadLink()">
+              Download
+          </button>
+        </div>
+        <div class="columns small-6">
+          <button class="button black expand round m0" ng-click="later()">Later</button>
+        </div>
     </div>
 </h3>
 <style>
     #buttons{
         margin-top: 30px;
-    }
-    #buttons > button{
-        width: 49%;
-    }
-    #buttons > button:first-child{
-        margin-left: 2px;
     }
 </style>

@@ -12,12 +12,16 @@
         <div class="delWitnesses">{{delWitnesses[$index]}}</div>
         <div class="addWitnesses">{{n}}</div>
     </div>
-    <div id="buttons">
+    <div id="buttons" class="row">
+      <div class="columns small-6">
         <button class="button black expand round m0" style="background-color: #4A90E2"
                 ng-click="replace()">
             Replace
         </button>
-      <button class="button black expand round m0" ng-click="later()">Later</button>
+      </div>
+      <div class="columns small-6">
+        <button class="button black expand round m0" ng-click="later()">Later</button>
+      </div>
     </div>
 </div>
 </div>
@@ -36,11 +40,5 @@
     }
     #buttons{
       margin-top: 30px;
-    }
-    #buttons > button{
-      width: 49%;
-    }
-    #buttons > button:first-child{
-      margin-left: 2px;
     }
 </style>
