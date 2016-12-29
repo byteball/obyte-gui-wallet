@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesWitnessesController',
-  function($scope, go, witnessListService, autoUpdatingWitnessesList, localStorageService){
+  function($scope, go, witnessListService, autoUpdatingWitnessesList){
     var self = this;
     this.witnesses = [];
     console.log('preferencesWitnessesController');
