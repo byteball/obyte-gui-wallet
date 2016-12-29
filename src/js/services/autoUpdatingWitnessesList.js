@@ -40,10 +40,10 @@ angular.module('copayApp.services')
     });
   };
 
-  root.setAutoUpdate = function(bUpdate){
-    configService.set({autoUpdateWitnessesList: bUpdate},function(){
+  root.setAutoUpdate = function(bAutoUpdate){
+    configService.set({autoUpdateWitnessesList: bAutoUpdate},function(){
     });
-    root.autoUpdate = bUpdate;
+    root.autoUpdate = bAutoUpdate;
   };
 
   configService.get(function(err, conf){
