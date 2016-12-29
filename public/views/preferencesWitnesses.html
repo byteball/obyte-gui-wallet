@@ -1,16 +1,26 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Witnesses'; goBackToState = 'preferencesGlobal'">
 </div>
 
 <div class="content preferences" ng-controller="preferencesWitnessesController as wc">
- 
-    <ul class="no-bullet m0">
+	<ul class="no-bullet m0">
+		<li>
+			<switch name="autoUpdWitnessesList" ng-model="autoUpdWitnessesList" class="green right"></switch>
+			<div>Automatically update the list of witnesses</div>
+		</li>
+	</ul>
+    <ul class="no-bullet m0" ng-class="{'autoUpdatingWitnessesList' : autoUpdWitnessesList}">
       <li ng-repeat="witness in wc.witnesses" ng-click="wc.edit(witness)">
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+        <i class="icon-arrow-right3 size-24 right text-gray"></i>
         {{witness}}
       </li>
     </ul>
 
 </div>
+<style>
+  .autoUpdatingWitnessesList{
+    color: #C1C1C1;
+  }
+</style>
