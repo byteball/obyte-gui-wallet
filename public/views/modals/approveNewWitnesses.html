@@ -7,12 +7,18 @@
 </nav>
 <div class="modal-content fix-modals-touch">
 <h1 class="text-center">New witnesses</h1>
-<div>
-    <div ng-repeat="n in addWitnesses" class="listWitnesses">
-        <div class="delWitnesses">{{delWitnesses[$index]}}</div>
-        <div class="addWitnesses">{{n}}</div>
-    </div>
-    <div id="buttons" class="row">
+<div class="row">
+	<div class="columns">
+		The hub suggests replacing the following witnesses:
+	</div>
+	<ul class="no-bullet m0 columns">
+		<li ng-repeat="newWitness in addWitnesses" class="listWitnesses">
+			<div class="delWitnesses">{{delWitnesses[$index]}}</div>
+			<div>to</div>
+			<div class="addWitnesses">{{newWitness}}</div>
+		</li>
+	</ul>
+    <div id="buttons">
       <div class="columns small-6">
         <button class="button black expand round m0" style="background-color: #4A90E2"
                 ng-click="replace()">
@@ -20,7 +26,7 @@
         </button>
       </div>
       <div class="columns small-6">
-        <button class="button black expand round m0" ng-click="later()">Later</button>
+        <button class="button black expand round m0" ng-click="later()">Maybe later</button>
       </div>
     </div>
 </div>

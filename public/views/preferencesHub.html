@@ -11,12 +11,10 @@
   <form name="settingsHubForm" ng-submit="prefHub.save()" class="columns">
     <label><span translate>Hub URL</span></label>
     <input type="text" id="hub" type="text" name="hub" ng-model="prefHub.hub">
-    <ul class="no-bullet m0">
-      <li>
+	  <div class="row size-14 m20b">
         <switch name="autoUpdWitnessesList" ng-model="autoUpdWitnessesList" class="green right"></switch>
-        <div>Automatically update the list of witnesses</div>
-      </li>
-    </ul>
+        <div>Auto-update the witness list from this hub</div>
+	  </div>
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
   </form>
     <div class="text-gray size-12 text-center" translate>The hub for receiving messages from other devices.
