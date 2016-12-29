@@ -1,8 +1,8 @@
 {
-  "name": "byteball",
+  "name": "byteball-tn",
   "description": "A wallet for decentralized value",
   "author": "Byteball",
-  "version": "1.0.0",
+  "version": "1.0.0t",
   "keywords": [
     "wallet",
     "byteball",
@@ -42,7 +42,7 @@
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git",
+    "byteballcore": "git+https://github.com/byteball/byteballcore.git#testnet",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
     "bip38": "^1.4.0",
