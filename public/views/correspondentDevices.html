@@ -1,7 +1,7 @@
 <div ng-controller="correspondentDevicesController">
 	<div ui-view="dialog"></div>
-    <div class="m20b" ng-class="{'hidden': !state.is('correspondentDevices')}">
-      <ul class="no-bullet m0" ng-init="readList()">
+    <div class="m20b" ng-show="state.is('correspondentDevices')">
+      <ul class="no-bullet m0 correspondentList" ng-init="readList()">
         <li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
             class="removeCorrespondentList" 

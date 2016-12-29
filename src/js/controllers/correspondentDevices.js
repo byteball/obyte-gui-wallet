@@ -11,11 +11,17 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.backgroundColor = fc.backgroundColor;
 
 	$scope.state = $state;
-	
+
+	var listScrollTop = 0;
+	$scope.$on('$viewContentLoaded', function(){
+	    if (!$state.is('correspondentDevices')) return;
+	    document.querySelector('.correspondentList').scrollTop = listScrollTop;
+	});
 	
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
+		listScrollTop = document.querySelector('.correspondentList').scrollTop;
 		go.path('correspondentDevices.correspondentDevice');
 	};
 
