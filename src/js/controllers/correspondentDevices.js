@@ -40,6 +40,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 
 	$scope.beginAddCorrespondent = function() {
 		console.log("beginAddCorrespondent");
+		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
 		go.path('correspondentDevices.addCorrespondentDevice');
 	};
 
