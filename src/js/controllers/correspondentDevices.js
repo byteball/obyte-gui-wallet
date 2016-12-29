@@ -15,13 +15,13 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	var listScrollTop = 0;
 	$scope.$on('$viewContentLoaded', function(){
 	    if (!$state.is('correspondentDevices')) return;
-	    document.querySelector('.correspondentList').scrollTop = listScrollTop;
+	    setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 	});
 	
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
-		listScrollTop = document.querySelector('.correspondentList').scrollTop;
+		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
 		go.path('correspondentDevices.correspondentDevice');
 	};
 
