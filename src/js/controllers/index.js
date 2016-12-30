@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
+  self.$state = $state;
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -496,6 +497,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     'title': gettext('History'),
     'icon': 'icon-history',
     'link': 'history'
+  }, {
+    'title': gettext('Chat'),
+    'icon': 'icon-bubble',
+    'new_state': 'correspondentDevices',
+    'link': 'chat'
   }];
 
   self.addonViews = addonManager.addonViews();
@@ -610,10 +616,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (typeof tab == 'object') {
       if (tab.open) {
         if (tab.link) {
-          self.tab = tab.link;
+          $rootScope.tab = self.tab = tab.link;
         }
         tab.open();
         return;
+      } else if (tab.new_state) {
+      	$rootScope.tab = self.tab = tab.link;
+      	go.path(tab.new_state);
+      	return;
       } else {
         return self.setTab(tab.link, reset, tries, switchState);
       }
@@ -630,11 +640,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
 
     if (!self.tab || !$state.is('walletHome'))
-      self.tab = 'walletHome';
+      $rootScope.tab = self.tab = 'walletHome';
 
     var changeTab = function() {
       if (document.getElementById(self.tab)) {
-        document.getElementById(self.tab).className = 'tab-out tab-view ' + self.tab;
+        document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
         var old = document.getElementById('menu-' + self.tab);
         if (old) {
           old.className = '';
@@ -649,7 +659,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         }
       }
 
-      self.tab = tab;
+      $rootScope.tab = self.tab = tab;
       $rootScope.$emit('Local/TabChanged', tab);
     };
 

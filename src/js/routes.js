@@ -109,6 +109,8 @@ angular
         url: '/',
         walletShouldBeComplete: true,
         needProfile: true,
+        deepStateRedirect: true,
+    	sticky: true,
         views: {
           'main': {
             templateUrl: 'views/walletHome.html',
@@ -197,57 +199,59 @@ angular
         url: '/correspondentDevices',
         walletShouldBeComplete: false,
         needProfile: true,
+        deepStateRedirect: true,
+    	sticky: true,
         views: {
-          'main': {
+          'chat': {
             templateUrl: 'views/correspondentDevices.html'
           },
         }
       })
-      .state('correspondentDevice', {
+      .state('correspondentDevices.correspondentDevice', {
         url: '/correspondentDevice',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'main': {
+          'dialog': {
             templateUrl: 'views/correspondentDevice.html'
           },
         }
       })
-      .state('editCorrespondentDevice', {
+      .state('correspondentDevices.editCorrespondentDevice', {
         url: '/editCorrespondentDevice',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'main': {
+          'dialog': {
             templateUrl: 'views/editCorrespondentDevice.html'
           },
         }
       })
-    .state('addCorrespondentDevice', {
+    .state('correspondentDevices.addCorrespondentDevice', {
       url: '/addCorrespondentDevice',
       needProfile: true,
       views: {
-        'main': {
+        'dialog': {
           templateUrl: 'views/addCorrespondentDevice.html'
         },
       }
     })
-      .state('inviteCorrespondentDevice', {
+      .state('correspondentDevices.inviteCorrespondentDevice', {
         url: '/inviteCorrespondentDevice',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'main': {
+          'dialog': {
             templateUrl: 'views/inviteCorrespondentDevice.html'
           },
         }
       })
-      .state('acceptCorrespondentInvitation', {
+      .state('correspondentDevices.acceptCorrespondentInvitation', {
         url: '/acceptCorrespondentInvitation',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'main': {
+          'dialog': {
             templateUrl: 'views/acceptCorrespondentInvitation.html'
           },
         }

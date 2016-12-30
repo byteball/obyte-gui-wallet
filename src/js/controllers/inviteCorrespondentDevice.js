@@ -9,7 +9,7 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     
     function onPaired(peer_address){
         correspondentListService.setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-            go.path('correspondentDevice');
+            go.path('correspondentDevices.correspondentDevice');
         });
     }
     

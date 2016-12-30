@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Invite new device'; goBackToState = 'addCorrespondentDevice'; showCamera = true; ">
+  ng-init="titleSection='Invite new device'; goBackToState = 'correspondentDevices.addCorrespondentDevice'; showCamera = true; ">
 </div>
 
 
@@ -36,3 +36,4 @@
 
     <div class="extra-margin-bottom"></div>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

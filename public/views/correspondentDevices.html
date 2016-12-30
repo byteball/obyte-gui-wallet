@@ -1,27 +1,8 @@
 <div ng-controller="correspondentDevicesController">
-  <nav class="tab-bar">
-    <section class="left-small">
-      <a ng-show="!editCorrespondentList" ng-click="cancel()" class="p10">
-        <span class="text-close" translate>Close</span>
-      </a>
-    </section>
-
-    <!--section class="right-small" ng-click="toggleEditCorrespondentList()">
-      <a ng-show="!editCorrespondentList" href class="p10">
-        <span class="text-close" translate>Edit</span>
-      </a>
-      <a ng-show="editCorrespondentList" href class="p10">
-        <span class="text-close" translate>Done</span>
-      </a>
-    </section-->
-  </nav>
-
-  <div class="modal-content fix-modals-touch">
-    
-
-    <div class="m20b">
-      <ul class="no-bullet m0" ng-init="readList()">
-        <li class="p10 line-b" ng-repeat="correspondent in list">
+	<div ui-view="dialog"></div>
+    <div class="m20b" ng-show="state.is('correspondentDevices')">
+      <ul class="no-bullet m0 correspondentList" ng-init="readList()">
+        <li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
             class="removeCorrespondentList" 
             ng-click="remove(correspondent.device_address)" translate>Remove</a>
@@ -32,12 +13,13 @@
           <div ng-click="showCorrespondent(correspondent)" class="pointer"> 
             {{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
             <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList"></i></div>
+            <div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
             <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
           </div>
         </li>
         <li class="m10t" ng-show="!editCorrespondentList">
           <a ng-click="beginAddCorrespondent()" class="p10">
-            <i class="fi-plus size-18 m10r"></i> 
+            <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
             <span class="text-close size-12" translate>Add a new device</span> 
           </a>
         </li>
@@ -45,7 +27,6 @@
 
 
     </div>
-
     <div class="extra-margin-bottom"></div>
-  </div>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

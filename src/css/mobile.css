@@ -236,6 +236,10 @@ ul.copayer-list img {
   height: 30px;
 }
 
+.bottombar-item {
+	width: 20%;
+}
+
 .bottombar-item a {
   color: #9EA9B3;
   padding: 0.5rem 0;
@@ -246,6 +250,20 @@ ul.copayer-list img {
 .bottombar-item a.active {
   color: #E4E8EC;
   background-color: #122232;
+}
+
+.bottombar-item .badge {
+	position: absolute;
+}
+
+.bottombar-item .badge, .correspondentlist_badge {
+	top: 3px;
+	right: 3px;
+	font-size: 0.6em;
+	padding: 2px 7px;
+	background-color: red;
+	border-radius: 9px;
+	color: white;
 }
 
 .box-founds {

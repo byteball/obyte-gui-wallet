@@ -76,7 +76,7 @@ angular.module('copayApp.controllers').controller('createController',
 	this.onCorrespondentSelected = function(device_address){
 		console.log(device_address);
 		if (device_address === "new")
-			go.path('addCorrespondentDevice');
+			go.path('correspondentDevices.addCorrespondentDevice');
 	};
 
 

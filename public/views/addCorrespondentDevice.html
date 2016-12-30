@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Add device'; goBackToState = 'correspondentDevices'; noColor = true">
+  ng-init="titleSection='Add device'; goBackToState = 'correspondentDevices'; resetState = 'correspondentDevices'; noColor = true">
 </div>
 
 
@@ -9,14 +9,14 @@
 <div class="content">
 <ul class="no-bullet manage size-12">
 	<li>
-		<a ng-click="$root.go('inviteCorrespondentDevice')">
+		<a ng-click="$root.go('correspondentDevices.inviteCorrespondentDevice')">
 			<i class="fi-die-four circle plus-fixed"></i>	
 			<i class="icon-arrow-right3 size-18 right m20t"></i>  
 			<span translate>Invite the other device</span>
 		</a>
 	</li>
 	<li>
-		<a ng-click="$root.go('acceptCorrespondentInvitation')">
+		<a ng-click="$root.go('correspondentDevices.acceptCorrespondentInvitation')">
 			<i class="icon-scan circle"></i>	  
 			<i class="icon-arrow-right3 size-18 right m20t"></i>  
 			<span translate style="max-width: 60%">Accept invitation from the other device</span>
@@ -25,3 +25,4 @@
 
 </ul>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

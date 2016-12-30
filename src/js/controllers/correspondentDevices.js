@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('correspondentDevicesController',
-  function($scope, $timeout, configService, profileService, go, correspondentListService) {
+  function($scope, $timeout, configService, profileService, go, correspondentListService, $state) {
 	
 	var self = this;
 	
@@ -9,12 +9,20 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
 	$scope.backgroundColor = fc.backgroundColor;
-	
+
+	$scope.state = $state;
+
+	var listScrollTop = 0;
+	$scope.$on('$viewContentLoaded', function(){
+	    if (!$state.is('correspondentDevices')) return;
+	    setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+	});
 	
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
-		go.path('correspondentDevice');
+		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
+		go.path('correspondentDevices.correspondentDevice');
 	};
 
 	$scope.toggleEditCorrespondentList = function() {
@@ -26,11 +34,14 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		$scope.selectedCorrespondentList[addr] = $scope.selectedCorrespondentList[addr] ? false : true;
 	};
 
-
+	$scope.newMsgByAddressComparator = function(correspondent) {
+	      return -($scope.newMessagesCount[correspondent.device_address]|0);
+	};
 
 	$scope.beginAddCorrespondent = function() {
 		console.log("beginAddCorrespondent");
-		go.path('addCorrespondentDevice');
+		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
+		go.path('correspondentDevices.addCorrespondentDevice');
 	};
 
 

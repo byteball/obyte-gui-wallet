@@ -4,7 +4,7 @@
 
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect, $state) {
 	
 	var self = this;
 	console.log("correspondentDeviceController");
@@ -12,6 +12,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
 	var indexScope = $scope.index;
+	$rootScope.tab = $scope.index.tab = 'chat';
 	$scope.backgroundColor = fc.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
@@ -21,6 +22,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	if (!correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
 	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
+
+	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
+		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+	});
 
 	$scope.send = function() {
 		$scope.error = null;
@@ -333,7 +338,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.editCorrespondent = function() {
-		go.path('editCorrespondentDevice');
+		go.path('correspondentDevices.editCorrespondentDevice');
 	};
 
 	function setError(error){
@@ -454,6 +459,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	};
+
+	$scope.goToCorrespondentDevices = function() {
+		$deepStateRedirect.reset('correspondentDevices');
+		go.path('correspondentDevices');
+	}
 	
 }).directive('sendPayment', function($compile){
 	console.log("sendPayment directive");
@@ -489,11 +499,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 }).directive('scrollBottom', function ($timeout) { // based on http://plnkr.co/edit/H6tFjw1590jHT28Uihcx?p=preview
 	return {
-		scope: {
-			scrollBottom: "="
-		},
 		link: function (scope, element) {
-			scope.$watchCollection('scrollBottom', function (newValue) {
+			scope.$watchCollection('messageEvents', function (newValue) {
 				if (newValue)
 					$timeout(function(){
 						element[0].scrollTop = element[0].scrollHeight;
@@ -513,9 +520,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				return targetElem[0].clientHeight;
 			},
 			function (newValue, oldValue) {
-				if (newValue != oldValue) {
+				if (newValue != oldValue && newValue != 0) {
 					elem.css(attributes[0], newValue + 'px');
-					elem[0].scrollTop = elem[0].scrollHeight;
+					//elem[0].scrollTop = elem[0].scrollHeight;
 				}
 			});
 		}
