@@ -20,14 +20,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.newMsgCounterEnabled = true;
 		});
 		$rootScope.$watch('newMessagesCount', function(counters) {
-			$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters)) 
-			if ($rootScope.totalNewMsgCnt) {
-				win.setBadgeLabel(""+$rootScope.totalNewMsgCnt);
+			var sum = lodash.sum(lodash.values(counters));
+			if (sum) {
+				win.setBadgeLabel(""+sum);
 			} else {
 				win.setBadgeLabel("");
 			}
 		}, true);
 	}
+	$rootScope.$watch('newMessagesCount', function(counters) {
+		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
+	}, true);
 	
 	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
 		var walletGeneral = require('byteballcore/wallet_general.js');
