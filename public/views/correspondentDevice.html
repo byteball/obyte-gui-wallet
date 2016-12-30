@@ -210,7 +210,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <form name="chatForm" class="send-form columns" no-validate ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
            <button
-          	class="chatbutton"
+          	class="chatbutton left"
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content>
 			  <li><a ng-click="insertMyAddress()">Insert my address</a></li>
@@ -218,7 +218,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
           <button type="submit" 
-          	class="chatbutton"
+          	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"
                      ng-style="{'background-color':backgroundColor}" 
                      ng-click="send()"><i class="size-18 icon-paperplane"></i></button>
