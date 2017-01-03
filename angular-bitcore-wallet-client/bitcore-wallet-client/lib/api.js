@@ -10,6 +10,7 @@ if (process.browser){
 
 var walletDefinedByKeys;
 var ecdsaSig = require('byteballcore/signature.js');
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 var _ = require('lodash');
 var $ = require('preconditions').singleton();
@@ -497,6 +498,7 @@ API.prototype.createAddress = function(is_change, cb) {
 
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
+	breadcrumbs.add('createAddress wallet='+this.credentials.walletId+', is_change='+is_change);
     walletDefinedByKeys.issueOrSelectNextAddress(this.credentials.walletId, is_change, function(addressInfo){
         var path = "m/44'/" + coin + "'/" + self.credentials.account + "'/0/"+addressInfo.address_index;
         cb(null, {address: addressInfo.address, path: path, createdOn: addressInfo.creation_ts});
