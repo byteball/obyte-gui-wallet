@@ -1,182 +1,185 @@
 @font-face {
-	font-family: 'icomoon';
-	src:url("../font/icomoon.eot");
-	src:url("../font/icomoon.eot?#iefix") format('embedded-opentype'),
-		url("../font/icomoon.woff") format('woff'),
-		url("../font/icomoon.ttf") format('truetype'),
-		url("../font/icomoon.svg#icomoon") format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'icomoon';
+  src:
+    url('../font/icomoon.ttf?ljlgk9') format('truetype'),
+    url('../font/icomoon.woff?ljlgk9') format('woff'),
+    url('../font/icomoon.svg?ljlgk9#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'icomoon' !important;
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
-  vertical-align: middle;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-sell-btc:before {
-	content: "\e632";
-}
-.icon-buy-btc:before {
-	content: "\e631";
-}
-.icon-erase:before {
-	content: "\e628";
-}
-.icon-receive2:before {
-	content: "\e62f";
+.icon-dots-three-horizontal:before {
+  content: "\e900";
 }
 .icon-arrow-left:before {
-	content: "\e600";
+  content: "\e600";
 }
 .icon-arrow-down:before {
-	content: "\e601";
+  content: "\e601";
 }
 .icon-arrow-up:before {
-	content: "\e602";
+  content: "\e602";
 }
 .icon-arrow-right:before {
-	content: "\e603";
+  content: "\e603";
 }
 .icon-arrow-left2:before {
-	content: "\e604";
+  content: "\e604";
 }
 .icon-arrow-down2:before {
-	content: "\e605";
+  content: "\e605";
 }
 .icon-arrow-up2:before {
-	content: "\e606";
+  content: "\e606";
 }
 .icon-arrow-right2:before {
-	content: "\e607";
+  content: "\e607";
 }
 .icon-arrow-left3:before {
-	content: "\e608";
+  content: "\e608";
 }
 .icon-arrow-down3:before {
-	content: "\e609";
+  content: "\e609";
 }
 .icon-arrow-up3:before {
-	content: "\e60a";
+  content: "\e60a";
 }
 .icon-arrow-right3:before {
-	content: "\e60b";
+  content: "\e60b";
 }
 .icon-arrow-left4:before {
-	content: "\e60c";
+  content: "\e60c";
 }
 .icon-arrow-down4:before {
-	content: "\e60d";
+  content: "\e60d";
 }
 .icon-arrow-up4:before {
-	content: "\e60e";
-}
-.icon-bank:before {
-	content: "\e630";
-}
-.icon-minus-circle:before {
-	content: "\e62c";
-}
-.icon-plus-circle:before {
-	content: "\e62d";
-}
-.icon-close-circle:before {
-	content: "\e62e";
-}
-.icon-checkmark-circle:before {
-	content: "\e62b";
-}
-.icon-circle:before {
-	content: "\e629";
-}
-.icon-circle-active:before {
-	content: "\e627";
-}
-.icon-circle-active:before {
-	content: "\e627";
-}
-.icon-scan:before {
-	content: "\e62a";
-}
-.icon-trash:before {
-	content: "\e626";
-}
-.icon-wallet:before {
-	content: "\e622";
-}
-.icon-history:before {
-	content: "\e623";
-}
-.icon-reference:before {
-	content: "\e621";
-}
-.icon-bell:before {
-	content: "\e61c";
-}
-.icon-receive:before {
-	content: "\e625";
-}
-.icon-wrench:before {
-	content: "\e61d";
-}
-.icon-download:before {
-	content: "\e61e";
-}
-.icon-upload:before {
-	content: "\e61f";
-}
-.icon-power:before {
-	content: "\e620";
-}
-.icon-forward:before {
-	content: "\e624";
-}
-.icon-compose:before {
-	content: "\e610";
-}
-.icon-contact:before {
-	content: "\e611";
-}
-.icon-email:before {
-	content: "\e612";
-}
-.icon-gear:before {
-	content: "\e613";
-}
-.icon-home:before {
-	content: "\e614";
-}
-.icon-locked:before {
-	content: "\e615";
-}
-.icon-paperplane:before {
-	content: "\e617";
-}
-.icon-people:before {
-	content: "\e618";
-}
-.icon-person:before {
-	content: "\e619";
-}
-.icon-pricetag:before {
-	content: "\e61a";
-}
-.icon-pricetags:before {
-	content: "\e61b";
+  content: "\e60e";
 }
 .icon-bitcoin:before {
-	content: "\e60f";
+  content: "\e60f";
+}
+.icon-compose:before {
+  content: "\e610";
+}
+.icon-contact:before {
+  content: "\e611";
+}
+.icon-email:before {
+  content: "\e612";
+}
+.icon-gear:before {
+  content: "\e613";
+}
+.icon-home:before {
+  content: "\e614";
+}
+.icon-locked:before {
+  content: "\e615";
 }
 .icon-usd:before {
-	content: "\e616";
+  content: "\e616";
 }
+.icon-paperplane:before {
+  content: "\e617";
+}
+.icon-people:before {
+  content: "\e618";
+}
+.icon-person:before {
+  content: "\e619";
+}
+.icon-pricetag:before {
+  content: "\e61a";
+}
+.icon-pricetags:before {
+  content: "\e61b";
+}
+.icon-bell:before {
+  content: "\e61c";
+}
+.icon-wrench:before {
+  content: "\e61d";
+}
+.icon-download:before {
+  content: "\e61e";
+}
+.icon-upload:before {
+  content: "\e61f";
+}
+.icon-power:before {
+  content: "\e620";
+}
+.icon-reference:before {
+  content: "\e621";
+}
+.icon-wallet:before {
+  content: "\e622";
+}
+.icon-history:before {
+  content: "\e623";
+}
+.icon-forward:before {
+  content: "\e624";
+}
+.icon-receive:before {
+  content: "\e625";
+}
+.icon-trash:before {
+  content: "\e626";
+}
+.icon-circle-active:before {
+  content: "\e627";
+}
+.icon-erase:before {
+  content: "\e628";
+}
+.icon-circle:before {
+  content: "\e629";
+}
+.icon-scan:before {
+  content: "\e62a";
+}
+.icon-checkmark-circle:before {
+  content: "\e62b";
+}
+.icon-minus-circle:before {
+  content: "\e62c";
+}
+.icon-plus-circle:before {
+  content: "\e62d";
+}
+.icon-close-circle:before {
+  content: "\e62e";
+}
+.icon-receive2:before {
+  content: "\e62f";
+}
+.icon-bank:before {
+  content: "\e630";
+}
+.icon-buy-btc:before {
+  content: "\e631";
+}
+.icon-sell-btc:before {
+  content: "\e632";
+}
+.icon-bubble:before {
+  content: "\e96b";
+}
+

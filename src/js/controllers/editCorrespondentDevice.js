@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		correspondent.hub = $scope.hub;
 		var device = require('byteballcore/device.js');
 		device.updateCorrespondentProps(correspondent, function(){
-			go.path('correspondentDevice');
+			go.path('correspondentDevices.correspondentDevice');
 		});
 	};
 

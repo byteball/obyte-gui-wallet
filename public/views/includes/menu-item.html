@@ -6,4 +6,7 @@
             {{ index.pendingTxProposalsCountForUs }}
         </span>
     </div>
+    <div ng-show="item.title == 'Chat' && totalNewMsgCnt > 0" class="badge">
+    	{{totalNewMsgCnt}}
+    </div>
 </a>

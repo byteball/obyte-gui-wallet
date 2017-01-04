@@ -5,27 +5,32 @@ var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 var objectHash = require('byteballcore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
 	var root = {};
 	var device = require('byteballcore/device.js');
+	$rootScope.newMessagesCount = {};
+	$rootScope.newMsgCounterEnabled = false;
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
-		function stopCountingNewMessages() {
-			$rootScope.newMessagesCount=0;
-			$rootScope.counterEnabled = false;
-		}
-		stopCountingNewMessages();
-		win.on('focus', function(){stopCountingNewMessages();$rootScope.$apply();});
-		win.on('blur', function(){$rootScope.counterEnabled = true;});
-		$rootScope.$watch('newMessagesCount', function(count) {
-			if (count) {
-				win.setBadgeLabel(""+count);
+		win.on('focus', function(){
+			$rootScope.newMsgCounterEnabled = false;
+		});
+		win.on('blur', function(){
+			$rootScope.newMsgCounterEnabled = true;
+		});
+		$rootScope.$watch('newMessagesCount', function(counters) {
+			var sum = lodash.sum(lodash.values(counters));
+			if (sum) {
+				win.setBadgeLabel(""+sum);
 			} else {
 				win.setBadgeLabel("");
 			}
-		});
+		}, true);
 	}
+	$rootScope.$watch('newMessagesCount', function(counters) {
+		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
+	}, true);
 	
 	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
 		var walletGeneral = require('byteballcore/wallet_general.js');
@@ -42,15 +47,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		root.messageEventsByCorrespondent[peer_address].push({bIncoming: bIncoming, message: body});
-		if (!$state.is('correspondentDevice'))
-			go.path('correspondentDevice');
-		else if (bAnotherCorrespondent)
+		if (bIncoming) {
+			if (peer_address in $rootScope.newMessagesCount)
+				$rootScope.newMessagesCount[peer_address]++;
+			else
+				$rootScope.newMessagesCount[peer_address] = 1;
+		}
+		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
+			$stickyState.reset('correspondentDevices.correspondentDevice');
+			go.path('correspondentDevices.correspondentDevice');
+		}
+		/*else if (bAnotherCorrespondent) {
 			$state.reload();
+		}*/
 		else
 			$rootScope.$digest();
-		if ($rootScope.counterEnabled && bIncoming) {
-			$rootScope.newMessagesCount++;			
-		}
 	}
 	
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
@@ -256,7 +267,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on('paired', function(device_address){
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // refresh the list
-		if (!$state.is('correspondentDevice'))
+		if (!$state.is('correspondentDevices.correspondentDevice'))
 			return;
 		if (!root.currentCorrespondent)
 			return;
@@ -310,8 +321,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			// open chat window with the newly added correspondent
 			device.readCorrespondent(device_address, function(correspondent){
 				root.currentCorrespondent = correspondent;
-				if (!$state.is('correspondentDevice'))
-					go.path('correspondentDevice');
+				if (!$state.is('correspondentDevices.correspondentDevice'))
+					go.path('correspondentDevices.correspondentDevice');
 				else
 					$state.reload();
 			});

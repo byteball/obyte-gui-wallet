@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('wordsController',
     var fc = profileService.focusedClient;
 	
 	if (isCordova)
-		self.text = "To ptotect your funds, please use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer.  Just the wallet seed is not enough.";
+		self.text = "To protect your funds, please use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer.  Just the wallet seed is not enough.";
 	else{
 		var desktopApp = require('byteballcore/desktop_app.js'+'');
 		var appDataDir = desktopApp.getAppDataDir();

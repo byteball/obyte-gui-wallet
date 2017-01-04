@@ -9,7 +9,7 @@
 <nav class="tab-bar">
   <section class="left-small">
     <a
-      ng-click="$root.go('addCorrespondentDevice')"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="$root.go('correspondentDevices.addCorrespondentDevice')"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
   </section>
@@ -64,3 +64,4 @@
 
     <div class="extra-margin-bottom"></div>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

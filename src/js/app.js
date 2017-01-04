@@ -15,7 +15,8 @@ var modules = [
   'copayApp.services',
   'copayApp.controllers',
   'copayApp.directives',
-  'copayApp.addons'
+  'copayApp.addons',
+  'ct.ui.router.extras'
 ];
 
 var copayApp = window.copayApp = angular.module('copayApp', modules);

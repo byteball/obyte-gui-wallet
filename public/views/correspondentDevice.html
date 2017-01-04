@@ -10,7 +10,7 @@
   <nav class="tab-bar">
     <section class="left-small">
     <a
-      ng-click="$root.go('correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="goToCorrespondentDevices()"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
     </section>
@@ -40,11 +40,29 @@
     .send-form{
         position: absolute;
         width: 100%;
+        padding-bottom: 58px;
         bottom: 0px;
-        min-height: 150px;
         border-top: 1px solid #E9E9EC;
         background-color: white;
-        z-index: 10;
+        z-index: 5;
+        white-space: nowrap;
+        text-align: center;
+    }
+    .send-form .textinput {
+    	min-height:30px;
+    	width: 75%;
+    	margin: 0 auto;
+    	display: inline;
+    	vertical-align: middle;
+    	margin-top: 8px;
+    }
+    .send-form .chatbutton {
+    	padding: 6px 8px 4px 8px;
+    	border-radius: 40px;
+    	margin: 8px auto;
+    }
+    #drop {
+    	max-width: none;
     }
     .message-log{
         position: absolute;
@@ -179,7 +197,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']">
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
@@ -189,11 +207,22 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         </div>
       </div>
         
-        <form name="chatForm" class="send-form columns" no-validate>
-          <div class="size-12 m10b" ng-show="!error">Text message to {{correspondent.name}}:</div>
+        <form name="chatForm" class="send-form columns" no-validate ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" style="min-height:30px;"></textarea>
-          <div class="row">
+           <button
+          	class="chatbutton left"
+                     dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
+            <ul id="drop" class="f-dropdown drop-top" data-dropdown-content>
+			  <li><a ng-click="insertMyAddress()">Insert my address</a></li>
+			  <li><a ng-click="requestPayment()">Request payment</a></li>
+			</ul>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
+          <button type="submit" 
+          	class="chatbutton right"
+                     ng-disabled="!chatForm.$valid"
+                     ng-style="{'background-color':backgroundColor}" 
+                     ng-click="send()"><i class="size-18 icon-paperplane"></i></button>
+          <!--<div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">
               <button type="button"
                      class="button expand round outline dark-gray tiny" 
@@ -213,7 +242,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
                      ng-style="{'background-color':backgroundColor}" 
                      ng-click="send()">
             </div>
-          </div>
+          </div>-->
         </form>
     <!--/div-->
       
@@ -221,3 +250,4 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
     <div class="extra-margin-bottom"></div>
 </div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

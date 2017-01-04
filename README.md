@@ -39,6 +39,7 @@ Then run Byteball desktop client:
 ```sh
 /path/to/your/nwjs/nwjs .
 ```
+If the client complains about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again.
 
 ## Build Byteball App Bundles
 

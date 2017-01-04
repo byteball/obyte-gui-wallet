@@ -7,7 +7,7 @@
   ],
   "dependencies": {
     "angular": "1.4.6",
-    "angular-foundation": "0.7.0",
+    "angular-foundation": "kakysha/angular-foundation#0.7.1",
     "angular-gettext": "2.1.0",
     "angular-touch": "1.4.6",
     "angular-carousel": "*",
@@ -22,6 +22,7 @@
     "moment": "2.10.3",
     "ng-lodash": "0.2.3",
     "qrcode-decoder-js": "*",
-    "angular-elastic": "^2.5.1"
+    "angular-elastic": "^2.5.1",
+    "ui-router-extras": "^0.1.3"
   }
 }

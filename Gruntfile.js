@@ -72,7 +72,8 @@ module.exports = function(grunt) {
           'bower_components/angular-touch/angular-touch.js',
           'bower_components/angular-carousel/dist/angular-carousel.js',
           'bower_components/angular-ui-switch/angular-ui-switch.js',
-          'bower_components/angular-elastic/elastic.js'
+          'bower_components/angular-elastic/elastic.js',
+          'bower_components/ui-router-extras/release/ct-ui-router-extras.js',
         ],
         dest: 'public/angular.js'
       },
