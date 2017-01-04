@@ -690,6 +690,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 if (err){
 					if (err.match(/device address/))
 						err = "This is a private asset, please send it only by clicking links from chat";
+					if (err.match(/no funded/))
+						err = "Not enough confirmed funds";
                     return self.setSendError(err);
 				}
                 self.resetForm();
