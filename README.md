@@ -17,6 +17,11 @@ git clone https://github.com/byteball/byteball.git
 cd byteball
 ```
 
+If you are building for testnet, switch to testnet branch:
+```sh
+git checkout testnet
+```
+
 Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
 
 ```sh
