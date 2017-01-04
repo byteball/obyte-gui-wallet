@@ -31,7 +31,7 @@ angular.module('copayApp.services')
           }
           if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
           root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
-        }, 'ignore');
+        }, 'wait');
       }
       else {
         if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
