@@ -138,7 +138,7 @@ angular.module('copayApp.directives')
 				}
 				catch(e){
 					e.bIgnore = true;
-					throw e;
+				//	throw e;
 				}
               };
             };

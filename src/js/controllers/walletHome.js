@@ -913,7 +913,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			$modalInstance.dismiss('cancel');
 		}
 		catch(e){
-			indexScope.sendBugReport('simulated in dismiss tx details', e);
+		//	indexScope.sendBugReport('simulated in dismiss tx details', e);
 		}
       };
 
