@@ -86,6 +86,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
     
+    eventBus.on('nonfatal_error', function(error_message, error_object) {
+		console.log('nonfatal error stack', error_object.stack);
+		error_object.bIgnore = true;
+        sendBugReport(error_message, error_object);
+	});
+	
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
