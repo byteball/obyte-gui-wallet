@@ -611,6 +611,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     var form = $scope.sendForm;
+	if (!form)
+		return console.log('form is gone');
 	if (self.bSendAll)
 		form.amount.$setValidity('validAmount', true);
     if (form.$invalid) {
