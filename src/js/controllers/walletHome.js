@@ -797,8 +797,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.amount.$setViewValue('');
       form.amount.$render();
 
-      form.comment.$setViewValue('');
-      form.comment.$render();
+	  if (form.comment){
+		  form.comment.$setViewValue('');
+		  form.comment.$render();
+	  }
       form.$setPristine();
 
       if (form.address) {
