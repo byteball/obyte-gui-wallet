@@ -673,6 +673,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
                 return;
             }
+			breadcrumbs.add('sending payment in '+asset);
             self.current_payment_key = current_payment_key;
 			var opts = {
 				shared_address: indexScope.shared_address,
@@ -686,6 +687,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             fc.sendMultiPayment(opts, function(err){
                 // if multisig, it might take very long before the callback is called
                 //self.setOngoingProcess();
+				breadcrumbs.add('done payment in '+asset+', err='+err);
                 delete self.current_payment_key;
                 if (err){
 					if (err.match(/device address/))
