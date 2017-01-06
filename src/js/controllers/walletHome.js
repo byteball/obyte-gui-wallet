@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
-    console.log('paymentRequest event '+address);
+    console.log('paymentRequest event '+address+', '+amount);
     $rootScope.$emit('Local/SetTab', 'send');
     self.setForm(address, amount, null, asset, recipient_device_address);
 
@@ -852,10 +852,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       
       if (!objRequest) // failed to parse
           return uri;
-      if (objRequest.amount){
-          var amount = (objRequest.amount / this.unitToBytes).toFixed(this.unitDecimals);
-          this.setForm(objRequest.address, amount);
-      }
+	  if (objRequest.amount){
+		  // setForm() cares about units conversion
+		  //var amount = (objRequest.amount / this.unitToBytes).toFixed(this.unitDecimals);
+		  this.setForm(objRequest.address, objRequest.amount);
+	  }
       return objRequest.address;
   };
 
