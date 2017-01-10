@@ -47,6 +47,8 @@ angular.module('copayApp.controllers').controller('splashController',
 	};
 	
 	this.create = function(noWallet) {
+		if (self.creatingProfile)
+			return console.log('already creating profile');
 		self.creatingProfile = true;
 		saveDeviceName();
 
@@ -57,9 +59,9 @@ angular.module('copayApp.controllers').controller('splashController',
 					$log.warn(err);
 					self.error = err;
 					$scope.$apply();
-					$timeout(function() {
+					/*$timeout(function() {
 						self.create(noWallet);
-					}, 3000);
+					}, 3000);*/
 				}
 			});
 		}, 100);

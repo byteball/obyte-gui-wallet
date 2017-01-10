@@ -86,6 +86,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
     
+    eventBus.on('nonfatal_error', function(error_message, error_object) {
+		console.log('nonfatal error stack', error_object.stack);
+		error_object.bIgnore = true;
+        sendBugReport(error_message, error_object);
+	});
+	
     eventBus.on('uncaught_error', function(error_message, error_object) {
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
@@ -111,6 +117,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     	}
     	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
         self.syncProgress = "" + percent + "%";
+		$rootScope.$apply();
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
@@ -840,6 +847,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.arrBalances.push(balanceInfo);
     }
     self.assetIndex = self.assetIndex || 0;
+	if (!self.arrBalances[self.assetIndex]) // if no such index in the subwallet, reset to bytes
+		self.assetIndex = 0;
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
 	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));

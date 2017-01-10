@@ -1,0 +1,21 @@
+<div class="m20tp p20h text-center">
+  <div class="row">
+	<h1 class="text-center">New version is available!</h1>
+    <div id="buttons" class="row">
+        <div class="columns small-6">
+          <button class="button black expand round m0" style="background-color: #4A90E2"
+                  ng-click="openDownloadLink()">
+              Upgrade to {{version}}
+          </button>
+        </div>
+        <div class="columns small-6">
+          <button class="button black expand round m0" ng-click="later()">Later</button>
+        </div>
+    </div>
+  </div>
+</div>
+<style>
+    #buttons{
+        margin-top: 30px;
+    }
+</style>

@@ -56,6 +56,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
     }
 
     self.scanFunds = function() {
+	  self.error = 'Unimplemented';
+	  return;
+		
       self.scanning = true;
       self.privateKey = '';
       self.balanceBytes = 0;

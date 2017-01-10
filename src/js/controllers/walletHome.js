@@ -4,7 +4,7 @@ var constants = require('byteballcore/constants.js');
 var eventBus = require('byteballcore/event_bus.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
-angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService) {
+angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList) {
 
   var self = this;
   var conf = require('byteballcore/conf.js');
@@ -35,7 +35,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
-    console.log('paymentRequest event '+address);
+    console.log('paymentRequest event '+address+', '+amount);
     $rootScope.$emit('Local/SetTab', 'send');
     self.setForm(address, amount, null, asset, recipient_device_address);
 
@@ -611,6 +611,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
     var form = $scope.sendForm;
+	if (!form)
+		return console.log('form is gone');
 	if (self.bSendAll)
 		form.amount.$setValidity('validAmount', true);
     if (form.$invalid) {
@@ -673,6 +675,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
                 return;
             }
+			breadcrumbs.add('sending payment in '+asset);
             self.current_payment_key = current_payment_key;
 			var opts = {
 				shared_address: indexScope.shared_address,
@@ -686,10 +689,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             fc.sendMultiPayment(opts, function(err){
                 // if multisig, it might take very long before the callback is called
                 //self.setOngoingProcess();
+				breadcrumbs.add('done payment in '+asset+', err='+err);
                 delete self.current_payment_key;
                 if (err){
 					if (err.match(/device address/))
 						err = "This is a private asset, please send it only by clicking links from chat";
+					if (err.match(/no funded/))
+						err = "Not enough confirmed funds";
                     return self.setSendError(err);
 				}
                 self.resetForm();
@@ -793,8 +799,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       form.amount.$setViewValue('');
       form.amount.$render();
 
-      form.comment.$setViewValue('');
-      form.comment.$render();
+	  if (form.comment){
+		  form.comment.$setViewValue('');
+		  form.comment.$render();
+	  }
       form.$setPristine();
 
       if (form.address) {
@@ -844,10 +852,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       
       if (!objRequest) // failed to parse
           return uri;
-      if (objRequest.amount){
-          var amount = (objRequest.amount / this.unitToBytes).toFixed(this.unitDecimals);
-          this.setForm(objRequest.address, amount);
-      }
+	  if (objRequest.amount){
+		  // setForm() cares about units conversion
+		  //var amount = (objRequest.amount / this.unitToBytes).toFixed(this.unitDecimals);
+		  this.setForm(objRequest.address, objRequest.amount);
+	  }
       return objRequest.address;
   };
 
@@ -905,7 +914,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			$modalInstance.dismiss('cancel');
 		}
 		catch(e){
-			indexScope.sendBugReport('simulated in dismiss tx details', e);
+		//	indexScope.sendBugReport('simulated in dismiss tx details', e);
 		}
       };
 

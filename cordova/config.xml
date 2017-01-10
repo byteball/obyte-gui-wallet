@@ -3,7 +3,7 @@
   version="1.0.0"
   android-versionCode="1020"
   ios-CFBundleVersion="1.0.0">
-    <name>Bytebal</name>
+    <name>Byteball</name>
     <description>
       Byteball wallet.
     </description>

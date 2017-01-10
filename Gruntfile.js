@@ -160,7 +160,7 @@ module.exports = function(grunt) {
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball test/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
           {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
@@ -205,7 +205,7 @@ module.exports = function(grunt) {
           archive: '../byteballbuilds/byteball-linux32.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Byteball test/linux32/',
+        cwd: '../byteballbuilds/Byteball/linux32/',
         src: ['**/*'],
         dest: 'byteball-linux32/'
       },
@@ -287,7 +287,8 @@ module.exports = function(grunt) {
   //grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux32', 'compress:linux64', 'copy:osx', 'exec:osx32', 'exec:osx64']);
   grunt.registerTask('desktop', ['default', 'nwjs']);
   grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
-  grunt.registerTask('linux', ['copy:linux', 'compress:linux64']);
+  grunt.registerTask('linux64', ['copy:linux', 'compress:linux64']);
+  grunt.registerTask('linux32', ['copy:linux', 'compress:linux32']);
   grunt.registerTask('deb', ['debian_package:linux64']);
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);

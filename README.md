@@ -17,6 +17,11 @@ git clone https://github.com/byteball/byteball.git
 cd byteball
 ```
 
+If you are building for testnet, switch to testnet branch:
+```sh
+git checkout testnet
+```
+
 Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
 
 ```sh
@@ -39,6 +44,7 @@ Then run Byteball desktop client:
 ```sh
 /path/to/your/nwjs/nwjs .
 ```
+If the client complains about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again.
 
 ## Build Byteball App Bundles
 
@@ -68,7 +74,7 @@ Then run Byteball desktop client:
 
 - `grunt desktop`
 - copy `node_modules` into the app bundle ../byteballbuilds/Byteball/linux64, except those that are important only for development (karma, grunt, jasmine)
-- `grunt linux`
+- `grunt linux64`
 
 
 ## About Byteball
