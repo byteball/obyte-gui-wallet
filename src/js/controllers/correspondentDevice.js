@@ -27,6 +27,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
 	});
 
+	$scope.$on('$viewContentLoaded', function(){
+	    $rootScope.tab = $scope.index.tab = 'chat';
+	});
+
 	$scope.send = function() {
 		$scope.error = null;
 		if (!$scope.message)
