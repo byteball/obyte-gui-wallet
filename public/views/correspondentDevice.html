@@ -61,8 +61,12 @@
     	border-radius: 40px;
     	margin: 8px auto;
     }
+    .send-form .chatbutton i {
+    	vertical-align: baseline;
+    }
     #drop {
-    	max-width: none;
+    	max-width: 250px;
+    	left: 15px;
     }
     .message-log{
         position: absolute;
@@ -212,7 +216,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
            <button
           	class="chatbutton left"
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
-            <ul id="drop" class="f-dropdown drop-top" data-dropdown-content>
+            <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
 			  <li><a ng-click="insertMyAddress()">Insert my address</a></li>
 			  <li><a ng-click="requestPayment()">Request payment</a></li>
 			</ul>
