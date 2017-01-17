@@ -650,7 +650,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.tab = self.tab = 'walletHome';
 
     var changeTab = function() {
-      if (document.getElementById(self.tab)) {
+      if (document.querySelector('.tab-in.tab-view')) {
         document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
         var old = document.getElementById('menu-' + self.tab);
         if (old) {

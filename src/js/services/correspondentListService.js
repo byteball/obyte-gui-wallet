@@ -254,6 +254,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body, bAnotherCorrespondent);
+			go.path('correspondentDevices.correspondentDevice');
 		});
 	});
 	

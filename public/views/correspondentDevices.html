@@ -7,7 +7,7 @@
 </div>
 
 	<div ui-view="dialog"></div>
-    <div class="m20b" ng-show="state.is('correspondentDevices')">
+    <div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')">
       <ul class="no-bullet m0 correspondentList" ng-init="readList()">
         <li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
