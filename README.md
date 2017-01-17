@@ -12,7 +12,7 @@ TBD
 
 We recommend following releases of NW.js and Node.js for binary compatibility of modules:
 
-Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7).
+Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7).  
 Download and install [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/). If you already have Node.js installed in your system, you can use [NVM](https://github.com/creationix/nvm) to manage your node versions and install older ones.
 
 Clone the source:
