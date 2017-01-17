@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	var listScrollTop = 0;
 	$scope.$on('$viewContentLoaded', function(){
 	    if (!$state.is('correspondentDevices')) return;
+	    $scope.readList();
 	    setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 	});
 	

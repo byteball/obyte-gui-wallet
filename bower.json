@@ -7,7 +7,7 @@
   ],
   "dependencies": {
     "angular": "1.4.6",
-    "angular-foundation": "kakysha/angular-foundation#0.7.1",
+    "angular-foundation": "kakysha/angular-foundation#0.7.2",
     "angular-gettext": "2.1.0",
     "angular-touch": "1.4.6",
     "angular-carousel": "*",
