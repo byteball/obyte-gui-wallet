@@ -324,8 +324,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				root.currentCorrespondent = correspondent;
 				if (!$state.is('correspondentDevices.correspondentDevice'))
 					go.path('correspondentDevices.correspondentDevice');
-				else
+				else {
+					$stickyState.reset('correspondentDevices.correspondentDevice');
 					$state.reload();
+				}
 			});
 		});
 	};
