@@ -10,6 +10,11 @@ TBD
 
 ## Installation
 
+We need LTS releases of both NW.js and Node.js for binary compatibility of modules.
+
+Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7).
+Download and install [Node.js v5.12.0 LTS](https://nodejs.org/download/release/v5.12.0/). If you have already Node.js installed in your system, you can use [NVM](https://github.com/creationix/nvm) to manage your node versions and install older ones.
+
 Clone the source:
 
 ```sh
@@ -29,8 +34,6 @@ npm install -g bower
 npm install -g grunt-cli
 ```
 
-Download and install [NW.js](http://nwjs.io/downloads/).  Version 0.14.7 is recommended.
-
 Build Byteball:
 
 ```sh
@@ -39,12 +42,13 @@ npm install
 grunt
 ```
 
+After first run, you'll likely encounter runtime error, complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again. (e.g. from `byteball/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `byteball/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`)
+
 Then run Byteball desktop client:
 
 ```sh
 /path/to/your/nwjs/nwjs .
 ```
-If the client complains about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again.
 
 ## Build Byteball App Bundles
 
