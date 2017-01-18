@@ -275,6 +275,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			var removeRegListener = $rootScope.$on('Local/BalanceUpdated', function(){
 				setTimeout(function(){
 					(process.platform === 'win32') ? registerWindowsProtocolHandler() : createLinuxDesktopFile();
+					gui.desktop = process.env.HOME + '/.local/share/applications';
 				}, 200);
 				removeRegListener();
 			});
