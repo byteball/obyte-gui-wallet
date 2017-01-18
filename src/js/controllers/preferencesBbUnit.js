@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesUnitController',
+angular.module('copayApp.controllers').controller('preferencesBbUnitController',
   function($rootScope, $scope, $log, configService, go) {
     var config = configService.getSync();
-    this.unitName = config.wallet.settings.unitName;
+    this.bBUnitName = config.wallet.settings.bbUnitName;
     this.unitOpts = [
       // TODO : add Satoshis to bitcore-wallet-client formatAmount()
       // {
@@ -36,32 +36,32 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
         code: 'btc',
       }
       , */{
-        name: 'bytes',
-        shortName: 'bytes',
+        name: 'blackbytes',
+        shortName: 'blackbytes',
         value: 1,
         decimals: 0,
-        code: 'one',
+        code: 'one'
       }
       , {
         name: 'kBytes (1,000 bytes)',
-        shortName: 'kB',
+        shortName: 'kBB',
         value: 1000,
         decimals: 3,
-        code: 'kilo',
+        code: 'kilo'
       }
       , {
         name: 'MBytes (1,000,000 bytes)',
-        shortName: 'MB',
+        shortName: 'MBB',
         value: 1000000,
         decimals: 6,
-        code: 'mega',
+        code: 'mega'
       }
       , {
         name: 'GBytes (1,000,000,000 bytes)',
-        shortName: 'GB',
+        shortName: 'GBB',
         value: 1000000000,
         decimals: 9,
-        code: 'giga',
+        code: 'giga'
       }
     ];
 
@@ -69,10 +69,8 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
       var opts = {
         wallet: {
           settings: {
-            unitName: newUnit.shortName,
-            unitToBytes: newUnit.value,
-            unitDecimals: newUnit.decimals,
-            unitCode: newUnit.code,
+            bbUnitName: newUnit.shortName,
+            bbUnitCode: newUnit.code
           }
         }
       };

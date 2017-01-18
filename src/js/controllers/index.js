@@ -440,12 +440,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.mainWalletBalanceInfo = self.arrMainWalletBalances[self.assetIndex];
 		$scope.asset = $scope.mainWalletBalanceInfo.asset;
 		var assocSharedByAddress = self.arrBalances[self.assetIndex].assocSharedByAddress;
-		for (var sa in assocSharedByAddress)
-			arrSharedWallets.push({
-				shared_address: sa, 
-				total: assocSharedByAddress[sa],
-				totalStr: profileService.formatAmount(assocSharedByAddress[sa]) + ' ' + self.unitName
-			});
+		for (var sa in assocSharedByAddress) {
+			var objSharedWallet = {};
+			objSharedWallet.shared_address = sa;
+			objSharedWallet.total = assocSharedByAddress[sa];
+			if($scope.asset == 'base'){
+				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'base') + ' ' + self.unitName;
+			}else if($scope.asset == self.BLACKBYTES_ASSET){
+				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'blackbytes') + ' ' + self.bbUnitName;
+			}
+			arrSharedWallets.push(objSharedWallet);
+		}
 		$scope.arrSharedWallets = arrSharedWallets;
 
 
@@ -822,6 +827,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.unitToBytes = config.unitToBytes;
     self.bytesToUnit = 1 / self.unitToBytes;
     self.unitName = config.unitName;
+    self.bbUnitName = config.bbUnitName;
 
     self.arrBalances = [];
     for (var asset in assocBalances){
@@ -837,12 +843,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				balanceInfo.assocSharedByAddress[sa] = total_on_shared_address;
 			}
 		}
-        if (asset === "base"){
-            balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total) + ' ' + self.unitName;
-            balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable) + ' ' + self.unitName;
-            balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending) + ' ' + self.unitName;
+        if (asset === "base" || asset == self.BLACKBYTES_ASSET){
+			var assetName = asset !== "base" ? 'blackbytes' : 'base';
+			var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
+            balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
+            balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
+            balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
 			if (balanceInfo.shared)
-				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared) + ' ' + self.unitName;
+				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
         }
         self.arrBalances.push(balanceInfo);
     }
