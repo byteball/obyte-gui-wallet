@@ -10,10 +10,7 @@ TBD
 
 ## Installation
 
-We recommend following releases of NW.js and Node.js for binary compatibility of modules:
-
-Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7).  
-Download and install [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/). If you already have Node.js installed in your system, you can use [NVM](https://github.com/creationix/nvm) to manage your node versions and install older ones.
+Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7) and [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/).  These versions are recommended for easiest install but newer versions will work too.  If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both.
 
 Clone the source:
 
@@ -41,8 +38,9 @@ bower install
 npm install
 grunt
 ```
+If you are on Windows or using NW.js and Node.js versions other than recommended, see [NW.js instructions about building native modules](http://docs.nwjs.io/en/latest/For%20Users/Advanced/Use%20Native%20Node%20Modules/).
 
-After first run, you'll likely encounter runtime error, complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again. (e.g. from `byteball/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `byteball/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`)
+After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again. (e.g. from `byteball/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `byteball/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`)
 
 Then run Byteball desktop client:
 
