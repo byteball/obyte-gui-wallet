@@ -145,6 +145,9 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
+	cordova plugin add cordova-plugin-android-support-v4-jar
+	checkOK
+
 fi
 
 if $DBGJS
