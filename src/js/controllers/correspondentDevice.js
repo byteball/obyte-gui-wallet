@@ -30,6 +30,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$rootScope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
 	        $rootScope.tab = $scope.index.tab = 'chat';
+	        $scope.newMessagesCount[correspondentListService.currentCorrespondent.device_address] = 0;
 	    }
 	});
 

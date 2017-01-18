@@ -32,17 +32,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
 	
-	function addIncomingMessageEvent(from_address, body, bAnotherCorrespondent){
+	function addIncomingMessageEvent(from_address, body){
 		var walletGeneral = require('byteballcore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
 			console.log("body with markup: "+body);
-			addMessageEvent(true, from_address, body, bAnotherCorrespondent);
+			addMessageEvent(true, from_address, body);
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, bAnotherCorrespondent){
+	function addMessageEvent(bIncoming, peer_address, body){
 		if (!root.messageEventsByCorrespondent[peer_address])
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -57,9 +57,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$stickyState.reset('correspondentDevices.correspondentDevice');
 			go.path('correspondentDevices.correspondentDevice');
 		}
-		/*else if (bAnotherCorrespondent) {
-			$state.reload();
-		}*/
 		else
 			$rootScope.$digest();
 	}
@@ -245,24 +242,20 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	console.log("correspondentListService");
 	
 	eventBus.on("text", function(from_address, body){
-		setCurrentCorrespondent(from_address, function(bAnotherCorrespondent){
-			addIncomingMessageEvent(from_address, body, bAnotherCorrespondent);
-		});
+		addIncomingMessageEvent(from_address, body);
 	});
 	
 	eventBus.on("sent_payment", function(peer_address, amount, asset){
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
-			addMessageEvent(false, peer_address, body, bAnotherCorrespondent);
+			addMessageEvent(false, peer_address, body);
 			go.path('correspondentDevices.correspondentDevice');
 		});
 	});
 	
 	eventBus.on("received_payment", function(peer_address, amount, asset){
-		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
-			addMessageEvent(true, peer_address, body, bAnotherCorrespondent);
-		});
+		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
+		addMessageEvent(true, peer_address, body);
 	});
 	
 	eventBus.on('paired', function(device_address){
