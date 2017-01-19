@@ -139,7 +139,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 2.95rem;
+  line-height: 2.90rem;
 }
 
 .bottom-bar {
@@ -262,7 +262,7 @@ ul.copayer-list img {
 	font-size: 0.6em;
 	padding: 3px 7.6px 2px 7.6px;
 	background-color: red;
-	border-radius: 9px;
+	border-radius: 10px;
 	color: white;
 }
 
