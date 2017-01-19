@@ -129,7 +129,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			configCache.deviceName = defaultConfig.getDeviceName();
 		
 		configCache.wallet.settings.unitCode = checkAndReplaceOldUnitCode(configCache.wallet.settings.unitCode);
-		configCache.wallet.settings.bbUnitCode = checkAndReplaceOldUnitCode(configCache.wallet.settings.bbUnitCode);
 	  } else {
 		configCache = lodash.clone(defaultConfig);
 		configCache.deviceName = defaultConfig.getDeviceName();
@@ -154,7 +153,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  }
 	  lodash.merge(config, oldOpts, newOpts);
 		config.wallet.settings.unitCode = checkAndReplaceOldUnitCode(config.wallet.settings.unitCode);
-		config.wallet.settings.bbUnitCode = checkAndReplaceOldUnitCode(config.wallet.settings.bbUnitCode);
 	  configCache = config;
 
 	  storageService.storeConfig(JSON.stringify(config), cb);

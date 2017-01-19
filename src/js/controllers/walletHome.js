@@ -19,7 +19,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   // INIT
   var walletSettings = configWallet.settings;
   this.unitValue = walletSettings.unitValue;
-  this.valueUnit = 1 / this.unitValue;
   this.unitName = walletSettings.unitName;
   this.unitDecimals = walletSettings.unitDecimals;
   this.isCordova = isCordova;
