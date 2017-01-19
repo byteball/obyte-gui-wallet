@@ -139,7 +139,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 2.90rem;
+  line-height: 49px;
 }
 
 .bottom-bar {
