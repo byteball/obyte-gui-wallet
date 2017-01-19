@@ -593,7 +593,7 @@ ul.manage li {
 
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
   /*line-height: 2.7rem;*/
-  line-height: 3.1rem; /* tested on mac and win */
+  line-height: 3rem; /* tested on mac and win */
 }
 
 .wallet-settings{
