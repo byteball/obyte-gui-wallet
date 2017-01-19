@@ -43,10 +43,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  idleDurationMin: 4,
 	  settings: {
 		unitName: 'bytes',
-		unitToBytes: 1,
+		unitValue: 1,
 		unitDecimals: 0,
 		unitCode: 'one',
 		bbUnitName: 'blackbytes',
+		bbUnitValue: 1,
+		bbUnitDecimals: 0,
 		bbUnitCode: 'one',
 		alternativeName: 'US Dollar',
 		alternativeIsoCode: 'USD',
@@ -99,8 +101,21 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		if (!configCache.wallet.settings.unitCode) {
 		  configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
 		}
+		if (!configCache.wallet.settings.unitValue){
+			if(configCache.wallet.settings.unitToBytes){
+				configCache.wallet.settings.unitValue = configCache.wallet.settings.unitToBytes; 
+			}else{
+				configCache.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
+			}
+		}
 		if (!configCache.wallet.settings.bbUnitName) {
 		  configCache.wallet.settings.bbUnitName = defaultConfig.wallet.settings.bbUnitName;
+		}
+		if (!configCache.wallet.settings.bbUnitValue) {
+		  configCache.wallet.settings.bbUnitValue = defaultConfig.wallet.settings.bbUnitValue;
+		}
+		if (!configCache.wallet.settings.bbUnitDecimals) {
+		  configCache.wallet.settings.bbUnitDecimals = defaultConfig.wallet.settings.bbUnitDecimals;
 		}
 		if (!configCache.wallet.settings.bbUnitCode) {
 		  configCache.wallet.settings.bbUnitCode = defaultConfig.wallet.settings.bbUnitCode;
@@ -114,6 +129,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			configCache.deviceName = defaultConfig.getDeviceName();
 		
 		configCache.wallet.settings.unitCode = checkAndReplaceOldUnitCode(configCache.wallet.settings.unitCode);
+		configCache.wallet.settings.bbUnitCode = checkAndReplaceOldUnitCode(configCache.wallet.settings.bbUnitCode);
 	  } else {
 		configCache = lodash.clone(defaultConfig);
 		configCache.deviceName = defaultConfig.getDeviceName();
@@ -137,6 +153,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		newOpts = JSON.parse(newOpts);
 	  }
 	  lodash.merge(config, oldOpts, newOpts);
+		config.wallet.settings.unitCode = checkAndReplaceOldUnitCode(config.wallet.settings.unitCode);
+		config.wallet.settings.bbUnitCode = checkAndReplaceOldUnitCode(config.wallet.settings.bbUnitCode);
 	  configCache = config;
 
 	  storageService.storeConfig(JSON.stringify(config), cb);

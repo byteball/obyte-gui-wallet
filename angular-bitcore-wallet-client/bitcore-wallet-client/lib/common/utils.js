@@ -42,7 +42,7 @@ Utils.formatAmount = function(bytes, unit, opts) {
   opts = opts || {};
 
   var u = Constants.UNITS[unit];
-  var amount = (bytes / u.toBytes).toFixed(u.maxDecimals);
+  var amount = (bytes / u.value).toFixed(u.maxDecimals);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals);
 };
 

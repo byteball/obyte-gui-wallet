@@ -22,22 +22,22 @@ Constants.UNITS = {
     minDecimals: 0,
   },*/
   one: {
-    toBytes: 1,
+    value: 1,
     maxDecimals: 0,
     minDecimals: 0,
   },
   kilo: {
-    toBytes: 1000,
+    value: 1000,
     maxDecimals: 0,
     minDecimals: 0,
   },
   mega: {
-    toBytes: 1000000,
+    value: 1000000,
     maxDecimals: 0,
     minDecimals: 0,
   },
   giga: {
-    toBytes: 1000000000,
+    value: 1000000000,
     maxDecimals: 0,
     minDecimals: 0,
   }

@@ -18,8 +18,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     
   // INIT
   var walletSettings = configWallet.settings;
-  this.unitToBytes = walletSettings.unitToBytes;
-  this.bytesToUnit = 1 / this.unitToBytes;
+  this.unitValue = walletSettings.unitValue;
+  this.valueUnit = 1 / this.unitValue;
   this.unitName = walletSettings.unitName;
   this.unitDecimals = walletSettings.unitDecimals;
   this.isCordova = isCordova;
@@ -384,7 +384,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.addr = addr;
         $scope.color = fc.backgroundColor;
         $scope.unitName = self.unitName;
-        $scope.unitToBytes = self.unitToBytes;
+        $scope.unitValue = self.unitValue;
         $scope.unitDecimals = self.unitDecimals;
         $scope.isCordova = isCordova;
         $scope.buttonLabel = 'Generate QR Code';
@@ -410,7 +410,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
         if (!asset)
             throw Error("no asset");
-        var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitToBytes).toFixed(0)) : amount;
+        var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : amount;
         $timeout(function() {
             $scope.customizedAmountUnit = 
 				amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? 'blackbytes' : 'of ' + asset));
@@ -603,7 +603,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	if ($scope.index.arrBalances.length === 0)
 		return console.log('send payment: no balances yet');
     var fc = profileService.focusedClient;
-    var unitToBytes = this.unitToBytes;
+    var unitValue = this.unitValue;
 
     if (isCordova && this.isWindowsPhoneApp) {
         this.hideAddress = false;
@@ -647,7 +647,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
         var amount = form.amount.$modelValue;
         if (asset === "base")
-            amount *= unitToBytes;
+            amount *= unitValue;
 		amount = Math.round(amount);
 
         profileService.requestTouchid(function(err) {
@@ -748,7 +748,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     if (amount) {
 		if (asset === 'base')
-			amount /= this.unitToBytes;
+			amount /= this.unitValue;
         form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
         this.lockAmount = true;
@@ -854,7 +854,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
           return uri;
 	  if (objRequest.amount){
 		  // setForm() cares about units conversion
-		  //var amount = (objRequest.amount / this.unitToBytes).toFixed(this.unitDecimals);
+		  //var amount = (objRequest.amount / this.unitValue).toFixed(this.unitDecimals);
 		  this.setForm(objRequest.address, objRequest.amount);
 	  }
       return objRequest.address;

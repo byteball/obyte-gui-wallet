@@ -824,8 +824,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
 
     // Selected unit
-    self.unitToBytes = config.unitToBytes;
-    self.bytesToUnit = 1 / self.unitToBytes;
+    self.unitValue = config.unitValue;
+    self.valueUnit = 1 / self.unitValue;
     self.unitName = config.unitName;
     self.bbUnitName = config.bbUnitName;
 
@@ -956,7 +956,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           self.setOngoingProcess('generatingCSV', false);
           $log.debug('Wallet Transaction History:', txs);
 
-          self.bytesToUnit = 1 / self.unitToBytes;
+          self.valueUnit = 1 / self.unitValue;
           var data = txs;
           var filename = 'Byteball-' + (self.alias || self.walletName) + '.csv';
           var csvContent = '';

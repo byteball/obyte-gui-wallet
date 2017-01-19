@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('preferencesUnitController',
         wallet: {
           settings: {
             unitName: newUnit.shortName,
-            unitToBytes: newUnit.value,
+            unitValue: newUnit.value,
             unitDecimals: newUnit.decimals,
             unitCode: newUnit.code,
           }
