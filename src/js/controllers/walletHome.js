@@ -385,6 +385,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.unitName = self.unitName;
         $scope.unitValue = self.unitValue;
         $scope.unitDecimals = self.unitDecimals;
+	      $scope.bbUnitValue = walletSettings.bbUnitValue;
+	      $scope.bbUnitName = walletSettings.bbUnitName;
         $scope.isCordova = isCordova;
         $scope.buttonLabel = 'Generate QR Code';
 		$scope.protocol = conf.program;
@@ -409,10 +411,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
         if (!asset)
             throw Error("no asset");
-        var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : amount;
+	      var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
         $timeout(function() {
             $scope.customizedAmountUnit = 
-				amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? 'blackbytes' : 'of ' + asset));
+				amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : 'of ' + asset));
             $scope.amountInSmallestUnits = amountInSmallestUnits;
             $scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
         }, 1);
