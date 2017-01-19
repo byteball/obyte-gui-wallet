@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   // INIT
   var walletSettings = configWallet.settings;
   this.unitValue = walletSettings.unitValue;
+  this.bbUnitValue = walletSettings.bbUnitValue;
   this.unitName = walletSettings.unitName;
   this.unitDecimals = walletSettings.unitDecimals;
   this.isCordova = isCordova;
@@ -605,6 +606,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		return console.log('send payment: no balances yet');
     var fc = profileService.focusedClient;
     var unitValue = this.unitValue;
+    var bbUnitValue = this.bbUnitValue;
 
     if (isCordova && this.isWindowsPhoneApp) {
         this.hideAddress = false;
@@ -649,6 +651,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         var amount = form.amount.$modelValue;
         if (asset === "base")
             amount *= unitValue;
+        if (asset === constants.BLACKBYTES_ASSET)
+            amount *= bbUnitValue;
 		amount = Math.round(amount);
 
         profileService.requestTouchid(function(err) {
@@ -750,6 +754,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     if (amount) {
 		if (asset === 'base')
 			amount /= this.unitValue;
+		if (asset === constants.BLACKBYTES_ASSET)
+			amount /= this.bbUnitValue;
         form.amount.$setViewValue("" + amount);
         form.amount.$isValid = true;
         this.lockAmount = true;
