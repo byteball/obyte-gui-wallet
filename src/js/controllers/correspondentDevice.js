@@ -1,7 +1,7 @@
 'use strict';
 
 
-
+var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect, $state) {
@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			var config = configService.getSync();
 			var configWallet = config.wallet;
 			var walletSettings = configWallet.settings;
-			$scope.unitToBytes = walletSettings.unitToBytes;
+			$scope.unitValue = walletSettings.unitValue;
 			$scope.unitName = walletSettings.unitName;
 			$scope.color = fc.backgroundColor;
 			$scope.bDisabled = true;
@@ -389,8 +389,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			var config = configService.getSync();
 			var configWallet = config.wallet;
 			var walletSettings = configWallet.settings;
-			$scope.unitToBytes = walletSettings.unitToBytes;
+			$scope.unitValue = walletSettings.unitValue;
 			$scope.unitName = walletSettings.unitName;
+			$scope.bbUnitValue = walletSettings.bbUnitValue;
+			$scope.bbUnitName = walletSettings.bbUnitName;
 			$scope.color = fc.backgroundColor;
 			$scope.isCordova = isCordova;
 			$scope.buttonLabel = 'Request payment';
@@ -417,11 +419,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
 				if (!asset)
 					throw Error("no asset");
-				var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitToBytes).toFixed(0)) : amount;
+				var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
 				var params = 'amount='+amountInSmallestUnits;
 				if (asset !== 'base')
 					params += '&asset='+encodeURIComponent(asset);
-				var units = (asset === 'base') ? $scope.unitName : ('of '+asset);
+				var units = (asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : ('of '+asset));
 				appendText('['+amount+' '+units+'](byteball:'+myPaymentAddress+'?'+params+')');
 				$modalInstance.dismiss('cancel');
 			};

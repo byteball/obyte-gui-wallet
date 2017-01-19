@@ -25,12 +25,11 @@ angular.module('copayApp.controllers').controller('paymentUriController',
 
       if (uri && uri.address) {
         var config = configService.getSync().wallet.settings;
-        var unitToBytes = config.unitToBytes;
-        var bytesToUnit = 1 / unitToBytes;
+        var unitValue = config.unitValue;
         var unitName = config.unitName;
 
         if (uri.amount) {
-          uri.amount = strip(uri.amount * bytesToUnit) + ' ' + unitName;
+          uri.amount = strip(uri.amount / unitValue) + ' ' + unitName;
         }
         uri.network = uri.address.network.name;
         this.uri = uri;

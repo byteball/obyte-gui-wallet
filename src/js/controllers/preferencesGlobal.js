@@ -8,6 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
     this.init = function() {
       var config = configService.getSync();
       this.unitName = config.wallet.settings.unitName;
+      this.bbUnitName = config.wallet.settings.bbUnitName;
       this.deviceName = config.deviceName;
       this.myDeviceAddress = require('byteballcore/device.js').getMyDeviceAddress();
       this.hub = config.hub;

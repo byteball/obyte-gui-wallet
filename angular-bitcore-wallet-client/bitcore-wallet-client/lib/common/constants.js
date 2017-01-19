@@ -21,23 +21,23 @@ Constants.UNITS = {
     maxDecimals: 0,
     minDecimals: 0,
   },*/
-  byte: {
-    toBytes: 1,
+  one: {
+    value: 1,
     maxDecimals: 0,
     minDecimals: 0,
   },
-  kB: {
-    toBytes: 1000,
+  kilo: {
+    value: 1000,
     maxDecimals: 0,
     minDecimals: 0,
   },
-  MB: {
-    toBytes: 1000000,
+  mega: {
+    value: 1000000,
     maxDecimals: 0,
     minDecimals: 0,
   },
-  GB: {
-    toBytes: 1000000000,
+  giga: {
+    value: 1000000000,
     maxDecimals: 0,
     minDecimals: 0,
   }
