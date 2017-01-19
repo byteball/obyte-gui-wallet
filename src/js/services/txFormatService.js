@@ -14,14 +14,12 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
 	  var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
 		return profileService.formatAmount(amount, assetName) + ' ' + unitName;
   };
-
-  var formatFeeStr = function(fee, asset) {
-    if (!fee) return;
-    var config = configService.getSync().wallet.settings;
-	  var assetName = asset !== "base" ? 'blackbytes' : 'base';
-	  var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
-	  return profileService.formatAmount(fee, assetName) + ' ' + unitName;
-  };
+	
+	var formatFeeStr = function(fee) {
+		if (!fee) return;
+		var config = configService.getSync().wallet.settings;
+		return profileService.formatAmount(fee, 'base') + ' ' + config.unitName;
+	};
 
   root.processTx = function(tx) {
     if (!tx) return; 
@@ -37,7 +35,7 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
     }
 
     tx.amountStr = formatAmountStr(tx.amount, tx.asset);
-    tx.feeStr = formatFeeStr(tx.fee || tx.fees, tx.asset);
+    tx.feeStr = formatFeeStr(tx.fee || tx.fees);
 
     return tx;
   };

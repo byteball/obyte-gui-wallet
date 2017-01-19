@@ -21,6 +21,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.unitValue = walletSettings.unitValue;
   this.bbUnitValue = walletSettings.bbUnitValue;
   this.unitName = walletSettings.unitName;
+  this.bbUnitName = walletSettings.bbUnitName;
   this.unitDecimals = walletSettings.unitDecimals;
   this.isCordova = isCordova;
   this.addresses = [];
