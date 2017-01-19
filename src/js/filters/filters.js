@@ -36,7 +36,7 @@ angular.module('copayApp.filters', [])
       if (typeof(n) === 'undefined' && !config) return amount;
 
       var fractionSize = (typeof(n) !== 'undefined') ?
-        n : config.unitToBytes.toString().length - 1;
+        n : config.unitValue.toString().length - 1;
       var value = numberFilter(amount, fractionSize);
       var sep = value.indexOf(formats.DECIMAL_SEP);
       var group = value.indexOf(formats.GROUP_SEP);

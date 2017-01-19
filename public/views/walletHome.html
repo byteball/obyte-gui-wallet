@@ -91,23 +91,22 @@
             <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex">
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
-						<strong class="size-36" ng-if="balance.asset == 'base'">{{balance.totalStr}}</strong>
-						<div ng-if="balance.asset != 'base'">
+						<strong class="size-36" ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.totalStr}}</strong>
+						<div ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">
 							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
-							<div class="of-blackbytes" ng-if="balance.asset == index.BLACKBYTES_ASSET">blackbytes</div>
-							<div class="of-asset" ng-if="balance.asset != index.BLACKBYTES_ASSET">of {{balance.asset}}</div>
+							<div class="of-asset">of {{balance.asset}}</div>
 						</div>
 						<div class="size-14" ng-if="balance.pending">
 							<span translate>Including pending confirmation</span>:
-							<span ng-if="balance.asset == 'base'">{{balance.pendingStr}}</span>
-							<span ng-if="balance.asset != 'base'">{{balance.pending.toLocaleString()}}</span>
+							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.pendingStr}}</span>
+							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.pending.toLocaleString()}}</span>
 						</div>
 					</div>
                     <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
-							<span ng-if="balance.asset == 'base'">{{balance.sharedStr}}</span>
-							<span ng-if="balance.asset != 'base'">{{balance.shared.toLocaleString()}}</span>
+							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.sharedStr}}</span>
+							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.shared.toLocaleString()}}</span>
 							<span translate>in smart wallets</span>
 						</a>
                     </div>
@@ -288,7 +287,7 @@
                 <span class="db text-bold">
                     <span translate>Available Balance</span>:
                 </span>
-                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? balance.totalStr : balance.total.toLocaleString() + (balance.asset === index.BLACKBYTES_ASSET ? ' blackbytes' : ' of ' + balance.asset)) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
+                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
             </div>
         </h4>
       </div>
@@ -446,7 +445,7 @@
       </div>
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:0 10px;">
-            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? balance.totalStr : balance.total.toLocaleString() + (balance.asset === index.BLACKBYTES_ASSET ? ' blackbytes' : ' of ' + balance.asset)) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
+            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
         </h4>
       </div>
       <div class="row m20t text-center" ng-show="index.updatingTxHistory[index.walletId]">
