@@ -54,8 +54,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				$rootScope.newMessagesCount[peer_address] = 1;
 		}
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
-			$stickyState.reset('correspondentDevices.correspondentDevice');
-			go.path('correspondentDevices.correspondentDevice');
+			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
+				$stickyState.reset('correspondentDevices.correspondentDevice');
+				go.path('correspondentDevices.correspondentDevice');
+			});
 		}
 		else
 			$rootScope.$digest();
