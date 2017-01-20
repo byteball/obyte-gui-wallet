@@ -183,14 +183,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function getAmountText(amount, asset){
 		if (asset === 'base'){
 			var walletSettings = configService.getSync().wallet.settings;
-			var unitToBytes = walletSettings.unitToBytes;
+			var unitValue = walletSettings.unitValue;
 			var unitName = walletSettings.unitName;
 			if (amount !== 'all')
-				amount /= unitToBytes;
+				amount /= unitValue;
 			return amount + ' ' + unitName;
 		}
-		else if (asset === constants.BLACKBYTES_ASSET)
-			return amount + ' blackbytes';
+		else if (asset === constants.BLACKBYTES_ASSET){
+			var walletSettings = configService.getSync().wallet.settings;
+			var bbUnitValue = walletSettings.bbUnitValue;
+			var bbUnitName = walletSettings.bbUnitName;
+			amount /= bbUnitValue;
+			return amount + ' ' + bbUnitName;
+		}
 		else
 			return amount + ' of ' + asset;
 	}
