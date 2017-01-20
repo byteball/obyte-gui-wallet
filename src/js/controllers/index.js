@@ -624,36 +624,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log("setTab", tab, reset, tries, switchState);
     tries = tries || 0;
 
-    // check if the whole menu item passed
-    if (typeof tab == 'object') {
-      if (tab.open) {
-        if (tab.link) {
-          $rootScope.tab = self.tab = tab.link;
-        }
-        tab.open();
-        return;
-      } else if (tab.new_state) {
-      	$rootScope.tab = self.tab = tab.link;
-      	go.path(tab.new_state);
-      	return;
-      } else {
-        return self.setTab(tab.link, reset, tries, switchState);
-      }
-    }
-    console.log("current tab "+self.tab+", requested to set tab "+tab+", reset="+reset);
-    if (self.tab === tab && !reset)
-      return;
-
-    if (!document.getElementById('menu-' + tab) && ++tries < 5) {
-        console.log("will retry setTab later:", tab, reset, tries, switchState);
-        return $timeout(function() {
-            self.setTab(tab, reset, tries, switchState);
-        }, 300);
-    }
-
-    if (!self.tab || !$state.is('walletHome'))
-      $rootScope.tab = self.tab = 'walletHome';
-
     var changeTab = function() {
       if (document.querySelector('.tab-in.tab-view')) {
         document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
@@ -674,6 +644,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.tab = self.tab = tab;
       $rootScope.$emit('Local/TabChanged', tab);
     };
+
+    // check if the whole menu item passed
+    if (typeof tab == 'object') {
+      if (tab.open) {
+        if (tab.link) {
+          $rootScope.tab = self.tab = tab.link;
+        }
+        tab.open();
+        return;
+      } else if (tab.new_state) {
+      	changeTab();
+      	$rootScope.tab = self.tab = tab.link;
+      	go.path(tab.new_state);
+      	return;
+      } else {
+        return self.setTab(tab.link, reset, tries, switchState);
+      }
+    }
+    console.log("current tab "+self.tab+", requested to set tab "+tab+", reset="+reset);
+    if (self.tab === tab && !reset)
+      return;
+
+    if (!document.getElementById('menu-' + tab) && ++tries < 5) {
+        console.log("will retry setTab later:", tab, reset, tries, switchState);
+        return $timeout(function() {
+            self.setTab(tab, reset, tries, switchState);
+        }, 300);
+    }
+
+    if (!self.tab || !$state.is('walletHome'))
+      $rootScope.tab = self.tab = 'walletHome';
 
     if (switchState && !$state.is('walletHome')) {
       go.path('walletHome', function() {
