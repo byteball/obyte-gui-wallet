@@ -626,7 +626,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var changeTab = function(tab) {
       if (document.querySelector('.tab-in.tab-view')) {
-        document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
+      	var el = angular.element(document.querySelector('.tab-in.tab-view'));
+        el.removeClass('tab-in').addClass('tab-out');
         var old = document.getElementById('menu-' + self.tab);
         if (old) {
           old.className = '';
@@ -634,7 +635,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
 
       if (document.getElementById(tab)) {
-        document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
+      	var el = angular.element(document.getElementById(tab));
+        el.removeClass('tab-out').addClass('tab-in');
         var newe = document.getElementById('menu-' + tab);
         if (newe) {
           newe.className = 'active';
