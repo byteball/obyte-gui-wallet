@@ -95,7 +95,7 @@ angular.module('copayApp.directives')
 			}*/
 			//console.log('-- amount');
             var settings = configService.getSync().wallet.settings;
-            var vNum = Number((value * settings.unitToBytes).toFixed(0));
+            var vNum = Number((value * settings.unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;

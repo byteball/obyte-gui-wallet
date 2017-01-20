@@ -122,7 +122,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar .icon-back {
   font-size: 2.5rem;
   position: absolute;
-  line-height: 52px;
+  line-height: 50px;
   left: -5px;
   height: 45px;
   top: 0px;
@@ -139,7 +139,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 2.95rem;
+  line-height: 49px;
 }
 
 .bottom-bar {
@@ -260,9 +260,9 @@ ul.copayer-list img {
 	top: 3px;
 	right: 3px;
 	font-size: 0.6em;
-	padding: 3px 7px 2px 7px;
+	padding: 3px 7.6px 2px 7.6px;
 	background-color: red;
-	border-radius: 9px;
+	border-radius: 10px;
 	color: white;
 }
 
