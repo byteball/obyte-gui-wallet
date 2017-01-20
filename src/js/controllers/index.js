@@ -624,6 +624,29 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log("setTab", tab, reset, tries, switchState);
     tries = tries || 0;
 
+    var changeTab = function(tab) {
+      if (document.querySelector('.tab-in.tab-view')) {
+      	var el = angular.element(document.querySelector('.tab-in.tab-view'));
+        el.removeClass('tab-in').addClass('tab-out');
+        var old = document.getElementById('menu-' + self.tab);
+        if (old) {
+          old.className = '';
+        }
+      }
+
+      if (document.getElementById(tab)) {
+      	var el = angular.element(document.getElementById(tab));
+        el.removeClass('tab-out').addClass('tab-in');
+        var newe = document.getElementById('menu-' + tab);
+        if (newe) {
+          newe.className = 'active';
+        }
+      }
+
+      $rootScope.tab = self.tab = tab;
+      $rootScope.$emit('Local/TabChanged', tab);
+    };
+
     // check if the whole menu item passed
     if (typeof tab == 'object') {
       if (tab.open) {
@@ -633,6 +656,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         tab.open();
         return;
       } else if (tab.new_state) {
+      	changeTab(tab.link);
       	$rootScope.tab = self.tab = tab.link;
       	go.path(tab.new_state);
       	return;
@@ -654,35 +678,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     if (!self.tab || !$state.is('walletHome'))
       $rootScope.tab = self.tab = 'walletHome';
 
-    var changeTab = function() {
-      if (document.querySelector('.tab-in.tab-view')) {
-        document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
-        var old = document.getElementById('menu-' + self.tab);
-        if (old) {
-          old.className = '';
-        }
-      }
-
-      if (document.getElementById(tab)) {
-        document.getElementById(tab).className = 'tab-in  tab-view ' + tab;
-        var newe = document.getElementById('menu-' + tab);
-        if (newe) {
-          newe.className = 'active';
-        }
-      }
-
-      $rootScope.tab = self.tab = tab;
-      $rootScope.$emit('Local/TabChanged', tab);
-    };
-
     if (switchState && !$state.is('walletHome')) {
       go.path('walletHome', function() {
-        changeTab();
+        changeTab(tab);
       });
       return;
     }
 
-    changeTab();
+    changeTab(tab);
   };
 
 
