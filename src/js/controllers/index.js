@@ -624,7 +624,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log("setTab", tab, reset, tries, switchState);
     tries = tries || 0;
 
-    var changeTab = function() {
+    var changeTab = function(tab) {
       if (document.querySelector('.tab-in.tab-view')) {
         document.querySelector('.tab-in.tab-view').className = 'tab-out tab-view ' + self.tab;
         var old = document.getElementById('menu-' + self.tab);
@@ -654,7 +654,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         tab.open();
         return;
       } else if (tab.new_state) {
-      	changeTab();
+      	changeTab(tab.link);
       	$rootScope.tab = self.tab = tab.link;
       	go.path(tab.new_state);
       	return;
@@ -678,12 +678,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     if (switchState && !$state.is('walletHome')) {
       go.path('walletHome', function() {
-        changeTab();
+        changeTab(tab);
       });
       return;
     }
 
-    changeTab();
+    changeTab(tab);
   };
 
 
