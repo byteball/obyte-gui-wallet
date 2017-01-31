@@ -44,14 +44,14 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var arrWalletIndexes = [];
 			
 			function checkAndAddCurrentAddress(is_change) {
-				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + (is_change ? 1 : 0) + '/' + currentAddressIndex)}]);
+				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + is_change + '/' + currentAddressIndex)}]);
 				determineIfAddressUsed(address, function(bUsed) {
 					if (bUsed) {
 						lastUsedAddressIndex = currentAddressIndex;
 						arrAddresses.push({
 							address: address,
 							index: currentAddressIndex,
-							is_change: is_change ? 1 : 0,
+							is_change: is_change,
 							walletIndex: currentWalletIndex
 						});
 						currentAddressIndex++;
@@ -72,7 +72,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 								}
 							} else {
 								currentAddressIndex = 0;
-								checkAndAddCurrentAddress(true);
+								checkAndAddCurrentAddress(1);
 							}
 						} else {
 							checkAndAddCurrentAddress(is_change);
@@ -85,7 +85,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				xPubKey = Bitcore.HDPublicKey(self.xPrivKey.derive("m/44'/0'/" + currentWalletIndex + "'"));
 				lastUsedAddressIndex = -1;
 				currentAddressIndex = 0;
-				checkAndAddCurrentAddress(false);
+				checkAndAddCurrentAddress(0);
 			}
 			
 			setCurrentWallet();
