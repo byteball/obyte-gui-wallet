@@ -1,9 +1,20 @@
 <div
 	class="topbar-container"
 	ng-include="'views/includes/topbar.html'"
-	ng-init="titleSection='Backup'; goBackToState = 'preferencesGlobal'">
+	ng-init="titleSection='Recovery'; goBackToState = 'preferencesGlobal'">
 </div>
 
+<style>
+	.preferences ul.warnings{
+		margin-left: 0px;
+		background-color: transparent;
+	}
+	.preferences ul.warnings li{
+		cursor: auto !important;
+		overflow: auto;
+		white-space: normal;
+	}
+</style>
 
 <div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
 	<h4></h4>
@@ -30,9 +41,9 @@
 
 			<div ng-show="recFromSeed.scanning" class="text-center">Please wait while the database is being scanned for addresses...</div>
 		</form>
-		<div class="text-alert size-12">
+		<div class="text-alert size-12 columns">
 			WARNINGS:
-			<ul>
+			<ul class="warnings">
 				<li>This will permanently delete all your existing wallets!</li>
 				<li>Private assets (such as blackbytes) are not recovered.</li>
 				<li>Only single-sig wallets can be recovered.</li>
