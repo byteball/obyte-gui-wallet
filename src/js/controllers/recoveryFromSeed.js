@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.scanning = false;
 		self.inputMnemonic = '';
 		self.xPrivKey = '';
-		self.objIndexesToWallets = {};
+		self.assocIndexesToWallets = {};
 		
 		function checkUseAddress(address, cb) {
 			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 0, 1", [address], function(rowOutputs) {
@@ -43,20 +43,20 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var lastUsedWalletIndex = -1;
 			var currentAddressIndex = 0;
 			var currentWalletIndex = 0;
-			var assocAddresses = {};
-			var assocIndexesWallet = {};
+			var arrAddresses = [];
+			var arrIndexesToWallets = [];
 			
 			function checkAndAddCurrentAddress(is_change) {
 				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + (is_change ? 1 : 0) + '/' + currentAddressIndex)}]);
 				checkUseAddress(address, function(bUsed) {
 					if (bUsed) {
 						lastUsedAddressIndex = currentAddressIndex;
-						assocAddresses[address] = {
+						arrAddresses.push({
 							address: address,
 							index: currentAddressIndex,
 							is_change: is_change ? 1 : 0,
 							walletIndex: currentWalletIndex
-						};
+						});
 						currentAddressIndex++;
 						checkAndAddCurrentAddress(is_change);
 					} else {
@@ -65,10 +65,10 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 							if (is_change) {
 								if (lastUsedAddressIndex !== -1) {
 									lastUsedWalletIndex = currentWalletIndex;
-									assocIndexesWallet[currentWalletIndex] = true;
+									arrIndexesToWallets.push(currentWalletIndex);
 								}
 								if (currentWalletIndex - lastUsedWalletIndex >= 20) {
-									cb(assocAddresses, assocIndexesWallet);
+									cb(arrAddresses, arrIndexesToWallets);
 								} else {
 									currentWalletIndex++;
 									setCurrentWallet();
@@ -96,23 +96,25 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		
 		function removeAddressesAndWallets(cb) {
 			var arrQueries = [];
+			db.addQuery(arrQueries, "DELETE FROM pending_shared_address_signing_paths");
+			db.addQuery(arrQueries, "DELETE FROM shared_address_signing_paths");
+			db.addQuery(arrQueries, "DELETE FROM pending_shared_addresses");
+			db.addQuery(arrQueries, "DELETE FROM shared_addresses");
 			db.addQuery(arrQueries, "DELETE FROM my_addresses");
 			db.addQuery(arrQueries, "DELETE FROM wallet_signing_paths");
 			db.addQuery(arrQueries, "DELETE FROM extended_pubkeys");
 			db.addQuery(arrQueries, "DELETE FROM wallets");
-			db.addQuery(arrQueries, "DELETE FROM shared_addresses");
 			
 			async.series(arrQueries, cb);
 		}
 		
-		function createAddressesFromObj(assocAddresses, cb) {
-			var keysAssocAddresses = Object.keys(assocAddresses);
+		function createAddressesFromObj(arrAddresses, cb) {
 			
 			function addAddress(n) {
-				var objAddress = assocAddresses[keysAssocAddresses[n]];
-				wallet_defined_by_keys.issueAddress(self.objIndexesToWallets[objAddress.walletIndex], objAddress.is_change, objAddress.index, function(addressInfo) {
+				var objAddress = arrAddresses[n];
+				wallet_defined_by_keys.issueAddress(self.assocIndexesToWallets[objAddress.walletIndex], objAddress.is_change, objAddress.index, function(addressInfo) {
 					n++;
-					if (n < keysAssocAddresses.length) {
+					if (n < arrAddresses.length) {
 						addAddress(n);
 					} else {
 						cb();
@@ -123,11 +125,10 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			addAddress(0);
 		}
 		
-		function createWalletsFromObj(assocIndexesWallet, cb) {
-			var walletIndexes = Object.keys(assocIndexesWallet);
+		function createWalletsFromObj(arrIndexesToWallets, cb) {
 			
 			function createWallet(n) {
-				var account = parseInt(walletIndexes[n]);
+				var account = parseInt(arrIndexesToWallets[n]);
 				var opts = {};
 				opts.m = 1;
 				opts.n = 1;
@@ -139,9 +140,9 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				opts.account = account;
 				
 				profileService.createWallet(opts, function(err, walletId) {
-					self.objIndexesToWallets[account] = walletId;
+					self.assocIndexesToWallets[account] = walletId;
 					n++;
-					if (n < walletIndexes.length) {
+					if (n < arrIndexesToWallets.length) {
 						createWallet(n);
 					} else {
 						cb();
@@ -156,13 +157,13 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			if (self.inputMnemonic) {
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
-					getListAddressesAndWallets(self.inputMnemonic, function(assocAddresses, assocIndexesWallet) {
-						if (Object.keys(assocAddresses).length) {
+					getListAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrIndexesToWallets) {
+						if (Object.keys(arrAddresses).length) {
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
 								profileService.replaceClientInfo(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function() {
-									createWalletsFromObj(assocIndexesWallet, function() {
-										createAddressesFromObj(assocAddresses, function() {
+									createWalletsFromObj(arrIndexesToWallets, function() {
+										createAddressesFromObj(arrAddresses, function() {
 											self.scanning = false;
 											$rootScope.$emit('Local/ShowAlert', "Restart the application to finish.", 'fi-alert', function() {
 												if (navigator && navigator.app) // android
