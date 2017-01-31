@@ -22,12 +22,12 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.assocIndexesToWallets = {};
 		
 		function determineIfAddressUsed(address, cb) {
-			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(rowOutputs) {
-				if (rowOutputs.length === 1)
+			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(outputsRows) {
+				if (outputsRows.length === 1)
 					cb(true);
 				else {
-					db.query("SELECT 1 FROM unit_authors WHERE address = ? LIMIT 1", [address], function(rowUnitAuthors) {
-						cb(rowUnitAuthors.length === 1);
+					db.query("SELECT 1 FROM unit_authors WHERE address = ? LIMIT 1", [address], function(unitAuthorsRows) {
+						cb(unitAuthorsRows.length === 1);
 					});
 				}
 			});
