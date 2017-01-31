@@ -7,7 +7,12 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		var conf = require('byteballcore/conf.js');
 		var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
 		var objectHash = require('byteballcore/object_hash.js');
-		var ecdsa = require('secp256k1');
+		try{
+			var ecdsa = require('secp256k1');
+		}
+		catch(e){
+			var ecdsa = require('byteballcore/node_modules/secp256k1');
+		}
 		var Mnemonic = require('bitcore-mnemonic');
 		var Bitcore = require('bitcore-lib');
 		var db = require('byteballcore/db.js');
