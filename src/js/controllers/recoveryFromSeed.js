@@ -146,7 +146,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
 					scanForAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrWalletIndexes) {
-						if (Object.keys(arrAddresses).length) {
+						if (arrAddresses.length) {
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
 								profileService.replaceClientInfo(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function() {
