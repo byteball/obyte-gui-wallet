@@ -676,7 +676,7 @@ angular.module('copayApp.services')
 			return cb();
 	};
 		
-	root.replaceClientInfo = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
+	root.replaceProfile = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
 		var device = require('byteballcore/device.js');
 		
 		root.profile.credentials = [];
