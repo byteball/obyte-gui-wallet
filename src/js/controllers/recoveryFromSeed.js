@@ -1,16 +1,17 @@
 'use strict';
 
-var async = require('async');
-var conf = require('byteballcore/conf.js');
-var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
-var objectHash = require('byteballcore/object_hash.js');
-var ecdsa = require('secp256k1');
-var Mnemonic = require('bitcore-mnemonic');
-var Bitcore = require('bitcore-lib');
-var db = require('byteballcore/db.js');
-
 angular.module('copayApp.controllers').controller('recoveryFromSeed',
 	function($rootScope, $scope, $log, $timeout, profileService) {
+	
+		var async = require('async');
+		var conf = require('byteballcore/conf.js');
+		var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
+		var objectHash = require('byteballcore/object_hash.js');
+		var ecdsa = require('secp256k1');
+		var Mnemonic = require('bitcore-mnemonic');
+		var Bitcore = require('bitcore-lib');
+		var db = require('byteballcore/db.js');
+
 		var self = this;
 		
 		self.error = '';
