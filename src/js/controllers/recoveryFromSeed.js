@@ -110,11 +110,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				var objAddress = arrAddresses[n];
 				wallet_defined_by_keys.issueAddress(self.assocIndexesToWallets[objAddress.walletIndex], objAddress.is_change, objAddress.index, function(addressInfo) {
 					n++;
-					if (n < arrAddresses.length) {
-						addAddress(n);
-					} else {
-						cb();
-					}
+					(n < arrAddresses.length) ? addAddress(n) : cb();
 				});
 			}
 			
@@ -138,11 +134,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				profileService.createWallet(opts, function(err, walletId) {
 					self.assocIndexesToWallets[account] = walletId;
 					n++;
-					if (n < arrWalletIndexes.length) {
-						createWallet(n);
-					} else {
-						cb();
-					}
+					(n < arrWalletIndexes.length) ? createWallet(n) : cb();
 				});
 			}
 			
