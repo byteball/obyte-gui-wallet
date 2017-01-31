@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('correspondentDevicesController',
-  function($scope, $timeout, configService, profileService, go, correspondentListService, $state) {
+  function($scope, $timeout, configService, profileService, go, correspondentListService, $state, $rootScope) {
 	
 	var self = this;
 	
@@ -13,10 +13,13 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.state = $state;
 
 	var listScrollTop = 0;
-	$scope.$on('$viewContentLoaded', function(){
-	    if (!$state.is('correspondentDevices')) return;
-	    $scope.readList();
-	    setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+
+	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
+	    if (toState.name === 'correspondentDevices') {
+	        $scope.readList();
+	        $rootScope.$emit('Local/SetTab', 'chat', true);
+	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+	    }
 	});
 	
 	$scope.showCorrespondent = function(correspondent) {
