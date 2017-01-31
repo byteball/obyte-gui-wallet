@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('createController',
 			if (opts.cosigners.length !== $scope.totalCosigners - 1)
 				return setError("Please select different co-signers");
 			for (var i=0; i<opts.cosigners.length; i++)
-				if (opts.cosigners[i].length !== 33)
+				if (!opts.cosigners[i] || opts.cosigners[i].length !== 33)
 					return setError("Please fill all co-signers");
 		}
 		/*

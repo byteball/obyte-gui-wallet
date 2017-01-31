@@ -1,0 +1,39 @@
+<div
+        class="topbar-container"
+        ng-include="'views/includes/topbar.html'"
+        ng-init="titleSection='Backup'; goBackToState = 'preferencesGlobal'">
+</div>
+
+
+<div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
+    <h4></h4>
+
+    <div class="box-notification" ng-show="recFromSeed.error">
+    <span class="text-warning">
+    	{{recFromSeed.error}}
+    </span>
+    </div>
+
+    <div ng-show="recFromSeed.bLight">
+        <div class="row">
+            <div class="columns center">
+                Recovery is only available in the full version.
+            </div>
+        </div>
+    </div>
+    <div ng-show="!recFromSeed.bLight">
+        <form name="settingsDeviceNameForm" class="columns" ng-submit="recFromSeed.recoveryForm()">
+            <label><span>Your Wallet Seed:</span></label>
+            <textarea id="inputMnemonic" ng-model="recFromSeed.inputMnemonic"></textarea>
+            <input ng-show="!recFromSeed.scanning" type="submit" class="button expand black round"
+                   value="{{'Recovery'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+
+            <div ng-show="recFromSeed.scanning" class="text-center">Please wait for the scan is complete...</div>
+        </form>
+        <div class="text-alert size-12 text-center">
+            WARNING! Permanently delete all your wallets.
+        </div>
+    </div>
+
+</div>
+<div class="extra-margin-bottom"></div>

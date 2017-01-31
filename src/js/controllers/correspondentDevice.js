@@ -371,7 +371,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.message += ' ';
 		$scope.message += text;
 		$scope.message += ' ';
-		if (!document.chatForm) // already gone
+		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
 		msgField.focus();

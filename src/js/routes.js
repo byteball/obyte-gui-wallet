@@ -464,6 +464,17 @@ angular
           },
         }
       })
+      .state('recoveryFromSeed', {
+	      url: '/recoveryFromSeed',
+	      templateUrl: 'views/recoveryFromSeed.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main': {
+			      templateUrl: 'views/recoveryFromSeed.html'
+		      }
+	      }
+      })
       .state('preferencesGlobal', {
         url: '/preferencesGlobal',
         needProfile: true,

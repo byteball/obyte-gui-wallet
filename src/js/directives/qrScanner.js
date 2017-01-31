@@ -76,7 +76,8 @@ angular.module('copayApp.directives')
                   };
                 }
                 localMediaStream = null;
-                video.src = '';
+				if (video)
+					video.src = '';
               };
 
               qrcode.callback = function(data) {
