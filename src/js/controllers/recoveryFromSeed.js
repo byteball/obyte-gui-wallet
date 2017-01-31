@@ -14,23 +14,19 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		var self = this;
 		
 		self.error = '';
-		self.bLight = conf.bLight === true;
+		self.bLight = conf.bLight;
 		self.scanning = false;
 		self.inputMnemonic = '';
 		self.xPrivKey = '';
 		self.assocIndexesToWallets = {};
 		
 		function checkUseAddress(address, cb) {
-			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 0, 1", [address], function(rowOutputs) {
-				if (rowOutputs.length === 1) {
+			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(rowOutputs) {
+				if (rowOutputs.length === 1)
 					cb(true);
-				} else {
-					db.query("SELECT 1 FROM unit_authors WHERE address = ? LIMIT 0, 1", [address], function(rowUnitAuthors) {
-						if (rowUnitAuthors.length === 1) {
-							cb(true);
-						} else {
-							cb(false);
-						}
+				else {
+					db.query("SELECT 1 FROM unit_authors WHERE address = ? LIMIT 1", [address], function(rowUnitAuthors) {
+						cb(rowUnitAuthors.length === 1);
 					});
 				}
 			});
@@ -108,7 +104,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			async.series(arrQueries, cb);
 		}
 		
-		function createAddressesFromObj(arrAddresses, cb) {
+		function createAddresses(arrAddresses, cb) {
 			
 			function addAddress(n) {
 				var objAddress = arrAddresses[n];
@@ -125,7 +121,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			addAddress(0);
 		}
 		
-		function createWalletsFromObj(arrIndexesToWallets, cb) {
+		function createWallets(arrIndexesToWallets, cb) {
 			
 			function createWallet(n) {
 				var account = parseInt(arrIndexesToWallets[n]);
@@ -162,8 +158,8 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
 								profileService.replaceClientInfo(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function() {
-									createWalletsFromObj(arrIndexesToWallets, function() {
-										createAddressesFromObj(arrAddresses, function() {
+									createWallets(arrIndexesToWallets, function() {
+										createAddresses(arrAddresses, function() {
 											self.scanning = false;
 											$rootScope.$emit('Local/ShowAlert', "Restart the application to finish.", 'fi-alert', function() {
 												if (navigator && navigator.app) // android
