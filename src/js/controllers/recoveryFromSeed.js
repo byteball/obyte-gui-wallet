@@ -154,7 +154,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 									createWallets(arrWalletIndexes, function() {
 										createAddresses(arrAddresses, function() {
 											self.scanning = false;
-											$rootScope.$emit('Local/ShowAlert', "Restart the application to finish.", 'fi-alert', function() {
+											$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length+" wallets recovered, please restart the application to finish.", 'fi-alert', function() {
 												if (navigator && navigator.app) // android
 													navigator.app.exitApp();
 												else if (process.exit) // nwjs
