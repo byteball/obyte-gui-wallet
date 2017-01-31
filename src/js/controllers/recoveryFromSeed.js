@@ -40,7 +40,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var currentAddressIndex = 0;
 			var currentWalletIndex = 0;
 			var arrAddresses = [];
-			var arrIndexesToWallets = [];
+			var arrWalletIndexes = [];
 			
 			function checkAndAddCurrentAddress(is_change) {
 				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + (is_change ? 1 : 0) + '/' + currentAddressIndex)}]);
@@ -61,10 +61,10 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 							if (is_change) {
 								if (lastUsedAddressIndex !== -1) {
 									lastUsedWalletIndex = currentWalletIndex;
-									arrIndexesToWallets.push(currentWalletIndex);
+									arrWalletIndexes.push(currentWalletIndex);
 								}
 								if (currentWalletIndex - lastUsedWalletIndex >= 20) {
-									cb(arrAddresses, arrIndexesToWallets);
+									cb(arrAddresses, arrWalletIndexes);
 								} else {
 									currentWalletIndex++;
 									setCurrentWallet();
@@ -121,10 +121,10 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			addAddress(0);
 		}
 		
-		function createWallets(arrIndexesToWallets, cb) {
+		function createWallets(arrWalletIndexes, cb) {
 			
 			function createWallet(n) {
-				var account = parseInt(arrIndexesToWallets[n]);
+				var account = parseInt(arrWalletIndexes[n]);
 				var opts = {};
 				opts.m = 1;
 				opts.n = 1;
@@ -138,7 +138,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				profileService.createWallet(opts, function(err, walletId) {
 					self.assocIndexesToWallets[account] = walletId;
 					n++;
-					if (n < arrIndexesToWallets.length) {
+					if (n < arrWalletIndexes.length) {
 						createWallet(n);
 					} else {
 						cb();
@@ -153,12 +153,12 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			if (self.inputMnemonic) {
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
-					getListAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrIndexesToWallets) {
+					getListAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrWalletIndexes) {
 						if (Object.keys(arrAddresses).length) {
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
 								profileService.replaceClientInfo(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function() {
-									createWallets(arrIndexesToWallets, function() {
+									createWallets(arrWalletIndexes, function() {
 										createAddresses(arrAddresses, function() {
 											self.scanning = false;
 											$rootScope.$emit('Local/ShowAlert', "Restart the application to finish.", 'fi-alert', function() {
