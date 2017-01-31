@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.xPrivKey = '';
 		self.assocIndexesToWallets = {};
 		
-		function checkUseAddress(address, cb) {
+		function determineIfAddressUsed(address, cb) {
 			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(rowOutputs) {
 				if (rowOutputs.length === 1)
 					cb(true);
@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			});
 		}
 		
-		function getListAddressesAndWallets(mnemonic, cb) {
+		function scanForAddressesAndWallets(mnemonic, cb) {
 			self.xPrivKey = new Mnemonic(mnemonic).toHDPrivateKey();
 			var xPubKey;
 			var lastUsedAddressIndex = -1;
@@ -44,7 +44,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			
 			function checkAndAddCurrentAddress(is_change) {
 				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + (is_change ? 1 : 0) + '/' + currentAddressIndex)}]);
-				checkUseAddress(address, function(bUsed) {
+				determineIfAddressUsed(address, function(bUsed) {
 					if (bUsed) {
 						lastUsedAddressIndex = currentAddressIndex;
 						arrAddresses.push({
@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			if (self.inputMnemonic) {
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
-					getListAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrWalletIndexes) {
+					scanForAddressesAndWallets(self.inputMnemonic, function(arrAddresses, arrWalletIndexes) {
 						if (Object.keys(arrAddresses).length) {
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
