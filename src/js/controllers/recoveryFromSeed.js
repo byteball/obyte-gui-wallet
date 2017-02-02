@@ -25,7 +25,6 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.inputMnemonic = '';
 		self.xPrivKey = '';
 		self.assocIndexesToWallets = {};
-		self.assocMaxIndexesWallets = {};
 		
 		function determineIfAddressUsed(address, cb) {
 			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(outputsRows) {
@@ -47,17 +46,18 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var currentAddressIndex = 0;
 			var currentWalletIndex = 0;
 			var arrWalletIndexes = [];
+			var assocMaxAddressIndexes = {};
 			
 			function checkAndAddCurrentAddress(is_change) {
 				var address = objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + is_change + '/' + currentAddressIndex)}]);
 				determineIfAddressUsed(address, function(bUsed) {
 					if (bUsed) {
 						lastUsedAddressIndex = currentAddressIndex;
-						if (!self.assocMaxIndexesWallets[currentWalletIndex]) self.assocMaxIndexesWallets[currentWalletIndex] = {};
+						if (!assocMaxAddressIndexes[currentWalletIndex]) assocMaxAddressIndexes[currentWalletIndex] = {main: 0};
 						if (is_change) {
-							self.assocMaxIndexesWallets[currentWalletIndex].change = currentAddressIndex;
+							assocMaxAddressIndexes[currentWalletIndex].change = currentAddressIndex;
 						} else {
-							self.assocMaxIndexesWallets[currentWalletIndex].dontChange = currentAddressIndex;
+							assocMaxAddressIndexes[currentWalletIndex].main = currentAddressIndex;
 						}
 						currentAddressIndex++;
 						checkAndAddCurrentAddress(is_change);
@@ -70,7 +70,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 									arrWalletIndexes.push(currentWalletIndex);
 								}
 								if (currentWalletIndex - lastUsedWalletIndex >= 20) {
-									cb(arrWalletIndexes);
+									cb(assocMaxAddressIndexes, arrWalletIndexes);
 								} else {
 									currentWalletIndex++;
 									setCurrentWallet();
@@ -111,8 +111,8 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			async.series(arrQueries, cb);
 		}
 		
-		function createAddresses(cb) {
-			var accounts = Object.keys(self.assocMaxIndexesWallets);
+		function createAddresses(assocMaxAddressIndexes, cb) {
+			var accounts = Object.keys(assocMaxAddressIndexes);
 			var currentAccount = 0;
 			
 			function addAddress(wallet, is_change, index, maxIndex) {
@@ -123,32 +123,29 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 					} else {
 						if (is_change) {
 							currentAccount++;
-							(currentAccount < accounts.length) ? setCurrentWallet(false) : cb();
+							(currentAccount < accounts.length) ? startAddToNewWallet(0) : cb();
 						} else {
-							setCurrentWallet(true);
+							startAddToNewWallet(1);
 						}
 					}
 				});
 			}
 			
-			function setCurrentWallet(is_change) {
+			function startAddToNewWallet(is_change) {
 				if (is_change) {
-					if (self.assocMaxIndexesWallets[accounts[currentAccount]].change) {
-						addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 1, 0, self.assocMaxIndexesWallets[accounts[currentAccount]].change + 20);
+					if (assocMaxAddressIndexes[accounts[currentAccount]].change) {
+						addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 1, 0, assocMaxAddressIndexes[accounts[currentAccount]].change);
 					} else {
-						addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 1, 0, 20);
+						currentAccount++;
+						(currentAccount < accounts.length) ? startAddToNewWallet(0) : cb();
 					}
 				} else {
-					if (self.assocMaxIndexesWallets[accounts[currentAccount]].dontChange) {
-						addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 0, 0, self.assocMaxIndexesWallets[accounts[currentAccount]].dontChange + 20);
-					} else {
-						addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 0, 0, 20);
-					}
+					addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 0, 0, assocMaxAddressIndexes[accounts[currentAccount]].main + 20);
 				}
 			}
 			
 			
-			setCurrentWallet(false);
+			startAddToNewWallet(0);
 		}
 		
 		function createWallets(arrWalletIndexes, cb) {
@@ -179,13 +176,13 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			if (self.inputMnemonic) {
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
-					scanForAddressesAndWallets(self.inputMnemonic, function(arrWalletIndexes) {
+					scanForAddressesAndWallets(self.inputMnemonic, function(assocMaxAddressIndexes, arrWalletIndexes) {
 						if (arrWalletIndexes.length) {
 							removeAddressesAndWallets(function() {
 								var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
 								profileService.replaceProfile(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function() {
 									createWallets(arrWalletIndexes, function() {
-										createAddresses(function() {
+										createAddresses(assocMaxAddressIndexes, function() {
 											self.scanning = false;
 											$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length+" wallets recovered, please restart the application to finish.", 'fi-alert', function() {
 												if (navigator && navigator.app) // android
