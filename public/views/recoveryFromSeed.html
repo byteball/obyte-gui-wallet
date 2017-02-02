@@ -19,6 +19,19 @@
 <div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
 	<h4></h4>
 
+	<div class="onGoingProcess" ng-show="recFromSeed.scanning">
+		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+			<span> Scanning for addresses... </span>
+		</div>
+	</div>
+
 	<div class="box-notification" ng-show="recFromSeed.error">
 	<span class="text-warning">
 		{{recFromSeed.error}}
@@ -38,8 +51,6 @@
 			<textarea id="inputMnemonic" ng-model="recFromSeed.inputMnemonic"></textarea>
 			<input ng-show="!recFromSeed.scanning" type="submit" class="button expand black round"
 				   value="{{'Recover'|translate}}" ng-style="{'background-color':index.backgroundColor}">
-
-			<div ng-show="recFromSeed.scanning" class="text-center">Please wait while the database is being scanned for addresses...</div>
 		</form>
 		<div class="text-alert size-12 columns">
 			WARNINGS:
