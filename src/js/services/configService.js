@@ -128,7 +128,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		if (!configCache.deviceName)
 			configCache.deviceName = defaultConfig.getDeviceName();
 		
-		configCache.wallet.settings.unitCode = checkAndReplaceOldUnitCode(configCache.wallet.settings.unitCode);
+		checkAndReplaceOldUnitCode(configCache.wallet.settings);
 	  } else {
 		configCache = lodash.clone(defaultConfig);
 		configCache.deviceName = defaultConfig.getDeviceName();
@@ -152,7 +152,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		newOpts = JSON.parse(newOpts);
 	  }
 	  lodash.merge(config, oldOpts, newOpts);
-		config.wallet.settings.unitCode = checkAndReplaceOldUnitCode(config.wallet.settings.unitCode);
+		checkAndReplaceOldUnitCode(config.wallet.settings);
 	  configCache = config;
 
 	  storageService.storeConfig(JSON.stringify(config), cb);
@@ -168,23 +168,24 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	return lodash.clone(defaultConfig);
   };
   
-  function checkAndReplaceOldUnitCode(unitCode) {
-	  switch (unitCode){
+  function checkAndReplaceOldUnitCode(setting) {
+	  switch (setting.unitCode){
 		  case 'byte':
-		  	return 'one';
+				setting.unitCode = 'one';
+				setting.unitValue = 1;
 		  	break;
 		  case 'kB':
-		  	return 'kilo';
+				setting.unitCode = 'kilo';
+				setting.unitValue = 1000;
 		  	break;
 		  case 'MB':
-		  	return 'mega';
+				setting.unitCode = 'mega';
+				setting.unitValue = 1000000;
 		  	break;
 		  case 'GB':
-		  	return 'giga';
+				setting.unitCode = 'giga';
+				setting.unitValue = 1000000000;
 		  	break;
-		  default:
-			  return unitCode;
-			  break;
 	  }
   }
 
