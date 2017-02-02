@@ -37,7 +37,14 @@
         {{prefGlobal.unitName}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
-      <div translate>Unit</div>
+      <div translate>Unit for bytes</div>
+    </li>
+	  <li ng-click="$root.go('preferencesBbUnit')">
+      <div class="right text-gray">
+        {{prefGlobal.bbUnitName}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>Unit for blackbytes</div>
     </li>
   </ul>
     
@@ -84,6 +91,15 @@
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
       <div translate>Backup</div>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Recovery from seed</div>
     </li>
   </ul>
     

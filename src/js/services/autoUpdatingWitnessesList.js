@@ -1,7 +1,5 @@
 'use strict';
 
-var device = require('byteballcore/device.js');
-var myWitnesses = require('byteballcore/my_witnesses.js');
 
 angular.module('copayApp.services')
 .factory('autoUpdatingWitnessesList', function($timeout, $modal, configService){
@@ -13,9 +11,11 @@ angular.module('copayApp.services')
   root.checkChangeWitnesses = function(){
     if (!root.autoUpdate) return;
 
+	var device = require('byteballcore/device.js');
+	var myWitnesses = require('byteballcore/my_witnesses.js');
     device.getWitnessesFromHub(function(err, arrWitnessesFromHub){
       if (arrWitnessesFromHub) {
-        myWitnesses.readMyWitnesses(function(arrWitnesses){
+       myWitnesses.readMyWitnesses(function(arrWitnesses){
           root.addWitnesses = arrWitnessesFromHub.filter(function(witness){
             return arrWitnesses.indexOf(witness) == -1;
           });
@@ -31,7 +31,7 @@ angular.module('copayApp.services')
           }
           if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
           root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
-        }, 'ignore');
+        }, 'wait');
       }
       else {
         if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);

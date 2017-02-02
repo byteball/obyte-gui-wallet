@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
           $log.warn(err);
           return;
         };
-        var last10 = [],
+        /*var last10 = [],
           i = 0,
           e = addrs.pop();
         while (i++ < 10 && e) {
@@ -32,7 +32,8 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
           last10.push(e);
           e = addrs.pop();
         }
-        $scope.addrs = last10;
+        $scope.addrs = last10;*/
+        $scope.addrs = addrs;
         $timeout(function() {
           $scope.$apply();
         });

@@ -2,7 +2,7 @@
 
 var eventBus = require('byteballcore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -70,6 +70,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	root.send = function(cb) {
+		$stickyState.reset('walletHome');
 		root.path('walletHome', function() {
 			$rootScope.$emit('Local/SetTab', 'send');
 			if (cb)
@@ -274,6 +275,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			var removeRegListener = $rootScope.$on('Local/BalanceUpdated', function(){
 				setTimeout(function(){
 					(process.platform === 'win32') ? registerWindowsProtocolHandler() : createLinuxDesktopFile();
+					gui.desktop = process.env.HOME + '/.local/share/applications';
 				}, 200);
 				removeRegListener();
 			});

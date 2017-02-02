@@ -3,6 +3,68 @@
  * Byteball main CSS
  *
  */
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Thin.ttf') format('truetype');
+  font-weight: thin;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-ThinItalic.ttf') format('truetype');
+  font-weight: thin;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Light.ttf') format('truetype');
+  font-weight: light;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-LightItalic.ttf') format('truetype');
+  font-weight: light;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Medium.ttf') format('truetype');
+  font-weight: medium;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-MediumItalic.ttf') format('truetype');
+  font-weight: medium;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('../font/Roboto-BoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
  body {
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -531,7 +593,7 @@ ul.manage li {
 
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
   /*line-height: 2.7rem;*/
-  line-height: 3.1rem; /* tested on mac and win */
+  line-height: 3rem; /* tested on mac and win */
 }
 
 .wallet-settings{

@@ -1,21 +1,25 @@
 'use strict';
 
+var constants = require('byteballcore/constants.js');
+
 angular.module('copayApp.services').factory('txFormatService', function(profileService, configService, lodash) {
   var root = {};
 
   var formatAmountStr = function(amount, asset) {
     if (!amount) return;
-      if (asset !== "base")
+      if (asset !== "base" && asset !==  constants.BLACKBYTES_ASSET)
           return amount;
     var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(amount) + ' ' + config.unitName;
+    var assetName = asset !== "base" ? 'blackbytes' : 'base';
+	  var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
+		return profileService.formatAmount(amount, assetName) + ' ' + unitName;
   };
-
-  var formatFeeStr = function(fee) {
-    if (!fee) return;
-    var config = configService.getSync().wallet.settings;
-    return profileService.formatAmount(fee) + ' ' + config.unitName;
-  };
+	
+	var formatFeeStr = function(fee) {
+		if (!fee) return;
+		var config = configService.getSync().wallet.settings;
+		return profileService.formatAmount(fee, 'base') + ' ' + config.unitName;
+	};
 
   root.processTx = function(tx) {
     if (!tx) return; 

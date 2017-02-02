@@ -1,0 +1,67 @@
+<div
+	class="topbar-container"
+	ng-include="'views/includes/topbar.html'"
+	ng-init="titleSection='Recovery'; goBackToState = 'preferencesGlobal'">
+</div>
+
+<style>
+	.preferences ul.warnings{
+		margin-left: 0px;
+		background-color: transparent;
+	}
+	.preferences ul.warnings li{
+		cursor: auto !important;
+		overflow: auto;
+		white-space: normal;
+	}
+</style>
+
+<div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
+	<h4></h4>
+
+	<div class="onGoingProcess" ng-show="recFromSeed.scanning">
+		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+			<span> Scanning for addresses... </span>
+		</div>
+	</div>
+
+	<div class="box-notification" ng-show="recFromSeed.error">
+	<span class="text-warning">
+		{{recFromSeed.error}}
+	</span>
+	</div>
+
+	<div ng-show="recFromSeed.bLight">
+		<div class="row">
+			<div class="columns center">
+				Recovery is only available in the full version.
+			</div>
+		</div>
+	</div>
+	<div ng-show="!recFromSeed.bLight">
+		<form name="settingsDeviceNameForm" class="columns" ng-submit="recFromSeed.recoveryForm()">
+			<label><span>Your Wallet Seed:</span></label>
+			<textarea id="inputMnemonic" ng-model="recFromSeed.inputMnemonic"></textarea>
+			<input ng-show="!recFromSeed.scanning" type="submit" class="button expand black round"
+				   value="{{'Recover'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+		</form>
+		<div class="text-alert size-12 columns">
+			WARNINGS:
+			<ul class="warnings">
+				<li>This will permanently delete all your existing wallets!</li>
+				<li>Private assets (such as blackbytes) are not recovered.</li>
+				<li>Only single-sig wallets can be recovered.</li>
+				<li>Correspondents are not restored.</li>
+			</ul>
+		</div>
+	</div>
+
+</div>
+<div class="extra-margin-bottom"></div>

@@ -13,12 +13,16 @@ angular.module('copayApp.services')
     
 
     root.Utils = bwcService.getUtils();
-    root.formatAmount = function(amount) {
+    root.formatAmount = function(amount, asset) {
       var config = configService.getSync().wallet.settings;
       //if (config.unitCode == 'byte') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-      return this.Utils.formatAmount(amount, config.unitCode);
+		if(asset == 'blackbytes') {
+			return this.Utils.formatAmount(amount, config.bbUnitCode);
+		}else{
+			return this.Utils.formatAmount(amount, config.unitCode);
+		}
     };
 
     root._setFocus = function(walletId, cb) {
@@ -671,7 +675,20 @@ angular.module('copayApp.services')
 		else
 			return cb();
 	};
-
+		
+	root.replaceProfile = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
+		var device = require('byteballcore/device.js');
+		
+		root.profile.credentials = [];
+		root.profile.xPrivKey = xPrivKey;
+		root.profile.mnemonic = mnemonic;
+		root.profile.my_device_address = myDeviceAddress;
+		device.setNewDeviceAddress(myDeviceAddress);
+		
+		storageService.storeProfile(root.profile, function () {
+			return cb();
+		});
+	};
 
 
     return root;

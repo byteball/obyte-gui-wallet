@@ -76,7 +76,8 @@ angular.module('copayApp.directives')
                   };
                 }
                 localMediaStream = null;
-                video.src = '';
+				if (video)
+					video.src = '';
               };
 
               qrcode.callback = function(data) {
@@ -138,7 +139,7 @@ angular.module('copayApp.directives')
 				}
 				catch(e){
 					e.bIgnore = true;
-					throw e;
+				//	throw e;
 				}
               };
             };

@@ -1,7 +1,5 @@
 'use strict';
 
-var myWitnesses = require('byteballcore/my_witnesses.js');
-
 angular.module('copayApp.controllers').controller('approveNewWitnesses', function($scope, $modalInstance, $document, autoUpdatingWitnessesList){
   $scope.addWitnesses = autoUpdatingWitnessesList.addWitnesses;
   $scope.delWitnesses = autoUpdatingWitnessesList.delWitnesses;
@@ -14,6 +12,7 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
     var n = 0, l = newWitnesses.length;
 
     function replaceWitness(n, oldWitnesses, newWitnesses){
+	  var myWitnesses = require('byteballcore/my_witnesses.js');
       myWitnesses.replaceWitness(oldWitnesses[n], newWitnesses[n], function(err){
 
         if (l < n) {

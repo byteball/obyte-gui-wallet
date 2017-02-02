@@ -307,6 +307,17 @@ angular
           },
         }
       })
+      .state('preferencesBbUnit', {
+        url: '/preferencesBbUnit',
+        templateUrl: 'views/preferencesBbUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesBbUnit.html'
+          },
+        }
+      })
 
     .state('preferencesAdvanced', {
       url: '/preferencesAdvanced',
@@ -452,6 +463,17 @@ angular
             templateUrl: 'views/backup.html'
           },
         }
+      })
+      .state('recoveryFromSeed', {
+	      url: '/recoveryFromSeed',
+	      templateUrl: 'views/recoveryFromSeed.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main': {
+			      templateUrl: 'views/recoveryFromSeed.html'
+		      }
+	      }
       })
       .state('preferencesGlobal', {
         url: '/preferencesGlobal',
