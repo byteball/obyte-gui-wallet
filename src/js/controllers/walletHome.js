@@ -682,6 +682,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 return;
             }
 			breadcrumbs.add('sending payment in '+asset);
+			profileService.bKeepUnlocked = true;
             self.current_payment_key = current_payment_key;
 			var opts = {
 				shared_address: indexScope.shared_address,
@@ -697,6 +698,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 //self.setOngoingProcess();
 				breadcrumbs.add('done payment in '+asset+', err='+err);
                 delete self.current_payment_key;
+				profileService.bKeepUnlocked = false;
                 if (err){
 					if (err.match(/device address/))
 						err = "This is a private asset, please send it only by clicking links from chat";
