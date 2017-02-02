@@ -118,7 +118,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			function addAddress(wallet, is_change, index, maxIndex) {
 				wallet_defined_by_keys.issueAddress(wallet, is_change, index, function(addressInfo) {
 					index++;
-					if (index < maxIndex) {
+					if (index <= maxIndex) {
 						addAddress(wallet, is_change, index, maxIndex);
 					} else {
 						if (is_change) {
