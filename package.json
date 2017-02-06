@@ -28,6 +28,7 @@
     "java": false,
     "plugin": false
   },
+  "chromium-args": "--proxy-server=http://127.1.2.7",
   "homepage": "https://github.com/byteball/byteball",
   "license": "MIT",
   "repository": {
