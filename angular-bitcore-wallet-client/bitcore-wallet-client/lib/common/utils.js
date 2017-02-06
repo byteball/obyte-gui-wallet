@@ -42,8 +42,8 @@ Utils.formatAmount = function(bytes, unit, opts) {
   opts = opts || {};
 
   var u = Constants.UNITS[unit];
-  var lengthAmount = Math.floor(bytes / u.value).toString().length;
-  var digits = lengthAmount >= 6 || unit == 'one' ? 0 : 6 - lengthAmount;
+  var intAmountLength = Math.floor(bytes / u.value).toString().length;
+  var digits = intAmountLength >= 6 || unit == 'one' ? 0 : 6 - intAmountLength;
   var amount = (bytes / u.value).toFixed(digits);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals);
 };
