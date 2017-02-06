@@ -29,7 +29,7 @@ Utils.formatAmount = function(bytes, unit, opts) {
     x1 = _.dropRightWhile(x1, function(n, i) {
         return n == '0' && i >= minDecimals;
     }).join('');
-    var x2 = x.length > 1 ? decimal + x1 : '';
+    var x2 = x.length > 1 && parseInt(x[1]) ? decimal + x1 : '';
 
     // in safari, toLocaleString doesn't add thousands separators
     if (navigator && navigator.vendor && navigator.vendor.indexOf('Apple') >= 0)
@@ -42,7 +42,9 @@ Utils.formatAmount = function(bytes, unit, opts) {
   opts = opts || {};
 
   var u = Constants.UNITS[unit];
-  var amount = (bytes / u.value).toFixed(u.maxDecimals);
+  var lengthAmount = Math.floor(bytes / u.value).toString().length;
+  var digits = lengthAmount >= 6 || unit == 'one' ? 0 : 6 - lengthAmount;
+  var amount = (bytes / u.value).toFixed(digits);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals);
 };
 
