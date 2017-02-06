@@ -977,10 +977,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				});
 			};
 			
-			$scope.newMsgByAddressComparator = function(correspondent) {
-				return -($scope.newMessagesCount[correspondent.device_address]|0);
-			};
-			
 			$scope.sendPrivatePayments = function(correspondent) {
 				var indivisible_asset =  require('byteballcore/indivisible_asset');
 				var wallet_general = require('byteballcore/wallet_general');
