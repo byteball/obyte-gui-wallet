@@ -898,6 +898,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.btx = btx;
+      var assetIndex = lodash.findIndex(indexScope.arrBalances, {asset: btx.asset});
+      $scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
 
@@ -918,7 +920,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         if (!addr) return;
         self.copyAddress(addr);
       };
-
+	
+      $scope.showCorrespondentList = function() {
+        self.showCorrespondentListToReSendPrivPayloads(btx);
+      };
+      
       $scope.cancel = function() {
 		breadcrumbs.add('dismiss tx details');
 		try{
@@ -949,7 +955,67 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       m.addClass(animationService.modalAnimated.slideOutRight);
     });
   };
-
+	
+	this.showCorrespondentListToReSendPrivPayloads = function(btx) {
+		$rootScope.modalOpened = true;
+		var self = this;
+		var fc = profileService.focusedClient;
+		var ModalInstanceCtrl = function($scope, $modalInstance, $timeout, go, notification) {
+			$scope.btx = btx;
+			$scope.settings = walletSettings;
+			$scope.color = fc.backgroundColor;
+			
+			$scope.readList = function() {
+				$scope.error = null;
+				correspondentListService.list(function(err, ab) {
+					if (err) {
+						$scope.error = err;
+						return;
+					}
+					$scope.list = ab;
+					$scope.$digest();
+				});
+			};
+			
+			$scope.sendPrivatePayments = function(correspondent) {
+				var indivisible_asset =  require('byteballcore/indivisible_asset');
+				var wallet_general = require('byteballcore/wallet_general');
+				indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
+					wallet_general.sendPrivatePayments(correspondent.device_address, arrRecipientChains, true, null, function() {
+						modalInstance.dismiss('cancel');
+						go.history();
+						$timeout(function() {
+							notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
+						});
+					});
+				});
+				
+			};
+			
+			$scope.back = function() {
+				self.openTxModal(btx);
+			};
+			
+		};
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/correspondentListToReSendPrivPayloads.html',
+			windowClass: animationService.modalAnimated.slideRight,
+			controller: ModalInstanceCtrl,
+		});
+		
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+		
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutRight);
+		});
+	};
+  
   this.hasAction = function(actions, action) {
     return actions.hasOwnProperty('create');
   };
