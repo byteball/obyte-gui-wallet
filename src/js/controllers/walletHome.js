@@ -839,7 +839,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			form.amount.$render();
 		}
 		else{
-			form.amount.$setViewValue(''+indexScope.arrBalances[indexScope.assetIndex].stable);
+			var full_amount = indexScope.arrBalances[indexScope.assetIndex].stable;
+			if (indexScope.arrBalances[indexScope.assetIndex].asset === constants.BLACKBYTES_ASSET)
+				full_amount /= this.bbUnitValue;
+			form.amount.$setViewValue(''+full_amount);
 			form.amount.$render();
 		}
 		//console.log('done setsendall')
