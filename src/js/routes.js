@@ -475,6 +475,17 @@ angular
 		      }
 	      }
       })
+      .state('preferencesTor', {
+	      url: '/preferencesTor',
+	      templateUrl: 'views/preferencesTor.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main': {
+			      templateUrl: 'views/preferencesTor.html'
+		      }
+	      }
+      })
       .state('preferencesGlobal', {
         url: '/preferencesGlobal',
         needProfile: true,
