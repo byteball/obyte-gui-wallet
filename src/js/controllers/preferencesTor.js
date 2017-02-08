@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesTorController',
-	function($scope, $log, configService) {
+	function($scope, $log, $timeout, go, configService) {
 		
 		var conf = require('byteballcore/conf.js');
 		var network = require('byteballcore/network.js');
@@ -39,6 +39,10 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 			confJson.socksPort = root.socksPort;
 			confJson.socksLocalDNS = root.socksLocalDNS;
 			fs.writeFile(appDataDir + '/conf.json', JSON.stringify(confJson, null, '\t'), 'utf8', function(err) {
+				if (err) {
+					$scope.$emit('Local/DeviceError', err);
+					return;
+				}
 				cb();
 			});
 		}
@@ -54,7 +58,14 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 					socksHost: $scope.socksHost,
 					socksPort: $scope.socksPort,
 					socksLocalDNS: $scope.socksLocalDNS
-				}, function() {
+				}, function(err) {
+					if (err) {
+						$scope.$emit('Local/DeviceError', err);
+						return;
+					}
+					$timeout(function(){
+						go.path('preferencesGlobal');
+					}, 50);
 				});
 			});
 		};
