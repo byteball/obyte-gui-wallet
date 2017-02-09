@@ -6,10 +6,15 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		var conf = require('byteballcore/conf.js');
 		var network = require('byteballcore/network.js');
 		
+		var bInitialized = false;
+		
 		var root = {};
 		root.socksHost = null;
 		root.socksPort = null;
 		root.socksLocalDNS = false;
+		
+		$scope.errorHostInput = '';
+		$scope.errorPortInput = '';
 		
 		$scope.torEnabled = conf.socksHost && conf.socksPort;
 		configService.get(function(err, confService) {
@@ -47,7 +52,19 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		}
 		
 		
-		$scope.save = function() {
+		$scope.save = function(close, oldVal) {
+			if (!$scope.socksHost) {
+				$scope.errorHostInput = 'Host is invalid';
+				if(!close && !oldVal) $scope.torEnabled = false;
+				return;
+			}
+			if (!$scope.socksPort || !(/^[0-9]+$/.test($scope.socksPort))) {
+				$scope.errorPortInput = 'Port is invalid';
+				if(!close && !oldVal) $scope.torEnabled = false;
+				return;
+			}
+			$scope.errorHostInput = '';
+			$scope.errorPortInput = '';
 			root.socksHost = $scope.torEnabled ? $scope.socksHost : null;
 			root.socksPort = $scope.torEnabled ? $scope.socksPort : null;
 			setConfAndCloseConnections();
@@ -60,11 +77,26 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 						$scope.$emit('Local/DeviceError', err);
 						return;
 					}
-					$timeout(function(){
-						go.path('preferencesGlobal');
-					}, 50);
+					if (close) {
+						$timeout(function() {
+							go.path('preferencesGlobal');
+						}, 50);
+					}
 				});
 			});
 		};
+		
+		
+		var unwatchTorEnabled = $scope.$watch('torEnabled', function(newVal, oldVal) {
+			if (!bInitialized) {
+				bInitialized = true;
+				return;
+			}
+			$scope.save(false, oldVal);
+		});
+		
+		$scope.$on('$destroy', function() {
+			unwatchTorEnabled();
+		});
 		
 	});
