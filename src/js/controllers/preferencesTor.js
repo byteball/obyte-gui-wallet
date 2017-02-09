@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 			$scope.socksPort = conf.socksPort || confService.socksPort || '9150';
 		});
 		
-		function setConfAndCloseConnect() {
+		function setConfAndCloseConnections() {
 			conf.socksHost = root.socksHost;
 			conf.socksPort = root.socksPort;
 			conf.socksLocalDNS = root.socksLocalDNS;
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		$scope.save = function() {
 			root.socksHost = $scope.torEnabled ? $scope.socksHost : null;
 			root.socksPort = $scope.torEnabled ? $scope.socksPort : null;
-			setConfAndCloseConnect();
+			setConfAndCloseConnections();
 			saveConfToFile(function() {
 				configService.set({
 					socksHost: $scope.socksHost,

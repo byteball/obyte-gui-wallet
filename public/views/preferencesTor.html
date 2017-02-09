@@ -12,9 +12,9 @@
 			<div>TOR enabled</div>
 		</div>
 		<label><span translate>Host</span></label>
-		<input type="text" id="host" name="host" ng-model="socksHost" placeholder="127.0.0.1">
+		<input type="text" id="host" name="host" ng-disabled="!torEnabled" ng-model="socksHost" placeholder="127.0.0.1">
 		<label><span translate>Port</span></label>
-		<input type="text" id="port" name="port" ng-model="socksPort" placeholder="9150">
+		<input type="text" id="port" name="port" ng-disabled="!torEnabled" ng-model="socksPort" placeholder="9150">
 		<input type="submit" class="button expand black round" value="{{'Save'|translate}}"
 			   ng-style="{'background-color':index.backgroundColor}">
 	</form>
