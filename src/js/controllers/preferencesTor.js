@@ -9,13 +9,12 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		var root = {};
 		root.socksHost = null;
 		root.socksPort = null;
-		root.socksLocalDNS = null;
+		root.socksLocalDNS = false;
 		
 		$scope.torEnabled = conf.socksHost && conf.socksPort;
 		configService.get(function(err, confService) {
 			$scope.socksHost = conf.socksHost || confService.socksHost || '127.0.0.1';
 			$scope.socksPort = conf.socksPort || confService.socksPort || '9150';
-			$scope.socksLocalDNS = conf.socksLocalDNS || confService.socksLocalDNS || false;
 		});
 		
 		function setConfAndCloseConnect() {
@@ -51,13 +50,11 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		$scope.save = function() {
 			root.socksHost = $scope.torEnabled ? $scope.socksHost : null;
 			root.socksPort = $scope.torEnabled ? $scope.socksPort : null;
-			root.socksLocalDNS = $scope.torEnabled ? $scope.socksLocalDNS : null;
 			setConfAndCloseConnect();
 			saveConfToFile(function() {
 				configService.set({
 					socksHost: $scope.socksHost,
-					socksPort: $scope.socksPort,
-					socksLocalDNS: $scope.socksLocalDNS
+					socksPort: $scope.socksPort
 				}, function(err) {
 					if (err) {
 						$scope.$emit('Local/DeviceError', err);
