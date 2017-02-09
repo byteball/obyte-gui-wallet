@@ -2,7 +2,9 @@
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
   function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
-
+	
+		var conf = require('byteballcore/conf.js');
+  
     $scope.encrypt = !!profileService.profile.xPrivKeyEncrypted;
     
     this.init = function() {
@@ -13,6 +15,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.myDeviceAddress = require('byteballcore/device.js').getMyDeviceAddress();
       this.hub = config.hub;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
+      this.torEnabled = conf.socksHost && conf.socksPort;
       $scope.pushNotifications = config.pushNotifications.enabled;
     };
 
