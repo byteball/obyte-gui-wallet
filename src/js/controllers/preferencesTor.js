@@ -53,17 +53,13 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		
 		
 		$scope.save = function(close, oldVal) {
-			if (!$scope.socksHost) {
-				$scope.errorHostInput = 'Host is invalid';
-				if(!close && !oldVal) $scope.torEnabled = false;
-				return;
-			}
-			if (!$scope.socksPort || !(/^[0-9]+$/.test($scope.socksPort))) {
+			$scope.socksHost = (!$scope.socksHost) ? '127.0.0.1' : $scope.socksHost;
+			$scope.socksPort = (!$scope.socksPort) ? 9150 : parseInt($scope.socksPort);
+			if (!$scope.socksPort || !($scope.socksPort > 0 && $scope.socksPort <= 65535)) {
 				$scope.errorPortInput = 'Port is invalid';
 				if(!close && !oldVal) $scope.torEnabled = false;
 				return;
 			}
-			$scope.errorHostInput = '';
 			$scope.errorPortInput = '';
 			root.socksHost = $scope.torEnabled ? $scope.socksHost : null;
 			root.socksPort = $scope.torEnabled ? $scope.socksPort : null;
