@@ -11,7 +11,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var ecdsa = require('secp256k1'+'');
 		}
 		catch(e){
-			var ecdsa = require('byteballcore/node_modules/secp256k1');
+			var ecdsa = require('byteballcore/node_modules/secp256k1'+'');
 		}
 		var Mnemonic = require('bitcore-mnemonic');
 		var Bitcore = require('bitcore-lib');
