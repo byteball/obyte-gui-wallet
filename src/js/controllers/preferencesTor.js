@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		var conf = require('byteballcore/conf.js');
 		var network = require('byteballcore/network.js');
 		
-		var init = false;
+		var bInitialized = false;
 		
 		var root = {};
 		root.socksHost = null;
@@ -88,8 +88,8 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		
 		
 		var unwatchTorEnabled = $scope.$watch('torEnabled', function(newVal, oldVal) {
-			if (!init) {
-				init = true;
+			if (!bInitialized) {
+				bInitialized = true;
 				return;
 			}
 			$scope.save(false, oldVal);
