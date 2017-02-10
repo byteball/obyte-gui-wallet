@@ -94,12 +94,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	});
 	
     eventBus.on('uncaught_error', function(error_message, error_object) {
-    	if(error_message.indexOf('ECONNREFUSED')){
-				$rootScope.$emit('Local/ShowAlert', "Error connecting to TOR", 'fi-alert', function() {
-					go.path('preferencesTor');
-				});
+    	if(error_message.indexOf('ECONNREFUSED') >= 0){
+			$rootScope.$emit('Local/ShowAlert', "Error connecting to TOR", 'fi-alert', function() {
+				go.path('preferencesTor');
+			});
     		return;
-			}
+		}
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
 		if (error_object && error_object.bIgnore)
