@@ -100,6 +100,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			});
     		return;
 		}
+    	if (error_message.indexOf('ttl expired') >= 0) // TOR error after wakeup from sleep
+			return;
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
 		if (error_object && error_object.bIgnore)
