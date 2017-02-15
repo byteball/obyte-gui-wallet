@@ -116,6 +116,8 @@ angular.module('copayApp.directives')
                     parentScope.beforeScan();
                   }
                   canvas = document.getElementById('qr-canvas');
+				  if (!canvas)
+					  return;
                   context = canvas.getContext('2d');
 
 
