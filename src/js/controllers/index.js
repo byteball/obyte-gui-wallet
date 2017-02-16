@@ -126,7 +126,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     	}
     	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
         self.syncProgress = "" + percent + "%";
-		$rootScope.$apply();
+		$timeout(function() {
+		  $rootScope.$apply();
+		});
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
@@ -897,7 +899,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.pendingAmountStr = null;
     }
       */
-    $rootScope.$apply();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   };
 
     
