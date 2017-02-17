@@ -1,0 +1,29 @@
+<div>
+	<nav class="tab-bar">
+		<section class="left-small">
+			<a ng-click="back()">
+				<i class="icon-arrow-left3 icon-back"></i>
+				<span class="text-back" translate>Back</span>
+			</a>
+		</section>
+		<section class="middle tab-bar-section">
+			<h1 class="title ellipsis" ng-style="{'color':color}" translate>
+				Choose the device to send to
+			</h1>
+		</section>
+	</nav>
+
+	<div class="modal-content fix-modals-touch">
+		<div class="m20b tab-in">
+			<ul class="no-bullet m0 correspondentList" ng-init="readList()">
+				<li class="p10 line-b" ng-repeat="correspondent in list | orderBy:'name'">
+					<div class="pointer" ng-click="sendPrivatePayments(correspondent)">
+						{{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
+						<div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

@@ -616,7 +616,13 @@ angular.module('copayApp.services')
             message: gettext('Wrong password')
           });
         }
-        $timeout(function() {
+		var autolock = function() {
+		  if (root.bKeepUnlocked){
+			  console.log("keeping unlocked");
+			  breadcrumbs.add("keeping unlocked");
+			  $timeout(autolock, 30*1000);
+			  return;
+		  }
           console.log('time to auto-lock wallet', fc.credentials);
           if (fc.hasPrivKeyEncrypted()) {
             $log.debug('Locking wallet automatically');
@@ -625,7 +631,8 @@ angular.module('copayApp.services')
 				breadcrumbs.add('locked '+fc.credentials.walletId);
 			} catch (e) {};
           };
-        }, 30*1000);
+        };
+        $timeout(autolock, 30*1000);
         return cb();
       });
     };
@@ -676,7 +683,7 @@ angular.module('copayApp.services')
 			return cb();
 	};
 		
-	root.replaceClientInfo = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
+	root.replaceProfile = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
 		var device = require('byteballcore/device.js');
 		
 		root.profile.credentials = [];

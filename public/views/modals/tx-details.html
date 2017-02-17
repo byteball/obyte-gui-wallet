@@ -106,6 +106,9 @@
  
     </span>
     </li>
+    <li ng-if="btx.action == 'sent' && isPrivate" class="p10 oh">
+      <input type="submit" ng-click="showCorrespondentList()" class="button expand black round" value="Re-send private payloads" ng-style="{'background-color':index.backgroundColor}">
+    </li>
   </ul>
 
   <!--div ng-show="btx.unit" class="tx-details-blockchain">

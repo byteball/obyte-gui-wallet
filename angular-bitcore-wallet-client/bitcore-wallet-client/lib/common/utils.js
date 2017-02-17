@@ -29,20 +29,24 @@ Utils.formatAmount = function(bytes, unit, opts) {
     x1 = _.dropRightWhile(x1, function(n, i) {
         return n == '0' && i >= minDecimals;
     }).join('');
-    var x2 = x.length > 1 ? decimal + x1 : '';
+    var x2 = x.length > 1 && parseInt(x[1]) ? decimal + x1 : '';
 
     // in safari, toLocaleString doesn't add thousands separators
-    if (navigator && navigator.vendor && navigator.vendor.indexOf('Apple') >= 0)
-        x0 = x0.replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
-    else
-        x0 = parseInt(x0).toLocaleString();
-    return x0 + x2;
+    if (navigator && navigator.vendor && navigator.vendor.indexOf('Apple') >= 0) {
+			x0 = x0.replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
+			return x0 + x2;
+		}
+    else {
+			return parseFloat(x0 + x2).toLocaleString();
+		}
   }
 
   opts = opts || {};
 
   var u = Constants.UNITS[unit];
-  var amount = (bytes / u.value).toFixed(u.maxDecimals);
+  var intAmountLength = Math.floor(bytes / u.value).toString().length;
+  var digits = intAmountLength >= 6 || unit == 'one' ? 0 : 6 - intAmountLength;
+  var amount = (bytes / u.value).toFixed(digits);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals);
 };
 
