@@ -24,7 +24,13 @@
       </div>
       <div translate>Hub</div>
     </li>
-
+	<li ng-show="!index.isCordova" ng-click="$root.go('preferencesTor')">
+      <div class="right text-gray">
+        {{prefGlobal.torEnabled?'On':'Off'}}
+        <i class="icon-arrow-right3 size-24"></i>
+      </div>
+      <div translate>TOR</div>
+	</li>
     <li ng-click="$root.go('preferencesLanguage')">
       <div class="right text-gray">
         {{prefGlobal.currentLanguageName|translate}}

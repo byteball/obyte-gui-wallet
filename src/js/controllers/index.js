@@ -8,6 +8,7 @@ var objectHash = require('byteballcore/object_hash.js');
 var ecdsaSig = require('byteballcore/signature.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
+var EventEmitter = require('events').EventEmitter;
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService) {
   breadcrumbs.add('index.js');
@@ -93,6 +94,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	});
 	
     eventBus.on('uncaught_error', function(error_message, error_object) {
+    	if(error_message.indexOf('ECONNREFUSED') >= 0){
+			$rootScope.$emit('Local/ShowAlert', "Error connecting to TOR", 'fi-alert', function() {
+				go.path('preferencesTor');
+			});
+    		return;
+		}
+    	if (error_message.indexOf('ttl expired') >= 0 || error_message.indexOf('general SOCKS server failure') >= 0) // TOR error after wakeup from sleep
+			return;
 		console.log('stack', error_object.stack);
         sendBugReport(error_message, error_object);
 		if (error_object && error_object.bIgnore)
@@ -117,7 +126,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     	}
     	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
         self.syncProgress = "" + percent + "%";
-		$rootScope.$apply();
+		$timeout(function() {
+		  $rootScope.$apply();
+		});
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
@@ -888,7 +899,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.pendingAmountStr = null;
     }
       */
-    $rootScope.$apply();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
   };
 
     

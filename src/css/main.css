@@ -674,6 +674,7 @@ input[type=number]::-webkit-outer-spin-button {
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
+.label.light-gray {background-color: #7A8C9E;;}
 
 .history .label  {
   width: 57px;
@@ -706,7 +707,7 @@ input {
 }
 
 input[type="color"], input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], textarea {
-  color: #B7C2CD;
+  color: #6A7D90;
   margin-bottom: 1.5rem;
   height: 35px;
   background: transparent;
