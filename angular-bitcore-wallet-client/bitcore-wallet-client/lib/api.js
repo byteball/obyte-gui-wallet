@@ -11,6 +11,7 @@ if (process.browser){
 var walletDefinedByKeys;
 var ecdsaSig = require('byteballcore/signature.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var constants = require('byteballcore/constants.js');
 
 var _ = require('lodash');
 var $ = require('preconditions').singleton();
@@ -576,6 +577,8 @@ API.prototype.getBalance = function(shared_address, cb) {
 	$.checkState(this.credentials && this.credentials.isComplete());
 	var walletId = this.credentials.walletId;
 	Wallet.readBalance(shared_address || walletId, function(assocBalances){
+		if (!assocBalances[constants.BLACKBYTES_ASSET])
+			assocBalances[constants.BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
 		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
 			cb(null, assocBalances, assocSharedBalances);
 		});
