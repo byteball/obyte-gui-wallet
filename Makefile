@@ -26,13 +26,13 @@ wp8-debug:
 
 ios-prod:
 	cordova/build.sh IOS --clear
-	cd ../byteballbuilds/project-IOS && cordova build ios
-#	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
+	cd ../byteballbuilds/project-IOS-tn && cordova build ios
+#	open ../byteballbuilds/project-IOS-tn/platforms/ios/Byteball.xcodeproj
 
 ios-debug:
 	cordova/build.sh IOS --dbgjs
-	cd ../byteballbuilds/project-IOS && cordova build ios
-	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
+	cd ../byteballbuilds/project-IOS-tn && cordova build ios
+	open ../byteballbuilds/project-IOS-tn/platforms/ios/Byteball.xcodeproj
 
 android-prod:
 	cordova/build.sh ANDROID --clear
