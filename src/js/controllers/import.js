@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function decrypt(buffer, password) {
-			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), new Buffer(crypto.createHash('sha1').update(password).digest('hex').substr(0, 16)));
+			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
 			var arrChunks = [];
 			var CHUNK_LENGTH = 2003;
 			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
