@@ -89,6 +89,22 @@
     
   <h4></h4>
   <ul class="no-bullet m0">
+    <li ng-click="$root.go('import')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Import</div>
+    </li>
+  </ul>
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('export')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Export</div>
+    </li>
+  </ul>
+  <ul class="no-bullet m0">
     <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <span class="text-warning" ng-show="index.needsBackup">

@@ -1,207 +1,154 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-  function($scope, $rootScope, $location, $timeout, $log, profileService, configService, notification, go, sjcl, gettext, derivationPathHelper) {
-
-    var self = this;
-    var reader = new FileReader();
-    var defaults = configService.getDefaults();
-    $scope.derivationPath = derivationPathHelper.default;
-    $scope.account = 1;
-
-    window.ignoreMobilePause = true;
-    $scope.$on('$destroy', function() {
-      $timeout(function() {
-        window.ignoreMobilePause = false;
-      }, 100);
-    });
-
-    var updateSeedSourceSelect = function() {
-      self.seedOptions = [];
-
-    };
-
-
-
-    this.setType = function(type) {
-      $scope.type = type;
-      this.error = null;
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    };
-
-    var _importBlob = function(str, opts) {
-      var str2, err;
-      try {
-        str2 = sjcl.decrypt(self.password, str);
-      } catch (e) {
-        err = gettext('Could not decrypt file, check your password');
-        $log.warn(e);
-      };
-
-      if (err) {
-        self.error = err;
-        $timeout(function() {
-          $rootScope.$apply();
-        });
-        return;
-      }
-
-      self.loading = true;
-      opts.compressed = null;
-      opts.password = null;
-
-      $timeout(function() {
-        profileService.importWallet(str2, opts, function(err, walletId) {
-          self.loading = false;
-          if (err) {
-            self.error = err;
-          } else {
-            $rootScope.$emit('Local/WalletImported', walletId);
-            notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-          }
-        });
-      }, 100);
-    };
-
-    var _importExtendedPrivateKey = function(xPrivKey, opts) {
-      self.loading = true;
-
-      $timeout(function() {
-        profileService.importExtendedPrivateKey(xPrivKey, opts, function(err, walletId) {
-          self.loading = false;
-          if (err) {
-            self.error = err;
-            return $timeout(function() {
-              $scope.$apply();
-            });
-          }
-          $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-        });
-      }, 100);
-    };
-
-    var _importMnemonic = function(words, opts) {
-      self.loading = true;
-
-      $timeout(function() {
-        profileService.importMnemonic(words, opts, function(err, walletId) {
-          self.loading = false;
-          if (err) {
-            self.error = err;
-            return $timeout(function() {
-              $scope.$apply();
-            });
-          }
-          $rootScope.$emit('Local/WalletImported', walletId);
-          notification.success(gettext('Success'), gettext('Your wallet has been imported correctly'));
-        });
-      }, 100);
-    };
-
-    $scope.getFile = function() {
-      // If we use onloadend, we need to check the readyState.
-      reader.onloadend = function(evt) {
-        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          var opts = {};
-          _importBlob(evt.target.result, opts);
-        }
-      }
-    };
-
-    this.importBlob = function(form) {
-      if (form.$invalid) {
-        this.error = gettext('There is an error in the form');
-
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
-      }
-
-      var backupFile = $scope.file;
-      var backupText = form.backupText.$modelValue;
-      var password = form.password.$modelValue;
-
-      if (!backupFile && !backupText) {
-        this.error = gettext('Please, select your backup file');
-        $timeout(function() {
-          $scope.$apply();
-        });
-
-        return;
-      }
-
-      if (backupFile) {
-        reader.readAsBinaryString(backupFile);
-      } else {
-        var opts = {};
-        _importBlob(backupText, opts);
-      }
-    };
-
-    this.importMnemonic = function(form) {
-      if (form.$invalid) {
-        this.error = gettext('There is an error in the form');
-
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
-      }
-
-      var opts = {};
-
-      var passphrase = form.passphrase.$modelValue;
-      var words = form.words.$modelValue;
-      this.error = null;
-
-      if (!words) {
-        this.error = gettext('Please enter the seed words');
-      } else if (words.indexOf('xprv') == 0 || words.indexOf('tprv') == 0) {
-        return _importExtendedPrivateKey(words, opts);
-      } else {
-        var wordList = words.split(/[\u3000\s]+/);
-
-        if ((wordList.length % 3) != 0)
-          this.error = gettext('Wrong number of seed words:') + wordList.length;
-      }
-
-      if (this.error) {
-        $timeout(function() {
-          $scope.$apply();
-        });
-        return;
-      }
-
-      opts.passphrase = form.passphrase.$modelValue || null;
-
-      var pathData = derivationPathHelper.parse($scope.derivationPath);
-      if (!pathData) {
-        this.error = gettext('Invalid derivation path');
-        return;
-      }
-      opts.account = pathData.account;
-      opts.networkName = pathData.networkName;
-      opts.derivationStrategy = pathData.derivationStrategy;
-
-
-      _importMnemonic(words, opts);
-    };
-
-
-    this.setSeedSource = function() {
-      if (!$scope.seedSource) return;
-      self.seedSourceId = $scope.seedSource.id;
-
-      $timeout(function() {
-        $rootScope.$apply();
-      });
-    };
-
-
-    updateSeedSourceSelect();
-    self.setSeedSource('new');
-  });
+	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile) {
+		
+		var JSZip = require("jszip");
+		var async = require('async');
+		var crypt = require('crypto');
+		var conf = require('byteballcore/conf');
+		var zip = new JSZip();
+		
+		var self = this;
+		self.imported = false;
+		self.password = '';
+		self.error = '';
+		self.iOs = isMobile.iOS();
+		self.arrBackupFiles = [];
+		
+		function generateListFilesForIos() {
+			var backupDirPath = window.cordova.file.documentsDirectory + '/';
+			fileSystemService.getListFilesAndFolders(backupDirPath, function(err, listFilenames) {
+				listFilenames.forEach(function(name) {
+					var dateNow = parseInt(name.split(' ')[1]);
+					self.arrBackupFiles.push({
+						name: name.replace(dateNow, new Date(dateNow).toLocaleString()),
+						originalName: name,
+						time: dateNow
+					})
+				});
+				$timeout(function() {
+					$rootScope.$apply();
+				});
+			});
+		}
+		
+		if (self.iOs) generateListFilesForIos();
+		
+		function writeDBAndFileStorage(zip, cb) {
+			var db = require('byteballcore/db');
+			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
+			db.close(function() {
+			});
+			async.forEachOfSeries(zip.files, function(objFile, key, callback) {
+				if (key == 'profile') {
+					zip.file(key).async('string').then(function(data) {
+						storageService.storeProfile(Profile.fromString(data), callback);
+					});
+				}
+				else if (key == 'config') {
+					zip.file(key).async('string').then(function(data) {
+						storageService.storeConfig(data, callback);
+					});
+				}
+				else if (key == 'conf.json' && !isCordova) {
+					zip.file(key).async('string').then(function(data) {
+						fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
+					});
+				}
+				else if (/\.sqlite/.test(key)) {
+					zip.file(key).async('nodebuffer').then(function(data) {
+						if (isCordova) {
+							fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
+						}
+						else {
+							fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
+						}
+					});
+				}
+				else {
+					callback();
+				}
+			}, function(err) {
+				if (err) return cb(err);
+				if (!isCordova && zip.file('light') && !zip.file('conf.json')) {
+					fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), cb);
+				}
+				else if (!isCordova && !zip.file('light') && conf.bLight) {
+					var _conf = require(dbDirPath + 'conf.json');
+					_conf.bLight = false;
+					fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), cb);
+				}
+				else {
+					return cb();
+				}
+			});
+		}
+		
+		function decrypt(buffer, password) {
+			var decipher = crypt.createDecipher('aes-256-ctr', crypt.createHash('sha1').update(password).digest('hex'));
+			return Buffer.concat([decipher.update(buffer), decipher.final()]);
+		}
+		
+		function showError(text) {
+			self.imported = false;
+			self.error = text;
+			$timeout(function() {
+				$rootScope.$apply();
+			});
+			return false;
+		}
+		
+		function unzipAndWriteFiles(data, password) {
+			zip.loadAsync(decrypt(data, password)).then(function(zip) {
+				if (isCordova && !zip.file('light')) {
+					self.imported = false;
+					self.error = 'Mobile version supports only light wallets.';
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}
+				else {
+					writeDBAndFileStorage(zip, function(err) {
+						if (err) return showError(err);
+						self.imported = false;
+						$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-alert', function() {
+							if (navigator && navigator.app)
+								navigator.app.exitApp();
+							else if (process.exit)
+								process.exit();
+						});
+					});
+				}
+			}, function(err) {
+				showError('Incorrect password or file');
+			})
+		}
+		
+		self.walletImport = function() {
+			self.imported = true;
+			self.error = '';
+			fileSystemService.readFileFromForm($scope.file, function(err, data) {
+				if (err) return showError(err);
+				unzipAndWriteFiles(data, self.password);
+			});
+		};
+		
+		self.iosWalletImportFromFile = function(fileName) {
+			$rootScope.$emit('Local/NeedsPassword', false, null, function(err, password) {
+				if (password) {
+					var backupDirPath = window.cordova.file.documentsDirectory + '/';
+					fileSystemService.readFile(backupDirPath + fileName, function(err, data) {
+						if (err) return showError(err);
+						unzipAndWriteFiles(data, password);
+					})
+				}
+			});
+		};
+		
+		$scope.getFile = function() {
+			$timeout(function() {
+				$rootScope.$apply();
+			});
+		};
+	});
