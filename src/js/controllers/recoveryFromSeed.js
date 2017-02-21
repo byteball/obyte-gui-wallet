@@ -195,7 +195,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 								});
 							});
 						} else {
-							self.error = 'Active address is not found.';
+							self.error = 'No active addresses found.';
 							self.scanning = false;
 							$timeout(function() {
 								$rootScope.$apply();
