@@ -36,7 +36,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 		
 		function saveFile(file, cb) {
-			var backupFilename = 'walletBackup ' + Date.now();
+			var backupFilename = 'ByteballBackup' + Date.now() + '.encrypted';
 			if (!isCordova) {
 				var a = angular.element('<input type="file" nwsaveas="' + backupFilename + '" />');
 				a[0].click();

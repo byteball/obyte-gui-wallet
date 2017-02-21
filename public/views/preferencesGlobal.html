@@ -88,22 +88,7 @@
     </ul>
     
   <h4></h4>
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('import')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Import</div>
-    </li>
-  </ul>
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('export')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Export</div>
-    </li>
-  </ul>
+	
   <ul class="no-bullet m0">
     <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
@@ -112,7 +97,7 @@
         </span>
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
-      <div translate>Backup</div>
+      <div translate>Backup wallet seed</div>
     </li>
   </ul>
 
@@ -122,6 +107,24 @@
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
       <div translate>Recovery from seed</div>
+    </li>
+  </ul>
+	
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('export')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Full backup</div>
+    </li>
+  </ul>
+	
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('import')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Restore from full backup</div>
     </li>
   </ul>
     

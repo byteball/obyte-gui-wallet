@@ -1,7 +1,7 @@
 <div
 		class="topbar-container"
 		ng-include="'views/includes/topbar.html'"
-		ng-init="titleSection='Export'; goBackToState = 'preferencesGlobal'">
+		ng-init="titleSection='Full backup'; goBackToState = 'preferencesGlobal'">
 </div>
 
 
@@ -16,7 +16,7 @@
 				<div class="rect4"></div>
 				<div class="rect5"></div>
 			</div>
-			<span> Export... </span>
+			<span> Exporting... </span>
 		</div>
 	</div>
 	<div>
@@ -27,20 +27,20 @@
 		<form>
 			<div class="row">
 				<div class="columns">
-					<label translate>Set up a Export Password </label>
+					<label translate>Set up a Password </label>
 					<div class="input">
 						<input type="password" class="form-control"
 							   placeholder="{{'Your export password'|translate}}"
 							   name="password" ng-model="export.password">
 					</div>
 
-					<label translate>Repeat password</label>
+					<label translate>Repeat the password</label>
 					<div class="input">
 						<input type="password" class="form-control"
 							   placeholder="{{'Repeat password'|translate}}"
 							   name="password2" ng-model="export.repeatpassword">
 					</div>
-					<div class="row size-14 m20b" ng-show="!export.isCordova">
+					<div class="size-14 m20b" ng-show="!export.isCordova">
 						<switch name="bCompression" ng-model="export.bCompression" class="green right"></switch>
 						<div>Compress the file? (Slower)</div>
 					</div>

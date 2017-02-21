@@ -1,7 +1,7 @@
 <div
 		class="topbar-container"
 		ng-include="'views/includes/topbar.html'"
-		ng-init="titleSection='Import wallet';  goBackToState = 'preferencesGlobal'; noColor = true">
+		ng-init="titleSection='Restore from full backup';  goBackToState = 'preferencesGlobal'; noColor = true">
 </div>
 
 <div class="content preferences" ng-controller="importController as import">
@@ -30,7 +30,7 @@
 		<form class="columns" ng-submit="import.walletImport()">
 			<label><span>Your wallet file:</span></label>
 			<input type="file" ng-file-select>
-			<input type="password" placeholder="Pass" ng-model="import.password">
+			<input type="password" placeholder="Password" ng-model="import.password">
 			<input ng-disabled="import.imported || import.password == '' || !file" type="submit"
 				   class="button expand black round"
 				   value="{{'Import'|translate}}" ng-style="{'background-color':index.backgroundColor}">
@@ -48,6 +48,6 @@
 		</div>
 	</div>
 	<div class="text-alert size-12 columns">
-		WARNINGS: This will permanently delete all your existing wallets!
+		WARNING: This will permanently delete all your existing wallets!
 	</div>
 </div>
