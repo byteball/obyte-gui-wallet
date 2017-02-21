@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		
 		var async = require('async');
 		var JSZip = require("jszip");
-		var crypt = require('crypto');
+		var crypto = require('crypto');
 		var conf = require('byteballcore/conf');
 		var zip = new JSZip();
 		
@@ -18,9 +18,9 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.isCordova = isCordova;
 		self.bCompression = false;
 		
-		function addingDBAndConfToZip(cb) {
+		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
-			fileSystemService.getListFilesAndFolders(dbDirPath, function(err, listFilenames) {
+			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
 				if (err) return cb(err);
 				listFilenames = listFilenames.filter(function(name) {
 					return (name == 'conf.json' || /\.sqlite/.test(name));
@@ -36,9 +36,9 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 		
 		function saveFile(file, cb) {
-			var nameBackupFile = 'backupWallet ' + Date.now();
+			var backupFilename = 'walletBackup ' + Date.now();
 			if (!isCordova) {
-				var a = angular.element('<input type="file" nwsaveas="' + nameBackupFile + '" />');
+				var a = angular.element('<input type="file" nwsaveas="' + backupFilename + '" />');
 				a[0].click();
 				a.bind('change', function() {
 					fileSystemService.nwWriteFile(this.value, file, function(err) {
@@ -47,15 +47,21 @@ angular.module('copayApp.controllers').controller('exportController',
 				})
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.documentsDirectory: window.cordova.file.externalRootDirectory), 'Byteball', nameBackupFile, file, function(err) {
+				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
 					cb(err);
 				});
 			}
 		}
 		
 		function encrypt(buffer, password) {
-			var cipher = crypt.createCipher('aes-256-ctr', crypt.createHash('sha1').update(password).digest('hex'));
-			return Buffer.concat([cipher.update(buffer), cipher.final()]);
+			var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), new Buffer(crypto.createHash('sha1').update(password).digest('hex').substr(0, 16)));
+			var arrChunks = [];
+			var CHUNK_LENGTH = 2003;
+			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
+				arrChunks.push(cipher.update(buffer.slice(offset, Math.min(offset + CHUNK_LENGTH, buffer.length)), 'utf8'));
+			}
+			arrChunks.push(cipher.final());
+			return Buffer.concat(arrChunks);
 		}
 		
 		function showError(text) {
@@ -75,7 +81,7 @@ angular.module('copayApp.controllers').controller('exportController',
 					zip.file('profile', JSON.stringify(profile));
 					zip.file('config', config);
 					if (isCordova || conf.bLight) zip.file('light', 'true');
-					addingDBAndConfToZip(function(err) {
+					addDBAndConfToZip(function(err) {
 						if (err) return showError(err);
 						var zipParams = {type: "nodebuffer"};
 						if (isCordova) {

@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('importController',
 		
 		var JSZip = require("jszip");
 		var async = require('async');
-		var crypt = require('crypto');
+		var crypto = require('crypto');
 		var conf = require('byteballcore/conf');
 		var zip = new JSZip();
 		
@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('importController',
 		
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/';
-			fileSystemService.getListFilesAndFolders(backupDirPath, function(err, listFilenames) {
+			fileSystemService.readdir(backupDirPath, function(err, listFilenames) {
 				listFilenames.forEach(function(name) {
 					var dateNow = parseInt(name.split(' ')[1]);
 					self.arrBackupFiles.push({
@@ -86,8 +86,14 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function decrypt(buffer, password) {
-			var decipher = crypt.createDecipher('aes-256-ctr', crypt.createHash('sha1').update(password).digest('hex'));
-			return Buffer.concat([decipher.update(buffer), decipher.final()]);
+			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), new Buffer(crypto.createHash('sha1').update(password).digest('hex').substr(0, 16)));
+			var arrChunks = [];
+			var CHUNK_LENGTH = 2003;
+			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
+				arrChunks.push(decipher.update(buffer.slice(offset, Math.min(offset + CHUNK_LENGTH, buffer.length)), 'utf8'));
+			}
+			arrChunks.push(decipher.final());
+			return Buffer.concat(arrChunks);
 		}
 		
 		function showError(text) {

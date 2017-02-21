@@ -3,7 +3,7 @@
 angular.module('copayApp.services')
 .factory('fileSystemService', function($log, isCordova) {
 	var root = {},
-		_fs;
+		bFsInitialized = false;
 	
 	var fs = require('fs' + '');
 	try {
@@ -13,12 +13,12 @@ angular.module('copayApp.services')
 	}
 	
 	root.init = function(cb) {
-		if (_fs) return cb(null, _fs);
+		if (bFsInitialized) return cb(null);
 		
 		function onFileSystemSuccess(fileSystem) {
 			console.log('File system started: ', fileSystem.name, fileSystem.root.name);
-			_fs = fileSystem;
-			return cb(null, _fs);
+			bFsInitialized = true;
+			return cb(null);
 		}
 		
 		function fail(evt) {
@@ -48,7 +48,7 @@ angular.module('copayApp.services')
 	
 	root.readFile = function(path, cb) {
 		if (isCordova) {
-			root.init(function(err, _fs) {
+			root.init(function() {
 				window.resolveLocalFileSystemURL(path, function(fileEntry) {
 					fileEntry.file(function(file) {
 						root.readFileFromForm(file, cb);
@@ -109,7 +109,7 @@ angular.module('copayApp.services')
 		}, cb);
 	}
 	
-	root.getListFilesAndFolders = function(path, cb) {
+	root.readdir = function(path, cb) {
 		if (isCordova) {
 			root.init(function() {
 				window.resolveLocalFileSystemURL(path,
