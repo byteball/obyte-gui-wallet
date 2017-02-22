@@ -430,6 +430,11 @@
 
     -->
     <div id="history" class="history tab-view">
+      <div ng-show="index.arrBalances.length > 1">
+        <h4 class="title m0" style="padding:0 10px;">
+            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
+        </h4>
+      </div>
       <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
         <div class="large-12 columns">
           <div class="oh text-center">
@@ -442,11 +447,6 @@
             </span>
           </div>
         </div>
-      </div>
-      <div ng-show="index.arrBalances.length > 1">
-        <h4 class="title m0" style="padding:0 10px;">
-            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
-        </h4>
       </div>
       <div class="row m20t text-center" ng-show="index.updatingTxHistory[index.walletId]">
         <div class="columns large-12 medium-12 small-12">
