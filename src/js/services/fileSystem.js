@@ -34,7 +34,7 @@ angular.module('copayApp.services')
 		if (isCordova) {
 			var reader = new FileReader();
 			reader.onloadend = function() {
-				var fileBuffer = new Buffer(new Uint8Array(this.result));
+				var fileBuffer = Buffer.from(new Uint8Array(this.result));
 				cb(null, fileBuffer);
 			};
 			reader.readAsArrayBuffer(file);

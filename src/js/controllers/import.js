@@ -86,7 +86,7 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function decrypt(buffer, password) {
-			password = new Buffer(password);
+			password = Buffer.from(password);
 			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
 			var arrChunks = [];
 			var CHUNK_LENGTH = 2003;
