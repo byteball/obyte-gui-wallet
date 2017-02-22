@@ -39,53 +39,54 @@ angular.module('copayApp.controllers').controller('importController',
 			var db = require('byteballcore/db');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			db.close(function() {
-			});
-			async.forEachOfSeries(zip.files, function(objFile, key, callback) {
-				if (key == 'profile') {
-					zip.file(key).async('string').then(function(data) {
-						storageService.storeProfile(Profile.fromString(data), callback);
-					});
-				}
-				else if (key == 'config') {
-					zip.file(key).async('string').then(function(data) {
-						storageService.storeConfig(data, callback);
-					});
-				}
-				else if (key == 'conf.json' && !isCordova) {
-					zip.file(key).async('string').then(function(data) {
-						fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
-					});
-				}
-				else if (/\.sqlite/.test(key)) {
-					zip.file(key).async('nodebuffer').then(function(data) {
-						if (isCordova) {
-							fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
-						}
-						else {
+				async.forEachOfSeries(zip.files, function(objFile, key, callback) {
+					if (key == 'profile') {
+						zip.file(key).async('string').then(function(data) {
+							storageService.storeProfile(Profile.fromString(data), callback);
+						});
+					}
+					else if (key == 'config') {
+						zip.file(key).async('string').then(function(data) {
+							storageService.storeConfig(data, callback);
+						});
+					}
+					else if (key == 'conf.json' && !isCordova) {
+						zip.file(key).async('string').then(function(data) {
 							fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
-						}
-					});
-				}
-				else {
-					callback();
-				}
-			}, function(err) {
-				if (err) return cb(err);
-				if (!isCordova && zip.file('light') && !zip.file('conf.json')) {
-					fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), cb);
-				}
-				else if (!isCordova && !zip.file('light') && conf.bLight) {
-					var _conf = require(dbDirPath + 'conf.json');
-					_conf.bLight = false;
-					fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), cb);
-				}
-				else {
-					return cb();
-				}
+						});
+					}
+					else if (/\.sqlite/.test(key)) {
+						zip.file(key).async('nodebuffer').then(function(data) {
+							if (isCordova) {
+								fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
+							}
+							else {
+								fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
+							}
+						});
+					}
+					else {
+						callback();
+					}
+				}, function(err) {
+					if (err) return cb(err);
+					if (!isCordova && zip.file('light') && !zip.file('conf.json')) {
+						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), cb);
+					}
+					else if (!isCordova && !zip.file('light') && conf.bLight) {
+						var _conf = require(dbDirPath + 'conf.json');
+						_conf.bLight = false;
+						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), cb);
+					}
+					else {
+						return cb();
+					}
+				});
 			});
 		}
 		
 		function decrypt(buffer, password) {
+			password = new Buffer(password);
 			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
 			var arrChunks = [];
 			var CHUNK_LENGTH = 2003;
