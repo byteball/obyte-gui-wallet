@@ -200,7 +200,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return amount + ' of ' + asset;
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, bWithLinks){
 		function parse(arrSubdefinition){
 			var op = arrSubdefinition[0];
 			var args = arrSubdefinition[1];
@@ -214,6 +214,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'cosigned by':
 					var address = args;
 					return 'co-signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
+				case 'not':
+					return '<span class="size-18">not</span>'+parseAndIndent(args);
 				case 'or':
 				case 'and':
 					return args.map(parseAndIndent).join('<span class="size-18">'+op+'</span>');
@@ -234,6 +236,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
+					return JSON.stringify(arrSubdefinition);
+				case 'seen':
+					if (args.what === 'output' && args.asset && args.amount && args.address){
+						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
+						var dest_address = (bOwnAddress ? 'you' : args.address);
+						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+					}
 					return JSON.stringify(arrSubdefinition);
 
 				default:
