@@ -658,19 +658,24 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return self.setSendError(gettext(msg));
     }
 
+	var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+	console.log("asset "+asset);
+	var address = form.address.$modelValue;
+	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+	var amount = form.amount.$modelValue;
+	if (asset === "base")
+		amount *= unitValue;
+	if (asset === constants.BLACKBYTES_ASSET)
+		amount *= bbUnitValue;
+	amount = Math.round(amount);
+
+	var current_payment_key = ''+asset+address+amount;
+	if (current_payment_key === self.current_payment_key)
+		return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
+	self.current_payment_key = current_payment_key;
+	  
     //self.setOngoingProcess(gettext('Creating transaction'));
     $timeout(function() {
-
-        var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
-        console.log("asset "+asset);
-        var address = form.address.$modelValue;
-        var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
-        var amount = form.amount.$modelValue;
-        if (asset === "base")
-            amount *= unitValue;
-        if (asset === constants.BLACKBYTES_ASSET)
-            amount *= bbUnitValue;
-		amount = Math.round(amount);
 
         profileService.requestTouchid(function(err) {
             if (err) {
@@ -678,6 +683,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
                 //self.setOngoingProcess();
                 self.error = err;
                 $timeout(function() {
+					delete self.current_payment_key;
                     $scope.$digest();
                 }, 1);
                 return;
@@ -716,7 +722,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					}
 				};
 				walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
-					ifError: self.setSendError,
+					ifError: function(err){
+						delete self.current_payment_key;
+						self.setSendError(err);
+					},
 					ifOk: function(shared_address){
 						composeAndSend(shared_address);
 					}
@@ -735,14 +744,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					});
 				else if (fc.credentials.n === 1 && indexScope.shared_address) // require only our signature (fix it)
 					arrSigningDeviceAddresses = [indexScope.copayers[0].device_address];
-				var current_payment_key = ''+asset+address+amount;
-				if (current_payment_key === self.current_payment_key){
-					$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
-					return;
-				}
 				breadcrumbs.add('sending payment in '+asset);
 				profileService.bKeepUnlocked = true;
-				self.current_payment_key = current_payment_key;
 				var opts = {
 					shared_address: indexScope.shared_address,
 					asset: asset,
