@@ -3,7 +3,6 @@
 var constants = require('byteballcore/constants.js');
 var eventBus = require('byteballcore/event_bus.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
-var TIMESTAMPER_ADDRESS = 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
 
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList) {
 
@@ -34,6 +33,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.addr = {};
   this.isTestnet = constants.version.match(/t$/);
   this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
+  var TIMESTAMPER_ADDRESS = this.isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
