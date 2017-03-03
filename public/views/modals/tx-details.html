@@ -54,6 +54,11 @@
 	  <div class="right small-10 columns enable_text_select ellipsis"><div ng-repeat="address in btx.arrPayerAddresses" class="right">{{address}}</div></div>
     </li>
 
+    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
+      <div class="text-gray small-2 columns"><span translate>To</span>:</div>
+	  <div class="right small-10 columns enable_text_select ellipsis"><div class="right">{{btx.my_address}}</div></div>
+    </li>
+
     <div class="line-b" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
       ng-repeat="output in btx.outputs"
       ng-include="'views/includes/output.html'">
