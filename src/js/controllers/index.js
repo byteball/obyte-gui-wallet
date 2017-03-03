@@ -322,8 +322,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 return unlock();
             }
             
-            walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddresses){
+            walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddressInfos){
                 var arrAuthorAddresses = objUnit.authors.map(function(author){ return author.address; });
+				var arrChangeAddresses = arrChangeAddressInfos.map(function(info){ return info.address; });
                 arrChangeAddresses = arrChangeAddresses.concat(arrAuthorAddresses);
                 var arrPaymentMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "payment"); });
                 if (arrPaymentMessages.length === 0)
