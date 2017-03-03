@@ -288,8 +288,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	  var walletGeneral = require('byteballcore/wallet_general.js');
 	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 	  walletGeneral.readMyAddresses(function(arrMyAddresses){
-		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition){
+		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts){
 			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], true);
+			  $scope.creation_ts = creation_ts;
 			  $scope.$apply();
 		  });
 	  });
@@ -691,44 +692,52 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			
 			var device = require('byteballcore/device.js');
 			if (self.binding){
-				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-				var my_address = self.addr[fc.credentials.walletId];
-				if (!my_address)
-					throw Error('my address not known');
 				if (!recipient_device_address)
 					throw Error('recipient device address not known');
-				var arrSeenCondition = ['seen', {what: 'output', address: my_address, asset: self.binding.reverseAsset, amount: self.binding.reverseAmount}];
-				var arrDefinition = ['or', [
-					['and', [
-						['address', address],
-						arrSeenCondition
-					]],
-					['and', [
-						['address', my_address],
-						['not', arrSeenCondition],
-						['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
-					]]
-				]];
-				var assocSignersByPath = {
-					'r.0.0': {
-						address: address,
-						member_signing_path: 'r',
-						device_address: recipient_device_address
-					},
-					'r.1.0': {
-						address: my_address,
-						member_signing_path: 'r',
-						device_address: device.getMyDeviceAddress()
-					}
-				};
-				walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
-					ifError: function(err){
-						delete self.current_payment_key;
-						self.setSendError(err);
-					},
-					ifOk: function(shared_address){
-						composeAndSend(shared_address);
-					}
+				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+				var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+				var my_address;
+				// never reuse addresses as the required output could be already present
+				walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
+					my_address = addressInfo.address;
+					var arrSeenCondition = ['seen', {
+						what: 'output', 
+						address: my_address, 
+						asset: self.binding.reverseAsset, 
+						amount: self.binding.reverseAmount
+					}];
+					var arrDefinition = ['or', [
+						['and', [
+							['address', address],
+							arrSeenCondition
+						]],
+						['and', [
+							['address', my_address],
+							['not', arrSeenCondition],
+							['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
+						]]
+					]];
+					var assocSignersByPath = {
+						'r.0.0': {
+							address: address,
+							member_signing_path: 'r',
+							device_address: recipient_device_address
+						},
+						'r.1.0': {
+							address: my_address,
+							member_signing_path: 'r',
+							device_address: device.getMyDeviceAddress()
+						}
+					};
+					walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
+						ifError: function(err){
+							delete self.current_payment_key;
+							self.setSendError(err);
+						},
+						ifOk: function(shared_address){
+							composeAndSend(shared_address);
+						}
+					});
 				});
 			}
 			else
@@ -742,8 +751,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 						if (copayer.me || copayer.signs)
 							arrSigningDeviceAddresses.push(copayer.device_address);
 					});
-				else if (fc.credentials.n === 1 && indexScope.shared_address) // require only our signature (fix it)
-					arrSigningDeviceAddresses = [indexScope.copayers[0].device_address];
+				else if (indexScope.shared_address)
+					arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 				breadcrumbs.add('sending payment in '+asset);
 				profileService.bKeepUnlocked = true;
 				var opts = {
@@ -774,6 +783,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					if (recipient_device_address){ // show payment in chat window
 						eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset);
 						if (binding && binding.reverseAmount){ // create a request for reverse payment
+							if (!my_address)
+								throw Error('my address not known');
 							var paymentRequestCode = 'byteball:'+my_address+'?amount='+binding.reverseAmount+'&asset='+encodeURIComponent(binding.reverseAsset);
 							var paymentRequestText = '[reverse payment]('+paymentRequestCode+')';
 							device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
