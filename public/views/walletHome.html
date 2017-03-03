@@ -140,7 +140,7 @@
               <p class="m0">
               {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
               </p>
-              <div class="size-12 text-gray">
+              <div class="size-12 text-gray" ng-if="!index.shared_address">
                 <span ng-include="'views/includes/walletInfo.html'"></span>
               </div>
           </div>
