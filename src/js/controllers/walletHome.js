@@ -789,6 +789,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 							var paymentRequestText = '[reverse payment]('+paymentRequestCode+')';
 							device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
 							correspondentListService.messageEventsByCorrespondent[recipient_device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							// issue next address to avoid reusing the reverse payment address
+							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
 						}
 					}
 					else // redirect to history
