@@ -275,7 +275,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     // if there are more than one addresses to sign from, we won't pop up confirmation dialog for each address, instead we'll use the already obtained approval
     var assocChoicesByUnit = {};
 
-    eventBus.on("signing_request", function(objAddress, objUnit, assocPrivatePayloads, from_address, signing_path){
+	// objAddress is local wallet address, top_address is the address that requested the signature, 
+	// it may be different from objAddress if it is a shared address
+    eventBus.on("signing_request", function(objAddress, top_address, objUnit, assocPrivatePayloads, from_address, signing_path){
         
         function createAndSendSignature(){
             var coin = "0";
@@ -296,13 +298,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             console.log("priv key buf:", privKeyBuf);
             var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
             var signature = ecdsaSig.sign(buf_to_sign, privKeyBuf);
-            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, objAddress.address);
+            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
             console.log("sent signature "+signature);
         }
         
         function refuseSignature(){
             var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
-            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, objAddress.address);
+            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, top_address);
             console.log("refused signature");
         }
         
@@ -326,6 +328,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 var arrAuthorAddresses = objUnit.authors.map(function(author){ return author.address; });
 				var arrChangeAddresses = arrChangeAddressInfos.map(function(info){ return info.address; });
                 arrChangeAddresses = arrChangeAddresses.concat(arrAuthorAddresses);
+				arrChangeAddresses.push(top_address);
                 var arrPaymentMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "payment"); });
                 if (arrPaymentMessages.length === 0)
                     throw Error("no payment message found");
