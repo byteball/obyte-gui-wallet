@@ -537,12 +537,7 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 		opts.change_address = opts.shared_address;
 		if (opts.asset && opts.asset !== 'base')
 			opts.fee_paying_wallet = self.credentials.walletId;
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-		walletDefinedByAddresses.readRequiredCosigners(opts.shared_address, opts.arrSigningDeviceAddresses, function(arrSigningAddresses){
-			if (arrSigningAddresses.length > 0)
-				opts.signing_addresses = arrSigningAddresses;
-			Wallet.sendMultiPayment(opts, cb);
-		});
+		Wallet.sendMultiPayment(opts, cb);
 	}
 	else{
 		// create a new change address or select first unused one
