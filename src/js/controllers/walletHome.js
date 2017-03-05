@@ -869,7 +869,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				$scope.binding.reverseAmount = getAmountInDisplayUnits(self.binding.reverseAmount, self.binding.reverseAsset);
 			}
 			else{
-				$scope.binding.timeout = 24;
+				$scope.binding.timeout = 4;
 				$scope.binding.reverseAsset = 'base';
 			}
 			
