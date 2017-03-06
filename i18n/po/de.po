@@ -246,6 +246,7 @@ msgstr "Zahlung übermitteln"
 msgid "Broadcasting Payment"
 msgstr "Übermittlung der Zahlung"
 
+
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
 msgstr "Übermittlung der Transaktion"
@@ -343,7 +344,7 @@ msgstr "Copayer Datenkonflikt"
 
 #: public/views/preferencesInformation.html
 msgid "Copayers"
-msgstr "Byteballers"
+msgstr "Cosigners"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
