@@ -12,6 +12,8 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 
 	$scope.state = $state;
 
+	$scope.hideRemove = true;
+
 	var listScrollTop = 0;
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
@@ -63,19 +65,28 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	
 
 	$scope.remove = function(addr) {
-		throw Error("unimplemented");
-		$scope.error = null;
-		$timeout(function() {
-		  correspondentListService.remove(addr, function(err, ab) {
-			if (err) {
-			  $scope.error = err;
-			  return;
-			}
-			$rootScope.$emit('Local/CorrespondentListUpdated', ab);
-			$scope.list = ab;
-			$scope.$digest();
-		  });
-		}, 100);
+		var device = require('byteballcore/device.js');
+		device.removeCorrespondentDevice(addr, function() {
+			$scope.hideRemove = true;
+			$scope.readList();
+			$rootScope.$emit('Local/SetTab', 'chat', true);
+			setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+		});
+
+		// previous version
+		// throw Error("unimplemented");
+		// $scope.error = null;
+		// $timeout(function() {
+		//   correspondentListService.remove(addr, function(err, ab) {
+		// 	if (err) {
+		// 	  $scope.error = err;
+		// 	  return;
+		// 	}
+		// 	$rootScope.$emit('Local/CorrespondentListUpdated', ab);
+		// 	$scope.list = ab;
+		// 	$scope.$digest();
+		//   });
+		// }, 100);
 	};
 
 	$scope.cancel = function() {
