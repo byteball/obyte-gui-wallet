@@ -1,3 +1,4 @@
+
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,23 +42,23 @@ msgstr "{{len}} Wallets importiert. Beträge werden gescannt. Bitte auf die Aktu
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Copayer unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
+msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Byteballer ihn unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
 
 #: public/views/disclaimer.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
-msgstr "<b>WENN DER ZUGRIFF AUF DAS COPAY WALLET ODER DEN VERSCHLÜSSELTEN PRIVATEN SCHLÜSSELN VERLOREN GEHT UND KEINE SICHERUNG DES WALLETS UND KORRESPONDIERENDEM PASSWORT EXISTIERT, DANN WIRD BESTÄTIGT UND AKZEPTIERT, DASS AUF ALLE MIT DIESEM WALLET VERBUNDENEN BITCOIN KEIN ZUGRIFF MEHR MÖGLICH IST.</b>"
+msgstr "<b>WENN DER ZUGRIFF AUF DAS BYTEBALL WALLET ODER DEN VERSCHLÜSSELTEN PRIVATEN SCHLÜSSELN VERLOREN GEHT UND KEINE SICHERUNG DES WALLETS UND KORRESPONDIERENDEM PASSWORT EXISTIERT, DANN WIRD BESTÄTIGT UND AKZEPTIERT, DASS AUF ALLE MIT DIESEM WALLET VERBUNDENEN BITCOIN KEIN ZUGRIFF MEHR MÖGLICH IST.</b>"
 
 #: public/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
-msgstr "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Wallet-Seeds (z.B. für ein 3-5 Wallet: 1 Exportdatei + 2 Wallet-Seeds eines anderen Copayers)."
+msgstr "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Wallet-Seeds (z.B. für ein 3-5 Wallet: 1 Exportdatei + 2 Wallet-Seeds eines anderen Anwenders)."
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Copayer des Wallets"
+msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Anwender dises Wallets"
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Copayer des Wallets"
+msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender dises Wallets"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
@@ -65,7 +66,7 @@ msgstr "Ein Bitcoin Wallet mit Mehrfachunterschriften"
 
 #: public/views/preferences.html
 msgid "About Copay"
-msgstr "Über Copay"
+msgstr "Über Byteball"
 
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
@@ -136,7 +137,7 @@ msgstr "Alias für <i>{{index.walletName}}</i>"
 
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
-msgstr "Alle Beiträge zur Übersetzung von Copay sind willkommen. Melde Dich bei crowdin.com an verbinde Dich mit dem Copay-Projekt über"
+msgstr "Alle Beiträge zur Übersetzung von Byteball sind willkommen. "
 
 #: public/views/disclaimer.html
 msgid "All transaction requests are irreversible."
@@ -330,11 +331,11 @@ msgstr "Verbindung zum {{join.hwWallet}} Wallet..."
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
-msgstr "Copayer nimmt bereits teil"
+msgstr "Dieser Byteballer nimmt bereits teil"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
-msgstr "Copayer hat schon für diesen Zahlungsvorschlag angestimmt"
+msgstr "Dieser Byteballer hat schon für diesen Zahlungsvorschlag angestimmt"
 
 #: src/js/services/bwsError.js
 msgid "Copayer data mismatch"
@@ -342,7 +343,7 @@ msgstr "Copayer Datenkonflikt"
 
 #: public/views/preferencesInformation.html
 msgid "Copayers"
-msgstr "Copayer"
+msgstr "Byteballers"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
@@ -711,7 +712,7 @@ msgstr "Hardware-Wallet"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
-msgstr "Ist eine Copay v0.9 Sicherung vorhanden"
+msgstr "Ist eine Byteball Sicherung vorhanden"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -813,7 +814,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
-msgstr "Einladung zum Copay-Wallet teilen"
+msgstr "Einladung zum Byteball-Wallet teilen"
 
 #: public/views/translators.html
 msgid "Italian"
@@ -834,7 +835,7 @@ msgstr "Teilnehmen"
 
 #: src/js/controllers/copayers.js
 msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
-msgstr "Copay Wallet beitreten. Hier ist der Einladungscode: {{secret}} Die Desktopversion oder die App fürs Handy kann auf https://copay.io heruntergeladen werden"
+msgstr "Einen Byteball Wallet beitreten. Hier ist der Einladungscode: {{secret}} Die Desktopversion oder die App fürs Handy kann auf https://github.com/byteball/byteball/releases heruntergeladen werden"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -862,7 +863,7 @@ msgstr "Letzte Wallet-Adressen"
 
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
-msgstr "Erfahren Sie mehr über Copay-Sicherungen"
+msgstr "Erfahren Sie mehr über die Byteball-Sicherungen"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
@@ -913,7 +914,7 @@ msgstr "Nachricht"
 
 #: public/views/walletHome.html
 msgid "Moved"
-msgstr "Verschoben"
+msgstr "EigenTX"
 
 #: public/views/join.html
 msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
@@ -1058,11 +1059,11 @@ msgstr "Zahlungsvorschlag abgelehnt"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected by Copayer"
-msgstr "Zahlungsvorschlag wurde vom Copayer abgelehnt"
+msgstr "Zahlungsvorschlag wurde vom Anwender abgelehnt"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
-msgstr "Zahlungsvorschlag wurde vom Copayer abgezeichnet"
+msgstr "Zahlungsvorschlag wurde vom Anwender abgezeichnet"
 
 #: public/views/walletHome.html
 msgid "Payment Proposals"
@@ -1130,7 +1131,7 @@ msgstr "Bitte geben Sie den Wallet-Seed ein"
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
-msgstr "Bitte Copay aktualisieren, um diese Aktion auszuführen"
+msgstr "Bitte Byteball aktualisieren, um diese Aktion auszuführen"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -1162,11 +1163,11 @@ msgstr "QR-Scanner"
 
 #: src/js/controllers/index.js
 msgid "Receive"
-msgstr "Empfangen"
+msgstr "Erhalten"
 
 #: public/views/walletHome.html
 msgid "Received"
-msgstr "Empfangen"
+msgstr "Erhalten"
 
 #: public/views/includes/transaction.html
 #: public/views/modals/tx-details.html
@@ -1374,7 +1375,7 @@ msgstr "Einladung teilen"
 
 #: public/views/copayers.html
 msgid "Share this invitation with your copayers"
-msgstr "Einladung mit Copayern teilen"
+msgstr "Einladung mit anderen Anwendern teilen"
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
@@ -1565,7 +1566,7 @@ msgstr "Ingesamt gesperrter Gesamtsaldo"
 
 #: public/views/create.html
 msgid "Total number of copayers"
-msgstr "Gesamtanzahl der Copayer"
+msgstr "Gesamtanzahl der Byteballer"
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
@@ -1606,7 +1607,7 @@ msgstr "Unbestätigt"
 
 #: public/views/preferences.html
 msgid "Unit"
-msgstr "Währungseinheit"
+msgstr "Währung"
 
 #: public/views/walletHome.html
 msgid "Unsent transactions"
@@ -1635,7 +1636,7 @@ msgstr "Ansicht"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
-msgstr "Warte auf copayer"
+msgstr "Warte auf Anwender"
 
 #: public/views/copayers.html
 msgid "Waiting..."
@@ -1787,7 +1788,7 @@ msgstr "Wir behalten uns das Recht vor, diese Erklärung von Zeit zu Zeit zu än
 
 #: public/views/splash.html
 msgid "WELCOME TO COPAY"
-msgstr "Willkommen bei COPAY"
+msgstr "Willkommen bei Byteball"
 
 #: public/views/disclaimer.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
