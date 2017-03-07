@@ -1,4 +1,3 @@
-
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +61,7 @@ msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender dises Wallets"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
-msgstr "Ein Bitcoin Wallet mit Mehrfachunterschriften"
+msgstr "Ein Byteball- Wallet mit Mehrfachunterschriften"
 
 #: public/views/preferences.html
 msgid "About Copay"
@@ -84,11 +83,11 @@ msgstr ""
 #: public/views/create.html
 #: public/views/import.html
 msgid "Account Number"
-msgstr ""
+msgstr "Acount Nummer"
 
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
-msgstr ""
+msgstr "Neuen Eintrag hinzufügen"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -117,7 +116,7 @@ msgstr "Adresstyp"
 
 #: public/views/modals/destination-address.html
 msgid "Addressbook"
-msgstr ""
+msgstr "Adressbuch"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -220,23 +219,23 @@ msgstr "Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schl
 #: public/views/import.html
 #: public/views/join.html
 msgid "BIP32 path for address derivation"
-msgstr ""
+msgstr "BIP32 Pfad für Adressableitung"
 
 #: public/views/walletHome.html
 msgid "Bitcoin address"
-msgstr "Bitcoinadresse"
+msgstr "Byteballadresse"
 
 #: public/views/preferences.html
 msgid "Bitcoin Network Fee Policy"
-msgstr "Bitcoin-Netzwerk Gebührenübersicht"
+msgstr "Byteball-Netzwerk Gebührenübersicht"
 
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
-msgstr "Für Bitcoin-Transaktionen können Gebühren hinzugefügt werden. Transaktionen mit höheren Gebühren werden meist schneller verarbeitet und bestätigt. Die tatsächlichen Gebühren werden anhand der Netzwerklast und der ausgewählte Richtlinie bestimmt."
+msgstr "Für Byteball-Transaktionen können Gebühren hinzugefügt werden. Transaktionen mit höheren Gebühren werden meist schneller verarbeitet und bestätigt. Die tatsächlichen Gebühren werden anhand der Netzwerklast und der ausgewählte Richtlinie bestimmt."
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Bitcoin URI ist NICHT gültig!"
+msgstr "Byteball URI ist NICHT gültig!"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -336,15 +335,15 @@ msgstr "Dieser Byteballer nimmt bereits teil"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
-msgstr "Dieser Byteballer hat schon für diesen Zahlungsvorschlag angestimmt"
+msgstr "Dieser Anwender hat schon für diesen Zahlungsvorschlag abgestimmt"
 
 #: src/js/services/bwsError.js
 msgid "Copayer data mismatch"
-msgstr "Copayer Datenkonflikt"
+msgstr "Byteball Datenkonflikt"
 
 #: public/views/preferencesInformation.html
 msgid "Copayers"
-msgstr "Cosigners"
+msgstr "Mitunterzeichner"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
