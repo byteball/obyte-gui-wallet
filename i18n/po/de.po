@@ -41,7 +41,7 @@ msgstr "{{len}} Wallets importiert. Beträge werden gescannt. Bitte auf die Aktu
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Byteballer ihn unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
+msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Anwender ihn unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
 
 #: public/views/disclaimer.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
@@ -331,7 +331,7 @@ msgstr "Verbindung zum {{join.hwWallet}} Wallet..."
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
-msgstr "Dieser Byteballer nimmt bereits teil"
+msgstr "Dieser Anwender nimmt bereits teil"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
@@ -1567,7 +1567,7 @@ msgstr "Ingesamt gesperrter Gesamtsaldo"
 
 #: public/views/create.html
 msgid "Total number of copayers"
-msgstr "Gesamtanzahl der Byteballer"
+msgstr "Gesamtanzahl der Anwender"
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
@@ -1871,4 +1871,3 @@ msgstr "Wallet-Seed"
 #: public/views/backup.html
 msgid "Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
 msgstr "Das Wallet und der Zugriff auf den Server, die die Erzeugung des ersten Wallets steuern. Es werden noch {{index.m}} Schlüssel benötigt."
-
