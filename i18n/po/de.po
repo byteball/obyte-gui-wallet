@@ -53,11 +53,11 @@ msgstr "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Walle
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Anwender dises Wallets"
+msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Anwender des Wallets"
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender dises Wallets"
+msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender des Wallets"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
