@@ -78,7 +78,7 @@ msgstr "Akzeptieren"
 #: public/views/join.html
 #: public/views/preferencesInformation.html
 msgid "Account"
-msgstr ""
+msgstr "Acount"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -287,7 +287,7 @@ msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
 
 #: public/views/preferencesInformation.html
 msgid "Clear history"
-msgstr ""
+msgstr "Lösche Historie"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
@@ -425,7 +425,7 @@ msgstr "Beteiligung am Wallet nicht möglich"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
-msgstr "Es konnte kein gültiger Bitcoin-QR-Code erkannt werden"
+msgstr "Es konnte kein gültiger Byteball-QR-Code erkannt werden"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment"
@@ -513,7 +513,7 @@ msgstr "Zahlung löschen"
 #: public/views/import.html
 #: public/views/join.html
 msgid "Derivation Path"
-msgstr ""
+msgstr "Ableitungspfad"
 
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
@@ -540,7 +540,7 @@ msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support 
 
 #: public/views/modals/destination-address.html
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #: public/views/export.html
 msgid "Download"
@@ -556,7 +556,7 @@ msgstr "Wirtschaftlich"
 
 #: public/views/modals/destination-address.html
 msgid "Edit"
-msgstr ""
+msgstr "Ändern"
 
 #: public/views/importLegacy.html
 msgid "Email"
@@ -572,7 +572,7 @@ msgstr "Benachrichtigunen per E-Mail"
 
 #: src/js/services/bwsError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr ""
+msgstr "Leere Adressengrenze erreicht. Neue Adressen können nicht generiert werden."
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -610,7 +610,7 @@ msgstr "Export-Optionen"
 
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
-msgstr ""
+msgstr "Exportiere Wallet"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -778,7 +778,8 @@ msgstr "Falsche Netzwerk-Adresse"
 #: public/views/walletHome.html
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
-msgstr ""
+msgstr "Die anfängliche Transaktionsverlaufs-Synchronisation kann einige Minuten für Geldbörsen mit vielen Transaktionen in Anspruch nehmen.<br>\n"
+"          Bitte warten."
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
@@ -796,7 +797,7 @@ msgstr "Ungültig"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid account number"
-msgstr ""
+msgstr "Ungültige Acountnummer"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
@@ -806,11 +807,11 @@ msgstr "Ungültige Adresse"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid derivation path"
-msgstr ""
+msgstr "Ungültiger Ableitungspfad"
 
 #: src/js/controllers/index.js
 msgid "Invalid Touch ID"
-msgstr ""
+msgstr "Ungültige Touch ID"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
@@ -851,7 +852,7 @@ msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
 
 #: public/views/modals/destination-address.html
 msgid "Label"
-msgstr ""
+msgstr "Adresse"
 
 #: public/views/preferences.html
 msgid "Language"
@@ -939,11 +940,11 @@ msgstr "Neue Zahlungsvorschlag"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "New Random Seed"
-msgstr ""
+msgstr "Neue Zufalls-Seed"
 
 #: public/views/import.html
 msgid "No hardware wallets supported on this device"
-msgstr ""
+msgstr "Es werde keine Hardware-Brieftaschen auf diesem Gerät unterstützt"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -998,7 +999,7 @@ msgstr "Teilnehmer"
 #: public/views/import.html
 #: public/views/paperWallet.html
 msgid "Passphrase"
-msgstr "Passphrase"
+msgstr "Passwort"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -1215,7 +1216,7 @@ msgstr "Einen bestimmten Betrag anfordern"
 
 #: public/views/preferences.html
 msgid "Request Password"
-msgstr ""
+msgstr "Kennwort abfragen"
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1254,7 +1255,7 @@ msgstr "Adresse auf neue Beträge überprüfen"
 
 #: public/views/preferences.html
 msgid "Scan Fingerprint"
-msgstr ""
+msgstr "Scanne Fingerabdruck"
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -1270,7 +1271,7 @@ msgstr "Prüfe Beträge des Wallets"
 
 #: src/js/controllers/index.js
 msgid "Scan your fingerprint please"
-msgstr ""
+msgstr "Scanne bitte deinen Fingerabdruck"
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
@@ -1313,7 +1314,7 @@ msgstr "Senden"
 
 #: public/views/preferencesInformation.html
 msgid "Send addresses by email"
-msgstr ""
+msgstr "Sende Adresse per Email"
 
 #: public/views/walletHome.html
 msgid "Send All"
@@ -1350,7 +1351,7 @@ msgstr "EINRICHTEN"
 
 #: public/views/preferencesBwsUrl.html
 msgid "Set default url"
-msgstr ""
+msgstr "Setze Default Adresse"
 
 #: public/views/export.html
 msgid "Set up a Export Password"
@@ -1395,7 +1396,7 @@ msgstr "Erweiterte Optionen anzeigen"
 
 #: public/views/walletHome.html
 msgid "Show all"
-msgstr ""
+msgstr "Zeige alles"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1420,7 +1421,7 @@ msgstr "Español"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Specify Seed..."
-msgstr ""
+msgstr "Spezifischer Seed"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1432,7 +1433,7 @@ msgstr "Zahlungsvorschlag wurde nicht gefunden"
 
 #: public/views/preferences.html
 msgid "Spending Restrictions"
-msgstr ""
+msgstr "Ausgabenbeschränkungen"
 
 #: public/views/preferences.html
 msgid "Still not done"
@@ -1468,7 +1469,7 @@ msgstr "Testnet"
 
 #: public/views/disclaimer.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
-msgstr "Die Autoren der Software, Mitarbeiter und Partner von Bitpay, Inhaber von Urheberrechten und BitPay, Inc. können nicht Ihre privaten Schlüssel oder Kennwörter abrufen, wenn diese verloren gehen oder vergessen werden und können die Durchführung von Transaktionen, auch nach Bestätigungen, nicht garantieren, da sie keine Kontrolle über das Bitcoin-Netzwerk haben."
+msgstr "Die Autoren der Software, Mitarbeiter und Partner von Byteball können nicht Ihre privaten Schlüssel oder Kennwörter abrufen, wenn diese verloren gehen oder vergessen werden und können die Durchführung von Transaktionen, auch nach Bestätigungen, nicht garantieren, da sie keine Kontrolle über das Byteball-Netzwerk haben."
 
 #: src/js/services/ledger.js
 msgid "The Ledger Chrome application is not installed"
@@ -1578,11 +1579,11 @@ msgstr "Transaktion wurde bereits übermittelt"
 
 #: public/views/preferencesInformation.html
 msgid "Transaction history"
-msgstr ""
+msgstr "Transaktions Übersicht"
 
 #: public/views/walletHome.html
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "Transaktionen<br> runtergeladen"
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1743,7 +1744,7 @@ msgstr "Wallet-Dienst nicht gefunden"
 
 #: public/views/modals/destination-address.html
 msgid "Wallets"
-msgstr ""
+msgstr "Brieftaschen"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
