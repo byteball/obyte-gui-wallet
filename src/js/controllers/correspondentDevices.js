@@ -67,8 +67,6 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				for (var i = 0; i < length; i++) {
  				 	corrDev = ab[i];
 
-				 	corrDev.name = 'x' + corrDev.name;
-  				 	
 				 	corrDevAddr = corrDev.device_address;
 					
 				 	var ix = arrNotRemovableDeviceAddresses.indexOf(corrDevAddr);
