@@ -88,19 +88,16 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	}
 
 	$scope.remove = function(addr) {
-<<<<<<< Updated upstream
-		var device = require('byteballcore/device.js');
-=======
 
 		var device = require('byteballcore/device.js');
 
 		// send message to paired device
+		// this must be done before removing the device
 		device.sendMessageToDevice(addr, "remove_paired_device",{
 			ifOk: function(){},
 			ifError: function(error){}}
 			);
 
->>>>>>> Stashed changes
 		device.removeCorrespondentDevice(addr, function() {
 			$scope.hideRemove = true;
 			$scope.readList();
@@ -108,12 +105,8 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 		});
 
-<<<<<<< Updated upstream
 		// previous version
 		// throw Error("unimplemented");
-=======
-		//throw Error("unimplemented");
->>>>>>> Stashed changes
 		// $scope.error = null;
 		// $timeout(function() {
 		//   correspondentListService.remove(addr, function(err, ab) {
