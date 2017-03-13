@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go) {
+  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
+		var constants = require('byteballcore/constants.js');
     var fc = profileService.focusedClient;
     var c = fc.credentials;
 
     this.init = function() {
       var basePath = c.getBaseAddressDerivationPath(); 
+			var config = configService.getSync().wallet.settings;
 
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;
@@ -39,7 +41,33 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         });
 
       });
+	
+			fc.getListOfBalancesOnAddresses(function(listBalances) {
+				listBalances = listBalances.map(function(row) {
+					if(row.asset == 'base' || row.asset == constants.BLACKBYTES_ASSET){
+						var assetName = row.asset !== "base" ? 'blackbytes' : 'base';
+						var unitName = row.asset !== "base" ? config.bbUnitName : config.unitName;
+						row.amount = profileService.formatAmount(row.amount, assetName) + ' ' + unitName;
+						return row;
+					}else{
+						return row;
+					}
+				});
+				//groupBy address
+				listBalances = listBalances.reduce(function(rv, x) {
+					(rv[x['address']] = rv[x['address']] || []).push(x);
+					return rv;
+				}, {});
+				$scope.listBalances = listBalances;
+				$timeout(function() {
+					$scope.$apply();
+				});
+			});
     };
+	
+		$scope.bShowListBalances = function() {
+			return !!Object.keys($scope.listBalances || {}).length;
+		};
 
     this.sendAddrs = function() {
       var self = this;

@@ -102,6 +102,20 @@
           </div>
       </li>
 
+      <ul class="no-bullet m0 size-14" ng-show="bShowListBalances()">
+        <div>
+          <h4 class="title m0" translate>Balance By Address</h4>
+          <li class="line-b p20 oh"  ng-repeat="(key, value) in listBalances">
+            <div class="enable_text_select ellipsis">
+              {{key}}
+            </div>
+            <div class="text-gray text-right" ng-repeat="row in value">
+              {{row.amount}}
+            </div>
+          </li>
+        </div>
+      </ul>
+
       <li class="line-b p20" ng-show="index.isCordova">
           <button class="black round small expand" 
             ng-style="{'background-color':index.backgroundColor}" 
@@ -111,21 +125,7 @@
             <span translate>Send addresses by email</span>
           </button>
       </li>
-    </ul>
-
-    <ul class="no-bullet m0 size-14" ng-show="index.balanceByAddress">
-      <div ng-if="index.balanceByAddress[0]">
-        <h4 class="title m0" translate>Balance By Address</h4>
-        <li class="line-b p20 oh"  ng-repeat="a in index.balanceByAddress">
-          <div class="enable_text_select ellipsis">
-            {{a.address}} 
-          </div>
-          <div class="text-gray text-right">
-            {{a.amount}} bytes 
-          </div>
-        </li>
-      </div>
-    </ul>
+    </ul>   
 
     <!--ul class="no-bullet m0 size-14">
       <h4 class="title m0" translate>Transaction history</h4>
