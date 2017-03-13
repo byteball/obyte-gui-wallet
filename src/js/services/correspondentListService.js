@@ -309,6 +309,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		  cb(null, arrCorrespondents);
 	  });
 	};
+
+	root.readNotRemovableDevices = function(cb) {
+		// load devices used in multisig wallets
+	  device.readDeviceAddressesUsedInMultisigWallets(function(rows){
+		
+		var arrAddresses = [];
+		for (var i = 0; i < rows.length; i++) {
+		
+			a = rows[i].device_address;
+			arrAddresses.push(a);
+		}
+
+		  cb(null, arrAddresses);
+	  });
+	};
 	
 	root.startWaitingForPairing = function(cb){
 		device.startWaitingForPairing(function(pairingInfo){

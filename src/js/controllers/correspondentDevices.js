@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 	    }
 	});
-	
+
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
@@ -58,14 +58,49 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				$scope.error = err;
 				return;
 			}
+
+			correspondentListService.readNotRemovableDevices(function(err, arrNotRemovableDeviceAddresses) {
+
+				// add a new property indicating whether the device can be removed or not
+				
+				var length = ab.length;
+				for (var i = 0; i < length; i++) {
+ 				 	corrDev = ab[i];
+
+				 	corrDev.name = 'x' + corrDev.name;
+  				 	
+				 	corrDevAddr = corrDev.device_address;
+					
+				 	var ix = arrNotRemovableDeviceAddresses.indexOf(corrDevAddr);
+					
+					// device is removable when not in list
+				 	corrDev.removable = (ix == -1);
+				}
+			});
+		
 			$scope.list = ab;
 			$scope.$digest();
 		});
 	};
 	
+	$scope.hideRemoveButton = function(removable){
+		return $scope.hideRemove || !removable;
+	}
 
 	$scope.remove = function(addr) {
+<<<<<<< Updated upstream
 		var device = require('byteballcore/device.js');
+=======
+
+		var device = require('byteballcore/device.js');
+
+		// send message to paired device
+		device.sendMessageToDevice(addr, "remove_paired_device",{
+			ifOk: function(){},
+			ifError: function(error){}}
+			);
+
+>>>>>>> Stashed changes
 		device.removeCorrespondentDevice(addr, function() {
 			$scope.hideRemove = true;
 			$scope.readList();
@@ -73,8 +108,12 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 		});
 
+<<<<<<< Updated upstream
 		// previous version
 		// throw Error("unimplemented");
+=======
+		//throw Error("unimplemented");
+>>>>>>> Stashed changes
 		// $scope.error = null;
 		// $timeout(function() {
 		//   correspondentListService.remove(addr, function(err, ab) {
