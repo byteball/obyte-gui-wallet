@@ -42,8 +42,8 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 
       });
 	
-			fc.getListOfBalancesOnAddresses(function(listBalances) {
-				listBalances = listBalances.map(function(row) {
+			fc.getListOfBalancesOnAddresses(function(listOfBalances) {
+				listOfBalances = listOfBalances.map(function(row) {
 					if(row.asset == 'base' || row.asset == constants.BLACKBYTES_ASSET){
 						var assetName = row.asset !== "base" ? 'blackbytes' : 'base';
 						var unitName = row.asset !== "base" ? config.bbUnitName : config.unitName;
@@ -54,11 +54,11 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 					}
 				});
 				//groupBy address
-				listBalances = listBalances.reduce(function(rv, x) {
-					(rv[x['address']] = rv[x['address']] || []).push(x);
-					return rv;
+				listOfBalances = listOfBalances.reduce(function(previousValue, currentValue) {
+					(previousValue[currentValue['address']] = previousValue[currentValue['address']] || []).push(currentValue);
+					return previousValue;
 				}, {});
-				$scope.listBalances = listBalances;
+				$scope.listOfBalances = listOfBalances;
 				$timeout(function() {
 					$scope.$apply();
 				});
