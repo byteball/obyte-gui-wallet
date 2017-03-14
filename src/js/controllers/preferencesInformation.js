@@ -54,11 +54,12 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 					}
 				});
 				//groupBy address
-				listOfBalances = listOfBalances.reduce(function(previousValue, currentValue) {
-					(previousValue[currentValue['address']] = previousValue[currentValue['address']] || []).push(currentValue);
-					return previousValue;
-				}, {});
-				$scope.listOfBalances = listOfBalances;
+				var assocListOfBalances = {};
+				listOfBalances.forEach(function(row) {
+					if(assocListOfBalances[row.address] === undefined) assocListOfBalances[row.address] = [];
+					assocListOfBalances[row.address].push(row);
+				});
+				$scope.assocListOfBalances = assocListOfBalances;
 				$timeout(function() {
 					$scope.$apply();
 				});
@@ -66,7 +67,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     };
 	
 		$scope.bShowListBalances = function() {
-			return !!Object.keys($scope.listBalances || {}).length;
+			return !!Object.keys($scope.assocListOfBalances || {}).length;
 		};
 
     this.sendAddrs = function() {
