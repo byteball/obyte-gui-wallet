@@ -28,7 +28,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			go.swipe();
 			root.menuOpened = false;
 		}
-		else if (location.hash == '#/') {
+		else if (location.hash == '#/' && arrHistory.length == 1) {
 			if (shownExitMessage) {
 				navigator.app.exitApp();
 			}
