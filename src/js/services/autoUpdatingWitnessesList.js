@@ -2,7 +2,7 @@
 
 
 angular.module('copayApp.services')
-.factory('autoUpdatingWitnessesList', function($timeout, $modal, configService){
+.factory('autoUpdatingWitnessesList', function($timeout, $modal, $rootScope, configService){
   var root = {};
 
   root.autoUpdate = true;
@@ -24,10 +24,13 @@ angular.module('copayApp.services')
           });
 
           if (root.addWitnesses.length != 0) {
-            $modal.open({
+						var modalInstance = $modal.open({
               templateUrl: 'views/modals/approveNewWitnesses.html',
               controller: 'approveNewWitnesses'
             });
+						$rootScope.$on('closeModal', function() {
+							modalInstance.dismiss('cancel');
+						});
           }
           if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
           root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);
