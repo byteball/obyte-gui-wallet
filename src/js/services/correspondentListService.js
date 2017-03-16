@@ -8,6 +8,7 @@ var objectHash = require('byteballcore/object_hash.js');
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
 	var root = {};
 	var device = require('byteballcore/device.js');
+	var wallet = require('byteballcore/wallet.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 
@@ -200,7 +201,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return amount + ' of ' + asset;
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, bWithLinks){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys){
 		function parse(arrSubdefinition){
 			var op = arrSubdefinition[0];
 			var args = arrSubdefinition[1];
@@ -214,8 +215,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'cosigned by':
 					var address = args;
 					return 'co-signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
-				case 'not':
-					return '<span class="size-18">not</span>'+parseAndIndent(args);
 				case 'or':
 				case 'and':
 					return args.map(parseAndIndent).join('<span class="size-18">'+op+'</span>');
@@ -236,14 +235,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
-					return JSON.stringify(arrSubdefinition);
-				case 'seen':
-					if (args.what === 'output' && args.asset && args.amount && args.address){
-						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
-						var dest_address = (bOwnAddress ? 'you' : args.address);
-						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
-					}
 					return JSON.stringify(arrSubdefinition);
 
 				default:
@@ -291,7 +282,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.$digest();
 		});
 	});
+
+	 eventBus.on('remove_paired_device', function(device_address){
+		if ($state.is('correspondentDevices'))
+			return $state.reload(); // todo show popup after refreshing the list
+		if (!$state.is('correspondentDevices.correspondentDevice'))
+		 	return;
+		if (!root.currentCorrespondent)
+		 	return;
+		if (device_address !== root.currentCorrespondent.device_address)
+		 	return;
+		
+		// go back to list of correspondentDevices
+		// todo show popup message
+		// todo return to correspondentDevices when in edit-mode, too
+		go.path('correspondentDevices');
+	});
 	
+
 	$rootScope.$on('Local/CorrespondentInvitation', function(event, device_pubkey, device_hub, pairing_secret){
 		console.log('CorrespondentInvitation', device_pubkey, device_hub, pairing_secret);
 		root.acceptInvitation(device_hub, device_pubkey, pairing_secret, function(){});
@@ -311,20 +319,27 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	};
 
 	root.readNotRemovableDevices = function(cb) {
-		// load devices used in multisig wallets
-	  device.readDeviceAddressesUsedInMultisigWallets(function(rows){
 		
-		var arrAddresses = [];
-		for (var i = 0; i < rows.length; i++) {
-		
-			a = rows[i].device_address;
-			arrAddresses.push(a);
-		}
+		// device addresses used in signing paths are not removable
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
 
-		  cb(null, arrAddresses);
-	  });
+			cb(null, arrDeviceAddresses);
+		});
 	};
 	
+	root.deviceCanBeRemoved = function(device_address, callbacks) {
+
+		// load device addresses used in signing paths
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
+					
+			var ix = arrDeviceAddresses.indexOf(device_address);
+
+			// device is removable when not in list
+			if (ix == -1) callbacks.ifOk();
+			else callbacks.ifError();
+		});
+	};
+
 	root.startWaitingForPairing = function(cb){
 		device.startWaitingForPairing(function(pairingInfo){
 			cb(pairingInfo);

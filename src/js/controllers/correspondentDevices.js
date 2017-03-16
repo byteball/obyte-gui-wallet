@@ -85,38 +85,37 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		return $scope.hideRemove || !removable;
 	}
 
-	$scope.remove = function(addr) {
+	$scope.remove = function(device_address) {
 
-		var device = require('byteballcore/device.js');
+		// check to be safe
+		correspondentListService.deviceCanBeRemoved(device_address, {
+			ifOk: function(){
 
-		// send message to paired device
-		// this must be done before removing the device
-		device.sendMessageToDevice(addr, "remove_paired_device",{
-			ifOk: function(){},
-			ifError: function(error){}}
-			);
+				var device = require('byteballcore/device.js');
 
-		device.removeCorrespondentDevice(addr, function() {
-			$scope.hideRemove = true;
-			$scope.readList();
-			$rootScope.$emit('Local/SetTab', 'chat', true);
-			setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+				var device_pubkey = device.getMyDevicePubKey();
+
+				// send message to paired device
+				// this must be done before removing the device
+				var body = "removed";
+				device.sendMessageToDevice(device_address, "remove_paired_device", body, {
+					ifOk: function(){},
+					ifError: function(error){}
+				});
+
+				// remove device
+				device.removeCorrespondentDevice(device_address, function() {
+					$scope.hideRemove = true;
+					$scope.readList();
+					$rootScope.$emit('Local/SetTab', 'chat', true);
+					setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+				});
+			}, 
+			ifError: function(err){
+				// todo show popup
+				$scope.error = "device can't be removed";
+			}
 		});
-
-		// previous version
-		// throw Error("unimplemented");
-		// $scope.error = null;
-		// $timeout(function() {
-		//   correspondentListService.remove(addr, function(err, ab) {
-		// 	if (err) {
-		// 	  $scope.error = err;
-		// 	  return;
-		// 	}
-		// 	$rootScope.$emit('Local/CorrespondentListUpdated', ab);
-		// 	$scope.list = ab;
-		// 	$scope.$digest();
-		//   });
-		// }, 100);
 	};
 
 	$scope.cancel = function() {
