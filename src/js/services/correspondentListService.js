@@ -250,7 +250,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var value = args[3];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return JSON.stringify(arrSubdefinition);
+					return 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+				case 'in merkle':
+					var arrAddresses = args[0];
+					var feed_name = args[1];
+					var value = args[2];
+					return 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);

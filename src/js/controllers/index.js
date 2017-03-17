@@ -476,6 +476,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
+			if (shared_address){
+				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
+					self.bHasMerkle = bHasMerkle;
+					$rootScope.$apply();
+				});
+			}
+			else
+				self.bHasMerkle = false;
 			self.updateAll();
 			self.updateTxHistory();
 			$modalInstance.close();
@@ -577,6 +586,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.arrBalances = [];
     self.assetIndex = 0;
 	self.shared_address = null;
+	self.bHasMerkle = false;
 
     self.txHistory = [];
     self.completeHistory = [];

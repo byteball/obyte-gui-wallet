@@ -123,7 +123,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $scope.openDestinationAddressModal = function(wallets, address) {
     $rootScope.modalOpened = true;
     var fc = profileService.focusedClient;
-    self.resetForm();
+    //self.resetForm();
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.wallets = wallets;
@@ -269,7 +269,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
     modalInstance.result.then(function onDestModalDone(addr) {
       if (addr) {
-        self.setForm(addr);
+        self.setToAddress(addr);
       }
     });
   };
@@ -667,6 +667,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	var address = form.address.$modelValue;
 	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 	var amount = form.amount.$modelValue;
+	var merkle_proof = form.merkle_proof.$modelValue.trim();
 	if (asset === "base")
 		amount *= unitValue;
 	if (asset === constants.BLACKBYTES_ASSET)
@@ -703,35 +704,80 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				// never reuse addresses as the required output could be already present
 				walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 					my_address = addressInfo.address;
-					var arrSeenCondition = ['seen', {
-						what: 'output', 
-						address: my_address, 
-						asset: self.binding.reverseAsset, 
-						amount: self.binding.reverseAmount
-					}];
-					var arrDefinition = ['or', [
-						['and', [
-							['address', address],
-							arrSeenCondition
-						]],
-						['and', [
-							['address', my_address],
-							['not', arrSeenCondition],
-							['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
-						]]
-					]];
-					var assocSignersByPath = {
-						'r.0.0': {
-							address: address,
-							member_signing_path: 'r',
-							device_address: recipient_device_address
-						},
-						'r.1.0': {
-							address: my_address,
-							member_signing_path: 'r',
-							device_address: device.getMyDeviceAddress()
-						}
-					};
+					if (self.binding.type === 'reverse_payment'){
+						var arrSeenCondition = ['seen', {
+							what: 'output', 
+							address: my_address, 
+							asset: self.binding.reverseAsset, 
+							amount: self.binding.reverseAmount
+						}];
+						var arrDefinition = ['or', [
+							['and', [
+								['address', address],
+								arrSeenCondition
+							]],
+							['and', [
+								['address', my_address],
+								['not', arrSeenCondition],
+								['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
+							]]
+						]];
+						var assocSignersByPath = {
+							'r.0.0': {
+								address: address,
+								member_signing_path: 'r',
+								device_address: recipient_device_address
+							},
+							'r.1.0': {
+								address: my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							}
+						};
+					}
+					else{
+						var arrExplicitEventCondition = 
+							['in data feed', [[self.binding.oracle_address], self.binding.feed_name, '=', self.binding.feed_value]];
+						var arrMerkleEventCondition = 
+							['in merkle', [[self.binding.oracle_address], self.binding.feed_name, self.binding.feed_value]];
+						var arrEventCondition;
+						if (self.binding.feed_type === 'explicit')
+							arrEventCondition = arrExplicitEventCondition;
+						else if (self.binding.feed_type === 'merkle')
+							arrEventCondition = arrMerkleEventCondition;
+						else if (self.binding.feed_type === 'either')
+							arrEventCondition = ['or', [arrMerkleEventCondition, arrExplicitEventCondition]];
+						else
+							throw Error("unknown feed type: "+self.binding.feed_type);
+						var arrDefinition = ['or', [
+							['and', [
+								['address', address],
+								arrEventCondition
+							]],
+							['and', [
+								['address', my_address],
+								['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
+							]]
+						]];
+						var assocSignersByPath = {
+							'r.0.0': {
+								address: address,
+								member_signing_path: 'r',
+								device_address: recipient_device_address
+							},
+							'r.1.0': {
+								address: my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							}
+						};
+						if (self.binding.feed_type === 'merkle' || self.binding.feed_type === 'either')
+							assocSignersByPath[(self.binding.feed_type === 'merkle') ? 'r.0.1' : 'r.0.1.0'] = {
+								address: '',
+								member_signing_path: 'r',
+								device_address: recipient_device_address
+							};
+					}
 					walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
 						ifError: function(err){
 							delete self.current_payment_key;
@@ -760,6 +806,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				profileService.bKeepUnlocked = true;
 				var opts = {
 					shared_address: indexScope.shared_address,
+					merkle_proof: merkle_proof,
 					asset: asset,
 					to_address: to_address,
 					amount: amount,
@@ -862,15 +909,25 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					info.displayName = 'of '+b.asset.substr(0, 4);
 				return info;
 			});
-			$scope.binding = {};
+			$scope.binding = { // defaults
+				type: 'reverse_payment',
+				timeout: 4,
+				reverseAsset: 'base',
+				feed_type: 'either'
+			};
 			if (self.binding){
+				$scope.binding.type = self.binding.type;
 				$scope.binding.timeout = self.binding.timeout;
-				$scope.binding.reverseAsset = self.binding.reverseAsset;
-				$scope.binding.reverseAmount = getAmountInDisplayUnits(self.binding.reverseAmount, self.binding.reverseAsset);
-			}
-			else{
-				$scope.binding.timeout = 4;
-				$scope.binding.reverseAsset = 'base';
+				if (self.binding.type === 'reverse_payment'){
+					$scope.binding.reverseAsset = self.binding.reverseAsset;
+					$scope.binding.reverseAmount = getAmountInDisplayUnits(self.binding.reverseAmount, self.binding.reverseAsset);
+				}
+				else{
+					$scope.binding.oracle_address = self.binding.oracle_address;
+					$scope.binding.feed_name = self.binding.feed_name;
+					$scope.binding.feed_value = self.binding.feed_value;
+					$scope.binding.feed_type = self.binding.feed_type;
+				}
 			}
 			
 			$scope.cancel = function() {
@@ -878,9 +935,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			};
 			
 			$scope.bind = function(){
-				var binding = {};
-				binding.reverseAsset = $scope.binding.reverseAsset;
-				binding.reverseAmount = getAmountInSmallestUnits($scope.binding.reverseAmount, $scope.binding.reverseAsset);
+				var binding = {type: $scope.binding.type};
+				if (binding.type === 'reverse_payment'){
+					binding.reverseAsset = $scope.binding.reverseAsset;
+					binding.reverseAmount = getAmountInSmallestUnits($scope.binding.reverseAmount, $scope.binding.reverseAsset);
+				}
+				else{
+					binding.oracle_address = $scope.binding.oracle_address;
+					binding.feed_name = $scope.binding.feed_name;
+					binding.feed_value = $scope.binding.feed_value;
+					binding.feed_type = $scope.binding.feed_type;
+				}
 				binding.timeout = $scope.binding.timeout;
 				self.binding = binding;
 				$modalInstance.dismiss('done');
@@ -925,6 +990,16 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	}
 	
 
+	this.setToAddress = function(to) {
+		var form = $scope.sendForm;
+		if (!form || !form.address) // disappeared?
+			return console.log('form.address has disappeared');
+		form.address.$setViewValue(to);
+		form.address.$isValid = true;
+		form.address.$render();
+		this.lockAddress = true;
+	}
+  
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 	this.resetError();
 	delete this.binding;
@@ -956,6 +1031,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	}
 	form.amount.$render();
 
+	form.merkle_proof.$setViewValue('');
+	form.merkle_proof.$render();
+	  
     if (comment) {
         form.comment.$setViewValue(comment);
         form.comment.$isValid = true;
@@ -997,6 +1075,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	  if (form.amount)
 		  form.amount.$render();
 
+	  if (form.merkle_proof){
+		  form.merkle_proof.$setViewValue('');
+		  form.merkle_proof.$render();
+	  }
 	  if (form.comment){
 		  form.comment.$setViewValue('');
 		  form.comment.$render();

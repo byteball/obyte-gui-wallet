@@ -363,6 +363,17 @@
                 </div>
               </div>
             </div>
+            <div class="row" ng-show="index.bHasMerkle">
+              <div class="large-12 columns">
+                <label for="merkle_proof"><span translate>Merkle proof</span>
+                  <small translate ng-hide="!sendForm.merkle_proof.$pristine">optional</small>
+                  <small translate class="has-error" ng-show="sendForm.merkle_proof.$invalid && !sendForm.merkle_proof.$pristine">too long!</small>
+                </label>
+                <div class="input">
+                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
+                </div>
+              </div>
+            </div>
             <div class="row" ng-hide="home.hideNote">
               <div class="large-12 columns">
                 <label for="comment"><span translate>Note</span>
