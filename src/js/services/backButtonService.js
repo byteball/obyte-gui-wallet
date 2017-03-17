@@ -19,6 +19,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		else {
 			if (arrHistory[arrHistory.length - 1] == '#.correspondentDevices' && !(/correspondentDevices/.test(path))) arrHistory = [];
 			arrHistory.push(path);
+			if (arrHistory[arrHistory.length - 2] == '#.correspondentDevices.correspondentDevice' && path == '#.correspondentDevices') arrHistory.splice(arrHistory.length - 2, 1);
 			if (root.dontDeletePath) root.dontDeletePath = false;
 		}
 		root.menuOpened = false;
@@ -44,10 +45,14 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 				}, 2000);
 			}
 		}
+		else if (location.hash == '#/correspondentDevices/correspondentDevice') {
+			$deepStateRedirect.reset('correspondentDevices');
+			go.path('correspondentDevices');
+		}
 		else {
 			if (arrHistory[arrHistory.length - 2]) {
 				var path = arrHistory[arrHistory.length - 2].substr(2);
-				arrHistory.slice(arrHistory.length - 2, 2);
+				arrHistory.splice(arrHistory.length - 2, 2);
 				if (path) {
 					$deepStateRedirect.reset(path);
 					go.path(path);
