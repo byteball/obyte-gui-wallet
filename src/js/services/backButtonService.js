@@ -5,6 +5,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	var root = {};
 	
 	root.menuOpened = false;
+	root.dontDeletePath = false;
 	
 	var arrHistory = [];
 	var body = $document.find('body').eq(0);
@@ -12,12 +13,14 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	
 	window.addEventListener("hashchange", function() {
 		var path = location.hash.replace(/\//g, '.');
-		if (path == arrHistory[arrHistory.length - 2]) {
+		if (!root.dontDeletePath && path == arrHistory[arrHistory.length - 2]) {
 			arrHistory.pop();
 		}
 		else {
 			arrHistory.push(path);
+			if (root.dontDeletePath) root.dontDeletePath = false;
 		}
+		root.menuOpened = false;
 	}, false);
 	
 	function back() {
@@ -28,7 +31,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			go.swipe();
 			root.menuOpened = false;
 		}
-		else if (location.hash == '#/' && arrHistory.length == 1) {
+		else if (location.hash == '#/' && arrHistory.length <= 1) {
 			if (shownExitMessage) {
 				navigator.app.exitApp();
 			}
@@ -41,20 +44,26 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			}
 		}
 		else {
-			var path = arrHistory[arrHistory.length - 2].substr(2);
-			if (path) {
-				if (/\//.test(path)) {
-					go.path(path);
-				}
-				else {
+			if (arrHistory[arrHistory.length - 2]) {
+				var path = arrHistory[arrHistory.length - 2].substr(2);
+				arrHistory.slice(arrHistory.length - 2, 2);
+				if (path) {
 					$deepStateRedirect.reset(path);
 					go.path(path);
 				}
+				else {
+					go.walletHome();
+				}
 			}
 			else {
-				go.walletHome()
+				arrHistory = [];
+				go.walletHome();
 			}
 		}
+	}
+	
+	function clearHistory() {
+		arrHistory = [];
 	}
 	
 	document.addEventListener('backbutton', function() {
@@ -63,5 +72,6 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	
 	root.back = back;
 	root.arrHistory = arrHistory;
+	root.clearHistory = clearHistory;
 	return root;
 });

@@ -664,6 +664,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     // check if the whole menu item passed
     if (typeof tab == 'object') {
+    	if(!tab.new_state) backButton.clearHistory();
       if (tab.open) {
         if (tab.link) {
           $rootScope.tab = self.tab = tab.link;
