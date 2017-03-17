@@ -43,15 +43,11 @@
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git#testnet",
-=======
     "async": "^1.5.2",
     "bip38": "^1.4.0",
->>>>>>> master
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git",
+    "byteballcore": "git+https://github.com/byteball/byteballcore.git#testnet",
     "grunt": "^1.0.1",
     "grunt-angular-gettext": "^2.2.3",
     "grunt-browserify": "^5.0.0",
