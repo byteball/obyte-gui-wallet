@@ -4,7 +4,7 @@
 var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton) {
 	
 	var self = this;
 	console.log("correspondentDeviceController");
@@ -78,6 +78,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
+		backButton.dontDeletePath = true;
 		go.send(function(){
 			//$rootScope.$emit('Local/SetTab', 'send', true);
 			$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);

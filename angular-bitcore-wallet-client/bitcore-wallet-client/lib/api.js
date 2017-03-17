@@ -582,6 +582,15 @@ API.prototype.getBalance = function(shared_address, cb) {
 	});
 };
 
+API.prototype.getListOfBalancesOnAddresses = function(cb) {
+	var Wallet = require('byteballcore/wallet.js');
+	$.checkState(this.credentials && this.credentials.isComplete());
+	var walletId = this.credentials.walletId;
+	Wallet.readBalancesOnAddresses(walletId, function(assocBalances) {
+		cb(assocBalances);
+	});
+};
+
 API.prototype.getTxHistory = function(asset, shared_address, cb) {
 	var Wallet = require('byteballcore/wallet.js');
 	$.checkState(this.credentials && this.credentials.isComplete());
