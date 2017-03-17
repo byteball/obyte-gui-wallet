@@ -66,7 +66,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
 			});
     };
 	
-		$scope.bShowListBalances = function() {
+		$scope.hasListOfBalances = function() {
 			return !!Object.keys($scope.assocListOfBalances || {}).length;
 		};
 
