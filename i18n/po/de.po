@@ -9,10 +9,10 @@ msgstr ""
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: template.pot\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Last-Translator: cmgustavo83\n"
+"Last-Translator: Limxdev\n"
 "Language-Team: German\n"
 "Language: de\n"
-"PO-Revision-Date: 2015-11-11 14:51-0500\n"
+"PO-Revision-Date: 2017-03-08 14:51-0500\n"
 
 #: public/views/walletHome.html
 msgid "(possible double spend)"
@@ -41,31 +41,31 @@ msgstr "{{len}} Wallets importiert. Beträge werden gescannt. Bitte auf die Aktu
 
 #: public/views/modals/txp-details.html
 msgid "* A payment proposal can be deleted if 1) you are the creator, and no other copayer has signed, or 2) 24 hours have passed since the proposal was created."
-msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Copayer unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
+msgstr "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt hast und noch kein anderer Anwender ihn unterschrieben hat, oder 2) 24 Stunden vergangen sind, seit der Vorschlag erstellt wurde."
 
 #: public/views/disclaimer.html
 msgid "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS AND YOU HAVE NOT SEPARATELY STORED A BACKUP OF YOUR WALLET AND CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
-msgstr "<b>WENN DER ZUGRIFF AUF DAS COPAY WALLET ODER DEN VERSCHLÜSSELTEN PRIVATEN SCHLÜSSELN VERLOREN GEHT UND KEINE SICHERUNG DES WALLETS UND KORRESPONDIERENDEM PASSWORT EXISTIERT, DANN WIRD BESTÄTIGT UND AKZEPTIERT, DASS AUF ALLE MIT DIESEM WALLET VERBUNDENEN BITCOIN KEIN ZUGRIFF MEHR MÖGLICH IST.</b>"
+msgstr "<b>WENN DER ZUGRIFF AUF DAS BYTEBALL WALLET ODER DEN VERSCHLÜSSELTEN PRIVATEN SCHLÜSSELN VERLOREN GEHT UND KEINE SICHERUNG DES WALLETS UND KORRESPONDIERENDEM PASSWORT EXISTIERT, DANN WIRD BESTÄTIGT UND AKZEPTIERT, DASS AUF ALLE MIT DIESEM WALLET VERBUNDENEN BITCOIN KEIN ZUGRIFF MEHR MÖGLICH IST.</b>"
 
 #: public/views/backup.html
 msgid "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds (e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of the other copayers)."
-msgstr "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Wallet-Seeds (z.B. für ein 3-5 Wallet: 1 Exportdatei + 2 Wallet-Seeds eines anderen Copayers)."
+msgstr "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Wallet-Seeds (z.B. für ein 3-5 Wallet: 1 Exportdatei + 2 Wallet-Seeds eines anderen Anwenders)."
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Copayer des Wallets"
+msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Anwender des Wallets"
 
 #: public/views/backup.html
 msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Copayer des Wallets"
+msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender des Wallets"
 
 #: public/views/splash.html
 msgid "A multisignature bitcoin wallet"
-msgstr "Ein Bitcoin Wallet mit Mehrfachunterschriften"
+msgstr "Ein Byteball- Wallet mit Mehrfachunterschriften"
 
 #: public/views/preferences.html
 msgid "About Copay"
-msgstr "Über Copay"
+msgstr "Über Byteball"
 
 #: public/views/modals/txp-details.html
 #: src/js/services/confirmDialog.js
@@ -78,16 +78,16 @@ msgstr "Akzeptieren"
 #: public/views/join.html
 #: public/views/preferencesInformation.html
 msgid "Account"
-msgstr ""
+msgstr "Acount"
 
 #: public/views/create.html
 #: public/views/import.html
 msgid "Account Number"
-msgstr ""
+msgstr "Acount Nummer"
 
 #: public/views/modals/destination-address.html
 msgid "Add a new entry"
-msgstr ""
+msgstr "Neuen Eintrag hinzufügen"
 
 #: public/views/create.html
 #: public/views/join.html
@@ -116,7 +116,7 @@ msgstr "Adresstyp"
 
 #: public/views/modals/destination-address.html
 msgid "Addressbook"
-msgstr ""
+msgstr "Adressbuch"
 
 #: public/views/preferences.html
 msgid "Advanced"
@@ -136,7 +136,7 @@ msgstr "Alias für <i>{{index.walletName}}</i>"
 
 #: public/views/translators.html
 msgid "All contributions to Copay's translation are welcome. Sign up at crowdin.com and join the Copay project at"
-msgstr "Alle Beiträge zur Übersetzung von Copay sind willkommen. Melde Dich bei crowdin.com an verbinde Dich mit dem Copay-Projekt über"
+msgstr "Alle Beiträge zur Übersetzung von Byteball sind willkommen. "
 
 #: public/views/disclaimer.html
 msgid "All transaction requests are irreversible."
@@ -219,23 +219,23 @@ msgstr "Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schl
 #: public/views/import.html
 #: public/views/join.html
 msgid "BIP32 path for address derivation"
-msgstr ""
+msgstr "BIP32 Pfad für Adressableitung"
 
 #: public/views/walletHome.html
 msgid "Bitcoin address"
-msgstr "Bitcoinadresse"
+msgstr "Byteballadresse"
 
 #: public/views/preferences.html
 msgid "Bitcoin Network Fee Policy"
-msgstr "Bitcoin-Netzwerk Gebührenübersicht"
+msgstr "Byteball-Netzwerk Gebührenübersicht"
 
 #: public/views/preferencesFee.html
 msgid "Bitcoin transactions may include a fee collected by miners on the network. The higher the fee, the greater the incentive a miner has to include that transaction in a block. Actual fees are determined based on network load and the selected policy."
-msgstr "Für Bitcoin-Transaktionen können Gebühren hinzugefügt werden. Transaktionen mit höheren Gebühren werden meist schneller verarbeitet und bestätigt. Die tatsächlichen Gebühren werden anhand der Netzwerklast und der ausgewählte Richtlinie bestimmt."
+msgstr "Für Byteball-Transaktionen können Gebühren hinzugefügt werden. Transaktionen mit höheren Gebühren werden meist schneller verarbeitet und bestätigt. Die tatsächlichen Gebühren werden anhand der Netzwerklast und der ausgewählte Richtlinie bestimmt."
 
 #: public/views/paymentUri.html
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Bitcoin URI ist NICHT gültig!"
+msgstr "Byteball URI ist NICHT gültig!"
 
 #: public/views/modals/txp-details.html
 msgid "Broadcast Payment"
@@ -244,6 +244,7 @@ msgstr "Zahlung übermitteln"
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting Payment"
 msgstr "Übermittlung der Zahlung"
+
 
 #: src/js/controllers/walletHome.js
 msgid "Broadcasting transaction"
@@ -286,7 +287,7 @@ msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
 
 #: public/views/preferencesInformation.html
 msgid "Clear history"
-msgstr ""
+msgstr "Lösche Historie"
 
 #: public/views/includes/topbar.html
 #: public/views/modals/advancedSend.html
@@ -330,19 +331,19 @@ msgstr "Verbindung zum {{join.hwWallet}} Wallet..."
 
 #: src/js/services/bwsError.js
 msgid "Copayer already in this wallet"
-msgstr "Copayer nimmt bereits teil"
+msgstr "Dieser Anwender nimmt bereits teil"
 
 #: src/js/services/bwsError.js
 msgid "Copayer already voted on this spend proposal"
-msgstr "Copayer hat schon für diesen Zahlungsvorschlag angestimmt"
+msgstr "Dieser Anwender hat schon für diesen Zahlungsvorschlag abgestimmt"
 
 #: src/js/services/bwsError.js
 msgid "Copayer data mismatch"
-msgstr "Copayer Datenkonflikt"
+msgstr "Byteball Datenkonflikt"
 
 #: public/views/preferencesInformation.html
 msgid "Copayers"
-msgstr "Copayer"
+msgstr "Mitunterzeichner"
 
 #: src/js/controllers/copayers.js
 #: src/js/controllers/export.js
@@ -424,7 +425,7 @@ msgstr "Beteiligung am Wallet nicht möglich"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not recognize a valid Bitcoin QR Code"
-msgstr "Es konnte kein gültiger Bitcoin-QR-Code erkannt werden"
+msgstr "Es konnte kein gültiger Byteball-QR-Code erkannt werden"
 
 #: src/js/controllers/walletHome.js
 msgid "Could not reject payment"
@@ -512,7 +513,7 @@ msgstr "Zahlung löschen"
 #: public/views/import.html
 #: public/views/join.html
 msgid "Derivation Path"
-msgstr ""
+msgstr "Ableitungspfad"
 
 #: public/views/preferencesInformation.html
 msgid "Derivation Strategy"
@@ -539,7 +540,7 @@ msgstr "Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support 
 
 #: public/views/modals/destination-address.html
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #: public/views/export.html
 msgid "Download"
@@ -555,7 +556,7 @@ msgstr "Wirtschaftlich"
 
 #: public/views/modals/destination-address.html
 msgid "Edit"
-msgstr ""
+msgstr "Ändern"
 
 #: public/views/importLegacy.html
 msgid "Email"
@@ -571,7 +572,7 @@ msgstr "Benachrichtigunen per E-Mail"
 
 #: src/js/services/bwsError.js
 msgid "Empty addresses limit reached. New addresses cannot be generated."
-msgstr ""
+msgstr "Leere Adressengrenze erreicht. Neue Adressen können nicht generiert werden."
 
 #: src/js/controllers/export.js
 msgid "Encrypted export file saved"
@@ -609,7 +610,7 @@ msgstr "Export-Optionen"
 
 #: public/views/preferencesAdvanced.html
 msgid "Export Wallet"
-msgstr ""
+msgstr "Exportiere Wallet"
 
 #: public/views/preferencesInformation.html
 msgid "Extended Public Keys"
@@ -711,7 +712,7 @@ msgstr "Hardware-Wallet"
 
 #: public/views/import.html
 msgid "Have a Backup from Copay v0.9?"
-msgstr "Ist eine Copay v0.9 Sicherung vorhanden"
+msgstr "Ist eine Byteball Sicherung vorhanden"
 
 #: public/views/create.html
 #: public/views/import.html
@@ -777,7 +778,8 @@ msgstr "Falsche Netzwerk-Adresse"
 #: public/views/walletHome.html
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
-msgstr ""
+msgstr "Die anfängliche Transaktionsverlaufs-Synchronisation kann einige Minuten für Geldbörsen mit vielen Transaktionen in Anspruch nehmen.<br>\n"
+"          Bitte warten."
 
 #: src/js/services/bwsError.js
 msgid "Insufficient funds"
@@ -795,7 +797,7 @@ msgstr "Ungültig"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid account number"
-msgstr ""
+msgstr "Ungültige Acountnummer"
 
 #: src/js/services/bwsError.js
 msgid "Invalid address"
@@ -805,15 +807,15 @@ msgstr "Ungültige Adresse"
 #: src/js/controllers/import.js
 #: src/js/controllers/join.js
 msgid "Invalid derivation path"
-msgstr ""
+msgstr "Ungültiger Ableitungspfad"
 
 #: src/js/controllers/index.js
 msgid "Invalid Touch ID"
-msgstr ""
+msgstr "Ungültige Touch ID"
 
 #: src/js/controllers/copayers.js
 msgid "Invitation to share a Copay Wallet"
-msgstr "Einladung zum Copay-Wallet teilen"
+msgstr "Einladung zum Byteball-Wallet teilen"
 
 #: public/views/translators.html
 msgid "Italian"
@@ -834,7 +836,7 @@ msgstr "Teilnehmen"
 
 #: src/js/controllers/copayers.js
 msgid "Join my Copay wallet. Here is the invitation code: {{secret}} You can download Copay for your phone or desktop at https://copay.io"
-msgstr "Copay Wallet beitreten. Hier ist der Einladungscode: {{secret}} Die Desktopversion oder die App fürs Handy kann auf https://copay.io heruntergeladen werden"
+msgstr "Einen Byteball Wallet beitreten. Hier ist der Einladungscode: {{secret}} Die Desktopversion oder die App fürs Handy kann auf https://github.com/byteball/byteball/releases heruntergeladen werden"
 
 #: public/views/add.html
 msgid "Join shared wallet"
@@ -850,7 +852,7 @@ msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
 
 #: public/views/modals/destination-address.html
 msgid "Label"
-msgstr ""
+msgstr "Adresse"
 
 #: public/views/preferences.html
 msgid "Language"
@@ -862,7 +864,7 @@ msgstr "Letzte Wallet-Adressen"
 
 #: public/views/backup.html
 msgid "Learn more about Copay backups"
-msgstr "Erfahren Sie mehr über Copay-Sicherungen"
+msgstr "Erfahren Sie mehr über die Byteball-Sicherungen"
 
 #: public/views/importLegacy.html
 msgid "Learn more about Wallet Migration"
@@ -913,7 +915,7 @@ msgstr "Nachricht"
 
 #: public/views/walletHome.html
 msgid "Moved"
-msgstr "Verschoben"
+msgstr "EigenTX"
 
 #: public/views/join.html
 msgid "Multiple wallets accounts are supported on the device simultaneously. Select which account should be used for this wallet"
@@ -938,11 +940,11 @@ msgstr "Neue Zahlungsvorschlag"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "New Random Seed"
-msgstr ""
+msgstr "Neue Zufalls-Seed"
 
 #: public/views/import.html
 msgid "No hardware wallets supported on this device"
-msgstr ""
+msgstr "Es werde keine Hardware-Brieftaschen auf diesem Gerät unterstützt"
 
 #: public/views/walletHome.html
 msgid "No transactions yet"
@@ -997,7 +999,7 @@ msgstr "Teilnehmer"
 #: public/views/import.html
 #: public/views/paperWallet.html
 msgid "Passphrase"
-msgstr "Passphrase"
+msgstr "Passwort"
 
 #: public/views/import.html
 #: public/views/importLegacy.html
@@ -1058,11 +1060,11 @@ msgstr "Zahlungsvorschlag abgelehnt"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Rejected by Copayer"
-msgstr "Zahlungsvorschlag wurde vom Copayer abgelehnt"
+msgstr "Zahlungsvorschlag wurde vom Anwender abgelehnt"
 
 #: src/js/services/notificationsService.js
 msgid "Payment Proposal Signed by Copayer"
-msgstr "Zahlungsvorschlag wurde vom Copayer abgezeichnet"
+msgstr "Zahlungsvorschlag wurde vom Anwender abgezeichnet"
 
 #: public/views/walletHome.html
 msgid "Payment Proposals"
@@ -1130,7 +1132,7 @@ msgstr "Bitte geben Sie den Wallet-Seed ein"
 
 #: src/js/services/bwsError.js
 msgid "Please upgrade Copay to perform this action"
-msgstr "Bitte Copay aktualisieren, um diese Aktion auszuführen"
+msgstr "Bitte Byteball aktualisieren, um diese Aktion auszuführen"
 
 #: src/js/controllers/import.js
 msgid "Please, select your backup file"
@@ -1162,11 +1164,11 @@ msgstr "QR-Scanner"
 
 #: src/js/controllers/index.js
 msgid "Receive"
-msgstr "Empfangen"
+msgstr "Erhalten"
 
 #: public/views/walletHome.html
 msgid "Received"
-msgstr "Empfangen"
+msgstr "Erhalten"
 
 #: public/views/includes/transaction.html
 #: public/views/modals/tx-details.html
@@ -1214,7 +1216,7 @@ msgstr "Einen bestimmten Betrag anfordern"
 
 #: public/views/preferences.html
 msgid "Request Password"
-msgstr ""
+msgstr "Kennwort abfragen"
 
 #: src/js/controllers/walletHome.js
 msgid "Requesting Ledger Wallet to sign"
@@ -1253,7 +1255,7 @@ msgstr "Adresse auf neue Beträge überprüfen"
 
 #: public/views/preferences.html
 msgid "Scan Fingerprint"
-msgstr ""
+msgstr "Scanne Fingerabdruck"
 
 #: src/js/services/notificationsService.js
 msgid "Scan Finished"
@@ -1269,7 +1271,7 @@ msgstr "Prüfe Beträge des Wallets"
 
 #: src/js/controllers/index.js
 msgid "Scan your fingerprint please"
-msgstr ""
+msgstr "Scanne bitte deinen Fingerabdruck"
 
 #: public/views/paperWallet.html
 msgid "Scanning wallet funds..."
@@ -1312,7 +1314,7 @@ msgstr "Senden"
 
 #: public/views/preferencesInformation.html
 msgid "Send addresses by email"
-msgstr ""
+msgstr "Sende Adresse per Email"
 
 #: public/views/walletHome.html
 msgid "Send All"
@@ -1349,7 +1351,7 @@ msgstr "EINRICHTEN"
 
 #: public/views/preferencesBwsUrl.html
 msgid "Set default url"
-msgstr ""
+msgstr "Setze Default Adresse"
 
 #: public/views/export.html
 msgid "Set up a Export Password"
@@ -1374,7 +1376,7 @@ msgstr "Einladung teilen"
 
 #: public/views/copayers.html
 msgid "Share this invitation with your copayers"
-msgstr "Einladung mit Copayern teilen"
+msgstr "Einladung mit anderen Anwendern teilen"
 
 #: public/views/walletHome.html
 msgid "Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them."
@@ -1394,7 +1396,7 @@ msgstr "Erweiterte Optionen anzeigen"
 
 #: public/views/walletHome.html
 msgid "Show all"
-msgstr ""
+msgstr "Zeige alles"
 
 #: public/views/backup.html
 msgid "Show Wallet Seed"
@@ -1419,7 +1421,7 @@ msgstr "Español"
 #: src/js/controllers/create.js
 #: src/js/controllers/join.js
 msgid "Specify Seed..."
-msgstr ""
+msgstr "Spezifischer Seed"
 
 #: src/js/services/bwsError.js
 msgid "Spend proposal is not accepted"
@@ -1431,7 +1433,7 @@ msgstr "Zahlungsvorschlag wurde nicht gefunden"
 
 #: public/views/preferences.html
 msgid "Spending Restrictions"
-msgstr ""
+msgstr "Ausgabenbeschränkungen"
 
 #: public/views/preferences.html
 msgid "Still not done"
@@ -1467,7 +1469,7 @@ msgstr "Testnet"
 
 #: public/views/disclaimer.html
 msgid "The authors of the software, employees and affiliates of Bitpay, copyright holders, and BitPay, Inc. cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the Bitcoin network."
-msgstr "Die Autoren der Software, Mitarbeiter und Partner von Bitpay, Inhaber von Urheberrechten und BitPay, Inc. können nicht Ihre privaten Schlüssel oder Kennwörter abrufen, wenn diese verloren gehen oder vergessen werden und können die Durchführung von Transaktionen, auch nach Bestätigungen, nicht garantieren, da sie keine Kontrolle über das Bitcoin-Netzwerk haben."
+msgstr "Die Autoren der Software, Mitarbeiter und Partner von Byteball können nicht Ihre privaten Schlüssel oder Kennwörter abrufen, wenn diese verloren gehen oder vergessen werden und können die Durchführung von Transaktionen, auch nach Bestätigungen, nicht garantieren, da sie keine Kontrolle über das Byteball-Netzwerk haben."
 
 #: src/js/services/ledger.js
 msgid "The Ledger Chrome application is not installed"
@@ -1565,7 +1567,7 @@ msgstr "Ingesamt gesperrter Gesamtsaldo"
 
 #: public/views/create.html
 msgid "Total number of copayers"
-msgstr "Gesamtanzahl der Copayer"
+msgstr "Gesamtanzahl der Anwender"
 
 #: public/views/modals/tx-details.html
 msgid "Transaction"
@@ -1577,11 +1579,11 @@ msgstr "Transaktion wurde bereits übermittelt"
 
 #: public/views/preferencesInformation.html
 msgid "Transaction history"
-msgstr ""
+msgstr "Transaktions Übersicht"
 
 #: public/views/walletHome.html
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "Transaktionen<br> runtergeladen"
 
 #: public/views/translators.html
 msgid "Translation Credits"
@@ -1606,7 +1608,7 @@ msgstr "Unbestätigt"
 
 #: public/views/preferences.html
 msgid "Unit"
-msgstr "Währungseinheit"
+msgstr "Währung"
 
 #: public/views/walletHome.html
 msgid "Unsent transactions"
@@ -1635,7 +1637,7 @@ msgstr "Ansicht"
 
 #: public/views/copayers.html
 msgid "Waiting for copayers"
-msgstr "Warte auf copayer"
+msgstr "Warte auf Anwender"
 
 #: public/views/copayers.html
 msgid "Waiting..."
@@ -1742,7 +1744,7 @@ msgstr "Wallet-Dienst nicht gefunden"
 
 #: public/views/modals/destination-address.html
 msgid "Wallets"
-msgstr ""
+msgstr "Brieftaschen"
 
 #: public/views/walletHome.html
 msgid "WARNING: Backup needed"
@@ -1787,7 +1789,7 @@ msgstr "Wir behalten uns das Recht vor, diese Erklärung von Zeit zu Zeit zu än
 
 #: public/views/splash.html
 msgid "WELCOME TO COPAY"
-msgstr "Willkommen bei COPAY"
+msgstr "Willkommen bei Byteball"
 
 #: public/views/disclaimer.html
 msgid "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software."
@@ -1869,4 +1871,3 @@ msgstr "Wallet-Seed"
 #: public/views/backup.html
 msgid "Your wallet seed and access to the server that coordinated the initial wallet creation. You still need {{index.m}} keys to spend."
 msgstr "Das Wallet und der Zugriff auf den Server, die die Erzeugung des ersten Wallets steuern. Es werden noch {{index.m}} Schlüssel benötigt."
-

@@ -1,4 +1,4 @@
-<div ng-init="wallets[0] ? selectedWalletsOpt = true : selectedWalletsOpts = false">
+<div ng-init="(wallets[0] || !bAllowAddressbook) ? selectedWalletsOpt = true : selectedWalletsOpt = false">
   <nav class="tab-bar">
     <section class="left-small">
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
@@ -6,7 +6,7 @@
       </a>
     </section>
 
-    <section class="middle tab-bar-section">
+    <section class="middle tab-bar-section" ng-show="bAllowAddressbook">
       <ul class="button-group round even-2" ng-show="!editAddressbook && wallets[0] && !addAddressbookEntry">
         <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
           translate>
@@ -19,6 +19,14 @@
       <h1 ng-show="(editAddressbook || !wallets[0]) && !addAddressbookEntry" class="title ellipsis" translate>
         Addressbook
       </h1>
+    </section>
+    <section class="middle tab-bar-section" ng-show="!bAllowAddressbook">
+      <ul class="button-group round even-2">
+        <li class="ellipsis" ng-class="{'selected':selectedWalletsOpt}" ng-click="selectedWalletsOpt = true"
+          translate>
+          Wallets
+        </li>
+      </ul>
     </section>
 
     <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">

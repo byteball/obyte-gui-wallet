@@ -91,7 +91,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
 			console.log(description);
 			console.log(paymentJson);
-			var objMultiPaymentRequest = JSON.parse(paymentJson);
+			try{
+				var objMultiPaymentRequest = JSON.parse(paymentJson);
+			}
+			catch(e){
+				return '[invalid payment request]';
+			}
 			if (objMultiPaymentRequest.definitions){
 				for (var destinationAddress in objMultiPaymentRequest.definitions){
 					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
@@ -99,7 +104,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						return '[invalid payment request]';
 				}
 			}
-			var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
+			try{
+				var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
+			}
+			catch(e){
+				return '[invalid payment request]';
+			}
 			var arrMovements = [];
 			for (var asset in assocPaymentsByAsset)
 				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
@@ -112,6 +122,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var assocPaymentsByAsset = {};
 		objMultiPaymentRequest.payments.forEach(function(objPayment){
 			var asset = objPayment.asset || 'base';
+			if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH))
+				throw Error("asset "+asset+" is not valid");
+			if (!ValidationUtils.isPositiveInteger(objPayment.amount))
+				throw Error("amount "+objPayment.amount+" is not valid");
 			if (!assocPaymentsByAsset[asset])
 				assocPaymentsByAsset[asset] = 0;
 			assocPaymentsByAsset[asset] += objPayment.amount;
@@ -139,11 +153,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var amount = parseInt(strAmount);
 		if (amount + '' !== strAmount)
 			return null;
+		if (!ValidationUtils.isPositiveInteger(amount))
+			return null;
 		var asset = assocParams['asset'] || 'base';
 		console.log("asset="+asset);
-		if (asset !== 'base' && asset.length !== 44) // invalid asset
+		if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH)) // invalid asset
 			return null;
-		var device_address = assocParams['device_address'] || ''; 
+		var device_address = assocParams['device_address'] || '';
+		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
+			return null;
 		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
@@ -166,7 +184,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeQuotes(text){
-		return text.replace(/(['"])/g, "\\$1");
+		return text.replace(/(['\\])/g, "\\$1").replace(/"/, "&quot;");
 	}
 	
 	function setCurrentCorrespondent(correspondent_device_address, onDone){
@@ -200,7 +218,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return amount + ' of ' + asset;
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, bWithLinks){
 		function parse(arrSubdefinition){
 			var op = arrSubdefinition[0];
 			var args = arrSubdefinition[1];
@@ -214,6 +232,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'cosigned by':
 					var address = args;
 					return 'co-signed by '+(arrMyAddresses.indexOf(address) >=0 ? 'you' : address);
+				case 'not':
+					return '<span class="size-18">not</span>'+parseAndIndent(args);
 				case 'or':
 				case 'and':
 					return args.map(parseAndIndent).join('<span class="size-18">'+op+'</span>');
@@ -230,10 +250,23 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var value = args[3];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return JSON.stringify(arrSubdefinition);
+					return 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+				case 'in merkle':
+					var arrAddresses = args[0];
+					var feed_name = args[1];
+					var value = args[2];
+					return 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
+					return JSON.stringify(arrSubdefinition);
+				case 'seen':
+					if (args.what === 'output' && args.asset && args.amount && args.address){
+						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
+						var dest_address = (bOwnAddress ? 'you' : args.address);
+						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+					}
 					return JSON.stringify(arrSubdefinition);
 
 				default:

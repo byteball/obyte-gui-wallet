@@ -144,8 +144,8 @@ angular.module('copayApp.services')
                         throw Error("neither xPrivKey nor xPrivKeyEncrypted");
                     //var tempDeviceKey = device.genPrivKey();
                     //saveTempKeys(tempDeviceKey, null, function(){});
-                    var tempDeviceKey = new Buffer(profile.tempDeviceKey, 'base64');
-                    var prevTempDeviceKey = profile.prevTempDeviceKey ? new Buffer(profile.prevTempDeviceKey, 'base64') : null;
+                    var tempDeviceKey = Buffer.from(profile.tempDeviceKey, 'base64');
+                    var prevTempDeviceKey = profile.prevTempDeviceKey ? Buffer.from(profile.prevTempDeviceKey, 'base64') : null;
                     device.setTempKeys(tempDeviceKey, prevTempDeviceKey, saveTempKeys);
                     /*storageService.getDeviceToken(function(err, token) {
                         if (!token)

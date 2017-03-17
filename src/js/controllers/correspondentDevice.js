@@ -4,7 +4,7 @@
 var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, lodash, $deepStateRedirect, $state) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state) {
 	
 	var self = this;
 	console.log("correspondentDeviceController");
@@ -13,10 +13,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatScope = $scope;
 	var indexScope = $scope.index;
 	$rootScope.tab = $scope.index.tab = 'chat';
-	$scope.backgroundColor = fc.backgroundColor;
+	$scope.profileService = profileService;
+	$scope.backgroundColor = profileService.focusedClient.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
-	var myPaymentAddress = indexScope.shared_address;
+//	var myPaymentAddress = indexScope.shared_address;
 	if (document.chatForm && document.chatForm.message)
 		document.chatForm.message.focus();
 	
@@ -58,15 +59,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.insertMyAddress = function(){
-		if (!fc.credentials.isComplete())
+		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		issueNextAddressIfNecessary(appendMyPaymentAddress);
+		readMyPaymentAddress(appendMyPaymentAddress);
+	//	issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
-		if (!fc.credentials.isComplete())
+		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		issueNextAddressIfNecessary(showRequestPaymentModal);
+		readMyPaymentAddress(showRequestPaymentModal);
+	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
 	$scope.sendPayment = function(address, amount, asset){
@@ -354,6 +357,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.error = error;
 	}
 	
+	function readMyPaymentAddress(cb){
+		if (indexScope.shared_address)
+			return cb(indexScope.shared_address);
+		addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, address) {
+			cb(address);
+		});
+	}
+	/*
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
@@ -363,7 +374,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			onDone();
 			$scope.$apply();
 		});
-	}
+	}*/
 	
 	function appendText(text){
 		if (!$scope.message)
@@ -379,11 +390,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
 	}
 	
-	function appendMyPaymentAddress(){
+	function appendMyPaymentAddress(myPaymentAddress){
 		appendText(myPaymentAddress);
 	}
 	
-	function showRequestPaymentModal(){
+	function showRequestPaymentModal(myPaymentAddress){
 		$rootScope.modalOpened = true;
 		var self = this;
 		var fc = profileService.focusedClient;

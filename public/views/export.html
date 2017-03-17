@@ -1,126 +1,56 @@
 <div
-  class="topbar-container"
-  ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Export'; goBackToState = 'preferencesAdvanced'">
+		class="topbar-container"
+		ng-include="'views/includes/topbar.html'"
+		ng-init="titleSection='Full backup'; goBackToState = 'preferencesGlobal'">
 </div>
 
 
+<div class="content preferences" ng-controller="exportController as export">
+	<h4></h4>
+	<div class="onGoingProcess" ng-show="export.exported">
+		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
+			<div class="spinner">
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+			</div>
+			<span> Exporting... </span>
+		</div>
+	</div>
+	<div>
+		<div class="text-warning size-14 m20b" ng-show="export.error">
+			<i class="fi-alert size-12"></i>
+			<span translate> Failed to export </span>
+		</div>
+		<form>
+			<div class="row">
+				<div class="columns">
+					<label translate>Set up a Password </label>
+					<div class="input">
+						<input type="password" class="form-control"
+							   placeholder="{{'Your export password'|translate}}"
+							   name="password" ng-model="export.password">
+					</div>
 
-<div class="content preferences" ng-controller="backupController as backup">
-  <h4></h4>
-  <div ng-show="!backup.backupWalletPlainText">
-      <div class="text-warning size-14 m20b" ng-show="backup.error">
-        <i class="fi-alert size-12"></i>
-        <span translate> Failed to export </span>
-      </div>
-
-      <div class="row">
-        <div class="columns">
-          <div class="text-warning size-14 m20b" ng-show="backup.isEncrypted">
-            <i class="fi-alert size-12"></i>
-            <span translate> The private key for this wallet is encrypted. Exporting keep the private key encrypted in the export archive.</span>
-
-          </div>
-        </div>
-      </div>
-
-      <form>
-        <div class="row">
-          <div class="columns">
-            <label for="password" translate>Set up a Export Password </label>
-            <div class="input">
-              <input type="password" class="form-control"
-                                     placeholder="{{'Your export password'|translate}}"
-                                     name="password" ng-model="backup.password">
-            </div>
-
-            <label for="password" translate>Repeat password</label>
-            <div class="input">
-              <input type="password" class="form-control"
-                                     placeholder="{{'Repeat password'|translate}}"
-                                     name="password" ng-model="backup.repeatpassword">
-            </div>
-          </div>
-        </div>
-      </form>
-
-      <h4></h4>
-
-      <ul class="no-bullet m0">
-        <li>
-        <switch id="no-metaData" name="metaData" ng-model="metaData" class="green right"></switch>
-        <span translate>Include address book and history cache</span>
-        </li>
-      </ul>
-      
-      <ul class="no-bullet m0" ng-show="index.canSign">
-        <li>
-        <switch id="no-sign" name="noSign" ng-model="noSign" class="green right"></switch>
-        <span translate>Do not include private key</span>
-        </li>
-      </ul>
-
-
-      <div class="box-notification"  ng-show="!index.canSign">
-        <span class="text-warning size-14">
-          <i class="fi-alert"></i>
-          <span translate>
-          WARNING: The private key of this wallet is not available. The export allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-          </span>
-        </span>
-      </div>
-
-
-      <div class="box-notification" ng-show="noSign">
-        <span class="text-warning size-14">
-          <i class="fi-alert"></i>
-          <span translate>
-          WARNING: Not including the private key allows to check the wallet balance, transaction history, and create spend proposals from the export. However, does not allow to approve (sign) proposals, so <b>funds will not be accessible from the export</b>.
-          </span>
-        </span>
-      </div>
-
-
-      <div class="row">
-        <div class="columns">
-          <button class="black round expand m20t" ng-click="backup.downloadWalletBackup()"
-            ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-            ng-style="{'background-color':index.backgroundColor}"
-            ng-show="!index.isSafari && !index.isCordova"><i class="fi-download"></i>
-            <span translate>Download</span></button>
-          <button class="black round expand m20t" ng-click="backup.viewWalletBackup()"
-            ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-            ng-style="{'background-color':index.backgroundColor}"
-            ng-show="index.isSafari && !index.isCordova"><i class="fi-eye"></i>
-            <span translate>View</span></button>
-          <div ng-show="index.isCordova">
-            <h4 translate>Export options</h4>
-            <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-              ng-style="{'background-color':index.backgroundColor}"
-              ng-click="backup.copyWalletBackup()"><i class="fi-clipboard-pencil"></i>
-              <span translate>Copy to clipboard</span></button>
-            <button class="black round expand" ng-disabled="(!backup.password || backup.password != backup.repeatpassword)"
-              ng-style="{'background-color':index.backgroundColor}"
-              ng-click="backup.sendWalletBackup()"><i class="fi-mail"></i>
-              <span translate>Send by email</span></button>
-          </div>
-        </div>
-      </div>
-    
-  </div>
-
-  <div class="row" ng-show="backup.backupWalletPlainText">
-    <div class="large-12 columns">
-      <h3 translate>Wallet Export</h3>
-      <div class="input">
-        <textarea rows="12">{{backup.backupWalletPlainText}}</textarea>
-      </div>
-      <div class="size-12 text-gray text-right">
-        <i class="icon-compose"></i>
-        <span translate>Copy this text as it is to a safe place (notepad or email)</span>
-      </div>
-    </div>
-  </div>
-
+					<label translate>Repeat the password</label>
+					<div class="input">
+						<input type="password" class="form-control"
+							   placeholder="{{'Repeat password'|translate}}"
+							   name="password2" ng-model="export.repeatpassword">
+					</div>
+					<div class="size-14 m20b" ng-show="!export.isCordova">
+						<switch name="bCompression" ng-model="export.bCompression" class="green right"></switch>
+						<div>Compress the file? (Slower)</div>
+					</div>
+					<button class="black round expand m20t" ng-click="export.walletExport()"
+							ng-disabled="(export.exported || !export.password || export.password != export.repeatpassword)"
+							ng-style="{'background-color':index.backgroundColor}"><i class="fi-download"></i>
+						<span translate>Export</span></button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 <div class="extra-margin-bottom"></div>
