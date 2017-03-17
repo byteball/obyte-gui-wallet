@@ -17,6 +17,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			arrHistory.pop();
 		}
 		else {
+			if (arrHistory[arrHistory.length - 1] == '#.correspondentDevices' && !(/correspondentDevices/.test(path))) arrHistory = [];
 			arrHistory.push(path);
 			if (root.dontDeletePath) root.dontDeletePath = false;
 		}
