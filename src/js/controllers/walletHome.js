@@ -667,7 +667,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	var address = form.address.$modelValue;
 	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 	var amount = form.amount.$modelValue;
-	var merkle_proof = form.merkle_proof.$modelValue.trim();
+	var merkle_proof = '';
+	if (form.merkle_proof && form.merkle_proof.$modelValue)
+		merkle_proof = form.merkle_proof.$modelValue.trim();
 	if (asset === "base")
 		amount *= unitValue;
 	if (asset === constants.BLACKBYTES_ASSET)
@@ -1031,9 +1033,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	}
 	form.amount.$render();
 
-	form.merkle_proof.$setViewValue('');
-	form.merkle_proof.$render();
-	  
+	if (form.merkle_proof){
+		form.merkle_proof.$setViewValue('');
+		form.merkle_proof.$render();
+	}
     if (comment) {
         form.comment.$setViewValue(comment);
         form.comment.$isValid = true;
