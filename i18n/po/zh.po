@@ -16,6 +16,10 @@ msgstr ""
 msgid "(possible double spend)"
 msgstr "（可能双重支付）"
 
+#: public/views/walletHome.html
+msgid "My Byteball address"
+msgstr "我的Byteball地址"
+
 #: public/views/modals/paypro.html
 msgid "(Trusted)"
 msgstr "（可信）"
@@ -112,6 +116,19 @@ msgstr "添加可选密码以确保种子的安全"
 #: public/views/includes/sidebar.html
 msgid "Add wallet"
 msgstr "添加钱包"
+
+#: public/views/includes/sidebar.html
+msgid "Create a new wallet"
+msgstr "创建新钱包"
+
+#: public/views/includes/sidebar.html
+msgid "Paired devices"
+msgstr "已配对设备"
+
+#: public/views/includes/sidebar.html
+msgid "Co-signers for multisig"
+msgstr "多重签名的共同签署人"
+
 
 #: public/views/paymentUri.html public/views/modals/customized-amount.html
 #: public/views/modals/destination-address.html public/views/modals/paypro.html
@@ -694,6 +711,10 @@ msgstr "{{selectedWalletName}} 获取钱包地址中 ..."
 
 #: public/views/preferences.html
 msgid "Global settings"
+msgstr "全局设置"
+
+#: public/views/includes/sidebar.html
+msgid "Global preferences"
 msgstr "全局设置"
 
 #: public/views/disclaimer.html
@@ -1315,6 +1336,10 @@ msgstr "通过邮件发送地址"
 msgid "Send All"
 msgstr "全部发送"
 
+#: public/views/walletHome.html
+msgid "Send all"
+msgstr "全部发送"
+
 #: public/views/export.html public/views/preferencesLogs.html
 msgid "Send by email"
 msgstr "邮件发送"
@@ -1341,6 +1366,10 @@ msgstr "会话日志"
 
 #: public/views/includes/password.html
 msgid "SET"
+msgstr "设置"
+
+#: public/views/includes/sidebar.html
+msgid "Settings"
 msgstr "设置"
 
 #: public/views/preferencesBwsUrl.html
@@ -1925,3 +1954,7 @@ msgid ""
 msgstr ""
 "您的钱包种子和访问服务器的入口协调初始钱包的创建。您仍需要 {{index.m}}密钥进"
 "行支付。"
+
+#: public/views/includes/menu-item.html
+msgid "Chat"
+msgstr "对话"
