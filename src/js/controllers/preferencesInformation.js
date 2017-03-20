@@ -2,13 +2,13 @@
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
-		var constants = require('byteballcore/constants.js');
+	var constants = require('byteballcore/constants.js');
     var fc = profileService.focusedClient;
     var c = fc.credentials;
 
     this.init = function() {
-      var basePath = c.getBaseAddressDerivationPath(); 
-			var config = configService.getSync().wallet.settings;
+      var basePath = c.getBaseAddressDerivationPath();
+      var config = configService.getSync().wallet.settings;
 
       $scope.walletName = c.walletName;
       $scope.walletId = c.walletId;
@@ -41,34 +41,35 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         });
 
       });
-	
-			fc.getListOfBalancesOnAddresses(function(listOfBalances) {
-				listOfBalances = listOfBalances.map(function(row) {
-					if(row.asset == 'base' || row.asset == constants.BLACKBYTES_ASSET){
-						var assetName = row.asset !== "base" ? 'blackbytes' : 'base';
-						var unitName = row.asset !== "base" ? config.bbUnitName : config.unitName;
-						row.amount = profileService.formatAmount(row.amount, assetName) + ' ' + unitName;
-						return row;
-					}else{
-						return row;
-					}
-				});
-				//groupBy address
-				var assocListOfBalances = {};
-				listOfBalances.forEach(function(row) {
-					if(assocListOfBalances[row.address] === undefined) assocListOfBalances[row.address] = [];
-					assocListOfBalances[row.address].push(row);
-				});
-				$scope.assocListOfBalances = assocListOfBalances;
-				$timeout(function() {
-					$scope.$apply();
-				});
-			});
+      
+      fc.getListOfBalancesOnAddresses(function(listOfBalances) {
+      	listOfBalances = listOfBalances.map(function(row) {
+      		if (row.asset == 'base' || row.asset == constants.BLACKBYTES_ASSET) {
+      			var assetName = row.asset !== "base" ? 'blackbytes' : 'base';
+      			var unitName = row.asset !== "base" ? config.bbUnitName : config.unitName;
+				row.amount = profileService.formatAmount(row.amount, assetName, {dontRound: true}) + ' ' + unitName;
+				return row;
+			}
+			else {
+				return row;
+			}
+		});
+      	//groupBy address
+      	var assocListOfBalances = {};
+      	listOfBalances.forEach(function(row) {
+			if (assocListOfBalances[row.address] === undefined) assocListOfBalances[row.address] = [];
+			assocListOfBalances[row.address].push(row);
+		});
+      	$scope.assocListOfBalances = assocListOfBalances;
+      	$timeout(function() {
+      		$scope.$apply();
+		});
+      });			
     };
-	
-		$scope.hasListOfBalances = function() {
-			return !!Object.keys($scope.assocListOfBalances || {}).length;
-		};
+    
+    $scope.hasListOfBalances = function() {
+    	return !!Object.keys($scope.assocListOfBalances || {}).length;
+	};
 
     this.sendAddrs = function() {
       var self = this;

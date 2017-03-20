@@ -1149,12 +1149,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
-		backButton.menuOpened = true;
+  	backButton.menuOpened = true;
     go.swipe(true);
   };
 
   self.closeMenu = function() {
-		backButton.menuOpened = false;
+  	backButton.menuOpened = false;
     go.swipe();
   };
     
