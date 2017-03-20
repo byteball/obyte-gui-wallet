@@ -11,13 +11,13 @@ angular.module('copayApp.services')
   eventBus.on('new_version', function(ws, data){
     root.version = data.version;
     if(!root.shown) {
-			var modalInstance = $modal.open({
-        templateUrl: 'views/modals/newVersionIsAvailable.html',
-        controller: 'newVersionIsAvailable'
+      var modalInstance = $modal.open({
+          templateUrl: 'views/modals/newVersionIsAvailable.html',
+          controller: 'newVersionIsAvailable'
       });
-			$rootScope.$on('closeModal', function() {
-				modalInstance.dismiss('cancel');
-			});
+      $rootScope.$on('closeModal', function() {
+      	  modalInstance.dismiss('cancel');
+      });
       root.shown = true;
       startTimerNextShow();
     }
