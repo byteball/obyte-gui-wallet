@@ -140,7 +140,7 @@
               <p class="m0">
               {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
               </p>
-              <div class="size-12 text-gray">
+              <div class="size-12 text-gray" ng-if="!index.shared_address">
                 <span ng-include="'views/includes/walletInfo.html'"></span>
               </div>
           </div>
@@ -291,7 +291,7 @@
             </div>
         </h4>
       </div>
-      <div class="row m20t" ng-show="home.canSendPayment()">
+      <div class="row m20t">
         <div class="large-12 large-centered columns">
           <form name="sendForm" ng-submit="home.submitForm()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
@@ -301,6 +301,10 @@
               <a class="close-notification text-warning">&#215;</a>
             </div>
 
+		    <div class="size-12" ng-hide="home.canSendExternalPayment()" style="margin-bottom: 15px">
+			  This is a private asset, please send it only by clicking links in the chat or send it to your other wallets.
+		    </div>
+			  
             <div ng-hide="home.hideAddress">
               <div class="row collapse">
                 <label for="address" class="left" >
@@ -318,7 +322,7 @@
               </div>
 
               <div class="input">
-                <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{'Byteball address'|translate}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+                <input ng-show="sendForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
                 <div class="addressbook-input" ng-show="!sendForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>
@@ -326,6 +330,12 @@
                   <i class="icon-wallet size-18"></i>
                 </a>
               </div>
+			  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
+				  <a ng-click="home.openBindModal()">
+					  <span ng-if="!home.binding">Bind the payment to a condition</span>
+					  <span ng-if="home.binding">This payment is bound to a condition</span>
+				  </a>
+			  </div>
             </div>
 
             <div class="row"  ng-hide="home.hideAmount">
@@ -342,14 +352,25 @@
                 <div>
                   <label for="amount">
                     <span translate>Amount</span>
-					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll" style="text-transform: none; margin-left: 10px">Send all</a>
+					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
-                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount ng-required="!home.bSendAll" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-show="index.bHasMerkle">
+              <div class="large-12 columns">
+                <label for="merkle_proof"><span translate>Merkle proof</span>
+                  <small translate ng-hide="!sendForm.merkle_proof.$pristine">optional</small>
+                  <small translate class="has-error" ng-show="sendForm.merkle_proof.$invalid && !sendForm.merkle_proof.$pristine">too long!</small>
+                </label>
+                <div class="input">
+                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
                 </div>
               </div>
             </div>
@@ -418,9 +439,9 @@
           </form>
         </div>
       </div>
-      <div class="row columns m20t" ng-hide="home.canSendPayment()">
+      <!--div class="row columns m20t" ng-hide="home.canSendPayment()">
 		  This is a private asset, please send it only by clicking links in the chat.
-      </div>
+      </div-->
       <div class="extra-margin-bottom"></div>
     </div> <!-- END Send -->
 
@@ -430,6 +451,11 @@
 
     -->
     <div id="history" class="history tab-view">
+      <div ng-show="index.arrBalances.length > 1">
+        <h4 class="title m0" style="padding:0 10px;">
+            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
+        </h4>
+      </div>
       <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
         <div class="large-12 columns">
           <div class="oh text-center">
@@ -442,11 +468,6 @@
             </span>
           </div>
         </div>
-      </div>
-      <div ng-show="index.arrBalances.length > 1">
-        <h4 class="title m0" style="padding:0 10px;">
-            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
-        </h4>
       </div>
       <div class="row m20t text-center" ng-show="index.updatingTxHistory[index.walletId]">
         <div class="columns large-12 medium-12 small-12">

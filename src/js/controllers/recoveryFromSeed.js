@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('recoveryFromSeed',
-	function($rootScope, $scope, $log, $timeout, profileService) {
+	function($rootScope, $scope, $log, $timeout, profileService, isCordova) {
 	
 		var async = require('async');
 		var conf = require('byteballcore/conf.js');
 		var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
 		var objectHash = require('byteballcore/object_hash.js');
 		try{
-			var ecdsa = require('secp256k1'+'');
+			var ecdsa = isCordova ? null : require('secp256k1'+'');
 		}
 		catch(e){
 			var ecdsa = require('byteballcore/node_modules/secp256k1'+'');
@@ -184,7 +184,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 									createWallets(arrWalletIndexes, function() {
 										createAddresses(assocMaxAddressIndexes, function() {
 											self.scanning = false;
-											$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length+" wallets recovered, please restart the application to finish.", 'fi-alert', function() {
+											$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length+" wallets recovered, please restart the application to finish.", 'fi-check', function() {
 												if (navigator && navigator.app) // android
 													navigator.app.exitApp();
 												else if (process.exit) // nwjs
@@ -195,7 +195,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 								});
 							});
 						} else {
-							self.error = 'Active address is not found.';
+							self.error = 'No active addresses found.';
 							self.scanning = false;
 							$timeout(function() {
 								$rootScope.$apply();

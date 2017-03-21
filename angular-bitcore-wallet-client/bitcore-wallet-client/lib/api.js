@@ -11,6 +11,7 @@ if (process.browser){
 var walletDefinedByKeys;
 var ecdsaSig = require('byteballcore/signature.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var constants = require('byteballcore/constants.js');
 
 var _ = require('lodash');
 var $ = require('preconditions').singleton();
@@ -534,12 +535,9 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 	if (opts.shared_address){
 		opts.paying_addresses = [opts.shared_address];
 		opts.change_address = opts.shared_address;
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-		walletDefinedByAddresses.readRequiredCosigners(opts.shared_address, opts.arrSigningDeviceAddresses, function(arrSigningAddresses){
-			if (arrSigningAddresses.length > 0)
-				opts.signing_addresses = arrSigningAddresses;
-			Wallet.sendMultiPayment(opts, cb);
-		});
+		if (opts.asset && opts.asset !== 'base')
+			opts.fee_paying_wallet = self.credentials.walletId;
+		Wallet.sendMultiPayment(opts, cb);
 	}
 	else{
 		// create a new change address or select first unused one
@@ -576,9 +574,20 @@ API.prototype.getBalance = function(shared_address, cb) {
 	$.checkState(this.credentials && this.credentials.isComplete());
 	var walletId = this.credentials.walletId;
 	Wallet.readBalance(shared_address || walletId, function(assocBalances){
+		if (!assocBalances[constants.BLACKBYTES_ASSET])
+			assocBalances[constants.BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
 		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
 			cb(null, assocBalances, assocSharedBalances);
 		});
+	});
+};
+
+API.prototype.getListOfBalancesOnAddresses = function(cb) {
+	var Wallet = require('byteballcore/wallet.js');
+	$.checkState(this.credentials && this.credentials.isComplete());
+	var walletId = this.credentials.walletId;
+	Wallet.readBalancesOnAddresses(walletId, function(assocBalances) {
+		cb(assocBalances);
 	});
 };
 

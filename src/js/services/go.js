@@ -280,7 +280,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				removeRegListener();
 			});
 		}
-		var win = gui.Window.get();
+		/*var win = gui.Window.get();
 		win.on('close', function(){
 			console.log('close event');
 			var db = require('byteballcore/db.js');
@@ -288,7 +288,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				console.log('close err: '+err);
 			});
 			this.close(true);
-		});
+		});*/
 	}
 	else if (window.cordova){
 		//console.log("go service: setting temp handleOpenURL");

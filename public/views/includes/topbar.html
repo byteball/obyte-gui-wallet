@@ -20,8 +20,8 @@
 
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-		<span ng-if="!index.arrBalances[index.assetIndex].shared">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
-		<span ng-if="index.arrBalances[index.assetIndex].shared"><a ng-click="index.openSubwalletModal()">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</a></span>
+		<span ng-if="!index.arrBalances[index.assetIndex].shared && !index.shared_address">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
+		<span ng-if="index.arrBalances[index.assetIndex].shared || index.shared_address"><a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" class="arrow-down">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</a></span>
     </h1>
   </section>
 </nav>

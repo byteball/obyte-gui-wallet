@@ -94,15 +94,27 @@ angular.module('copayApp.directives')
 				return value;
 			}*/
 			//console.log('-- amount');
+			var constants = require('byteballcore/constants.js');
+			var asset = attrs.validAmount;
             var settings = configService.getSync().wallet.settings;
-            var vNum = Number((value * settings.unitValue).toFixed(0));
+			var unitValue = 1;
+			var decimals = 0;
+			if (asset === 'base'){
+				unitValue = settings.unitValue;
+				decimals = Number(settings.unitDecimals);
+			}
+			else if (asset === constants.BLACKBYTES_ASSET){
+				unitValue = settings.bbUnitValue;
+				decimals = Number(settings.bbUnitDecimals);
+			}
+			  
+            var vNum = Number((value * unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
             }
 
             if (typeof vNum == "number" && vNum > 0) {
-              var decimals = Number(settings.unitDecimals);
               var sep_index = ('' + value).indexOf('.');
               var str_value = ('' + value).substring(sep_index + 1);
               if (sep_index > 0 && str_value.length > decimals) {
