@@ -2,6 +2,7 @@
 
 
 var constants = require('byteballcore/constants.js');
+var chatStorage = require('byteballcore/chat_storage.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton) {
@@ -25,6 +26,31 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
 	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
 
+	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
+		if (pref == old_pref) return;
+		var device = require('byteballcore/device.js');
+		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", (pref ? "true" : "false"), {
+			ifOk: function(){
+				device.updateCorrespondentProps(correspondent);
+				var oldState = (correspondent.peer_record_pref && !correspondent.my_record_pref);
+				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				if (newState != oldState) {
+					var message = {
+						type: 'system',
+						message: JSON.stringify({state: newState}),
+						timestamp: Math.floor(Date.now() / 1000)
+					};
+					$scope.messageEvents.push(chatStorage.parseMessage(message));
+					$scope.$digest();
+					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
+				}
+				if (!pref) {
+					chatStorage.purge(correspondent.device_address);
+				}
+			}
+		});
+	});
+
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
 		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
 	});
@@ -47,9 +73,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			ifOk: function(){
 				setOngoingProcess();
 				//$scope.messageEvents.push({bIncoming: false, message: $sce.trustAsHtml($scope.message)});
-				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(message)});
+				$scope.autoScrollEnabled = true;
+				$scope.messageEvents.push({
+					bIncoming: false, 
+					message: correspondentListService.formatOutgoingMessage(message), 
+					timestamp: Math.floor(Date.now() / 1000)});
 				$scope.message = "";
 				$scope.$apply();
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, correspondentListService.formatOutgoingMessage(message), 0);
 			},
 			ifError: function(error){
 				setOngoingProcess();
@@ -353,6 +384,34 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		go.path('correspondentDevices.editCorrespondentDevice');
 	};
 
+	$scope.loadMoreHistory = function(cb) {
+		if (correspondent.endOfChatHistory)
+			return;
+		var limit = 10;
+		var last_msg_ts = Math.floor(Date.now() / 1000);
+		if ($scope.messageEvents.length && $scope.messageEvents[0].timestamp)
+			last_msg_ts = $scope.messageEvents[0].timestamp;
+		chatStorage.load(correspondent.device_address, last_msg_ts, limit, function(messages){
+			if (messages.length < limit)
+				correspondent.endOfChatHistory = true;
+			for (var i in messages) {
+				var message = messages[i];
+				$scope.messageEvents.unshift({type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(new Date(message.creation_date.replace(' ', 'T')).getTime() / 1000)});
+			}
+			if (cb) cb();
+		});
+	}
+	if ($scope.messageEvents.length == 0) {
+		$scope.autoScrollEnabled = true;
+		$scope.loadMoreHistory(function(){
+			if ($scope.messageEvents.length == 0) {
+				correspondent.endOfChatHistory = false;
+				chatStorage.store(correspondent.device_address, JSON.stringify({state: correspondent.peer_record_pref && correspondent.my_record_pref}), false, 'system');
+				setTimeout($scope.loadMoreHistory, 1000);
+			}
+		});
+	}
+
 	function setError(error){
 		console.log("send error:", error);
 		$scope.error = error;
@@ -486,7 +545,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$deepStateRedirect.reset('correspondentDevices');
 		go.path('correspondentDevices');
 	}
-	
 }).directive('sendPayment', function($compile){
 	console.log("sendPayment directive");
 	return {
@@ -522,10 +580,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 }).directive('scrollBottom', function ($timeout) { // based on http://plnkr.co/edit/H6tFjw1590jHT28Uihcx?p=preview
 	return {
 		link: function (scope, element) {
-			scope.$watchCollection('messageEvents', function (newValue) {
-				if (newValue)
+			scope.$watchCollection('messageEvents', function (newCollection) {
+				if (newCollection)
 					$timeout(function(){
-						element[0].scrollTop = element[0].scrollHeight;
+						if (scope.autoScrollEnabled)
+							element[0].scrollTop = element[0].scrollHeight;
 					}, 100);
 			});
 		}
@@ -560,4 +619,58 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-});;
+}).directive('whenScrolled', ['$timeout', function($timeout) {
+	function ScrollPosition(node) {
+	    this.node = node;
+	    this.previousScrollHeightMinusTop = 0;
+	    this.readyFor = 'up';
+	}
+
+	ScrollPosition.prototype.restore = function () {
+	    if (this.readyFor === 'up') {
+	        this.node.scrollTop = this.node.scrollHeight
+	            - this.previousScrollHeightMinusTop;
+	    }
+	}
+
+	ScrollPosition.prototype.prepareFor = function (direction) {
+	    this.readyFor = direction || 'up';
+	    this.previousScrollHeightMinusTop = this.node.scrollHeight
+	        - this.node.scrollTop;
+	}
+
+    return function(scope, elm, attr) {
+        var raw = elm[0];
+
+        var chatScrollPosition = new ScrollPosition(raw);
+        
+        $timeout(function() {
+            raw.scrollTop = raw.scrollHeight;
+        });
+        
+        elm.bind('scroll', function() {
+        	if (raw.scrollTop + raw.offsetHeight != raw.scrollHeight) 
+        		scope.autoScrollEnabled = false;
+        	else 
+        		scope.autoScrollEnabled = true;
+            if (raw.scrollTop <= 20 && !scope.loadingHistory) { // load more items before you hit the top
+                scope.loadingHistory = true;
+                chatScrollPosition.prepareFor('up');
+            	scope[attr.whenScrolled](function(){
+            		scope.$digest();
+                	chatScrollPosition.restore();
+                	scope.loadingHistory = false;
+                });
+            }
+        });
+    };
+}]).directive('system', function ($compile) {
+	return {
+		link: function (scope, ele, attrs) {
+			if (scope.messageEvent.type != "system") return;
+			ele.find('b').on('click', function(){
+				alert('123');
+			});
+		}
+	};
+});

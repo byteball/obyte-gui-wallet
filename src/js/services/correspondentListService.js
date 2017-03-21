@@ -46,7 +46,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[peer_address])
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
-		root.messageEventsByCorrespondent[peer_address].push({bIncoming: bIncoming, message: body});
+		root.messageEventsByCorrespondent[peer_address].push({
+			bIncoming: bIncoming,
+			message: body,
+			timestamp: Math.floor(Date.now() / 1000)
+		});
 		if (bIncoming) {
 			if (peer_address in $rootScope.newMessagesCount)
 				$rootScope.newMessagesCount[peer_address]++;
@@ -283,12 +287,47 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	eventBus.on("text", function(from_address, body){
 		addIncomingMessageEvent(from_address, body);
+		device.readCorrespondent(from_address, function(correspondent){
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
+		});
+	});
+
+	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
+		var bEnabled = (enabled == "true");
+		var chatStorage = require('byteballcore/chat_storage.js');
+		device.readCorrespondent(correspondent_address, function(correspondent){
+			var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+			correspondent.peer_record_pref = bEnabled;
+			var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+			device.updateCorrespondentProps(correspondent);
+			if (newState != oldState) {
+				if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
+				var message = {
+					type: 'system',
+					message: JSON.stringify({state: newState}),
+					timestamp: Math.floor(Date.now() / 1000)
+				};
+				root.messageEventsByCorrespondent[correspondent_address].push(chatStorage.parseMessage(message));
+				$rootScope.$digest();
+				chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
+			}
+		if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
+			root.currentCorrespondent.peer_record_pref = enabled == "true" ? 1 : 0;
+		}
+		});
+		if (enabled == "false") {
+			chatStorage.purge(correspondent_address);
+		}
+		//root.messageEventsByCorrespondent[correspondent_address] = [];
 	});
 	
 	eventBus.on("sent_payment", function(peer_address, amount, asset){
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body);
+			device.readCorrespondent(peer_address, function(correspondent){
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+			});
 			go.path('correspondentDevices.correspondentDevice');
 		});
 	});
@@ -296,6 +335,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on("received_payment", function(peer_address, amount, asset){
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body);
+		device.readCorrespondent(peer_address, function(correspondent){
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+		});
 	});
 	
 	eventBus.on('paired', function(device_address){
