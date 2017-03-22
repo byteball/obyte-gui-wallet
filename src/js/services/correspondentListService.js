@@ -8,6 +8,7 @@ var objectHash = require('byteballcore/object_hash.js');
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
 	var root = {};
 	var device = require('byteballcore/device.js');
+	var chatStorage = require('byteballcore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 
@@ -294,7 +295,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
 		var bEnabled = (enabled == "true");
-		var chatStorage = require('byteballcore/chat_storage.js');
 		device.readCorrespondent(correspondent_address, function(correspondent){
 			var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
 			correspondent.peer_record_pref = bEnabled;
