@@ -2,7 +2,7 @@
   <header>
     <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" width="80"></logo>
     <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Byteball" width="80">
-    <div ng-include="'views/includes/version.html'"></div>
+    <div ng-include="'views/includes/versionAndWalletType.html'"></div>
   </header>
   <ul class="off-canvas-list">
     <li ng-show="sidebar.wallets[0]"
