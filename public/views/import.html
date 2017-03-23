@@ -16,7 +16,7 @@
 				<div class="rect4"></div>
 				<div class="rect5"></div>
 			</div>
-			<span> Importing wallet... </span>
+			<span translate> Importing wallet... </span>
 		</div>
 	</div>
 
@@ -28,7 +28,7 @@
 
 	<div>
 		<form class="columns" ng-submit="import.walletImport()">
-			<label><span>Your wallet file:</span></label>
+			<label><span translate>Your wallet file:</span></label>
 			<input type="file" ng-file-select>
 			<input type="password" placeholder="Password" ng-model="import.password">
 			<input ng-disabled="import.imported || import.password == '' || !file" type="submit"
@@ -42,12 +42,12 @@
 			<ul class="no-bullet m0" ng-repeat="backupFile in import.arrBackupFiles | orderBy:backupFile.time:true">
 				<li ng-click="import.iosWalletImportFromFile(backupFile.originalName)">
 					<i class="icon-arrow-right3 size-24 right text-gray"></i>
-					<div translate>{{backupFile.name}}</div>
+					<div>{{backupFile.name}}</div>
 				</li>
 			</ul>
 		</div>
 	</div>
-	<div class="text-alert size-12 columns">
+	<div class="text-alert size-12 columns" translate>
 		WARNING: This will permanently delete all your existing wallets!
 	</div>
 </div>

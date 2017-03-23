@@ -22,8 +22,8 @@
 	<h4 class="title m0 row" translate>The peer receives this payment if:</h4>
 	<div class="row columns m10t">
 		<select ng-model="binding.type">
-			<option value="reverse_payment" selected>I receive another payment:</option>
-			<option value="data">An event is posted by an oracle:</option>
+			<option value="reverse_payment" selected translate>I receive another payment:</option>
+			<option value="data" translate>An event is posted by an oracle:</option>
 		</select>
 	</div>
 	
@@ -73,21 +73,21 @@
 				<span translate>The expected value will be posted:</span>
 			</label>
 			<select ng-model="binding.feed_type" name="feed_type" id="feed_type" style="font-size: 13px; color: #6A7D90" >
-				<option value="explicit">explicitly</option>
-				<option value="merkle">in merkle tree</option>
-				<option value="either">either way</option>
+				<option value="explicit" translate>explicitly</option>
+				<option value="merkle" translate>in merkle tree</option>
+				<option value="either" translate>either way</option>
 			</select>
 		</div>
 	</div>
 	
-	<h4 class="columns row title">
+	<h4 class="columns row title" translate>
 		If the condition is not met, I can take this money back after: 
 	</h4>
 	<div class="row">
 		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
 			<input type="number" min="0.1" required name="timeout" ng-model="binding.timeout" style="text-align: right">
 		</div>
-		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px; margin-top: 8px; font-size: 13px; color: #6A7D90">
+		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px; margin-top: 8px; font-size: 13px; color: #6A7D90" translate>
 			hours
 		</div>
 	</div>
@@ -98,7 +98,7 @@
 		<div >
 		</div>
 		<button type="button" class="button black round expand" ng-disabled="!binding.timeout || (binding.type == 'reverse_payment' ? (!binding.reverseAmount || bindForm.reverseAmount.$invalid) : (!binding.oracle_address || bindForm.oracle_address.$invalid || !binding.feed_name || !binding.feed_value))" ng-style="{'background-color':color}" ng-click="bind()" translate>
-			Bind Payment
+			Bind payment
 		</button>
 	</div>
 	</form>

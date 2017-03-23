@@ -301,7 +301,7 @@
               <a class="close-notification text-warning">&#215;</a>
             </div>
 
-		    <div class="size-12" ng-hide="home.canSendExternalPayment()" style="margin-bottom: 15px">
+		    <div class="size-12" ng-hide="home.canSendExternalPayment()" style="margin-bottom: 15px" translate>
 			  This is a private asset, please send it only by clicking links in the chat or send it to your other wallets.
 		    </div>
 			  
@@ -332,8 +332,8 @@
               </div>
 			  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
 				  <a ng-click="home.openBindModal()">
-					  <span ng-if="!home.binding">Bind the payment to a condition</span>
-					  <span ng-if="home.binding">This payment is bound to a condition</span>
+					  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
+					  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
 				  </a>
 			  </div>
             </div>
