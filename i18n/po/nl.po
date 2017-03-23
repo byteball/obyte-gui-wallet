@@ -29,7 +29,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Over Byteball"
 
 #: src/js/controllers/copayers.js:8 src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117 src/js/services/confirmDialog.js:8
@@ -46,7 +46,7 @@ msgstr ""
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Rekening"
 
 #: public/views/correspondentDevices.html:30
 msgid "Add a new device"
@@ -65,20 +65,20 @@ msgstr "Add wallet"
 #: public/views/modals/destination-address.html:114
 #: public/views/paymentUri.html:15
 msgid "Address"
-msgstr "Address"
+msgstr "Adres"
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:19
 msgid "Addressbook"
-msgstr ""
+msgstr "Adresboek"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
-msgstr "Advanced"
+msgstr "Gevorderd"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr "Agree"
+msgstr "Akkoord"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
@@ -86,7 +86,7 @@ msgstr "Alias for <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Alle Wallet adressen"
 
 #: public/views/translators.html:26
 msgid ""
@@ -96,7 +96,7 @@ msgstr ""
 
 #: public/views/walletHome.html:107
 msgid "Also"
-msgstr ""
+msgstr "Ook"
 
 #: public/views/includes/output.html:6 public/views/modals/bind.html:32
 #: public/views/modals/customized-amount.html:38
@@ -104,11 +104,11 @@ msgstr ""
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16 public/views/walletHome.html:354
 msgid "Amount"
-msgstr "Amount"
+msgstr "Bedrag"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Een gebeurtenis is posted by an oracle"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
@@ -129,7 +129,7 @@ msgstr ""
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:288
 msgid "Available Balance"
-msgstr "Available Balance"
+msgstr "Beschikbaar saldo"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -138,11 +138,11 @@ msgstr "Available Balance"
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/tx-details.html:5
 msgid "Back"
-msgstr "Back"
+msgstr "Terug"
 
 #: public/views/walletHome.html:189
 msgid "Backup now"
-msgstr "Backup now"
+msgstr "Maak backup"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
@@ -164,11 +164,11 @@ msgstr ""
 
 #: public/views/modals/bind.html:100 public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Koppel betaling"
 
 #: public/views/walletHome.html:335
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Koppel de betaling aan een conditie"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -184,7 +184,7 @@ msgstr "CANCEL"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "VERDER"
 
 #: public/views/modals/destination-address.html:123
 #: public/views/walletHome.html:429 src/js/controllers/copayers.js:9
@@ -214,23 +214,23 @@ msgstr ""
 #: public/views/modals/multi-payment.html:4 public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr "Close"
+msgstr "Afsluiten"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Mede-ondertekenaar"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Mede-ondertekenaars"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Mede-ondertekenaars voor multisig"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr "Color"
+msgstr "Kleur"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
@@ -244,24 +244,24 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:119 src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr "Confirm"
+msgstr "Bevestig"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Bevestig betaling"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Bevestigd"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:385
 msgid "Copied to clipboard"
-msgstr "Copied to clipboard"
+msgstr "Gecopieerd naar klipbord"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Correspondenten zijn niet teruggeplaatst."
 
 #: src/js/controllers/walletHome.js:595
 msgid "Could not create payment proposal"
@@ -281,7 +281,7 @@ msgstr "Could not create: Invalid wallet seed"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr "Could not decrypt"
+msgstr "Kon niet ontcijferen"
 
 #: public/views/walletHome.html:463
 msgid "Could not fetch transaction history"
@@ -290,7 +290,7 @@ msgstr "Could not fetch transaction history"
 #: src/js/services/profileService.js:442 src/js/services/profileService.js:469
 #: src/js/services/profileService.js:491
 msgid "Could not import"
-msgstr "Could not import"
+msgstr "Kon niet importeren"
 
 #: src/js/services/profileService.js:419
 msgid "Could not import. Check input file and password"
@@ -306,11 +306,11 @@ msgstr "Could not send payment"
 
 #: public/views/walletHome.html:12
 msgid "Create"
-msgstr "Create"
+msgstr "Creeer"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Creeer een nieuwe portefuielle"
 
 #: public/views/add.html:15 public/views/create.html:165
 msgid "Create new wallet"
@@ -326,7 +326,7 @@ msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Gecreeerd"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -338,7 +338,7 @@ msgstr "Creating Wallet..."
 
 #: public/views/backup.html:99
 msgid "DELETE WORDS"
-msgstr "DELETE WORDS"
+msgstr "VERWIJDER WOORDEN"
 
 #: public/views/modals/bind.html:57
 msgid "Data feed name:"
@@ -346,11 +346,11 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
-msgstr "Date"
+msgstr "Datum"
 
 #: src/js/controllers/index.js:204
 msgid "Declined"
-msgstr ""
+msgstr "Afgewezen"
 
 #: public/views/paperWallet.html:40
 msgid ""
@@ -362,7 +362,7 @@ msgstr ""
 
 #: public/views/walletHome.html:136
 msgid "Definition"
-msgstr ""
+msgstr "Definitie"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
@@ -374,7 +374,7 @@ msgstr ""
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
-msgstr "Delete Wallet"
+msgstr "Verwijder portefueille"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
@@ -414,7 +414,7 @@ msgstr ""
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:37
 msgid "Done"
-msgstr ""
+msgstr "Beeindigd"
 
 #: public/views/walletHome.html:558
 msgid "Download CSV file"
@@ -423,7 +423,7 @@ msgstr "Download CSV file"
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:34
 msgid "Edit"
-msgstr ""
+msgstr "Wijzig"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -450,11 +450,11 @@ msgstr "Error creating wallet"
 
 #: public/views/modals/bind.html:65
 msgid "Expected value:"
-msgstr ""
+msgstr "Verwachte waarde:"
 
 #: public/views/export.html:50
 msgid "Export"
-msgstr "Export"
+msgstr "Exporteren"
 
 #: src/js/controllers/export.js:100
 msgid "Export completed successfully"
@@ -522,7 +522,7 @@ msgstr "Generating .csv file..."
 
 #: public/views/translators.html:15 public/views/translators.html:16
 msgid "German"
-msgstr "German"
+msgstr "Duits"
 
 #: public/views/modals/destination-address.html:57
 msgid "Getting address for wallet {{selectedWalletName}} ..."
@@ -534,11 +534,11 @@ msgstr ""
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr "Go back"
+msgstr "Ga terug"
 
 #: public/views/translators.html:18 public/views/translators.html:19
 msgid "Greek"
-msgstr "Greek"
+msgstr "Grieks"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
@@ -622,11 +622,11 @@ msgstr ""
 #: public/views/translators.html:12 public/views/translators.html:13
 #: public/views/translators.html:14
 msgid "Italian"
-msgstr "Italian"
+msgstr "Italiaans"
 
 #: public/views/translators.html:10
 msgid "Japanese"
-msgstr "Japanese"
+msgstr "Japanees"
 
 #: public/views/modals/destination-address.html:116
 msgid "Label"
@@ -634,15 +634,15 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
-msgstr "Language"
+msgstr "Taal"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "Later"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
-msgstr ""
+msgstr "Lichte portefueille"
 
 #: src/js/controllers/disclaimer.js:8
 msgid "Loading..."
@@ -654,16 +654,16 @@ msgstr "Make a payment to"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
-msgstr ""
+msgstr "Misschien later"
 
 #: public/views/includes/copayers.html:4
 #: public/views/preferencesInformation.html:76 public/views/walletHome.html:399
 msgid "Me"
-msgstr "Me"
+msgstr "Ik"
 
 #: public/views/modals/tx-details.html:97
 msgid "Merchant message"
-msgstr "Merchant message"
+msgstr "Boodschap van verkoper"
 
 #: public/views/walletHome.html:368
 msgid "Merkle proof"
@@ -671,11 +671,11 @@ msgstr ""
 
 #: public/views/paymentUri.html:17
 msgid "Message"
-msgstr "Message"
+msgstr "Boodschap"
 
 #: public/views/walletHome.html:500
 msgid "Moved"
-msgstr "Moved"
+msgstr "Verplaatst"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
@@ -687,7 +687,7 @@ msgstr ""
 
 #: public/views/paymentUri.html:18
 msgid "Network"
-msgstr "Network"
+msgstr "Netwerk"
 
 #: src/js/controllers/create.js:29
 msgid "New Random Seed"
@@ -699,11 +699,11 @@ msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
-msgstr ""
+msgstr "Nieuwe getuigen"
 
 #: public/views/authConfirmation.html:22 src/js/controllers/index.js:393
 msgid "No"
-msgstr ""
+msgstr "Neen"
 
 #: public/views/walletHome.html:466
 msgid "No transactions yet"
@@ -738,11 +738,11 @@ msgstr ""
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Koppel"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "Gekoppelde apparaten"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
@@ -1684,7 +1684,7 @@ msgstr ""
 #~ msgstr "Download"
 
 #~ msgid "Economy"
-#~ msgstr "Economy"
+#~ msgstr "Economie"
 
 #~ msgid "Email"
 #~ msgstr "Email"
@@ -1705,7 +1705,7 @@ msgstr ""
 #~ msgstr "Error importing wallet:"
 
 #~ msgid "Expires"
-#~ msgstr "Expires"
+#~ msgstr "Vervald"
 
 #~ msgid "Export options"
 #~ msgstr "Export options"
@@ -2341,13 +2341,13 @@ msgstr ""
 #~ msgstr "Your backup password"
 
 #~ msgid "Your nickname"
-#~ msgstr "Your nickname"
+#~ msgstr "Uw nickname"
 
 #~ msgid "Your profile password"
-#~ msgstr "Your profile password"
+#~ msgstr "Uw profile password"
 
 #~ msgid "Your wallet has been imported correctly"
-#~ msgstr "Your wallet has been imported correctly"
+#~ msgstr "Uw wallet has been imported correctly"
 
 #~ msgid "Your Wallet Seed"
 #~ msgstr "Your Wallet Seed"
