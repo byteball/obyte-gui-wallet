@@ -60,6 +60,8 @@ angular.module('copayApp.services')
     root._set = function(lang) {
       $log.debug('Setting default language: ' + lang);
       gettextCatalog.setCurrentLanguage(lang);
+	  if (lang !== 'en')
+		  gettextCatalog.loadRemote("languages/" + lang + ".json");
       amMoment.changeLocale(lang);
       root.currentLanguage = lang;
     };

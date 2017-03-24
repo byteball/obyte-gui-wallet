@@ -87,7 +87,6 @@ module.exports = function(grunt) {
           'src/js/models/*.js',
           'src/js/services/*.js',
           'src/js/controllers/*.js',
-          'src/js/translations.js',
           'src/js/version.js',
           'src/js/init.js'
         ],
@@ -136,11 +135,19 @@ module.exports = function(grunt) {
     nggettext_compile: {
       all: {
         options: {
+		  format: "json",
           module: 'copayApp'
         },
-        files: {
-          'src/js/translations.js': ['i18n/po/*.po']
-        }
+		files: [
+			{
+				expand: true,
+				dot: true,
+				cwd: "i18n/po",
+				dest: "public/languages",
+				src: ["*.po"],
+				ext: ".json"
+			}
+		]
       },
     },
     copy: {
