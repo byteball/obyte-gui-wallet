@@ -627,7 +627,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
-            $rootScope.$digest();
+			$timeout(function(){
+				$rootScope.$digest();
+			});
         });
 
 		self.needsBackup = false;
