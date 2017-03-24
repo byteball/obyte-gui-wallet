@@ -22,6 +22,9 @@ angular.module('copayApp.services')
       name: 'Português',
       isoCode: 'pt',
     }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
+    }, {
       name: 'Ελληνικά',
       isoCode: 'el',
     }, {
