@@ -10,82 +10,82 @@ msgstr ""
 
 #: public/views/walletHome.html:508
 msgid "(possible double spend)"
-msgstr ""
+msgstr "przypuszczalne podwójne wydanie"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Portfel zdecentralizowanej wartości"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "O Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr ""
+msgstr "Akceptuj"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Akceptuj zaproszenie"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Akceptuj zaproszenie od innego urządzenia"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Konto"
 
 #: public/views/correspondentDevices.html:30
 msgid "Add a new device"
-msgstr ""
+msgstr "Dodaj nowe urządzenie"
 
 #: public/views/modals/destination-address.html:102
 #: public/views/modals/destination-address.html:95
 msgid "Add a new entry"
-msgstr ""
+msgstr "Dodaj nowy wpis"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
-msgstr ""
+msgstr "Dodaj portfel"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:114
 #: public/views/paymentUri.html:15
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:19
 msgid "Addressbook"
-msgstr ""
+msgstr "Książka adresowa"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
-msgstr ""
+msgstr "Zaawansowane"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr ""
+msgstr "Zgoda"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr ""
+msgstr "Alias dla"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Wszystkie adresy portfela"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Zapraszamy wszystkich do tłumaczenia Byteball. Utwórz konto na crowdin.com i dołącz do projektu Byteball"
 
 #: public/views/walletHome.html:107
 msgid "Also"
-msgstr ""
+msgstr "Oraz"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -95,33 +95,33 @@ msgstr ""
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:354
 msgid "Amount"
-msgstr ""
+msgstr "Kwota"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Wydarzenie jest ogłaszane przez wyrocznię"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Zaakceptuj utworzenie portfela na innych urządzeniach"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Jesteś pewien, że chcesz usunąć słowa kopii zapasowej?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
 msgid "Are you sure you want to delete this wallet?"
-msgstr ""
+msgstr "Jesteś pewien, że chcesz usunąć ten portfel?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Aktywo"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:288
 msgid "Available Balance"
-msgstr ""
+msgstr "Dostępne saldo"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -130,52 +130,52 @@ msgstr ""
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/tx-details.html:5
 msgid "Back"
-msgstr ""
+msgstr "Wstecz"
 
 #: public/views/walletHome.html:189
 msgid "Backup now"
-msgstr ""
+msgstr "Utwórz teraz kopię zapasową"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Utwórz kopię zapasową słów do przywracania portfela"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Usunięto słowa kopii zapasowej"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr ""
+msgstr "Saldo poszczególnych adresów"
 
 #: public/views/walletHome.html:183
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr ""
+msgstr "Przed otrzymaniem środków, wysoce zalecane jest dokonanie kopii zapasowej kluczy porfela"
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Powiązana płatność"
 
 #: public/views/walletHome.html:335
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Powiąż płatność z warunkiem"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr ""
+msgstr "URI Bitcoina jest niepoprawne!"
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
-msgstr ""
+msgstr "Niewspierana przeglądarka"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr ""
+msgstr "ANULUJ"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "KONTYNUUJ"
 
 #: public/views/modals/destination-address.html:123
 #: public/views/walletHome.html:429
@@ -184,19 +184,19 @@ msgstr ""
 #: src/js/controllers/walletHome.js:118
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr ""
+msgstr "Anuluj"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr ""
+msgstr "Zmiana aliasu porfela wpływa tylko na lokalną nazwę porfela"
 
 #: src/js/controllers/index.js:537
 msgid "Chat"
-msgstr ""
+msgstr "Czat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Wybierz urządzenie, na które wysłać"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -209,31 +209,31 @@ msgstr ""
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr ""
+msgstr "Zamknij"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Współsygnatariusz"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Współsygnatariusze"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Współsygnatariusze multi-podpisu"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr ""
+msgstr "Kolor"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
-msgstr ""
+msgstr "Wyślij hash"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "Skompresować plik? (Wolniejsze)"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:394
@@ -241,20 +241,20 @@ msgstr ""
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr ""
+msgstr "Potwierdź"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Potwierdź płatność"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Potwierdzone"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:385
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "Skopiowano do schowka"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
