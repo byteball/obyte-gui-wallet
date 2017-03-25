@@ -700,7 +700,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         console.log("will retry setTab later:", tab, reset, tries, switchState);
         return $timeout(function() {
             self.setTab(tab, reset, tries, switchState);
-        }, 300);
+        }, (tries === 1) ? 10 : 300);
     }
 
     if (!self.tab || !$state.is('walletHome'))
