@@ -6,11 +6,11 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane"
 
 #: public/views/walletHome.html:508
 msgid "(possible double spend)"
-msgstr "przypuszczalne podwójne wydanie"
+msgstr "przypuszczalne podwójne wydanie środków"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -73,7 +73,7 @@ msgstr "Zgoda"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr "Alias dla"
+msgstr "Alias dla <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
@@ -99,7 +99,7 @@ msgstr "Kwota"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr "Wydarzenie jest ogłaszane przez wyrocznię"
+msgstr "Wydarzenie jest ogłaszane przez wyrocznię:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
@@ -150,7 +150,7 @@ msgstr "Saldo poszczególnych adresów"
 
 #: public/views/walletHome.html:183
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr "Przed otrzymaniem środków, wysoce zalecane jest dokonanie kopii zapasowej kluczy porfela"
+msgstr "Przed otrzymaniem środków jest wysoce zalecane dokonanie kopii zapasowej kluczy porfela"
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
