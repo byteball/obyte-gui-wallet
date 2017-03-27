@@ -25,31 +25,36 @@ msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
 
 #: public/views/splash.html:50
+#, fuzzy
 msgid "A wallet for decentralized value"
 msgstr "Een portefeuille voor gedecentraliseerde waarden"
 
 #: public/views/preferencesGlobal.html:135
+#, fuzzy
 msgid "About Byteball"
 msgstr "Over Byteball"
 
 #: src/js/controllers/copayers.js:8 src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117 src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr "Aanvaard"
+msgstr "Accepteer"
 
 #: public/views/acceptCorrespondentInvitation.html:23
+#, fuzzy
 msgid "Accept invitation"
-msgstr "Aanvaard de uitnodiging"
+msgstr "Aanvaard uitnodiging"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
 msgstr "Aanvaard de uitnodiging van het andere toestel"
 
 #: public/views/preferencesInformation.html:65
+#, fuzzy
 msgid "Account"
 msgstr "Rekening"
 
 #: public/views/correspondentDevices.html:30
+#, fuzzy
 msgid "Add a new device"
 msgstr "Voeg een nieuw toestel toe"
 
@@ -183,7 +188,7 @@ msgstr "Deze browser is niet ondersteund"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr "CANCEL"
+msgstr "ANNULEER"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
@@ -203,6 +208,7 @@ msgstr ""
 "de lokale portefeuille."
 
 #: src/js/controllers/index.js:537
+#, fuzzy
 msgid "Chat"
 msgstr "Praat"
 
@@ -252,10 +258,12 @@ msgid "Confirm"
 msgstr "Bevestig"
 
 #: public/views/modals/multi-payment.html:8
+#, fuzzy
 msgid "Confirm payment"
 msgstr "Bevestig betaling"
 
 #: public/views/modals/tx-details.html:108
+#, fuzzy
 msgid "Confirmed"
 msgstr "Bevestigd"
 
@@ -434,7 +442,7 @@ msgstr "Wijzig"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
-msgstr "E-mail voor meldingen van portefeuille"
+msgstr "E-mail voor portefeuille-meldingen"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
@@ -452,7 +460,7 @@ msgstr ""
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
-msgstr "Geef uw paswoord in"
+msgstr "Vul paswoord in"
 
 #: src/js/services/profileService.js:270 src/js/services/profileService.js:320
 msgid "Error creating wallet"
@@ -557,7 +565,7 @@ msgstr "Hardware wallet"
 
 #: public/views/backup.html:54
 msgid "Hide the Wallet Seed"
-msgstr "Verberg de sleutel van portefeuille "
+msgstr "Verberg de sleutel van de portefeuille"
 
 #: src/js/controllers/index.js:533
 msgid "History"
@@ -665,7 +673,7 @@ msgstr "Bezig met laden…"
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
-msgstr "Aanmaken van een betaling aan"
+msgstr "Aanmaken van een betaling voor"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
@@ -778,6 +786,10 @@ msgstr "Paswoord is nodig"
 msgid "Passwords do not match"
 msgstr "De paswoorden komen niet overeen"
 
+#: src/js/controllers/password.js:33
+msgid "Passwords do not match"
+msgstr "Wachtwoorden komen niet overeen"
+
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
 msgstr "Paste your paper wallet private key here"
@@ -801,6 +813,10 @@ msgstr "De betaling is verworpen"
 #: public/views/modals/tx-status.html:5
 msgid "Payment Sent"
 msgstr "De betaling is verzonden"
+
+#: public/views/modals/tx-status.html:5
+msgid "Payment Sent"
+msgstr "Betaling Verzonden"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -1031,6 +1047,7 @@ msgid "Send addresses by email"
 msgstr "Verstuur adressen met e-mail"
 
 #: public/views/walletHome.html:355
+#, fuzzy
 msgid "Send all"
 msgstr "Verstuur alles"
 
@@ -1051,6 +1068,7 @@ msgid "Session log"
 msgstr "Log van de sessie"
 
 #: public/views/export.html:30
+#, fuzzy
 msgid "Set up a Password"
 msgstr "Maak een paswoord aan"
 
@@ -1344,7 +1362,7 @@ msgstr "Id van portefeuille"
 #: public/views/preferencesAdvanced.html:14
 #: public/views/preferencesInformation.html:8
 msgid "Wallet Information"
-msgstr "Informatie van portefeuille"
+msgstr "Informatie over portefeuille"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
@@ -1356,7 +1374,7 @@ msgstr "Portefeuille bestaat reeds in Byteball: "
 
 #: public/views/create.html:48
 msgid "Wallet name"
-msgstr "Naam van portefeuille"
+msgstr "Naam van de portefeuille"
 
 #: public/views/backup.html:43
 msgid "Wallet seed not available."
@@ -1377,7 +1395,7 @@ msgstr "Wie ondertekend:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr "Adres van getuige"
+msgstr "Adres van de getuige"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"

@@ -374,7 +374,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             self.addr[fc.credentials.walletId] = addr;
         }
 
-        $scope.$digest();
+        $timeout(function(){
+			$scope.$digest();
+		});
       });
     });
   };
