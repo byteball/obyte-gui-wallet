@@ -864,7 +864,7 @@ msgstr "Címzettek"
 
 #: public/views/walletHome.html:28
 msgid "Reconnecting to Wallet Service..."
-msgstr "Újrakapcsolódás a tárca kiszolgálóhoz"
+msgstr "Újrakapcsolódás a tárcaszolgáltatóhoz"
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
@@ -914,7 +914,7 @@ msgstr "Jelszó igénylés"
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:252
 msgid "Request a specific amount"
-msgstr "Adott összeg igénylés"
+msgstr "Adott összeg igénylése"
 
 #: public/views/correspondentDevice.html:221
 msgid "Request payment"
@@ -960,7 +960,7 @@ msgstr "Ujjlenyomat leolvasás"
 
 #: public/views/paperWallet.html:44
 msgid "Scan Wallet Funds"
-msgstr "Tárcaérték leolvasás"
+msgstr "Tárca pénzkészlet leolvasás"
 
 #: public/views/walletHome.html:87
 msgid "Scan status finished with error"
@@ -980,7 +980,7 @@ msgstr "Kérlek olvasd le az ujjlenyomatodat"
 
 #: public/views/walletHome.html:47
 msgid "Scanning Wallet funds..."
-msgstr "Tárcaérték leolvasása..."
+msgstr "Tárca pénzkészletének leolvasása..."
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
@@ -988,7 +988,7 @@ msgstr "Címek keresése..."
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
-msgstr "Tárcaérték leolvasása..."
+msgstr "Tárca pénzkészletének leolvasása..."
 
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
@@ -1400,7 +1400,7 @@ msgid ""
 "Your wallet key will be encrypted. Password cannot be recovered. Be sure to "
 "write it down"
 msgstr ""
-"A tárca kulcsod titkosítva lesz. A jelszót nem lehet majd visszaállítani, a "
+"A tárcád kulcsa titkosítva lesz. A jelszót nem lehet majd visszaállítani, a "
 "biztonság kedvéért írd le."
 
 #: public/views/modals/bind.html:78
