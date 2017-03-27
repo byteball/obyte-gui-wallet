@@ -71,7 +71,7 @@
     #recording-drop {
     	max-width: 200px;
     	left: 140px;
-    	padding: 10px;
+    	padding: 15px;
     }
     .message-log{
         position: absolute;
@@ -198,7 +198,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .system span{
 	color: #888;
-	padding-left: 15px;
+	padding: 0 15px;
 	background-color: white;
 }
 .system b{
@@ -223,6 +223,11 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .switch-line {
 	margin-top: 5px;
+}
+.msg-ts {
+	color: #666;
+	font-size: 10px;
+	padding-top: 10px;
 }
 
 
@@ -251,19 +256,20 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
       <div id="recording-drop" class="f-dropdown" data-dropdown-content>
       <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref">
-      	Both you and your opponent enabled local chat history recording.
+      	Both you and {{correspondent.name}} enabled local chat history recording.
       </div>
       <div class="text" ng-if="!(correspondent.my_record_pref && correspondent.peer_record_pref)">
-      	Either you or your opponent have chat history recording disabled. History is not saved for anyone now.
+      	Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now.
       </div>
+      <br>
 	  <div>
 	  	<switch ng-model="correspondent.my_record_pref" class="green right"></switch>
-	  	<div>My recording</div>
+	  	<div>My recording preference</div>
 	  </div>
 	  <div class="clear"></div>
 	  <div class="switch-line">
 	  	<switch ng-model="correspondent.peer_record_pref" class="green right" disabled="true"></switch>
-	  	<div>Peer recording</div>
+	  	<div>Their recording preference</div>
 	  </div>
 	</div>
 
@@ -272,6 +278,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
               <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')" class="bubble" dynamic="messageEvent.message" ng-attr-dropdown-toggle="{{messageEvent.type == 'system' && '#recording-drop'}}"></div>
+              <div ng-class="(messageEvent.bIncoming ? 'left' : 'right')" class="msg-ts" ng-if="messageEvent.type != 'system'">{{messageEvent.timestamp * 1000 | date:'shortTime'}}</div>
             <!--/div-->
             <div class="clear"></div>
         </div>

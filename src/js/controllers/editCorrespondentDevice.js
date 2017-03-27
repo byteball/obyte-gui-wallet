@@ -22,6 +22,14 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		});
 	};
 
+	$scope.purge_chat = function() {
+		if (confirm('Delete the whole chat history with ' + correspondent.name + '?')) {
+			var chatStorage = require('byteballcore/chat_storage.js');
+			chatStorage.purge(correspondent.device_address);
+			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
+		}
+	}
+
 	function setError(error){
 		$scope.error = error;
 	}

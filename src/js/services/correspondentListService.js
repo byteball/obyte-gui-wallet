@@ -315,9 +315,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			root.currentCorrespondent.peer_record_pref = enabled == "true" ? 1 : 0;
 		}
 		});
-		if (enabled == "false") {
+		/*if (enabled == "false") {
 			chatStorage.purge(correspondent_address);
-		}
+		}*/
 		//root.messageEventsByCorrespondent[correspondent_address] = [];
 	});
 	

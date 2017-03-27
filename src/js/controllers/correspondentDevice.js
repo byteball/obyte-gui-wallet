@@ -44,9 +44,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$scope.$digest();
 					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
 				}
-				if (!pref) {
+				/*if (!pref) {
 					chatStorage.purge(correspondent.device_address);
-				}
+				}*/
 			}
 		});
 	});
@@ -388,16 +388,25 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (correspondent.endOfChatHistory)
 			return;
 		var limit = 10;
-		var last_msg_ts = Math.floor(Date.now() / 1000);
-		if ($scope.messageEvents.length && $scope.messageEvents[0].timestamp)
-			last_msg_ts = $scope.messageEvents[0].timestamp;
-		chatStorage.load(correspondent.device_address, last_msg_ts, limit, function(messages){
+		var last_msg_ts = null;
+		var last_msg_id = Number.MAX_SAFE_INTEGER;
+		if ($scope.messageEvents.length && $scope.messageEvents[0].id) {
+			last_msg_ts = new Date($scope.messageEvents[0].timestamp * 1000);
+			last_msg_id = $scope.messageEvents[0].id;
+		}
+		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
 			if (messages.length < limit)
 				correspondent.endOfChatHistory = true;
 			for (var i in messages) {
 				var message = messages[i];
-				$scope.messageEvents.unshift({type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(new Date(message.creation_date.replace(' ', 'T')).getTime() / 1000)});
+				var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+				if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
+					$scope.messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+				}
+				last_msg_ts = msg_ts;
+				$scope.messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
 			}
+			$scope.$digest();
 			if (cb) cb();
 		});
 	}
@@ -406,8 +415,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.loadMoreHistory(function(){
 			if ($scope.messageEvents.length == 0) {
 				correspondent.endOfChatHistory = false;
-				chatStorage.store(correspondent.device_address, JSON.stringify({state: correspondent.peer_record_pref && correspondent.my_record_pref}), false, 'system');
-				setTimeout($scope.loadMoreHistory, 1000);
+				chatStorage.store(correspondent.device_address, JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}), false, 'system');
+				setTimeout($scope.loadMoreHistory, 500);
 			}
 		});
 	}
@@ -664,13 +673,4 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-}]).directive('system', function ($compile) {
-	return {
-		link: function (scope, ele, attrs) {
-			if (scope.messageEvent.type != "system") return;
-			ele.find('b').on('click', function(){
-				alert('123');
-			});
-		}
-	};
-});
+}]);
