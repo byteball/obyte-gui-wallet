@@ -64,7 +64,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
 		if (counter == 0) removeNewMessagesDelim();
-		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) {
+		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
 			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
 		}
 	});

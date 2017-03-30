@@ -53,7 +53,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else {
 				$rootScope.newMessagesCount[peer_address] = 1;
 			}
-			if ($rootScope.newMessagesCount[peer_address] == 1) {
+			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
 				root.messageEventsByCorrespondent[peer_address].push({
 					bIncoming: false,
 					message: 'new messages',
