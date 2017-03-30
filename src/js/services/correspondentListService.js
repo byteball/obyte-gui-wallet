@@ -47,17 +47,26 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[peer_address])
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
+		if (bIncoming) {
+			if (peer_address in $rootScope.newMessagesCount)
+				$rootScope.newMessagesCount[peer_address]++;
+			else {
+				$rootScope.newMessagesCount[peer_address] = 1;
+			}
+			if ($rootScope.newMessagesCount[peer_address] == 1) {
+				root.messageEventsByCorrespondent[peer_address].push({
+					bIncoming: false,
+					message: 'new messages',
+					type: 'system',
+					new_message_delim: true
+				});
+			}
+		}
 		root.messageEventsByCorrespondent[peer_address].push({
 			bIncoming: bIncoming,
 			message: body,
 			timestamp: Math.floor(Date.now() / 1000)
 		});
-		if (bIncoming) {
-			if (peer_address in $rootScope.newMessagesCount)
-				$rootScope.newMessagesCount[peer_address]++;
-			else
-				$rootScope.newMessagesCount[peer_address] = 1;
-		}
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$stickyState.reset('correspondentDevices.correspondentDevice');
@@ -283,42 +292,80 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		return parse(arrDefinition, 0);
 	}
+
+	function loadMoreHistory(correspondent, cb) {
+		if (correspondent.endOfChatHistory)
+			return;
+		if (!root.messageEventsByCorrespondent[correspondent.device_address])
+			root.messageEventsByCorrespondent[correspondent.device_address] = [];
+		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
+		var limit = 10;
+		var last_msg_ts = null;
+		var last_msg_id = Number.MAX_SAFE_INTEGER;
+		if (messageEvents.length && messageEvents[0].id) {
+			last_msg_ts = new Date(messageEvents[0].timestamp * 1000);
+			last_msg_id = messageEvents[0].id;
+		}
+		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
+			if (messages.length < limit)
+				correspondent.endOfChatHistory = true;
+			for (var i in messages) {
+				var message = messages[i];
+				var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+				if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
+					messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+				}
+				last_msg_ts = msg_ts;
+				messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
+			}
+			$rootScope.$digest();
+			if (cb) cb();
+		});
+	}
 		
 	console.log("correspondentListService");
 	
 	eventBus.on("text", function(from_address, body){
-		addIncomingMessageEvent(from_address, body);
-		device.readCorrespondent(from_address, function(correspondent){
-			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
+		mutex.lock(["handle_message"], function(unlock){
+			device.readCorrespondent(from_address, function(correspondent){
+				if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
+				addIncomingMessageEvent(correspondent.device_address, body);
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
+				unlock();
+			});
 		});
+		
 	});
 
 	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
-		var bEnabled = (enabled == "true");
-		device.readCorrespondent(correspondent_address, function(correspondent){
-			var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
-			correspondent.peer_record_pref = bEnabled;
-			var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
-			device.updateCorrespondentProps(correspondent);
-			if (newState != oldState) {
-				if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
-				var message = {
-					type: 'system',
-					message: JSON.stringify({state: newState}),
-					timestamp: Math.floor(Date.now() / 1000)
-				};
-				root.messageEventsByCorrespondent[correspondent_address].push(chatStorage.parseMessage(message));
-				$rootScope.$digest();
-				chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
-			}
-		if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
-			root.currentCorrespondent.peer_record_pref = enabled == "true" ? 1 : 0;
-		}
+		mutex.lock(["handle_message"], function(unlock){
+			var bEnabled = (enabled == "true");
+			device.readCorrespondent(correspondent_address, function(correspondent){
+				var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				correspondent.peer_record_pref = bEnabled;
+				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				device.updateCorrespondentProps(correspondent);
+				if (newState != oldState) {
+					if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
+					var message = {
+						type: 'system',
+						message: JSON.stringify({state: newState}),
+						timestamp: Math.floor(Date.now() / 1000)
+					};
+					root.messageEventsByCorrespondent[correspondent_address].push(chatStorage.parseMessage(message));
+					$rootScope.$digest();
+					chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
+				}
+				if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
+					root.currentCorrespondent.peer_record_pref = enabled == "true" ? 1 : 0;
+				}
+				unlock();
+			});
+			/*if (enabled == "false") {
+				chatStorage.purge(correspondent_address);
+			}*/
+			//root.messageEventsByCorrespondent[correspondent_address] = [];
 		});
-		/*if (enabled == "false") {
-			chatStorage.purge(correspondent_address);
-		}*/
-		//root.messageEventsByCorrespondent[correspondent_address] = [];
 	});
 	
 	eventBus.on("sent_payment", function(peer_address, amount, asset){
@@ -368,6 +415,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.setCurrentCorrespondent = setCurrentCorrespondent;
 	root.formatOutgoingMessage = formatOutgoingMessage;
 	root.getHumanReadableDefinition = getHumanReadableDefinition;
+	root.loadMoreHistory = loadMoreHistory;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){

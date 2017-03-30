@@ -51,8 +51,22 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 	});
 
+	var removeNewMessagesDelim = function() {
+		setTimeout(function(){
+			for (var i in $scope.messageEvents) {
+	        	if ($scope.messageEvents[i].new_message_delim) {
+	        		$scope.messageEvents.splice(i, 1);
+	        	}
+	        }
+	        $scope.$digest();
+		}, 3000);
+	};
+
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+		if (counter == 0) removeNewMessagesDelim();
+		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) {
+			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
+		}
 	});
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
@@ -385,32 +399,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.loadMoreHistory = function(cb) {
-		if (correspondent.endOfChatHistory)
-			return;
-		var limit = 10;
-		var last_msg_ts = null;
-		var last_msg_id = Number.MAX_SAFE_INTEGER;
-		if ($scope.messageEvents.length && $scope.messageEvents[0].id) {
-			last_msg_ts = new Date($scope.messageEvents[0].timestamp * 1000);
-			last_msg_id = $scope.messageEvents[0].id;
-		}
-		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
-			if (messages.length < limit)
-				correspondent.endOfChatHistory = true;
-			for (var i in messages) {
-				var message = messages[i];
-				var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
-				if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
-					$scope.messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
-				}
-				last_msg_ts = msg_ts;
-				$scope.messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
-			}
-			$scope.$digest();
-			if (cb) cb();
-		});
+		correspondentListService.loadMoreHistory(correspondent, cb);
 	}
-	if ($scope.messageEvents.length == 0) {
+	if (!correspondent.endOfChatHistory) {
 		$scope.autoScrollEnabled = true;
 		$scope.loadMoreHistory(function(){
 			if ($scope.messageEvents.length == 0) {
