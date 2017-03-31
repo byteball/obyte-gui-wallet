@@ -6,7 +6,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr "Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane"
+msgstr "(Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane)"
 
 #: public/views/walletHome.html:508
 msgid "(possible double spend)"
