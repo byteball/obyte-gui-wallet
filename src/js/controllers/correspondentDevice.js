@@ -38,7 +38,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var message = {
 						type: 'system',
 						message: JSON.stringify({state: newState}),
-						timestamp: Math.floor(Date.now() / 1000)
+						timestamp: Math.floor(Date.now() / 1000),
+						record_pref: true
 					};
 					$scope.messageEvents.push(chatStorage.parseMessage(message));
 					$scope.$digest();

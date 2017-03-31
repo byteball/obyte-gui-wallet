@@ -318,6 +318,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				last_msg_ts = msg_ts;
 				messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
 			}
+			if (correspondent.endOfChatHistory) {
+				messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(last_msg_ts.getTime() / 1000)});
+			}
 			$rootScope.$digest();
 			if (cb) cb();
 		});
@@ -350,7 +353,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var message = {
 						type: 'system',
 						message: JSON.stringify({state: newState}),
-						timestamp: Math.floor(Date.now() / 1000)
+						timestamp: Math.floor(Date.now() / 1000),
+						record_pref: true
 					};
 					root.messageEventsByCorrespondent[correspondent_address].push(chatStorage.parseMessage(message));
 					$rootScope.$digest();
