@@ -160,7 +160,7 @@ h4.title a {
   border-bottom: 1px solid #E9E9EC;
 }
 
-ul.whopays li:first-child {
+#send ul.whopays li:first-child {
   border-top: 1px solid #E9E9EC;
 }
 
@@ -1492,4 +1492,16 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .arrow-down:after{
 	content: " \25be";
+}
+
+.gray-13{
+	font-size: 13px;
+	color: #6A7D90;
+}
+
+.gray-13.aligned-with-input{
+	margin-top: 8px;
+}
+.gray-13.aligned-with-select{
+	margin-top: 7px;
 }

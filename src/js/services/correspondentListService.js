@@ -72,7 +72,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
+			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown drop-to4p drop-4up" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">Pay to this address</a></li><li><a ng-click="offerContract(\''+address+'\')">Offer a contract</a></li></ul>';
+		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';

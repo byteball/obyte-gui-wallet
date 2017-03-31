@@ -31,9 +31,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.isMobile = isMobile.any();
   this.addr = {};
-  this.isTestnet = constants.version.match(/t$/);
   this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
-  var TIMESTAMPER_ADDRESS = this.isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
@@ -723,7 +721,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 							['and', [
 								['address', my_address],
 								['not', arrSeenCondition],
-								['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
+								['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
 							]]
 						]];
 						var assocSignersByPath = {
@@ -760,7 +758,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 							]],
 							['and', [
 								['address', my_address],
-								['in data feed', [[TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
+								['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout*3600*1000)]]
 							]]
 						]];
 						var assocSignersByPath = {
