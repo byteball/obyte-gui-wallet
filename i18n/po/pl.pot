@@ -10,7 +10,7 @@ msgstr "(Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane
 
 #: public/views/walletHome.html:508
 msgid "(possible double spend)"
-msgstr "możliwe podwójne wydanie środków"
+msgstr "(możliwe podwójne wydanie środków)"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
