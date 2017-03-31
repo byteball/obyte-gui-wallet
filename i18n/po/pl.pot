@@ -1375,7 +1375,7 @@ msgstr "dokładnie"
 
 #: public/views/modals/bind.html:90
 msgid "hours"
-msgstr "godzin"
+msgstr "godziny"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
