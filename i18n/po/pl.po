@@ -1,5 +1,6 @@
 msgid ""
 msgstr ""
+"Language: pl\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
@@ -545,7 +546,7 @@ msgstr "Historia"
 
 #: src/js/controllers/index.js:521
 msgid "Home"
-msgstr "Strona główna"
+msgstr "główna"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
