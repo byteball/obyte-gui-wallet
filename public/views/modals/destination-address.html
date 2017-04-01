@@ -4,6 +4,10 @@
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
         <span class="text-close" translate>Close</span>
       </a>
+      <a ng-show="addAddressbookEntry" ng-click="newAddress = ''; toggleAddAddressbookEntry()" class="p10">
+		<i class="icon-arrow-left3 icon-back"></i>
+		<span class="text-back" translate>Back</span>
+      </a>
     </section>
 
     <section class="middle tab-bar-section" ng-show="bAllowAddressbook">
