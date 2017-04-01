@@ -402,60 +402,60 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var self = this;
     var fc = profileService.focusedClient;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.addr = addr;
-        $scope.color = fc.backgroundColor;
-        $scope.unitName = self.unitName;
-        $scope.unitValue = self.unitValue;
-        $scope.unitDecimals = self.unitDecimals;
-	      $scope.bbUnitValue = walletSettings.bbUnitValue;
-	      $scope.bbUnitName = walletSettings.bbUnitName;
-        $scope.isCordova = isCordova;
-        $scope.buttonLabel = 'Generate QR Code';
+		$scope.addr = addr;
+		$scope.color = fc.backgroundColor;
+		$scope.unitName = self.unitName;
+		$scope.unitValue = self.unitValue;
+		$scope.unitDecimals = self.unitDecimals;
+		$scope.bbUnitValue = walletSettings.bbUnitValue;
+		$scope.bbUnitName = walletSettings.bbUnitName;
+		$scope.isCordova = isCordova;
+		$scope.buttonLabel = 'Generate QR Code';
 		$scope.protocol = conf.program;
 
 
-      Object.defineProperty($scope,
-        "_customAmount", {
-          get: function() {
-            return $scope.customAmount;
-          },
-          set: function(newValue) {
-            $scope.customAmount = newValue;
-          },
-          enumerable: true,
-          configurable: true
-        });
+		Object.defineProperty($scope, "_customAmount", {
+			get: function() {
+				return $scope.customAmount;
+			},
+			set: function(newValue) {
+				$scope.customAmount = newValue;
+			},
+			enumerable: true,
+			configurable: true
+		});
 
-      $scope.submitForm = function(form) {
-		if ($scope.index.arrBalances.length === 0)
-			return console.log('openCustomizedAmountModal: no balances yet');
-        var amount = form.amount.$modelValue;
-        var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
-        if (!asset)
-            throw Error("no asset");
-	      var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
-        $timeout(function() {
-            $scope.customizedAmountUnit = 
-				amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : 'of ' + asset));
-            $scope.amountInSmallestUnits = amountInSmallestUnits;
-            $scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
-        }, 1);
-      };
+		$scope.submitForm = function(form) {
+			if ($scope.index.arrBalances.length === 0)
+				return console.log('openCustomizedAmountModal: no balances yet');
+			var amount = form.amount.$modelValue;
+			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+			if (!asset)
+				throw Error("no asset");
+			var amountInSmallestUnits = (asset === 'base') 
+				? parseInt((amount * $scope.unitValue).toFixed(0)) 
+				: (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
+			$timeout(function() {
+				$scope.customizedAmountUnit = 
+					amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : 'of ' + asset));
+				$scope.amountInSmallestUnits = amountInSmallestUnits;
+				$scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
+			}, 1);
+		};
 
 
-      $scope.shareAddress = function(uri) {
-        if (isCordova) {
-          if (isMobile.Android() || isMobile.Windows()) {
-            window.ignoreMobilePause = true;
-          }
-          window.plugins.socialsharing.share(uri, null, null, null);
-        }
-      };
+		$scope.shareAddress = function(uri) {
+			if (isCordova) {
+				if (isMobile.Android() || isMobile.Windows())
+					window.ignoreMobilePause = true;
+				window.plugins.socialsharing.share(uri, null, null, null);
+			}
+		};
 
-      $scope.cancel = function() {
-		breadcrumbs.add('openCustomizedAmountModal: cancel');
-		$modalInstance.dismiss('cancel');
-      };
+		$scope.cancel = function() {
+			breadcrumbs.add('openCustomizedAmountModal: cancel');
+			$modalInstance.dismiss('cancel');
+		};
     };
 
     var modalInstance = $modal.open({
@@ -470,12 +470,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		modalInstance.dismiss('cancel');
     });
 
-    modalInstance.result.finally(function() {
-      $rootScope.modalOpened = false;
-      disableCloseModal();
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass(animationService.modalAnimated.slideOutDown);
-    });
+	modalInstance.result.finally(function() {
+		$rootScope.modalOpened = false;
+		disableCloseModal();
+		var m = angular.element(document.getElementsByClassName('reveal-modal'));
+		m.addClass(animationService.modalAnimated.slideOutDown);
+	});
   };
 
   // Send 
