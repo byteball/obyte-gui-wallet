@@ -232,8 +232,9 @@
                   <span translate>Share address</span>
                 </span>
               </div>
-              <div class="line-t size-12" translate>
-                Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.
+              <div class="line-t size-12 text-center">
+				<span translate>Share this wallet address to receive payments.</span>
+				<span ng-if="!index.shared_address" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
               </div>
             </div>
           </div>
