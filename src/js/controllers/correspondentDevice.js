@@ -389,6 +389,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				}
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
+				if (arrAllMemberAddresses.length === 0)
+					throw Error("no member addresses in "+paymentJson);
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
