@@ -249,14 +249,22 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var feed_name = args[1];
 					var relation = args[2];
 					var value = args[3];
+					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'in merkle':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
 					var value = args[2];
-					return 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					var min_mci = args[3];
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
