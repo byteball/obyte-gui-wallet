@@ -24,13 +24,13 @@ angular.module('copayApp.services')
           });
 
           if (root.addWitnesses.length != 0) {
-						var modalInstance = $modal.open({
-              templateUrl: 'views/modals/approveNewWitnesses.html',
-              controller: 'approveNewWitnesses'
-            });
-						$rootScope.$on('closeModal', function() {
-							modalInstance.dismiss('cancel');
-						});
+              var modalInstance = $modal.open({
+                  templateUrl: 'views/modals/approveNewWitnesses.html',
+                  controller: 'approveNewWitnesses'
+              });
+              $rootScope.$on('closeModal', function() {
+                  modalInstance.dismiss('cancel');
+              });
           }
           if (root.timerNextCheck) $timeout.cancel(root.timerNextCheck);
           root.timerNextCheck = $timeout(root.checkChangeWitnesses, 1000 * 60 * 60 * 24);

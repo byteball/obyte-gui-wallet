@@ -37,7 +37,7 @@ Utils.formatAmount = function(bytes, unit, opts) {
 			return x0 + x2;
 		}
     else {
-			return parseFloat(x0 + x2).toLocaleString();
+		return parseFloat(x0 + x2).toLocaleString([], {maximumFractionDigits: 20});
 		}
   }
 
@@ -46,7 +46,7 @@ Utils.formatAmount = function(bytes, unit, opts) {
   var u = Constants.UNITS[unit];
   var intAmountLength = Math.floor(bytes / u.value).toString().length;
   var digits = intAmountLength >= 6 || unit == 'one' ? 0 : 6 - intAmountLength;
-  var amount = (bytes / u.value).toFixed(digits);
+  var amount = opts.dontRound ? (bytes / u.value).toString() : (bytes / u.value).toFixed(digits);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals);
 };
 

@@ -627,7 +627,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
-            $rootScope.$digest();
+			$timeout(function(){
+				$rootScope.$digest();
+			});
         });
 
 		self.needsBackup = false;
@@ -698,7 +700,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         console.log("will retry setTab later:", tab, reset, tries, switchState);
         return $timeout(function() {
             self.setTab(tab, reset, tries, switchState);
-        }, 300);
+        }, (tries === 1) ? 10 : 300);
     }
 
     if (!self.tab || !$state.is('walletHome'))
@@ -1149,12 +1151,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
-		backButton.menuOpened = true;
+  	backButton.menuOpened = true;
     go.swipe(true);
   };
 
   self.closeMenu = function() {
-		backButton.menuOpened = false;
+  	backButton.menuOpened = false;
     go.swipe();
   };
     

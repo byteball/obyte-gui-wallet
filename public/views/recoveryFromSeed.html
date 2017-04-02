@@ -28,7 +28,7 @@
 				<div class="rect4"></div>
 				<div class="rect5"></div>
 			</div>
-			<span> Scanning for addresses... </span>
+			<span translate> Scanning for addresses... </span>
 		</div>
 	</div>
 
@@ -40,25 +40,25 @@
 
 	<div ng-show="recFromSeed.bLight">
 		<div class="row">
-			<div class="columns center">
-				Recovery is only available full wallets.
+			<div class="columns center" translate>
+				Recovery is only available in full wallets.
 			</div>
 		</div>
 	</div>
 	<div ng-show="!recFromSeed.bLight">
 		<form name="settingsDeviceNameForm" class="columns" ng-submit="recFromSeed.recoveryForm()">
-			<label><span>Your Wallet Seed:</span></label>
+			<label><span translate>Your Wallet Seed:</span></label>
 			<textarea id="inputMnemonic" ng-model="recFromSeed.inputMnemonic"></textarea>
 			<input ng-show="!recFromSeed.scanning" type="submit" class="button expand black round"
 				   value="{{'Recover'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 		</form>
 		<div class="text-alert size-12 columns">
-			WARNINGS:
+			<span translate>WARNINGS:</span>
 			<ul class="warnings">
-				<li>This will permanently delete all your existing wallets!</li>
-				<li>Private assets (such as blackbytes) are not recovered.</li>
-				<li>Only single-sig wallets can be recovered.</li>
-				<li>Correspondents are not restored.</li>
+				<li translate>This will permanently delete all your existing wallets!</li>
+				<li translate>Private assets (such as blackbytes) are not recovered.</li>
+				<li translate>Only single-sig wallets can be recovered.</li>
+				<li translate>Correspondents are not restored.</li>
 			</ul>
 		</div>
 	</div>

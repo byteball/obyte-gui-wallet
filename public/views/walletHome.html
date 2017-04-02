@@ -232,8 +232,9 @@
                   <span translate>Share address</span>
                 </span>
               </div>
-              <div class="line-t size-12" translate>
-                Share this wallet address to receive payments. To protect your privacy, new addresses are generated automatically once you use them.
+              <div class="line-t size-12 text-center">
+				<span translate>Share this wallet address to receive payments.</span>
+				<span ng-if="!index.shared_address" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
               </div>
             </div>
           </div>
@@ -247,7 +248,7 @@
           </div>
         </div>
         <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(home.addr[index.walletId])">
+          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])">
             <i class="fi-bitcoin"></i>
             <span translate>Request a specific amount</span>
           </a>
@@ -301,7 +302,7 @@
               <a class="close-notification text-warning">&#215;</a>
             </div>
 
-		    <div class="size-12" ng-hide="home.canSendExternalPayment()" style="margin-bottom: 15px">
+		    <div class="size-12" ng-hide="home.canSendExternalPayment()" style="margin-bottom: 15px" translate>
 			  This is a private asset, please send it only by clicking links in the chat or send it to your other wallets.
 		    </div>
 			  
@@ -332,8 +333,8 @@
               </div>
 			  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
 				  <a ng-click="home.openBindModal()">
-					  <span ng-if="!home.binding">Bind the payment to a condition</span>
-					  <span ng-if="home.binding">This payment is bound to a condition</span>
+					  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
+					  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
 				  </a>
 			  </div>
             </div>
@@ -352,7 +353,7 @@
                 <div>
                   <label for="amount">
                     <span translate>Amount</span>
-					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px">Send all</a>
+					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
                     <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">

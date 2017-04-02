@@ -82,6 +82,7 @@ public/css/*
 public/lib/*
 public/js/*
 public/*.js
+public/languages
 
 *.sublime-project
 *.sublime-workspace

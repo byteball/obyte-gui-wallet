@@ -4,6 +4,10 @@
       <a ng-show="!editAddressbook && !addAddressbookEntry" ng-click="cancel()" class="p10">
         <span class="text-close" translate>Close</span>
       </a>
+      <a ng-show="addAddressbookEntry" ng-click="newAddress = ''; toggleAddAddressbookEntry()" class="p10">
+		<i class="icon-arrow-left3 icon-back"></i>
+		<span class="text-back" translate>Back</span>
+      </a>
     </section>
 
     <section class="middle tab-bar-section" ng-show="bAllowAddressbook">
@@ -112,9 +116,9 @@
             </small>
           </span>
           <label translate>Address</label>
-          <input type="text" id="address" name="address" ng-model="addressbook.address" valid-address required>
+          <input type="text" id="address" name="address" ng-model="addressbook.address" placeholder="Byteball address" valid-address required>
           <label translate>Label</label>
-          <input type="text" id="label" name="label" ng-model="addressbook.label" required>
+          <input type="text" id="label" name="label" ng-model="addressbook.label" placeholder="Name of the contact" required>
           <div class="row">
             <div class="columns large-6 medium-6 small-6">
               <input type="button" 

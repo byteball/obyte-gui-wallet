@@ -13,15 +13,15 @@ angular.module('copayApp.services')
     
 
     root.Utils = bwcService.getUtils();
-    root.formatAmount = function(amount, asset) {
+    root.formatAmount = function(amount, asset, opts) {
       var config = configService.getSync().wallet.settings;
       //if (config.unitCode == 'byte') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
 		if(asset == 'blackbytes') {
-			return this.Utils.formatAmount(amount, config.bbUnitCode);
+			return this.Utils.formatAmount(amount, config.bbUnitCode, opts);
 		}else{
-			return this.Utils.formatAmount(amount, config.unitCode);
+			return this.Utils.formatAmount(amount, config.unitCode, opts);
 		}
     };
 
