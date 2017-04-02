@@ -249,24 +249,33 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var feed_name = args[1];
 					var relation = args[2];
 					var value = args[3];
+					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'in merkle':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
 					var value = args[2];
-					return 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					var min_mci = args[3];
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
 					return JSON.stringify(arrSubdefinition);
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
+						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
 						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
-						var dest_address = (bOwnAddress ? 'you' : args.address);
-						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+						var display_dest_address = (bOwnAddress ? 'you' : args.address);
+						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + display_dest_address;
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
 					return JSON.stringify(arrSubdefinition);
 
