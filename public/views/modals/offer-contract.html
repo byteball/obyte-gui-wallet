@@ -45,6 +45,15 @@
 		</div>
 	</div>
 	
+	<div class="row">
+		<div class="large-6 medium-6 small-6 columns gray-13 label-aligned-with-select">
+			<label translate>Peer pays to:</label>
+		</div>
+		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px">
+			<select ng-model="contract.peer_pays_to" ng-options="dest.value as dest.display_value for dest in arrPeerPaysTos" class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+	</div>
+	
 	<div class="row columns">
 		<label for="timeout" class="left" >
 			<span translate>If the peer doesn't pay, I can take my money back after:</span>

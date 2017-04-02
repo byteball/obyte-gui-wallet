@@ -121,6 +121,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 			$scope.arrParties = [{value: 'me', display_value: "me"}, {value: 'peer', display_value: "the peer"}];
+			$scope.arrPeerPaysTos = [{value: 'me', display_value: "me"}, {value: 'contract', display_value: "this contract"}];
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -136,6 +137,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				timeout: 4,
 				myAsset: 'base',
 				peerAsset: 'base',
+				peer_pays_to: 'contract',
 				relation: '>',
 				expiry: 7,
 				data_party: 'me',
@@ -157,6 +159,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			
 			$scope.payAndOffer = function() {
 				console.log('payAndOffer');
+				$scope.error = '';
 				
 				if (fc.isPrivKeyEncrypted()) {
 					profileService.unlockFC(null, function(err) {
@@ -197,12 +200,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						throw Error("peer asset cannot be blackbytes");
 					peer_amount = Math.round(peer_amount);
 					
-					readMyPaymentAddress(function(my_address){
-				//	walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
-				//		var my_address = addressInfo.address;
+					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
+						$scope.error = "The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.";
+						$timeout(function() {
+							$scope.$digest();
+						}, 1);
+						return;
+					}
+					
+					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
+					fnReadMyAddress(function(my_address){
 						var arrSeenCondition = ['seen', {
 							what: 'output', 
-							address: 'this address', 
+							address: (contract.peer_pays_to === 'contract') ? 'this address' : my_address, 
 							asset: contract.peerAsset, 
 							amount: peer_amount
 						}];
@@ -312,6 +322,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							if (contract.peer_pays_to === 'me')
+								issueNextAddress(); // make sure the address is not reused
 						});
 						$modalInstance.dismiss('cancel');
 					}
@@ -625,6 +637,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			cb(address);
 		});
 	}
+	
+	function issueNextAddress(cb){
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		walletDefinedByKeys.issueNextAddress(profileService.focusedClient.credentials.walletId, 0, function(addressInfo){
+			if (cb)
+				cb(addressInfo.address);
+		});
+	}
+	
 	/*
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
