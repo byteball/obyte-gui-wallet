@@ -31,6 +31,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.showScanner = false;
   this.isMobile = isMobile.any();
   this.addr = {};
+  this.isTestnet = constants.version.match(/t$/);
   this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
