@@ -1505,3 +1505,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .gray-13.aligned-with-select{
 	margin-top: 7px;
 }
+.gray-13.label-aligned-with-select{
+	margin-top: 10px;
+}
