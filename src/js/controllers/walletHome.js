@@ -1017,21 +1017,27 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
             assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
     }
 
-    if (amount) {
+	if (amount) {
 		if (asset === 'base')
 			amount /= this.unitValue;
 		if (asset === constants.BLACKBYTES_ASSET)
 			amount /= this.bbUnitValue;
-        form.amount.$setViewValue("" + amount);
-        form.amount.$isValid = true;
+	//	form.amount.$setViewValue("" + amount);
+	//	form.amount.$isValid = true;
         this.lockAmount = true;
+		$timeout(function(){
+			form.amount.$setViewValue("" + amount);
+			form.amount.$isValid = true;
+			form.amount.$render();
+		});
     }
 	else{
 		this.lockAmount = false;
 		form.amount.$pristine = true;
 		form.amount.$setViewValue('');
+		form.amount.$render();
 	}
-	form.amount.$render();
+//	form.amount.$render();
 
 	if (form.merkle_proof){
 		form.merkle_proof.$setViewValue('');
