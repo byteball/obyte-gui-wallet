@@ -277,14 +277,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									});
 								},
 								ifOk: function(shared_address){
-									composeAndSend(shared_address);
+									composeAndSend(shared_address, my_address);
 								}
 							});
 						});
 					});
 					
 					// compose and send
-					function composeAndSend(to_address){
+					function composeAndSend(shared_address, my_address){
 						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
 						if (fc.credentials.m < fc.credentials.n)
 							indexScope.copayers.forEach(function(copayer){
@@ -297,7 +297,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var opts = {
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
-							to_address: to_address,
+							to_address: shared_address,
 							amount: my_amount,
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: correspondent.device_address
