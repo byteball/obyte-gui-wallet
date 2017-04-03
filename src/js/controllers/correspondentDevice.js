@@ -621,10 +621,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	
 	function readLastMainChainIndex(cb){
-		if (conf.bLight)
+		if (conf.bLight){
+			var network = require('byteballcore/network.js');
 			network.requestFromLightVendor('get_last_mci', null, function(ws, request, response){
 				response.error ? cb(response.error) : cb(null, response);
 			});
+		}
 		else
 			storage.readLastMainChainIndex(function(last_mci){
 				cb(null, last_mci);
