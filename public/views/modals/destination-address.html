@@ -79,7 +79,7 @@
     </div>
 
     <div ng-show="!selectedWalletsOpt" class="m20b">
-      <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="list()">
+      <ul ng-show="!addAddressbookEntry" class="no-bullet m0" ng-init="listEntries()">
         <li class="p10 line-b" ng-repeat="(addr, label) in list">
           <a ng-show="selectedAddressbook[addr]" 
             class="removeAddressbook" 

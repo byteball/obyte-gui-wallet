@@ -179,7 +179,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         $scope.addAddressbookEntry = !$scope.addAddressbookEntry;
       };
 
-      $scope.list = function() {
+      $scope.listEntries = function() {
         $scope.error = null;
         addressbookService.list(function(err, ab) {
           if (err) {
