@@ -318,7 +318,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							$rootScope.$emit("NewOutgoingTx");
 							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset);
-							var paymentRequestCode = 'byteball:'+to_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+							var payment_req_address = (contract.peer_pays_to === 'contract') ? shared_address : my_address;
+							var paymentRequestCode = 'byteball:'+payment_req_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
