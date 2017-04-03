@@ -132,7 +132,7 @@
 	<div style="margin-left: 30px">
 		<div class="row">
 			<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
-				<input type="number" min="0.1" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right">
+				<input type="number" min="0.01" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right">
 			</div>
 			<div class="large-6 medium-6 small-6 columns gray-13 aligned-with-input" style="padding-left: 0px" translate>
 				days
@@ -167,7 +167,7 @@
 		</div>
 		<div >
 		</div>
-		<button type="button" class="button black round expand" ng-disabled="!contract.timeout || !contract.myAmount || !contract.peerAmount || contractForm.myAmount.$invalid|| contractForm.peerAmount.$invalid || !contract.oracle_address || contractForm.oracle_address.$invalid || !contract.feed_name || !contract.feed_value || bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+		<button type="button" class="button black round expand" ng-disabled="!contract.timeout || !contract.myAmount || !contract.peerAmount || contractForm.myAmount.$invalid|| contractForm.peerAmount.$invalid || !contract.oracle_address || contractForm.oracle_address.$invalid || !contract.feed_name || !contract.feed_value || !contract.expiry || bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
 			Pay and offer
 		</button>
 	</div>
