@@ -228,11 +228,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       };
 
       $scope.selectWallet = function(walletId, walletName) {
-        $scope.gettingAddress = true;
+        //$scope.gettingAddress = true; // this caused a weird hang under cordova if used after pulling "..." drop-up menu in chat
         $scope.selectedWalletName = walletName;
-        $timeout(function() {
-          $scope.$apply();
-        });
+        //$timeout(function() { // seems useless
+        //  $scope.$apply();
+        //});
         addressService.getAddress(walletId, false, function onGotAddress(err, addr) {
           $scope.gettingAddress = false;
 
