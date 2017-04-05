@@ -21,11 +21,6 @@
 		</li>
 	  </ul>
   </div>
-  <div ng-if="error">
-	  <span class="has-error size-12">
-		{{error}}
-	  </span>
-  </div>
   <div class="m20b" ng-if="arrHumanReadableDefinitions">
 	  <h4 class="title m0" translate>Definitions of addresses</h4>
 	  <ul class="no-bullet size-14 m0">
@@ -35,6 +30,29 @@
 		</li>
 	  </ul>
   </div>
+	
+	<div class="" ng-show="index.m < index.n">
+		<h4 class="title m0 row" translate>Who signs:</h4>
+		<div class="row columns large-12 medium-12">
+			<ul class="no-bullet m20b whopays">
+			  <li class="" ng-repeat="copayer in index.copayers">
+				  <span class="size-12 text-gray" ng-show="copayer.me">
+					  <i class="icon-contact size-24 m10r"></i>{{'Me'|translate}} <i class="fi-check m5 right"></i>
+				  </span>
+				  <div class="size-12" style="width: 100%" ng-show="!copayer.me" ng-click="copayer.signs = !copayer.signs">
+					  <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{copayer.device_address.substr(0,4)}}...) <i class="m5 right" ng-class="copayer.signs ? 'fi-check' : ''"></i>
+				  </div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	
   <div class="row m20t">
     <div class="large-12 large-centered columns">
         <div >
