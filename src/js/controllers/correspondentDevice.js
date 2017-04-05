@@ -277,7 +277,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									});
 								},
 								ifOk: function(shared_address){
-									composeAndSend(shared_address, arrDefinition, assocSignersByPat, my_address);
+									composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address);
 								}
 							});
 						});
