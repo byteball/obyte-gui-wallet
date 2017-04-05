@@ -277,14 +277,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									});
 								},
 								ifOk: function(shared_address){
-									composeAndSend(shared_address, my_address);
+									composeAndSend(shared_address, arrDefinition, assocSignersByPat, my_address);
 								}
 							});
 						});
 					});
 					
 					// compose and send
-					function composeAndSend(shared_address, my_address){
+					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
 						if (fc.credentials.m < fc.credentials.n)
 							indexScope.copayers.forEach(function(copayer){
@@ -318,8 +318,21 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							$rootScope.$emit("NewOutgoingTx");
 							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset);
-							var payment_req_address = (contract.peer_pays_to === 'contract') ? shared_address : my_address;
-							var paymentRequestCode = 'byteball:'+payment_req_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+							var paymentRequestCode;
+							if (contract.peer_pays_to === 'contract'){
+								var arrPayments = [{address: shared_address, amount: peer_amount, asset: contract.peerAsset}];
+								var assocDefinitions = {};
+								assocDefinitions[shared_address] = {
+									definition: arrDefinition,
+									signers: assocSignersByPath
+								};
+								var objPaymentRequest = {payments: arrPayments, definitions: assocDefinitions};
+								var paymentJson = JSON.stringify(objPaymentRequest);
+								var paymentJsonBase64 = Buffer(paymentJson).toString('base64');
+								paymentRequestCode = 'payment:'+paymentJsonBase64;
+							}
+							else
+								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
