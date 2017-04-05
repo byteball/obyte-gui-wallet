@@ -89,34 +89,45 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
 			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
-			var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
-			console.log(description);
-			console.log(paymentJson);
-			try{
-				var objMultiPaymentRequest = JSON.parse(paymentJson);
-			}
-			catch(e){
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
+			if (!arrMovements)
 				return '[invalid payment request]';
-			}
-			if (objMultiPaymentRequest.definitions){
-				for (var destinationAddress in objMultiPaymentRequest.definitions){
-					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-					if (destinationAddress !== objectHash.getChash160(arrDefinition))
-						return '[invalid payment request]';
-				}
-			}
-			try{
-				var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
-			}
-			catch(e){
-				return '[invalid payment request]';
-			}
-			var arrMovements = [];
-			for (var asset in assocPaymentsByAsset)
-				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
 			description = 'Payment request: '+arrMovements.join(', ');
 			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
 		});
+	}
+	
+	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
+		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		console.log(paymentJson);
+		try{
+			var objMultiPaymentRequest = JSON.parse(paymentJson);
+		}
+		catch(e){
+			return null;
+		}
+		if (objMultiPaymentRequest.definitions){
+			for (var destinationAddress in objMultiPaymentRequest.definitions){
+				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+				if (destinationAddress !== objectHash.getChash160(arrDefinition))
+					return null;
+			}
+		}
+		try{
+			var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
+		}
+		catch(e){
+			return null;
+		}
+		var arrMovements = [];
+		if (bAggregatedByAsset)
+			for (var asset in assocPaymentsByAsset)
+				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
+		else
+			arrMovements = objMultiPaymentRequest.payments.map(function(objPayment){
+				return getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + objPayment.address;
+			});
+		return arrMovements;
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
@@ -142,6 +153,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest)
 				return str;
 			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
+			if (!arrMovements)
+				return '[invalid payment request]';
+			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
 		});
 	}
 	

@@ -531,6 +531,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								if (copayer.me || copayer.signs)
 									arrSigningDeviceAddresses.push(copayer.device_address);
 							});
+						else if (indexScope.shared_address)
+							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
