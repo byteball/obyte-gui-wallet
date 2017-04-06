@@ -89,13 +89,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				setOngoingProcess();
 				//$scope.messageEvents.push({bIncoming: false, message: $sce.trustAsHtml($scope.message)});
 				$scope.autoScrollEnabled = true;
-				$scope.messageEvents.push({
+				var msg_obj = {
 					bIncoming: false, 
 					message: correspondentListService.formatOutgoingMessage(message), 
-					timestamp: Math.floor(Date.now() / 1000)});
+					timestamp: Math.floor(Date.now() / 1000)
+				};
+				correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
+				$scope.messageEvents.push(msg_obj);
 				$scope.message = "";
 				$scope.$apply();
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, correspondentListService.formatOutgoingMessage(message), 0);
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
 				setOngoingProcess();

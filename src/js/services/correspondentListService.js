@@ -62,11 +62,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				});
 			}
 		}
-		root.messageEventsByCorrespondent[peer_address].push({
+		var msg_obj = {
 			bIncoming: bIncoming,
 			message: body,
 			timestamp: Math.floor(Date.now() / 1000)
-		});
+		};
+		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
+		root.messageEventsByCorrespondent[peer_address].push(msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$stickyState.reset('correspondentDevices.correspondentDevice');
@@ -293,8 +295,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		return parse(arrDefinition, 0);
 	}
 
+	var historyEndForCorrespondent = {};
 	function loadMoreHistory(correspondent, cb) {
-		if (correspondent.endOfChatHistory)
+		if (historyEndForCorrespondent[correspondent.device_address])
 			return;
 		if (!root.messageEventsByCorrespondent[correspondent.device_address])
 			root.messageEventsByCorrespondent[correspondent.device_address] = [];
@@ -307,23 +310,43 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			last_msg_id = messageEvents[0].id;
 		}
 		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
-			if (messages.length < limit)
-				correspondent.endOfChatHistory = true;
-			for (var i in messages) {
-				var message = messages[i];
-				var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
-				if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
-					messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+			var walletGeneral = require('byteballcore/wallet_general.js');
+			walletGeneral.readMyAddresses(function(arrMyAddresses){
+				if (messages.length < limit)
+					historyEndForCorrespondent[correspondent.device_address] = true;
+				for (var i in messages) {
+					var message = messages[i];
+					var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
+						messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+					}
+					last_msg_ts = msg_ts;
+					if (message.type == "text") {
+						if (message.is_incoming) {
+							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
+							message.message = text2html(message.message);
+						} else {
+							message.message = formatOutgoingMessage(message.message);
+						}
+					}
+					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
 				}
-				last_msg_ts = msg_ts;
-				messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
-			}
-			if (correspondent.endOfChatHistory) {
-				messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(last_msg_ts.getTime() / 1000)});
-			}
-			$rootScope.$digest();
-			if (cb) cb();
+				if (historyEndForCorrespondent[correspondent.device_address] && last_msg_ts) {
+					messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(last_msg_ts.getTime() / 1000)});
+				}
+				$rootScope.$digest();
+				if (cb) cb();
+			});
 		});
+	}
+
+	function checkAndInsertDate(messageEvents, message) {
+		var msg_ts = new Date(message.timestamp * 1000);
+		if (messageEvents.length == 0) return;
+		var last_msg_ts = new Date(messageEvents[messageEvents.length-1].timestamp * 1000);
+		if (last_msg_ts.getDay() != msg_ts.getDay()) {
+			messageEvents.push({type: 'system', bIncoming: false, message: msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+		}
 	}
 		
 	console.log("correspondentListService");
@@ -420,6 +443,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.formatOutgoingMessage = formatOutgoingMessage;
 	root.getHumanReadableDefinition = getHumanReadableDefinition;
 	root.loadMoreHistory = loadMoreHistory;
+	root.checkAndInsertDate = checkAndInsertDate;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
