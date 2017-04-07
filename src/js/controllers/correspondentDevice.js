@@ -41,6 +41,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						timestamp: Math.floor(Date.now() / 1000),
 						record_pref: true
 					};
+					$scope.autoScrollEnabled = true;
 					$scope.messageEvents.push(chatStorage.parseMessage(message));
 					$scope.$digest();
 					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
@@ -405,16 +406,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.loadMoreHistory = function(cb) {
 		correspondentListService.loadMoreHistory(correspondent, cb);
 	}
-	if (!correspondent.endOfChatHistory) {
-		$scope.autoScrollEnabled = true;
-		$scope.loadMoreHistory(function(){
-			if ($scope.messageEvents.length == 0) {
-				correspondent.endOfChatHistory = false;
-				chatStorage.store(correspondent.device_address, JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}), false, 'system');
-				setTimeout($scope.loadMoreHistory, 500);
-			}
-		});
-	}
+	$scope.autoScrollEnabled = true;
+	$scope.loadMoreHistory(function(){
+		if ($scope.messageEvents.length == 1) {
+			correspondent.endOfChatHistory = false;
+			chatStorage.store(correspondent.device_address, JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}), false, 'system');
+			setTimeout($scope.loadMoreHistory, 500);
+		}
+	});
 
 	function setError(error){
 		console.log("send error:", error);

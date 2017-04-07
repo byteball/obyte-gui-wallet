@@ -297,8 +297,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	var historyEndForCorrespondent = {};
 	function loadMoreHistory(correspondent, cb) {
-		if (historyEndForCorrespondent[correspondent.device_address])
+		if (historyEndForCorrespondent[correspondent.device_address]) {
+			if (cb) cb();
 			return;
+		}
 		if (!root.messageEventsByCorrespondent[correspondent.device_address])
 			root.messageEventsByCorrespondent[correspondent.device_address] = [];
 		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
@@ -331,8 +333,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					}
 					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
 				}
-				if (historyEndForCorrespondent[correspondent.device_address] && last_msg_ts) {
-					messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(last_msg_ts.getTime() / 1000)});
+				if (historyEndForCorrespondent[correspondent.device_address]) {
+					messageEvents.unshift({type: 'system', bIncoming: false, message: (last_msg_ts ? last_msg_ts : new Date()).toDateString(), timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
 				$rootScope.$digest();
 				if (cb) cb();

@@ -25,15 +25,14 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	$scope.purge_chat = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
         $scope.title = $sce.trustAsHtml('Delete the whole chat history with ' + correspondent.name + '?');
-        $scope.loading = false;
 
         $scope.ok = function() {
-          $scope.loading = true;
           $modalInstance.close(true);
 
         };
         $scope.cancel = function() {
-          $modalInstance.close(false);
+          $modalInstance.dismiss('cancel');
+          go.path('correspondentDevices.editCorrespondentDevice');
         };
       };
 
@@ -52,7 +51,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
         if (ok) {
           	var chatStorage = require('byteballcore/chat_storage.js');
 			chatStorage.purge(correspondent.device_address);
-			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
+			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = correspondentListService.messageEventsByCorrespondent[correspondent.device_address].slice(0,2);
         }
         
       });
