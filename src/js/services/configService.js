@@ -64,7 +64,6 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  enabled: true,
 	  config: {
 		android: {
-		  senderID: '1036948132229',
 		  icon: 'push',
 		  iconColor: '#2F4053'
 		},
