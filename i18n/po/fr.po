@@ -29,7 +29,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "A propos de Byteball"
 
 #: src/js/controllers/copayers.js:8 src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117 src/js/services/confirmDialog.js:8
@@ -38,11 +38,11 @@ msgstr "Accepter"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Accepter l'invitation"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Accepter l'invitation de l'autre appareil"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -50,7 +50,7 @@ msgstr "Compte"
 
 #: public/views/correspondentDevices.html:30
 msgid "Add a new device"
-msgstr ""
+msgstr "Ajouter un nouvel appareil"
 
 #: public/views/modals/destination-address.html:102
 #: public/views/modals/destination-address.html:95
@@ -92,7 +92,7 @@ msgstr ""
 msgid ""
 "All contributions to Byteball's translation are welcome. Sign up at crowdin."
 "com and join the Byteball project at"
-msgstr ""
+msgstr "Toutes les contributions à la traduction de Byteball sont les bienvenues. Inscrivez vous sur crowdin.com et rejoignez le projet Byteball sur"
 
 #: public/views/walletHome.html:107
 msgid "Also"
@@ -185,7 +185,7 @@ msgstr "ANNULER"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "CONTINUER"
 
 #: public/views/modals/destination-address.html:123
 #: public/views/walletHome.html:429 src/js/controllers/copayers.js:9
@@ -206,7 +206,7 @@ msgstr ""
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Choisissez l'appareil sur lequel envoyer"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -251,11 +251,11 @@ msgstr "Confirmer"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Confirmer le paiement"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Confirmé"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:385
@@ -301,7 +301,7 @@ msgstr "Impossible d'importer. Vérifiez le fichier d'entrée et le mot de passe
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "Impossible de reconnaitre un QR Code Byteball valide"
 
 #: src/js/controllers/walletHome.js:595
 msgid "Could not send payment"
@@ -317,7 +317,7 @@ msgstr ""
 
 #: public/views/add.html:15 public/views/create.html:165
 msgid "Create new wallet"
-msgstr "Créer"
+msgstr "Créer un nouveau portefeuille"
 
 #: src/js/controllers/index.js:234
 msgid "Create new wallet  together with  ?"
@@ -329,7 +329,7 @@ msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Créé:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -353,7 +353,7 @@ msgstr "Date"
 
 #: src/js/controllers/index.js:204
 msgid "Declined"
-msgstr ""
+msgstr "Rejeté"
 
 #: public/views/paperWallet.html:40
 msgid ""
@@ -365,7 +365,7 @@ msgstr ""
 
 #: public/views/walletHome.html:136
 msgid "Definition"
-msgstr ""
+msgstr "Définition"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
@@ -395,16 +395,16 @@ msgstr "Détails"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "Adresse de l'appareil"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "Nom de l'appareil"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Le nom de l'appareil est visible par les autres appareils avec lesquels vous communiquez."
 
 #: public/views/translators.html:29
 msgid ""
@@ -453,7 +453,7 @@ msgstr "Erreur de création du portefeuille"
 
 #: public/views/modals/bind.html:65
 msgid "Expected value:"
-msgstr ""
+msgstr "Valeur attendue"
 
 #: public/views/export.html:50
 msgid "Export"
@@ -489,19 +489,19 @@ msgstr "Français"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "De"
 
 #: public/views/editCorrespondentDevice.html:28
 msgid "Full address:"
-msgstr ""
+msgstr "Adresse complète"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Restauration complète"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Portefeuille complet"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
@@ -509,7 +509,7 @@ msgstr "Fonds trouvés"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Les fonds seront transferrés sur"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -562,7 +562,7 @@ msgstr "Accueil"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Hôte"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
@@ -578,11 +578,11 @@ msgstr "Je confirme que j'ai lu, compris et suis d'accord avec ces conditions."
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
-msgstr ""
+msgstr "Je reçois un u-autre paiement :"
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
-msgstr ""
+msgstr "Si la condition n'est pas remplie, je peux récupérer cet argent après :"
 
 #: public/views/import.html:36
 msgid "Import"
@@ -613,7 +613,7 @@ msgstr ""
 
 #: public/views/correspondentDevice.html:220
 msgid "Insert my address"
-msgstr ""
+msgstr "Insérer mon adresse"
 
 #: public/views/walletHome.html:501
 msgid "Invalid"
@@ -625,7 +625,7 @@ msgstr "Touch ID invalide"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
+msgstr "Inviter l'autre appareil"
 
 #: public/views/translators.html:12 public/views/translators.html:13
 #: public/views/translators.html:14
@@ -646,7 +646,7 @@ msgstr "Langue"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "Plus tard"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
@@ -662,7 +662,7 @@ msgstr "Faire un paiement à"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
-msgstr ""
+msgstr "Peut-être plus tard"
 
 #: public/views/includes/copayers.html:4
 #: public/views/preferencesInformation.html:76 public/views/walletHome.html:399
@@ -691,7 +691,7 @@ msgstr ""
 
 #: public/views/walletHome.html:197
 msgid "My Byteball address"
-msgstr ""
+msgstr "Mon adresse Byteball"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -703,7 +703,7 @@ msgstr "Nouvelle graine aléatoire"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
-msgstr ""
+msgstr "Une nouvelle version est disponible !"
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
@@ -711,7 +711,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:22 src/js/controllers/index.js:393
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: public/views/walletHome.html:466
 msgid "No transactions yet"
@@ -808,7 +808,7 @@ msgstr ""
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "Veuillez choisir le type de portefeuille"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -816,7 +816,7 @@ msgstr "Veuillez saisir les champs requis"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
-msgstr ""
+msgstr "Veuillez nommer cet appareil"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
@@ -832,7 +832,7 @@ msgstr "Préférences"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr ""
+msgstr "Appuyez à nouveau pour quitter"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
@@ -885,7 +885,7 @@ msgstr "Recréation du portefeuille..."
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
-msgstr ""
+msgstr "Refusé"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -906,7 +906,7 @@ msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Remplacer"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
@@ -999,7 +999,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
-msgstr ""
+msgstr "Sélectionnez votre identité"
 
 #: public/views/includes/transaction.html:10 public/views/walletHome.html:432
 #: src/js/controllers/index.js:529
@@ -1012,7 +1012,7 @@ msgstr "Tout envoyer"
 
 #: public/views/modals/multi-payment.html:44
 msgid "Send Payment"
-msgstr ""
+msgstr "Envoyer le paiement"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
@@ -1020,7 +1020,7 @@ msgstr "Envoyer les adresses par e-mail"
 
 #: public/views/walletHome.html:355
 msgid "Send all"
-msgstr ""
+msgstr "Tout envoyer"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
@@ -1059,7 +1059,7 @@ msgstr ""
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: public/views/modals/customized-amount.html:24
 #: public/views/walletHome.html:232
@@ -1179,7 +1179,7 @@ msgstr "Il n'y a pas de portefeuilles pour faire ce paiement"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "The choix ne peut pas être changé plus tard"
 
 #: public/views/walletHome.html:304
 msgid ""
@@ -1200,7 +1200,7 @@ msgstr ""
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "Cela supprimera de manière permanente tous vos portefeuilles existants !"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
@@ -1260,7 +1260,7 @@ msgstr "Mise à jour du portefeuille..."
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
-msgstr ""
+msgstr "Mettre à jour vers {{version}}"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1281,7 +1281,7 @@ msgstr ""
 
 #: public/views/import.html:50
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "ATTENTION : Cela supprimera de manière permanente tous vos portefeuilles existants !"
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
@@ -1289,7 +1289,7 @@ msgstr ""
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
-msgstr ""
+msgstr "BIENVENUE SUR BYTEBALL"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
@@ -1404,11 +1404,11 @@ msgstr ""
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
-msgstr ""
+msgstr "explicitement"
 
 #: public/views/modals/bind.html:90
 msgid "hours"
-msgstr ""
+msgstr "heures"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
@@ -1428,7 +1428,7 @@ msgstr "optionnelle"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "à"
 
 #: public/views/walletHome.html:370 public/views/walletHome.html:381
 msgid "too long!"
