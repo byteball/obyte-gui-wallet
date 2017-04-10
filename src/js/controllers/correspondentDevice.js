@@ -408,10 +408,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
-		if ($scope.messageEvents.length == 1) {
-			correspondent.endOfChatHistory = false;
-			chatStorage.store(correspondent.device_address, JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}), false, 'system');
-			setTimeout($scope.loadMoreHistory, 500);
+		if ($scope.messageEvents.length < 2) {
+			var message = {
+				type: 'system',
+				bIncoming: false,
+				message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
+				timestamp: Math.floor(+ new Date() / 1000)
+			};
+			chatStorage.store(correspondent.device_address, message.message, false, 'system');
+			$scope.messageEvents.push(chatStorage.parseMessage(message));
 		}
 	});
 
