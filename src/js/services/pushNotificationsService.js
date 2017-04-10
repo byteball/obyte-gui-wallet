@@ -30,6 +30,10 @@ angular.module('copayApp.services')
 						sendRequestEnableNotification(ws, pushInfo.registrationId);
 					}
 					$rootScope.$emit('Local/pushNotificationsReady');
+				}else if(pushInfo && pushInfo.projectNumber && projectNumber == 0){
+					root.pushNotificationsUnregister(function() {
+						
+					});
 				}
 				else {
 					root.pushNotificationsInit(function(registrationId) {
@@ -62,6 +66,22 @@ angular.module('copayApp.services')
 		
 		push.on('error', function(e) {
 			alert(JSON.stringify(e));
+		});
+	};
+	
+	root.pushNotificationsUnregister = function(cb) {
+		if (!usePushNotifications) return;
+		
+		var config = configService.getSync();
+		if (!config.pushNotifications.enabled) return;
+		
+		defaults.pushNotifications.config.android.senderID = projectNumber;
+		
+		var push = PushNotification.init(defaults.pushNotifications.config);
+		push.unregister(function() {
+			cb()
+		}, function() {
+			cb();
 		});
 	};
 	
