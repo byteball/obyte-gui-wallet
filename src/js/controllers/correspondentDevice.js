@@ -9,6 +9,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
+	var device = require('byteballcore/device.js');
+	var eventBus = require('byteballcore/event_bus.js');
+	var conf = require('byteballcore/conf.js');
+	var storage = require('byteballcore/storage.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -84,7 +88,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			return;
 		setOngoingProcess("sending");
 		var message = lodash.clone($scope.message); // save in var as $scope.message may disappear while we are sending the message over the network
-		var device = require('byteballcore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "text", message, {
 			ifOk: function(){
 				setOngoingProcess();
@@ -151,6 +154,276 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 
+	
+	
+	$scope.offerContract = function(address){
+		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		$rootScope.modalOpened = true;
+		var fc = profileService.focusedClient;
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			var config = configService.getSync();
+			var configWallet = config.wallet;
+			var walletSettings = configWallet.settings;
+			$scope.unitValue = walletSettings.unitValue;
+			$scope.unitName = walletSettings.unitName;
+			$scope.color = fc.backgroundColor;
+			$scope.bWorking = false;
+			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
+			$scope.arrParties = [{value: 'me', display_value: "me"}, {value: 'peer', display_value: "the peer"}];
+			$scope.arrPeerPaysTos = [{value: 'me', display_value: "me"}, {value: 'contract', display_value: "this contract"}];
+			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
+				var info = {asset: b.asset, is_private: b.is_private};
+				if (b.asset === 'base')
+					info.displayName = walletSettings.unitName;
+				else if (b.asset === constants.BLACKBYTES_ASSET)
+					info.displayName = walletSettings.bbUnitName;
+				else
+					info.displayName = 'of '+b.asset.substr(0, 4);
+				return info;
+			});
+			$scope.arrPublicAssetInfos = $scope.arrAssetInfos.filter(function(b){ return !b.is_private; });
+			var contract = {
+				timeout: 4,
+				myAsset: 'base',
+				peerAsset: 'base',
+				peer_pays_to: 'contract',
+				relation: '>',
+				expiry: 7,
+				data_party: 'me',
+				expiry_party: 'peer'
+			};
+			$scope.contract = contract;
+
+			
+			$scope.onDataPartyUpdated = function(){
+				console.log('onDataPartyUpdated');
+				contract.expiry_party = (contract.data_party === 'me') ? 'peer' : 'me';
+			};
+			
+			$scope.onExpiryPartyUpdated = function(){
+				console.log('onExpiryPartyUpdated');
+				contract.data_party = (contract.expiry_party === 'me') ? 'peer' : 'me';
+			};
+			
+			
+			$scope.payAndOffer = function() {
+				console.log('payAndOffer');
+				$scope.error = '';
+				
+				if (fc.isPrivKeyEncrypted()) {
+					profileService.unlockFC(null, function(err) {
+						if (err){
+							$scope.error = err.message;
+							$scope.$apply();
+							return;
+						}
+						$scope.payAndOffer();
+					});
+					return;
+				}
+				
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						$timeout(function() {
+							$scope.$digest();
+						}, 1);
+						return;
+					}
+					
+					if ($scope.bWorking)
+						return console.log('already working');
+					
+					var my_amount = contract.myAmount;
+					if (contract.myAsset === "base")
+						my_amount *= walletSettings.unitValue;
+					if (contract.myAsset === constants.BLACKBYTES_ASSET)
+						my_amount *= walletSettings.bbUnitValue;
+					my_amount = Math.round(my_amount);
+					
+					var peer_amount = contract.peerAmount;
+					if (contract.peerAsset === "base")
+						peer_amount *= walletSettings.unitValue;
+					if (contract.peerAsset === constants.BLACKBYTES_ASSET)
+						throw Error("peer asset cannot be blackbytes");
+					peer_amount = Math.round(peer_amount);
+					
+					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
+						$scope.error = "The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.";
+						$timeout(function() {
+							$scope.$digest();
+						}, 1);
+						return;
+					}
+					
+					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
+					fnReadMyAddress(function(my_address){
+						var arrSeenCondition = ['seen', {
+							what: 'output', 
+							address: (contract.peer_pays_to === 'contract') ? 'this address' : my_address, 
+							asset: contract.peerAsset, 
+							amount: peer_amount
+						}];
+						readLastMainChainIndex(function(err, last_mci){
+							if (err){
+								$scope.error = err;
+								$timeout(function() {
+									$scope.$digest();
+								}, 1);
+								return;
+							}
+							var arrExplicitEventCondition = 
+								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value+'', last_mci]];
+							var arrEventCondition = arrExplicitEventCondition;
+							var data_address = (contract.data_party === 'me') ? my_address : address;
+							var expiry_address = (contract.expiry_party === 'me') ? my_address : address;
+							var data_device_address = (contract.data_party === 'me') ? device.getMyDeviceAddress() : correspondent.device_address;
+							var expiry_device_address = (contract.expiry_party === 'me') ? device.getMyDeviceAddress() : correspondent.device_address;
+							var arrDefinition = ['or', [
+								['and', [
+									arrSeenCondition,
+									['or', [
+										['and', [
+											['address', data_address],
+											arrEventCondition
+										]],
+										['and', [
+											['address', expiry_address],
+											['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.expiry*24*3600*1000)]]
+										]]
+									]]
+								]],
+								['and', [
+									['address', my_address],
+									['not', arrSeenCondition],
+									['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.timeout*3600*1000)]]
+								]]
+							]];
+							var assocSignersByPath = {
+								'r.0.1.0.0': {
+									address: data_address,
+									member_signing_path: 'r',
+									device_address: data_device_address
+								},
+								'r.0.1.1.0': {
+									address: expiry_address,
+									member_signing_path: 'r',
+									device_address: expiry_device_address
+								},
+								'r.1.0': {
+									address: my_address,
+									member_signing_path: 'r',
+									device_address: device.getMyDeviceAddress()
+								}
+							};
+							walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
+								ifError: function(err){
+									$scope.bWorking = false;
+									$scope.error = err;
+									$timeout(function(){
+										$scope.$digest();
+									});
+								},
+								ifOk: function(shared_address){
+									composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address);
+								}
+							});
+						});
+					});
+					
+					// compose and send
+					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
+						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+						if (fc.credentials.m < fc.credentials.n)
+							indexScope.copayers.forEach(function(copayer){
+								if (copayer.me || copayer.signs)
+									arrSigningDeviceAddresses.push(copayer.device_address);
+							});
+						else if (indexScope.shared_address)
+							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							shared_address: indexScope.shared_address,
+							asset: contract.myAsset,
+							to_address: shared_address,
+							amount: my_amount,
+							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							recipient_device_address: correspondent.device_address
+						};
+						fc.sendMultiPayment(opts, function(err){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							$scope.bWorking = false;
+							profileService.bKeepUnlocked = false;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough confirmed funds";
+								if ($scope)
+									$scope.error = err;
+								return;
+							}
+							$rootScope.$emit("NewOutgoingTx");
+							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset);
+							var paymentRequestCode;
+							if (contract.peer_pays_to === 'contract'){
+								var arrPayments = [{address: shared_address, amount: peer_amount, asset: contract.peerAsset}];
+								var assocDefinitions = {};
+								assocDefinitions[shared_address] = {
+									definition: arrDefinition,
+									signers: assocSignersByPath
+								};
+								var objPaymentRequest = {payments: arrPayments, definitions: assocDefinitions};
+								var paymentJson = JSON.stringify(objPaymentRequest);
+								var paymentJsonBase64 = Buffer(paymentJson).toString('base64');
+								paymentRequestCode = 'payment:'+paymentJsonBase64;
+							}
+							else
+								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
+							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
+							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							if (contract.peer_pays_to === 'me')
+								issueNextAddress(); // make sure the address is not reused
+						});
+						$modalInstance.dismiss('cancel');
+					}
+					
+				});
+			}; // payAndOffer
+			
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/offer-contract.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
+	
+	
+	
+
 	$scope.sendMultiPayment = function(paymentJsonBase64){
 		var async = require('async');
 		var db = require('byteballcore/db.js');
@@ -192,6 +465,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				}
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
+				if (arrAllMemberAddresses.length === 0)
+					throw Error("no member addresses in "+paymentJson);
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
@@ -306,6 +581,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								if (copayer.me || copayer.signs)
 									arrSigningDeviceAddresses.push(copayer.device_address);
 							});
+						else if (indexScope.shared_address)
+							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
@@ -425,6 +702,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.error = error;
 	}
 	
+	function readLastMainChainIndex(cb){
+		if (conf.bLight){
+			var network = require('byteballcore/network.js');
+			network.requestFromLightVendor('get_last_mci', null, function(ws, request, response){
+				response.error ? cb(response.error) : cb(null, response);
+			});
+		}
+		else
+			storage.readLastMainChainIndex(function(last_mci){
+				cb(null, last_mci);
+			})
+	}
+	
 	function readMyPaymentAddress(cb){
 		if (indexScope.shared_address)
 			return cb(indexScope.shared_address);
@@ -432,6 +722,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			cb(address);
 		});
 	}
+	
+	function issueNextAddress(cb){
+		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		walletDefinedByKeys.issueNextAddress(profileService.focusedClient.credentials.walletId, 0, function(addressInfo){
+			if (cb)
+				cb(addressInfo.address);
+		});
+	}
+	
 	/*
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
