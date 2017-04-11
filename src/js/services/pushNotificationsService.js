@@ -22,7 +22,7 @@ angular.module('copayApp.services')
 	
 	eventBus.on('receivedPushProjectNumber', function(ws, data) {
 		_ws = ws;
-		if (data && data.projectNumber) {
+		if (data && data.projectNumber !== undefined) {
 			storageService.getPushInfo(function(err, pushInfo) {
 				projectNumber = data.projectNumber;
 				if (pushInfo && projectNumber == 0) {
