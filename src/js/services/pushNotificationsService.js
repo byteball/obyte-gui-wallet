@@ -25,17 +25,18 @@ angular.module('copayApp.services')
 		if (data && data.projectNumber) {
 			storageService.getPushInfo(function(err, pushInfo) {
 				projectNumber = data.projectNumber;
-				if (pushInfo && pushInfo.projectNumber && pushInfo.projectNumber === projectNumber) {
-					if (pushInfo.enabled) {
-						sendRequestEnableNotification(ws, pushInfo.registrationId);
-					}
-					$rootScope.$emit('Local/pushNotificationsReady');
-				}else if(pushInfo && pushInfo.projectNumber && projectNumber == 0){
+				if (pushInfo && projectNumber == 0) {
 					root.pushNotificationsUnregister(function() {
 						
 					});
 				}
-				else {
+				else if (pushInfo && pushInfo.projectNumber && pushInfo.projectNumber === projectNumber) {
+					if (pushInfo.enabled) {
+						sendRequestEnableNotification(ws, pushInfo.registrationId);
+					}
+					$rootScope.$emit('Local/pushNotificationsReady');
+				}
+				else if(projectNumber){
 					root.pushNotificationsInit(function(registrationId) {
 						sendRequestEnableNotification(ws, registrationId);
 						$rootScope.$emit('Local/pushNotificationsReady');
