@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
         if (ok) {
           	var chatStorage = require('byteballcore/chat_storage.js');
 			chatStorage.purge(correspondent.device_address);
-			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = correspondentListService.messageEventsByCorrespondent[correspondent.device_address].slice(0,2);
+			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = correspondentListService.messageEventsByCorrespondent[correspondent.device_address].slice(0,1);
         }
         
       });

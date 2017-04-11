@@ -39,7 +39,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	};
 
 	$scope.newMsgByAddressComparator = function(correspondent) {
-	      return -($scope.newMessagesCount[correspondent.device_address]|0);
+	      return (-$scope.newMessagesCount[correspondent.device_address]|correspondent.name.toLowerCase());
 	};
 
 	$scope.beginAddCorrespondent = function() {
