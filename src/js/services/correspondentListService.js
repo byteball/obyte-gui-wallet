@@ -370,7 +370,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	function checkAndInsertDate(messageEvents, message) {
 		var msg_ts = new Date(message.timestamp * 1000);
-		if (messageEvents.length == 0) return;
+		if (typeof messageEvents[messageEvents.length-1].timestamp == "undefined" || messageEvents.length == 0) return;
 		var last_msg_ts = new Date(messageEvents[messageEvents.length-1].timestamp * 1000);
 		if (last_msg_ts.getDay() != msg_ts.getDay()) {
 			messageEvents.push({type: 'system', bIncoming: false, message: msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
