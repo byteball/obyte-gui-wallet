@@ -683,7 +683,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
-		if ($scope.messageEvents.length < 2) {
+		if ($scope.messageEvents.length < 1) {
 			var message = {
 				type: 'system',
 				bIncoming: false,
