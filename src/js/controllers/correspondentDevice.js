@@ -58,18 +58,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	});
 
 	var removeNewMessagesDelim = function() {
-		setTimeout(function(){
-			for (var i in $scope.messageEvents) {
-	        	if ($scope.messageEvents[i].new_message_delim) {
-	        		$scope.messageEvents.splice(i, 1);
-	        	}
-	        }
-	        $scope.$digest();
-		}, 3000);
+		for (var i in $scope.messageEvents) {
+        	if ($scope.messageEvents[i].new_message_delim) {
+        		$scope.messageEvents.splice(i, 1);
+        	}
+        }
 	};
 
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (counter == 0) removeNewMessagesDelim();
 		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
 			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
 		}
@@ -79,6 +75,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
 	        $rootScope.tab = $scope.index.tab = 'chat';
 	        $scope.newMessagesCount[correspondentListService.currentCorrespondent.device_address] = 0;
+	    } else {
+	    	removeNewMessagesDelim();
 	    }
 	});
 
