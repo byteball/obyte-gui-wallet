@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
         $scope.ok = function() {
           $modalInstance.close(true);
-          go.path('correspondentDevices.editCorrespondentDevice');
+          go.path('correspondentDevices.correspondentDevice');
 
         };
         $scope.cancel = function() {
