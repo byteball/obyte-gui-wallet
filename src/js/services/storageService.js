@@ -175,12 +175,14 @@ angular.module('copayApp.services')
       storage.remove('addressbook-' + network, cb);
     };
 
-    root.setDeviceToken = function(token, cb) {
-      storage.set('pushToken', token, cb);
+    root.setPushInfo = function(projectNumber, registrationId, enabled, cb) {
+      storage.set('pushToken', JSON.stringify({projectNumber: projectNumber, registrationId: registrationId, enabled: enabled}), cb);
     };
 
-    root.getDeviceToken = function(cb) {
-      storage.get('pushToken', cb);
+    root.getPushInfo = function(cb) {
+      storage.get('pushToken', function(err, data) {
+      	err ? cb(err) : cb(null, (data ? JSON.parse(data) : data));
+	  });
     };
 
     return root;
