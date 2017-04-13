@@ -12,10 +12,7 @@ angular.module('copayApp.services')
 	var device = require('byteballcore/device.js');
 	
 	function sendRequestEnableNotification(ws, registrationId) {
-		network.sendRequest(ws, 'hub/enable_notification', {
-			deviceAddress: device.getMyDeviceAddress(),
-			registrationId: registrationId
-		}, false, function(ws, request, response) {
+		network.sendRequest(ws, 'hub/enable_notification', registrationId, false, function(ws, request, response) {
 			if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 		});
 	}
@@ -36,7 +33,7 @@ angular.module('copayApp.services')
 					}
 					$rootScope.$emit('Local/pushNotificationsReady');
 				}
-				else if(projectNumber){
+				else if (projectNumber) {
 					root.pushNotificationsInit(function(registrationId) {
 						sendRequestEnableNotification(ws, registrationId);
 						$rootScope.$emit('Local/pushNotificationsReady');
@@ -104,10 +101,7 @@ angular.module('copayApp.services')
 		
 		storageService.getPushInfo(function(err, pushInfo) {
 			storageService.setPushInfo(pushInfo.projectNumber, pushInfo.registrationId, false, function() {
-				network.sendRequest(_ws, 'hub/disable_notification', {
-					deviceAddress: device.getMyDeviceAddress(),
-					registrationId: pushInfo.registrationId
-				}, false, function(ws, request, response) {
+				network.sendRequest(_ws, 'hub/disable_notification', pushInfo.registrationId, false, function(ws, request, response) {
 					if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 				});
 			});
