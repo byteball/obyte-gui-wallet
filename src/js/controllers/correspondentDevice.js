@@ -75,9 +75,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
 	        $rootScope.tab = $scope.index.tab = 'chat';
 	        $scope.newMessagesCount[correspondentListService.currentCorrespondent.device_address] = 0;
-	    } else {
+	    } else
 	    	removeNewMessagesDelim();
-	    }
 	});
 
 	$scope.send = function() {
@@ -681,6 +680,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.loadMoreHistory = function(cb) {
 		correspondentListService.loadMoreHistory(correspondent, cb);
 	}
+	
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
 		if ($scope.messageEvents.length < 1) {
