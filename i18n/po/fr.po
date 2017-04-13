@@ -974,7 +974,8 @@ msgstr "Analyse terminée avec des erreurs"
 msgid ""
 "Scan the above QR code using the other device, or send this pairing code to "
 "the other device:"
-msgstr ""
+msgstr "Scannez le code QR ci-dessus en utilisant l'autre appareil ou envoyez"
+"le code d'appairage suivant à l'autre appareil :"
 
 #: src/js/controllers/index.js:1420
 msgid "Scan your fingerprint please"
@@ -986,7 +987,7 @@ msgstr "Analyse des fonds du portefeuille..."
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
-msgstr ""
+msgstr "Recherche d'adresse"
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
@@ -998,7 +999,7 @@ msgstr "Sélectionner un portefeuille"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr ""
+msgstr "Sélectionnez un sous-portefeuille"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
@@ -1043,7 +1044,7 @@ msgstr "Journal de session"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "Spécifiez un mot de passe"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
@@ -1084,15 +1085,15 @@ msgstr "Tout montrer"
 
 #: public/views/backup.html:53
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "Montrer la graine de portefeuille quand même"
 
 #: src/js/controllers/index.js:370
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "Signer la transaction de dépense depuis le portefeuille ?"
 
 #: src/js/services/profileService.js:265
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "Portefeuille Byteball"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1127,7 +1128,7 @@ msgstr "Balayer un portefeuille de papier"
 
 #: public/views/walletHome.html:50
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "Synchronisation... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
@@ -1144,19 +1145,19 @@ msgstr "Conditions d'utilisation"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "La valeur attendue va être soumise:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "Votre hub pour recevoir des messages des autre appareils"
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "Votre Hub suggère de remplacer les witnesses suivant:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr ""
+msgstr "Le pair recevant ce paiement si :"
 
 #: src/js/controllers/copayers.js:75 src/js/controllers/preferencesDelete.js:56
 msgid "The wallet \"{{walletName}}\" was deleted"
@@ -1167,14 +1168,18 @@ msgid ""
 "The wallet will contain minimum information relevant to you.  The wallet "
 "vendor will be able to know some of your balances and will be able to see "
 "which transactions are yours, but you can start using the wallet immediately."
-msgstr ""
+msgstr "Le portefeuille contiendra le minimum d'informations qui vous sont propres."
+" Le prestataire de portefeuille pourra connaitre votre solde et quelles transactions"
+"sont les votres mais vous pouvez utiliser le portefeuille immédiatement."
 
 #: public/views/splash.html:26
 msgid ""
 "The wallet will contain the most current state of the entire Byteball "
 "database.  This option is better for privacy but will consume more resources "
 "and the initial sync will take several hours."
-msgstr ""
+msgstr "Le portefeuille contiendra la plupart des données du réseau Byteball. "
+"Cette version est meilleure pour la confidentialité mais demande plus de"
+"ressources. La synchro initiale peut durer plusieurs heures".
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1188,11 +1193,12 @@ msgstr "The choix ne peut pas être changé plus tard"
 msgid ""
 "This is a private asset, please send it only by clicking links in the chat "
 "or send it to your other wallets."
-msgstr ""
+msgstr "C'est une valeur privée, transférable seulement en cliquant dans"
+" le lien de chat ou dans un autre de vos portefeuilles."
 
 #: public/views/walletHome.html:336
 msgid "This payment is bound to a condition"
-msgstr ""
+msgstr "Ce paiement est soumis à une condition"
 
 #: public/views/modals/tx-details.html:73
 msgid ""
@@ -1219,7 +1225,7 @@ msgstr "Solde verrouillé total"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "Nombre total de co-signeurs"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
@@ -1247,11 +1253,11 @@ msgstr "Non confirmée"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "Unités pour les blackbytes"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "Unité pour les bytes"
 
 #: public/views/walletHome.html:154
 msgid "Unsent transactions"
@@ -1288,7 +1294,7 @@ msgstr "ATTENTION : Cela supprimera de manière permanente tous vos portefeuille
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
-msgstr ""
+msgstr "ATTENTION :"
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
@@ -1296,7 +1302,7 @@ msgstr "BIENVENUE SUR BYTEBALL"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "En attente des co-signeurs"
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
@@ -1329,7 +1335,7 @@ msgstr "Nom du portefeuille (à la création)"
 
 #: src/js/services/profileService.js:386
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "Portefeuille déjà dans Byteball :"
 
 #: public/views/create.html:48
 msgid "Wallet name"
