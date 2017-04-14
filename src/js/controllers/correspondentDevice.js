@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
 		var device = require('byteballcore/device.js');
-		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", (pref ? "true" : "false"), {
+		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
 			ifOk: function(){
 				device.updateCorrespondentProps(correspondent);
 				var oldState = (correspondent.peer_record_pref && !correspondent.my_record_pref);
@@ -46,7 +46,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						record_pref: true
 					};
 					$scope.autoScrollEnabled = true;
-					$scope.messageEvents.push(chatStorage.parseMessage(message));
+					$scope.messageEvents.push(correspondentListService.parseMessage(message));
 					$scope.$digest();
 					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
 				}
@@ -680,7 +680,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.loadMoreHistory = function(cb) {
 		correspondentListService.loadMoreHistory(correspondent, cb);
 	}
-	
+
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
 		if ($scope.messageEvents.length < 1) {
@@ -691,7 +691,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				timestamp: Math.floor(+ new Date() / 1000)
 			};
 			chatStorage.store(correspondent.device_address, message.message, false, 'system');
-			$scope.messageEvents.push(chatStorage.parseMessage(message));
+			$scope.messageEvents.push(correspondentListService.parseMessage(message));
 		}
 	});
 

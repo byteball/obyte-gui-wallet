@@ -338,6 +338,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			last_msg_id = messageEvents[0].id;
 		}
 		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
+			for (var i in messages) {
+				messages[i] = parseMessage(messages[i]);
+			}
 			var walletGeneral = require('byteballcore/wallet_general.js');
 			walletGeneral.readMyAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
@@ -377,6 +380,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			messageEvents.push({type: 'system', bIncoming: false, message: msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 		}
 	}
+
+	function parseMessage(message) {
+		switch (message.type) {
+			case "system":
+				message.message = JSON.parse(message.message);
+				message.message = "chat recording " + (message.message.state ? "&nbsp;" : "") + "<b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
+				break;
+		}
+		return message;
+	}
 	
 	eventBus.on("text", function(from_address, body){
 		mutex.lock(["handle_message"], function(unlock){
@@ -392,10 +405,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
 		mutex.lock(["handle_message"], function(unlock){
-			var bEnabled = (enabled == "true");
 			device.readCorrespondent(correspondent_address, function(correspondent){
 				var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
-				correspondent.peer_record_pref = bEnabled;
+				correspondent.peer_record_pref = enabled;
 				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
 				device.updateCorrespondentProps(correspondent);
 				if (newState != oldState) {
@@ -406,19 +418,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						timestamp: Math.floor(Date.now() / 1000),
 						record_pref: true
 					};
-					root.messageEventsByCorrespondent[correspondent_address].push(chatStorage.parseMessage(message));
+					root.messageEventsByCorrespondent[correspondent_address].push(parseMessage(message));
 					$rootScope.$digest();
 					chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
 				}
 				if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
-					root.currentCorrespondent.peer_record_pref = enabled == "true" ? 1 : 0;
+					root.currentCorrespondent.peer_record_pref = enabled ? 1 : 0;
 				}
 				unlock();
 			});
-			/*if (enabled == "false") {
-				chatStorage.purge(correspondent_address);
-			}*/
-			//root.messageEventsByCorrespondent[correspondent_address] = [];
 		});
 	});
 	
@@ -471,6 +479,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.getHumanReadableDefinition = getHumanReadableDefinition;
 	root.loadMoreHistory = loadMoreHistory;
 	root.checkAndInsertDate = checkAndInsertDate;
+	root.parseMessage = parseMessage;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){

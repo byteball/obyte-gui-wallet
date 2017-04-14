@@ -258,21 +258,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
       </div-->
 
       <div id="recording-drop" class="f-dropdown" data-dropdown-content>
-      <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref">
+      <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref" translate>
       	Both you and {{correspondent.name}} enabled local chat history recording.
       </div>
-      <div class="text" ng-if="!(correspondent.my_record_pref && correspondent.peer_record_pref)">
+      <div class="text" ng-if="!(correspondent.my_record_pref && correspondent.peer_record_pref)" translate>
       	Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now.
       </div>
       <br>
 	  <div>
 	  	<switch ng-model="correspondent.my_record_pref" class="green right"></switch>
-	  	<div>My recording preference</div>
+	  	<div translate>My recording preference</div>
 	  </div>
 	  <div class="clear"></div>
 	  <div class="switch-line">
 	  	<switch ng-model="correspondent.peer_record_pref" class="green right" disabled="true"></switch>
-	  	<div>Their recording preference</div>
+	  	<div translate>Their recording preference</div>
 	  </div>
 	</div>
 
