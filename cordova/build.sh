@@ -148,6 +148,9 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
+	cordova plugin add phonegap-plugin-push
+	checkOK
+
 fi
 
 if $DBGJS
