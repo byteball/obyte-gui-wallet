@@ -499,7 +499,7 @@ msgstr "Adresse complète"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr "Restauration complète"
+msgstr "Sauvegarde complète"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
@@ -1343,7 +1343,7 @@ msgstr "Nom du portefeuille"
 
 #: public/views/backup.html:43
 msgid "Wallet seed not available."
-msgstr ""
+msgstr "Graine d'aléas du portefeuille non disponible"
 
 #: public/views/modals/destination-address.html:11
 #: public/views/modals/destination-address.html:25
@@ -1356,11 +1356,11 @@ msgstr "Attention !"
 
 #: public/views/walletHome.html:394
 msgid "Who signs:"
-msgstr ""
+msgstr "Qui signe :"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr ""
+msgstr "addresse du Witness"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
@@ -1368,7 +1368,7 @@ msgstr ""
 
 #: public/views/backup.html:65
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "Ecrivez la quelque part en sécurité"
 
 #: src/js/services/profileService.js:616
 msgid "Wrong password"
@@ -1385,7 +1385,7 @@ msgstr "Vous n'avez aucun portefeuille"
 
 #: public/views/backup.html:64 public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr ""
+msgstr "La graine d'aléas de votre portefeuille"
 
 #: public/views/export.html:33
 msgid "Your export password"
@@ -1397,7 +1397,7 @@ msgstr "Votre mot de passe"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr ""
+msgstr "Le fichier de votre portefeuille :"
 
 #: public/views/includes/password.html:40
 msgid ""
@@ -1409,7 +1409,7 @@ msgstr ""
 
 #: public/views/modals/bind.html:78
 msgid "either way"
-msgstr ""
+msgstr "n'importe quel sens"
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
@@ -1421,7 +1421,7 @@ msgstr "heures"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
-msgstr ""
+msgstr "dans l'arbre de mekle"
 
 #: public/views/walletHome.html:110
 msgid "in smart wallets"
@@ -1445,7 +1445,7 @@ msgstr "trop long !"
 
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
-msgstr ""
+msgstr "{{address}} peut être dépensé si :"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
@@ -1503,7 +1503,7 @@ msgstr ""
 #~ "<b>SI VOUS PERDEZ L'ACCÈS À VOTRE PORTEFEUILLE COPAY OU À VOS CLÉS "
 #~ "PRIVÉES CHIFFRÉES ET QUE VOUS N'AVEZ PAS ENTREPOSÉ SÉPARÉMENT UNE "
 #~ "SAUVEGARDE DE VOTRE PORTEFEUILLE ET LES MOTS DE PASSE CORRESPONDANT, VOUS "
-#~ "RECONNAISSEZ ET ACCEPTEZ QUE LES BITCOINS QUE VOUS AVEZ ASSOCIÉ À CE "
+#~ "RECONNAISSEZ ET ACCEPTEZ QUE LES GBYTES QUE VOUS AVEZ ASSOCIÉ À CE "
 #~ "PORTEFEUILLE COPAY DEVIENNENT INACCESSIBLES.</b>"
 
 #~ msgid ""
@@ -1518,12 +1518,12 @@ msgstr ""
 
 #~ msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
 #~ msgstr ""
-#~ "<b>OU</b> la graine de portefeuille de <b>tous</b> les copayers dans le "
+#~ "<b>OU</b> la graine de portefeuille de <b>tous</b> les co-payeurs dans le "
 #~ "portefeuille"
 
 #~ msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
 #~ msgstr ""
-#~ "<b>OU</b> les graines de portefeuilles de <b>tous</b> les copayers dans "
+#~ "<b>OU</b> les graines de portefeuilles de <b>tous</b> les co-payeurss dans "
 #~ "le portefeuille"
 
 #~ msgid "A multisignature bitcoin wallet"
