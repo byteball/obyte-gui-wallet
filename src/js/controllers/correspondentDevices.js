@@ -88,34 +88,28 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.remove = function(device_address) {
 
 		// check to be safe
-		correspondentListService.deviceCanBeRemoved(device_address, {
-			ifOk: function(){
+		if (correspondentListService.deviceCanBeRemoved(device_address)){
 
-				var device = require('byteballcore/device.js');
+			var device = require('byteballcore/device.js');
 
-				var device_pubkey = device.getMyDevicePubKey();
+			var device_pubkey = device.getMyDevicePubKey();
 
-				// send message to paired device
-				// this must be done before removing the device
-				var body = "removed";
-				device.sendMessageToDevice(device_address, "remove_paired_device", body, {
-					ifOk: function(){},
-					ifError: function(error){}
-				});
+			// send message to paired device
+			// this must be done before removing the device
+			var body = "removed";
+			device.sendMessageToDevice(device_address, "remove_paired_device", body, {
+				ifOk: function(){},
+				ifError: function(error){}
+			});
 
-				// remove device
-				device.removeCorrespondentDevice(device_address, function() {
-					$scope.hideRemove = true;
-					$scope.readList();
-					$rootScope.$emit('Local/SetTab', 'chat', true);
-					setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
-				});
-			}, 
-			ifError: function(err){
-				// todo show popup
-				$scope.error = "device can't be removed";
-			}
-		});
+			// remove device
+			device.removeCorrespondentDevice(device_address, function() {
+				$scope.hideRemove = true;
+				$scope.readList();
+				$rootScope.$emit('Local/SetTab', 'chat', true);
+				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+			});
+		}
 	};
 
 	$scope.cancel = function() {

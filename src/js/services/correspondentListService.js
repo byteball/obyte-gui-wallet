@@ -342,7 +342,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	 eventBus.on('remove_paired_device', function(device_address){
+	 eventBus.on('removed_paired_device', function(device_address){
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // todo show popup after refreshing the list
 		if (!$state.is('correspondentDevices.correspondentDevice'))
@@ -386,7 +386,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	};
 	
-	root.deviceCanBeRemoved = function(device_address, callbacks) {
+	root.deviceCanBeRemoved = function(device_address) {
 
 		// load device addresses used in signing paths
 		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
@@ -394,8 +394,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var ix = arrDeviceAddresses.indexOf(device_address);
 
 			// device is removable when not in list
-			if (ix == -1) callbacks.ifOk();
-			else callbacks.ifError();
+			return (ix == -1);
 		});
 	};
 
