@@ -1,19 +1,16 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: copay\n"
+"Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2017-03-23 21:54+0300\n"
-"Last-Translator: Limxdev\n"
-"Language-Team: German\n"
-"Language: de\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.12\n"
-"X-Crowdin-Project: copay\n"
-"X-Crowdin-Language: de\n"
-"X-Crowdin-File: template.pot\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -21,7 +18,7 @@ msgstr ""
 
 #: public/views/walletHome.html:508
 msgid "(possible double spend)"
-msgstr "(mögliche Doppelausgabe)"
+msgstr "（可能双重支付）"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -34,7 +31,7 @@ msgstr ""
 #: src/js/controllers/copayers.js:8 src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117 src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr "Akzeptieren"
+msgstr "承诺"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
@@ -46,7 +43,7 @@ msgstr ""
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr "Acount"
+msgstr "账户"
 
 #: public/views/correspondentDevices.html:30
 msgid "Add a new device"
@@ -55,34 +52,34 @@ msgstr ""
 #: public/views/modals/destination-address.html:102
 #: public/views/modals/destination-address.html:95
 msgid "Add a new entry"
-msgstr "Neuen Eintrag hinzufügen"
+msgstr "添加新条目"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
-msgstr "Wallet hinzufügen"
+msgstr "添加钱包"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:114
 #: public/views/paymentUri.html:15
 msgid "Address"
-msgstr "Adresse"
+msgstr "地址"
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:19
 msgid "Addressbook"
-msgstr "Adressbuch"
+msgstr "地址簿"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr "高级"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr "Zustimmen"
+msgstr "同意"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr "Alias für <i>{{index.walletName}}</i>"
+msgstr "<i>{{index.walletName}}</i>的别名"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
@@ -104,7 +101,7 @@ msgstr ""
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16 public/views/walletHome.html:354
 msgid "Amount"
-msgstr "Betrag"
+msgstr "金额"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
@@ -116,11 +113,11 @@ msgstr ""
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr "Sollen diese Sicherungsworte wirklich gelöscht werden?"
+msgstr "您确定要删除备份文档吗？"
 
 #: src/js/controllers/copayers.js:7 src/js/controllers/preferencesDelete.js:8
 msgid "Are you sure you want to delete this wallet?"
-msgstr "Soll das Wallet wirklich gelöscht werden?"
+msgstr "您确定要删除此钱包吗？"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
@@ -129,7 +126,7 @@ msgstr ""
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:288
 msgid "Available Balance"
-msgstr "Verfügbarer Gesamtbetrag"
+msgstr "可用余额"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -138,11 +135,11 @@ msgstr "Verfügbarer Gesamtbetrag"
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/tx-details.html:5
 msgid "Back"
-msgstr "Zurück"
+msgstr "返回"
 
 #: public/views/walletHome.html:189
 msgid "Backup now"
-msgstr "Jetzt sichern"
+msgstr "立即备份"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
@@ -150,18 +147,16 @@ msgstr ""
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr "Sicherungsworte gelöscht"
+msgstr "备份文档已删除"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr "Guthaben nach Adresse"
+msgstr "地址余额"
 
 #: public/views/walletHome.html:183
 msgid ""
 "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr ""
-"Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schlüssel "
-"zu sichern."
+msgstr "在收到资金之前，强烈建议您备份您的钱包密钥。"
 
 #: public/views/modals/bind.html:100 public/views/modals/bind.html:8
 msgid "Bind payment"
@@ -173,15 +168,15 @@ msgstr ""
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Byteball URI ist NICHT gültig!"
+msgstr "比特币URI无效！"
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
-msgstr "Der eingesetzte Browser wird nicht unterstützt"
+msgstr "浏览器不支持"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr "ABBRUCH"
+msgstr "取消"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
@@ -192,16 +187,15 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js:10
 #: src/js/controllers/walletHome.js:118 src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr "Abbruch"
+msgstr "取消"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr ""
-"Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wallets"
+msgstr "更改钱包别名仅影响本地钱包名称。"
 
 #: src/js/controllers/index.js:537
 msgid "Chat"
-msgstr ""
+msgstr "对话"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
@@ -216,7 +210,7 @@ msgstr ""
 #: public/views/modals/multi-payment.html:4 public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr "Schließen"
+msgstr "关闭"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
@@ -228,15 +222,15 @@ msgstr ""
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "多重签名的共同签署人"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr "Farbe"
+msgstr "颜色"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
-msgstr "Hash übertragen"
+msgstr "提交哈希值"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
@@ -246,7 +240,7 @@ msgstr ""
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:119 src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr "Bestätigen"
+msgstr "确认"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
@@ -259,7 +253,7 @@ msgstr ""
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:385
 msgid "Copied to clipboard"
-msgstr "In die Zwischenablage kopiert"
+msgstr "已复制到剪贴板"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
@@ -267,38 +261,36 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js:595
 msgid "Could not create payment proposal"
-msgstr "Es kann kein Zahlungsvorschlag erzeugt werden"
+msgstr "无法创建付款协议"
 
 #: src/js/services/profileService.js:213
 msgid "Could not create using the specified extended private key"
-msgstr "Erzeugung mit erweiterten privaten Schlüssel nicht möglich"
+msgstr "指定的扩展私钥无法进行创建"
 
 #: src/js/services/profileService.js:223
 msgid "Could not create using the specified extended public key"
-msgstr ""
-"Erzeugung mit dem angegebenen erweiterten öffentlichen Schlüssel nicht "
-"möglich"
+msgstr "指定的扩展公钥无法进行创建"
 
 #: src/js/services/profileService.js:206
 msgid "Could not create: Invalid wallet seed"
-msgstr "Erzeugung nicht möglich: Ungültiger Wallet-Seed"
+msgstr "无法创建：无效的钱包种子"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr "Entschlüsselung nicht möglich"
+msgstr "无法解密"
 
 #: public/views/walletHome.html:463
 msgid "Could not fetch transaction history"
-msgstr "Transaktionshistorie kann nicht abgerufen werden"
+msgstr "无法获取历史交易记录"
 
 #: src/js/services/profileService.js:442 src/js/services/profileService.js:469
 #: src/js/services/profileService.js:491
 msgid "Could not import"
-msgstr "Import nicht möglich"
+msgstr "无法导入"
 
 #: src/js/services/profileService.js:419
 msgid "Could not import. Check input file and password"
-msgstr "Import nicht möglich. Bitte Datei und Passwort überprüfen"
+msgstr "无法导入，请检查输入文件和密码"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
@@ -306,19 +298,19 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js:595
 msgid "Could not send payment"
-msgstr "Zahlung kann nicht gesendet werden"
+msgstr "无法发送交易"
 
 #: public/views/walletHome.html:12
 msgid "Create"
-msgstr "Erzeugen"
+msgstr "创建"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "创建新钱包"
 
 #: public/views/add.html:15 public/views/create.html:165
 msgid "Create new wallet"
-msgstr "Neues Wallet erzeugen"
+msgstr "创建新的钱包"
 
 #: src/js/controllers/index.js:234
 msgid "Create new wallet  together with  ?"
@@ -334,15 +326,15 @@ msgstr ""
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
-msgstr "Profil erstellen..."
+msgstr "创建配置文件…"
 
 #: public/views/create.html:20
 msgid "Creating Wallet..."
-msgstr "Wallet erstellen..."
+msgstr "创建钱包…"
 
 #: public/views/backup.html:99
 msgid "DELETE WORDS"
-msgstr "WÖRTER LÖSCHEN"
+msgstr "删除文档"
 
 #: public/views/modals/bind.html:57
 msgid "Data feed name:"
@@ -350,7 +342,7 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
-msgstr "Datum"
+msgstr "日期"
 
 #: src/js/controllers/index.js:204
 msgid "Declined"
@@ -361,8 +353,7 @@ msgid ""
 "Decrypting a paper wallet could take around 5 minutes on this device. please "
 "be patient and keep the app open."
 msgstr ""
-"Das Entschlüsseln eines Paperwallets kann auf diesem Gerät bis zu 5 Minuten "
-"dauern. Bitte abwarten und die App nicht beenden."
+"解密纸钱包在这台设备上可能需要花费5分钟时间，请耐心等待并保持应用程序运行。"
 
 #: public/views/walletHome.html:136
 msgid "Definition"
@@ -378,21 +369,21 @@ msgstr ""
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
-msgstr "Wallet löschen"
+msgstr "删除钱包"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
-msgstr "Wallet löschen"
+msgstr "删除钱包"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
-msgstr "Ableitungstrategie"
+msgstr "派生策略"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
 #: public/views/modals/tx-details.html:25
 msgid "Details"
-msgstr "Details"
+msgstr "详情"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
@@ -412,26 +403,26 @@ msgid ""
 "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love "
 "to support your language."
 msgstr ""
-"Wird deine Sprache auf Crowdin nicht angezeigt? Kontaktiere den Support von "
-"Crowdin, denn wir würden deine Sprache gerne hinzufügen."
+"在Crowdin平台上没有看到您的语言？ 联系Crowdin平台上的管理员！我们很乐意支持你"
+"的语言"
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:37
 msgid "Done"
-msgstr "Fertig"
+msgstr "完成"
 
 #: public/views/walletHome.html:558
 msgid "Download CSV file"
-msgstr "CSV-Datei herunterladen"
+msgstr "下载CSV的文件"
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:34
 msgid "Edit"
-msgstr "Ändern"
+msgstr "编辑"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
-msgstr "E-Mail für Wallet Benachrichtigungen"
+msgstr "通过电子邮件发送钱包通知"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
@@ -446,11 +437,11 @@ msgstr ""
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
-msgstr "Passwort eingeben"
+msgstr "输入您的密码"
 
 #: src/js/services/profileService.js:270 src/js/services/profileService.js:320
 msgid "Error creating wallet"
-msgstr "Fehler beim Erstellen des Wallets"
+msgstr "生成钱包时出错"
 
 #: public/views/modals/bind.html:65
 msgid "Expected value:"
@@ -470,15 +461,15 @@ msgstr ""
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
-msgstr "Erweiterte öffentliche Schlüssel"
+msgstr "扩展公匙"
 
 #: public/views/export.html:25
 msgid "Failed to export"
-msgstr "Fehler beim Exportieren"
+msgstr "无法导出"
 
 #: public/views/modals/tx-details.html:85
 msgid "Fee"
-msgstr "Gebühr"
+msgstr "费用"
 
 #: public/views/modals/tx-details.html:103
 msgid "Finality"
@@ -486,7 +477,7 @@ msgstr ""
 
 #: public/views/translators.html:11
 msgid "French"
-msgstr "Français"
+msgstr "法语"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
@@ -506,7 +497,7 @@ msgstr ""
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr "Beträge gefunden"
+msgstr "建立资金"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
@@ -514,39 +505,39 @@ msgstr ""
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
-msgstr "JETZT STARTEN"
+msgstr "开始"
 
 #: public/views/walletHome.html:243
 msgid "Generate new address"
-msgstr "Neue Adresse erzeugen"
+msgstr "生成新地址"
 
 #: public/views/walletHome.html:49
 msgid "Generating .csv file..."
-msgstr "CSV-Datei erzeugen..."
+msgstr "产生csv文件中..."
 
 #: public/views/translators.html:15 public/views/translators.html:16
 msgid "German"
-msgstr "Deutsch"
+msgstr "德语"
 
 #: public/views/modals/destination-address.html:57
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr "Ermittle die Adresse des Wallets {{selectedWalletName}}..."
+msgstr "{{selectedWalletName}} 获取钱包地址中 ..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "全局设置"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr "Zurück"
+msgstr "返回"
 
 #: public/views/translators.html:18 public/views/translators.html:19
 msgid "Greek"
-msgstr "Griechisch"
+msgstr "希腊语"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr "Hardware-Wallet"
+msgstr "硬件钱包"
 
 #: public/views/backup.html:54
 msgid "Hide the Wallet Seed"
@@ -554,11 +545,11 @@ msgstr ""
 
 #: src/js/controllers/index.js:533
 msgid "History"
-msgstr "Historie"
+msgstr "历史记录"
 
 #: src/js/controllers/index.js:521
 msgid "Home"
-msgstr "Start"
+msgstr "首页"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
@@ -574,9 +565,7 @@ msgstr ""
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
-msgstr ""
-"Ich bestätige, dass ich diese Bedingungen gelesen habe, diese verstehe und "
-"diesen zustimme."
+msgstr "我确定我已经读过，理解并且同意这些条款。"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -588,15 +577,15 @@ msgstr ""
 
 #: public/views/import.html:36
 msgid "Import"
-msgstr "Import"
+msgstr "导入"
 
 #: public/views/add.html:22
 msgid "Import wallet"
-msgstr "Wallet importieren"
+msgstr "导入钱包"
 
 #: public/views/import.html:19
 msgid "Importing wallet..."
-msgstr "Wallet wird importiert..."
+msgstr "钱包导入中…"
 
 #: public/views/walletHome.html:100
 msgid "Including pending confirmation"
@@ -608,9 +597,8 @@ msgid ""
 "wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr ""
-"Die anfängliche Transaktionsverlaufs-Synchronisation kann einige Minuten für "
-"Geldbörsen mit vielen Transaktionen in Anspruch nehmen.<br>\n"
-"          Bitte warten."
+"多宗交易的钱包，其首次交易历史同步可能需要几分钟的时间。<br>\n"
+"          请稍等。"
 
 #: public/views/correspondentDevice.html:220
 msgid "Insert my address"
@@ -618,11 +606,11 @@ msgstr ""
 
 #: public/views/walletHome.html:501
 msgid "Invalid"
-msgstr "Ungültig"
+msgstr "无效"
 
 #: src/js/controllers/index.js:1427
 msgid "Invalid Touch ID"
-msgstr "Ungültige Touch ID"
+msgstr "指纹识别无效"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
@@ -631,19 +619,19 @@ msgstr ""
 #: public/views/translators.html:12 public/views/translators.html:13
 #: public/views/translators.html:14
 msgid "Italian"
-msgstr "Italienisch"
+msgstr "意大利语"
 
 #: public/views/translators.html:10
 msgid "Japanese"
-msgstr "日本語"
+msgstr "日语"
 
 #: public/views/modals/destination-address.html:116
 msgid "Label"
-msgstr "Adresse"
+msgstr "标签"
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
-msgstr "Sprache"
+msgstr "语言设定"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
@@ -655,11 +643,11 @@ msgstr ""
 
 #: src/js/controllers/disclaimer.js:8
 msgid "Loading..."
-msgstr "Lade..."
+msgstr "加载中..."
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
-msgstr "Sende eine Zahlung an"
+msgstr "支付至"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
@@ -668,11 +656,11 @@ msgstr ""
 #: public/views/includes/copayers.html:4
 #: public/views/preferencesInformation.html:76 public/views/walletHome.html:399
 msgid "Me"
-msgstr "Ich"
+msgstr "自己"
 
 #: public/views/modals/tx-details.html:97
 msgid "Merchant message"
-msgstr "Händlernachricht"
+msgstr "商家信息："
 
 #: public/views/walletHome.html:368
 msgid "Merkle proof"
@@ -680,11 +668,11 @@ msgstr ""
 
 #: public/views/paymentUri.html:17
 msgid "Message"
-msgstr "Nachricht"
+msgstr "消息"
 
 #: public/views/walletHome.html:500
 msgid "Moved"
-msgstr "EigenTX"
+msgstr "移动"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
@@ -692,15 +680,15 @@ msgstr ""
 
 #: public/views/walletHome.html:197
 msgid "My Byteball address"
-msgstr ""
+msgstr "我的Byteball地址"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
-msgstr "Netzwerk"
+msgstr "网络"
 
 #: src/js/controllers/create.js:29
 msgid "New Random Seed"
-msgstr "Neue Zufalls-Seed"
+msgstr "新的随机种子"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
@@ -716,20 +704,20 @@ msgstr ""
 
 #: public/views/walletHome.html:466
 msgid "No transactions yet"
-msgstr "Noch keine Transaktionen"
+msgstr "没有交易"
 
 #: public/views/modals/bind.html:46
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:108
 #: public/views/walletHome.html:316 public/views/walletHome.html:346
 msgid "Not valid"
-msgstr "Nicht gültig"
+msgstr "无效"
 
 #: public/views/includes/output.html:12 public/views/modals/tx-details.html:68
 #: public/views/modals/tx-details.html:93 public/views/walletHome.html:379
 #: public/views/walletHome.html:529
 msgid "Note"
-msgstr "Notiz"
+msgstr "注意"
 
 #: public/views/backup.html:93
 msgid ""
@@ -751,47 +739,47 @@ msgstr ""
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "已配对设备"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
-msgstr "Privater Schlüssel des Paperwallets"
+msgstr "纸钱包私钥"
 
 #: public/views/paperWallet.html:37 public/views/paperWallet.html:39
 msgid "Passphrase"
-msgstr "Passwort"
+msgstr "密码"
 
 #: src/js/services/profileService.js:606
 msgid "Password needed"
-msgstr "Passwort benötigt"
+msgstr "需要密码"
 
 #: src/js/controllers/password.js:33
 msgid "Passwords do not match"
-msgstr "Passwörter stimmen nicht überein"
+msgstr "密码不匹配"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr "Privaten Schlüssel des Paperwallets hier einfügen"
+msgstr "将您的纸钱包私钥粘贴至此处"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
-msgstr "Zahlung angenommen"
+msgstr "付款已完成"
 
 #: public/views/modals/tx-status.html:16
 msgid "Payment Proposal Created"
-msgstr "Zahlungsvorschlag erstellt"
+msgstr "已创建付款协议"
 
 #: public/views/walletHome.html:153
 msgid "Payment Proposals"
-msgstr "Zahlungsvorschläge"
+msgstr "付款协议"
 
 #: public/views/modals/tx-status.html:38
 msgid "Payment Rejected"
-msgstr "Zahlung abgelehnt"
+msgstr "付款被拒绝"
 
 #: public/views/modals/tx-status.html:5
 msgid "Payment Sent"
-msgstr "Zahlung gesendet"
+msgstr "付款已发送"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -799,8 +787,7 @@ msgstr ""
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr ""
-"Wallet dauerhaft löschen. DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN"
+msgstr "永久删除此钱包。 此操作无法撤销！"
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
@@ -812,7 +799,7 @@ msgstr ""
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
-msgstr "Bitte die benötigten Felder ausfüllen"
+msgstr "请输入必填字段"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
@@ -824,11 +811,11 @@ msgstr ""
 
 #: public/views/translators.html:17
 msgid "Portuguese"
-msgstr "Português"
+msgstr "葡萄牙语"
 
 #: public/views/walletHome.html:132 public/views/walletHome.html:15
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "偏好设定"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
@@ -844,28 +831,28 @@ msgstr ""
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
-msgstr "QR-Code"
+msgstr "QR码"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr "QR-Scanner"
+msgstr "QR-扫描"
 
 #: src/js/controllers/index.js:525
 msgid "Receive"
-msgstr "Erhalten"
+msgstr "接收"
 
 #: public/views/walletHome.html:497
 msgid "Received"
-msgstr "Erhalten"
+msgstr "收到"
 
 #: public/views/includes/transaction.html:15
 #: public/views/modals/tx-details.html:45
 msgid "Recipients"
-msgstr "Empfänger"
+msgstr "接收者"
 
 #: public/views/walletHome.html:28
 msgid "Reconnecting to Wallet Service..."
-msgstr "Neuverbindung zum Wallet Service... "
+msgstr "正在重新连接到钱包服务..."
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
@@ -881,7 +868,7 @@ msgstr ""
 
 #: public/views/walletHome.html:48
 msgid "Recreating Wallet..."
-msgstr "Wallet wiederherstellen..."
+msgstr "重新创建钱包中…"
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
@@ -889,16 +876,16 @@ msgstr ""
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
-msgstr "Information zur Veröffentlichung"
+msgstr "发布信息"
 
 #: public/views/correspondentDevices.html:13
 #: public/views/modals/destination-address.html:80
 msgid "Remove"
-msgstr ""
+msgstr "删除"
 
 #: public/views/export.html:40 public/views/includes/password.html:10
 msgid "Repeat password"
-msgstr "Passwort wiederholen"
+msgstr "重复密码"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
@@ -910,12 +897,12 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr "Kennwort abfragen"
+msgstr "要求密码"
 
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:252
 msgid "Request a specific amount"
-msgstr "Einen bestimmten Betrag anfordern"
+msgstr "要求特定金额"
 
 #: public/views/correspondentDevice.html:221
 msgid "Request payment"
@@ -923,7 +910,7 @@ msgstr ""
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
-msgstr "Erforderliche Anzahl von Signaturen"
+msgstr "选择必要的签名数"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
@@ -931,15 +918,15 @@ msgstr ""
 
 #: public/views/splash.html:60
 msgid "Retrying..."
-msgstr "Neuer Versuch..."
+msgstr "重试…"
 
 #: public/views/translators.html:21
 msgid "Russian"
-msgstr "Pусский"
+msgstr "俄语"
 
 #: public/views/includes/password.html:32
 msgid "SET"
-msgstr "EINRICHTEN"
+msgstr "设置"
 
 #: public/views/editCorrespondentDevice.html:42
 #: public/views/modals/destination-address.html:128
@@ -949,23 +936,23 @@ msgstr "EINRICHTEN"
 #: public/views/preferencesEmail.html:35 public/views/preferencesHub.html:18
 #: public/views/preferencesTor.html:19
 msgid "Save"
-msgstr "Speichern"
+msgstr "保存"
 
 #: public/views/preferencesEmail.html:21
 msgid "Saving preferences..."
-msgstr "Speichere Einstellungen"
+msgstr "保存设置中……"
 
 #: public/views/preferences.html:55
 msgid "Scan Fingerprint"
-msgstr "Scanne Fingerabdruck"
+msgstr "扫描指纹"
 
 #: public/views/paperWallet.html:44
 msgid "Scan Wallet Funds"
-msgstr "Prüfe Beträge des Wallets"
+msgstr "钱包余额查询"
 
 #: public/views/walletHome.html:87
 msgid "Scan status finished with error"
-msgstr "Überprüfung wurde mit Fehlern beendet"
+msgstr "查询结果出现错误"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid ""
@@ -975,11 +962,11 @@ msgstr ""
 
 #: src/js/controllers/index.js:1420
 msgid "Scan your fingerprint please"
-msgstr "Scanne bitte deinen Fingerabdruck"
+msgstr "请扫描您的指纹"
 
 #: public/views/walletHome.html:47
 msgid "Scanning Wallet funds..."
-msgstr "Prüfe Wallet auf neue Beträge..."
+msgstr "查询钱包余额中…"
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
@@ -987,11 +974,11 @@ msgstr ""
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
-msgstr "Prüfe Wallet auf neue Beträge..."
+msgstr "查询钱包余额中…"
 
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
-msgstr "Wallet wählen"
+msgstr "选择一个钱包"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
@@ -1004,11 +991,11 @@ msgstr ""
 #: public/views/includes/transaction.html:10 public/views/walletHome.html:432
 #: src/js/controllers/index.js:529
 msgid "Send"
-msgstr "Senden"
+msgstr "发送"
 
 #: public/views/walletHome.html:279
 msgid "Send All"
-msgstr "Alle senden"
+msgstr "全部发送"
 
 #: public/views/modals/multi-payment.html:44
 msgid "Send Payment"
@@ -1016,27 +1003,27 @@ msgstr ""
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
-msgstr "Sende Adresse per Email"
+msgstr "通过邮件发送地址"
 
 #: public/views/walletHome.html:355
 msgid "Send all"
-msgstr ""
+msgstr "全部发送"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
-msgstr "Per E-Mail versenden"
+msgstr "邮件发送"
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
-msgstr "Sende Beträge..."
+msgstr "正在发送资金..."
 
 #: public/views/walletHome.html:499
 msgid "Sent"
-msgstr "Gesendet"
+msgstr "已发送"
 
 #: public/views/preferencesAbout.html:38
 msgid "Session log"
-msgstr "Sitzungsprotokoll"
+msgstr "会话日志"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
@@ -1044,7 +1031,7 @@ msgstr ""
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
-msgstr "Passwort einrichten"
+msgstr "设置密码"
 
 #: public/views/preferencesEmail.html:38
 msgid ""
@@ -1052,30 +1039,27 @@ msgid ""
 "service provider is compromised. Information available to an attacker would "
 "include your wallet addresses and its balance, but no more."
 msgstr ""
-"Das Einrichten einer E-Mail Benachrichtigung schwächt die Privatsphäre, wenn "
-"der Wallet Service Anbieter kompromittiert wurde. Der Angreifer  kann jedoch "
-"nur Wallet Adresse und Guthaben erfahren, mehr nicht."
+"如果电子钱包服务提供商遭到入侵，设置电子邮件通知可能会削弱您的隐私。攻击者可"
+"获得的信息仅包括您的钱包地址和余额。"
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #: public/views/modals/customized-amount.html:24
 #: public/views/walletHome.html:232
 msgid "Share address"
-msgstr "Adresse teilen"
+msgstr "分享地址"
 
 #: public/views/walletHome.html:235
 msgid ""
 "Share this wallet address to receive payments. To protect your privacy, new "
 "addresses are generated automatically once you use them."
-msgstr ""
-"Um Zahlungen zu empfangen, die hier angegebene Adresse teilen. Um die "
-"Privatsphäre zu schützen wird nach jeder Nutzung eine neue Adresse erzeugt."
+msgstr "分享此钱包地址以接收付款。为了保护您的隐私，新的地址在使用后自动生成。"
 
 #: public/views/walletHome.html:550
 msgid "Show all"
-msgstr "Zeige alles"
+msgstr "显示所有"
 
 #: public/views/backup.html:53
 msgid "Show the Wallet Seed Anyway"
@@ -1091,34 +1075,34 @@ msgstr ""
 
 #: public/views/translators.html:20
 msgid "Spanish"
-msgstr "Español"
+msgstr "西班牙语"
 
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
-msgstr "Spezifischer Seed"
+msgstr "指定种子…"
 
 #: public/views/preferences.html:49 public/views/preferencesGlobal.html:82
 msgid "Spending Restrictions"
-msgstr "Ausgabenbeschränkungen"
+msgstr "支出限制"
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
-msgstr "Noch nicht erledigt"
+msgstr "未完成"
 
 #: src/js/controllers/copayers.js:75 src/js/controllers/export.js:100
 #: src/js/controllers/index.js:193 src/js/controllers/index.js:221
 #: src/js/controllers/preferencesDelete.js:56
 #: src/js/controllers/walletHome.js:1263
 msgid "Success"
-msgstr "Erfolgreich"
+msgstr "成功"
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
-msgstr "Wallet löschen"
+msgstr "扫描钱包"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
-msgstr "Paperwallet löschen"
+msgstr "扫描纸钱包"
 
 #: public/views/walletHome.html:50
 msgid "Syncing... {{index.syncProgress}}"
@@ -1131,11 +1115,11 @@ msgstr ""
 #: public/views/walletHome.html:464 public/views/walletHome.html:83
 #: public/views/walletHome.html:88
 msgid "Tap to retry"
-msgstr "Zum Wiederholen antippen"
+msgstr "点击重试"
 
 #: public/views/disclaimer.html:12 public/views/preferencesAbout.html:30
 msgid "Terms of Use"
-msgstr "Nutzungsbedingungen"
+msgstr "使用条款"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
@@ -1155,7 +1139,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js:75 src/js/controllers/preferencesDelete.js:56
 msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "Wallet \"{{walletName}}\" wurde gelöscht"
+msgstr "钱包 \"{{walletName}}\"已被删除"
 
 #: public/views/splash.html:34
 msgid ""
@@ -1173,7 +1157,7 @@ msgstr ""
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
-msgstr "Es gibt keine Wallets, um diese Zahlung auszuführen"
+msgstr "没有钱包可以进行付款"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
@@ -1192,9 +1176,7 @@ msgstr ""
 #: public/views/modals/tx-details.html:73
 msgid ""
 "This transaction has become invalid; possibly due to a double spend attempt."
-msgstr ""
-"Diese Transaktion ist wurde ungültig; dies kann durch eine versuchte "
-"Doppelzahlung verursacht worden sein."
+msgstr "此交易已失效，可能由于尝试双重支付导致。"
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
@@ -1206,11 +1188,11 @@ msgstr ""
 #: public/views/modals/tx-details.html:58 public/views/walletHome.html:311
 #: public/views/walletHome.html:531
 msgid "To"
-msgstr "An"
+msgstr "至："
 
 #: public/views/walletHome.html:161
 msgid "Total Locked Balance"
-msgstr "Ingesamt gesperrter Gesamtsaldo"
+msgstr "锁定总余额"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
@@ -1218,27 +1200,27 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
-msgstr "Transaktion"
+msgstr "交易"
 
 #: public/views/walletHome.html:488
 msgid "Transactions<br> Downloaded"
-msgstr "Transaktionen<br> runtergeladen"
+msgstr "交易历史<br>下载完毕"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
-msgstr "Danksagung an die Übersetzer"
+msgstr "翻译积分"
 
 #: public/views/preferencesAbout.html:34
 msgid "Translators"
-msgstr "Übersetzer"
+msgstr "翻译者"
 
 #: src/js/controllers/walletHome.js:643
 msgid "Unable to send transaction proposal"
-msgstr "Transaktionsvorschlag kann nicht gesendet werden"
+msgstr "无法发送交易协议"
 
 #: public/views/modals/tx-details.html:105 public/views/walletHome.html:519
 msgid "Unconfirmed"
-msgstr "Unbestätigt"
+msgstr "未确认"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
@@ -1250,11 +1232,11 @@ msgstr ""
 
 #: public/views/walletHome.html:154
 msgid "Unsent transactions"
-msgstr "Nicht vesendete Transaktionen"
+msgstr "未发送的交易"
 
 #: public/views/walletHome.html:41
 msgid "Updating Wallet..."
-msgstr "Wallet aktualisieren..."
+msgstr "钱包更新中…"
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
@@ -1262,19 +1244,17 @@ msgstr ""
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
-msgstr "Version"
+msgstr "版本"
 
 #: public/views/walletHome.html:179
 msgid "WARNING: Backup needed"
-msgstr "WARNUNG: Sicherung notwendig"
+msgstr "注意：有必要进行备份"
 
 #: public/views/backup.html:83
 msgid ""
 "WARNING: This seed was created with a passphrase. To recover this wallet "
 "both the mnemonic and passphrase are needed."
-msgstr ""
-"WARNUNG: Dieser Seed wurde mit einer Passphrase erzeugt. Um das Wallet "
-"wiederherzustellen, wird die Gedächtnisstütze und die Passphrase benötigt."
+msgstr "注意：这个种子是由密码创建的。要恢复这个钱包，需要恢复口令和密码。"
 
 #: public/views/import.html:50
 msgid "WARNING: This will permanently delete all your existing wallets!"
@@ -1294,32 +1274,32 @@ msgstr ""
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
-msgstr "Warte..."
+msgstr "等待中…"
 
 #: public/views/preferencesDeleteWallet.html:12
 msgid "Wallet"
-msgstr "Wallet"
+msgstr "钱包"
 
 #: public/views/preferences.html:20
 msgid "Wallet Alias"
-msgstr "Alias"
+msgstr "钱包别名"
 
 #: public/views/preferencesInformation.html:27
 msgid "Wallet Configuration (m-n)"
-msgstr "Wallet-Konfiguration (m-n)"
+msgstr "钱包配置 (m-n)"
 
 #: public/views/preferencesInformation.html:20
 msgid "Wallet Id"
-msgstr "Wallet-Id"
+msgstr "钱包ID"
 
 #: public/views/preferencesAdvanced.html:14
 #: public/views/preferencesInformation.html:8
 msgid "Wallet Information"
-msgstr "Wallet-Informationen"
+msgstr "钱包信息"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
-msgstr "Wallet-Name (bei der Erzeugung)"
+msgstr "钱包名称 (创建时)"
 
 #: src/js/services/profileService.js:386
 msgid "Wallet already in Byteball:"
@@ -1327,7 +1307,7 @@ msgstr ""
 
 #: public/views/create.html:48
 msgid "Wallet name"
-msgstr "Name des Wallets"
+msgstr "钱包名称"
 
 #: public/views/backup.html:43
 msgid "Wallet seed not available."
@@ -1336,11 +1316,11 @@ msgstr ""
 #: public/views/modals/destination-address.html:11
 #: public/views/modals/destination-address.html:25
 msgid "Wallets"
-msgstr "Brieftaschen"
+msgstr "钱包"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
-msgstr "Warnung!"
+msgstr "注意！"
 
 #: public/views/walletHome.html:394
 msgid "Who signs:"
@@ -1360,16 +1340,16 @@ msgstr ""
 
 #: src/js/services/profileService.js:616
 msgid "Wrong password"
-msgstr "Falsches Passwort"
+msgstr "密码错误"
 
 #: public/views/authConfirmation.html:17
 #: public/views/modals/confirmation.html:6 src/js/controllers/index.js:392
 msgid "Yes"
-msgstr "Ja"
+msgstr "是的"
 
 #: public/views/walletHome.html:10
 msgid "You do not have a wallet"
-msgstr "Kein Wallet vorhanden"
+msgstr "您没有钱包"
 
 #: public/views/backup.html:64 public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
@@ -1377,11 +1357,11 @@ msgstr ""
 
 #: public/views/export.html:33
 msgid "Your export password"
-msgstr "Ihr Passwort für den Export"
+msgstr "您的导出密码"
 
 #: public/views/includes/password.html:18
 msgid "Your password"
-msgstr "Passwort"
+msgstr "您的密码"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
@@ -1391,9 +1371,7 @@ msgstr ""
 msgid ""
 "Your wallet key will be encrypted. Password cannot be recovered. Be sure to "
 "write it down"
-msgstr ""
-"Der Schlüssel des Wallets wird verschlüsselt. Das Passwort kann nicht "
-"wiederhergestellt werden. Bitte sicherstellen, dass dieses notiert wurde."
+msgstr "您的钱包密码将被加密，密码无法被恢复，一定要记下来。"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
@@ -1417,11 +1395,11 @@ msgstr ""
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
-msgstr "durch ausstehende Zahlungen gesperrt"
+msgstr "待付锁定"
 
 #: public/views/walletHome.html:369 public/views/walletHome.html:380
 msgid "optional"
-msgstr "zusätzlich"
+msgstr "任意"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
@@ -1429,7 +1407,7 @@ msgstr ""
 
 #: public/views/walletHome.html:370 public/views/walletHome.html:381
 msgid "too long!"
-msgstr "zu lang!"
+msgstr "太长！"
 
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
@@ -1445,7 +1423,7 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js:1304
 msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} wird als Netzwerkgebühr abgezogen"
+msgstr "{{fee}} 将扣除比特币网络费用"
 
 #: public/views/modals/multi-payment.html:33
 msgid "{{hrd.destinationAddress}} can be spent if:"
@@ -1453,34 +1431,31 @@ msgstr ""
 
 #: public/views/copayers.html:18 public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr "{{index.m}}-von-{{index.n}}"
+msgstr "{{index.m}}-of-{{index.n}}"
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr "{{item.m}}-von-{{item.n}}"
+msgstr "{{item.m}}-of-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
 msgstr ""
 
 #~ msgid "(Trusted)"
-#~ msgstr "(Vertraut)"
+#~ msgstr "（可信）"
 
 #~ msgid ""
 #~ "{{len}} wallets imported. Funds scanning in progress. Hold on to see "
 #~ "updated balance"
-#~ msgstr ""
-#~ "{{len}} Wallets importiert. Beträge werden gescannt. Bitte auf die "
-#~ "Aktualisierung des Gesamtsaldos warten"
+#~ msgstr "{{len}} 钱包已导入，正在扫描资金，请稍后查看更新余额。"
 
 #~ msgid ""
 #~ "* A payment proposal can be deleted if 1) you are the creator, and no "
 #~ "other copayer has signed, or 2) 24 hours have passed since the proposal "
 #~ "was created."
 #~ msgstr ""
-#~ "* Ein Zahlungsvorschlag kann gelöscht werden, wenn 1) Du diesen erzeugt "
-#~ "hast und noch kein anderer Anwender ihn unterschrieben hat, oder 2) 24 "
-#~ "Stunden vergangen sind, seit der Vorschlag erstellt wurde."
+#~ "*付款协议可以在以下情况被撤销：（1）您是创建者，并且没有其他copay钱包用户"
+#~ "的签名；（2）协议创建之后，已过24小时。"
 
 #~ msgid ""
 #~ "<b>IF YOU LOSE ACCESS TO YOUR COPAY WALLET OR YOUR ENCRYPTED PRIVATE KEYS "
@@ -1488,87 +1463,82 @@ msgstr ""
 #~ "CORRESPONDING PASSWORD, YOU ACKNOWLEDGE AND AGREE THAT ANY BITCOIN YOU "
 #~ "HAVE ASSOCIATED WITH THAT COPAY WALLET WILL BECOME INACCESSIBLE.</b>"
 #~ msgstr ""
-#~ "<b>WENN DER ZUGRIFF AUF DAS BYTEBALL WALLET ODER DEN VERSCHLÜSSELTEN "
-#~ "PRIVATEN SCHLÜSSELN VERLOREN GEHT UND KEINE SICHERUNG DES WALLETS UND "
-#~ "KORRESPONDIERENDEM PASSWORT EXISTIERT, DANN WIRD BESTÄTIGT UND "
-#~ "AKZEPTIERT, DASS AUF ALLE MIT DIESEM WALLET VERBUNDENEN BITCOIN KEIN "
-#~ "ZUGRIFF MEHR MÖGLICH IST.</b>"
+#~ "<b>如果您无法访问您的copay钱包或您的加密私钥，并且您没有单独存储备份您的钱"
+#~ "包和相应的密码，那么即视为您承认并同意任何与该copay钱包有关的比特币将变得"
+#~ "不可访问。 </b>"
 
 #~ msgid ""
 #~ "<b>OR</b> 1 wallet export file and the remaining quorum of wallet seeds "
 #~ "(e.g. in a 3-5 wallet: 1 wallet export file + 2 wallet seeds of any of "
 #~ "the other copayers)."
 #~ msgstr ""
-#~ "<b>ODER</b> 1 Exportdatei des Wallets und und die noch benötigten Wallet-"
-#~ "Seeds (z.B. für ein 3-5 Wallet: 1 Exportdatei + 2 Wallet-Seeds eines "
-#~ "anderen Anwenders)."
+#~ "<b>或者</b> 1个钱包导出文件和钱包种子的剩余quorum集合 (例如：在3-5个钱包"
+#~ "中：1个钱包导出文件+2个任何其他copay钱包用户的钱包种子。）"
 
 #~ msgid "<b>OR</b> the wallet seed of <b>all</b> copayers in the wallet"
-#~ msgstr "<b>ODER</b> der Wallet-Seed <b>aller</b> Anwender des Wallets"
+#~ msgstr "<b>或者</b> <b>所有</b>copay钱包用户在钱包中的钱包种子。"
 
 #~ msgid "<b>OR</b> the wallet seeds of <b>all</b> copayers in the wallet"
-#~ msgstr "<b>ODER</b> die Wallet-Seeds <b>aller</b> Anwender des Wallets"
+#~ msgstr "<b>或者</b> <b>所有</b>copay钱包用户在钱包中的钱包种子。"
 
 #~ msgid "A multisignature bitcoin wallet"
-#~ msgstr "Ein Byteball- Wallet mit Mehrfachunterschriften"
+#~ msgstr "多重签名比特币钱包"
 
 #~ msgid "About Copay"
-#~ msgstr "Über Byteball"
+#~ msgstr "关于Copay"
 
 #~ msgid "Account Number"
-#~ msgstr "Acount Nummer"
+#~ msgstr "账号"
 
 #~ msgid "Add a Seed Passphrase"
-#~ msgstr "Hinzufügen einer Seed-Passphrase"
+#~ msgstr "添加种子密码"
 
 #~ msgid "Add an optional passphrase to secure the seed"
-#~ msgstr "Um den Seed zu sichern, geben Sie optional eine Passphrase ein"
+#~ msgstr "添加可选密码以确保种子的安全"
 
 #~ msgid "Address Type"
-#~ msgstr "Adresstyp"
+#~ msgstr "地址类型"
 
 #~ msgid "Advanced Send"
-#~ msgstr "Erweitertes Senden"
+#~ msgstr "高级支付"
 
 #~ msgid ""
 #~ "All contributions to Copay's translation are welcome. Sign up at crowdin."
 #~ "com and join the Copay project at"
-#~ msgstr "Alle Beiträge zur Übersetzung von Byteball sind willkommen. "
+#~ msgstr "欢迎对Copay翻译的所有贡献。可以在crowdin.com注册并加入Copay项目"
 
 #~ msgid "All transaction requests are irreversible."
-#~ msgstr "Transaktionen können unmöglich rückgängig gemacht werden."
+#~ msgstr "所有已被签署的交易都是不可逆的。"
 
 #~ msgid "Already have a wallet?"
-#~ msgstr "Existiert bereits ein Wallet?"
+#~ msgstr "已经拥有一个钱包？"
 
 #~ msgid "Alternative Currency"
-#~ msgstr "Alternative Währung"
+#~ msgstr "替代货币"
 
 #~ msgid "Amount below dust threshold"
-#~ msgstr "Betrag unter Schwellenwert"
+#~ msgstr "金额低于最小汇款额"
 
 #~ msgid "Amount in"
-#~ msgstr "Betrag in"
+#~ msgstr "换算金额"
 
 #~ msgid "Average confirmation time: {{fee.nbBlocks * 10}} minutes"
-#~ msgstr ""
-#~ "Durchschnittliche Zeit für die Bestätigung der Transaktion: {{fee."
-#~ "nbBlocks * 10}} Minuten"
+#~ msgstr "平均确认时间： {{fee.nbBlocks * 10}} 分"
 
 #~ msgid "Backup"
-#~ msgstr "Sicherung"
+#~ msgstr "备份"
 
 #~ msgid "Bad wallet invitation"
-#~ msgstr "Ungültige Einladung"
+#~ msgstr "不正确的钱包邀请码"
 
 #~ msgid "BIP32 path for address derivation"
-#~ msgstr "BIP32 Pfad für Adressableitung"
+#~ msgstr "BIP32地址导出路径"
 
 #~ msgid "Bitcoin address"
-#~ msgstr "Byteballadresse"
+#~ msgstr "比特币地址"
 
 #~ msgid "Bitcoin Network Fee Policy"
-#~ msgstr "Byteball-Netzwerk Gebührenübersicht"
+#~ msgstr "比特币网络费用标准"
 
 #~ msgid ""
 #~ "Bitcoin transactions may include a fee collected by miners on the "
@@ -1576,221 +1546,215 @@ msgstr ""
 #~ "include that transaction in a block. Actual fees are determined based on "
 #~ "network load and the selected policy."
 #~ msgstr ""
-#~ "Für Byteball-Transaktionen können Gebühren hinzugefügt werden. "
-#~ "Transaktionen mit höheren Gebühren werden meist schneller verarbeitet und "
-#~ "bestätigt. Die tatsächlichen Gebühren werden anhand der Netzwerklast und "
-#~ "der ausgewählte Richtlinie bestimmt."
+#~ "比特币交易可能包括矿工在网络上收取的费用。费用越高，矿工在区块中确认该交易"
+#~ "的激励越大。实际费用根据网络负载和所选费用标准来确定。"
 
 #~ msgid "Broadcast Payment"
-#~ msgstr "Zahlung übermitteln"
+#~ msgstr "发送付款"
 
 #~ msgid "Broadcasting Payment"
-#~ msgstr "Übermittlung der Zahlung"
+#~ msgstr "付款发送中"
 
 #~ msgid "Broadcasting transaction"
-#~ msgstr "Übermittlung der Transaktion"
+#~ msgstr "交易发送中"
 
 #~ msgid "Cannot join the same wallet more that once"
-#~ msgstr "An einem Wallet kann nicht mehrfach teilgenommen werden"
+#~ msgstr "不能重复加入相同的钱包。"
 
 #~ msgid "Certified by"
-#~ msgstr "Zertifiziert von"
+#~ msgstr "认证源："
 
 #~ msgid "Choose a backup file from your computer"
-#~ msgstr "Bitte eine Sicherungsdatei vom Computer wählen"
+#~ msgstr "从您的电脑中选择一个备份文件"
 
 #~ msgid "Clear history"
-#~ msgstr "Lösche Historie"
+#~ msgstr "清除历史"
 
 #~ msgid "Confirmations"
-#~ msgstr "Bestätigungen"
+#~ msgstr "确认次数"
 
 #~ msgid "Connecting to {{create.hwWallet}} Wallet..."
-#~ msgstr "Verbindung zum {{create.hwWallet}} Wallet..."
+#~ msgstr "正在连接{{create.hwWallet}} 钱包中…"
 
 #~ msgid "Connecting to {{import.hwWallet}} Wallet..."
-#~ msgstr "Verbindung zum {{import.hwWallet}} Wallet..."
+#~ msgstr "正在连接{{import.hwWallet}} 钱包中…"
 
 #~ msgid "Connecting to {{join.hwWallet}} Wallet..."
-#~ msgstr "Verbindung zum {{join.hwWallet}} Wallet..."
+#~ msgstr "正在连接{{join.hwWallet}} 钱包中…"
 
 #~ msgid "Copayer already in this wallet"
-#~ msgstr "Dieser Anwender nimmt bereits teil"
+#~ msgstr "Copay钱包用户已经存在"
 
 #~ msgid "Copayer already voted on this spend proposal"
-#~ msgstr "Dieser Anwender hat schon für diesen Zahlungsvorschlag abgestimmt"
+#~ msgstr "Copay钱包用户已对该支出协议投票。"
 
 #~ msgid "Copayer data mismatch"
-#~ msgstr "Byteball Datenkonflikt"
+#~ msgstr "Copay钱包用户数据不匹配"
 
 #~ msgid "Copayers"
-#~ msgstr "Mitunterzeichner"
+#~ msgstr "Copay钱包用户"
 
 #~ msgid "Copy this text as it is to a safe place (notepad or email)"
-#~ msgstr "Diesen Text an einem sichern Ort einfügen (Notepad oder E-Mail)"
+#~ msgstr "请将此文本原样复制到安全的地方 (记事本或是电子邮件)。"
 
 #~ msgid "Copy to clipboard"
-#~ msgstr "In die Zwischenablage kopieren"
+#~ msgstr "复制到剪贴板"
 
 #~ msgid "Could not accept payment"
-#~ msgstr "Zahlung kann nicht akzeptiert werden"
+#~ msgstr "无法接受付款"
 
 #~ msgid "Could not access Wallet Service: Not found"
-#~ msgstr ""
-#~ "Auf den Wallet-Dienst konnte nicht zugegriffen werden: Nicht gefunden"
+#~ msgstr "无法访问钱包服务：未找到"
 
 #~ msgid "Could not broadcast payment"
-#~ msgstr "Zahlung konnte nicht gesendet werden"
+#~ msgstr "无法发送交易"
 
 #~ msgid "Could not create address"
-#~ msgstr "Adresse konnte nicht erstellt werden"
+#~ msgstr "无法生成地址"
 
 #~ msgid "Could not decrypt file, check your password"
-#~ msgstr ""
-#~ "Datei kann nicht entschlüsselt werden, bitte das Passwort überprüfen"
+#~ msgstr "无法解密文件，请检查您的密码"
 
 #~ msgid "Could not delete payment proposal"
-#~ msgstr "Zahlungsvorschlag konnte nicht gelöscht werden"
+#~ msgstr "无法删除付款协议"
 
 #~ msgid "Could not fetch payment information"
-#~ msgstr "Zahlungsinformationen können nicht abgerufen werden"
+#~ msgstr "无法获取付款信息"
 
 #~ msgid "Could not join wallet"
-#~ msgstr "Beteiligung am Wallet nicht möglich"
+#~ msgstr "无法加入钱包"
 
 #~ msgid "Could not recognize a valid Bitcoin QR Code"
-#~ msgstr "Es konnte kein gültiger Byteball-QR-Code erkannt werden"
+#~ msgstr "无法识别有效的比特币QR代码"
 
 #~ msgid "Could not reject payment"
-#~ msgstr "Zahlung konnte nicht abgelehnt werden"
+#~ msgstr "无法拒绝交易"
 
 #~ msgid "Could not update Wallet"
-#~ msgstr "Wallet kann nicht aktualisiert werden"
+#~ msgstr "无法更新钱包"
 
 #~ msgid "Create {{requiredCopayers}}-of-{{totalCopayers}} wallet"
-#~ msgstr "Ein {{requiredCopayers}}-von-{{totalCopayers}} Wallet erzeugen"
+#~ msgstr "创建{{requiredCopayers}}-of-{{totalCopayers}} 钱包"
 
 #~ msgid "Create, join or import"
-#~ msgstr "NEU | TEILNAHME | IMPORT"
+#~ msgstr "创建，加入或者导入"
 
 #~ msgid "Created by"
-#~ msgstr "Erstellt von"
+#~ msgstr "创建者"
 
 #~ msgid "Creating transaction"
-#~ msgstr "Transaktion erstellen"
+#~ msgstr "创建交易…"
 
 #~ msgid "Current fee rate for this policy: {{fee.feePerKBUnit}}/kiB"
-#~ msgstr "Aktuelle Gebühr für dieses Einstellung: {{fee.feePerKBUnit}}/KiB"
+#~ msgstr "当前手续费标准的费用率：{{fee.feePerKBUnit}}/kiB"
 
 #~ msgid "Delete it and create a new one"
-#~ msgstr "Löschen und neues Wallet erzeugen"
+#~ msgstr "删除并重新创建"
 
 #~ msgid "Delete Payment Proposal"
-#~ msgstr "Zahlungsvorschlag löschen"
+#~ msgstr "删除付款协议"
 
 #~ msgid "Deleting payment"
-#~ msgstr "Zahlung löschen"
+#~ msgstr "取消支付中…"
 
 #~ msgid "Derivation Path"
-#~ msgstr "Ableitungspfad"
+#~ msgstr "派生路径"
 
 #~ msgid "Disabled"
-#~ msgstr "Deaktiviert"
+#~ msgstr "无效"
 
 #~ msgid "Do not include private key"
-#~ msgstr "Den privaten Schlüssel nicht einbeziehen"
+#~ msgstr "不包含私钥"
 
 #~ msgid "Download"
-#~ msgstr "Herunterladen"
+#~ msgstr "下载"
 
 #~ msgid "Economy"
-#~ msgstr "Wirtschaftlich"
+#~ msgstr "节约"
 
 #~ msgid "Email"
-#~ msgstr "E-Mail"
+#~ msgstr "电子邮件"
 
 #~ msgid "Email Notifications"
-#~ msgstr "Benachrichtigunen per E-Mail"
+#~ msgstr "电子邮件通知"
 
 #~ msgid "Empty addresses limit reached. New addresses cannot be generated."
-#~ msgstr ""
-#~ "Leere Adressengrenze erreicht. Neue Adressen können nicht generiert "
-#~ "werden."
+#~ msgstr "已达到空地址上限。无法生成新地址。"
 
 #~ msgid "Encrypted export file saved"
-#~ msgstr "Verschlüsselte Exportdatei gespeichert"
+#~ msgstr "加密导出文件已保存"
 
 #~ msgid "Enter the seed words (BIP39)"
-#~ msgstr "Seed-Wörter eingeben (BIP39)"
+#~ msgstr "输入种子文字(BIP39)"
 
 #~ msgid "Error at Wallet Service"
-#~ msgstr "Fehler beim Wallet-Dienst"
+#~ msgstr "钱包服务出错"
 
 #~ msgid "Error importing wallet:"
-#~ msgstr "Fehler beim Import des Wallets"
+#~ msgstr "导入钱包时出错"
 
 #~ msgid "Expires"
-#~ msgstr "Gültig bis"
+#~ msgstr "有效期限："
 
 #~ msgid "Export options"
-#~ msgstr "Export-Optionen"
+#~ msgstr "导出选项"
 
 #~ msgid "Export Wallet"
-#~ msgstr "Exportiere Wallet"
+#~ msgstr "导出钱包"
 
 #~ msgid "Failed to import wallets"
-#~ msgstr "Import des Wallets fehlgeschlagen"
+#~ msgstr "无法导入钱包"
 
 #~ msgid "Family vacation funds"
-#~ msgstr "Familienurlaub"
+#~ msgstr "家庭旅行基金"
 
 #~ msgid "Fee Policy"
-#~ msgstr "Gebührenübersicht"
+#~ msgstr "费用标准"
 
 #~ msgid "Fee policy for this transaction"
-#~ msgstr "Gebührenübersicht für diese Transaktion"
+#~ msgstr "该交易的费用标准"
 
 #~ msgid "Fetching Payment Information"
-#~ msgstr "Zahlungsinformationen abrufen"
+#~ msgstr "正在获取付款信息…"
 
 #~ msgid "File/Text Backup"
-#~ msgstr "Datei/Text Sicherung"
+#~ msgstr "文档/文本 备份"
 
 #~ msgid "Funds are locked by pending spend proposals"
-#~ msgstr "Beträge sind durch ausstehende Zahlungsvorschläge gesperrt"
+#~ msgstr "资金被待处理的支出计划锁定。"
 
 #~ msgid "Funds received"
-#~ msgstr "Beträge empfangen"
+#~ msgstr "收到资金"
 
 #~ msgid "Funds will be transfered to"
-#~ msgstr "Beträge werden überwiesen"
+#~ msgstr "资金将被转移到"
 
 #~ msgid "Generate QR Code"
-#~ msgstr "QR-Code generieren"
+#~ msgstr "生成QR代码"
 
 #~ msgid "Global settings"
-#~ msgstr "Globale Einstellungen"
+#~ msgstr "全局设置"
 
 #~ msgid "Have a Backup from Copay v0.9?"
-#~ msgstr "Ist eine Byteball Sicherung vorhanden"
+#~ msgstr "从Copay v0.9备份吗？"
 
 #~ msgid "Hide advanced options"
-#~ msgstr "Erweiterte Optionen ausblenden"
+#~ msgstr "隐藏高级选项"
 
 #~ msgid "Hide Wallet Seed"
-#~ msgstr "Wallet-Seed ausblenden"
+#~ msgstr "隐藏钱包种子"
 
 #~ msgid "Import backup"
-#~ msgstr "Importiere Sicherung"
+#~ msgstr "导入备份"
 
 #~ msgid "Import from the Cloud?"
-#~ msgstr "Aus der Cloud importieren"
+#~ msgstr "从云导入吗？"
 
 #~ msgid "Import here"
-#~ msgstr "Hier importieren"
+#~ msgstr "从这里导入"
 
 #~ msgid "Importing..."
-#~ msgstr "Importiere..."
+#~ msgstr "导入中…"
 
 #~ msgid ""
 #~ "In no event shall the authors of the software, employees and affiliates "
@@ -1799,275 +1763,271 @@ msgstr ""
 #~ "tort, or otherwise, arising from, out of or in connection with the "
 #~ "software."
 #~ msgstr ""
-#~ "Die Autoren der Software, Mitarbeiter und Partner von Bitpay, Inhaber von "
-#~ "Urheberrechten oder Bitpay Inc., haften in keinem Fall für Schäden oder "
-#~ "Ansprüche, die sich im Rahmen einer Klage zum Vertrag, unerlaubter "
-#~ "Handlung, auf andere Weise oder aus bzw. im Zusammenhang mit der Software "
-#~ "ergeben."
+#~ "在任何情况下，软件的编程者，Bitpay的员工和子公司，版权持有人，或者Bitpay公"
+#~ "司，对任何由合同、侵权或其他原因产生的任何索赔、损害或其他责任概不负责。"
 
 #~ msgid "Incorrect address network"
-#~ msgstr "Falsche Netzwerk-Adresse"
+#~ msgstr "网络地址不正确"
 
 #~ msgid "Insufficient funds"
-#~ msgstr "Nicht ausreichendes Guthaben"
+#~ msgstr "资金不足"
 
 #~ msgid "Insufficient funds for fee"
-#~ msgstr "Nicht ausreichendes Guthaben für die Gebühr"
+#~ msgstr "支付费用的资金不足"
 
 #~ msgid "Invalid account number"
-#~ msgstr "Ungültige Acountnummer"
+#~ msgstr "无效账号"
 
 #~ msgid "Invalid address"
-#~ msgstr "Ungültige Adresse"
+#~ msgstr "无效地址"
 
 #~ msgid "Invalid derivation path"
-#~ msgstr "Ungültiger Ableitungspfad"
+#~ msgstr "无效的派生路径"
 
 #~ msgid "Invitation to share a Copay Wallet"
-#~ msgstr "Einladung zum Byteball-Wallet teilen"
+#~ msgstr "分享Copay钱包邀请"
 
 #~ msgid "John"
-#~ msgstr "Sascha"
+#~ msgstr "山田太郎"
 
 #~ msgid "Join"
-#~ msgstr "Teilnehmen"
+#~ msgstr "加入"
 
 #~ msgid ""
 #~ "Join my Copay wallet. Here is the invitation code: {{secret}} You can "
 #~ "download Copay for your phone or desktop at https://copay.io"
 #~ msgstr ""
-#~ "Einen Byteball Wallet beitreten. Hier ist der Einladungscode: {{secret}} "
-#~ "Die Desktopversion oder die App fürs Handy kann auf https://github.com/"
-#~ "byteball/byteball/releases heruntergeladen werden"
+#~ "加入我的Copay钱包。这是邀请码{{secret}} 你可以在https://copay.io 上下载"
+#~ "Copay到你的手机或者电脑桌面"
 
 #~ msgid "Join shared wallet"
-#~ msgstr "Gemeinschaftliches Wallet"
+#~ msgstr "参与共享钱包"
 
 #~ msgid "Joining Wallet..."
-#~ msgstr "Teilnahme am Wallet einrichten..."
+#~ msgstr "加入钱包中…"
 
 #~ msgid "Key already associated with an existing wallet"
-#~ msgstr "Schlüssel ist bereits mit einem existierenden Wallet verbunden"
+#~ msgstr "密钥已与现有的钱包相关联"
 
 #~ msgid "Last Wallet Addresses"
-#~ msgstr "Letzte Wallet-Adressen"
+#~ msgstr "最新钱包地址"
 
 #~ msgid "Learn more about Copay backups"
-#~ msgstr "Erfahren Sie mehr über die Byteball-Sicherungen"
+#~ msgstr "详细了解Copay备份"
 
 #~ msgid "Learn more about Wallet Migration"
-#~ msgstr "Mehr über die Migration von Wallets erfahren"
+#~ msgstr "详细了解电子钱包迁移"
 
 #~ msgid "Locktime in effect. Please wait to create a new spend proposal"
-#~ msgstr "Zeitsperre aktiv. Bitte mit neuem Zahlungsvorschlag warten"
+#~ msgstr "Locktime等待中。请稍后创建新的支付协议。"
 
 #~ msgid "Locktime in effect. Please wait to remove this spend proposal"
-#~ msgstr ""
-#~ "Zeitsperre aktiv. Bitte auf die Entfernung des Zahlungsvorschlags warten"
+#~ msgstr "Locktime等待中。请稍后删除该支付协议。"
 
 #~ msgid "me"
-#~ msgstr "Ich"
+#~ msgstr "自己"
 
 #~ msgid "Memo"
-#~ msgstr "Notiz"
+#~ msgstr "备忘录"
+
+#~ msgid ""
+#~ "Multiple wallets accounts are supported on the device simultaneously. "
+#~ "Select which account should be used for this wallet"
+#~ msgstr "设备同时支持多个钱包账户。为该钱包选择应使用的帐户"
 
 #~ msgid "My Bitcoin address"
-#~ msgstr "Eigene Bitcoinadresse"
+#~ msgstr "我的比特币地址"
 
 #~ msgid "Network connection error"
-#~ msgstr "Netzwerkverbindungsfehler"
+#~ msgstr "网络连接错误"
 
 #~ msgid "New Payment Proposal"
-#~ msgstr "Neue Zahlungsvorschlag"
+#~ msgstr "新的付款协议"
 
 #~ msgid "No hardware wallets supported on this device"
-#~ msgstr "Es werde keine Hardware-Brieftaschen auf diesem Gerät unterstützt"
+#~ msgstr "此设备上不支持硬件钱包"
 
 #~ msgid "Normal"
-#~ msgstr "Normal"
+#~ msgstr "通常"
 
 #~ msgid "Not authorized"
-#~ msgstr "Nicht berechtigt"
+#~ msgstr "未授权"
 
 #~ msgid "Official English Disclaimer"
-#~ msgstr "Offizieller englischer Haftungsausschluss"
+#~ msgstr "官方免责声明(英语)"
 
 #~ msgid ""
 #~ "Once you have copied your wallet seed down, it is recommended to delete "
 #~ "it from this device."
-#~ msgstr ""
-#~ "Sobald Sie Ihren Wallet-Seed kopiert haben, wird empfohlen, diesen vom "
-#~ "Gerät zu löschen."
+#~ msgstr "您复制了您的钱包种子后，建议您从该设备中删除钱包种子。"
 
 #~ msgid ""
 #~ "Only Main (not change) addresses are shown. The addresses on this list "
 #~ "were not verified locally at this time."
-#~ msgstr ""
-#~ "Nur die Haupt (unveränderbaren) Adressen werden angezeigt. Die Adressen "
-#~ "in dieser Liste sind momentan noch nicht lokal überprüft."
+#~ msgstr "只有主（不可更改）地址被显示。 此列表上的地址目前未在本地进行验证。"
 
 #~ msgid "Participants"
-#~ msgstr "Teilnehmer"
+#~ msgstr "参与者"
 
 #~ msgid "Password"
-#~ msgstr "Passwort"
+#~ msgstr "密码"
 
 #~ msgid "Paste invitation here"
-#~ msgstr "Einladung hier einfügen"
+#~ msgstr "将邀请码粘贴至此处"
 
 #~ msgid "Paste the backup plain text code"
-#~ msgstr "Den Klartext der Sicherung einfügen"
+#~ msgstr "粘贴备份纯文本代码"
 
 #~ msgid "Pay To"
-#~ msgstr "Zahle an"
+#~ msgstr "收款人"
 
 #~ msgid "Payment accepted, but not yet broadcasted"
-#~ msgstr "Zahlung akzeptiert, aber noch nicht übermittelt"
+#~ msgstr "交易已经获得批准，但尚未发送。"
 
 #~ msgid ""
 #~ "Payment accepted. It will be broadcasted by Glidera. In case there is a "
 #~ "problem, it can be deleted 6 hours after it was created."
 #~ msgstr ""
-#~ "Zahlung akzeptiert. Sie wird durch Glidera übermittelt. Falls ein Problem "
-#~ "auftritt, kann sie nach einer Wartezeit von 6 Stunden gelöscht werden."
+#~ "交易已经获得批准，将由Glidera发送。如果有问题，您可以在创建后6小时内撤销交"
+#~ "易。"
 
 #~ msgid "Payment details"
-#~ msgstr "Zahlungsdetails"
+#~ msgstr "付款明细"
 
 #~ msgid "Payment Proposal"
-#~ msgstr "Zahlungsvorschlag"
+#~ msgstr "付款协议"
 
 #~ msgid "Payment Proposal Rejected"
-#~ msgstr "Zahlungsvorschlag abgelehnt"
+#~ msgstr "已拒绝付款协议"
 
 #~ msgid "Payment Proposal Rejected by Copayer"
-#~ msgstr "Zahlungsvorschlag wurde vom Anwender abgelehnt"
+#~ msgstr "付款协议被Copay钱包用户拒绝"
 
 #~ msgid "Payment Proposal Signed by Copayer"
-#~ msgstr "Zahlungsvorschlag wurde vom Anwender abgezeichnet"
+#~ msgstr "付款协议被Copay钱包用户签署"
 
 #~ msgid "Payment Protocol Invalid"
-#~ msgstr "Ungültiges Zahlungsprotokoll"
+#~ msgstr "付款协议无效"
 
 #~ msgid "Payment Protocol not supported on Chrome App"
-#~ msgstr "Zahlungsprotokoll wird nicht von der Chrome App unterstützt"
+#~ msgstr "Chrome应用不支持付款协议"
 
 #~ msgid "Payment rejected"
-#~ msgstr "Zahlung abgelehnt"
+#~ msgstr "付款被拒绝"
 
 #~ msgid "Payment request"
-#~ msgstr "Zahlungsanforderung"
+#~ msgstr "请求付款"
 
 #~ msgid "Payment sent"
-#~ msgstr "Zahlung gesendet"
+#~ msgstr "付款已发送"
 
 #~ msgid "Payment to"
-#~ msgstr "Zahlung an"
+#~ msgstr "收款人"
 
 #~ msgid "Pending Confirmation"
-#~ msgstr "Ausstehende Bestätigung"
+#~ msgstr "等待确认"
 
 #~ msgid "Personal Wallet"
-#~ msgstr "Persönliches Wallet"
+#~ msgstr "个人钱包"
 
 #~ msgid "Please enter the seed words"
-#~ msgstr "Bitte geben Sie die Seed-Wörter ein"
+#~ msgstr "请输入种子字段"
 
 #~ msgid "Please enter the wallet seed"
-#~ msgstr "Bitte geben Sie den Wallet-Seed ein"
+#~ msgstr "请输入钱包种子"
 
 #~ msgid "Please upgrade Copay to perform this action"
-#~ msgstr "Bitte Byteball aktualisieren, um diese Aktion auszuführen"
+#~ msgstr "请更新Copay以执行此操作"
 
 #~ msgid "Please, select your backup file"
-#~ msgstr "Bitte die Sicherungsdatei wählen"
+#~ msgstr "请选择您的备份文件"
 
 #~ msgid "Preparing backup..."
-#~ msgstr "Sicherung wird vorbereitet..."
+#~ msgstr "正在准备备份中…"
 
 #~ msgid "Priority"
-#~ msgstr "höchste Priorität"
+#~ msgstr "优先"
 
 #~ msgid "Recreate"
-#~ msgstr "Wiederherstellen"
+#~ msgstr "重新创建"
 
 #~ msgid "Reject"
-#~ msgstr "Ablehnen"
+#~ msgstr "拒绝"
 
 #~ msgid "Rejecting payment"
-#~ msgstr "Zahlung ablehenen"
+#~ msgstr "拒绝付款"
 
 #~ msgid "Requesting Ledger Wallet to sign"
-#~ msgstr "Anfrage eine Ledger Wallet zu unterschreiben"
+#~ msgstr "要求分类帐钱包签名"
 
 #~ msgid "Required"
-#~ msgstr "Benötigt"
+#~ msgstr "必须填写"
 
 #~ msgid "Scan addresses for funds"
-#~ msgstr "Adresse auf neue Beträge überprüfen"
+#~ msgstr "查询资金地址"
 
 #~ msgid "Scan Finished"
-#~ msgstr "Überprüfung abgeschlossen"
+#~ msgstr "查询完毕"
 
 #~ msgid "See it on the blockchain"
-#~ msgstr "Im Blockchain anzeigen"
+#~ msgstr "在区块链中查看"
 
 #~ msgid "Seed passphrase"
-#~ msgstr "Seed Passphrase"
+#~ msgstr "种子密码"
 
 #~ msgid "Seed Passphrase"
-#~ msgstr "Seed Passphrase"
+#~ msgstr "种子密码"
 
 #~ msgid "Select a backup file"
-#~ msgstr "Eine Sicherungsdatei auswählen"
+#~ msgstr "选择一个备份文件"
 
 #~ msgid "Self-signed Certificate"
-#~ msgstr "Selbstsigniertes Zertifikat"
+#~ msgstr "自签名认证"
 
 #~ msgid "Server"
-#~ msgstr "Server"
+#~ msgstr "服务器"
 
 #~ msgid "Server response could not be verified"
-#~ msgstr "Antwort des Servers konnte nicht verifiziert werden"
+#~ msgstr "服务器响应无法被验证"
 
 #~ msgid "Set default url"
-#~ msgstr "Setze Default Adresse"
+#~ msgstr "设置默认网址"
 
 #~ msgid "Set up a Export Password"
-#~ msgstr "Einrichten eines Kennworts für den Export"
+#~ msgstr "设置导出密码"
 
 #~ msgid "Share invitation"
-#~ msgstr "Einladung teilen"
+#~ msgstr "分享邀请码"
 
 #~ msgid "Share this invitation with your copayers"
-#~ msgstr "Einladung mit anderen Anwendern teilen"
+#~ msgstr "与其他Copay钱包用户分享邀请码"
 
 #~ msgid "Shared Wallet"
-#~ msgstr "Wallet teilen"
+#~ msgstr "共享钱包"
 
 #~ msgid "Show advanced options"
-#~ msgstr "Erweiterte Optionen anzeigen"
+#~ msgstr "显示高级选项"
 
 #~ msgid "Show Wallet Seed"
-#~ msgstr "Wallet Seed anzeigen"
+#~ msgstr "显示钱包种子"
 
 #~ msgid "Signatures rejected by server"
-#~ msgstr "Signaturen wurden vom Server abgelehnt"
+#~ msgstr "被服务器拒绝的签名"
 
 #~ msgid "Signing payment"
-#~ msgstr "Zahlung unterschreiben"
+#~ msgstr "签署付款中…"
 
 #~ msgid "SKIP BACKUP"
-#~ msgstr "SICHERUNG ÜBERSPRINGEN"
+#~ msgstr "跳过备份"
 
 #~ msgid "Spend proposal is not accepted"
-#~ msgstr "Zahlungsvorschlag wurde nicht akzeptiert"
+#~ msgstr "支出协议没有被接受"
 
 #~ msgid "Spend proposal not found"
-#~ msgstr "Zahlungsvorschlag wurde nicht gefunden"
+#~ msgstr "未找到支出协议"
 
 #~ msgid "Testnet"
-#~ msgstr "Testnet"
+#~ msgstr "测试版"
 
 #~ msgid ""
 #~ "The authors of the software, employees and affiliates of Bitpay, "
@@ -2075,174 +2035,166 @@ msgstr ""
 #~ "passwords if you lose or forget them and cannot guarantee transaction "
 #~ "confirmation as they do not have control over the Bitcoin network."
 #~ msgstr ""
-#~ "Die Autoren der Software, Mitarbeiter und Partner von Byteball können "
-#~ "nicht Ihre privaten Schlüssel oder Kennwörter abrufen, wenn diese "
-#~ "verloren gehen oder vergessen werden und können die Durchführung von "
-#~ "Transaktionen, auch nach Bestätigungen, nicht garantieren, da sie keine "
-#~ "Kontrolle über das Byteball-Netzwerk haben."
+#~ "如果您丢失或忘记您的私钥或密码，软件的作者、Bitpay的员工和关联公司、版权所"
+#~ "有者和Bitpay等将无法检索您的私钥和密码，并且不能保证交易确认，因为他们无法"
+#~ "控制比特币网络。"
 
 #~ msgid "The Ledger Chrome application is not installed"
-#~ msgstr "Die Chrome-Anwendung für Ledger ist nicht installiert"
+#~ msgstr "未安装Ledger Chrome应用程序"
 
 #~ msgid ""
 #~ "The payment was created but could not be completed. Please try again from "
 #~ "home screen"
-#~ msgstr ""
-#~ "Die Zahlung wurde erzeugt, kann aber nicht abgeschlossen werden. Bitte "
-#~ "erneut über die Startseite versuchen"
+#~ msgstr "付款已经创建，但无法完成，请从主页重试。"
 
 #~ msgid ""
 #~ "The payment was created but could not be signed. Please try again from "
 #~ "home screen"
-#~ msgstr ""
-#~ "Die Zahlung wurde erzeugt, kann aber nicht unterschrieben werden. Bitte "
-#~ "erneut über die Startseite versuchen"
+#~ msgstr "付款已经创建，但无法签名，请从主页重试。"
 
 #~ msgid "The payment was removed by creator"
-#~ msgstr "Die Zahlung wurde vom Ersteller entfernt"
+#~ msgstr "付款被创建者移除"
 
 #~ msgid ""
 #~ "The payment was signed but could not be broadcasted. Please try again "
 #~ "from home screen"
-#~ msgstr ""
-#~ "Die Zahlung wurde unterschrieben, kann aber nicht übertragen werden. "
-#~ "Bitte erneut über die Startseite versuchen"
+#~ msgstr "付款已经签署，但无法发送，请从主页重试。"
 
 #~ msgid ""
 #~ "The private key for this wallet is encrypted. Exporting keep the private "
 #~ "key encrypted in the export archive."
-#~ msgstr ""
-#~ "Der private Schlüssel für dieses Wallet ist verschlüsselt. Beim Export "
-#~ "bleibt der privaten Schlüssel verschlüsselt im Exportarchiv."
+#~ msgstr "该钱包的私钥已加密。导出时确保私钥在导出存档中加密。"
 
 #~ msgid "The seed could require a passphrase to be imported"
-#~ msgstr "Der Seed könnte eine Passphrase benötigen, um importiert zu werden"
+#~ msgstr "导入种子需要输入密码"
 
 #~ msgid ""
 #~ "The software does not constitute an account where BitPay or other third "
 #~ "parties serve as financial intermediaries or custodians of your bitcoin."
 #~ msgstr ""
-#~ "Die Software erzeugt kein Benutzerkonto, bei dem Bitpay oder sonstige "
-#~ "Dritte als Finanzvermittler oder Verwalter der Bitcoin fungieren."
+#~ "该软件不作为 Bitpay或其他第三方担任您比特币账户金融中介机构或保管者的场"
+#~ "所。"
 
 #~ msgid ""
 #~ "The software you are about to use functions as a free, open source, and "
 #~ "multi-signature digital wallet."
-#~ msgstr ""
-#~ "Die Software, die genutzt werden soll, fungiert als freies, quelloffenes "
-#~ "und digitales mehrfachunterschriften Wallet."
+#~ msgstr "该软件是一款免费、开源、多重签名的数字钱包。"
 
 #~ msgid "The spend proposal is not pending"
-#~ msgstr "Der Zahlungsvorschlag ist nicht ausstehend"
+#~ msgstr "支出协议不在待处理状态"
 
 #~ msgid "There is an error in the form"
-#~ msgstr "Es ist ein Fehler im Formular aufgetreten"
+#~ msgstr "形式存在错误"
 
 #~ msgid ""
 #~ "This wallet is not registered at the given Bitcore Wallet Service (BWS). "
 #~ "You can recreate it from the local information."
 #~ msgstr ""
-#~ "Dieses Wallet ist nicht beim angegebenen Bitcore Wallet Service (BWS) "
-#~ "registriert. Bitte aus den lokalen Informationen wiederherstellen"
+#~ "该钱包没有在给定的Bitcore钱包服务（BWS）中注册，您可以从本地信息中重新创建"
+#~ "它。"
 
 #~ msgid "Time"
-#~ msgstr "Zeit"
+#~ msgstr "时间"
 
 #~ msgid ""
 #~ "To restore this {{index.m}}-{{index.n}} <b>shared</b> wallet you will need"
+#~ msgstr "要恢复{{index.m}}-{{index.n}} <b>共享</b>钱包将会是您需要的"
+
+#~ msgid ""
+#~ "To the fullest extent permitted by law, this software is provided “as is” "
+#~ "and no representations or warranties can be made of any kind, express or "
+#~ "implied, including but not limited to the warranties of merchantability, "
+#~ "fitness or a particular purpose and noninfringement."
 #~ msgstr ""
-#~ "Voraussetzungen um dieses <b>geteilte</b> {{index.m}}-{{index.n}} Wallet "
-#~ "wiederherzustellen"
+#~ "在法律允许的最大范围内，本软件提供“如现状所示”，且不以任何明示或暗示的方式"
+#~ "提供任何声明或保证，包括但不限于适销性，适用性或特定用途和不侵权的保证。"
 
 #~ msgid "Total"
-#~ msgstr "Insgesamt"
+#~ msgstr "合计"
 
 #~ msgid "Total number of copayers"
-#~ msgstr "Gesamtanzahl der Anwender"
+#~ msgstr "Copay钱包用户总数"
 
 #~ msgid "Transaction already broadcasted"
-#~ msgstr "Transaktion wurde bereits übermittelt"
+#~ msgstr "交易已经发送"
 
 #~ msgid "Transaction history"
-#~ msgstr "Transaktions Übersicht"
+#~ msgstr "交易历史"
 
 #~ msgid "Type the Seed Word (usually 12 words)"
-#~ msgstr "Geben Sie einen Seed ein (in der Regel 12 Wörter)"
+#~ msgstr "输入种子字段 (通常为 12 个字符)"
 
 #~ msgid "Unit"
-#~ msgstr "Währung"
+#~ msgstr "单元"
 
 #~ msgid "Use Unconfirmed Funds"
-#~ msgstr "Unbestätigte Mittel einsetzen"
+#~ msgstr "使用未确认的资金"
 
 #~ msgid "Username"
-#~ msgstr "Benutzername"
+#~ msgstr "用户名"
 
 #~ msgid "View"
-#~ msgstr "Ansicht"
+#~ msgstr "视图"
 
 #~ msgid "Waiting for copayers"
-#~ msgstr "Warte auf Anwender"
+#~ msgstr "等待Copay钱包用户"
 
 #~ msgid "Wallet already exists"
-#~ msgstr "Wallet exstiert bereits"
+#~ msgstr "钱包已经存在"
 
 #~ msgid "Wallet Already Imported:"
-#~ msgstr "Wallet bereits importiert:"
+#~ msgstr "钱包已经导入："
 
 #~ msgid "Wallet already in Copay:"
-#~ msgstr "Wallet bereits in Copay:"
+#~ msgstr "Copay内现有的钱包："
 
 #~ msgid "Wallet Export"
-#~ msgstr "Wallet-Export"
+#~ msgstr "钱包出口"
 
 #~ msgid "Wallet incomplete and broken"
-#~ msgstr "Wallet unvollständig oder defekt"
+#~ msgstr "钱包破损、不完整"
 
 #~ msgid "Wallet Invitation"
-#~ msgstr "Wallet Einladung"
+#~ msgstr "钱包邀请"
 
 #~ msgid "Wallet Invitation is not valid!"
-#~ msgstr "Wallet Einladung nicht gültig!"
+#~ msgstr "钱包邀请无效！"
 
 #~ msgid "Wallet is full"
-#~ msgstr "Maximale Teilnehmerzahl erreicht"
+#~ msgstr "钱包已满"
 
 #~ msgid "Wallet is not complete"
-#~ msgstr "Wallet ist unvollständig"
+#~ msgstr "钱包不完整"
 
 #~ msgid "Wallet Network"
-#~ msgstr "Wallet-Netzwerk"
+#~ msgstr "钱包网络"
 
 #~ msgid "Wallet not found"
-#~ msgstr "Wallet nicht gefunden"
+#~ msgstr "找不到钱包"
 
 #~ msgid ""
 #~ "Wallet not registed at the Wallet Service. Recreate it from \"Create "
 #~ "Wallet\" using \"Advanced Options\" to set your seed"
 #~ msgstr ""
-#~ "Wallet ist nicht beim Wallet-Service registiert. Aus \"Wallet erzeugen\" "
-#~ "mit \"Erweiterten Optionen\" neu erzeugen um den Seed zu setzen"
+#~ "钱包未在钱包服务中注册。 在 \"创建钱包\"中使用 \"高级选项\"重新创建，以设"
+#~ "置您的种子。"
 
 #~ msgid "Wallet Seed"
-#~ msgstr "Wallet-Seed"
+#~ msgstr "钱包种子"
 
 #~ msgid "Wallet Seed could require a passphrase to be imported"
-#~ msgstr ""
-#~ "Der Import des Wallet-Seeds erfordert möglicherweise eine Passphrase"
+#~ msgstr "导入钱包种子可能需要输入密码"
 
 #~ msgid "Wallet seed is invalid"
-#~ msgstr "Ungültiger Wallet-Seed"
+#~ msgstr "钱包种子无效"
 
 #~ msgid ""
 #~ "Wallet seed not available. You can still export it from Advanced &gt; "
 #~ "Export."
-#~ msgstr ""
-#~ "Wallet-Seed ist nicht verfügbar. Dieser kann noch über Erweiterter Export "
-#~ "&gt; Exportieren ausgegeben werden."
+#~ msgstr "钱包种子不可用。您仍可从“高级”选项的“导出”中创建备份文件。"
 
 #~ msgid "Wallet service not found"
-#~ msgstr "Wallet-Dienst nicht gefunden"
+#~ msgstr "找不到钱包服务"
 
 #~ msgid ""
 #~ "WARNING: Not including the private key allows to check the wallet "
@@ -2250,19 +2202,14 @@ msgstr ""
 #~ "However, does not allow to approve (sign) proposals, so <b>funds will not "
 #~ "be accessible from the export</b>."
 #~ msgstr ""
-#~ "WARNUNG: Ohne das Hinzufügen des privaten Schlüssels, ist es möglich das "
-#~ "Guthaben und die Transaktionshistorie einzusehen, sowie "
-#~ "Zahlungsvorschläge zu erzeugen. Allerdings können Vorschläge nicht "
-#~ "ausgeführt (unterschrieben) werden und es ist <b>kein Zugriff auf "
-#~ "Guthaben möglich</b>."
+#~ "注意：没有私钥，可允许检查钱包余额，历史交易记录，并从导出中创建支出协议。"
+#~ "然而，不允许批准（签署）提案，因此<b>资金无法从导出</b>中访问。"
 
 #~ msgid ""
 #~ "WARNING: Passphrase cannot be recovered. <b>Be sure to write it down</b>. "
 #~ "The wallet can not be restored without the passphrase."
 #~ msgstr ""
-#~ "WARNUNG: Die Passphrase kann nicht wiederhergestellt werden. "
-#~ "<b>Sicherstellen, das diese notiert wurde</b>. Das Wallet kann ohne "
-#~ "Passphrase nicht wiederhergestellt werden."
+#~ "注意：密码无法恢复， <b>请务必记下</b>。如果没有密码，钱包将无法恢复。"
 
 #~ msgid ""
 #~ "WARNING: The private key of this wallet is not available. The export "
@@ -2270,94 +2217,80 @@ msgstr ""
 #~ "proposals from the export. However, does not allow to approve (sign) "
 #~ "proposals, so <b>funds will not be accessible from the export</b>."
 #~ msgstr ""
-#~ "WARNUNG: Der private Schlüssel ist nicht verfügbar. Dieser Export "
-#~ "ermöglicht das Guthaben und die Transaktionshistorie zu prüfen, sowie "
-#~ "Zahlungsvorschläge zu erzeugen. Allerdings können Vorschläge nicht "
-#~ "ausgeführt (unterschrieben) werden und so ist <b>kein Zugriff auf "
-#~ "Guthaben möglich</b>."
+#~ "注意：此钱包的私钥不可用。导出允许检查钱包余额，交易历史记录，并从导出中创"
+#~ "建支出协议，但是，不允许批准（签署）提案，因此<b>资金无法从导出</b>中访"
+#~ "问。"
 
 #~ msgid "Warning: this transaction has unconfirmed inputs"
-#~ msgstr "Warnung: Diese Transaktion hat unbestätigte Eingänge"
+#~ msgstr "注意：此交易包含未被批准的资金。"
 
 #~ msgid "WARNING: UNTRUSTED CERTIFICATE"
-#~ msgstr "WARNUNG: NICHT VERTRAUENSWÜRDIGES ZERTIFIKAT"
+#~ msgstr "警告：不受信任的证书！"
 
 #~ msgid "WARNING: Wallet not registered"
-#~ msgstr "WARNUNG: Wallet nicht registriert"
+#~ msgstr "注意：钱包未注册"
 
 #~ msgid "We reserve the right to modify this disclaimer from time to time."
-#~ msgstr ""
-#~ "Wir behalten uns das Recht vor, diese Erklärung von Zeit zu Zeit zu "
-#~ "ändern."
+#~ msgstr "我们保留随时修改此免责声明的权利。"
 
 #~ msgid "WELCOME TO COPAY"
-#~ msgstr "Willkommen bei Byteball"
+#~ msgstr "欢迎来到COPAY"
 
 #~ msgid ""
 #~ "While the software has undergone beta testing and continues to be "
 #~ "improved by feedback from the open-source user and developer community, "
 #~ "we cannot guarantee that there will be no bugs in the software."
 #~ msgstr ""
-#~ "Solange sich diese Software im Betastadium befindet und weiterhin durch "
-#~ "Feedback der Open-Source Nutzer und Entwickler-Community verbessert wird, "
-#~ "können wir nicht garantieren, dass diese frei von Fehlern ist."
+#~ "虽然该软件已经过BETA测试，并继续通过来自开源社区的用户和开发人员的反馈进行"
+#~ "改进，但我们不能保证软件中不会有错误。"
 
 #~ msgid "Write it down and keep them somewhere safe."
-#~ msgstr "Aufschreiben und an einem sicheren Ort aufbewahren."
+#~ msgstr "请写下来，并把它们保存在安全的地方。"
 
 #~ msgid "Wrong number of seed words:"
-#~ msgstr "Falsche Anzahl von Seed-Worten:"
+#~ msgstr "种子字段数量错误："
 
 #~ msgid ""
 #~ "You acknowledge that your use of this software is at your own discretion "
 #~ "and in compliance with all applicable laws."
-#~ msgstr ""
-#~ "Sie bestätigen, die Software nach eigenem Ermessen und in Übereinstimmung "
-#~ "der anwendbaren Gesetze zu verwenden."
+#~ msgstr "您承认您对本软件的使用是您自行决定的，并会遵守所有适用的法律。"
 
 #~ msgid ""
 #~ "You are responsible for safekeeping your passwords, private key pairs, "
 #~ "PINs and any other codes you use to access the software."
 #~ msgstr ""
-#~ "Sie sind verantwortlich für die Verwahrung Ihrer Kennwörter, privaten "
-#~ "Schlüsselpaaren, PINs und anderen Codes, die zum Zugriff auf die Software "
-#~ "verwendet werden."
+#~ "您有责任妥善保管您的密码，私钥对，PIN码以及您用于访问软件的任何其他代码。"
 
 #~ msgid ""
 #~ "You assume any and all risks associated with the use of the software."
-#~ msgstr ""
-#~ "Sie übernehmen allen Risiken im Zusammenhang mit der Nutzung der Software."
+#~ msgstr "您承担与使用软件相关的任何风险。"
 
 #~ msgid ""
 #~ "You can safely install your wallet on another device and use it from "
 #~ "multiple devices at the same time."
-#~ msgstr ""
-#~ "Das Wallet kann sicher auf einem anderen Gerät installiert und von "
-#~ "mehreren Geräten gleichzeitig verwendet werden."
+#~ msgstr "您可以安全地在另一台设备上安装您的钱包，并在多个设备上同时使用。"
 
 #~ msgid "You need the wallet seed to restore this personal wallet."
-#~ msgstr ""
-#~ "Es wird der Wallet-Seed benötigt, um das persönliche Wallet "
-#~ "wiederherzustellen."
+#~ msgstr "您需要钱包种子来恢复个人钱包。"
 
 #~ msgid "Your backup password"
-#~ msgstr "Passwort zur Sicherung"
+#~ msgstr "您的备份密码"
 
 #~ msgid "Your nickname"
-#~ msgstr "Name des Teilnehmers"
+#~ msgstr "您的昵称"
 
 #~ msgid "Your profile password"
-#~ msgstr "Profilpasswort"
+#~ msgstr "您的个人资料密码"
 
 #~ msgid "Your wallet has been imported correctly"
-#~ msgstr "Das Wallet wurde korrekt importiert"
+#~ msgstr "您的钱包已正确导入。"
 
 #~ msgid "Your Wallet Seed"
-#~ msgstr "Wallet-Seed"
+#~ msgstr "您的钱包种子"
 
 #~ msgid ""
 #~ "Your wallet seed and access to the server that coordinated the initial "
 #~ "wallet creation. You still need {{index.m}} keys to spend."
 #~ msgstr ""
-#~ "Das Wallet und der Zugriff auf den Server, die die Erzeugung des ersten "
-#~ "Wallets steuern. Es werden noch {{index.m}} Schlüssel benötigt."
+#~ "您的钱包种子和访问服务器的入口协调初始钱包的创建。您仍需要 {{index.m}}密钥"
+#~ "进行支付。"

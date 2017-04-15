@@ -10,7 +10,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -21,6 +21,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
   self.$state = $state;
+  self.usePushNotifications = false;
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -476,6 +477,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
+			if (shared_address){
+				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
+					self.bHasMerkle = bHasMerkle;
+					$rootScope.$apply();
+				});
+			}
+			else
+				self.bHasMerkle = false;
 			self.updateAll();
 			self.updateTxHistory();
 			$modalInstance.close();
@@ -577,6 +587,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.arrBalances = [];
     self.assetIndex = 0;
 	self.shared_address = null;
+	self.bHasMerkle = false;
 
     self.txHistory = [];
     self.completeHistory = [];
@@ -617,7 +628,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
-            $rootScope.$digest();
+			$timeout(function(){
+				$rootScope.$digest();
+			});
         });
 
 		self.needsBackup = false;
@@ -664,6 +677,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     // check if the whole menu item passed
     if (typeof tab == 'object') {
+    	if(!tab.new_state) backButton.clearHistory();
       if (tab.open) {
         if (tab.link) {
           $rootScope.tab = self.tab = tab.link;
@@ -687,7 +701,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         console.log("will retry setTab later:", tab, reset, tries, switchState);
         return $timeout(function() {
             self.setTab(tab, reset, tries, switchState);
-        }, 300);
+        }, (tries === 1) ? 10 : 300);
     }
 
     if (!self.tab || !$state.is('walletHome'))
@@ -1138,10 +1152,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.openMenu = function() {
+  	backButton.menuOpened = true;
     go.swipe(true);
   };
 
   self.closeMenu = function() {
+  	backButton.menuOpened = false;
     go.swipe();
   };
     
@@ -1449,6 +1465,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   $rootScope.$on('Local/NewEncryptionSetting', function() {
     var fc = profileService.focusedClient;
     self.isPrivKeyEncrypted = fc.isPrivKeyEncrypted();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  });
+  
+  $rootScope.$on('Local/pushNotificationsReady', function() {
+  	self.usePushNotifications = true;
     $timeout(function() {
       $rootScope.$apply();
     });

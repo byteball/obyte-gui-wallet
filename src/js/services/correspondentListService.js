@@ -73,7 +73,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
+			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown drop-to4p drop-4up" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">Pay to this address</a></li><li><a ng-click="offerContract(\''+address+'\')">Offer a contract</a></li></ul>';
+		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
@@ -89,30 +90,55 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
 			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
-			var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
-			console.log(description);
-			console.log(paymentJson);
-			var objMultiPaymentRequest = JSON.parse(paymentJson);
-			if (objMultiPaymentRequest.definitions){
-				for (var destinationAddress in objMultiPaymentRequest.definitions){
-					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-					if (destinationAddress !== objectHash.getChash160(arrDefinition))
-						return '[invalid payment request]';
-				}
-			}
-			var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
-			var arrMovements = [];
-			for (var asset in assocPaymentsByAsset)
-				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
+			if (!arrMovements)
+				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
 			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
 		});
+	}
+	
+	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
+		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		console.log(paymentJson);
+		try{
+			var objMultiPaymentRequest = JSON.parse(paymentJson);
+		}
+		catch(e){
+			return null;
+		}
+		if (objMultiPaymentRequest.definitions){
+			for (var destinationAddress in objMultiPaymentRequest.definitions){
+				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+				if (destinationAddress !== objectHash.getChash160(arrDefinition))
+					return null;
+			}
+		}
+		try{
+			var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
+		}
+		catch(e){
+			return null;
+		}
+		var arrMovements = [];
+		if (bAggregatedByAsset)
+			for (var asset in assocPaymentsByAsset)
+				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
+		else
+			arrMovements = objMultiPaymentRequest.payments.map(function(objPayment){
+				return getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + objPayment.address;
+			});
+		return arrMovements;
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
 		var assocPaymentsByAsset = {};
 		objMultiPaymentRequest.payments.forEach(function(objPayment){
 			var asset = objPayment.asset || 'base';
+			if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH))
+				throw Error("asset "+asset+" is not valid");
+			if (!ValidationUtils.isPositiveInteger(objPayment.amount))
+				throw Error("amount "+objPayment.amount+" is not valid");
 			if (!assocPaymentsByAsset[asset])
 				assocPaymentsByAsset[asset] = 0;
 			assocPaymentsByAsset[asset] += objPayment.amount;
@@ -128,6 +154,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest)
 				return str;
 			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
+			if (!arrMovements)
+				return '[invalid payment request]';
+			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
 		});
 	}
 	
@@ -140,11 +171,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var amount = parseInt(strAmount);
 		if (amount + '' !== strAmount)
 			return null;
+		if (!ValidationUtils.isPositiveInteger(amount))
+			return null;
 		var asset = assocParams['asset'] || 'base';
 		console.log("asset="+asset);
-		if (asset !== 'base' && asset.length !== 44) // invalid asset
+		if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH)) // invalid asset
 			return null;
-		var device_address = assocParams['device_address'] || ''; 
+		var device_address = assocParams['device_address'] || '';
+		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
+			return null;
 		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
@@ -167,7 +202,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeQuotes(text){
-		return text.replace(/(['"])/g, "\\$1");
+		return text.replace(/(['\\])/g, "\\$1").replace(/"/, "&quot;");
 	}
 	
 	function setCurrentCorrespondent(correspondent_device_address, onDone){
@@ -231,19 +266,33 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var feed_name = args[1];
 					var relation = args[2];
 					var value = args[3];
+					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return JSON.stringify(arrSubdefinition);
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
+				case 'in merkle':
+					var arrAddresses = args[0];
+					var feed_name = args[1];
+					var value = args[2];
+					var min_mci = args[3];
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
 					return JSON.stringify(arrSubdefinition);
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
+						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
 						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
-						var dest_address = (bOwnAddress ? 'you' : args.address);
-						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+						var display_dest_address = (bOwnAddress ? 'you' : args.address);
+						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + display_dest_address;
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
 					return JSON.stringify(arrSubdefinition);
 
