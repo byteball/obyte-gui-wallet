@@ -103,8 +103,8 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
 	checkOK
 
-#	cordova plugin add cordova-plugin-inappbrowser
-#	checkOK
+	cordova plugin add cordova-plugin-inappbrowser
+	checkOK
 
 	cordova plugin add cordova-plugin-x-toast && cordova prepare
 	checkOK

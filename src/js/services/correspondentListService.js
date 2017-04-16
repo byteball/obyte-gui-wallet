@@ -110,6 +110,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
 			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
+		}).replace(/\bhttps?:\/\/\S+/g, function(str){
+			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
 	}
 	
@@ -174,6 +176,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!arrMovements)
 				return '[invalid payment request]';
 			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
+		}).replace(/\bhttps?:\/\/\S+/g, function(str){
+			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
 	}
 	
