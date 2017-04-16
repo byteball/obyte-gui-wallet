@@ -8,6 +8,7 @@ var objectHash = require('byteballcore/object_hash.js');
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
 	var root = {};
 	var device = require('byteballcore/device.js');
+	var wallet = require('byteballcore/wallet.js');
 	var chatStorage = require('byteballcore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
@@ -469,7 +470,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.$digest();
 		});
 	});
+
+	 eventBus.on('removed_paired_device', function(device_address){
+		if ($state.is('correspondentDevices'))
+			return $state.reload(); // todo show popup after refreshing the list
+		if (!$state.is('correspondentDevices.correspondentDevice'))
+		 	return;
+		if (!root.currentCorrespondent)
+		 	return;
+		if (device_address !== root.currentCorrespondent.device_address)
+		 	return;
+		
+		// go back to list of correspondentDevices
+		// todo show popup message
+		// todo return to correspondentDevices when in edit-mode, too
+		go.path('correspondentDevices');
+	});
 	
+
 	$rootScope.$on('Local/CorrespondentInvitation', function(event, device_pubkey, device_hub, pairing_secret){
 		console.log('CorrespondentInvitation', device_pubkey, device_hub, pairing_secret);
 		root.acceptInvitation(device_hub, device_pubkey, pairing_secret, function(){});
@@ -490,7 +508,30 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		  cb(null, arrCorrespondents);
 	  });
 	};
+
+	root.readNotRemovableDevices = function(cb) {
+		
+		// device addresses used in signing paths are not removable
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
+
+			cb(null, arrDeviceAddresses);
+		});
+	};
 	
+	root.deviceCanBeRemoved = function(device_address, cb) {
+
+		// load device addresses used in signing paths
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
+					
+			var ix = arrDeviceAddresses.indexOf(device_address);
+
+			// device is removable when not in list
+			if (ix == -1) {
+				cb(device_address);
+			}
+		});
+	};
+
 	root.startWaitingForPairing = function(cb){
 		device.startWaitingForPairing(function(pairingInfo){
 			cb(pairingInfo);

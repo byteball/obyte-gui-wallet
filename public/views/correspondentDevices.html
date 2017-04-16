@@ -11,6 +11,7 @@
       <ul class="no-bullet m0 correspondentList" ng-init="readList()">
         <li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
+            ng-hide="hideRemoveButton(correspondent.removable)"
             class="removeCorrespondentList" 
             ng-click="remove(correspondent.device_address)" translate>Remove</a>
           <a class="selectCorrespondentList" 
@@ -28,6 +29,12 @@
           <a ng-click="beginAddCorrespondent()" class="p10">
             <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
             <span class="text-close size-12" translate>Add a new device</span> 
+          </a>
+        </li>
+        <li class="m10t" ng-show="!editCorrespondentList">
+          <a ng-click="hideRemove = !hideRemove" class="p10">
+            <i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i> 
+            <span class="text-close size-12" translate>Remove device</span> 
           </a>
         </li>
       </ul>

@@ -12,6 +12,8 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 
 	$scope.state = $state;
 
+	$scope.hideRemove = true;
+
 	var listScrollTop = 0;
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
@@ -21,7 +23,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 	    }
 	});
-	
+
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
@@ -56,26 +58,58 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				$scope.error = err;
 				return;
 			}
+
+			correspondentListService.readNotRemovableDevices(function(err, arrNotRemovableDeviceAddresses) {
+
+				// add a new property indicating whether the device can be removed or not
+				
+				var length = ab.length;
+				for (var i = 0; i < length; i++) {
+ 				 	corrDev = ab[i];
+
+				 	corrDevAddr = corrDev.device_address;
+					
+				 	var ix = arrNotRemovableDeviceAddresses.indexOf(corrDevAddr);
+					
+					// device is removable when not in list
+				 	corrDev.removable = (ix == -1);
+				}
+			});
+		
 			$scope.list = ab;
 			$scope.$digest();
 		});
 	};
 	
+	$scope.hideRemoveButton = function(removable){
+		return $scope.hideRemove || !removable;
+	}
 
-	$scope.remove = function(addr) {
-		throw Error("unimplemented");
-		$scope.error = null;
-		$timeout(function() {
-		  correspondentListService.remove(addr, function(err, ab) {
-			if (err) {
-			  $scope.error = err;
-			  return;
-			}
-			$rootScope.$emit('Local/CorrespondentListUpdated', ab);
-			$scope.list = ab;
-			$scope.$digest();
-		  });
-		}, 100);
+	$scope.remove = function(device_address) {
+
+		// check to be safe
+		correspondentListService.deviceCanBeRemoved(device_address, function(device_address) {
+
+			var device = require('byteballcore/device.js');
+
+			var device_pubkey = device.getMyDevicePubKey();
+
+			// send message to paired device
+			// this must be done before removing the device
+			var body = "removed";
+			device.sendMessageToDevice(device_address, "remove_paired_device", body, {
+				ifOk: function(){},
+				ifError: function(error){}
+			});
+
+			// remove device
+			device.removeCorrespondentDevice(device_address, function() {
+				$scope.hideRemove = true;
+				$scope.readList();
+				$rootScope.$emit('Local/SetTab', 'chat', true);
+				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+			});
+		});
 	};
 
 	$scope.cancel = function() {
