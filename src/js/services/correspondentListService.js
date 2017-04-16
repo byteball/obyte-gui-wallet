@@ -386,7 +386,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	};
 	
-	root.deviceCanBeRemoved = function(device_address) {
+	root.deviceCanBeRemoved = function(device_address, cb) {
 
 		// load device addresses used in signing paths
 		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
@@ -394,7 +394,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var ix = arrDeviceAddresses.indexOf(device_address);
 
 			// device is removable when not in list
-			return (ix == -1);
+			if (ix == -1) {
+				cb(device_address);
+			}
 		});
 	};
 

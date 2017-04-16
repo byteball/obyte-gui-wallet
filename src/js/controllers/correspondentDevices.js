@@ -88,7 +88,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.remove = function(device_address) {
 
 		// check to be safe
-		if (correspondentListService.deviceCanBeRemoved(device_address)){
+		correspondentListService.deviceCanBeRemoved(device_address, function(device_address) {
 
 			var device = require('byteballcore/device.js');
 
@@ -109,7 +109,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				$rootScope.$emit('Local/SetTab', 'chat', true);
 				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 			});
-		}
+		});
 	};
 
 	$scope.cancel = function() {
