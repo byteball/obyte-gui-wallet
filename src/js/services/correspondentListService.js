@@ -9,6 +9,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var root = {};
 	var device = require('byteballcore/device.js');
 	var wallet = require('byteballcore/wallet.js');
+
 	var chatStorage = require('byteballcore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
@@ -440,7 +441,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body);
 			device.readCorrespondent(peer_address, function(correspondent){
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false, 'html');
 			});
 			go.path('correspondentDevices.correspondentDevice');
 		});
@@ -450,7 +451,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body);
 		device.readCorrespondent(peer_address, function(correspondent){
-			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, true, 'html');
 		});
 	});
 	
