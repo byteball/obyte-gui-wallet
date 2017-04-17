@@ -376,6 +376,12 @@ a.missing-copayers {
   float: right;
 }
 
+ul.correspondentList li a.removeCorrespondentList {
+  color: red;
+  margin-right: 10px;
+  float: right;
+}
+
 .modal-content ul li a.selectAddressbook {
   float: left;
   font-size: 18px;

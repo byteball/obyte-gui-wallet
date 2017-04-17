@@ -13,14 +13,14 @@
           <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
             ng-hide="hideRemoveButton(correspondent.removable)"
             class="removeCorrespondentList" 
-            ng-click="remove(correspondent.device_address)" translate>Remove</a>
+            ng-click="remove(correspondent.device_address)" translate><i class="fi-trash size-24"></i></a>
           <a class="selectCorrespondentList" 
             ng-show="editCorrespondentList" 
             ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
             <i class="fi-trash"></i></a> 
           <div ng-click="showCorrespondent(correspondent)" class="pointer"> 
             {{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
-            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList"></i></div>
+            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
             <div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
             <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
           </div>
@@ -34,7 +34,7 @@
         <li class="m10t" ng-show="!editCorrespondentList">
           <a ng-click="hideRemove = !hideRemove" class="p10">
             <i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i> 
-            <span class="text-close size-12" translate>Remove device</span> 
+            <span class="text-close size-12" translate>Remove a device</span> 
           </a>
         </li>
       </ul>
