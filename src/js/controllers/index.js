@@ -21,7 +21,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
   self.$state = $state;
-  self.usePushNotifications = false;
+  self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
     /*
     console.log("process", process.env);
     var os = require('os');

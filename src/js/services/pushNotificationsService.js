@@ -11,9 +11,6 @@ angular.module('copayApp.services')
 	var network = require('byteballcore/network.js');
 	var device = require('byteballcore/device.js');
 	
-	if(usePushNotifications && isMobile.Android()){
-		$rootScope.$emit('Local/pushNotificationsReady');
-	}
 	
 	function sendRequestEnableNotification(ws, registrationId) {
 		network.sendRequest(ws, 'hub/enable_notification', registrationId, false, function(ws, request, response) {
