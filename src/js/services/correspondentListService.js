@@ -510,28 +510,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	  });
 	};
 
-	root.readNotRemovableDevices = function(cb) {
-		
-		// device addresses used in signing paths are not removable
-		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
-
-			cb(null, arrDeviceAddresses);
-		});
-	};
-	
-	root.deviceCanBeRemoved = function(device_address, cb) {
-
-		// load device addresses used in signing paths
-		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
-					
-			var ix = arrDeviceAddresses.indexOf(device_address);
-
-			// device is removable when not in list
-			if (ix == -1) {
-				cb(device_address);
-			}
-		});
-	};
 
 	root.startWaitingForPairing = function(cb){
 		device.startWaitingForPairing(function(pairingInfo){
