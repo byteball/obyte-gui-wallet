@@ -38,7 +38,7 @@ fi
 
 
 echo "${OpenColor}${Green}* Checking dependencies...${CloseColor}"
-command -v cordova >/dev/null 2>&1 || { echo >&2 "Cordova is not present, please install it: sudo npm -g cordova."; exit 1; }
+command -v cordova >/dev/null 2>&1 || { echo >&2 "Cordova is not present, please install it: sudo npm install -g cordova."; exit 1; }
 #command -v xcodebuild >/dev/null 2>&1 || { echo >&2 "XCode is not present, install it or use [--android]."; exit 1; }
 
 # Create project dir
@@ -148,7 +148,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
-	cordova plugin add phonegap-plugin-push
+	cordova plugin add https://github.com/phonegap-build/PushPlugin.git
 	checkOK
 
 fi

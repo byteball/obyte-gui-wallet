@@ -184,6 +184,10 @@ angular.module('copayApp.services')
       	err ? cb(err) : cb(null, (data ? JSON.parse(data) : data));
 	  });
     };
+      
+    root.removePushInfo = function(cb){
+      storage.remove('pushToken', cb);
+    };
 
     return root;
   });
