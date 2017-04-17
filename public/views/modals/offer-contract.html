@@ -1,0 +1,175 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Offer a contract
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	<form name="contractForm">
+		
+	<h4 class="title m0 row columns" translate>1. Payment to the contract:</h4>
+	
+	<div class="row columns m10t">
+		<label for="myAmount" class="left" >
+			<span translate>I pay:</span>
+		</label>
+	</div>
+	<div class="row">
+		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+			<input type="number" min="0" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right">
+		</div>
+		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px">
+			<select ng-model="contract.myAsset" ng-options="info.asset as info.displayName for info in arrAssetInfos" class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+	</div>
+	
+	<div class="row columns">
+		<label for="peerAmount" class="left" >
+			<span translate>Peer pays:</span>
+		</label>
+	</div>
+	<div class="row">
+		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+			<input type="number" min="0" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.peerAmount" name="peerAmount" valid-amount="{{contract.peerAsset}}" required autocomplete="off" style="text-align: right">
+		</div>
+		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px">
+			<select ng-model="contract.peerAsset" ng-options="info.asset as info.displayName for info in arrPublicAssetInfos" class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="large-6 medium-6 small-6 columns gray-13 label-aligned-with-select">
+			<label translate>Peer pays to:</label>
+		</div>
+		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px">
+			<select ng-model="contract.peer_pays_to" ng-options="dest.value as dest.display_value for dest in arrPeerPaysTos" class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+	</div>
+	
+	<div class="row columns">
+		<label for="timeout" class="left" >
+			<span translate>If the peer doesn't pay, I can take my money back after:</span>
+		</label>
+	</div>
+	<div class="row">
+		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+			<input type="number" min="0.1" required name="time2out" id="tim2eout" ng-model="contract.timeout" style="text-align: right">
+		</div>
+		<div class="large-6 medium-6 small-6 columns gray-13" style="padding-left: 0px; margin-top: 7px" translate>
+			hours
+		</div>
+	</div>
+		
+		
+		
+	<h4 class="title m0 row" translate>2. Who can unlock the contract:</h4>
+		
+	<div class="m10t row">
+		<div class="large-4 medium-4 small-4 columns" >
+			<select ng-model="contract.data_party" ng-options="party.value as party.display_value for party in arrParties" ng-change="onDataPartyUpdated()"  class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+		<div class="large-8 medium-8 small-8 columns gray-13 aligned-with-select" translate>
+			if an event is posted by an oracle:
+		</div>
+	</div>
+		
+	<div style="margin-left: 30px">
+		<div class="row large-12 large-centered columns">
+			<label for="oracle_address" class="left" >
+				<span translate>Oracle address:</span>
+			</label>
+			<span class="has-error right size-12" ng-show="contractForm.oracle_address.$invalid && contract.oracle_address">
+				<i class="icon-close-circle size-14"></i>
+				<span class="vm" translate>Not valid</span>
+			</span>
+			<small class="right text-primary" ng-show="!contractForm.oracle_address.$invalid">
+				<i class="icon-checkmark-circle size-14"></i>
+			</small>
+			<div class="input">
+				<input class="m0" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required >
+			</div>
+		</div>
+		<div class="row large-12 large-centered columns">
+			<label for="feed_name" class="left" >
+				<span translate>Data feed name:</span>
+			</label>
+			<div class="input">
+				<input class="m0" type="text" id="feed_name" name="feed_name" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required >
+			</div>
+		</div>
+		<div class="row large-12 large-centered columns">
+			<label for="feed_value" class="left" >
+				<span translate>Posted value:</span>
+			</label>
+		</div>
+		<div class="row">
+			<div class="large-4 medium-4 small-4 columns" >
+				<select ng-model="contract.relation" ng-options="relation for relation in arrRelations" class="gray-13" style="margin-top: -2px" ></select>
+			</div>
+			<div class="large-8 medium-8 small-8 columns" >
+				<input class="m0" type="text" id="feed_value" name="feed_value" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required >
+			</div>
+		</div>
+	</div>
+		
+	<div class="title m0 row">
+		<div class="large-4 medium-4 small-4 columns">
+			<select ng-model="contract.expiry_party" ng-options="party.value as party.display_value for party in arrParties" ng-change="onExpiryPartyUpdated()" class="gray-13" style="margin-top: -2px" ></select>
+		</div>
+		<div class="large-8 medium-8 small-8 columns gray-13 aligned-with-select" translate>
+			after the contract expires in:
+		</div>
+	</div>
+		
+	<div style="margin-left: 30px">
+		<div class="row">
+			<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+				<input type="number" min="0.01" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right">
+			</div>
+			<div class="large-6 medium-6 small-6 columns gray-13 aligned-with-input" style="padding-left: 0px" translate>
+				days
+			</div>
+		</div>
+	</div>
+
+	<div class="" ng-show="index.m < index.n && index.m > 1">
+		<h4 class="title m0 row" translate>Who signs:</h4>
+		<div class="row columns large-12 medium-12">
+			<ul class="no-bullet m20b whopays">
+			  <li class="" ng-repeat="copayer in index.copayers">
+				  <span class="size-12 text-gray" ng-show="copayer.me">
+					  <i class="icon-contact size-24 m10r"></i>{{'Me'|translate}} <i class="fi-check m5 right"></i>
+				  </span>
+				  <div class="size-12" style="width: 100%" ng-show="!copayer.me" ng-click="copayer.signs = !copayer.signs">
+					  <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{copayer.device_address.substr(0,4)}}...) <i class="m5 right" ng-class="copayer.signs ? 'fi-check' : ''"></i>
+				  </div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	
+	<div class="m20t large-12 large-centered row columns">
+		<div >
+		</div>
+		<div >
+		</div>
+		<button type="button" class="button black round expand" ng-disabled="!contract.timeout || !contract.myAmount || !contract.peerAmount || contractForm.myAmount.$invalid|| contractForm.peerAmount.$invalid || !contract.oracle_address || contractForm.oracle_address.$invalid || !contract.feed_name || !contract.feed_value || !contract.expiry || bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+			Pay and offer
+		</button>
+	</div>
+	</form>
+</div>

@@ -16,9 +16,9 @@
     </section>
 
     <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-      {{correspondent.name}}
-    </h1>
+	    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+	      {{correspondent.name}}
+	    </h1>
     </section>
       
     <section class="right-small" ng-click="editCorrespondent()">
@@ -68,6 +68,11 @@
     	max-width: 250px;
     	left: 15px;
     }
+    #recording-drop {
+    	max-width: 200px;
+    	left: 140px;
+    	padding: 15px;
+    }
     .message-log{
         position: absolute;
         width: 100%;
@@ -96,6 +101,15 @@
         text-align: left;
         /*display: inline-block;*/
         word-wrap: break-word;
+    }
+    .top-drop-btn, .top-drop-btn:hover, .top-drop-btn:active, .top-drop-btn:focus {
+    	padding: 0;
+    	background: none;
+    }
+    #top-drop {
+    	width: 150px;
+    	left: 50%;
+    	margin-left: -75px;
     }
     
 
@@ -139,7 +153,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 .from-me a {
     color: white;
 }
-.bubble a.payment {
+.bubble a.payment, .bubble a.external-link {
     text-decoration: underline;
 }
 .bubble a.command {
@@ -176,6 +190,48 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
   -webkit-transform: translate(-30px, -2px);
   transform: translate(-30px, -2px);
 }
+.system {
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	max-width: 100%;
+}
+.system span{
+	color: #888;
+	padding: 0 10px;
+	background-color: white;
+}
+.system span.padding {
+	padding: 0 10px 0 0;
+}
+.system b{
+	background-color: white;
+	border: 1px dashed #888;
+	border-width: 0 0 1px 0;
+	cursor: pointer;
+}
+.system:before {
+	border-top: 2px solid #dfdfdf;
+	content: "";
+	margin: 0 auto;
+	/* this centers the line to the full width specified */
+	position: absolute;
+	/* positioning must be absolute here, and relative positioning must be applied to the parent */
+	top: 50%;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 95%;
+	z-index: -1;
+}
+.switch-line {
+	margin-top: 5px;
+}
+.msg-ts {
+	color: #666;
+	font-size: 10px;
+	padding-top: 10px;
+}
 
 
 </style>
@@ -201,11 +257,31 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
+      <div id="recording-drop" class="f-dropdown" data-dropdown-content>
+      <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref" translate>
+      	Both you and {{correspondent.name}} enabled local chat history recording.
+      </div>
+      <div class="text" ng-if="!(correspondent.my_record_pref && correspondent.peer_record_pref)" translate>
+      	Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now.
+      </div>
+      <br>
+	  <div>
+	  	<switch ng-model="correspondent.my_record_pref" class="green right"></switch>
+	  	<div translate>My recording preference</div>
+	  </div>
+	  <div class="clear"></div>
+	  <div class="switch-line">
+	  	<switch ng-model="correspondent.peer_record_pref" class="green right" disabled="true"></switch>
+	  	<div translate>Their recording preference</div>
+	  </div>
+	</div>
+
+      <div class="message-log size-12 enable_text_select" scroll-bottom="messageEvents" when-scrolled="loadMoreHistory" bind-to-height="['bottom','form[name=chatForm]']" ng-mousemove="newMsgCounterEnabled ?'': newMessagesCount[correspondent.device_address] = 0">
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
-              <div ng-class="messageEvent.bIncoming ? 'from-them' : 'from-me'" class="bubble" dynamic="messageEvent.message"></div>
+              <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')" class="bubble" dynamic="messageEvent.message"></div>
+              <div ng-class="(messageEvent.bIncoming ? 'left' : 'right')" class="msg-ts" ng-if="messageEvent.type != 'system'">{{messageEvent.timestamp * 1000 | date:'shortTime'}}</div>
             <!--/div-->
             <div class="clear"></div>
         </div>
@@ -216,9 +292,10 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
            <button
           	class="chatbutton left"
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
+
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
-			  <li><a ng-click="insertMyAddress()">Insert my address</a></li>
-			  <li><a ng-click="requestPayment()">Request payment</a></li>
+			  <li><a ng-click="insertMyAddress()" translate>Insert my address</a></li>
+			  <li><a ng-click="requestPayment()" translate>Request payment</a></li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
           <button type="submit" 

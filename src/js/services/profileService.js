@@ -147,10 +147,6 @@ angular.module('copayApp.services')
                     var tempDeviceKey = Buffer.from(profile.tempDeviceKey, 'base64');
                     var prevTempDeviceKey = profile.prevTempDeviceKey ? Buffer.from(profile.prevTempDeviceKey, 'base64') : null;
                     device.setTempKeys(tempDeviceKey, prevTempDeviceKey, saveTempKeys);
-                    /*storageService.getDeviceToken(function(err, token) {
-                        if (!token)
-                            pushNotificationsService.pushNotificationsInit();
-                    });*/
                     $rootScope.$emit('Local/ProfileBound');
                     return cb();
                 });
@@ -332,10 +328,6 @@ angular.module('copayApp.services')
     root.deleteWallet = function(opts, cb) {
         var client = opts.client || root.focusedClient;
         var walletId = client.credentials.walletId;
-        /*pushNotificationsService.unsubscribe(root.getClient(walletId), function(err) {
-            if (err) $log.warn('Unsubscription error: ' + err.message);
-            else $log.debug('Unsubscribed from push notifications service');
-        });*/
         $log.debug('Deleting Wallet:', client.credentials.walletName);
         breadcrumbs.add('Deleting Wallet: ' + client.credentials.walletName);
 
@@ -396,8 +388,6 @@ angular.module('copayApp.services')
 			root.setAndStoreFocus(walletId, function() {
 				storageService.storeProfile(root.profile, function(err) {
 					var config = configService.getSync();
-					//if (config.pushNotifications.enabled)
-					//    pushNotificationsService.enableNotifications(root.walletClients);
 					return cb(err, walletId);
 				});
 			});

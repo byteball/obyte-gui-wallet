@@ -1,84 +1,91 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, storageService, configService, lodash, isCordova) {
-    var root = {};
-    var defaults = configService.getDefaults();
-    var usePushNotifications = isCordova && !isMobile.Windows();
-
-    root.pushNotificationsInit = function() {
-      if (!usePushNotifications) return;
-
-      var config = configService.getSync();
-      if (!config.pushNotifications.enabled) return;
-
-      var push = PushNotification.init(defaults.pushNotifications.config);
-
-      push.on('registration', function(data) {
-        $log.debug('Starting push notification registration');
-        storageService.setDeviceToken(data.registrationId, function() {
-          $rootScope.$emit('Local/pushNotificationsReady');
-        });
-      });
-    };
-
-    root.enableNotifications = function(walletsClients) {
-      if (!usePushNotifications) return;
-
-      var config = configService.getSync();
-      if (!config.pushNotifications.enabled) return;
-
-      storageService.getDeviceToken(function(err, token) {
-
-        if (err || !token) {
-          $log.warn('No token available for this device. Cannot set push notifications');
-          return;
-        }
-
-
-        lodash.forEach(walletsClients, function(walletClient) {
-          var opts = {};
-          opts.type = isMobile.iOS() ? "ios" : isMobile.Android() ? "android" : null;
-          opts.token = token;
-          root.subscribe(opts, walletClient, function(err, response) {
-            if (err) $log.warn('Subscription error: ' + err.message +  ': ' + JSON.stringify(opts));
-            else $log.debug('Subscribed to push notifications service: ' + JSON.stringify(response));
-          });
-        });
-      });
-    }
-
-    root.disableNotifications = function(walletsClients) {
-      if (!usePushNotifications) return;
-
-      lodash.forEach(walletsClients, function(walletClient) {
-        root.unsubscribe(walletClient, function(err) {
-          if (err) $log.warn('Unsubscription error: ' + err.message);
-          else $log.debug('Unsubscribed from push notifications service');
-        });
-      });
-    }
-
-    root.subscribe = function(opts, walletClient, cb) {
-      if (!usePushNotifications) return cb();
-
-      var config = configService.getSync();
-      if (!config.pushNotifications.enabled) return;
-
-      walletClient.pushNotificationsSubscribe(opts, function(err, resp) {
-        if (err) return cb(err);
-        return cb(null, resp);
-      });
-    }
-
-    root.unsubscribe = function(walletClient, cb) {
-      if (!usePushNotifications) return cb();
-
-      walletClient.pushNotificationsUnsubscribe(function(err) {
-        if (err) return cb(err);
-        return cb(null);
-      });
-    }
-
-    return root;
-
-  });
+.factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, storageService, configService, lodash, isCordova) {
+	var root = {};
+	var defaults = configService.getDefaults();
+	var usePushNotifications = isCordova && !isMobile.Windows();
+	var projectNumber;
+	var _ws;
+	
+	var eventBus = require('byteballcore/event_bus.js');
+	var network = require('byteballcore/network.js');
+	var device = require('byteballcore/device.js');
+	
+	
+	function sendRequestEnableNotification(ws, registrationId) {
+		network.sendRequest(ws, 'hub/enable_notification', registrationId, false, function(ws, request, response) {
+			if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
+		});
+	}
+	
+	window.onNotification = function(data) {
+		if (data.event === 'registered') {
+			storageService.setPushInfo(projectNumber, data.regid, true, function() {
+				sendRequestEnableNotification(_ws, data.regid);
+			});
+		}
+		else {
+			return false;
+		}
+	};
+	
+	eventBus.on('receivedPushProjectNumber', function(ws, data) {
+		_ws = ws;
+		if (data && data.projectNumber !== undefined) {
+			storageService.getPushInfo(function(err, pushInfo) {
+				var config = configService.getSync();
+				projectNumber = data.projectNumber + "";
+				if (pushInfo && projectNumber === "0") {
+					root.pushNotificationsUnregister(function() {
+						
+					});
+				}
+				else if (projectNumber && config.pushNotifications.enabled) {
+					root.pushNotificationsInit();
+				}
+			});
+		}
+	});
+	
+	root.pushNotificationsInit = function() {
+		if (!usePushNotifications) return;
+		
+		window.plugins.pushNotification.register(function(data) {
+			},
+			function(e) {
+				alert('err= ' + e);
+			}, {
+				"senderID": projectNumber,
+				"ecb": "onNotification"
+			});
+		
+		configService.set({pushNotifications: {enabled: true}}, function(err) {
+			if (err) $log.debug(err);
+		});
+	};
+	
+	function disable_notification() {
+		storageService.getPushInfo(function(err, pushInfo) {
+			storageService.removePushInfo(function() {
+				network.sendRequest(_ws, 'hub/disable_notification', pushInfo.registrationId, false, function(ws, request, response) {
+					if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
+				});
+			});
+		});
+		configService.set({pushNotifications: {enabled: false}}, function(err) {
+			if (err) $log.debug(err);
+		});
+	}
+	
+	root.pushNotificationsUnregister = function() {
+		if (!usePushNotifications) return;
+		window.plugins.pushNotification.unregister(function() {
+			disable_notification();
+		}, function() {
+			disable_notification();
+		});
+	};
+	
+	return root;
+	
+});

@@ -22,6 +22,18 @@ angular.module('copayApp.services')
       name: 'Português',
       isoCode: 'pt',
     }, {
+      name: 'Nederlands',
+      isoCode: 'nl',
+    }, {
+      name: 'Svenska',
+      isoCode: 'sv',
+    }, {
+      name: 'Polski',
+      isoCode: 'pl',
+    }, {
+      name: 'Magyar',
+      isoCode: 'hu',
+    }, {
       name: 'Ελληνικά',
       isoCode: 'el',
     }, {
@@ -60,6 +72,8 @@ angular.module('copayApp.services')
     root._set = function(lang) {
       $log.debug('Setting default language: ' + lang);
       gettextCatalog.setCurrentLanguage(lang);
+	  if (lang !== 'en')
+		  gettextCatalog.loadRemote("languages/" + lang + ".json");
       amMoment.changeLocale(lang);
       root.currentLanguage = lang;
     };

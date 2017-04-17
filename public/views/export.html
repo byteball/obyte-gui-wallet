@@ -16,7 +16,7 @@
 				<div class="rect4"></div>
 				<div class="rect5"></div>
 			</div>
-			<span> Exporting... </span>
+			<span translate> Exporting... </span>
 		</div>
 	</div>
 	<div>
@@ -42,7 +42,7 @@
 					</div>
 					<div class="size-14 m20b" ng-show="!export.isCordova">
 						<switch name="bCompression" ng-model="export.bCompression" class="green right"></switch>
-						<div>Compress the file? (Slower)</div>
+						<div translate>Compress the file? (Slower)</div>
 					</div>
 					<button class="black round expand m20t" ng-click="export.walletExport()"
 							ng-disabled="(export.exported || !export.password || export.password != export.repeatpassword)"

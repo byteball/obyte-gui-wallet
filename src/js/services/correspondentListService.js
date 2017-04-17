@@ -8,6 +8,8 @@ var objectHash = require('byteballcore/object_hash.js');
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
 	var root = {};
 	var device = require('byteballcore/device.js');
+	var wallet = require('byteballcore/wallet.js');
+	var chatStorage = require('byteballcore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 
@@ -46,13 +48,28 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[peer_address])
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
-		root.messageEventsByCorrespondent[peer_address].push({bIncoming: bIncoming, message: body});
 		if (bIncoming) {
 			if (peer_address in $rootScope.newMessagesCount)
 				$rootScope.newMessagesCount[peer_address]++;
-			else
+			else {
 				$rootScope.newMessagesCount[peer_address] = 1;
+			}
+			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
+				root.messageEventsByCorrespondent[peer_address].push({
+					bIncoming: false,
+					message: 'new messages',
+					type: 'system',
+					new_message_delim: true
+				});
+			}
 		}
+		var msg_obj = {
+			bIncoming: bIncoming,
+			message: body,
+			timestamp: Math.floor(Date.now() / 1000)
+		};
+		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
+		root.messageEventsByCorrespondent[peer_address].push(msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$stickyState.reset('correspondentDevices.correspondentDevice');
@@ -72,7 +89,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
+			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown drop-to4p drop-4up" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">Pay to this address</a></li><li><a ng-click="offerContract(\''+address+'\')">Offer a contract</a></li></ul>';
+		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
@@ -88,34 +106,47 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
 			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
-			var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
-			console.log(description);
-			console.log(paymentJson);
-			try{
-				var objMultiPaymentRequest = JSON.parse(paymentJson);
-			}
-			catch(e){
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
+			if (!arrMovements)
 				return '[invalid payment request]';
-			}
-			if (objMultiPaymentRequest.definitions){
-				for (var destinationAddress in objMultiPaymentRequest.definitions){
-					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-					if (destinationAddress !== objectHash.getChash160(arrDefinition))
-						return '[invalid payment request]';
-				}
-			}
-			try{
-				var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
-			}
-			catch(e){
-				return '[invalid payment request]';
-			}
-			var arrMovements = [];
-			for (var asset in assocPaymentsByAsset)
-				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
 			description = 'Payment request: '+arrMovements.join(', ');
 			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
+		}).replace(/\bhttps?:\/\/\S+/g, function(str){
+			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
+	}
+	
+	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
+		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		console.log(paymentJson);
+		try{
+			var objMultiPaymentRequest = JSON.parse(paymentJson);
+		}
+		catch(e){
+			return null;
+		}
+		if (objMultiPaymentRequest.definitions){
+			for (var destinationAddress in objMultiPaymentRequest.definitions){
+				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+				if (destinationAddress !== objectHash.getChash160(arrDefinition))
+					return null;
+			}
+		}
+		try{
+			var assocPaymentsByAsset = getPaymentsByAsset(objMultiPaymentRequest);
+		}
+		catch(e){
+			return null;
+		}
+		var arrMovements = [];
+		if (bAggregatedByAsset)
+			for (var asset in assocPaymentsByAsset)
+				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
+		else
+			arrMovements = objMultiPaymentRequest.payments.map(function(objPayment){
+				return getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + objPayment.address;
+			});
+		return arrMovements;
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
@@ -141,6 +172,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest)
 				return str;
 			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
+			if (!arrMovements)
+				return '[invalid payment request]';
+			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
+		}).replace(/\bhttps?:\/\/\S+/g, function(str){
+			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
 	}
 	
@@ -248,24 +286,33 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var feed_name = args[1];
 					var relation = args[2];
 					var value = args[3];
+					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>')
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
-					return 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'in merkle':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
 					var value = args[2];
-					return 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					var min_mci = args[3];
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					if (min_mci)
+						str += ' after MCI '+min_mci;
+					return str;
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
 					return JSON.stringify(arrSubdefinition);
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
+						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
 						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
-						var dest_address = (bOwnAddress ? 'you' : args.address);
-						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + dest_address;
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+args.address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+						var display_dest_address = (bOwnAddress ? 'you' : args.address);
+						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + display_dest_address;
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
 					return JSON.stringify(arrSubdefinition);
 
@@ -278,17 +325,123 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		return parse(arrDefinition, 0);
 	}
-		
-	console.log("correspondentListService");
+
+	var historyEndForCorrespondent = {};
+	function loadMoreHistory(correspondent, cb) {
+		if (historyEndForCorrespondent[correspondent.device_address]) {
+			if (cb) cb();
+			return;
+		}
+		if (!root.messageEventsByCorrespondent[correspondent.device_address])
+			root.messageEventsByCorrespondent[correspondent.device_address] = [];
+		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
+		var limit = 10;
+		var last_msg_ts = null;
+		var last_msg_id = Number.MAX_SAFE_INTEGER;
+		if (messageEvents.length && messageEvents[0].id) {
+			last_msg_ts = new Date(messageEvents[0].timestamp * 1000);
+			last_msg_id = messageEvents[0].id;
+		}
+		chatStorage.load(correspondent.device_address, last_msg_id, limit, function(messages){
+			for (var i in messages) {
+				messages[i] = parseMessage(messages[i]);
+			}
+			var walletGeneral = require('byteballcore/wallet_general.js');
+			walletGeneral.readMyAddresses(function(arrMyAddresses){
+				if (messages.length < limit)
+					historyEndForCorrespondent[correspondent.device_address] = true;
+				for (var i in messages) {
+					var message = messages[i];
+					var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
+						messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+					}
+					last_msg_ts = msg_ts;
+					if (message.type == "text") {
+						if (message.is_incoming) {
+							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
+							message.message = text2html(message.message);
+						} else {
+							message.message = formatOutgoingMessage(message.message);
+						}
+					}
+					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
+				}
+				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
+					messageEvents.unshift({type: 'system', bIncoming: false, message: (last_msg_ts ? last_msg_ts : new Date()).toDateString(), timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
+				}
+				$rootScope.$digest();
+				if (cb) cb();
+			});
+		});
+	}
+
+	function checkAndInsertDate(messageEvents, message) {
+		if (typeof messageEvents[messageEvents.length-1].timestamp == "undefined") return;
+
+		var msg_ts = new Date(message.timestamp * 1000);
+		var last_msg_ts = new Date(messageEvents[messageEvents.length-1].timestamp * 1000);
+		if (last_msg_ts.getDay() != msg_ts.getDay()) {
+			messageEvents.push({type: 'system', bIncoming: false, message: msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+		}
+	}
+
+	function parseMessage(message) {
+		switch (message.type) {
+			case "system":
+				message.message = JSON.parse(message.message);
+				message.message = "chat recording " + (message.message.state ? "&nbsp;" : "") + "<b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
+				break;
+		}
+		return message;
+	}
 	
 	eventBus.on("text", function(from_address, body){
-		addIncomingMessageEvent(from_address, body);
+		mutex.lock(["handle_message"], function(unlock){
+			device.readCorrespondent(from_address, function(correspondent){
+				if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
+				addIncomingMessageEvent(correspondent.device_address, body);
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
+				unlock();
+			});
+		});
+		
+	});
+
+	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
+		mutex.lock(["handle_message"], function(unlock){
+			device.readCorrespondent(correspondent_address, function(correspondent){
+				var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				correspondent.peer_record_pref = enabled;
+				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				device.updateCorrespondentProps(correspondent);
+				if (newState != oldState) {
+					if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
+					var message = {
+						type: 'system',
+						message: JSON.stringify({state: newState}),
+						timestamp: Math.floor(Date.now() / 1000),
+						record_pref: true
+					};
+					root.messageEventsByCorrespondent[correspondent_address].push(parseMessage(message));
+					$rootScope.$digest();
+					chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
+				}
+				if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
+					root.currentCorrespondent.peer_record_pref = enabled ? 1 : 0;
+				}
+				unlock();
+			});
+		});
 	});
 	
 	eventBus.on("sent_payment", function(peer_address, amount, asset){
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body);
+			device.readCorrespondent(peer_address, function(correspondent){
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+			});
 			go.path('correspondentDevices.correspondentDevice');
 		});
 	});
@@ -296,6 +449,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on("received_payment", function(peer_address, amount, asset){
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body);
+		device.readCorrespondent(peer_address, function(correspondent){
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false);
+		});
 	});
 	
 	eventBus.on('paired', function(device_address){
@@ -314,7 +470,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.$digest();
 		});
 	});
+
+	 eventBus.on('removed_paired_device', function(device_address){
+		if ($state.is('correspondentDevices'))
+			return $state.reload(); // todo show popup after refreshing the list
+		if (!$state.is('correspondentDevices.correspondentDevice'))
+		 	return;
+		if (!root.currentCorrespondent)
+		 	return;
+		if (device_address !== root.currentCorrespondent.device_address)
+		 	return;
+		
+		// go back to list of correspondentDevices
+		// todo show popup message
+		// todo return to correspondentDevices when in edit-mode, too
+		go.path('correspondentDevices');
+	});
 	
+
 	$rootScope.$on('Local/CorrespondentInvitation', function(event, device_pubkey, device_hub, pairing_secret){
 		console.log('CorrespondentInvitation', device_pubkey, device_hub, pairing_secret);
 		root.acceptInvitation(device_hub, device_pubkey, pairing_secret, function(){});
@@ -326,13 +499,39 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.setCurrentCorrespondent = setCurrentCorrespondent;
 	root.formatOutgoingMessage = formatOutgoingMessage;
 	root.getHumanReadableDefinition = getHumanReadableDefinition;
+	root.loadMoreHistory = loadMoreHistory;
+	root.checkAndInsertDate = checkAndInsertDate;
+	root.parseMessage = parseMessage;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
 		  cb(null, arrCorrespondents);
 	  });
 	};
+
+	root.readNotRemovableDevices = function(cb) {
+		
+		// device addresses used in signing paths are not removable
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
+
+			cb(null, arrDeviceAddresses);
+		});
+	};
 	
+	root.deviceCanBeRemoved = function(device_address, cb) {
+
+		// load device addresses used in signing paths
+		wallet.readDeviceAddressesUsedInSigningPaths(function(arrDeviceAddresses){
+					
+			var ix = arrDeviceAddresses.indexOf(device_address);
+
+			// device is removable when not in list
+			if (ix == -1) {
+				cb(device_address);
+			}
+		});
+	};
+
 	root.startWaitingForPairing = function(cb){
 		device.startWaitingForPairing(function(pairingInfo){
 			cb(pairingInfo);
