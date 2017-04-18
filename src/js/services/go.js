@@ -157,54 +157,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	
 	function registerWindowsProtocolHandler(){
 		// now we do it in inno setup
-		/*
-		var regedit = require('regedit');
-		// we register the protocol handler at HKCU which is per-user and does not require UAC
-		var obj = {
-			"HKCU\\SOFTWARE\\Classes\\byteball": {
-				"someNameIDontCareAbout": {
-					value: 'URL:Byteball Protocol',
-					type: 'REG_DEFAULT'
-				},
-				"URL Protocol": {
-					value: "",
-					type: 'REG_SZ'
-				}
-			},
-			"HKCU\\SOFTWARE\\Classes\\byteball\\DefaultIcon": {
-				"someNameIDontCareAbout": {
-					value: '"'+process.execPath+'",0',
-					type: 'REG_DEFAULT'
-				}
-			},
-			//"HKCU\\SOFTWARE\\Classes\\byteball\\shell": {},
-			//"HKCU\\SOFTWARE\\Classes\\byteball\\shell\\open": {},
-			"HKCU\\SOFTWARE\\Classes\\byteball\\shell\\open\\command": {
-				"someNameIDontCareAbout": {
-					value: '"'+process.execPath+'" "%1"',
-					type: 'REG_DEFAULT'
-				}
-			}
-		};
-		console.log("will regedit");
-		regedit.createKey([
-				"HKCU\\SOFTWARE\\Classes\\byteball", 
-				"HKCU\\SOFTWARE\\Classes\\byteball\\DefaultIcon", 
-				"HKCU\\SOFTWARE\\Classes\\byteball\\shell", 
-				"HKCU\\SOFTWARE\\Classes\\byteball\\shell\\open", 
-				"HKCU\\SOFTWARE\\Classes\\byteball\\shell\\open\\command"
-			], 
-			function(err){
-				if (err)
-					throw Error("regedit failed to createKey: "+err);
-				regedit.putValue(obj, function(err){
-					if (err)
-						throw Error("regedit failed to putValue: "+err);
-					console.log("regedit done");
-				});
-			}
-		);
-		*/
 	}
 	
 	function createLinuxDesktopFile(){
