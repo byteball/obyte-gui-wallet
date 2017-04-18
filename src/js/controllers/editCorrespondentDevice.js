@@ -53,14 +53,6 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
           	var chatStorage = require('byteballcore/chat_storage.js');
 			chatStorage.purge(correspondent.device_address);
 			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
-			var message = {
-				type: 'system',
-				bIncoming: false,
-				message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
-				timestamp: Math.floor(+ new Date() / 1000)
-			};
-			chatStorage.store(correspondent.device_address, message.message, false, 'system');
-			correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push(chatStorage.parseMessage(message));
         }
         
       });
