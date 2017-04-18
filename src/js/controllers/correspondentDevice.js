@@ -690,16 +690,21 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
-		if ($scope.messageEvents.length < 1) {
-			var message = {
-				type: 'system',
-				bIncoming: false,
-				message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
-				timestamp: Math.floor(+ new Date() / 1000)
-			};
-			chatStorage.store(correspondent.device_address, message.message, false, 'system');
-			$scope.messageEvents.push(correspondentListService.parseMessage(message));
+		for (var i in $scope.messageEvents) {
+			var message = $scope.messageEvents[i];
+			if (message.type == "text" || (message.type == "system" && message.new_message_delim)) {
+				return;
+			}
 		}
+		
+		var message = {
+			type: 'system',
+			bIncoming: false,
+			message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
+			timestamp: Math.floor(+ new Date() / 1000)
+		};
+		chatStorage.store(correspondent.device_address, message.message, 0, 'system');
+		$scope.messageEvents.push(correspondentListService.parseMessage(message));
 	});
 
 	function setError(error){

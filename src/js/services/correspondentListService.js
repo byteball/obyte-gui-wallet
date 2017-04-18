@@ -441,7 +441,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body);
 			device.readCorrespondent(peer_address, function(correspondent){
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, false, 'html');
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
 			});
 			go.path('correspondentDevices.correspondentDevice');
 		});
@@ -451,7 +451,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body);
 		device.readCorrespondent(peer_address, function(correspondent){
-			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, true, 'html');
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
 	});
 	
