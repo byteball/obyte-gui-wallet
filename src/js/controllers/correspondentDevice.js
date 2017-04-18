@@ -696,6 +696,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				return;
 			}
 		}
+
 		var message = {
 			type: 'system',
 			bIncoming: false,
