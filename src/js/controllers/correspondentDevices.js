@@ -5,6 +5,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	
 	var self = this;
 	
+	var wallet = require('byteballcore/wallet.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
@@ -59,7 +60,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				return;
 			}
 
-			correspondentListService.readNotRemovableDevices(function(err, arrNotRemovableDeviceAddresses) {
+			wallet.readDeviceAddressesUsedInSigningPaths(function(arrNotRemovableDeviceAddresses) {
 
 				// add a new property indicating whether the device can be removed or not
 				
@@ -88,19 +89,14 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.remove = function(device_address) {
 
 		// check to be safe
-		correspondentListService.deviceCanBeRemoved(device_address, function(device_address) {
-
+		wallet.determineIfDeviceCanBeRemoved(device_address, function(bRemovable) {
+			if (!bRemovable)
+				return console.log('device '+device_address+' is not removable');
 			var device = require('byteballcore/device.js');
-
-			var device_pubkey = device.getMyDevicePubKey();
 
 			// send message to paired device
 			// this must be done before removing the device
-			var body = "removed";
-			device.sendMessageToDevice(device_address, "remove_paired_device", body, {
-				ifOk: function(){},
-				ifError: function(error){}
-			});
+			device.sendMessageToDevice(device_address, "removed_paired_device", "removed");
 
 			// remove device
 			device.removeCorrespondentDevice(device_address, function() {
