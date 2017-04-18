@@ -366,7 +366,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							message.message = formatOutgoingMessage(message.message);
 						}
 					}
-					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000)});
+					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000), chat_recording_status: message.chat_recording_status});
 				}
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
 					messageEvents.unshift({type: 'system', bIncoming: false, message: (last_msg_ts ? last_msg_ts : new Date()).toDateString(), timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
@@ -392,6 +392,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			case "system":
 				message.message = JSON.parse(message.message);
 				message.message = "chat recording " + (message.message.state ? "&nbsp;" : "") + "<b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
+				message.chat_recording_status = true;
 				break;
 		}
 		return message;
@@ -422,7 +423,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						type: 'system',
 						message: JSON.stringify({state: newState}),
 						timestamp: Math.floor(Date.now() / 1000),
-						record_pref: true
+						chat_recording_status: true
 					};
 					root.messageEventsByCorrespondent[correspondent_address].push(parseMessage(message));
 					$rootScope.$digest();

@@ -43,7 +43,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						type: 'system',
 						message: JSON.stringify({state: newState}),
 						timestamp: Math.floor(Date.now() / 1000),
-						record_pref: true
+						chat_recording_status: true
 					};
 					$scope.autoScrollEnabled = true;
 					$scope.messageEvents.push(correspondentListService.parseMessage(message));
@@ -692,16 +692,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.loadMoreHistory(function(){
 		for (var i in $scope.messageEvents) {
 			var message = $scope.messageEvents[i];
-			if (message.type == "text" || (message.type == "system" && message.new_message_delim)) {
+			if (message.chat_recording_status) {
 				return;
 			}
 		}
-		
+
 		var message = {
 			type: 'system',
 			bIncoming: false,
 			message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
-			timestamp: Math.floor(+ new Date() / 1000)
+			timestamp: Math.floor(+ new Date() / 1000),
+			chat_recording_status: true
 		};
 		chatStorage.store(correspondent.device_address, message.message, 0, 'system');
 		$scope.messageEvents.push(correspondentListService.parseMessage(message));
