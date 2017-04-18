@@ -5,7 +5,7 @@ var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 var objectHash = require('byteballcore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout) {
 	var root = {};
 	var device = require('byteballcore/device.js');
 	var wallet = require('byteballcore/wallet.js');
@@ -485,7 +485,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		// go back to list of correspondentDevices
 		// todo show popup message
 		// todo return to correspondentDevices when in edit-mode, too
+		$deepStateRedirect.reset('correspondentDevices');
 		go.path('correspondentDevices');
+		$timeout(function(){
+			$rootScope.$digest();
+		});
 	});
 	
 
