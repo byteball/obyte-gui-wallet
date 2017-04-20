@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	var self = this;
 	
 	var wallet = require('byteballcore/wallet.js');
+	var breadcrumbs = require('byteballcore/breadcrumbs.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
@@ -100,6 +101,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 
 			// remove device
 			device.removeCorrespondentDevice(device_address, function() {
+				breadcrumbs.add('correspondent removed: '+device_address);
 				$scope.hideRemove = true;
 				$scope.readList();
 				$rootScope.$emit('Local/SetTab', 'chat', true);
