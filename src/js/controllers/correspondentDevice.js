@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var eventBus = require('byteballcore/event_bus.js');
 	var conf = require('byteballcore/conf.js');
 	var storage = require('byteballcore/storage.js');
+	var breadcrumbs = require('byteballcore/breadcrumbs.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -696,7 +697,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				return;
 			}
 		}
-
+		breadcrumbs.add("correspondent with empty chat opened: " + correspondent.device_address);
 		var message = {
 			type: 'system',
 			bIncoming: false,
