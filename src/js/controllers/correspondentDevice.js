@@ -6,6 +6,7 @@ var constants = require('byteballcore/constants.js');
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton) {
 	
+	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
 	var device = require('byteballcore/device.js');
@@ -29,15 +30,53 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
 	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
 
+	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
+		if (pref == old_pref) return;
+		var device = require('byteballcore/device.js');
+		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
+			ifOk: function(){
+				device.updateCorrespondentProps(correspondent);
+				var oldState = (correspondent.peer_record_pref && !correspondent.my_record_pref);
+				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+				if (newState != oldState) {
+					var message = {
+						type: 'system',
+						message: JSON.stringify({state: newState}),
+						timestamp: Math.floor(Date.now() / 1000),
+						chat_recording_status: true
+					};
+					$scope.autoScrollEnabled = true;
+					$scope.messageEvents.push(correspondentListService.parseMessage(message));
+					$scope.$digest();
+					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
+				}
+				/*if (!pref) {
+					chatStorage.purge(correspondent.device_address);
+				}*/
+			}
+		});
+	});
+
+	var removeNewMessagesDelim = function() {
+		for (var i in $scope.messageEvents) {
+        	if ($scope.messageEvents[i].new_message_delim) {
+        		$scope.messageEvents.splice(i, 1);
+        	}
+        }
+	};
+
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled && $state.includes('correspondentDevices')) $scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
+			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
+		}
 	});
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
 	        $rootScope.tab = $scope.index.tab = 'chat';
 	        $scope.newMessagesCount[correspondentListService.currentCorrespondent.device_address] = 0;
-	    }
+	    } else
+	    	removeNewMessagesDelim();
 	});
 
 	$scope.send = function() {
@@ -50,9 +89,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			ifOk: function(){
 				setOngoingProcess();
 				//$scope.messageEvents.push({bIncoming: false, message: $sce.trustAsHtml($scope.message)});
-				$scope.messageEvents.push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(message)});
+				$scope.autoScrollEnabled = true;
+				var msg_obj = {
+					bIncoming: false, 
+					message: correspondentListService.formatOutgoingMessage(message), 
+					timestamp: Math.floor(Date.now() / 1000)
+				};
+				correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
+				$scope.messageEvents.push(msg_obj);
 				$scope.message = "";
 				$scope.$apply();
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
 				setOngoingProcess();
@@ -625,10 +672,41 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.message = command;
 		$scope.send();
 	};
+	
+	$scope.openExternalLink = function(url){
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
+	};
 
 	$scope.editCorrespondent = function() {
 		go.path('correspondentDevices.editCorrespondentDevice');
 	};
+
+	$scope.loadMoreHistory = function(cb) {
+		correspondentListService.loadMoreHistory(correspondent, cb);
+	}
+
+	$scope.autoScrollEnabled = true;
+	$scope.loadMoreHistory(function(){
+		for (var i in $scope.messageEvents) {
+			var message = $scope.messageEvents[i];
+			if (message.chat_recording_status) {
+				return;
+			}
+		}
+
+		var message = {
+			type: 'system',
+			bIncoming: false,
+			message: JSON.stringify({state: (correspondent.peer_record_pref && correspondent.my_record_pref ? true : false)}),
+			timestamp: Math.floor(+ new Date() / 1000),
+			chat_recording_status: true
+		};
+		chatStorage.store(correspondent.device_address, message.message, 0, 'system');
+		$scope.messageEvents.push(correspondentListService.parseMessage(message));
+	});
 
 	function setError(error){
 		console.log("send error:", error);
@@ -785,7 +863,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$deepStateRedirect.reset('correspondentDevices');
 		go.path('correspondentDevices');
 	}
-	
 }).directive('sendPayment', function($compile){
 	console.log("sendPayment directive");
 	return {
@@ -821,10 +898,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 }).directive('scrollBottom', function ($timeout) { // based on http://plnkr.co/edit/H6tFjw1590jHT28Uihcx?p=preview
 	return {
 		link: function (scope, element) {
-			scope.$watchCollection('messageEvents', function (newValue) {
-				if (newValue)
+			scope.$watchCollection('messageEvents', function (newCollection) {
+				if (newCollection)
 					$timeout(function(){
-						element[0].scrollTop = element[0].scrollHeight;
+						if (scope.autoScrollEnabled)
+							element[0].scrollTop = element[0].scrollHeight;
 					}, 100);
 			});
 		}
@@ -859,4 +937,49 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-});;
+}).directive('whenScrolled', ['$timeout', function($timeout) {
+	function ScrollPosition(node) {
+	    this.node = node;
+	    this.previousScrollHeightMinusTop = 0;
+	    this.readyFor = 'up';
+	}
+
+	ScrollPosition.prototype.restore = function () {
+	    if (this.readyFor === 'up') {
+	        this.node.scrollTop = this.node.scrollHeight
+	            - this.previousScrollHeightMinusTop;
+	    }
+	}
+
+	ScrollPosition.prototype.prepareFor = function (direction) {
+	    this.readyFor = direction || 'up';
+	    this.previousScrollHeightMinusTop = this.node.scrollHeight
+	        - this.node.scrollTop;
+	}
+
+    return function(scope, elm, attr) {
+        var raw = elm[0];
+
+        var chatScrollPosition = new ScrollPosition(raw);
+        
+        $timeout(function() {
+            raw.scrollTop = raw.scrollHeight;
+        });
+        
+        elm.bind('scroll', function() {
+        	if (raw.scrollTop + raw.offsetHeight != raw.scrollHeight) 
+        		scope.autoScrollEnabled = false;
+        	else 
+        		scope.autoScrollEnabled = true;
+            if (raw.scrollTop <= 20 && !scope.loadingHistory) { // load more items before you hit the top
+                scope.loadingHistory = true;
+                chatScrollPosition.prepareFor('up');
+            	scope[attr.whenScrolled](function(){
+            		scope.$digest();
+                	chatScrollPosition.restore();
+                	scope.loadingHistory = false;
+                });
+            }
+        });
+    };
+}]);

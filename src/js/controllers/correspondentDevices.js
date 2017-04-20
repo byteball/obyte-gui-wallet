@@ -5,12 +5,15 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	
 	var self = this;
 	
+	var wallet = require('byteballcore/wallet.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
 	$scope.backgroundColor = fc.backgroundColor;
 
 	$scope.state = $state;
+
+	$scope.hideRemove = true;
 
 	var listScrollTop = 0;
 
@@ -21,7 +24,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
 	    }
 	});
-	
+
 	$scope.showCorrespondent = function(correspondent) {
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
@@ -39,7 +42,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	};
 
 	$scope.newMsgByAddressComparator = function(correspondent) {
-	      return -($scope.newMessagesCount[correspondent.device_address]|0);
+	      return (-$scope.newMessagesCount[correspondent.device_address]||correspondent.name.toLowerCase());
 	};
 
 	$scope.beginAddCorrespondent = function() {
@@ -56,26 +59,53 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 				$scope.error = err;
 				return;
 			}
+
+			wallet.readDeviceAddressesUsedInSigningPaths(function(arrNotRemovableDeviceAddresses) {
+
+				// add a new property indicating whether the device can be removed or not
+				
+				var length = ab.length;
+				for (var i = 0; i < length; i++) {
+ 				 	corrDev = ab[i];
+
+				 	corrDevAddr = corrDev.device_address;
+					
+				 	var ix = arrNotRemovableDeviceAddresses.indexOf(corrDevAddr);
+					
+					// device is removable when not in list
+				 	corrDev.removable = (ix == -1);
+				}
+			});
+		
 			$scope.list = ab;
 			$scope.$digest();
 		});
 	};
 	
+	$scope.hideRemoveButton = function(removable){
+		return $scope.hideRemove || !removable;
+	}
 
-	$scope.remove = function(addr) {
-		throw Error("unimplemented");
-		$scope.error = null;
-		$timeout(function() {
-		  correspondentListService.remove(addr, function(err, ab) {
-			if (err) {
-			  $scope.error = err;
-			  return;
-			}
-			$rootScope.$emit('Local/CorrespondentListUpdated', ab);
-			$scope.list = ab;
-			$scope.$digest();
-		  });
-		}, 100);
+	$scope.remove = function(device_address) {
+
+		// check to be safe
+		wallet.determineIfDeviceCanBeRemoved(device_address, function(bRemovable) {
+			if (!bRemovable)
+				return console.log('device '+device_address+' is not removable');
+			var device = require('byteballcore/device.js');
+
+			// send message to paired device
+			// this must be done before removing the device
+			device.sendMessageToDevice(device_address, "removed_paired_device", "removed");
+
+			// remove device
+			device.removeCorrespondentDevice(device_address, function() {
+				$scope.hideRemove = true;
+				$scope.readList();
+				$rootScope.$emit('Local/SetTab', 'chat', true);
+				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+			});
+		});
 	};
 
 	$scope.cancel = function() {

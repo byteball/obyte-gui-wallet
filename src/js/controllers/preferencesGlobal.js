@@ -29,9 +29,9 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       };
       configService.set(opts, function(err) {
         if (opts.pushNotifications.enabled)
-          pushNotificationsService.enableNotifications(profileService.walletClients);
+          pushNotificationsService.pushNotificationsInit();
         else
-          pushNotificationsService.disableNotifications(profileService.walletClients);
+          pushNotificationsService.pushNotificationsUnregister();
         if (err) $log.debug(err);
       });
     });

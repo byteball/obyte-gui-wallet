@@ -56,6 +56,11 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 				if (path) {
 					$deepStateRedirect.reset(path);
 					go.path(path);
+					if(path === 'correspondentDevices.correspondentDevice'){
+						$timeout(function() {
+							$rootScope.$emit('Local/SetTab', 'chat', true);
+						}, 100);
+					}
 				}
 				else {
 					go.walletHome();
