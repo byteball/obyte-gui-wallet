@@ -577,6 +577,9 @@ API.prototype.getBalance = function(shared_address, cb) {
 		if (!assocBalances[constants.BLACKBYTES_ASSET])
 			assocBalances[constants.BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
 		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
+			for (var asset in assocSharedBalances)
+				if (!assocBalances[asset])
+					assocBalances[asset] = {stable: 0, pending: 0};
 			cb(null, assocBalances, assocSharedBalances);
 		});
 	});
