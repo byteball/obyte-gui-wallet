@@ -77,7 +77,7 @@
 	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
-          <div ng-if="!index.anyOnGoingProcess || 1">
+          <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
@@ -88,7 +88,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex">
+            <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" ng-attr-rn-carousel-controls="!index.isCordova">
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
 						<strong class="size-36" ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.totalStr}}</strong>
