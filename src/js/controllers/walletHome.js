@@ -7,6 +7,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 angular.module('copayApp.controllers').controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList) {
 
   var self = this;
+  var home = this;
   var conf = require('byteballcore/conf.js');
   this.protocol = conf.program;
   $rootScope.hideMenuBar = false;
@@ -1193,10 +1194,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return self.getUnitName();
       };
 
-      $scope.getShortNetworkName = function() {
-        var n = fc.credentials.network;
-        return n.substring(0, 4);
-      };
+	  $scope.openInExplorer = function(){
+		var testnet = home.isTestnet ? 'testnet' : '';
+		var url = 'https://'+testnet+'explorer.byteball.org/#'+btx.unit;
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
+	  };
 
       $scope.copyAddress = function(addr) {
         if (!addr) return;
