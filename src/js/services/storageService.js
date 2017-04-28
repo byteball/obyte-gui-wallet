@@ -92,7 +92,7 @@ angular.module('copayApp.services')
 
     root.getProfile = function(cb) {
       storage.get('profile', function(err, str) {
-          console.log("prof="+str+", err="+err);
+        //console.log("prof="+str+", err="+err);
         if (err || !str)
           return cb(err);
 
