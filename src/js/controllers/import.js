@@ -7,7 +7,11 @@ angular.module('copayApp.controllers').controller('importController',
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('byteballcore/conf');
-		var zip = new JSZip();
+		if(isCordova) {
+			var zip = new JSZip();
+		}else{
+			var unzip = require('unzip' + '');
+		}
 		
 		var self = this;
 		self.imported = false;
@@ -35,7 +39,7 @@ angular.module('copayApp.controllers').controller('importController',
 		
 		if (self.iOs) generateListFilesForIos();
 		
-		function writeDBAndFileStorage(zip, cb) {
+		function writeDBAndFileStorageMobile(zip, cb) {
 			var db = require('byteballcore/db');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			db.close(function() {
@@ -50,19 +54,9 @@ angular.module('copayApp.controllers').controller('importController',
 							storageService.storeConfig(data, callback);
 						});
 					}
-					else if (key == 'conf.json' && !isCordova) {
-						zip.file(key).async('string').then(function(data) {
-							fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
-						});
-					}
 					else if (/\.sqlite/.test(key)) {
 						zip.file(key).async('nodebuffer').then(function(data) {
-							if (isCordova) {
-								fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
-							}
-							else {
-								fileSystemService.nwWriteFile(dbDirPath + key, data, callback);
-							}
+							fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
 						});
 					}
 					else {
@@ -70,18 +64,69 @@ angular.module('copayApp.controllers').controller('importController',
 					}
 				}, function(err) {
 					if (err) return cb(err);
-					if (!isCordova && zip.file('light') && !zip.file('conf.json')) {
-						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), cb);
-					}
-					else if (!isCordova && !zip.file('light') && conf.bLight) {
-						var _conf = require(dbDirPath + 'conf.json');
-						_conf.bLight = false;
-						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), cb);
-					}
-					else {
-						return cb();
-					}
+					return cb();
 				});
+			});
+		}
+		
+		function writeDBAndFileStoragePC(cb) {
+			var db = require('byteballcore/db');
+			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
+			db.close(function() {
+				async.series([
+					function(callback) {
+						fileSystemService.nwReadFile(dbDirPath + 'temp/' + 'profile', function(err, data) {
+							if(err) return callback(err);
+							storageService.storeProfile(Profile.fromString(data.toString()), callback)
+						});
+					},
+					function(callback) {
+						fileSystemService.nwReadFile(dbDirPath + 'temp/' + 'config', function(err, data) {
+							if(err) return callback(err);
+							storageService.storeConfig(data.toString(), callback);
+						});
+					},
+					function(callback) {
+						fileSystemService.readdir(dbDirPath, function(err, fileNames) {
+							fileNames = fileNames.filter(function(name){ return /\.sqlite$/.test(name); });
+							async.forEach(fileNames, function(name, callback2) {
+								fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback2);
+							}, function(err) {
+								if(err) return callback(err);
+								callback();
+							})
+						});
+					},
+					function(callback) {
+						var existsConfJson = fileSystemService.nwExistsSync(dbDirPath + 'temp/conf.json');
+						var existsLight = fileSystemService.nwExistsSync(dbDirPath + 'temp/light');
+						if(existsConfJson){
+							fileSystemService.nwMoveFile(dbDirPath + 'temp/conf.json', dbDirPath + 'conf.json', callback);
+						}else if(existsLight && !existsConfJson){
+							fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), callback);
+						}else if(!existsLight && conf.bLight){
+							var _conf = require(dbDirPath + 'conf.json');
+							_conf.bLight = false;
+							fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), callback);
+						}else{
+							callback();
+						}
+					},
+					function(callback) {
+						fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
+							async.forEach(fileNames, function(name, callback2) {
+								fileSystemService.nwUnlink(dbDirPath + 'temp/' + name, callback2);
+							}, function(err) {
+								if(err) return callback(err);
+								fileSystemService.nwRmDir(dbDirPath + 'temp/', function() {
+									callback();
+								});
+							})
+						});
+					}
+				], function(err) {
+					cb(err);
+				})
 			});
 		}
 		
@@ -107,16 +152,41 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function unzipAndWriteFiles(data, password) {
-			zip.loadAsync(decrypt(data, password)).then(function(zip) {
-				if (isCordova && !zip.file('light')) {
-					self.imported = false;
-					self.error = 'Mobile version supports only light wallets.';
-					$timeout(function() {
-						$rootScope.$apply();
-					});
-				}
-				else {
-					writeDBAndFileStorage(zip, function(err) {
+			if(isCordova) {
+				zip.loadAsync(decrypt(data, password)).then(function(zip) {
+					if (!zip.file('light')) {
+						self.imported = false;
+						self.error = 'Mobile version supports only light wallets.';
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					}
+					else {
+						writeDBAndFileStorageMobile(zip, function(err) {
+							if (err) return showError(err);
+							self.imported = false;
+							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
+								if (navigator && navigator.app)
+									navigator.app.exitApp();
+								else if (process.exit)
+									process.exit();
+							});
+						});
+					}
+				}, function(err) {
+					showError('Incorrect password or file');
+				})
+			}else {
+				password = Buffer.from(password);
+				var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
+				data.pipe(decipher).pipe(unzip.Extract({ path: fileSystemService.getDatabaseDirPath() + '/temp/' })).on('error', function(err) {
+					if(err.message === "Invalid signature in zip file"){
+						showError('Incorrect password or file');
+					}else{
+						showError(err);
+					}
+				}).on('finish', function() {
+					writeDBAndFileStoragePC(function(err) {
 						if (err) return showError(err);
 						self.imported = false;
 						$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
@@ -126,10 +196,8 @@ angular.module('copayApp.controllers').controller('importController',
 								process.exit();
 						});
 					});
-				}
-			}, function(err) {
-				showError('Incorrect password or file');
-			})
+				});
+			}
 		}
 		
 		self.walletImport = function() {

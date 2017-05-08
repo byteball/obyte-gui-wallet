@@ -56,6 +56,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     function sendBugReport(error_message, error_object){
+    	return false;
         var conf = require('byteballcore/conf.js');
         var network = require('byteballcore/network.js');
         var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
