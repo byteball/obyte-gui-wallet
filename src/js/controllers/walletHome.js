@@ -992,7 +992,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			amount /= self.bbUnitValue;
 		return amount;
 	}
-	
 
 	this.setToAddress = function(to) {
 		var form = $scope.sendForm;

@@ -56,14 +56,14 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
 	cd $BUILDDIR
 	echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet Byteball
+	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet2 Byteball
 	checkOK
 
 	cd $PROJECT
 
 	if [ $CURRENT_OS == "ANDROID" ]; then
 		echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
-		cordova platforms add android
+		cordova platforms add android@6.2.0
 		checkOK
 	fi
 
