@@ -56,7 +56,7 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
 	cd $BUILDDIR
 	echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet2 Byteball
+	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet Byteball
 	checkOK
 
 	cd $PROJECT
