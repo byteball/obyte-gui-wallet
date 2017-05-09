@@ -57,14 +57,14 @@ angular.module('copayApp.services')
 			});
 		}
 		else {
-			return cb(null, path.replace(/\\/g, '/'));
+			fs.readFile(path, function(err, data) {
+				return err ? cb(err) : cb(null, data);
+			});
 		}
 	};
 	
-	root.nwReadFile = function(path, cb) {
-		fs.readFile(path, function(err, data) {
-			return err ? cb(err) : cb(null, data);
-		});
+	root.getPath = function(path, cb) {
+		return cb(null, path.replace(/\\/g, '/'));
 	};
 	
 	root.nwWriteFile = function(path, data, cb) {

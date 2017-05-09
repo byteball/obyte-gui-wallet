@@ -31,8 +31,9 @@ angular.module('copayApp.controllers').controller('exportController',
 				listFilenames = listFilenames.filter(function(name) {
 					return (name == 'conf.json' || /\.sqlite/.test(name));
 				});
+				var getFileOrPath = isCordova ? fileSystemService.readFile : fileSystemService.getPath;
 				async.forEachSeries(listFilenames, function(name, callback) {
-					fileSystemService.readFile(dbDirPath + '/' + name, function(err, data) {
+					getFileOrPath(dbDirPath + '/' + name, function(err, data) {
 						if (err) return callback(err);
 						zip.file(name, data);
 						callback();
@@ -78,7 +79,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			return false;
 		}
 
-		self.walletExportPC = function() {
+		self.walletExportPC = function(connection) {
 			saveFile(null, function(path) {
 				var password = Buffer.from(self.password);
 				var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
@@ -95,11 +96,12 @@ angular.module('copayApp.controllers').controller('exportController',
 							if (err) return showError(err);
 							zip.end(function() {
 								var db = require('byteballcore/db');
-								db.createConnect();
-								self.exported = false;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+								db.unlockConnect(connection, function() {
+									self.exported = false;
+									$timeout(function() {
+										$rootScope.$apply();
+										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+									});
 								});
 							});
 						});
@@ -108,7 +110,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			})
 		};
 
-		self.walletExportCordova = function() {
+		self.walletExportCordova = function(connection) {
 			storageService.getProfile(function(err, profile) {
 				storageService.getConfig(function(err, config) {
 					zip.file('profile', JSON.stringify(profile));
@@ -120,12 +122,13 @@ angular.module('copayApp.controllers').controller('exportController',
 						zip.generateAsync(zipParams).then(function(zipFile) {
 							saveFile(encrypt(zipFile, self.password), function(err) {
 								var db = require('byteballcore/db');
-								db.createConnect();
-								if (err) return showError(err);
-								self.exported = false;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+								db.unlockConnect(connection, function() {
+									if (err) return showError(err);
+									self.exported = false;
+									$timeout(function() {
+										$rootScope.$apply();
+										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+									});
 								});
 							})
 						}, function(err) {
@@ -140,11 +143,11 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exported = true;
 			self.error = '';
 			var db = require('byteballcore/db');
-			db.close(function() {				
+			db.lockConnect(function(connection) {
 				if (isCordova) {
-					self.walletExportCordova()
+					self.walletExportCordova(connection)
 				} else {
-					self.walletExportPC();
+					self.walletExportPC(connection);
 				}
 			});
 		}

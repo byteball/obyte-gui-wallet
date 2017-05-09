@@ -75,13 +75,13 @@ angular.module('copayApp.controllers').controller('importController',
 			db.close(function() {
 				async.series([
 					function(callback) {
-						fileSystemService.nwReadFile(dbDirPath + 'temp/' + 'profile', function(err, data) {
+						fileSystemService.readFile(dbDirPath + 'temp/' + 'profile', function(err, data) {
 							if(err) return callback(err);
 							storageService.storeProfile(Profile.fromString(data.toString()), callback)
 						});
 					},
 					function(callback) {
-						fileSystemService.nwReadFile(dbDirPath + 'temp/' + 'config', function(err, data) {
+						fileSystemService.readFile(dbDirPath + 'temp/' + 'config', function(err, data) {
 							if(err) return callback(err);
 							storageService.storeConfig(data.toString(), callback);
 						});
