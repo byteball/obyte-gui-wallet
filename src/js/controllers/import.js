@@ -186,16 +186,18 @@ angular.module('copayApp.controllers').controller('importController',
 						showError(err);
 					}
 				}).on('finish', function() {
-					writeDBAndFileStoragePC(function(err) {
-						if (err) return showError(err);
-						self.imported = false;
-						$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
-							if (navigator && navigator.app)
-								navigator.app.exitApp();
-							else if (process.exit)
-								process.exit();
+					setTimeout(function() {
+						writeDBAndFileStoragePC(function(err) {
+							if (err) return showError(err);
+							self.imported = false;
+							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
+								if (navigator && navigator.app)
+									navigator.app.exitApp();
+								else if (process.exit)
+									process.exit();
+							});
 						});
-					});
+					}, 100);
 				});
 			}
 		}
