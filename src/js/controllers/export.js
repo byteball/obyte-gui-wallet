@@ -148,26 +148,12 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exported = true;
 			self.error = '';
 			var db = require('byteballcore/db');
-			console.log('close DB');
-			db.close(function() {
-				console.log('close CB');
-				console.log(db.getArrConnections());
-				db.query("SELECT unit FROM units LIMIT 0, 1", function(rows) {
-					alert(JSON.stringify(rows));
-				});
-				setTimeout(function() {
-					console.log(db.getArrConnections());
-					db.createConnect();
-					console.log(db.getArrConnections());
-				}, 5000);
+			db.takeConnectionFromPool(function(connection) {
+				if (isCordova) {
+					self.walletExportCordova(connection)
+				} else {
+					self.walletExportPC(connection);
+				}
 			});
-			
-			// db.takeConnectionFromPool(function(connection) {
-			// 	if (isCordova) {
-			// 		self.walletExportCordova(connection)
-			// 	} else {
-			// 		self.walletExportPC(connection);
-			// 	}
-			// });
 		}
 	});
