@@ -31,14 +31,23 @@ angular.module('copayApp.controllers').controller('exportController',
 				listFilenames = listFilenames.filter(function(name) {
 					return (name == 'conf.json' || /\.sqlite/.test(name));
 				});
-				var getFileOrPath = isCordova ? fileSystemService.readFile : fileSystemService.getPath;
-				async.forEachSeries(listFilenames, function(name, callback) {
-					getFileOrPath(dbDirPath + '/' + name, function(err, data) {
-						if (err) return callback(err);
-						zip.file(name, data);
-						callback();
-					});
-				}, cb);
+				if(isCordova) {
+					async.forEachSeries(listFilenames, function(name, callback) {
+						fileSystemService.readFile(dbDirPath + '/' + name, function(err, data) {
+							if (err) return callback(err);
+							zip.file(name, data);
+							callback();
+						});
+					}, cb);
+				}else{
+					async.forEachSeries(listFilenames, function(name, callback) {
+						fileSystemService.getPath(dbDirPath + '/' + name, function(err, path) {
+							if (err) return callback(err);
+							zip.file(name, path);
+							callback();
+						});
+					}, cb);
+				}
 			});
 		}
 
@@ -139,12 +148,26 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exported = true;
 			self.error = '';
 			var db = require('byteballcore/db');
-			db.takeConnectionFromPool(function(connection) {
-				if (isCordova) {
-					self.walletExportCordova(connection)
-				} else {
-					self.walletExportPC(connection);
-				}
+			console.log('close DB');
+			db.close(function() {
+				console.log('close CB');
+				console.log(db.getArrConnections());
+				db.query("SELECT unit FROM units LIMIT 0, 1", function(rows) {
+					alert(JSON.stringify(rows));
+				});
+				setTimeout(function() {
+					console.log(db.getArrConnections());
+					db.createConnect();
+					console.log(db.getArrConnections());
+				}, 5000);
 			});
+			
+			// db.takeConnectionFromPool(function(connection) {
+			// 	if (isCordova) {
+			// 		self.walletExportCordova(connection)
+			// 	} else {
+			// 		self.walletExportPC(connection);
+			// 	}
+			// });
 		}
 	});
