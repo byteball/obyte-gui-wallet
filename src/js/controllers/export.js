@@ -95,13 +95,11 @@ angular.module('copayApp.controllers').controller('exportController',
 						addDBAndConfToZip(function(err) {
 							if (err) return showError(err);
 							zip.end(function() {
-								var db = require('byteballcore/db');
-								db.unlockConnect(connection, function() {
-									self.exported = false;
-									$timeout(function() {
-										$rootScope.$apply();
-										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
-									});
+								connection.release();
+								self.exported = false;
+								$timeout(function() {
+									$rootScope.$apply();
+									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
 								});
 							});
 						});
@@ -121,14 +119,12 @@ angular.module('copayApp.controllers').controller('exportController',
 						var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
 						zip.generateAsync(zipParams).then(function(zipFile) {
 							saveFile(encrypt(zipFile, self.password), function(err) {
-								var db = require('byteballcore/db');
-								db.unlockConnect(connection, function() {
-									if (err) return showError(err);
-									self.exported = false;
-									$timeout(function() {
-										$rootScope.$apply();
-										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
-									});
+								connection.release();
+								if (err) return showError(err);
+								self.exported = false;
+								$timeout(function() {
+									$rootScope.$apply();
+									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
 								});
 							})
 						}, function(err) {
@@ -143,7 +139,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exported = true;
 			self.error = '';
 			var db = require('byteballcore/db');
-			db.lockConnect(function(connection) {
+			db.takeConnectionFromPool(function(connection) {
 				if (isCordova) {
 					self.walletExportCordova(connection)
 				} else {
