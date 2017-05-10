@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-10 16:22-0400\n"
+"PO-Revision-Date: 2017-05-10 16:31-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1301,7 +1301,7 @@ msgstr ""
 
 #: src/js/services/profileService.js:386
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "Кошелек уже в Byteball:"
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1314,7 +1314,7 @@ msgstr "Зерно недоступно"
 #: public/views/modals/destination-address.html:11
 #: public/views/modals/destination-address.html:25
 msgid "Wallets"
-msgstr ""
+msgstr "Кошельки"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
@@ -1334,7 +1334,7 @@ msgstr "Свидетели"
 
 #: public/views/backup.html:65
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "Запишите это и храните где-нибудь в безопасном месте."
 
 #: src/js/services/profileService.js:616
 msgid "Wrong password"
@@ -1357,7 +1357,7 @@ msgstr "Зерно кошелька:"
 
 #: public/views/export.html:33
 msgid "Your export password"
-msgstr ""
+msgstr "Пароль экспортируемого файла"
 
 #: public/views/includes/password.html:18
 msgid "Your password"
@@ -1369,7 +1369,7 @@ msgstr "Файл кошелька"
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
-msgstr ""
+msgstr "Ключ вашего кошелька будет зашифрован. Пароль нельзя восстановить. Убедитесь, что вы его записали"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
