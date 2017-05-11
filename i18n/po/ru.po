@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 01:10-0400\n"
+"PO-Revision-Date: 2017-05-11 01:21-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -435,7 +435,7 @@ msgstr "Push-уведомления"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "Введите полученный от другого устройства код сопряжения, или используйте Вашу камеру (значок в правом верхнем углу) для сканирования QR-кода отображаемого на другом устройстве."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -456,7 +456,7 @@ msgstr "Экспорт"
 
 #: src/js/controllers/export.js:100
 msgid "Export completed successfully"
-msgstr ""
+msgstr "Экспорт завершен успешно"
 
 #: public/views/export.html:19
 msgid "Exporting..."
@@ -464,11 +464,11 @@ msgstr "Экспортирую..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
-msgstr ""
+msgstr "Расширенные открытые ключи"
 
 #: public/views/export.html:25
 msgid "Failed to export"
-msgstr ""
+msgstr "Не удалось экспортировать"
 
 #: public/views/modals/tx-details.html:85
 msgid "Fee"
@@ -558,15 +558,15 @@ msgstr "Главная"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Хост"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Хаб"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "URL-адрес хаба"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -615,7 +615,7 @@ msgstr ""
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
+msgstr "Пригласить другое устройство"
 
 #: public/views/translators.html:12
 #: public/views/translators.html:13
@@ -740,15 +740,15 @@ msgstr "Адрес оракула"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Пара"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "Спаренные устройства"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
-msgstr ""
+msgstr "Закрытый ключ бумажного кошелька"
 
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
@@ -765,7 +765,7 @@ msgstr "Пароли не совпадают"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr ""
+msgstr "Вставьте закрытый ключ бумажного кошелька сюда"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -801,7 +801,7 @@ msgstr "Простой кошелек"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "Пожалуйста, выберите тип этого кошелька"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -813,7 +813,7 @@ msgstr "Присвойте имя этому устройству"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Порт"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -957,7 +957,7 @@ msgstr "Сканирование отпечатка пальца"
 
 #: public/views/paperWallet.html:44
 msgid "Scan Wallet Funds"
-msgstr ""
+msgstr "Сканирование кошелька"
 
 #: public/views/walletHome.html:87
 msgid "Scan status finished with error"
@@ -981,7 +981,7 @@ msgstr "Сканирование адресов кошелька..."
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
-msgstr ""
+msgstr "Сканирование адресов кошелька..."
 
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
@@ -1011,7 +1011,7 @@ msgstr "Отправить платёж"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
-msgstr ""
+msgstr "Отправить адреса по электронной почте"
 
 #: public/views/walletHome.html:355
 msgid "Send all"
@@ -1288,7 +1288,7 @@ msgstr "Конфигурация кошелька (m-n)"
 
 #: public/views/preferencesInformation.html:20
 msgid "Wallet Id"
-msgstr ""
+msgstr "Идентификатор кошелька"
 
 #: public/views/preferencesAdvanced.html:14
 #: public/views/preferencesInformation.html:8
@@ -1297,7 +1297,7 @@ msgstr "Информация о кошельке"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
-msgstr ""
+msgstr "Название кошелька (при создании)"
 
 #: src/js/services/profileService.js:386
 msgid "Wallet already in Byteball:"
@@ -1402,7 +1402,7 @@ msgstr "необязательно"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "кому"
 
 #: public/views/walletHome.html:370
 #: public/views/walletHome.html:381
@@ -1436,7 +1436,7 @@ msgstr "{{index.m}}-из-{{index.n}}"
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr ""
+msgstr "{{item.m}}-из-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
