@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 02:23-0400\n"
+"PO-Revision-Date: 2017-05-11 02:32-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1166,7 +1166,7 @@ msgstr "Выбор не может быть изменён позже"
 
 #: public/views/walletHome.html:304
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr ""
+msgstr "Это частный актив, пожалуйста, отправляйте его, только при помощи ссылок в чате или отправляйте его в другие Ваши кошельки."
 
 #: public/views/walletHome.html:336
 msgid "This payment is bound to a condition"
