@@ -7,7 +7,7 @@
 
 <div class="content preferences" ng-controller="exportController as export">
 	<h4></h4>
-	<div class="onGoingProcess" ng-show="export.exported">
+	<div class="onGoingProcess" ng-show="export.exporting">
 		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
 			<div class="spinner">
 				<div class="rect1"></div>
@@ -46,7 +46,7 @@
 					</div>
 					<input type="file" id="nwExportInputFile" nwsaveas=""  style="display: none"/>
 					<button class="black round expand m20t" ng-click="export.walletExport()"
-							ng-disabled="(export.exported || !export.password || export.password != export.repeatpassword)"
+							ng-disabled="(export.exporting || !export.password || export.password != export.repeatpassword)"
 							ng-style="{'background-color':index.backgroundColor}"><i class="fi-download"></i>
 						<span translate>Export</span></button>
 				</div>
