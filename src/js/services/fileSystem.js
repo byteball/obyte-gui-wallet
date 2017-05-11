@@ -141,7 +141,13 @@ angular.module('copayApp.services')
 	};
 	
 	root.nwMoveFile = function(oldPath, newPath, cb){
-		fs.rename(oldPath, newPath, cb);
+		var read = fs.createReadStream(oldPath);
+		var write = fs.createWriteStream(newPath);
+
+		read.pipe(write);
+		read.on('end',function() {
+			fs.unlink(oldPath, cb);
+		});
 	};
 	
 	root.nwUnlink = function(path, cb) {

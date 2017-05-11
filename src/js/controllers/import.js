@@ -87,8 +87,8 @@ angular.module('copayApp.controllers').controller('importController',
 						});
 					},
 					function(callback) {
-						fileSystemService.readdir(dbDirPath, function(err, fileNames) {
-							fileNames = fileNames.filter(function(name){ return /\.sqlite$/.test(name); });
+						fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
+							fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
 							async.forEach(fileNames, function(name, callback2) {
 								fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback2);
 							}, function(err) {
