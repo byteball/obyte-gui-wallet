@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 01:31-0400\n"
+"PO-Revision-Date: 2017-05-11 01:51-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -427,7 +427,7 @@ msgstr "Редактировать"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
-msgstr ""
+msgstr "Укажите адрес электронной почты для получения уведомлений"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
@@ -965,7 +965,7 @@ msgstr "Сканирование завершено с ошибкой"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
-msgstr ""
+msgstr "Отсканируйте приведенный выше QR-код с помощью другого устройства или отправьте этот код сопряжения на другое устройство:"
 
 #: src/js/controllers/index.js:1420
 msgid "Scan your fingerprint please"
@@ -1019,7 +1019,7 @@ msgstr "Отправить все"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
-msgstr "Отправить на email"
+msgstr "Отправить по электронной почте"
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
