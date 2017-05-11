@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 01:01-0400\n"
+"PO-Revision-Date: 2017-05-11 01:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -59,7 +59,7 @@ msgstr "Добавить новую запись"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
-msgstr "Добавить кошелёк"
+msgstr "Добавить кошелек"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:114
@@ -317,12 +317,12 @@ msgstr "Создать"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr "Создать новый кошелёк"
+msgstr "Создать новый кошелек"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
 msgid "Create new wallet"
-msgstr "Создать новый кошелёк"
+msgstr "Создать новый кошелек"
 
 #: src/js/controllers/index.js:234
 msgid "Create new wallet  together with  ?"
@@ -378,7 +378,7 @@ msgstr "Определения адресов"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
-msgstr "Удалить кошелёк"
+msgstr "Удалить кошелек"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
@@ -496,15 +496,15 @@ msgstr "Полный Backup"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr "Полный кошелёк"
+msgstr "Полный кошелек"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "Средства найдены"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Средства будут переведены на"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -542,7 +542,7 @@ msgstr "греческий"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr ""
+msgstr "Аппаратный кошелек"
 
 #: public/views/backup.html:54
 msgid "Hide the Wallet Seed"
@@ -641,7 +641,7 @@ msgstr "Позже"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
-msgstr "Лёгкий кошелёк"
+msgstr "Лёгкий кошелек"
 
 #: src/js/controllers/disclaimer.js:8
 msgid "Loading..."
@@ -753,7 +753,7 @@ msgstr ""
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
-msgstr ""
+msgstr "Ключевая фраза"
 
 #: src/js/services/profileService.js:606
 msgid "Password needed"
@@ -797,7 +797,7 @@ msgstr "Окончательно удалить этот кошелек. ЭТО 
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr "Простой кошелёк"
+msgstr "Простой кошелек"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
@@ -985,7 +985,7 @@ msgstr ""
 
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
-msgstr "Выберите кошелёк"
+msgstr "Выберите кошелек"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
@@ -1110,7 +1110,7 @@ msgstr ""
 
 #: public/views/walletHome.html:50
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "Синхронизация... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
@@ -1146,7 +1146,7 @@ msgstr "Контрагент получает этот платёж если:"
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
 msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "Кошелёк «{{walletName}}» был удален"
+msgstr "Кошелек «{{walletName}}» был удален"
 
 #: public/views/splash.html:34
 msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately."
@@ -1432,7 +1432,7 @@ msgstr ""
 #: public/views/copayers.html:18
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr ""
+msgstr "{{index.m}}-из-{{index.n}}"
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
