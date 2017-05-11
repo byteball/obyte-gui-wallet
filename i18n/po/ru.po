@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 02:51-0400\n"
+"PO-Revision-Date: 2017-05-11 03:04-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -147,7 +147,7 @@ msgstr "Создать резервную копию"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Резервное копирование мнемоники (seed)"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -283,7 +283,7 @@ msgstr "Не удалось создать используя указанный
 
 #: src/js/services/profileService.js:206
 msgid "Could not create: Invalid wallet seed"
-msgstr ""
+msgstr "Не удалось создать: недействительная мнемоника (seed)"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
@@ -691,7 +691,7 @@ msgstr "Сеть"
 
 #: src/js/controllers/create.js:29
 msgid "New Random Seed"
-msgstr ""
+msgstr "Новая случайная мнемоника (seed)"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
@@ -1064,7 +1064,7 @@ msgstr "Показать все"
 
 #: public/views/backup.html:53
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "В любом случае показать мнемонику (seed) кошелька"
 
 #: src/js/controllers/index.js:370
 msgid "Sign transaction spending  from wallet ?"
