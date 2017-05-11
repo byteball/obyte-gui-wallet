@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 03:48-0400\n"
+"PO-Revision-Date: 2017-05-11 03:52-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -599,7 +599,7 @@ msgstr "Включая ожидающие подтверждения"
 #: public/views/walletHome.html:482
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
-msgstr ""
+msgstr "Первоначальная синхронизация истории транзакций может занять несколько минут для кошельков с большим количеством транзакциями.<br>Пожалуйста, подождите."
 
 #: public/views/correspondentDevice.html:220
 msgid "Insert my address"
@@ -993,7 +993,7 @@ msgstr "Выберите подкошелек"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
-msgstr ""
+msgstr "Выберите аккаунт"
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:432
