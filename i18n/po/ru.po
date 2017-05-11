@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 02:01-0400\n"
+"PO-Revision-Date: 2017-05-11 02:12-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -112,7 +112,7 @@ msgstr "Событие зарегистрировано оракулом"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Одобрить создание кошелька на других устройствах"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -222,15 +222,15 @@ msgstr "Закрыть"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Совладелец {{$index + 1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Совладельцы"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Совладельцы для мульти подписи"
 
 #: public/views/preferences.html:29
 msgid "Color"
@@ -326,7 +326,7 @@ msgstr "Создать новый кошелек"
 
 #: src/js/controllers/index.js:234
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "Создать новый кошелек вместе с?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
@@ -358,7 +358,7 @@ msgstr "Дата"
 
 #: src/js/controllers/index.js:204
 msgid "Declined"
-msgstr ""
+msgstr "Отклонено"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
@@ -1114,7 +1114,7 @@ msgstr "Синхронизация... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "ТОР"
 
 #: public/views/walletHome.html:464
 #: public/views/walletHome.html:83
@@ -1129,15 +1129,15 @@ msgstr "Условия использования"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "Ожидаемое значение будет опубликовано:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "Хаб для получения сообщений от других устройств."
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "Хаб предлагает заменить следующих свидетелей:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
@@ -1195,7 +1195,7 @@ msgstr "Всего заблокировано средств"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "Количество совладельцев"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
@@ -1224,11 +1224,11 @@ msgstr "Неподтверждено"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "Единица для blackbytes"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "Единица для bytes"
 
 #: public/views/walletHome.html:154
 msgid "Unsent transactions"
