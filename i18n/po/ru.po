@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 02:43-0400\n"
+"PO-Revision-Date: 2017-05-11 02:51-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -629,7 +629,7 @@ msgstr "японский"
 
 #: public/views/modals/destination-address.html:116
 msgid "Label"
-msgstr ""
+msgstr "Ярлык"
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
@@ -679,7 +679,7 @@ msgstr "Перемещено"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr ""
+msgstr "Кошелек для нескольких устройств"
 
 #: public/views/walletHome.html:197
 msgid "My Byteball address"
