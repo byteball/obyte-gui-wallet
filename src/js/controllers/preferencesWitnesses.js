@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
         self.witnesses = arrWitnesses;
         $scope.$apply();
         console.log('preferencesWitnessesController set witnesses '+arrWitnesses);
-    });
+    }, 'wait');
 
     this.edit = function(witness) {
       if ($scope.autoUpdWitnessesList) return;

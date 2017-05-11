@@ -2,7 +2,7 @@
   "name": "byteball",
   "description": "A wallet for decentralized value",
   "author": "Byteball",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "keywords": [
     "wallet",
     "byteball",
@@ -62,7 +62,9 @@
     "lodash": "^4.6.1",
     "preconditions": "^1.0.8",
     "shelljs": "^0.3.0",
-    "sjcl": "^1.0.2"
+    "sjcl": "^1.0.2",
+    "unzip": "git+https://github.com/xJeneKx/unzip.git",
+    "zip": "git+https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {
     "innosetup-compiler": "^5.5.9"

@@ -48,6 +48,9 @@ angular.module('copayApp.services')
       name: 'Pусский',
       isoCode: 'ru',
     }, {
+      name: 'Bahasa Indonesia',
+      isoCode: 'id',
+    }, {
       name: 'Türk',
       isoCode: 'tr',
     }];
