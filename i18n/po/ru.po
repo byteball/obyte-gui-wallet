@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 00:52-0400\n"
+"PO-Revision-Date: 2017-05-11 01:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -382,7 +382,7 @@ msgstr "Удалить кошелёк"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
-msgstr "Удалить кошелёк"
+msgstr "Удалить кошелек"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
@@ -645,7 +645,7 @@ msgstr "Лёгкий кошелёк"
 
 #: src/js/controllers/disclaimer.js:8
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -793,7 +793,7 @@ msgstr "Контрагент:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr "Окончательно удалить этот кошелёк. ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
+msgstr "Окончательно удалить этот кошелек. ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
@@ -875,7 +875,7 @@ msgstr "Восстановление возможно только в полны
 
 #: public/views/walletHome.html:48
 msgid "Recreating Wallet..."
-msgstr "Воссоздаю кошелёк..."
+msgstr "Воссоздаю кошелек..."
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
@@ -888,7 +888,7 @@ msgstr "Информация о выпуске"
 #: public/views/correspondentDevices.html:13
 #: public/views/modals/destination-address.html:80
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -901,7 +901,7 @@ msgstr "Повторите пароль"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Заменить"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
@@ -918,11 +918,11 @@ msgstr "Запросить платёж"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
-msgstr ""
+msgstr "Требуемое число подписей"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
-msgstr ""
+msgstr "Восстановление из полной резервной копии"
 
 #: public/views/splash.html:60
 msgid "Retrying..."
@@ -953,7 +953,7 @@ msgstr "Сохранение настроек..."
 
 #: public/views/preferences.html:55
 msgid "Scan Fingerprint"
-msgstr ""
+msgstr "Сканирование отпечатка пальца"
 
 #: public/views/paperWallet.html:44
 msgid "Scan Wallet Funds"
@@ -969,7 +969,7 @@ msgstr ""
 
 #: src/js/controllers/index.js:1420
 msgid "Scan your fingerprint please"
-msgstr ""
+msgstr "Пожалуйста, отсканируйте Ваш отпечаток пальца"
 
 #: public/views/walletHome.html:47
 msgid "Scanning Wallet funds..."
@@ -989,7 +989,7 @@ msgstr "Выберите кошелёк"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr "Выберите подкошелёк"
+msgstr "Выберите подкошелек"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
@@ -1023,7 +1023,7 @@ msgstr "Отправить на email"
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
-msgstr ""
+msgstr "Отправка средств..."
 
 #: public/views/walletHome.html:499
 msgid "Sent"
@@ -1276,7 +1276,7 @@ msgstr "Ожидание..."
 
 #: public/views/preferencesDeleteWallet.html:12
 msgid "Wallet"
-msgstr ""
+msgstr "Кошелек"
 
 #: public/views/preferences.html:20
 msgid "Wallet Alias"
