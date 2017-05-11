@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 03:15-0400\n"
+"PO-Revision-Date: 2017-05-11 03:24-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -546,7 +546,7 @@ msgstr "Аппаратный кошелек"
 
 #: public/views/backup.html:54
 msgid "Hide the Wallet Seed"
-msgstr "Скрыть зерно"
+msgstr "Скрыть мнемонику (seed)"
 
 #: src/js/controllers/index.js:533
 msgid "History"
@@ -728,7 +728,7 @@ msgstr "Примечание"
 
 #: public/views/backup.html:93
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr "Рекомендуется удалить мнемонику (seed) кошелька с устройства, как только Вы ее записали."
+msgstr "Рекомендуется удалить мнемонику кошелька (seed) с устройства, как только Вы ее записали."
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
@@ -867,7 +867,7 @@ msgstr "Восстановить"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr "Восстановление из зерна"
+msgstr "Восстановление из мнемоники (seed)"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
@@ -1309,7 +1309,7 @@ msgstr "Имя кошелька"
 
 #: public/views/backup.html:43
 msgid "Wallet seed not available."
-msgstr "Зерно недоступно"
+msgstr "Мнемоника кошелька (seed) недоступна."
 
 #: public/views/modals/destination-address.html:11
 #: public/views/modals/destination-address.html:25
@@ -1353,7 +1353,7 @@ msgstr "У вас нет кошелька"
 #: public/views/backup.html:64
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr "Зерно кошелька:"
+msgstr "Мнемоника (seed) Вашего кошелька:"
 
 #: public/views/export.html:33
 msgid "Your export password"
