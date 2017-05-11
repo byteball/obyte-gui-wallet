@@ -40,9 +40,7 @@ angular.module('copayApp.services')
 			reader.readAsArrayBuffer(file);
 		}
 		else {
-			fs.readFile(file.path, function(err, fileBuffer) {
-				return err ? cb(err) : cb(null, fileBuffer);
-			});
+			return cb(null, fs.createReadStream(file.path));
 		}
 	};
 	
@@ -63,6 +61,10 @@ angular.module('copayApp.services')
 				return err ? cb(err) : cb(null, data);
 			});
 		}
+	};
+	
+	root.getPath = function(path, cb) {
+		return cb(null, path.replace(/\\/g, '/'));
 	};
 	
 	root.nwWriteFile = function(path, data, cb) {
@@ -136,6 +138,28 @@ angular.module('copayApp.services')
 				return err ? cb(err) : cb(null, entries);
 			});
 		}
+	};
+	
+	root.nwMoveFile = function(oldPath, newPath, cb){
+		var read = fs.createReadStream(oldPath);
+		var write = fs.createWriteStream(newPath);
+
+		read.pipe(write);
+		read.on('end',function() {
+			fs.unlink(oldPath, cb);
+		});
+	};
+	
+	root.nwUnlink = function(path, cb) {
+		fs.unlink(path, cb);
+	};
+	
+	root.nwRmDir = function(path, cb) {
+		fs.rmdir(path, cb);
+	};
+	
+	root.nwExistsSync = function(path) {
+		return fs.existsSync(path);
 	};
 	
 	

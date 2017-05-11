@@ -7,12 +7,10 @@ angular.module('copayApp.services')
 	var projectNumber;
 	var _ws;
 	
-	var eventBus = require('byteballcore/event_bus.js');
-	var network = require('byteballcore/network.js');
-	var device = require('byteballcore/device.js');
-	
+	var eventBus = require('byteballcore/event_bus.js');	
 	
 	function sendRequestEnableNotification(ws, registrationId) {
+		var network = require('byteballcore/network.js');
 		network.sendRequest(ws, 'hub/enable_notification', registrationId, false, function(ws, request, response) {
 			if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 		});
@@ -67,6 +65,7 @@ angular.module('copayApp.services')
 	function disable_notification() {
 		storageService.getPushInfo(function(err, pushInfo) {
 			storageService.removePushInfo(function() {
+				var network = require('byteballcore/network.js');
 				network.sendRequest(_ws, 'hub/disable_notification', pushInfo.registrationId, false, function(ws, request, response) {
 					if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 				});

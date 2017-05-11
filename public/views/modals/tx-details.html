@@ -87,7 +87,7 @@
     </li>
     <li class="line-b p10 row collapse">
       <div class="text-gray small-2 columns"><span>Unit</span>:</div>
-      <div class="right small-10 columns enable_text_select ellipsis">{{btx.unit}}</div>
+      <div class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer()" class=" ">{{btx.unit}}</a></div>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
       <span class="text-gray" translate>Note</span>:
@@ -116,13 +116,5 @@
     </li>
   </ul>
 
-  <!--div ng-show="btx.unit" class="tx-details-blockchain">
-    <div class="text-center m20t">
-      <button class="button outline round dark-gray tiny" ng-click="$root.openExternalLink('https://' +
-        (getShortNetworkName() == 'test' ? 'test-' : '') + 'insight.bitpay.com/tx/' + btx.unit)">
-        <span class="text-gray" translate>See it on the blockchain</span>
-      </button>
-    </div>
-  </div-->
 
 </div>
