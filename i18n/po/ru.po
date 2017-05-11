@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-10 16:31-0400\n"
+"PO-Revision-Date: 2017-05-11 00:52-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -46,16 +46,16 @@ msgstr "Принять приглашение от другого устройс
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Аккаунт"
 
 #: public/views/correspondentDevices.html:30
 msgid "Add a new device"
-msgstr ""
+msgstr "Добавить новое устройство"
 
 #: public/views/modals/destination-address.html:102
 #: public/views/modals/destination-address.html:95
 msgid "Add a new entry"
-msgstr ""
+msgstr "Добавить новую запись"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -70,7 +70,7 @@ msgstr "Адрес"
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:19
 msgid "Addressbook"
-msgstr ""
+msgstr "Адресная книга"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -125,7 +125,7 @@ msgstr "Вы уверены, что хотите удалить этот кош�
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Актив"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:288
@@ -184,7 +184,7 @@ msgstr "ОТМЕНА"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "ПРОДОЛЖИТЬ"
 
 #: public/views/modals/destination-address.html:123
 #: public/views/walletHome.html:429
@@ -201,7 +201,7 @@ msgstr "Изменение псевдонима кошелька влияет т
 
 #: src/js/controllers/index.js:537
 msgid "Chat"
-msgstr ""
+msgstr "Чат"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
@@ -287,7 +287,7 @@ msgstr ""
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr ""
+msgstr "Не удалось расшифровать"
 
 #: public/views/walletHome.html:463
 msgid "Could not fetch transaction history"
@@ -297,7 +297,7 @@ msgstr "Не удалось получить историю транзакций
 #: src/js/services/profileService.js:469
 #: src/js/services/profileService.js:491
 msgid "Could not import"
-msgstr ""
+msgstr "Не удалось импортировать"
 
 #: src/js/services/profileService.js:419
 msgid "Could not import. Check input file and password"
@@ -423,7 +423,7 @@ msgstr "Скачать CSV-файл"
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:34
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -484,7 +484,7 @@ msgstr "французский"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "От"
 
 #: public/views/editCorrespondentDevice.html:28
 msgid "Full address:"
