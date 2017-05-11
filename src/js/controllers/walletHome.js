@@ -683,13 +683,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 	self.current_payment_key = current_payment_key;
 	  
-    //self.setOngoingProcess(gettext('Creating transaction'));
+    self.setOngoingProcess(gettext('sending'));
     $timeout(function() {
 
         profileService.requestTouchid(function(err) {
             if (err) {
                 profileService.lockFC();
-                //self.setOngoingProcess();
+                self.setOngoingProcess();
                 self.error = err;
                 $timeout(function() {
 					delete self.current_payment_key;
@@ -820,7 +820,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				};
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
-					//self.setOngoingProcess();
+					self.setOngoingProcess();
 					breadcrumbs.add('done payment in '+asset+', err='+err);
 					delete self.current_payment_key;
 					profileService.bKeepUnlocked = false;
