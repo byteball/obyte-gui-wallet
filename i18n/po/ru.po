@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 03:24-0400\n"
+"PO-Revision-Date: 2017-05-11 03:48-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -116,7 +116,7 @@ msgstr "Одобрить создание кошелька на других у�
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить резервную копию мнемоники?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -151,7 +151,7 @@ msgstr "Резервное копирование мнемоники (seed)"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Резервная копия мнемоники удалена"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
@@ -346,11 +346,11 @@ msgstr "Создание кошелька..."
 
 #: public/views/backup.html:99
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "УДАЛИТЬ МНЕМОНИКУ"
 
 #: public/views/modals/bind.html:57
 msgid "Data feed name:"
-msgstr ""
+msgstr "Имя канала данных:"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -414,7 +414,7 @@ msgstr "Не видите свой язык на Crowdin? Свяжитесь с 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:37
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 #: public/views/walletHome.html:558
 msgid "Download CSV file"
@@ -879,7 +879,7 @@ msgstr "Воссоздаю кошелек..."
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
-msgstr ""
+msgstr "Отказался"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -1203,7 +1203,7 @@ msgstr "Транзакция"
 
 #: public/views/walletHome.html:488
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "Транзакций<br>Загружено"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
