@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 03:04-0400\n"
+"PO-Revision-Date: 2017-05-11 03:15-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -728,7 +728,7 @@ msgstr "Примечание"
 
 #: public/views/backup.html:93
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "Рекомендуется удалить мнемонику (seed) кошелька с устройства, как только Вы ее записали."
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
@@ -1080,7 +1080,7 @@ msgstr "испанский"
 
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
-msgstr ""
+msgstr "Укажите мнемонику (seed)..."
 
 #: public/views/preferences.html:49
 #: public/views/preferencesGlobal.html:82
@@ -1248,11 +1248,11 @@ msgstr "Версия"
 
 #: public/views/walletHome.html:179
 msgid "WARNING: Backup needed"
-msgstr "ПРЕДУПРЕЖДЕНИЕ: Необходимо резервное копирование"
+msgstr "ВНИМАНИЕ: Необходимо резервное копирование"
 
 #: public/views/backup.html:83
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
-msgstr ""
+msgstr "ВНИМАНИЕ: Эта мнемоника (seed) была создана с паролем. Для восстановления этого кошелька необходимо указать и мнемонику и пароль."
 
 #: public/views/import.html:50
 msgid "WARNING: This will permanently delete all your existing wallets!"
@@ -1318,7 +1318,7 @@ msgstr "Кошельки"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
-msgstr "Предупреждение!"
+msgstr "Внимание!"
 
 #: public/views/walletHome.html:394
 msgid "Who signs:"
