@@ -89,7 +89,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" ng-attr-rn-carousel-controls="!index.isCordova">
+            <ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
 						<strong class="size-36" ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.totalStr}}</strong>
@@ -103,6 +103,11 @@
 							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.pending.toLocaleString()}}</span>
 						</div>
 					</div>
+          <style ng-if="index.isCordova">
+            .rn-carousel-controls {
+              display: none !important;
+            }
+          </style>
                     <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
