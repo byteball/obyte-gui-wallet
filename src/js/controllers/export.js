@@ -112,6 +112,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExportPC = function(connection) {
 			self.connection = connection;
 			saveFile(null, function(path) {
+				if(!path) return;
 				var password = Buffer.from(self.password);
 				var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
 				zip = new _zip(path, {
