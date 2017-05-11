@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 01:21-0400\n"
+"PO-Revision-Date: 2017-05-11 01:31-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1085,11 +1085,11 @@ msgstr ""
 #: public/views/preferences.html:49
 #: public/views/preferencesGlobal.html:82
 msgid "Spending Restrictions"
-msgstr ""
+msgstr "Ограничение расходов"
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
-msgstr ""
+msgstr "Все еще не завершено"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/export.js:100
@@ -1102,11 +1102,11 @@ msgstr "Успешно"
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
-msgstr ""
+msgstr "Считать кошелек"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
-msgstr ""
+msgstr "Пополнить с бумажного кошелька"
 
 #: public/views/walletHome.html:50
 msgid "Syncing... {{index.syncProgress}}"
@@ -1256,7 +1256,7 @@ msgstr ""
 
 #: public/views/import.html:50
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "ВНИМАНИЕ: Все ваши существующие кошельки будут безвозвратно удалены!"
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
