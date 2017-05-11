@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 01:51-0400\n"
+"PO-Revision-Date: 2017-05-11 02:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -205,7 +205,7 @@ msgstr "Чат"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Выберите устройство для отправки"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -267,7 +267,7 @@ msgstr "Скопировано в буфер обмена"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Корреспонденты не восстанавливаются."
 
 #: src/js/controllers/walletHome.js:595
 msgid "Could not create payment proposal"
@@ -279,7 +279,7 @@ msgstr "Не удалось создать используя указанный
 
 #: src/js/services/profileService.js:223
 msgid "Could not create using the specified extended public key"
-msgstr ""
+msgstr "Не удалось создать используя указанный расширенный открытый ключ"
 
 #: src/js/services/profileService.js:206
 msgid "Could not create: Invalid wallet seed"
@@ -362,7 +362,7 @@ msgstr ""
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "Расшифровка бумажного кошелька может занять до пяти минут на этом устройстве. Пожалуйста, будьте терпеливы и держите приложение открытым."
 
 #: public/views/walletHome.html:136
 msgid "Definition"
@@ -386,7 +386,7 @@ msgstr "Удалить кошелек"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
-msgstr ""
+msgstr "Стратегия деривации"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
@@ -405,7 +405,7 @@ msgstr "Имя устройства"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Имя устройства видимо для других устройств, с которыми Вы общаетесь."
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
@@ -611,7 +611,7 @@ msgstr "Недействительно"
 
 #: src/js/controllers/index.js:1427
 msgid "Invalid Touch ID"
-msgstr ""
+msgstr "Недействительный Touch ID (датчик идентификации по отпечатку пальца)"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
@@ -830,7 +830,7 @@ msgstr "Нажмите ещё раз для выхода"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "Частные активы (например, blackbytes) не восстанавливаются."
 
 #: src/js/controllers/walletHome.js:1263
 msgid "Private payloads sent"
