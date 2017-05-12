@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-11 04:06-0400\n"
+"PO-Revision-Date: 2017-05-12 07:31-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -112,11 +112,11 @@ msgstr "Событие зарегистрировано оракулом"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr "Одобрить создание кошелька на других устройствах"
+msgstr "Одобрите создание кошелька на других устройствах"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr "Вы уверены, что хотите удалить резервную копию мнемоники?"
+msgstr "Вы уверены, что хотите удалить мнемонику?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -151,7 +151,7 @@ msgstr "Резервное копирование мнемоники (seed)"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr "Резервная копия мнемоники удалена"
+msgstr "Мнемоника удалена"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
@@ -205,7 +205,7 @@ msgstr "Чат"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr "Выберите устройство для отправки"
+msgstr "Выберите устройство куда отправить"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -435,7 +435,7 @@ msgstr "Push-уведомления"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr "Введите полученный от другого устройства код сопряжения, или используйте Вашу камеру (значок в правом верхнем углу) для сканирования QR-кода отображаемого на другом устройстве."
+msgstr "Введите полученный от другого устройства код сопряжения или используйте Вашу камеру (значок в правом верхнем углу) для сканирования QR-кода, отображаемого на другом устройстве."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -611,7 +611,7 @@ msgstr "Недействительно"
 
 #: src/js/controllers/index.js:1427
 msgid "Invalid Touch ID"
-msgstr "Недействительный Touch ID (датчик идентификации по отпечатку пальца)"
+msgstr "Недействительный Touch ID"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
@@ -740,7 +740,7 @@ msgstr "Адрес оракула"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr "Пара"
+msgstr "Спарить"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
@@ -879,7 +879,7 @@ msgstr "Воссоздаю кошелек..."
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
-msgstr "Отказался"
+msgstr "Отказано"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -1064,7 +1064,7 @@ msgstr "Показать все"
 
 #: public/views/backup.html:53
 msgid "Show the Wallet Seed Anyway"
-msgstr "В любом случае показать мнемонику (seed) кошелька"
+msgstr "Всё равно показать мнемонику (seed) кошелька"
 
 #: src/js/controllers/index.js:370
 msgid "Sign transaction spending  from wallet ?"
@@ -1114,7 +1114,7 @@ msgstr "Синхронизация... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr "ТОР"
+msgstr "TOR"
 
 #: public/views/walletHome.html:464
 #: public/views/walletHome.html:83
@@ -1326,7 +1326,7 @@ msgstr "Кто подписывает:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr "Адреса свидетелей"
+msgstr "Адрес свидетеля"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
@@ -1402,7 +1402,7 @@ msgstr "необязательно"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr "кому"
+msgstr "на"
 
 #: public/views/walletHome.html:370
 #: public/views/walletHome.html:381
