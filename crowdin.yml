@@ -1,0 +1,7 @@
+files:
+  - source: /i18n/docs/appstore_en.txt
+    translation: /i18n/docs/appstore_%two_letters_code%.txt
+  - source: /i18n/docs/updateinfo_en.txt
+    translation: /i18n/docs/updateinfo_%two_letters_code%.txt
+  - source: /i18n/po/template.pot
+    translation: /i18n/po/%two_letters_code%.po
