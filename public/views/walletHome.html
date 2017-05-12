@@ -108,6 +108,11 @@
               display: none !important;
             }
           </style>
+          <style>
+          	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
+            	background-color: {{index.backgroundColor}};
+            }
+          </style>
                     <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
