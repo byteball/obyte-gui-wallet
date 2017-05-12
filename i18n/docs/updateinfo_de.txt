@@ -1,24 +1,7 @@
-Wichtige Updates
-=============
-
-* Anpassungen für iOS 9
-* Trezor Hardwarewallet Anbindung
-* Paperwallet Unterstüzung
-
-Kleinere Updates
-=============
-
-* Neuer Startbildschirm um Copay auf OSX zu installieren
-* Fix: Annimationen
-* Zurück-Buttons auf Android-Systemen berücksichtigen, wenn ein modales Fenster geöffnet ist
-* Fix: Ton nach Scan von QR-Codes auf Andoid-Systemen
-* Fix: Herkunftspfad bei erweiterten Informationen
-* Nicht-Abwärtskompatibilität URI für Zahlungsprotokoll hinzufügen
-* Verstecken des unteren Menues bei nicht autorisierten Wallets
-* Fix: Formulierung auf die Backup-Seite
-* Fix: Übersetzung
-* Aktualisierung der Paketabhängigkeiten mit Bower
-* Anpassungen für iOS 9
-* Fix: Gedächtnisstütze mit privaten Schlüssel verschlüsselt
-* Fix: Zeitangabe im Transaktionsvorschlag
-* Fix: Autofokus zur Kennworteingabe bei der Kennwortanforderung im modalen Ausgaben-Fenster
+* TREZOR support (only in Chrome App version)
+* New notification system. Reduced bandwidth usage and better handling of network disconnections
+* Addressbook
+* Transaction history cache and better ordering
+* Better BIP44 Support: prevent gaps in indexes when scanning wallets and generating addresses
+* Per Wallet BWS Setting
+* Fixes resume event on mobile
