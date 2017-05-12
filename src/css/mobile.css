@@ -845,6 +845,30 @@ textarea:focus
   font-weight: 600;
 }
 
+.rn-carousel-control {
+	top: 0%;
+	height: 100%;
+}
+.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
+	opacity: 0.6;
+	font-size: 80px;
+	background-color: rgb(74, 144, 226);
+}
+.rn-carousel-control.rn-carousel-control-next {
+	right: -0.2em;
+    width: 15%;
+}
+.rn-carousel-control.rn-carousel-control-prev {
+	left: -0.2em;
+    width: 15%;
+}
+.rn-carousel-control.rn-carousel-control-prev:before {
+	content: "‹";
+}
+.rn-carousel-control.rn-carousel-control-next:before {
+	content: "›";
+}
+
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */
