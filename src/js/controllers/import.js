@@ -23,14 +23,16 @@ angular.module('copayApp.controllers').controller('importController',
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/Byteball/';
 			fileSystemService.readdir(backupDirPath, function(err, listFilenames) {
-				listFilenames.forEach(function(name) {
-					var dateNow = parseInt(name.split(' ')[1]);
-					self.arrBackupFiles.push({
-						name: name.replace(dateNow, new Date(dateNow).toLocaleString()),
-						originalName: name,
-						time: dateNow
-					})
-				});
+				if (listFilenames){
+					listFilenames.forEach(function(name) {
+						var dateNow = parseInt(name.split(' ')[1]);
+						self.arrBackupFiles.push({
+							name: name.replace(dateNow, new Date(dateNow).toLocaleString()),
+							originalName: name,
+							time: dateNow
+						})
+					});
+				}
 				$timeout(function() {
 					$rootScope.$apply();
 				});
