@@ -1,23 +1,23 @@
-Secure bitcoin on your own terms with an open source, multisignature wallet from BitPay. 
-Copay users can hold funds individually or share finances securely with other users with multisignature wallets, which prevent unauthorized payments by requiring multiple approvals. Here are some ways Copay can be used with others:
+Sichere Bitcoins zu eigenen Bedingungen, mit einem quelloffenen Gemeinschaftswallet (elektronische Brieftasche mit Mehrfachunterschriften) von BitPay. 
+Copay Nutzer können ihre Beträge individuell speichern oder ihre Finanzen mit anderen Nutzern in Gemeinschaftswallets teilen, die je nach Einstellung mehrere Bestätigungen (elektronische Unterschriften) benötigen und so nichtautorisierte Zahlungen verhindern. Ein paar Einsatzmöglichkeiten, wie ein solches Wallet mit anderen Copayern genutzt werden kann:
 
-To save for vacations or joint purchases with friends 
-To track family spending and allowances
-To manage business, club, or organization funds and expenses
+Ansparen von Beträgen für Urlaub oder gemeinsame Anschaffungen (z. B. mit Freunden) 
+Überwachung von Ausgaben und Einkünften der Familie
+Organisation der Ausgaben in Firmen, Vereinen oder Organisationen
 
-We built the following features into this version of Copay for a bitcoin wallet that doesn't compromise on security or accessibility:
+Folgende Funktionen wurden in diese Version von Copay eingebaut um ein Bitcoin Wallet anzubieten das keine Kompromisse in Sichereit oder Zugänglichkeit eingeht:
 
-Multiple wallet creation and management in-app 
-Intuitive multisignature security for personal or shared wallets
-Easy spending proposal flow for shared wallets and group payments
-Hierarchical deterministic (HD) address generation and wallet backups 
-Device-based security: all private keys are stored locally, not in the cloud
-Support for Bitcoin testnet wallets
-Synchronous access across all major mobile and desktop platforms
-Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure bitcoin payments
-Support for 150+ currency pricing options and unit denomination in BTC or bits
-Email notifications for payments and transfers
-Customizable wallet naming and background colors
-10 supported languages (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
+Anlage und Verwaltung von mehreren Wallets innerhalb der Anwendung 
+Intiutive mehrfachunterschriften Sicherheit für persönliche und geteilete Wallets
+Einfache Ausgabenvorschläge für geteilte Walltes und Gruppenzahlungen
+Hierarchische deterministische (HD) Adresserzeugung und Sicherung der Wallets 
+Gerätebasierte Sicherheit: Alle privaten Schlüssel werden auf dem Gerät und nicht in der Cloud gespreichert
+Unterstützung von Bitcoin Testnet Wallets
+Gleichzeitiger Zugriff über alle wichtigen mobilen Systeme und Desktop-Plattformen
+Zahlungsprotokoll (BIP70-BIP73) Unterstützung: Leicht identifizierbare Zahlungsanforderungen und nachvollziehbare sichere Bitcoinzahlungen
+Unterstützung von 150+ verschiedenen Währungen und Stückelung in BTC oder bits
+E-Mail Benachrichtigung für Zahlungen und Transaktionen
+Anpasspare Wallets: Eigene Namen und Hintergrundfarben
+Unterstützung von 10 Sprachen (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
 
-Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay).
+Copay ist eine kostenlose und quelloffene Software, die auf nicht firmeneigenen Servern läuft und es somit nicht nötig ist, sich auf ein bestimmtes Unternehmen und dessen kontinuierliche Unterstützung zu verlassen. Jeder hat die Möglichkeit den Quelltext zu überprüfen oder auf GitHub (https://github.com/bitpay/copay) eigene Änderungen beizutragen und an der Weiterentwicklung mitzuwirken.
