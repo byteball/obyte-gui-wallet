@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-12 07:00-0400\n"
+"PO-Revision-Date: 2017-05-12 07:12-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1326,7 +1326,7 @@ msgstr "Кто подписывает:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr "Адреса свидетелей"
+msgstr "Адрес свидетеля"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
@@ -1402,7 +1402,7 @@ msgstr "необязательно"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr "кому"
+msgstr "на"
 
 #: public/views/walletHome.html:370
 #: public/views/walletHome.html:381
