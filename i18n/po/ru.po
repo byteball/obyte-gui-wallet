@@ -423,7 +423,7 @@ msgstr "Скачать CSV-файл"
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:34
 msgid "Edit"
-msgstr "Редактировать"
+msgstr "Ред."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
