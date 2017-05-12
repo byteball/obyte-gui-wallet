@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-12 06:51-0400\n"
+"PO-Revision-Date: 2017-05-12 07:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -879,7 +879,7 @@ msgstr "Воссоздаю кошелек..."
 
 #: src/js/controllers/index.js:156
 msgid "Refused"
-msgstr "Отказался"
+msgstr "Отказано"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -1064,7 +1064,7 @@ msgstr "Показать все"
 
 #: public/views/backup.html:53
 msgid "Show the Wallet Seed Anyway"
-msgstr "В любом случае показать мнемонику (seed) кошелька"
+msgstr "Всё равно показать мнемонику (seed) кошелька"
 
 #: src/js/controllers/index.js:370
 msgid "Sign transaction spending  from wallet ?"
@@ -1114,7 +1114,7 @@ msgstr "Синхронизация... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr "ТОР"
+msgstr "TOR"
 
 #: public/views/walletHome.html:464
 #: public/views/walletHome.html:83
