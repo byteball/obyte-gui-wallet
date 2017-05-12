@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-12 06:41-0400\n"
+"PO-Revision-Date: 2017-05-12 06:51-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -435,7 +435,7 @@ msgstr "Push-уведомления"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr "Введите полученный от другого устройства код сопряжения, или используйте Вашу камеру (значок в правом верхнем углу) для сканирования QR-кода отображаемого на другом устройстве."
+msgstr "Введите полученный от другого устройства код сопряжения или используйте Вашу камеру (значок в правом верхнем углу) для сканирования QR-кода, отображаемого на другом устройстве."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -611,7 +611,7 @@ msgstr "Недействительно"
 
 #: src/js/controllers/index.js:1427
 msgid "Invalid Touch ID"
-msgstr "Недействительный Touch ID (датчик идентификации по отпечатку пальца)"
+msgstr "Недействительный Touch ID"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
@@ -740,7 +740,7 @@ msgstr "Адрес оракула"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr "Пара"
+msgstr "Спарить"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
