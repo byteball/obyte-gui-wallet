@@ -1220,7 +1220,7 @@ msgstr "Не удается отправить предложение транз
 #: public/views/modals/tx-details.html:105
 #: public/views/walletHome.html:519
 msgid "Unconfirmed"
-msgstr "Неподтверждено"
+msgstr "Ожидает"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
