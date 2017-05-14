@@ -330,7 +330,7 @@ msgstr "Создать новый кошелек вместе с?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Создать кошелёк {{requiredCopayers}}-из-{{totalCopayers}}"
+msgstr "Создать кошелёк {{requiredCosigners}}-из-{{totalCosigners}}"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
