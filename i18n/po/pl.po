@@ -1414,7 +1414,7 @@ msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""{{cancel_label || 'Anuluj'}}"
+msgstr "{{cancel_label || 'Anuluj'}}"
 
 #: src/js/controllers/walletHome.js:1304
 msgid "{{fee}} will be deducted for bitcoin networking fees"
