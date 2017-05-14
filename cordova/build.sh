@@ -150,6 +150,9 @@ if [ ! -d $PROJECT ]; then
 
 	cordova plugin add https://github.com/phonegap-build/PushPlugin.git
 	checkOK
+	
+	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
+	checkOK
 
 fi
 

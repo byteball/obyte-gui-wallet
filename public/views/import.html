@@ -29,9 +29,13 @@
 	<div>
 		<form class="columns" ng-submit="import.walletImport()">
 			<label><span translate>Your wallet file:</span></label>
-			<input type="file" ng-file-select>
+			<div ng-show="import.android && import.androidVersion < 5">
+				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round">Choose File</button>
+				{{import.oldAndroidNameFile}}
+			</div>
+			<input ng-show="!import.android || import.androidVersion>=5" type="file" ng-file-select>
 			<input type="password" placeholder="Password" ng-model="import.password">
-			<input ng-disabled="import.imported || import.password == '' || !file" type="submit"
+			<input ng-disabled="import.imported || import.password == '' || (!file && !import.oldAndroidFilePath)" type="submit"
 				   class="button expand black round"
 				   value="{{'Import'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 		</form>

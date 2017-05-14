@@ -7,6 +7,8 @@ angular.module('copayApp.controllers').controller('importController',
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('byteballcore/conf');
+		var userAgent = navigator.userAgent;
+		
 		if(isCordova) {
 			var zip = new JSZip();
 		}else{
@@ -18,7 +20,11 @@ angular.module('copayApp.controllers').controller('importController',
 		self.password = '';
 		self.error = '';
 		self.iOs = isMobile.iOS();
+		self.android = isMobile.Android();
 		self.arrBackupFiles = [];
+		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
+		self.oldAndroidFilePath = null;
+		self.oldAndroidNameFile = '';
 		
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/Byteball/';
@@ -204,13 +210,31 @@ angular.module('copayApp.controllers').controller('importController',
 			}
 		}
 		
+		self.oldAndroidInputFileClick = function() {
+			window.plugins.mfilechooser.open([], function (uri) {
+				self.oldAndroidFilePath = 'file://' + uri;
+				self.oldAndroidNameFile = uri.split('/').pop();
+				$timeout(function() {
+					$rootScope.$apply();
+				});
+			}, function (error) {
+				alert(error);
+			});
+		};
+		
 		self.walletImport = function() {
 			self.imported = true;
 			self.error = '';
-			fileSystemService.readFileFromForm($scope.file, function(err, data) {
-				if (err) return showError(err);
-				unzipAndWriteFiles(data, self.password);
-			});
+			if(isMobile.Android() && self.androidVersion < 5){
+				fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
+					unzipAndWriteFiles(data, self.password);
+				})
+			}else {
+				fileSystemService.readFileFromForm($scope.file, function(err, data) {
+					if (err) return showError(err);
+					unzipAndWriteFiles(data, self.password);
+				});
+			}
 		};
 		
 		self.iosWalletImportFromFile = function(fileName) {
