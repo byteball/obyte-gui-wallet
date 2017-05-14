@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('importController',
 		self.arrBackupFiles = [];
 		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
-		self.oldAndroidNameFile = '';
+		self.oldAndroidFileName = '';
 		
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/Byteball/';
@@ -213,7 +213,7 @@ angular.module('copayApp.controllers').controller('importController',
 		self.oldAndroidInputFileClick = function() {
 			window.plugins.mfilechooser.open([], function (uri) {
 				self.oldAndroidFilePath = 'file://' + uri;
-				self.oldAndroidNameFile = uri.split('/').pop();
+				self.oldAndroidFileName = uri.split('/').pop();
 				$timeout(function() {
 					$rootScope.$apply();
 				});
