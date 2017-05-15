@@ -54,6 +54,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				/*if (!pref) {
 					chatStorage.purge(correspondent.device_address);
 				}*/
+			},
+			ifError: function(){
+				// ignore
 			}
 		});
 	});
