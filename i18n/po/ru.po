@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-16 13:11-0400\n"
+"PO-Revision-Date: 2017-05-16 13:22-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1112,7 +1112,7 @@ msgstr "Отправка средств..."
 
 #: public/views/walletHome.html:51
 msgid "Sending..."
-msgstr ""
+msgstr "Отправка..."
 
 #: public/views/walletHome.html:500
 msgid "Sent"
@@ -1145,7 +1145,7 @@ msgstr "Отправить адрес"
 
 #: public/views/walletHome.html:247
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Используйте этот адрес кошелька для получения платежей."
 
 #: public/views/walletHome.html:551
 msgid "Show all"
@@ -1477,11 +1477,11 @@ msgstr ""
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "очистить историю чата"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "дней"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
@@ -1522,7 +1522,7 @@ msgstr "необязательно"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "отправка"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
