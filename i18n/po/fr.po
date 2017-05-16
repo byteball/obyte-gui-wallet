@@ -1179,7 +1179,7 @@ msgid ""
 "and the initial sync will take several hours."
 msgstr "Le portefeuille contiendra la plupart des données du réseau Byteball. "
 "Cette version est meilleure pour la confidentialité mais demande plus de"
-"ressources. La synchro initiale peut durer plusieurs heures".
+"ressources. La synchro initiale peut durer plusieurs heures."
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"

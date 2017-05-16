@@ -683,13 +683,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 	self.current_payment_key = current_payment_key;
 	  
-    //self.setOngoingProcess(gettext('Creating transaction'));
+    indexScope.setOngoingProcess(gettext('sending'), true);
     $timeout(function() {
 
         profileService.requestTouchid(function(err) {
             if (err) {
                 profileService.lockFC();
-                //self.setOngoingProcess();
+                indexScope.setOngoingProcess(gettext('sending'), false);
                 self.error = err;
                 $timeout(function() {
 					delete self.current_payment_key;
@@ -785,6 +785,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
 						ifError: function(err){
 							delete self.current_payment_key;
+							indexScope.setOngoingProcess(gettext('sending'), false);
 							self.setSendError(err);
 						},
 						ifOk: function(shared_address){
@@ -820,7 +821,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				};
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
-					//self.setOngoingProcess();
+					indexScope.setOngoingProcess(gettext('sending'), false);
 					breadcrumbs.add('done payment in '+asset+', err='+err);
 					delete self.current_payment_key;
 					profileService.bKeepUnlocked = false;
@@ -992,7 +993,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			amount /= self.bbUnitValue;
 		return amount;
 	}
-	
 
 	this.setToAddress = function(to) {
 		var form = $scope.sendForm;
