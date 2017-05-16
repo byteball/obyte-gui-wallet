@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-12 07:31-0400\n"
+"PO-Revision-Date: 2017-05-16 13:04-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -330,7 +330,7 @@ msgstr "Создать новый кошелек вместе с?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Создать кошелёк {{requiredCopayers}}-из-{{totalCopayers}}"
+msgstr "Создать кошелёк {{requiredCosigners}}-из-{{totalCosigners}}"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -423,7 +423,7 @@ msgstr "Скачать CSV-файл"
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:34
 msgid "Edit"
-msgstr "Редактировать"
+msgstr "Ред."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -1220,7 +1220,7 @@ msgstr "Не удается отправить предложение транз
 #: public/views/modals/tx-details.html:105
 #: public/views/walletHome.html:519
 msgid "Unconfirmed"
-msgstr "Неподтверждено"
+msgstr "Ожидает"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
