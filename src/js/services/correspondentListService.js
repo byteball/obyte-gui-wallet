@@ -449,10 +449,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 	
 	eventBus.on("received_payment", function(peer_address, amount, asset){
-		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
-		addMessageEvent(true, peer_address, body);
-		device.readCorrespondent(peer_address, function(correspondent){
-			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
+		mutex.lock(["handle_message"], function(unlock){
+			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
+			addMessageEvent(true, peer_address, body);
+			device.readCorrespondent(peer_address, function(correspondent){
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
+			});
+			unlock();
 		});
 	});
 	
