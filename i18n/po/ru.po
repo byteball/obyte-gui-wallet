@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-16 13:22-0400\n"
+"PO-Revision-Date: 2017-05-16 13:36-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,11 +23,11 @@ msgstr "(возможна двойная трата)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "Оплата на контракт:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "Кто может потратить из контракта:"
 
 #: public/views/correspondentDevices.html:13
 msgid "<i class=\"fi-trash size-24\"></i>"
@@ -781,7 +781,7 @@ msgstr "Примечание"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Предложить контракт"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
@@ -891,7 +891,7 @@ msgstr "португальский"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "Засвидетельствованное значение:"
 
 #: public/views/walletHome.html:143
 #: public/views/walletHome.html:15
@@ -1498,7 +1498,7 @@ msgstr "часов"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "если оракулом отправлено событие:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
