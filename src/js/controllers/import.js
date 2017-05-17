@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('importController',
 		self.password = '';
 		self.error = '';
 		self.iOs = isMobile.iOS();
-		self.android = isMobile.Android();
+		self.android = isMobile.Android() && window.cordova;
 		self.arrBackupFiles = [];
 		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
@@ -211,19 +211,15 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		self.oldAndroidInputFileClick = function() {
-			if(window.plugins.mfilechooser) {
-				window.plugins.mfilechooser.open([], function(uri) {
-					self.oldAndroidFilePath = 'file://' + uri;
-					self.oldAndroidFileName = uri.split('/').pop();
-					$timeout(function() {
-						$rootScope.$apply();
-					});
-				}, function(error) {
-					alert(error);
+			window.plugins.mfilechooser.open([], function (uri) {
+				self.oldAndroidFilePath = 'file://' + uri;
+				self.oldAndroidFileName = uri.split('/').pop();
+				$timeout(function() {
+					$rootScope.$apply();
 				});
-			}else{
-				showError('The module was not found. Please describe your problem at https://github.com/byteball/byteball/issues');
-			}
+			}, function (error) {
+				alert(error);
+			});
 		};
 		
 		self.walletImport = function() {
