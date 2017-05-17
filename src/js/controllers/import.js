@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('importController',
 		self.password = '';
 		self.error = '';
 		self.iOs = isMobile.iOS();
-		self.android = isMobile.Android();
+		self.android = isMobile.Android() && window.cordova;
 		self.arrBackupFiles = [];
 		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
