@@ -83,16 +83,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function insertMsg(messages, msg_obj) {
-		var inserted = false;
 		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
 			var message = messages[i];
 			if (message.message_counter && msg_obj.message_counter > message.message_counter) {
 				messages.splice(i+1, 0, msg_obj);
-				inserted = true;
-				break;
+				return;
 			}
 		}
-		if (!inserted) messages.push(msg_obj);
+		messages.push(msg_obj);
 	}
 	
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
