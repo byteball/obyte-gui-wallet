@@ -296,7 +296,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
 
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
-			  <li><a ng-click="insertMyAddress()" translate>Insert my address</a></li>
+			  <li><a ng-click="insertMyAddress()" style="overflow: hidden; text-overflow: ellipsis;"><span translate>Insert my address</span> ({{(index.alias || index.walletName)}})</a></li>
 			  <li><a ng-click="requestPayment()" translate>Request payment</a></li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
