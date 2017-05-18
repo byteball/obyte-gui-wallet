@@ -35,17 +35,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
 	
-	function addIncomingMessageEvent(from_address, body){
+	function addIncomingMessageEvent(from_address, body, message_counter){
 		var walletGeneral = require('byteballcore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
 			console.log("body with markup: "+body);
-			addMessageEvent(true, from_address, body);
+			addMessageEvent(true, from_address, body, message_counter);
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body){
+	function addMessageEvent(bIncoming, peer_address, body, message_counter){
 		if (!root.messageEventsByCorrespondent[peer_address])
 			root.messageEventsByCorrespondent[peer_address] = [];
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -67,10 +67,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var msg_obj = {
 			bIncoming: bIncoming,
 			message: body,
-			timestamp: Math.floor(Date.now() / 1000)
+			timestamp: Math.floor(Date.now() / 1000),
+			message_counter: message_counter
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
-		root.messageEventsByCorrespondent[peer_address].push(msg_obj);
+		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$stickyState.reset('correspondentDevices.correspondentDevice');
@@ -79,6 +80,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		else
 			$rootScope.$digest();
+	}
+
+	function insertMsg(messages, msg_obj) {
+		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
+			var message = messages[i];
+			if (message.message_counter && msg_obj.message_counter > message.message_counter) {
+				messages.splice(i+1, 0, msg_obj);
+				return;
+			}
+		}
+		messages.push(msg_obj);
 	}
 	
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
@@ -398,42 +410,36 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		return message;
 	}
 	
-	eventBus.on("text", function(from_address, body){
-		mutex.lock(["handle_message"], function(unlock){
-			device.readCorrespondent(from_address, function(correspondent){
-				if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
-				addIncomingMessageEvent(correspondent.device_address, body);
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
-				unlock();
-			});
+	eventBus.on("text", function(from_address, body, message_counter){
+		device.readCorrespondent(from_address, function(correspondent){
+			if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
+			addIncomingMessageEvent(correspondent.device_address, body, message_counter);
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
 		});
-		
 	});
 
-	eventBus.on("chat_recording_pref", function(correspondent_address, enabled){
-		mutex.lock(["handle_message"], function(unlock){
-			device.readCorrespondent(correspondent_address, function(correspondent){
-				var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
-				correspondent.peer_record_pref = enabled;
-				var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
-				device.updateCorrespondentProps(correspondent);
-				if (newState != oldState) {
-					if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
-					var message = {
-						type: 'system',
-						message: JSON.stringify({state: newState}),
-						timestamp: Math.floor(Date.now() / 1000),
-						chat_recording_status: true
-					};
-					root.messageEventsByCorrespondent[correspondent_address].push(parseMessage(message));
-					$rootScope.$digest();
-					chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
-				}
-				if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
-					root.currentCorrespondent.peer_record_pref = enabled ? 1 : 0;
-				}
-				unlock();
-			});
+	eventBus.on("chat_recording_pref", function(correspondent_address, enabled, message_counter){
+		device.readCorrespondent(correspondent_address, function(correspondent){
+			var oldState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+			correspondent.peer_record_pref = enabled;
+			var newState = (correspondent.peer_record_pref && correspondent.my_record_pref);
+			device.updateCorrespondentProps(correspondent);
+			if (newState != oldState) {
+				if (!root.messageEventsByCorrespondent[correspondent_address]) root.messageEventsByCorrespondent[correspondent_address] = [];
+				var message = {
+					type: 'system',
+					message: JSON.stringify({state: newState}),
+					timestamp: Math.floor(Date.now() / 1000),
+					chat_recording_status: true,
+					message_counter: message_counter
+				};
+				insertMsg(root.messageEventsByCorrespondent[correspondent_address], parseMessage(message));
+				$rootScope.$digest();
+				chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
+			}
+			if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
+				root.currentCorrespondent.peer_record_pref = enabled ? 1 : 0;
+			}
 		});
 	});
 	
@@ -448,9 +454,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 	
-	eventBus.on("received_payment", function(peer_address, amount, asset){
+	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter){
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">Payment: '+getAmountText(amount, asset)+'</a>';
-		addMessageEvent(true, peer_address, body);
+		addMessageEvent(true, peer_address, body, message_counter);
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
