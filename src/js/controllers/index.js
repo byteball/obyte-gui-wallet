@@ -20,6 +20,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
+  self.arrBalances = [];
+  self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
     /*

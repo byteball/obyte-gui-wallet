@@ -235,7 +235,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeQuotes(text){
-		return text.replace(/(['\\])/g, "\\$1").replace(/"/, "&quot;");
+		return text.replace(/(['\\])/g, "\\$1").replace(/"/g, "&quot;");
 	}
 	
 	function setCurrentCorrespondent(correspondent_device_address, onDone){
