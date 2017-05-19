@@ -102,12 +102,12 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar-section.middle {
-  left: 4.7rem;
+  left: 3.8rem;
   right: 4.7rem;
 }
 
 .left-small {
-  width: 4.7rem;
+  width: 3.8rem;
   line-height: 2.95rem;
   border-right: none;
 }
