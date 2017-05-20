@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2017-05-16 13:22-0400\n"
+"PO-Revision-Date: 2017-05-20 10:02-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(站点不能看到你的余额并且没有钱会被花掉)"
 
 #: public/views/walletHome.html:509
 msgid "(possible double spend)"
@@ -23,11 +23,11 @@ msgstr "（可能双重支付）"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "支付到合约"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "谁能解锁合约"
 
 #: public/views/correspondentDevices.html:13
 msgid "<i class=\"fi-trash size-24\"></i>"
@@ -35,11 +35,11 @@ msgstr ""
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "为去中化价值准备的钱包"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "关于ByteBall"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -50,11 +50,11 @@ msgstr "承诺"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "接受邀请"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "从其它设备按受邀请"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -62,7 +62,7 @@ msgstr "账户"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "添加新设备"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
@@ -98,15 +98,15 @@ msgstr "<i>{{index.walletName}}</i>的别名"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "所有钱包地址"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "欢迎为Byteball的翻译添砖加瓦，注册crowdin.com并参与Byteball项目"
 
 #: public/views/walletHome.html:118
 msgid "Also"
-msgstr ""
+msgstr "还有"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
