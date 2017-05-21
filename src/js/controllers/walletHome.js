@@ -1111,6 +1111,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var form = $scope.sendForm;
 		if (!form || !form.amount) // disappeared?
 			return console.log('form.amount has disappeared');
+		if (indexScope.arrBalances.length === 0)
+			return;
 		if (indexScope.arrBalances[indexScope.assetIndex].asset === 'base'){
 			this._amount = null;
 			this.bSendAll = true;
