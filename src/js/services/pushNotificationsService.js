@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-.factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, storageService, configService, lodash, isCordova) {
+.factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, $timeout, storageService, configService, lodash, isCordova) {
 	var root = {};
 	var defaults = configService.getDefaults();
 	var usePushNotifications = isCordova && !isMobile.Windows();
@@ -30,17 +30,19 @@ angular.module('copayApp.services')
 	eventBus.on('receivedPushProjectNumber', function(ws, data) {
 		_ws = ws;
 		if (data && data.projectNumber !== undefined) {
-			storageService.getPushInfo(function(err, pushInfo) {
-				var config = configService.getSync();
-				projectNumber = data.projectNumber + "";
-				if (pushInfo && projectNumber === "0") {
-					root.pushNotificationsUnregister(function() {
-						
-					});
-				}
-				else if (projectNumber && config.pushNotifications.enabled) {
-					root.pushNotificationsInit();
-				}
+			$timeout(function(){
+				storageService.getPushInfo(function(err, pushInfo) {
+					var config = configService.getSync();
+					projectNumber = data.projectNumber + "";
+					if (pushInfo && projectNumber === "0") {
+						root.pushNotificationsUnregister(function() {
+
+						});
+					}
+					else if (projectNumber && config.pushNotifications.enabled) {
+						root.pushNotificationsInit();
+					}
+				});
 			});
 		}
 	});

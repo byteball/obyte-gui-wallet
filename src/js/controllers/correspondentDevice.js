@@ -48,7 +48,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					};
 					$scope.autoScrollEnabled = true;
 					$scope.messageEvents.push(correspondentListService.parseMessage(message));
-					$scope.$digest();
+					$timeout(function(){
+						$scope.$digest();
+					});
 					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
 				}
 				/*if (!pref) {
@@ -102,7 +104,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
 				$scope.messageEvents.push(msg_obj);
 				$scope.message = "";
-				$scope.$apply();
+				$timeout(function(){
+					$scope.$apply();
+				});
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
