@@ -103,7 +103,7 @@ _:-ms-fullscreen, :root .main {
 
 .tab-bar-section.middle {
   left: 4.7rem;
-  right: 4.4rem;
+  right: 4.3rem;
 }
 
 .left-small {
@@ -113,7 +113,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .right-small {
-  width: 4.4rem;
+  width: 4.3rem;
   text-align: right;
   line-height: 2.7rem;
   border-left: none;
