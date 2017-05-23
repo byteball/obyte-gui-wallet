@@ -687,7 +687,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .ellipsis {
-  display: inline-block;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

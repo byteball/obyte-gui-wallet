@@ -99,6 +99,7 @@ _:-ms-fullscreen, :root .main {
   color: #7A8C9E;
   font-weight: 500;
   font-size: 14px;
+  display: inline-block;
 }
 
 .tab-bar-section.middle {
