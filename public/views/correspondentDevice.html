@@ -313,9 +313,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
 
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
-			  <li class="dropup-item"><a ng-click="insertMyAddress()" class="ellipsis dropup-item-link"><span translate>Insert my address</span> ({{(index.alias || index.walletName)}}</a><span class="ellipsis-end">)</span></li>
+			  <li class="dropup-item">
+			  <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+				  	<span translate>
+				  		Insert my address
+				  	</span> ({{(index.alias || index.walletName)}}
+			  	</a>
+			  	<span class="ellipsis-end">)</span>
+			  </li>
 			  <div class="clear"></div>
-			  <li class="dropup-item"><a ng-click="requestPayment()" class="ellipsis dropup-item-link"><span translate>Request payment</span> ({{(index.alias || index.walletName)}}</a><span class="ellipsis-end">)</span></a></li>
+			  <li class="dropup-item">
+			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
+			  		<span translate>Request payment</span> ({{(index.alias || index.walletName)}}
+			  	</a>
+			  	<span class="ellipsis-end">)</span>
+			  </li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
           <button type="submit" 
