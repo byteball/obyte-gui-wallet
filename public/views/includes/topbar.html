@@ -23,10 +23,10 @@
 		<span ng-if="!index.arrBalances[index.assetIndex].shared && !index.shared_address || titleSection">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared || index.shared_address) && !titleSection">
 			<a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-				<span class="ellipsis" style="max-width: calc(100% - 15px);float: left;">
+				<span class="ellipsis" style="max-width: calc(100% - 14px);float: left;">
 					{{(index.shared_address || index.alias || index.walletName)}}
 				</span>
-				<span class="arrow-down" style="float: left; width: 15px;"></span>
+				<span class="arrow-down" ng-style="{'float': 'left', 'border-top-color': index.backgroundColor}"></span>
 			</a>
 		</span>
     </h1>

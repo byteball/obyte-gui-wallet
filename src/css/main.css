@@ -1490,8 +1490,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	word-wrap: break-word;
 }
 
-.arrow-down:after{
-	content: " \25be";
+.arrow-down{
+    width: 0;
+    height: 0;
+    margin: 23px 0 0 4px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 4px solid #f00;
 }
 
 .gray-13{
