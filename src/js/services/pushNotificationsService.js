@@ -28,6 +28,7 @@ angular.module('copayApp.services')
 	};
 	
 	eventBus.on('receivedPushProjectNumber', function(ws, data) {
+		if (!usePushNotifications) return;
 		_ws = ws;
 		if (data && data.projectNumber !== undefined) {
 			$timeout(function(){
