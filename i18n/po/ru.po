@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-25 06:12-0400\n"
+"PO-Revision-Date: 2017-05-25 06:22-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -735,7 +735,7 @@ msgstr "Мой Byteball адрес"
 
 #: public/views/correspondentDevice.html:272
 msgid "My recording preference"
-msgstr ""
+msgstr "Мой выбор о сохранении чата"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -827,7 +827,7 @@ msgstr "Вставьте закрытый ключ бумажного кошел
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Заплатить и предложить"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -851,11 +851,11 @@ msgstr "Платёж отправлен"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Куда платит контрагент:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Контрагент платит:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -920,7 +920,7 @@ msgstr "QR-сканер"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "Переотправить приватное содержание"
 
 #: src/js/controllers/index.js:526
 msgid "Receive"
@@ -969,11 +969,11 @@ msgstr "Удалить"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Удалить устройство"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Переименовать:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1248,7 +1248,7 @@ msgstr "Кошелек будет содержать текущее состоя
 
 #: public/views/correspondentDevice.html:277
 msgid "Their recording preference"
-msgstr ""
+msgstr "Их выбор о сохранении чата"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1285,7 +1285,7 @@ msgstr "Кому"
 
 #: public/views/walletHome.html:248
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "Чтобы защитить вашу конфиденциальность, новые адреса создаются после их использовния."
 
 #: public/views/walletHome.html:172
 msgid "Total Locked Balance"
@@ -1473,7 +1473,7 @@ msgstr "Ключ вашего кошелька будет зашифрован. 
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
-msgstr ""
+msgstr "после истечения контракта через:"
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
