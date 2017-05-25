@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-17 03:10-0400\n"
+"PO-Revision-Date: 2017-05-25 06:12-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -143,11 +143,11 @@ msgstr "Актив"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Авто-обновлять список свидителей из хаба"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Авто-обновлять список свидителей из этого хаба"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:289
@@ -199,7 +199,7 @@ msgstr "Bitcoin URI не действителен!"
 
 #: public/views/correspondentDevice.html:263
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "И вы, и {{correspondent.name}} включили локальную запись истории чата."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -224,7 +224,7 @@ msgstr "Отмена"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Изменить хаб:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -460,7 +460,7 @@ msgstr "Ред."
 
 #: public/views/correspondentDevice.html:266
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "Или вы, или {{correspondent.name}} отключили запись истории чата. История не сохраняется ни для кого."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -612,7 +612,7 @@ msgstr "Я подтверждаю, что я прочитал(а), понял(а
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Я плачу:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -624,7 +624,7 @@ msgstr "Если условие не выполнено, я могу забра�
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
-msgstr ""
+msgstr "Если контрагент не заплатит, я смогу забрать свои деньги обратно после:"
 
 #: public/views/import.html:36
 msgid "Import"
