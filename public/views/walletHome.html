@@ -58,6 +58,7 @@
       <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
       <span translate ng-show="index.onGoingProcessName == 'generatingCSV'">Generating .csv file...</span>
       <span translate ng-show="index.onGoingProcessName == 'Syncing'">Syncing... {{index.syncProgress}}</span>
+      <span translate ng-show="index.onGoingProcessName == 'handling_private'">Syncing... {{index.count_unhandled_private_payments}} private payments left</span>
       <span translate ng-show="index.onGoingProcessName == 'sending'">Sending...</span>
     </div>
   </div>

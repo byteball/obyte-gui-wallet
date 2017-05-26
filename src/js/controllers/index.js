@@ -138,6 +138,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setOngoingProcess('Syncing', false);
         self.syncProgress = "";
     });
+    eventBus.on('unhandled_private_payments_left', function(count_left){ // light only
+		var bChanged = (self.count_unhandled_private_payments !== count_left);
+		self.count_unhandled_private_payments = count_left;
+		if (bChanged)
+			self.setOngoingProcess('handling_private', count_left>0);
+	});
     eventBus.on('refresh_light_started', function(){
 		console.log('refresh_light_started');
         self.setOngoingProcess('Syncing', true);
