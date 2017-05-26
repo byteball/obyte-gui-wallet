@@ -464,7 +464,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			objSharedWallet.total = assocSharedByAddress[sa];
 			if($scope.asset == 'base'){
 				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'base') + ' ' + self.unitName;
-			}else if($scope.asset == self.BLACKBYTES_ASSET){
+			}else if($scope.asset == constants.BLACKBYTES_ASSET){
 				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'blackbytes') + ' ' + self.bbUnitName;
 			}
 			arrSharedWallets.push(objSharedWallet);
