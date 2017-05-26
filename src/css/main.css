@@ -1181,25 +1181,32 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 /*/////////////////////////////////////////////////*/
 
 .tabbable {
-  border: 2px solid #213140;
-  border-radius: 3px;
   margin-bottom: 1.2rem;
 }
 
 .tabs dd.active a {
-  color: #fff;
   background-color: transparent;
+  border: 1px solid #213140;
+  border-width: 1px 1px 0 1px;
+}
+
+.tabs dd:first-child a {
+  border-left-width: 0;
+}
+.tabs dd:last-child a {
+  border-right-width: 0;
 }
 
 .tabs dd>a {
-  background: #213140;
+  background: #efefef;
   text-transform: uppercase;
   color: #3E4F5D;
   padding: 1rem;
   text-align: center;
-  height: 64px;
+  height: 40px;
   font-size: 14px;
-  line-height: 15px;
+  line-height: 10px;
+  border-bottom: 1px solid #213140;
 }
 
 .tabs-content {
