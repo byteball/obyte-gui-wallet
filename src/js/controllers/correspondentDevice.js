@@ -498,7 +498,20 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				var checkDuplicatePayment = function(cb){
+					var objFirstPayment = objMultiPaymentRequest.payments[0];
+					db.query(
+						"SELECT 1 FROM outputs JOIN unit_authors USING(unit) JOIN my_addresses ON unit_authors.address=my_addresses.address \n\
+						WHERE outputs.address=? AND amount=? LIMIT 1",
+						[objFirstPayment.address, objFirstPayment.amount],
+						function(rows){
+							$scope.bAlreadyPaid = (rows.length > 0);
+							cb();
+						}
+					);
+				};
 				arrFuncs.push(findMyAddresses);
+				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){
 					if (err)
 						$scope.error = err;
