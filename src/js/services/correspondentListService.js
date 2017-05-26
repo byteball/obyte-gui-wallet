@@ -365,7 +365,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					historyEndForCorrespondent[correspondent.device_address] = true;
 				for (var i in messages) {
 					var message = messages[i];
-					var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+					var msg_ts = new Date(message.creation_date.replace(' ', 'T')+'.000Z');
 					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
 						messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
