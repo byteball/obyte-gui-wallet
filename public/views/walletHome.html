@@ -122,7 +122,7 @@
             	background-color: {{index.backgroundColor}};
             }
           </style>
-                    <div class="size-14" ng-if="balance.shared">
+                    <div class="size-14" ng-if="balance.shared !== undefined">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
 							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.sharedStr}}</span>

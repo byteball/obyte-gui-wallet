@@ -861,7 +861,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.unitValue = config.unitValue;
     self.unitName = config.unitName;
     self.bbUnitName = config.bbUnitName;
-
+	
     self.arrBalances = [];
     for (var asset in assocBalances){
         var balanceInfo = assocBalances[asset];
@@ -882,7 +882,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
             balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
             balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
-			if (balanceInfo.shared)
+			if (typeof balanceInfo.shared === 'number')
 				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
         }
         self.arrBalances.push(balanceInfo);
