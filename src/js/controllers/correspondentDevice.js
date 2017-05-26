@@ -366,7 +366,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
 								if (err.match(/no funded/))
-									err = "Not enough confirmed funds";
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								if ($scope)
 									$scope.error = err;
 								return;
