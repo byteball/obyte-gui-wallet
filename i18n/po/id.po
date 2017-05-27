@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 21:02-0400\n"
+"PO-Revision-Date: 2017-05-26 21:11-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -196,7 +196,7 @@ msgstr "Bitcoin URI TIDAK sah!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal riwayat percakapan."
+msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal riwayat obrolan."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -457,7 +457,7 @@ msgstr "Sunting"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr "Baik anda atau {{correspondent.name}} menonaktifkan rekaman riwayat percakapan. Riwayat tidak akan disimpan siapapun."
+msgstr "Baik anda atau {{correspondent.name}} menonaktifkan rekaman riwayat obrolan. Riwayat tidak akan disimpan siapapun."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -857,7 +857,7 @@ msgstr "Rekanan membayar:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
-msgstr "Rekan:"
+msgstr "Rekanan:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -1229,7 +1229,7 @@ msgstr "Hub menyarankan untuk mengganti saksi berikut ini:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr "Rekan menerima pembayaran ini jika:"
+msgstr "Rekanan menerima pembayaran ini jika:"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
