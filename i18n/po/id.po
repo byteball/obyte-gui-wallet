@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 20:33-0400\n"
+"PO-Revision-Date: 2017-05-26 20:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -267,7 +267,7 @@ msgstr "Warna"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
-msgstr ""
+msgstr "Memasukkan hash"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
@@ -316,7 +316,7 @@ msgstr "Tidak dapat membuat: Benih dompet tidak valid"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr ""
+msgstr "Tidak dapat mendeskripsi"
 
 #: public/views/walletHome.html:479
 msgid "Could not fetch transaction history"
@@ -375,12 +375,12 @@ msgstr "Membuat Dompet..."
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "HAPUS KATA-KATA"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
 msgid "Data feed name:"
-msgstr ""
+msgstr "Data nama feed:"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -392,7 +392,7 @@ msgstr "Menolak"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "Mendeskripsi dompet kertas membutuhkan waktu sekitar 5 menit pada perangkat ini. harap bersabar dan membiarkan aplikasi berjalan."
 
 #: public/views/walletHome.html:156
 msgid "Definition"
@@ -597,11 +597,11 @@ msgstr "Tuan rumah"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "Hub URL"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -609,7 +609,7 @@ msgstr "Saya menegaskan bahwa saya telah membaca, mengerti, dan menyetujui persy
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Aku membayar:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -621,7 +621,7 @@ msgstr "Jika kondisinya tidak terpenuhi, saya bisa mengembalikan uang ini setela
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
-msgstr ""
+msgstr "Jika rekanan tidak membayar, saya dapat mengambil uang saya kembali setelah:"
 
 #: public/views/import.html:40
 msgid "Import"
