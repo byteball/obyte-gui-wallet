@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 20:40-0400\n"
+"PO-Revision-Date: 2017-05-26 20:54-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -196,7 +196,7 @@ msgstr "Bitcoin URI TIDAK sah!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal sejarah percakapan."
+msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal riwayat percakapan."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -392,7 +392,7 @@ msgstr "Menolak"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Mendeskripsi dompet kertas membutuhkan waktu sekitar 5 menit pada perangkat ini. harap bersabar dan membiarkan aplikasi berjalan."
+msgstr "Mendeskripsi dompet kertas membutuhkan waktu sekitar 5 menit pada perangkat ini. harap bersabar dan membiarkan aplikasi tetap berjalan."
 
 #: public/views/walletHome.html:156
 msgid "Definition"
@@ -457,7 +457,7 @@ msgstr "Sunting"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "Baik anda atau {{correspondent.name}} menonaktifkan rekaman riwayat percakapan. Riwayat tidak akan disimpan siapapun."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -465,7 +465,7 @@ msgstr "Surel untuk notifikasi dompet"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "Mengaktifkan notifikasi push"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
@@ -609,7 +609,7 @@ msgstr "Saya menegaskan bahwa saya telah membaca, mengerti, dan menyetujui persy
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr "Aku membayar:"
+msgstr "Saya membayar:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -673,7 +673,7 @@ msgstr "Jepang"
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
@@ -733,7 +733,7 @@ msgstr "Alamat Byteball saya"
 
 #: public/views/correspondentDevice.html:289
 msgid "My recording preference"
-msgstr ""
+msgstr "Preferensi rekaman saya"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -779,7 +779,7 @@ msgstr "Catatan"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Menawarkan kontrak"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
@@ -787,7 +787,7 @@ msgstr "Setelah Anda menuliskan benih dompet Anda, sebaiknya Anda menghapusnya d
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
-msgstr ""
+msgstr "Hanya satu-sig dompet dapat dipulihkan."
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
@@ -825,7 +825,7 @@ msgstr "Tempelkan kunci pribadi dompet kertas anda di sini"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Membayar dan menawarkan"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -849,11 +849,11 @@ msgstr "Pembayaran Terkirim"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Rekanan membayar ke:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Rekanan membayar:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -881,7 +881,7 @@ msgstr "Berikan nama perangkat ini"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -889,7 +889,7 @@ msgstr "Portugis"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "Nilai yang diterbitkan:"
 
 #: public/views/walletHome.html:152
 #: public/views/walletHome.html:25
@@ -918,7 +918,7 @@ msgstr "Pemindai QR"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "Mengirim ulang muatan pribadi"
 
 #: src/js/controllers/index.js:528
 msgid "Receive"
@@ -967,11 +967,11 @@ msgstr "Menghapus"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Hapus perangkat"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Ubah nama:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1017,7 +1017,7 @@ msgstr "Rusia"
 
 #: public/views/includes/password.html:32
 msgid "SET"
-msgstr ""
+msgstr "SET"
 
 #: public/views/editCorrespondentDevice.html:49
 #: public/views/modals/destination-address.html:132
@@ -1072,7 +1072,7 @@ msgstr "Pilih dompet"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr ""
+msgstr "Pilih sub dompet"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
@@ -1110,7 +1110,7 @@ msgstr "Mengirim dana..."
 
 #: public/views/walletHome.html:61
 msgid "Sending..."
-msgstr ""
+msgstr "Mengirim..."
 
 #: public/views/walletHome.html:515
 msgid "Sent"
