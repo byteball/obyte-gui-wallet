@@ -577,9 +577,20 @@ API.prototype.getBalance = function(shared_address, cb) {
 		if (!assocBalances[constants.BLACKBYTES_ASSET])
 			assocBalances[constants.BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
 		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
-			for (var asset in assocSharedBalances)
+			var assocSharedAddresses = {}; // all shared addresses
+			for (var asset in assocSharedBalances){
 				if (!assocBalances[asset])
 					assocBalances[asset] = {stable: 0, pending: 0};
+				for (var sa in assocSharedBalances[asset])
+					assocSharedAddresses[sa] = true;
+			}
+			for (var sa in assocSharedAddresses)
+				for (var asset in assocBalances){
+					if (!assocSharedBalances[asset])
+						assocSharedBalances[asset] = {};
+					if (!assocSharedBalances[asset][sa])
+						assocSharedBalances[asset][sa] = {stable: 0, pending: 0};
+				}
 			cb(null, assocBalances, assocSharedBalances);
 		});
 	});

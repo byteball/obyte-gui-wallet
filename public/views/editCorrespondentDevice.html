@@ -38,9 +38,9 @@
 
         <form name="editForm" class="m20t" no-validate>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
-          Rename:
+		  <span translate>Rename:</span>
           <input type="text" id="name" name="name" ng-model="name" required>
-          Change hub:
+		  <span translate>Change hub:</span>
           <input type="text" id="hub" name="hub" ng-model="hub" required>
           <div class="row">
             <div>
@@ -55,7 +55,7 @@
         </form>
     </div>
       
-    <div class="purge_chat columns"><a href="#" ng-click="purge_chat()">clear chat history</a></div>
+    <div class="purge_chat columns"><a href="#" ng-click="purge_chat()" translate>clear chat history</a></div>
 
     <div class="extra-margin-bottom"></div>
 </div>

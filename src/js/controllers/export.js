@@ -20,9 +20,10 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.success = null;
 		self.password = null;
 		self.repeatpassword = null;
-		self.exported = false;
+		self.exporting = false;
 		self.isCordova = isCordova;
 		self.bCompression = false;
+		self.connection = null;
 
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
@@ -51,14 +52,34 @@ angular.module('copayApp.controllers').controller('exportController',
 			});
 		}
 
+		function checkValueFileAndChangeStatusExported() {
+			$timeout(function() {
+				var inputFile = document.getElementById('nwExportInputFile');
+				if(!inputFile.value && self.exporting){
+					self.exporting = false;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}
+				if(!inputFile.value && self.connection){
+					self.connection.release();
+					self.connection = false;
+				}
+				window.removeEventListener('focus', checkValueFileAndChangeStatusExported, true);
+			}, 1000);
+		}
+
+
 		function saveFile(file, cb) {
 			var backupFilename = 'ByteballBackup' + Date.now() + '.encrypted';
 			if (!isCordova) {
-				var a = angular.element('<input type="file" nwsaveas="' + backupFilename + '" />');
-				a[0].click();
-				a.bind('change', function() {
+				var inputFile = document.getElementById('nwExportInputFile');
+				inputFile.setAttribute("nwsaveas", backupFilename);
+				inputFile.click();
+				window.addEventListener('focus', checkValueFileAndChangeStatusExported, true);
+				inputFile.onchange = function() {
 					cb(this.value);
-				})
+				};
 			}
 			else {
 				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
@@ -80,7 +101,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 
 		function showError(text) {
-			self.exported = false;
+			self.exporting = false;
 			self.error = text;
 			$timeout(function() {
 				$rootScope.$apply();
@@ -89,7 +110,9 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 
 		self.walletExportPC = function(connection) {
+			self.connection = connection;
 			saveFile(null, function(path) {
+				if(!path) return;
 				var password = Buffer.from(self.password);
 				var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
 				zip = new _zip(path, {
@@ -105,7 +128,8 @@ angular.module('copayApp.controllers').controller('exportController',
 							if (err) return showError(err);
 							zip.end(function() {
 								connection.release();
-								self.exported = false;
+								self.connection = null;
+								self.exporting = false;
 								$timeout(function() {
 									$rootScope.$apply();
 									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -130,7 +154,7 @@ angular.module('copayApp.controllers').controller('exportController',
 							saveFile(encrypt(zipFile, self.password), function(err) {
 								connection.release();
 								if (err) return showError(err);
-								self.exported = false;
+								self.exporting = false;
 								$timeout(function() {
 									$rootScope.$apply();
 									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -145,12 +169,12 @@ angular.module('copayApp.controllers').controller('exportController',
 		};
 
 		self.walletExport = function() {
-			self.exported = true;
+			self.exporting = true;
 			self.error = '';
 			var db = require('byteballcore/db');
 			db.takeConnectionFromPool(function(connection) {
 				if (isCordova) {
-					self.walletExportCordova(connection)
+					self.walletExportCordova(connection);
 				} else {
 					self.walletExportPC(connection);
 				}

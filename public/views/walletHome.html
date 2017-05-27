@@ -1,3 +1,13 @@
+<style>
+#binding-drop {
+    max-width: 250px;
+    left: 15px;
+    width: auto !important;
+    text-align: left;
+    /*line-height: 1em;*/
+}
+</style>
+
 
 <div class="topbar-container"
   ng-include="'views/includes/topbar.html'"
@@ -48,6 +58,8 @@
       <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
       <span translate ng-show="index.onGoingProcessName == 'generatingCSV'">Generating .csv file...</span>
       <span translate ng-show="index.onGoingProcessName == 'Syncing'">Syncing... {{index.syncProgress}}</span>
+      <span translate ng-show="index.onGoingProcessName == 'handling_private'">Syncing... {{index.count_unhandled_private_payments}} private payments left</span>
+      <span translate ng-show="index.onGoingProcessName == 'sending'">Sending...</span>
     </div>
   </div>
 
@@ -65,7 +77,6 @@
   </div>
 
   <div class="oh" ng-show="!index.noFocusedWallet">
-	  
 
     <!--
 
@@ -77,7 +88,7 @@
 	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
         <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
-          <div ng-if="!index.anyOnGoingProcess || 1">
+          <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span class="size-12 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
@@ -88,7 +99,7 @@
               <br><span translate>Tap to retry</span>
             </div>
 
-            <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex">
+            <ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
 						<strong class="size-36" ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.totalStr}}</strong>
@@ -102,7 +113,17 @@
 							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.pending.toLocaleString()}}</span>
 						</div>
 					</div>
-                    <div class="size-14" ng-if="balance.shared">
+          <style ng-if="index.isCordova">
+            .rn-carousel-controls {
+              display: none !important;
+            }
+          </style>
+          <style>
+          	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
+            	background-color: {{index.backgroundColor}};
+            }
+          </style>
+                    <div class="size-14" ng-if="balance.shared !== undefined">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
 							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.sharedStr}}</span>
@@ -263,17 +284,6 @@
 
     -->
     <div id="send" class="send tab-view">
-    	<div class="row m20t text-center" ng-show="home.current_payment_key">
-        <div class="columns large-12 medium-12 small-12">
-          <div class="spinner">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
-        </div>
-      </div>
       <div>
         <h4 class="title m0">
 
@@ -335,6 +345,12 @@
 				  <a ng-click="home.openBindModal()">
 					  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
 					  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
+				  </a>
+			  </div>
+			  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
+			  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
+				  <a dropdown-toggle="#binding-drop" data-options="align:top">
+					  <span translate class="text-gray">Bind the payment to a condition</span>
 				  </a>
 			  </div>
             </div>

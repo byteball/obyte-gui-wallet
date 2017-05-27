@@ -67,6 +67,9 @@
     #drop {
     	max-width: 250px;
     	left: 15px;
+    	width: auto !important;
+    	text-align: left;
+    	line-height: 1em;
     }
     #recording-drop {
     	max-width: 200px;
@@ -235,7 +238,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 .send-form .textinput::-webkit-input-placeholder {
 	white-space: nowrap;
 }
-
+.dropup-item {
+	display: inline-block;
+	max-width: 100%;
+	padding: 0 10px;
+}
+.dropup-item-link {
+	padding: 8px 0 !important;
+	display: inline-block !important;
+	max-width: calc(100% - 10px);
+}
+.ellipsis-end {
+	float: right;
+	width: 10px;
+	padding: 8px 0;
+}
 </style>
 
     
@@ -283,6 +300,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
               <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')" class="bubble" dynamic="messageEvent.message"></div>
+              <span></span>
               <div ng-class="(messageEvent.bIncoming ? 'left' : 'right')" class="msg-ts" ng-if="messageEvent.type != 'system'">{{messageEvent.timestamp * 1000 | date:'shortTime'}}</div>
             <!--/div-->
             <div class="clear"></div>
@@ -296,8 +314,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
 
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
-			  <li><a ng-click="insertMyAddress()" translate>Insert my address</a></li>
-			  <li><a ng-click="requestPayment()" translate>Request payment</a></li>
+			  <li class="dropup-item">
+			  <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+				  	<span translate>
+				  		Insert my address
+				  	</span> ({{(index.alias || index.walletName)}}
+			  	</a>
+			  	<span class="ellipsis-end">)</span>
+			  </li>
+			  <div class="clear"></div>
+			  <li class="dropup-item">
+			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
+			  		<span translate>Request payment</span> ({{(index.alias || index.walletName)}}
+			  	</a>
+			  	<span class="ellipsis-end">)</span>
+			  </li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
           <button type="submit" 
