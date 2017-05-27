@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 20:54-0400\n"
+"PO-Revision-Date: 2017-05-26 21:02-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1130,7 +1130,7 @@ msgstr "Mengatur Kata Sandi"
 
 #: public/views/preferencesEmail.html:38
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr ""
+msgstr "Menyiapkan pemberitahuan surat elektronik bisa melemahkan privasi anda, jika penyedia layanan dompet dikompromikan. Informasi yang tersedia untuk penyerang akan mencakup alamat dompet anda dan saldonya, namun tidak lebih."
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
@@ -1143,7 +1143,7 @@ msgstr "Bagikan alamat"
 
 #: public/views/walletHome.html:256
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Berbagi alamat dompet ini untuk menerima pembayaran."
 
 #: public/views/walletHome.html:566
 msgid "Show all"
@@ -1202,7 +1202,7 @@ msgstr "Sinkronisasi... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:480
 #: public/views/walletHome.html:93
@@ -1246,7 +1246,7 @@ msgstr "Dompet akan berisi keadaan terkini dari keseluruhan database Byteball. P
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
-msgstr ""
+msgstr "Preferensi rekaman mereka"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1266,7 +1266,7 @@ msgstr "Pembayaran ini terikat pada suatu kondisi"
 
 #: public/views/modals/tx-details.html:73
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
-msgstr ""
+msgstr "Transaksi ini telah menjadi tidak sah; mungkin karena upaya pembayaran ganda."
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
@@ -1283,11 +1283,11 @@ msgstr "Ke"
 
 #: public/views/walletHome.html:349
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr ""
+msgstr "Untuk mengikat pembayaran ke kondisi, klik alamat rekanan di obrolan"
 
 #: public/views/walletHome.html:257
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "Untuk melindungi privasi Anda, alamat baru dihasilkan secara otomatis setelah Anda menggunakannya."
 
 #: public/views/walletHome.html:181
 msgid "Total Locked Balance"
@@ -1295,11 +1295,11 @@ msgstr "Total Saldo Terkunci"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "Jumlah total dari co-signers"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
-msgstr ""
+msgstr "Transaksi"
 
 #: public/views/walletHome.html:504
 msgid "Transactions<br> Downloaded"
@@ -1368,7 +1368,7 @@ msgstr "SELAMAT DATANG DI BYTEBALL"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "Menunggu co-signers"
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
@@ -1475,11 +1475,11 @@ msgstr "Kunci dompet anda akan dienkripsi. Kata sandi tidak bisa dipulihkan. Pas
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
-msgstr ""
+msgstr "setelah kontrak berakhir pada:"
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "hapus riwayat obrolan"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
