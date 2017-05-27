@@ -10,14 +10,14 @@ Kami membangun fitur-fitur berikut ke versi Copay untuk dompet bitcoin yang tida
 Pembuatan banyak dompet dan manajemen didalam aplikasi 
 Keamanan Intuitif multisignature untuk dompet pribadi atau bersama
 Kemudahan aliran proposal pengeluaran untuk dompet bersama dan pembayaran berkelompok
-Hierarchical deterministic (HD) address generation and wallet backups 
-Device-based security: all private keys are stored locally, not in the cloud
-Support for Bitcoin testnet wallets
-Synchronous access across all major mobile and desktop platforms
-Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure bitcoin payments
-Support for 150+ currency pricing options and unit denomination in BTC or bits
-Email notifications for payments and transfers
-Customizable wallet naming and background colors
-10 supported languages (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
+Pembuatan alamat Hierarki deterministik (HD) dan cadangan dompet 
+Keamanan berbasis perangkat: Semua kunci pribadi disimpan secara lokal, bukan di awan
+Dukungan untuk dompet Bitcoin testnet
+Sinkron akses di semua platform utama mobile dan desktop
+Dukungan protokol pembayaran (BIP70-BIP73): permintaan pembayaran mudah diidentifikasi dan pembayaran bitcoin yang aman
+Dukungan untuk 150 + pilihan mata uang harga dan unit denominasi di BTC atau bit
+Email pemberitahuan untuk pembayaran dan transfer
+Penyesuaian nama dompet dan warna latar belakang
+10 bahasa yang didukung (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
 
-Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay).
+Copay adalah perangkat lunak bebas dan sumber terbuka yang berjalan di server non-eksklusif, sehingga tidak perlu mengandalkan setiap perusahaan untuk dukungan terus-menerus. Siapa pun dapat meninjau atau berkontribusi ke kode sumber Copay pada GitHub (https://github.com/bitpay/copay).
