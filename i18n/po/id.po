@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 20:22-0400\n"
+"PO-Revision-Date: 2017-05-26 20:33-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -126,7 +126,7 @@ msgstr "Menyetujui pembuatan dompet pada perangkat lain"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Apakah anda yakin ingin menghapus cadangan kata-kata?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -139,11 +139,11 @@ msgstr "Aset"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Pemutakihran otomatis daftar saksi-saksi dari hub"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Pemutakihran otomatis daftar saksi-saksi dari hub ini"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:298
@@ -170,7 +170,7 @@ msgstr "Cadangan benih dompet"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Cadangan kata-kata dihapus"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
@@ -183,7 +183,7 @@ msgstr "Sebelum menerima dana, sangat disarankan mencadangkan kunci dompet anda.
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Mengikat pembayaran"
 
 #: public/views/walletHome.html:345
 #: public/views/walletHome.html:352
@@ -196,7 +196,7 @@ msgstr "Bitcoin URI TIDAK sah!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal sejarah percakapan."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -221,7 +221,7 @@ msgstr "Batal"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Ganti hub:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -233,7 +233,7 @@ msgstr "Obrolan"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Pilih perangkat untuk mengirim ke"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -251,15 +251,15 @@ msgstr "Tutup"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Co-signer {{$index+1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Co-signers"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Co-signers untuk multisig"
 
 #: public/views/preferences.html:29
 msgid "Color"
