@@ -10,7 +10,7 @@ msgstr ""
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
-"Language: ru\n"
+"Language: ru_RU\n"
 "PO-Revision-Date: 2017-05-27 17:39-0400\n"
 
 #: public/views/authConfirmation.html:10
