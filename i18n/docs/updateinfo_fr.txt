@@ -1,7 +1,7 @@
-* Prise en charge de TREZOR (uniquement en version Chrome App)
-* Nouveau système de notification. Réduction de la bande passante et meilleure gestion des déconnexions réseaux
-* Répertoire
-* Mise en cache de l'historique des transactions et meilleur arrangement
-* Meilleur support de BIP44 : empêche des lacunes dans les index lors de l'analyse des portefeuilles et lors de la génération des adresses
-* Paramètre BWS pour chaque portefeuille
-* Correction de l'évènement reprise sur mobile
+* TREZOR support (only in Chrome App version)
+* New notification system. Reduced bandwidth usage and better handling of network disconnections
+* Addressbook
+* Transaction history cache and better ordering
+* Better BIP44 Support: prevent gaps in indexes when scanning wallets and generating addresses
+* Per Wallet BWS Setting
+* Fixes resume event on mobile

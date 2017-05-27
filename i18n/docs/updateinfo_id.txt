@@ -1,0 +1,7 @@
+* Dukungan TREZOR (hanya dalam versi Chrome App)
+* Sistem notifikasi baru. Mengurangi penggunaan bandwidth dan penanganan lebih baik atas pemutusan jaringan
+* Buku alamat
+* Cache riwayat transaksi dan pengurutan yang lebih baik
+* Dukungan BIP44 yang lebih baik: mencegah kesenjangan dalam indeks ketika pemindaian dompet dan pembuatan alamat
+* Pengaturan BWS per dompet
+* Perbaikan melanjutkan acara pada ponsel

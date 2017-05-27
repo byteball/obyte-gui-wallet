@@ -1,23 +1,23 @@
-ビットコインにおける高度なセキュリティーを手軽に扱えるオープンソースマルチシグネチャウォレットです。 
-Copayは個人のご利用はもちろんのこと、複数人によるウォレット管理の権限分散も簡単なウォレットソフトを通してご活用いただけます。 例えば：
+Secure bitcoin on your own terms with an open source, multisignature wallet from BitPay. 
+Copay users can hold funds individually or share finances securely with other users with multisignature wallets, which prevent unauthorized payments by requiring multiple approvals. Here are some ways Copay can be used with others:
 
-友達との旅行や買い物のために透明性抜群の環境で貯蓄したい時 
-家族のお小遣いや日常の家計簿管理がしたい時
-ビジネス・クラブ・団体の資金や財産管理を透明な管理分散がしたい時
+To save for vacations or joint purchases with friends 
+To track family spending and allowances
+To manage business, club, or organization funds and expenses
 
-下記の機能でセキュリティーも利便性も妥協しない最高のウォレットをCopayでご提供させていただきました：
+We built the following features into this version of Copay for a bitcoin wallet that doesn't compromise on security or accessibility:
 
-■ 複数のウォレットの作成・管理がアプリ内で管理可能 
-■ マルチシグネチャのウォレット分散管理でも個人ウォレットでも使いやすさ抜群
-■ 送金の提案・承認・却下の流れが非常に直感的で分散管理が簡単
-■ 階級的決定性ウォレット(HDウォレット)でアドレス生成とバックアップ管理をしているためバックアップは永久に各参加者1回ずつのみ 
-■ 端末に依存するセキュリティー、秘密鍵が全て端末に保管され、サーバに送ることは無い
-■ ビットコインの開発テスト用ネットワークにも対応
-■ メジャーなプラットフォーム全てに対応 (Windows, Mac, Linux, Android, iPhone, Windows Phone)
-■ ペイメントプロトコルにも対応(BIP 70-73)、暗号通信と証明書を使ったマーチャントとの安全なペイメントの実現
-■ 世界中の150個以上の通貨の表示に対応、自国通貨との為替レートを計算する必要なし。ビットコインの単位も BTC と bits にも対応
-■ ペイメントや提案のメール通知も可能
-■ ウォレットごとの背景色設定や通称設定も可能でカスタマイズ性抜群
-■ 10ヶ国語対応 (英日仏西伊独葡露希土)
+Multiple wallet creation and management in-app 
+Intuitive multisignature security for personal or shared wallets
+Easy spending proposal flow for shared wallets and group payments
+Hierarchical deterministic (HD) address generation and wallet backups 
+Device-based security: all private keys are stored locally, not in the cloud
+Support for Bitcoin testnet wallets
+Synchronous access across all major mobile and desktop platforms
+Payment protocol (BIP70-BIP73) support: easily-identifiable payment requests and verifiably secure bitcoin payments
+Support for 150+ currency pricing options and unit denomination in BTC or bits
+Email notifications for payments and transfers
+Customizable wallet naming and background colors
+10 supported languages (EN, JP, FR, ES, IT, DE, PT, RU, EL, TR)
 
-Copayは永久無料でオープンソースのソフトです。サーバーもオープンソースなので、独自運用や法人の利用やソース流用は許可します。 ソースをご覧の際に間違いなどが見つかった場合、Githubにてご報告・ソース修正のプルリクエストなどをお願いします。(https://github.com/bitpay/copay) 
+Copay is free and open source software run on non-proprietary servers, so there's no need to rely on any company for continuous support. Anyone can review or contribute to Copay's source code on GitHub (https://github.com/bitpay/copay).
