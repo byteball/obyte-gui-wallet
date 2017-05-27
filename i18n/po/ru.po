@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-27 17:34-0400\n"
+"PO-Revision-Date: 2017-05-27 17:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -102,7 +102,7 @@ msgstr "Любой вклад в перевод Byteball приветствую�
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Уже оплачено"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -1201,7 +1201,7 @@ msgstr "Пополнить с бумажного кошелька"
 
 #: public/views/walletHome.html:61
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
-msgstr ""
+msgstr "Синхронизация... осталось {{index.count_unhandled_private_payments}} приватных платежей"
 
 #: public/views/walletHome.html:60
 msgid "Syncing... {{index.syncProgress}}"
