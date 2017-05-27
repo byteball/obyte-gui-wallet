@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-25 22:32-0400\n"
+"PO-Revision-Date: 2017-05-26 20:22-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,11 +23,11 @@ msgstr "(kemungkinan pembayaran ganda)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. Pembayaran ke kontrak:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Siapa yang dapat membuka kontrak:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
