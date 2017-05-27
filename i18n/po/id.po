@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-05-26 21:11-0400\n"
+"PO-Revision-Date: 2017-05-26 21:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1159,7 +1159,7 @@ msgstr "Menandatangani pengeluaran transaksi dari dompet ?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr "Dompet Biaya Kecil"
+msgstr "Dompet Kecil Pengeluaran"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1483,7 +1483,7 @@ msgstr "hapus riwayat obrolan"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "hari"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
@@ -1500,7 +1500,7 @@ msgstr "jam"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "jika peristiwa dilansir oleh peramal:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
@@ -1524,7 +1524,7 @@ msgstr "opsional"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "mengirim"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
@@ -1541,11 +1541,11 @@ msgstr "{{address}} dapat digunakan jika:"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{{cancel_label || 'Cancel'}}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -1558,12 +1558,12 @@ msgstr "{{hrd.destinationAddress}} dapat digunakan jika:"
 #: public/views/copayers.html:18
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr ""
+msgstr "{{index.m}}-of-{{index.n}}"
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr ""
+msgstr "{{item.m}}-of-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
-msgstr ""
+msgstr "{{wordsC.text}}"
