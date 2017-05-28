@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2017-05-28 17:50-0400\n"
+"PO-Revision-Date: 2017-05-28 18:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -939,7 +939,7 @@ msgstr "Ontvangers"
 
 #: public/views/walletHome.html:38
 msgid "Reconnecting to Wallet Service..."
-msgstr ""
+msgstr "Opnieuw verbinden met portemonnee Service..."
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
@@ -971,11 +971,11 @@ msgstr "Verwijder"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Een apparaat verwijderen"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Naam wijzigen:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1021,7 +1021,7 @@ msgstr "Russisch"
 
 #: public/views/includes/password.html:32
 msgid "SET"
-msgstr ""
+msgstr "INSTELLEN"
 
 #: public/views/editCorrespondentDevice.html:49
 #: public/views/modals/destination-address.html:132
@@ -1048,7 +1048,7 @@ msgstr "Scan portefeuillebedragen"
 
 #: public/views/walletHome.html:98
 msgid "Scan status finished with error"
-msgstr ""
+msgstr "Scan beeïndigd met fout"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
@@ -1060,7 +1060,7 @@ msgstr "Scan uw vingerafdruk a.u.b."
 
 #: public/views/walletHome.html:57
 msgid "Scanning Wallet funds..."
-msgstr ""
+msgstr "Portemonnee inhoud scannen..."
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
@@ -1102,7 +1102,7 @@ msgstr "Verstuur adressen met e-mail"
 
 #: public/views/walletHome.html:372
 msgid "Send all"
-msgstr ""
+msgstr "Alles verzenden"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
@@ -1114,7 +1114,7 @@ msgstr "Bezig met het versturen van bedragen..."
 
 #: public/views/walletHome.html:62
 msgid "Sending..."
-msgstr ""
+msgstr "Verzenden..."
 
 #: public/views/walletHome.html:516
 msgid "Sent"
@@ -1126,7 +1126,7 @@ msgstr "Log van de sessie"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "Maak een wachtwoord aan"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
@@ -1148,7 +1148,7 @@ msgstr "Adres (mede)delen"
 
 #: public/views/walletHome.html:257
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Deel dit portemonnee-adres om betalingen te ontvangen."
 
 #: public/views/walletHome.html:567
 msgid "Show all"
@@ -1211,7 +1211,7 @@ msgstr "Bezig met synchroniseren... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1316,7 +1316,7 @@ msgstr "Transacties<br> Downloaded"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
-msgstr ""
+msgstr "Vertalers credits"
 
 #: public/views/preferencesAbout.html:34
 msgid "Translators"
