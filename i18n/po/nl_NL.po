@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-28 17:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,19 +23,19 @@ msgstr "(mogelijk dubbel besteed)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "Betaling aan het contract:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "Wie dit contract kan ontgrendelen:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Een portemonnee voor gedecentraliseerde waarde"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Over Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -46,7 +46,7 @@ msgstr "Accepteer"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Uitnodiging accepteren"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
@@ -54,11 +54,11 @@ msgstr "Aanvaard de uitnodiging van het andere toestel"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Profiel"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Nieuw apparaat toevoegen"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
@@ -102,7 +102,7 @@ msgstr "Alle bijdrages aan de vertaling van Byteball zijn welkom. Meld u aan bij
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Reeds betaald"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -143,7 +143,7 @@ msgstr "Bezitting"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Auto-update de getuigenlijst van de hub"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
