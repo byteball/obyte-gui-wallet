@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 15:10-0400\n"
+"PO-Revision-Date: 2017-05-28 15:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -237,7 +237,7 @@ msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Wählen sie das Geräte für den Versand"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -255,15 +255,15 @@ msgstr "Schließen"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Mitunterzeichner {{$index+1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Mitunterzeichner"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Mitunterzeichner bei Mehrfachsignaturen"
 
 #: public/views/preferences.html:29
 msgid "Color"
@@ -338,7 +338,7 @@ msgstr "Import nicht möglich. Bitte Datei und Passwort überprüfen"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr "Es konnte kein gültiger Byteball QR-Code erkannt werden"
+msgstr "Es konnte kein gültiger Byteball QR-Code ermittelt werden"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
@@ -350,7 +350,7 @@ msgstr "Erzeugen"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr "Neue Wallet erstellen"
+msgstr "Neue Brieftasche erstellen"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
@@ -461,7 +461,7 @@ msgstr "Ändern"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "Entweder Sie oder {{correspondent.name}} haben den Chat Verlauf deaktiviert. Der Verlauf wird daher für niemanden gespeichert."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -469,11 +469,11 @@ msgstr "E-Mail für Wallet Benachrichtigungen"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "Pushbenachrichtigungen aktivieren"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "Geben Sie den Pairing-Code des anderen Gerätes ein, oder verwenden Sie die Kamera (Symbol oben rechts), um den QR-Code zu scannen der auf dem anderen Gerät angezeigt wird."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -490,16 +490,16 @@ msgstr ""
 
 #: public/views/export.html:51
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
 msgid "Export completed successfully"
-msgstr ""
+msgstr "Export erfolgreich abgeschlossen"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr ""
+msgstr "Exportieren..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
@@ -605,7 +605,7 @@ msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "Hub URL"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
