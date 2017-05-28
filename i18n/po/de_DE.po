@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 17:11-0400\n"
+"PO-Revision-Date: 2017-05-28 17:21-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -31,7 +31,7 @@ msgstr "Wer kann den Vertrag entsperren:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr "Eine Brieftasche für dezentrale Wertsachen"
+msgstr "Ein Wallet für dezentrale Werte"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -54,16 +54,16 @@ msgstr "Einladungen anderer Geräte akzeptieren"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr "Acount"
+msgstr "Konto"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr "Geräte hinzufügen"
+msgstr "Ein neues Gerät hinzufügen"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr "Neuen Eintrag hinzufügen"
+msgstr "Einen neuen Eintrag hinzufügen"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -94,7 +94,7 @@ msgstr "Alias für <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr "Alle Adressen dieser Brieftasche"
+msgstr "Alle Adressen dieses Wallets"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
@@ -1225,7 +1225,7 @@ msgstr "Nutzungsbedingungen"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "Der erwartete Wert wird gesendet:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
