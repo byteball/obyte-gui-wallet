@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2017-05-28 15:10-0400\n"
+"PO-Revision-Date: 2017-05-28 15:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -225,7 +225,7 @@ msgstr "Annuler"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Changer de hub :"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -800,7 +800,7 @@ msgstr "Adresse de l'Oracle:"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Appairer"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
@@ -829,7 +829,7 @@ msgstr "Collez ici votre clé privée du portefeuille de papier"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Rémunération et offre"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -853,11 +853,11 @@ msgstr "Paiement envoyé"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Les pairs payent à :"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Les pairs payent :"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -885,7 +885,7 @@ msgstr "Veuillez nommer cet appareil"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -893,7 +893,7 @@ msgstr "Portugais"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "Valeur postée :"
 
 #: public/views/walletHome.html:153
 #: public/views/walletHome.html:25
@@ -918,11 +918,11 @@ msgstr "Code QR"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr ""
+msgstr "QR-Scanner"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "Ré-envoyer des charges privées"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
@@ -971,11 +971,11 @@ msgstr "Supprimer"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Supprimer un périphérique"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Renommer :"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1114,7 +1114,7 @@ msgstr "Envoi des fonds..."
 
 #: public/views/walletHome.html:62
 msgid "Sending..."
-msgstr ""
+msgstr "Envoi en cours..."
 
 #: public/views/walletHome.html:516
 msgid "Sent"
@@ -1210,7 +1210,7 @@ msgstr "Synchronisation... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1254,7 +1254,7 @@ msgstr "Le portefeuille contiendra la plupart des données du réseau Byteball. 
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
-msgstr ""
+msgstr "Leur préférence d’enregistrement"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1295,7 +1295,7 @@ msgstr ""
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "Pour protéger votre vie privée, les nouvelles adresses sont générés automatiquement dès que vous les utilisez."
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
@@ -1307,7 +1307,7 @@ msgstr "Nombre total de co-signeurs"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
-msgstr ""
+msgstr "Transaction"
 
 #: public/views/walletHome.html:505
 msgid "Transactions<br> Downloaded"
@@ -1352,7 +1352,7 @@ msgstr "Mettre à jour vers {{version}}"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: public/views/walletHome.html:200
 msgid "WARNING: Backup needed"
@@ -1440,7 +1440,7 @@ msgstr "addresse du Witness"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "Témoins"
 
 #: public/views/backup.html:50
 msgid "Write it down and keep it somewhere safe."
@@ -1483,11 +1483,11 @@ msgstr "La clé de votre portefeuille sera chiffrée. Le mot de passe ne peut pa
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
-msgstr ""
+msgstr "après que le contrat expire dans :"
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "effacer l’historique du chat"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
