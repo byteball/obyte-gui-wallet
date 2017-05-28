@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 16:51-0400\n"
+"PO-Revision-Date: 2017-05-28 17:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -893,7 +893,7 @@ msgstr "Português"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "Gesendete Wert:"
 
 #: public/views/walletHome.html:153
 #: public/views/walletHome.html:25
@@ -1508,7 +1508,7 @@ msgstr "Stunden"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "Wenn ein Ereignis durch ein Orakel gesendet wird:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
