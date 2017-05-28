@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-28 16:20-0400\n"
+"PO-Revision-Date: 2017-05-28 16:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -27,7 +27,7 @@ msgstr "Оплата на контракт:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr "Кто может потратить из контракта:"
+msgstr "2. Кто может разблокировать контракт:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
