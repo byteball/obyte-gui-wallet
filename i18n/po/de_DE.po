@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 15:01-0400\n"
+"PO-Revision-Date: 2017-05-28 15:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -139,15 +139,15 @@ msgstr "Soll das Wallet wirklich gelöscht werden?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Einheit"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Autom. Aktualisierung der Zeugenliste via Hub zulassen"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Autom. Aktualisierung der Zeugenliste vom Hub"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,7 +170,7 @@ msgstr "Jetzt sichern"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Backup des Wallet Seeds"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -187,12 +187,12 @@ msgstr "Bevor Beträge empfangen werden, wird dringend empfohlen die Wallet Schl
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Bedingte Zahlung"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Zahlung an Bedingung binden"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -200,7 +200,7 @@ msgstr "Byteball URI ist NICHT gültig!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Sie und {{correspondent.name}} verwenden die Chat Historisierung."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -212,7 +212,7 @@ msgstr "ABBRUCH"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "Weiter"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -225,7 +225,7 @@ msgstr "Abbruch"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Hub ändern:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -233,7 +233,7 @@ msgstr "Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wal
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
@@ -275,7 +275,7 @@ msgstr "Hash übertragen"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "Datei komprimieren? (Langsamer)"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:403
@@ -287,11 +287,11 @@ msgstr "Bestätigen"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Zahlung bestätigen"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Bestätigt"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
@@ -338,7 +338,7 @@ msgstr "Import nicht möglich. Bitte Datei und Passwort überprüfen"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "Es konnte kein gültiger Byteball QR-Code erkannt werden"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
@@ -350,7 +350,7 @@ msgstr "Erzeugen"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Neue Wallet erstellen"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
@@ -363,11 +363,11 @@ msgstr ""
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "{{requiredCosigners}}-von-{{totalCosigners}} Wallet erstellen"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Erstellt:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -392,7 +392,7 @@ msgstr "Datum"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "Abgelehnt"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
@@ -400,7 +400,7 @@ msgstr "Das Entschlüsseln eines Paperwallets kann auf diesem Gerät bis zu 5 Mi
 
 #: public/views/walletHome.html:157
 msgid "Definition"
-msgstr ""
+msgstr "Definition"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
@@ -426,7 +426,7 @@ msgstr "Ableitungstrategie"
 #: public/views/modals/multi-payment.html:17
 #: public/views/modals/tx-details.html:25
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
@@ -523,7 +523,7 @@ msgstr "Français"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "Von"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
@@ -531,11 +531,11 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Vollständiges Backup"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Full Wallet"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
@@ -543,7 +543,7 @@ msgstr "Beträge gefunden"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Betrag wird überwiesen an"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -568,7 +568,7 @@ msgstr "Ermittle die Adresse des Wallets {{selectedWalletName}}..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Globale Einstellungen"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
@@ -585,7 +585,7 @@ msgstr "Hardware-Wallet"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Wallet Seed ausblenden"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -597,11 +597,11 @@ msgstr "Start"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
@@ -613,7 +613,7 @@ msgstr "Ich bestätige, dass ich diese Bedingungen gelesen habe, diese verstehe 
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Ich zahle:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
