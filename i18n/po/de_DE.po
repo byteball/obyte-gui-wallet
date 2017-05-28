@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 15:40-0400\n"
+"PO-Revision-Date: 2017-05-28 15:49-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1159,11 +1159,11 @@ msgstr "Seed der Brieftasche anzeigen"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "Transaktion über dieser Brieftasche signieren?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "Brieftasche für kleine Ausgaben"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1202,15 +1202,15 @@ msgstr "Paperwallet löschen"
 
 #: public/views/walletHome.html:61
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
-msgstr ""
+msgstr "Synchronisiere... {{index.count_unhandled_private_payments}} private Zahlungen ausstehend"
 
 #: public/views/walletHome.html:60
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "Snchronisiere... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1229,15 +1229,15 @@ msgstr ""
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "Hub, um Nachrichten von anderen Geräten zu empfangen."
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "Der Hub möchte die folgenden Zeugen ersetzen:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr ""
+msgstr "Der Teilnehmer erhält die Zahlung wenn:"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
