@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2017-05-28 17:46-0400\n"
+"PO-Revision-Date: 2017-05-28 17:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -813,7 +813,7 @@ msgstr ""
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
-msgstr ""
+msgstr "Wachtwoord"
 
 #: src/js/services/profileService.js:596
 msgid "Password needed"
@@ -825,11 +825,11 @@ msgstr "Wachtwoorden komen niet overeen"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr ""
+msgstr "Voer hier uw papier portemonnee privé sleutel in"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Betaal en bied aan"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -853,11 +853,11 @@ msgstr "Betaling Verzonden"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Peer betaalt aan:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Peer betaalt:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -914,11 +914,11 @@ msgstr "Private payloads zijn verzonden"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
-msgstr ""
+msgstr "QR Code"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr ""
+msgstr "QR-Scanner"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
