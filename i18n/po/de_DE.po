@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 16:40-0400\n"
+"PO-Revision-Date: 2017-05-28 16:51-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1499,7 +1499,7 @@ msgstr ""
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
-msgstr ""
+msgstr "ausdrücklich"
 
 #: public/views/modals/bind.html:90
 #: public/views/modals/offer-contract.html:66
