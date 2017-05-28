@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 14:50-0400\n"
+"PO-Revision-Date: 2017-05-28 15:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr "Diese Seite sieht weder ihr Guthaben noch wird etwas gespendet."
+msgstr "(Diese Seite sieht weder ihr Guthaben noch wird etwas gespendet)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -50,7 +50,7 @@ msgstr "Einladung akzeptieren"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Einladungen anderer Geräte akzeptieren"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -58,7 +58,7 @@ msgstr "Acount"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Geräte hinzufügen"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
@@ -94,19 +94,19 @@ msgstr "Alias für <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Alle Adressen dieser Brieftasche"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Beiträge zur Byteball Übersetzung sind gern willkommen. Meldet euch bei crowdin.com an und tretet dem Byteball Projekt bei."
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "bereits bezahlt"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Auch"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -122,11 +122,11 @@ msgstr "Betrag"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Ein Event wird von einem Orakel gepostet:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Genehmigen Sie die Erstellung der Brieftasche an einem anderem Gerät"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
