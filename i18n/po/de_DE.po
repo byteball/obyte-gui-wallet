@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 16:20-0400\n"
+"PO-Revision-Date: 2017-05-28 16:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -729,15 +729,15 @@ msgstr "EigenTX"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr ""
+msgstr "Mehrgeräte Brieftasche"
 
 #: public/views/walletHome.html:218
 msgid "My Byteball address"
-msgstr ""
+msgstr "Meine Byteball Adresse"
 
 #: public/views/correspondentDevice.html:289
 msgid "My recording preference"
-msgstr ""
+msgstr "Meine Voreinstellung für Aufnahmen"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -749,16 +749,16 @@ msgstr "Neue Zufalls-Seed"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
-msgstr ""
+msgstr "Eine neue Version ist verfügbar!"
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
-msgstr ""
+msgstr "Neue Zeugen"
 
 #: public/views/authConfirmation.html:22
 #: src/js/controllers/index.js:402
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
@@ -783,28 +783,28 @@ msgstr "Notiz"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Einen Vertrag anbieten"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "Sobald Sie Ihren Brieftaschen-Seed kopiert haben, wird empfohlen, diesen vom Gerät zu löschen."
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
-msgstr ""
+msgstr "Nur einfach signierte Brieftaschen können wiederhergestellt werden."
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
 msgid "Oracle address:"
-msgstr ""
+msgstr "Oracle-Adresse:"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Verbinden"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "Verbundene Geräte"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
@@ -829,7 +829,7 @@ msgstr "Privaten Schlüssel des Paperwallets hier einfügen"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Zahlen und Anbieten"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -853,15 +853,15 @@ msgstr "Zahlung gesendet"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Teilnehmer bezahlt an:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Teilnehmer bezahlt:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
-msgstr ""
+msgstr "Teilnehmer:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -869,11 +869,11 @@ msgstr "Wallet dauerhaft löschen. DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT 
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr ""
+msgstr "Einfache Brieftasche"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "Bitte wählen Sie die Art der Brieftasche"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -881,11 +881,11 @@ msgstr "Bitte die benötigten Felder ausfüllen"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
-msgstr ""
+msgstr "Bitte benennen Sie dieses Gerät"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -902,7 +902,7 @@ msgstr "Einstellungen"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr ""
+msgstr "Zum Beenden erneut drücken"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
@@ -918,7 +918,7 @@ msgstr "QR-Code"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr ""
+msgstr "QR-Scanner"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
@@ -943,15 +943,15 @@ msgstr "Neuverbindung zum Wallet Service... "
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
-msgstr ""
+msgstr "Wiederherstellen"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "Wiederherstellen per Brieftaschen-Seed"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
-msgstr ""
+msgstr "Wiederherstellung ist nur über die Vollversion der Brieftasche möglich."
 
 #: public/views/walletHome.html:58
 msgid "Recreating Wallet..."
@@ -959,7 +959,7 @@ msgstr "Wallet wiederherstellen..."
 
 #: src/js/controllers/index.js:165
 msgid "Refused"
-msgstr ""
+msgstr "Abgelehnt"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -967,15 +967,15 @@ msgstr "Information zur Veröffentlichung"
 
 #: public/views/modals/destination-address.html:84
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Entfernen eines Geräts"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Umbenennen:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -984,11 +984,11 @@ msgstr "Passwort wiederholen"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "Passwort wiederholen"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Ersetzen"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
@@ -1487,11 +1487,11 @@ msgstr "nach Ablauf des Vertrags in:"
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "Chatverlauf löschen"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "Tage"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
@@ -1504,7 +1504,7 @@ msgstr ""
 #: public/views/modals/bind.html:90
 #: public/views/modals/offer-contract.html:66
 msgid "hours"
-msgstr ""
+msgstr "Stunden"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
@@ -1532,11 +1532,11 @@ msgstr "zusätzlich"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "Sende"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "an"
 
 #: public/views/walletHome.html:387
 #: public/views/walletHome.html:398
@@ -1549,11 +1549,11 @@ msgstr ""
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{{cancel_label || 'Abbrechen'}}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -1574,4 +1574,4 @@ msgstr "{{item.m}}-von-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
-msgstr ""
+msgstr "{{wordsC.text}}"
