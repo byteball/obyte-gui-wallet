@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-28 16:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,11 +23,11 @@ msgstr "(możliwe podwójne wydanie środków)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "Płatność na rzecz kontraktu:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "Kto może odblokować kontrakt:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -102,7 +102,7 @@ msgstr "Zapraszamy wszystkich do tłumaczenia Byteball. Utwórz konto na crowdin
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Już zapłacone"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -143,11 +143,11 @@ msgstr "Aktywo"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Automatycznie aktualizuj listę świadków z hubu"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Automatycznie aktualizuj listę świadków z tego hubu"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -200,7 +200,7 @@ msgstr "URI Bitcoin jest niepoprawne!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Zarówno ty jak i {{correspondent.name}} włączyliście lokalne rejestrowanie historii czatu."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -225,7 +225,7 @@ msgstr "Anuluj"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Zmień hub:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
