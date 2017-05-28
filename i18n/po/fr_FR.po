@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-28 15:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Qui peut débloquer le contrat :"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -102,7 +102,7 @@ msgstr "Toutes les contributions à la traduction de Byteball sont les bienvenue
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Déjà payé"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -388,7 +388,7 @@ msgstr "Nom du fil de données"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
-msgstr ""
+msgstr "Date"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
@@ -601,7 +601,7 @@ msgstr "Hôte"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
@@ -613,7 +613,7 @@ msgstr "Je confirme que j'ai lu, compris et suis d'accord avec ces conditions."
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Je paye :"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -717,11 +717,11 @@ msgstr "Message marchand"
 
 #: public/views/walletHome.html:385
 msgid "Merkle proof"
-msgstr ""
+msgstr "Preuve de Merkle"
 
 #: public/views/paymentUri.html:17
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #: public/views/walletHome.html:517
 msgid "Moved"
@@ -779,11 +779,11 @@ msgstr "Non valide"
 #: public/views/walletHome.html:396
 #: public/views/walletHome.html:546
 msgid "Note"
-msgstr ""
+msgstr "Note"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Offrir un contrat"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
@@ -1491,7 +1491,7 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "jours"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
@@ -1508,7 +1508,7 @@ msgstr "heures"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "si un événement est posté par un oracle :"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
@@ -1516,7 +1516,7 @@ msgstr "dans l'arbre de mekle"
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
-msgstr ""
+msgstr "dans le portefeuilles intelligents"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
@@ -1532,7 +1532,7 @@ msgstr "optionnelle"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "envoyer"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
@@ -1549,11 +1549,11 @@ msgstr "{{address}} peut être dépensé si :"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{{cancel_label || 'Annuler'}}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -1561,7 +1561,7 @@ msgstr "{{fee}} seront déduits pour les frais de réseau Bitcoin"
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"
-msgstr ""
+msgstr "{{hrd.destinationAddress}} peut être dépensé si :"
 
 #: public/views/copayers.html:18
 #: public/views/includes/walletInfo.html:2
@@ -1574,4 +1574,4 @@ msgstr "{{item.m}}-sur-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
-msgstr ""
+msgstr "{{wordsC.text}}"
