@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
-"PO-Revision-Date: 2017-05-28 16:40-0400\n"
+"PO-Revision-Date: 2017-05-28 16:44-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -19,7 +19,7 @@ msgstr "(Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
-msgstr "(możliwe podwójne wydanie środków)"
+msgstr "(przypuszczalne podwójne wydanie środków)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
@@ -1532,7 +1532,7 @@ msgstr "opcjonalnie"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "wyślij"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
