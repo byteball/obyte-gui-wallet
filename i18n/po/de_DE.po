@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 15:49-0400\n"
+"PO-Revision-Date: 2017-05-28 16:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1246,15 +1246,15 @@ msgstr "Wallet \"{{walletName}}\" wurde gelöscht"
 
 #: public/views/splash.html:34
 msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately."
-msgstr ""
+msgstr "Die Brieftasche enthält die notwendigsten Informationen zu Ihnen. Der Anbieter wird in der Lage sein, einige ihrer Guthaben und Transaktionen einzusehen. Sie können jedoch sofort beginnen. "
 
 #: public/views/splash.html:26
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
-msgstr ""
+msgstr "Diese Brieftasche enthält den aktuellsten Stand der Byteball Datenbank. Sie erhalten damit mehr Privatsphäre. Es werden jedoch mehr Ressourcen ihres Gerätes gebunden und eine Erstsynchronisierung wird mehrere Stunden dauern."
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
-msgstr ""
+msgstr "Ihre Aufnahme-Präferenz"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1262,7 +1262,7 @@ msgstr "Es gibt keine Wallets, um diese Zahlung auszuführen"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "Diese Auswahl kann später geändert werden"
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
