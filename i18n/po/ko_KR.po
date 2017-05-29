@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 01:00-0400\n"
+"PO-Revision-Date: 2017-05-29 01:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -312,15 +312,15 @@ msgstr "특정한 확장된 개인 키를 사용하여 만들 수 없습니다."
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
-msgstr ""
+msgstr "특정한 확장된 개인 키를 사용하여 만들 수 없습니다."
 
 #: src/js/services/profileService.js:202
 msgid "Could not create: Invalid wallet seed"
-msgstr ""
+msgstr "만들 수 없습니다: 유효하지 않은 지갑 시드"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr ""
+msgstr "암호를 해독할 수 없습니다"
 
 #: public/views/walletHome.html:480
 msgid "Could not fetch transaction history"
@@ -330,7 +330,7 @@ msgstr "거래내역을 가져올 수 없습니다"
 #: src/js/services/profileService.js:459
 #: src/js/services/profileService.js:481
 msgid "Could not import"
-msgstr ""
+msgstr "가져올 수 없습니다"
 
 #: src/js/services/profileService.js:409
 msgid "Could not import. Check input file and password"
@@ -338,11 +338,11 @@ msgstr "가져올 수 없습니다. 파일과 패스워드를 확인해 주세�
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "유효한 바이트볼 QR 코드를 인식할 수 없습니다."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
-msgstr ""
+msgstr "지불할 비용을 보낼 수 없습니다."
 
 #: public/views/walletHome.html:22
 msgid "Create"
@@ -350,7 +350,7 @@ msgstr "작성"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "새로운 지갑 추가"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
@@ -359,15 +359,15 @@ msgstr "새로운 지갑 만들기"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "새로운 지갑을 함께 만드시겠습니까?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "{{totalCosigners}} 의 {{requiredCosigners}} 지갑 만들기"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "작성:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -379,12 +379,12 @@ msgstr "지갑 만드는 중..."
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "단어 삭제"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
 msgid "Data feed name:"
-msgstr ""
+msgstr "데이터 피드 이름"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -392,23 +392,23 @@ msgstr "날짜"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "거절됨"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "종이 지갑을 해독하는데 이 장치에서 5분정도 걸릴 수 있습니다. 앱을 종료하지 말아주십시오."
 
 #: public/views/walletHome.html:157
 msgid "Definition"
-msgstr ""
+msgstr "정의"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "스마트 주소 정의"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "주소 정의"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
@@ -420,7 +420,7 @@ msgstr "지갑 삭제"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
-msgstr ""
+msgstr "파생 전략"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
@@ -430,25 +430,25 @@ msgstr "상세"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "장치 주소"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "장치 이름"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "장치 이름은 당신과 통신하는 다른 장치에 표시됩니다."
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr ""
+msgstr "Crowdin에서 당신의 모국어가 보이지 않습니까? Crowdin의 운영자와 연락하세요! 우리는 당신의 모국어를 지원하고 싶습니다."
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:41
 msgid "Done"
-msgstr ""
+msgstr "완료"
 
 #: public/views/walletHome.html:575
 msgid "Download CSV file"
@@ -457,23 +457,23 @@ msgstr "CSV 파일 다운로드"
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
-msgstr ""
+msgstr "편집"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "당신이나 {{correspondent.name}}은 채팅 내역 기록을 이용하지 못하게 되었습니다. 기록은 현재 누구에게도 저장되어있지 않습니다."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
-msgstr ""
+msgstr "지갑 알림을 위한 이메일"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "푸시 알림 받기"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "다른 장치로 부터 받은 페어링 코드를 입력하거나 카메라(오른쪽 상단에 아이콘)을 사용하여 다른 장치에 표시된 QR코드를 스캔합니다."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -486,28 +486,28 @@ msgstr "지갑 생성 중 오류"
 
 #: public/views/modals/bind.html:65
 msgid "Expected value:"
-msgstr ""
+msgstr "예상 값"
 
 #: public/views/export.html:51
 msgid "Export"
-msgstr ""
+msgstr "보내기"
 
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
 msgid "Export completed successfully"
-msgstr ""
+msgstr "보내기 완료"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr ""
+msgstr "보내는중..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
-msgstr ""
+msgstr "공개 키 확장"
 
 #: public/views/export.html:25
 msgid "Failed to export"
-msgstr ""
+msgstr "내보내기 실패"
 
 #: public/views/modals/tx-details.html:85
 msgid "Fee"
@@ -519,31 +519,31 @@ msgstr ""
 
 #: public/views/translators.html:11
 msgid "French"
-msgstr ""
+msgstr "프랑스어"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "전송자"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
-msgstr ""
+msgstr "전체 주소:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "전체 백업"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "전체 지갑"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "자금 발견"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "자금이 전송될 것입니다."
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -560,7 +560,7 @@ msgstr ".csv 파일 생성중..."
 #: public/views/translators.html:15
 #: public/views/translators.html:16
 msgid "German"
-msgstr ""
+msgstr "독일어"
 
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet {{selectedWalletName}} ..."
@@ -568,7 +568,7 @@ msgstr "'{{selectedWalletName}}' 지갑의 주소 얻는 중..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "전역 환경설정"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
@@ -577,15 +577,15 @@ msgstr "뒤로 가기"
 #: public/views/translators.html:18
 #: public/views/translators.html:19
 msgid "Greek"
-msgstr ""
+msgstr "그리스어"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr ""
+msgstr "하드웨어 지갑"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "지갑 씨앗 숨김"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -597,11 +597,11 @@ msgstr "홈"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "호스트"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "허브"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
@@ -609,7 +609,7 @@ msgstr ""
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
-msgstr ""
+msgstr "이 약관을 읽었으며, 이해하고 동의합니다."
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
