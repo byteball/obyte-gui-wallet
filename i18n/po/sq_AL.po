@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-29 10:58-0400\n"
+"PO-Revision-Date: 2017-05-29 11:04-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -572,20 +572,20 @@ msgstr "Preferencat globale"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr ""
+msgstr "Ktheu mbrapa"
 
 #: public/views/translators.html:18
 #: public/views/translators.html:19
 msgid "Greek"
-msgstr ""
+msgstr "Greqisht"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr ""
+msgstr "Portofoli i Pajisjes"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Fshih fjalët e portofolit"
 
 #: src/js/controllers/index.js:542
 msgid "History"
