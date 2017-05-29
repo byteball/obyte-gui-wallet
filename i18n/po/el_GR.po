@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-29 16:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(Το site δεν θα βλέπει το υπολοιπό σας και τα χρήματα δεν θα δαπανηθούν)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -23,19 +23,19 @@ msgstr "(πιθανό διπλό ξόδεμα)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. Πληρωμή για το συμβόλαιο:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Ποιος μπορεί να ξεκλειδώσει το συμβόλαιο:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Ένα πορτοφόλι για αποκεντρωμένη αξία"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Σχετικά με το Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -46,24 +46,24 @@ msgstr "Αποδοχή"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Αποδοχή πρόσκλησης"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Αποδοχή πρόσκλησης από αλλη συσκευή"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Λογαριασμός"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Προσθήκη νέας συσκευής"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr ""
+msgstr "Προσθήκη νέας καταχώρησης"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -78,7 +78,7 @@ msgstr "Διεύθυνση"
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "Βιβλίο διευθύνσεων"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -94,11 +94,11 @@ msgstr "Ψευδώνυμο για <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Όλες οι διευθύνσεις πορτοφολιού"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Όλες οι συνεισφορές στη μετάφραση του Byteball είναι ευπρόσδεκτες. Εγγραφείτε στο crowdin.com και συμμετάσχετε στο Byteball project στο"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
