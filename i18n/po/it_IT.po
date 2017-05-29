@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
-"PO-Revision-Date: 2017-05-29 06:44-0400\n"
+"PO-Revision-Date: 2017-05-29 10:26-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -523,7 +523,7 @@ msgstr "Francese"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "Da"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
@@ -531,7 +531,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Backup completo"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
@@ -593,7 +593,7 @@ msgstr "Storico"
 
 #: src/js/controllers/index.js:530
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
