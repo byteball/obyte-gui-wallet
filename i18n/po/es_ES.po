@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 04:22-0400\n"
+"PO-Revision-Date: 2017-05-29 04:33-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -367,7 +367,7 @@ msgstr "Crear monedero {{requiredCosigners}}-de-{{totalCosigners}}"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Creado:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -392,7 +392,7 @@ msgstr "Fecha"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "Rechazado"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
@@ -404,11 +404,11 @@ msgstr ""
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "Definición de dirección inteligente"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "Definiciones de direcciones"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
@@ -430,16 +430,16 @@ msgstr "Detalles"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "Direción del dispositivo"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "Nombre dispositivo"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Nombre dispositivo visible para otros dispositivos con los que comunica."
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
