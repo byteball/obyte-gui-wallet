@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 08:50-0400\n"
+"PO-Revision-Date: 2017-05-29 09:02-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1126,7 +1126,7 @@ msgstr "Sitzungsprotokoll"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr "Passwort"
+msgstr "Export-Passwort"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
