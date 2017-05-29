@@ -11,27 +11,27 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-29 10:32-0400\n"
+"PO-Revision-Date: 2017-05-29 10:42-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(Faqja nuk mund ta shohë bilancin tuaj dhe nuk do të shpenzohen para)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
-msgstr ""
+msgstr "(Shpenzimet e dyfishta të mundshme)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. Pagesa e kontratës:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Kush mund ta zhbllokojë kontratën:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Një portofol për vlerë të decentralizuar"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -122,15 +122,15 @@ msgstr "Shuma"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Një ngjarje është postuar nga një orakull:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Mirato krijimin e portofolit në pajisje të tjera"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Jeni i sigurt që doni të fshini fjalët e ruajtjes?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -139,15 +139,15 @@ msgstr "Jeni i sigurtë që doni të fshini këtë kuletë?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Aset"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Auto-rifreskim i listës së dëshmitarëve nga hub-i"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Auto-rifreskim i listës së dëshmitarëve nga hub-i"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,19 +170,19 @@ msgstr "Krijo kopjen rezervë tani"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Ruaji fjalët (seeds) e portfolit"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Fjalët e ruajtjes janë fshirë"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr ""
+msgstr "Bilanci nga Adresa"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr ""
+msgstr "Para marrjes së fondeve, rekomandohet që të kopjoni çelësat e portofolit tuaj."
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
