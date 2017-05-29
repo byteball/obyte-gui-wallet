@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 00:30-0400\n"
+"PO-Revision-Date: 2017-05-29 00:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,7 +23,7 @@ msgstr "(이중 사용 가능성 있음)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. 계약에 대한 지불"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
@@ -31,11 +31,11 @@ msgstr "2. 누가 계약을 해제할수 있는가:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "분산화 값을 위한 지갑"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "바이트볼에 대해서"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -46,24 +46,24 @@ msgstr "승인"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "초대 수락"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "다른 장치로부터의 초대 수락"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "계정"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "새로운 장치 추가"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr ""
+msgstr "새 항목 추가"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -78,7 +78,7 @@ msgstr "주소"
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "주소록"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -94,19 +94,19 @@ msgstr "<i>{{index.walletName}}</i>의 별명"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "모든 지갑 주소"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "바이트볼 번역에 대한 모든 기여를 환영합니다. Crowndin.com에 가입해서 바이트볼 프로젝트에 참여하세요."
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "이미 지불됨."
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "또한"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -122,11 +122,11 @@ msgstr "금액"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "이벤트는 오라클에의해 게시됩니다."
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "다른 장치에서의 지갑 생성에 승인"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -139,15 +139,15 @@ msgstr "정말로 지갑을 삭제하시겠습니까?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "자산"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "허브로부터 증인 목록 자동 업데이트"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "허브로부터 증인 목록 자동 업데이트하기."
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,15 +170,15 @@ msgstr "지금 백업"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "월렛 시드 백업하기."
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "백업 단어 삭제"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr ""
+msgstr "주소에 의한 잔고"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
@@ -187,12 +187,12 @@ msgstr "비트코인을 받기 전에 지갑의 키를 백업하길 강력히 �
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "지불 묶어두기."
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "조건부로 지불 묶어두기"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -200,7 +200,7 @@ msgstr "비트코인 URI가 유효하지 않습니다!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "당신과 {{correspondent.name}} 둘 다 로컬 채팅 내역 기록을 이용 가능하게 했습니다."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -212,7 +212,7 @@ msgstr "취소"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "계속하기"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -225,15 +225,15 @@ msgstr "취소"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "허브 변경:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr ""
+msgstr "지갑 별명을 바꾸는 것은 로컬 지갑 이름에만 영향을 줍니다."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "채팅"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
