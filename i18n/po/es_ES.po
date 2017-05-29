@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:10-0400\n"
+"PO-Revision-Date: 2017-05-29 05:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,7 +23,7 @@ msgstr "(Posible doble gasto)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr "Pago al contrato:"
+msgstr "1. Pago al contrato:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
@@ -31,11 +31,11 @@ msgstr "Quien puede desbloquear el contrato:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr "Un monedero para un valor descentralizado"
+msgstr "Monedero para valor descentralizado"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr "Sobre Byteball"
+msgstr "Acerca de Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -50,7 +50,7 @@ msgstr "Aceptar invitación"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr "Aceptar invitación del otro dispositivo"
+msgstr "Aceptar invitación de otro dispositivo"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -63,7 +63,7 @@ msgstr "Añadir nuevo dispositivo"
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr "Agregar una nueva entrada"
+msgstr "Agregar nueva entrada"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -78,7 +78,7 @@ msgstr "Dirección"
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr "Libreta de direcciones"
+msgstr "Libro de direcciones"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -392,11 +392,11 @@ msgstr "Fecha"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr "Rechazado"
+msgstr "No aceptada"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Descifrar un monedero de papel podría tomar alrededor de 5 minutos en este dispositivo. Por favor, sea paciente y mantenga la aplicación abierta."
+msgstr "Descifrar un monedero de papel podría tomar unos 5 minutos. Por favor, sea paciente y no cierra la aplicación."
 
 #: public/views/walletHome.html:157
 msgid "Definition"
@@ -443,7 +443,7 @@ msgstr "Nombre dispositivo visible para otros dispositivos con los que comunica.
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "¿No ve su idioma en Crowdin? Contáctese con el encargado del proyecto! Nos encantaría soportar su idioma."
+msgstr "¿No ve su idioma en Crowdin? Contáctese con el encargado del proyecto! Nos encantaría dar soporte a su idioma."
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:41
@@ -791,20 +791,20 @@ msgstr "Se recomienda borrar de este dispositivo la semilla, una vez recordada o
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
-msgstr ""
+msgstr "Sólo se pueden recuperar monederos de firma única."
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
 msgid "Oracle address:"
-msgstr ""
+msgstr "Dirección del \"Oráculo\":"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Par"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "Dispositivos emparejados"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
@@ -829,7 +829,7 @@ msgstr "Pegar la clave privada del monedero aquí"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Pago y oferta"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -853,15 +853,15 @@ msgstr "Pago Enviado"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Par paga a:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Par paga:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
-msgstr ""
+msgstr "Par:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -1102,7 +1102,7 @@ msgstr "Enviar las direcciones por email"
 
 #: public/views/walletHome.html:372
 msgid "Send all"
-msgstr ""
+msgstr "Enviar todo"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
@@ -1155,7 +1155,7 @@ msgstr "Mostrar todo"
 
 #: public/views/backup.html:38
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "Mostrar la semilla de todos modos"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
@@ -1237,7 +1237,7 @@ msgstr ""
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr ""
+msgstr "El par recibe el pago si:"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
@@ -1332,7 +1332,7 @@ msgstr "Sin confirmar"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "Unidad de blackbytes"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
@@ -1475,7 +1475,7 @@ msgstr "Contraseña"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr ""
+msgstr "Fichero de tu monedero:"
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
@@ -1483,40 +1483,40 @@ msgstr "La clave del monedero se cifrará. La contraseña no puede ser recuperad
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
-msgstr ""
+msgstr "después de que el contrato expire en:"
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "limpiar historial de chat"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "días"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
-msgstr ""
+msgstr "de todos modos"
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
-msgstr ""
+msgstr "explícitamente"
 
 #: public/views/modals/bind.html:90
 #: public/views/modals/offer-contract.html:66
 msgid "hours"
-msgstr ""
+msgstr "horas"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "si un \"oráculo\" establece un evento:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
-msgstr ""
+msgstr "en el árbol \"Merkle\""
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
-msgstr ""
+msgstr "en monederos"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
@@ -1532,11 +1532,11 @@ msgstr "opcional"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "enviando"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "a"
 
 #: public/views/walletHome.html:387
 #: public/views/walletHome.html:398
@@ -1545,15 +1545,15 @@ msgstr "¡demasiado largo!"
 
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
-msgstr ""
+msgstr "Se puede gastar {{address}} si:"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{cancel_label || 'Cancel'}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
@@ -1561,7 +1561,7 @@ msgstr "{{fee}} se descontará por comisión de la red bitcoin"
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"
-msgstr ""
+msgstr "Se puede gastar {{hrd.destinationAddress}} si:"
 
 #: public/views/copayers.html:18
 #: public/views/includes/walletInfo.html:2
@@ -1574,4 +1574,4 @@ msgstr "{{item.m}}-de-{{item.n}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
-msgstr ""
+msgstr "{{wordsC.text}}"
