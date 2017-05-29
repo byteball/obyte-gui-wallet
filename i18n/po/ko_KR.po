@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 02:41-0400\n"
+"PO-Revision-Date: 2017-05-29 02:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1211,13 +1211,13 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
 #: public/views/walletHome.html:99
 msgid "Tap to retry"
-msgstr ""
+msgstr "탭 하여 재시도"
 
 #: public/views/disclaimer.html:12
 #: public/views/preferencesAbout.html:30
@@ -1226,28 +1226,28 @@ msgstr "이용약관"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "게시될 예상 값:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "다른 장치에서 메세지를 받기 위한 허브"
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "허브가 다음의 증인을 교체할 것을 제안합니다:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr ""
+msgstr "상대가 이 지불을 수령합니다 조건:"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
 msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr ""
+msgstr "지갑 \"{{walletName}}\"이 삭제 되었습니다."
 
 #: public/views/splash.html:34
 msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately."
-msgstr ""
+msgstr "이 지갑은 당신에게 관련있는 최소한의 정보만을 보관합니다. 지갑 공급 업체는 당신의 계좌의 잔액을 알 수 있을 것이고 어떤 거래가 당신의 것인지를 알 수 있을 것입니다. 그러나 기다리지 않고 바로 사용하실 수 있습니다."
 
 #: public/views/splash.html:26
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
@@ -1365,7 +1365,7 @@ msgstr ""
 
 #: public/views/import.html:54
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "경고: 기존의 모든 지갑은 영구적으로 삭제될 것입니다."
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
