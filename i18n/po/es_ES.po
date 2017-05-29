@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 03:20-0400\n"
+"PO-Revision-Date: 2017-05-29 03:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(El sitio no verá su balance y no se gastará ningún dinero)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -23,7 +23,7 @@ msgstr "(Posible doble gasto)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "Pago al contrato:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
@@ -31,7 +31,7 @@ msgstr "Quien puede desbloquear el contrato:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Un monedero para un valor descentralizado"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -46,11 +46,11 @@ msgstr "Aceptar"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Aceptar invitación"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Aceptar invitación del otro dispositivo"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -98,7 +98,7 @@ msgstr "Todas las direcciones"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Todos las contribuciones a la traduccion de Byteball son bienvenidas. Regístrese en croudin.com y únase al proyecto Byteball en"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
@@ -122,7 +122,7 @@ msgstr "Importe"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Un evento es posteado por un oráculo:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
@@ -237,7 +237,7 @@ msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Elegir dispositivo al que enviar"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -259,11 +259,11 @@ msgstr ""
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Cofirmantes"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Cofirmantes para multifirma"
 
 #: public/views/preferences.html:29
 msgid "Color"
