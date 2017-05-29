@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 01:30-0400\n"
+"PO-Revision-Date: 2017-05-29 01:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -854,27 +854,27 @@ msgstr "지불 전송"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "피어가 지불:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "피어 지불:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
-msgstr ""
+msgstr "피어:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr ""
+msgstr "영원히 이 지갑을 지웁니다. '절대' 복구할 수 없습니다."
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr ""
+msgstr "일반 지갑"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "이 지갑의 종류를 선택해주세요."
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -890,28 +890,28 @@ msgstr "포트"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
-msgstr ""
+msgstr "포르투갈어"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "게시 값:"
 
 #: public/views/walletHome.html:153
 #: public/views/walletHome.html:25
 msgid "Preferences"
-msgstr ""
+msgstr "환경설정"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr ""
+msgstr "한번 더 누르면 종료됩니다."
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "블랙바이트와 같은 개인 자산은 복구되지 않습니다."
 
 #: src/js/controllers/walletHome.js:1277
 msgid "Private payloads sent"
-msgstr ""
+msgstr "개인 페이로드 전송"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -923,24 +923,24 @@ msgstr "QR스캐너"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "개인 페이로드 재전송하기"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
-msgstr ""
+msgstr "수신"
 
 #: public/views/walletHome.html:514
 msgid "Received"
-msgstr ""
+msgstr "수신됨"
 
 #: public/views/includes/transaction.html:15
 #: public/views/modals/tx-details.html:45
 msgid "Recipients"
-msgstr ""
+msgstr "받는 사람"
 
 #: public/views/walletHome.html:38
 msgid "Reconnecting to Wallet Service..."
-msgstr ""
+msgstr "지갑 서비스에 다시 연결..."
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
@@ -948,7 +948,7 @@ msgstr "복구"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "시드로부터 복구"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
@@ -960,23 +960,23 @@ msgstr "지갑 재생성중..."
 
 #: src/js/controllers/index.js:165
 msgid "Refused"
-msgstr ""
+msgstr "거절됨"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
-msgstr ""
+msgstr "릴리스 정보"
 
 #: public/views/modals/destination-address.html:84
 msgid "Remove"
-msgstr ""
+msgstr "제거"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "장치 제거"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "이름 바꾸기:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -985,32 +985,32 @@ msgstr "패스워드 다시 입력"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "비밀번호를 한번 더 입력해주세요"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "바꾸기"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr ""
+msgstr "비밀번호 요청"
 
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:274
 msgid "Request a specific amount"
-msgstr ""
+msgstr "특정한 양 요청"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
-msgstr ""
+msgstr "지불 요청"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
-msgstr ""
+msgstr "필요한 서명의 수"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
-msgstr ""
+msgstr "전체 백업 파일으로부터 복구하기"
 
 #: public/views/splash.html:60
 msgid "Retrying..."
@@ -1018,11 +1018,11 @@ msgstr "다시 시도 중..."
 
 #: public/views/translators.html:21
 msgid "Russian"
-msgstr ""
+msgstr "러시아어"
 
 #: public/views/includes/password.html:32
 msgid "SET"
-msgstr ""
+msgstr "설정"
 
 #: public/views/editCorrespondentDevice.html:49
 #: public/views/modals/destination-address.html:132
@@ -1033,7 +1033,7 @@ msgstr ""
 #: public/views/preferencesHub.html:18
 #: public/views/preferencesTor.html:19
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #: public/views/preferencesEmail.html:21
 msgid "Saving preferences..."
@@ -1139,24 +1139,24 @@ msgstr ""
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
-msgstr ""
+msgstr "설정"
 
 #: public/views/modals/customized-amount.html:24
 #: public/views/walletHome.html:253
 msgid "Share address"
-msgstr ""
+msgstr "주소 공유"
 
 #: public/views/walletHome.html:257
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "지불받을 지갑 주소 공유"
 
 #: public/views/walletHome.html:567
 msgid "Show all"
-msgstr ""
+msgstr "모두 보기"
 
 #: public/views/backup.html:38
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "어쨌든 지갑 주소 보여주기"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
@@ -1373,11 +1373,11 @@ msgstr ""
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
-msgstr ""
+msgstr "바이트볼에 오신 것을 환영합니다"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "공동서명자 기다리기"
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
@@ -1385,7 +1385,7 @@ msgstr "대기 중..."
 
 #: public/views/preferencesDeleteWallet.html:12
 msgid "Wallet"
-msgstr ""
+msgstr "지갑"
 
 #: public/views/preferences.html:20
 msgid "Wallet Alias"
@@ -1393,24 +1393,24 @@ msgstr "지갑 별명"
 
 #: public/views/preferencesInformation.html:27
 msgid "Wallet Configuration (m-n)"
-msgstr ""
+msgstr "지갑 구성 (m-n)"
 
 #: public/views/preferencesInformation.html:20
 msgid "Wallet Id"
-msgstr ""
+msgstr "지갑 ID"
 
 #: public/views/preferencesAdvanced.html:14
 #: public/views/preferencesInformation.html:8
 msgid "Wallet Information"
-msgstr ""
+msgstr "지갑 정보"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
-msgstr ""
+msgstr "지갑 이름"
 
 #: src/js/services/profileService.js:378
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "바이트볼에 이미 있는 지갑:"
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1418,12 +1418,12 @@ msgstr "지갑 이름"
 
 #: public/views/backup.html:28
 msgid "Wallet seed not available."
-msgstr ""
+msgstr "지갑 시드가 유효하지 않습니다."
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
 msgid "Wallets"
-msgstr ""
+msgstr "지갑"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
@@ -1433,19 +1433,19 @@ msgstr "경고!"
 #: public/views/modals/offer-contract.html:144
 #: public/views/walletHome.html:411
 msgid "Who signs:"
-msgstr ""
+msgstr "누가 서명했는지:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr ""
+msgstr "증인 주소"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "증인"
 
 #: public/views/backup.html:50
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "그것을 적어서 안전한 곳에 보관해주세요."
 
 #: src/js/services/profileService.js:606
 msgid "Wrong password"
@@ -1455,7 +1455,7 @@ msgstr "잘못된 비밀번호"
 #: public/views/modals/confirmation.html:6
 #: src/js/controllers/index.js:401
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: public/views/walletHome.html:20
 msgid "You do not have a wallet"
@@ -1464,7 +1464,7 @@ msgstr "지갑이 없습니다"
 #: public/views/backup.html:49
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr ""
+msgstr "당신의 지갑 시드:"
 
 #: public/views/export.html:33
 msgid "Your export password"
