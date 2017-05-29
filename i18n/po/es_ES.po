@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 12:01-0400\n"
+"PO-Revision-Date: 2017-05-29 12:11-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1553,7 +1553,7 @@ msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr "{cancel_label || 'Cancel'}"
+msgstr "{cancel_label || 'Cancelar'}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
