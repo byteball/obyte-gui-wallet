@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 03:50-0400\n"
+"PO-Revision-Date: 2017-05-29 04:03-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -31,7 +31,7 @@ msgstr "Wer kann den Vertrag entsperren:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr "Ein Wallet für dezentrale Werte"
+msgstr "Ein Wallet für dezentrale Wertsachen"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -126,7 +126,7 @@ msgstr "Ein Event wird von einem Orakel gepostet:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr "Genehmigen Sie die Erstellung der Brieftasche an einem anderem Gerät"
+msgstr "Genehmigen Sie die Erstellung des Wallets an einem anderem Gerät"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -350,7 +350,7 @@ msgstr "Erzeugen"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr "Neue Brieftasche erstellen"
+msgstr "Neues Wallet erstellen"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
@@ -359,11 +359,11 @@ msgstr "Neues Wallet erzeugen"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr "Erstellen einer neue Brieftasche zusammen mit ?"
+msgstr "Erstellen eines neuen Wallets zusammen mit ?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Erstelle {{requiredCosigners}}-von-{{totalCosigners}} Brieftasche"
+msgstr "{{requiredCosigners}}-von-{{totalCosigners}} Wallet erstellen"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -375,7 +375,7 @@ msgstr "Profil erstellen..."
 
 #: public/views/create.html:20
 msgid "Creating Wallet..."
-msgstr "Wallet erstellen..."
+msgstr "Erstelle Wallet..."
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
@@ -787,11 +787,11 @@ msgstr "Einen Vertrag anbieten"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr "Sobald Sie Ihren Brieftaschen-Seed kopiert haben, wird empfohlen, diesen vom Gerät zu löschen."
+msgstr "Sobald Sie Ihren Wallet-Seed kopiert haben, wird empfohlen, diesen vom Gerät zu löschen."
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
-msgstr "Nur einfach signierte Brieftaschen können wiederhergestellt werden."
+msgstr "Nur einfach signierte Wallets können wiederhergestellt werden."
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
@@ -869,11 +869,11 @@ msgstr "Wallet dauerhaft löschen. DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT 
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr "Einfache Brieftasche"
+msgstr "Standard Wallet"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr "Bitte wählen Sie die Art der Brieftasche"
+msgstr "Bitte, wählen Sie die Art des Wallets"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -951,7 +951,7 @@ msgstr "Wiederherstellen per Brieftaschen-Seed"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
-msgstr "Wiederherstellung ist nur über die Vollversion der Brieftasche möglich."
+msgstr "Eine Wiederherstellung ist nur über die Vollversion des Wallets möglich."
 
 #: public/views/walletHome.html:58
 msgid "Recreating Wallet..."
