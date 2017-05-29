@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-29 10:26-0400\n"
+"PO-Revision-Date: 2017-05-29 10:32-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -78,7 +78,7 @@ msgstr "Adresa"
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "Adresari"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -94,19 +94,19 @@ msgstr "Nofka për <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Të gjitha adresat e portfolit"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Të gjitha kontributet në përkthimin e Byteball janë të mirëseardhura. Regjistrohuni në crowdin.com dhe bashkohuni me projektin Byteball në"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Paguar tashmë"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Poashtu"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
