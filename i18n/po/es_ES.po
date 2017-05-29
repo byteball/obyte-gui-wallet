@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:50-0400\n"
+"PO-Revision-Date: 2017-05-29 06:04-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -196,7 +196,7 @@ msgstr "Enlazar pago a condición"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr "¡Bitcoin URI no es válida!"
+msgstr "¡URI de Bitcoin no válida!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
@@ -308,33 +308,33 @@ msgstr "No se ha podido crear la propuesta de pago"
 
 #: src/js/services/profileService.js:209
 msgid "Could not create using the specified extended private key"
-msgstr "No se ha podido crear el monedero usando la clave privada ingresada"
+msgstr "No se pudo crear el monedero usando la clave privada ingresada"
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
-msgstr "No se ha podido crear con la clave pública extendida especificada"
+msgstr "No se pudo crear con la clave pública extendida especificada"
 
 #: src/js/services/profileService.js:202
 msgid "Could not create: Invalid wallet seed"
-msgstr "No se ha podido crear: semilla del monedero no válida"
+msgstr "No se pudo crear: semilla de monedero no válida"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr "No se ha podido descifrar"
+msgstr "No se pudo descifrar"
 
 #: public/views/walletHome.html:480
 msgid "Could not fetch transaction history"
-msgstr "No se ha podido obtener el historial de transacciones"
+msgstr "No se pudo obtener historial de transacciones"
 
 #: src/js/services/profileService.js:432
 #: src/js/services/profileService.js:459
 #: src/js/services/profileService.js:481
 msgid "Could not import"
-msgstr "No se ha podido importar"
+msgstr "No se pudo importar"
 
 #: src/js/services/profileService.js:409
 msgid "Could not import. Check input file and password"
-msgstr "No se ha podido importar. Verifique el archivo y contraseña"
+msgstr "No se pudo importar. Verifique archivo y contraseña"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
@@ -342,7 +342,7 @@ msgstr "No se pudo leer un código QR válido"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
-msgstr "No se ha podido enviar el pago"
+msgstr "No se pudo enviar el pago"
 
 #: public/views/walletHome.html:22
 msgid "Create"
