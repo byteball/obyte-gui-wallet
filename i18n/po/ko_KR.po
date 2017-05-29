@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 02:50-0400\n"
+"PO-Revision-Date: 2017-05-29 03:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -300,7 +300,7 @@ msgstr "클립보드에 복사하기"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "이전 거래 상대자는 복구 되지 않았습니다."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
@@ -515,7 +515,7 @@ msgstr "수수료"
 
 #: public/views/modals/tx-details.html:103
 msgid "Finality"
-msgstr ""
+msgstr "최종"
 
 #: public/views/translators.html:11
 msgid "French"
@@ -714,7 +714,7 @@ msgstr "나"
 
 #: public/views/modals/tx-details.html:97
 msgid "Merchant message"
-msgstr ""
+msgstr "상점의 메세지"
 
 #: public/views/walletHome.html:385
 msgid "Merkle proof"
@@ -738,7 +738,7 @@ msgstr "내 바이트볼 주소"
 
 #: public/views/correspondentDevice.html:289
 msgid "My recording preference"
-msgstr ""
+msgstr "나의 기록 기본 설정"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -1177,7 +1177,7 @@ msgstr ""
 #: public/views/preferences.html:49
 #: public/views/preferencesGlobal.html:82
 msgid "Spending Restrictions"
-msgstr ""
+msgstr "지출 제한"
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
@@ -1251,19 +1251,19 @@ msgstr "이 지갑은 당신에게 관련있는 최소한의 정보만을 보관
 
 #: public/views/splash.html:26
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
-msgstr ""
+msgstr "이 지갑은 가장 최신의 바이트볼 전체 데이터베이스를 보관할 것입니다. 이 옵션은 개인 프라이버시를 위해 더 낫지만, 더 많은 자원이 요구되고 처음 동기화를 위해 몇 시간이 소요될 것입니다."
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
-msgstr ""
+msgstr "그들의 기록 설정"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
-msgstr ""
+msgstr "이 지불을 위한 지갑이 없습니다."
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "이 선택은 나중에 바꾸실 수 없습니다."
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
@@ -1279,7 +1279,7 @@ msgstr ""
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "이것은 당신의 모든 기존 지갑을 영구히 삭제 할 것입니다."
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
