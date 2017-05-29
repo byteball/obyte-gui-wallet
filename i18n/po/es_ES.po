@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 03:40-0400\n"
+"PO-Revision-Date: 2017-05-29 04:22-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -212,7 +212,7 @@ msgstr "CANCELAR"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "Continuar"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -225,7 +225,7 @@ msgstr "Cancelar"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Cambiar hub:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -255,7 +255,7 @@ msgstr "Cerrar"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Cofirmante {{$index+1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
@@ -267,7 +267,7 @@ msgstr "Cofirmantes para multifirma"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr ""
+msgstr "Color"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
@@ -350,7 +350,7 @@ msgstr "Crear"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Crear nuevo monedero"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
@@ -359,11 +359,11 @@ msgstr "Crear nuevo monedero"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "Crear nuevo monero junto  con ?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "Crear monedero {{requiredCosigners}}-de-{{totalCosigners}}"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
