@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Greek\n"
 "Language: el_GR\n"
-"PO-Revision-Date: 2017-05-29 16:40-0400\n"
+"PO-Revision-Date: 2017-05-29 16:49-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -102,11 +102,11 @@ msgstr "Όλες οι συνεισφορές στη μετάφραση του By
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Ήδη πληρωμένο"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Επίσης"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -291,7 +291,7 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Επιβεβαιωμένο"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
@@ -300,7 +300,7 @@ msgstr "Αντιγράφηκε στο πρόχειρο"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Ανταποκριτές δεν επαναφέρονται."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
@@ -379,12 +379,12 @@ msgstr "Δημιουργία του Πορτοφολιού..."
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "ΔΙΑΓΡΑΨΤΕ ΤΙΣ ΛΕΞΕΙΣ"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
 msgid "Data feed name:"
-msgstr ""
+msgstr "Όνομα δεδομένων τροφοδοσίας:"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -392,7 +392,7 @@ msgstr "Ημερομηνία"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "Απορρίφθηκε"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
@@ -527,23 +527,23 @@ msgstr ""
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
-msgstr ""
+msgstr "Πλήρης διεύθυνση:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Πλήρες αντίγραφο ασφαλείας"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Πλήρες πορτοφόλι"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "Χρήματα βρέθηκαν"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Τα χρήματα θα μεταφερθούν στο"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -568,7 +568,7 @@ msgstr "Λήψη διεύθυνσης για το πορτοφόλι {{selectedW
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Κεντρικές ρυθμίσεις"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
@@ -585,7 +585,7 @@ msgstr "Υλικό πορτοφόλι"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Απόκρυψη του Seed πορτοφολιού"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -597,15 +597,15 @@ msgstr "Αρχική Σελίδα"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Διακομιστής"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Κεντρικός τομέας"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "URL κεντρικού τομέα"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -613,15 +613,15 @@ msgstr "Βεβαιώνω ότι έχω διαβάσει, κατανοήσει κ
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Πληρώνω:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
-msgstr ""
+msgstr "Λαμβάνω άλλη πληρωμή:"
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
-msgstr ""
+msgstr "Αν δεν πληρείται η προϋπόθεση, θα μπορέσω να πάρω αυτά τα χρήματα πίσω μετά από:"
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
