@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 09:02-0400\n"
+"PO-Revision-Date: 2017-05-29 11:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -452,7 +452,7 @@ msgstr "Fertig"
 
 #: public/views/walletHome.html:575
 msgid "Download CSV file"
-msgstr "CSV-Datei herunterladen"
+msgstr ".csv-Datei herunterladen"
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
@@ -881,7 +881,7 @@ msgstr "Bitte die benötigten Felder ausfüllen"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
-msgstr "Bitte benennen Sie dieses Gerät"
+msgstr "Vergeben Sie einen Name für das Gerät"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
@@ -947,11 +947,11 @@ msgstr "Wiederherstellen"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr "Wiederherstellen per Brieftaschen-Seed"
+msgstr "Wiederherstellen per Wallet-Seed"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
-msgstr "Eine Wiederherstellung ist nur über die Vollversion des Wallets möglich."
+msgstr "Eine Wiederherstellung ist nur über ein Full Wallet möglich."
 
 #: public/views/walletHome.html:58
 msgid "Recreating Wallet..."
@@ -963,7 +963,7 @@ msgstr "Abgelehnt"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
-msgstr "Information zur Veröffentlichung"
+msgstr "Release-Informationen"
 
 #: public/views/modals/destination-address.html:84
 msgid "Remove"
