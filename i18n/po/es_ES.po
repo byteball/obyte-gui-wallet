@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-29 03:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "Quien puede desbloquear el contrato:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Sobre Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -58,7 +58,7 @@ msgstr "Cuenta"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Añadir nuevo dispositivo"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
@@ -94,7 +94,7 @@ msgstr "Alias de <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Todas las direcciones"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
@@ -102,11 +102,11 @@ msgstr ""
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Ya Pagado"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Además"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -126,7 +126,7 @@ msgstr ""
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Aprobar creación monedero en otros dispositivos"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -139,7 +139,7 @@ msgstr "¿Estas seguro de borrar este monedero?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Activo"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -170,7 +170,7 @@ msgstr "Realizar copia de seguridad ahora"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Respaldar copia de la semilla"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -187,12 +187,12 @@ msgstr "Antes de recibir fondos, es altamente recomendable realizar una copia de
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Enlazar pago"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Enlazar pago a condición"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -233,7 +233,7 @@ msgstr "Cambiar el alias del monedero solo afecta al nombre del monedero local."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
