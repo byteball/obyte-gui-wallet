@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:30-0400\n"
+"PO-Revision-Date: 2017-05-29 05:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1202,15 +1202,15 @@ msgstr "Importar monedero en papel"
 
 #: public/views/walletHome.html:61
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
-msgstr ""
+msgstr "Sincronizando... Restan {{index.count_unhandled_private_payments}} pagos privados"
 
 #: public/views/walletHome.html:60
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "Sincronizando... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1225,15 +1225,15 @@ msgstr "Términos de Uso"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "Se publicará el valor esperado:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "\"Hub\" para recibir mensajes de otros dispositivos."
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "El \"hub\" sugiere reemplazar los siguientes testigos:"
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
@@ -1246,15 +1246,15 @@ msgstr "El monedero \"{{walletName}}\" fue eliminado"
 
 #: public/views/splash.html:34
 msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately."
-msgstr ""
+msgstr "El monedero contendrá la mínima información relevante. Será posible conocer algunos de sus balances y qué transacciones son suyas. En todo caso, usted puede empezar a usar el monedero inmediatamente."
 
 #: public/views/splash.html:26
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
-msgstr ""
+msgstr "El monedero contendrá el último estado conocido de la base de datos Byteball. Esta opción es más segura pero consume más recursos, la sincronización inicial podría durar horas."
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
-msgstr ""
+msgstr "Su preferencia de grabación"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
@@ -1262,15 +1262,15 @@ msgstr "No dispone de monederos para realizar este pago"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "Esta elección no se puede cambiar después"
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr ""
+msgstr "Este activo es privado, envíese sólo a través de enlaces de chat o a monederos propios."
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
-msgstr ""
+msgstr "Este pago está asociado a una condición"
 
 #: public/views/modals/tx-details.html:73
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
@@ -1278,7 +1278,7 @@ msgstr "Esta transacción se ha invalidado; posiblemente debido a un intento de 
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "¡Se borrarán permanentemente todos sus monederos!"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
