@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-28 17:40-0400\n"
+"PO-Revision-Date: 2017-05-29 03:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -922,7 +922,7 @@ msgstr "QR-Scanner"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "Private Transaktionen erneut senden"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
@@ -1512,7 +1512,7 @@ msgstr "Wenn ein Ereignis durch ein Orakel gesendet wird:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
-msgstr ""
+msgstr "im Hash-Baum"
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
