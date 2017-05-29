@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 01:20-0400\n"
+"PO-Revision-Date: 2017-05-29 01:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -814,7 +814,7 @@ msgstr "종이 지갑 개인 키"
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
-msgstr ""
+msgstr "암호"
 
 #: src/js/services/profileService.js:596
 msgid "Password needed"
@@ -826,19 +826,19 @@ msgstr "비밀번호가 일치하지 않습니다"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr ""
+msgstr "당신의 종이 지갑 개인 키를 여기에 붙여 넣으세요"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "지불 및 제공"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
-msgstr ""
+msgstr "지불 승인"
 
 #: public/views/modals/tx-status.html:16
 msgid "Payment Proposal Created"
-msgstr ""
+msgstr "지불 제안 생성"
 
 #: public/views/walletHome.html:174
 msgid "Payment Proposals"
@@ -846,11 +846,11 @@ msgstr "지불제안"
 
 #: public/views/modals/tx-status.html:38
 msgid "Payment Rejected"
-msgstr ""
+msgstr "지불 거절"
 
 #: public/views/modals/tx-status.html:5
 msgid "Payment Sent"
-msgstr ""
+msgstr "지불 전송"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
