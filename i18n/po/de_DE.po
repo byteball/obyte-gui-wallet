@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 05:30-0400\n"
+"PO-Revision-Date: 2017-05-29 05:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1176,7 +1176,7 @@ msgstr "Spezifischer Seed"
 #: public/views/preferences.html:49
 #: public/views/preferencesGlobal.html:82
 msgid "Spending Restrictions"
-msgstr "Ausgabenbeschränkungen"
+msgstr "Ausgabebeschränkungen"
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
