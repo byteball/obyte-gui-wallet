@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 05:40-0400\n"
+"PO-Revision-Date: 2017-05-29 08:22-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,11 +23,11 @@ msgstr "(mögliche Doppelausgabe)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr "Zahlung an den Vertrag:"
+msgstr "1. Zahlung an den Vertrag:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr "Wer kann den Vertrag entsperren:"
+msgstr "2. Wer kann den Vertrag entsperren:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -152,7 +152,7 @@ msgstr "Autom. Aktualisierung der Zeugenliste vom Hub"
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
 msgid "Available Balance"
-msgstr "Verfügbarer Gesamtbetrag"
+msgstr "Verfügbarer Betrag"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -196,7 +196,7 @@ msgstr "Zahlung an Bedingung binden"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Byteball URI ist NICHT gültig!"
+msgstr "Bitcoin URI ist NICHT gültig!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
@@ -229,7 +229,7 @@ msgstr "Hub ändern:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Änderung der Aliases hat nur Auswirkungen auf den lokalen Namen des Wallets"
+msgstr "Änderung am Aliase haben nur Auswirkungen auf den lokalen Namen des Wallets."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
