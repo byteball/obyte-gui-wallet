@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 04:22-0400\n"
+"PO-Revision-Date: 2017-05-29 04:33-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -58,12 +58,12 @@ msgstr "Konto"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr "Ein neues Gerät hinzufügen"
+msgstr "Geräte hinzufügen"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr "Einen neuen Eintrag hinzufügen"
+msgstr "Neuen Eintrag hinzufügen"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -208,7 +208,7 @@ msgstr "Der eingesetzte Browser wird nicht unterstützt"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr "ABBRUCH"
+msgstr "Abbrechen"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
@@ -221,7 +221,7 @@ msgstr "Weiter"
 #: src/js/controllers/walletHome.js:118
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr "Abbruch"
+msgstr "Abbrechen"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
@@ -251,7 +251,7 @@ msgstr "Wählen sie das Geräte für den Versand"
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr "Schließen"
+msgstr "Zurück"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
