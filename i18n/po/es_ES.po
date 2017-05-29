@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:40-0400\n"
+"PO-Revision-Date: 2017-05-29 05:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -655,11 +655,11 @@ msgstr "Introducir mi dirección"
 
 #: public/views/walletHome.html:518
 msgid "Invalid"
-msgstr "Inválido"
+msgstr "No válido"
 
 #: src/js/controllers/index.js:1439
 msgid "Invalid Touch ID"
-msgstr "Touch ID inválido"
+msgstr "Touch ID no válido"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
@@ -1291,11 +1291,11 @@ msgstr "A"
 
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr ""
+msgstr "Para asociar el pago a una condición, pulse en la dirección del par desde el chat"
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "Para mayor privacidad se generan nuevas direcciones según se van usando."
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
@@ -1303,7 +1303,7 @@ msgstr "Balance Total Bloqueado"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "Número total de cosignatarios"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
@@ -1323,7 +1323,7 @@ msgstr "Traductores"
 
 #: src/js/controllers/walletHome.js:645
 msgid "Unable to send transaction proposal"
-msgstr "No se puede enviar la propuesta de transacción"
+msgstr "No se puede enviar propuesta de transacción"
 
 #: public/views/modals/tx-details.html:105
 #: public/views/walletHome.html:536
@@ -1336,7 +1336,7 @@ msgstr "Unidad de blackbytes"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "Unidad para bytes"
 
 #: public/views/walletHome.html:175
 msgid "Unsent transactions"
@@ -1348,7 +1348,7 @@ msgstr "Actualizando Monedero..."
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
-msgstr ""
+msgstr "Actualizar a {{version}}"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1364,19 +1364,19 @@ msgstr "ADVERTENCIA: Esta semilla fue creada con una contraseña. Para recuperar
 
 #: public/views/import.html:54
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "AVISO: ¡Se borrarán permanentemente todos sus monederos!"
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
-msgstr ""
+msgstr "AVISOS:"
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
-msgstr ""
+msgstr "BIENVENIDO A BYTEBALL"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "Esperando a cosignatarios"
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
@@ -1409,7 +1409,7 @@ msgstr "Nombre del Monedero (al crear)"
 
 #: src/js/services/profileService.js:378
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "Monedero ya en Byteball:"
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1417,7 +1417,7 @@ msgstr "Nombre del monedero"
 
 #: public/views/backup.html:28
 msgid "Wallet seed not available."
-msgstr ""
+msgstr "Semilla no disponible."
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
@@ -1432,15 +1432,15 @@ msgstr "¡Advertencia!"
 #: public/views/modals/offer-contract.html:144
 #: public/views/walletHome.html:411
 msgid "Who signs:"
-msgstr ""
+msgstr "Firmante:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr ""
+msgstr "Dirección de testigo"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "Testigos"
 
 #: public/views/backup.html:50
 msgid "Write it down and keep it somewhere safe."
