@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 11:20-0400\n"
+"PO-Revision-Date: 2017-05-29 11:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -971,7 +971,7 @@ msgstr "Entfernen"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr "Entfernen eines Geräts"
+msgstr "Geräte entfernen"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
@@ -1060,7 +1060,7 @@ msgstr "Scanne bitte deinen Fingerabdruck"
 
 #: public/views/walletHome.html:57
 msgid "Scanning Wallet funds..."
-msgstr "Prüfe Wallet auf neue Beträge..."
+msgstr "Prüfe Wallet-Beträge..."
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
@@ -1344,7 +1344,7 @@ msgstr "Nicht vesendete Transaktionen"
 
 #: public/views/walletHome.html:51
 msgid "Updating Wallet..."
-msgstr "Wallet aktualisieren..."
+msgstr "Aktualisiere Wallet..."
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
@@ -1405,7 +1405,7 @@ msgstr "Wallet-Informationen"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
-msgstr "Wallet-Name (bei der Erzeugung)"
+msgstr "Wallet-Name (bei der Erstellung)"
 
 #: src/js/services/profileService.js:378
 msgid "Wallet already in Byteball:"
