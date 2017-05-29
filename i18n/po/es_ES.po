@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 07:11-0400\n"
+"PO-Revision-Date: 2017-05-29 12:01-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -98,7 +98,7 @@ msgstr "Todas las direcciones"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr "Todos las contribuciones a la traduccion de Byteball son bienvenidas. Regístrese en croudin.com y únase al proyecto Byteball en"
+msgstr "Todas las contribuciones a la traducción de Byteball son bienvenidas. Regístrese en crowdin.com y únase al proyecto Byteball en"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
@@ -126,7 +126,7 @@ msgstr "Un evento es posteado por un oráculo:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr "Aprobar creación monedero en otros dispositivos"
+msgstr "Aprobar creación de monedero en otros dispositivos"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -212,7 +212,7 @@ msgstr "CANCELAR"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr "Continuar"
+msgstr "CONTINUAR"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -1360,7 +1360,7 @@ msgstr "ADVERTENCIA: Se requiere hacer copia de seguridad"
 
 #: public/views/backup.html:68
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
-msgstr "ADVERTENCIA: Esta semilla fue creada con una contraseña. Para recuperar este mondero necesita las palabras y la contraseña."
+msgstr "ADVERTENCIA: Esta semilla fue creada con una contraseña. Para recuperar este monedero necesita las palabras y la contraseña."
 
 #: public/views/import.html:54
 msgid "WARNING: This will permanently delete all your existing wallets!"
