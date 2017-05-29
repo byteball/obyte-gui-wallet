@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 05:20-0400\n"
+"PO-Revision-Date: 2017-05-29 05:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -473,7 +473,7 @@ msgstr "Pushbenachrichtigungen aktivieren"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr "Geben Sie den Pairing-Code des anderen Gerätes ein, oder verwenden Sie die Kamera (Symbol oben rechts), um den QR-Code zu scannen der auf dem anderen Gerät angezeigt wird."
+msgstr "Geben Sie den Verbindungs-Code des anderen Gerätes ein, oder verwenden Sie die Kamera (Symbol oben rechts), um den QR-Code zu scannen der auf dem anderen Gerät angezeigt wird."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -926,11 +926,11 @@ msgstr "Private Transaktionen erneut senden"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
-msgstr "Eingang"
+msgstr "Empfangen"
 
 #: public/views/walletHome.html:514
 msgid "Received"
-msgstr "Erhalten"
+msgstr "Empfangen"
 
 #: public/views/includes/transaction.html:15
 #: public/views/modals/tx-details.html:45
@@ -1036,7 +1036,7 @@ msgstr "Speichern"
 
 #: public/views/preferencesEmail.html:21
 msgid "Saving preferences..."
-msgstr "Speichere Einstellungen"
+msgstr "Einstellungen werden gespeichert..."
 
 #: public/views/preferences.html:55
 msgid "Scan Fingerprint"
@@ -1052,7 +1052,7 @@ msgstr "Überprüfung wurde mit Fehlern beendet"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
-msgstr "Scannen Sie den obigen QR-Code mit Ihrem anderen Gerät oder senden Sie den Kopplung-Code an das andere Gerät:"
+msgstr "Scannen Sie den obigen QR-Code mit Ihrem anderen Gerät oder senden Sie den Verbindungs-Code an das andere Gerät:"
 
 #: src/js/controllers/index.js:1432
 msgid "Scan your fingerprint please"
@@ -1098,7 +1098,7 @@ msgstr "Zahlung senden"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
-msgstr "Sende Adresse per Email"
+msgstr "Adresse per Email senden"
 
 #: public/views/walletHome.html:372
 msgid "Send all"
