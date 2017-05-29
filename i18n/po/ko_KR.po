@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 03:10-0400\n"
+"PO-Revision-Date: 2017-05-29 03:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -31,7 +31,7 @@ msgstr "2. 누가 계약을 해제할수 있는가:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr "분산화 값을 위한 지갑"
+msgstr "분산 저장된 가치를 위한 지갑"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -122,7 +122,7 @@ msgstr "금액"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr "이벤트는 오라클에의해 게시됩니다."
+msgstr "이벤트는 오라클에 의해 게시됩니다."
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
@@ -147,7 +147,7 @@ msgstr "허브로부터 증인 목록 자동 업데이트"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr "허브로부터 증인 목록 자동 업데이트하기."
+msgstr "이 허브로부터 증인 목록 자동 업데이트하기"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -300,7 +300,7 @@ msgstr "클립보드에 복사하기"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr "이전 거래 상대자는 복구 되지 않았습니다."
+msgstr "이전 거래 상대자는 복구 되지 않습니다."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
