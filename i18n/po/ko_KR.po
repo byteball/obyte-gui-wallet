@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 12:20-0400\n"
+"PO-Revision-Date: 2017-05-29 13:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1160,7 +1160,7 @@ msgstr "어쨌든 지갑 주소 보여주기"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "지갑으로부터의 거래에 서명하시겠습니까?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
