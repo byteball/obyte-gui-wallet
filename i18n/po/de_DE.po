@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 04:43-0400\n"
+"PO-Revision-Date: 2017-05-29 04:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -499,7 +499,7 @@ msgstr "Export erfolgreich abgeschlossen"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr "Exportieren..."
+msgstr "Exportiere..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
@@ -589,7 +589,7 @@ msgstr "Wallet Seed ausblenden"
 
 #: src/js/controllers/index.js:542
 msgid "History"
-msgstr "Historie"
+msgstr "Verlauf"
 
 #: src/js/controllers/index.js:530
 msgid "Home"
