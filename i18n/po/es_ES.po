@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 03:30-0400\n"
+"PO-Revision-Date: 2017-05-29 03:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -143,11 +143,11 @@ msgstr "Activo"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Autoactualizar lista de testigos desde el hub"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Autoactualizar lista de testigos desde este hub"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -200,7 +200,7 @@ msgstr "¡Bitcoin URI no es válida!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Tanto tú como {{correspondent.name}} habilitan la grabación del historial de chat."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
