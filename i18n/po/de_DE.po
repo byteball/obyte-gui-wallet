@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 08:33-0400\n"
+"PO-Revision-Date: 2017-05-29 08:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -663,13 +663,13 @@ msgstr "Ungültige Touch ID"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr "Das andere Gerät einladen"
+msgstr "Ein anderes Gerät einladen"
 
 #: public/views/translators.html:12
 #: public/views/translators.html:13
 #: public/views/translators.html:14
 msgid "Italian"
-msgstr "Italienisch"
+msgstr "Italiano"
 
 #: public/views/translators.html:10
 msgid "Japanese"
@@ -677,7 +677,7 @@ msgstr "日本語"
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
-msgstr "Adresse"
+msgstr "Name"
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
@@ -717,7 +717,7 @@ msgstr "Händlernachricht"
 
 #: public/views/walletHome.html:385
 msgid "Merkle proof"
-msgstr "Merkle proof"
+msgstr "Merkle-Nachweis"
 
 #: public/views/paymentUri.html:17
 msgid "Message"
