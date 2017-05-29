@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 08:22-0400\n"
+"PO-Revision-Date: 2017-05-29 08:33-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -346,7 +346,7 @@ msgstr "Zahlung kann nicht gesendet werden"
 
 #: public/views/walletHome.html:22
 msgid "Create"
-msgstr "Erzeugen"
+msgstr "Erstellen"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
@@ -355,11 +355,11 @@ msgstr "Neues Wallet erstellen"
 #: public/views/add.html:15
 #: public/views/create.html:165
 msgid "Create new wallet"
-msgstr "Neues Wallet erzeugen"
+msgstr "Neues Wallet erstellen"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr "Erstellen eines neuen Wallets zusammen mit ?"
+msgstr "Erstellen eines neuen Wallets zusammen mit?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
@@ -371,15 +371,15 @@ msgstr "Erstellt:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
-msgstr "Profil erstellen..."
+msgstr "Profil wird erstellt..."
 
 #: public/views/create.html:20
 msgid "Creating Wallet..."
-msgstr "Erstelle Wallet..."
+msgstr "Wallet wird erstellt..."
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr "WÖRTER LÖSCHEN"
+msgstr "Wallet-Seed löschen"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
@@ -605,11 +605,11 @@ msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr "Hub URL"
+msgstr "Hub Url"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
-msgstr "Ich bestätige, dass ich diese Bedingungen gelesen habe, diese verstehe und diesen zustimme."
+msgstr "Ich bestätige, dass ich die Nutzungsbedingungen gelesen habe, diese verstehe und diesen zustimme."
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
