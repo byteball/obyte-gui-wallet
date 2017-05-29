@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:01-0400\n"
+"PO-Revision-Date: 2017-05-29 05:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -495,11 +495,11 @@ msgstr "Exportar"
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
 msgid "Export completed successfully"
-msgstr ""
+msgstr "Exportación completada con éxito"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr ""
+msgstr "Exportando..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
@@ -515,7 +515,7 @@ msgstr "Comisión"
 
 #: public/views/modals/tx-details.html:103
 msgid "Finality"
-msgstr ""
+msgstr "Concepto"
 
 #: public/views/translators.html:11
 msgid "French"
@@ -523,19 +523,19 @@ msgstr "Francés"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "Desde"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
-msgstr ""
+msgstr "Dirección completa:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Copia de Seg. completa"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Monedero completo"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
@@ -543,7 +543,7 @@ msgstr "Fondos encontrados"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Se transferirán los fondos a"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -568,7 +568,7 @@ msgstr "Obteniendo direcciones para el monedero {{selectedWalletName}} ..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Preferencias generales"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
@@ -585,7 +585,7 @@ msgstr "Monedero de Hardware"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Ocultar semilla del monedero"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -597,15 +597,15 @@ msgstr "Inicio"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "\"Host\""
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "\"Hub\""
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "URL del \"Hub\""
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -613,19 +613,19 @@ msgstr "Confirmo haber leído, entendido y aceptado estos términos."
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Pago:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
-msgstr ""
+msgstr "Recibo otro pago:"
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
-msgstr ""
+msgstr "Si no se cumple la condición, los fondos retornan tras:"
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
-msgstr ""
+msgstr "Si el corresponsal no paga, los fondos retornan tras:"
 
 #: public/views/import.html:40
 msgid "Import"
@@ -641,7 +641,7 @@ msgstr "Importando monedero..."
 
 #: public/views/walletHome.html:111
 msgid "Including pending confirmation"
-msgstr ""
+msgstr "Incluyendo confirmación pendiente"
 
 #: public/views/walletHome.html:499
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
@@ -651,7 +651,7 @@ msgstr "La sincronización del historial de transacción inicial puede tomar alg
 
 #: public/views/correspondentDevice.html:319
 msgid "Insert my address"
-msgstr ""
+msgstr "Introducir mi dirección"
 
 #: public/views/walletHome.html:518
 msgid "Invalid"
@@ -663,7 +663,7 @@ msgstr "Touch ID inválido"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
+msgstr "Invitar a otro dispositivo"
 
 #: public/views/translators.html:12
 #: public/views/translators.html:13
@@ -685,11 +685,11 @@ msgstr "Idioma"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "Más tarde"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
-msgstr ""
+msgstr "Monedero Ligero"
 
 #: src/js/controllers/disclaimer.js:13
 msgid "Loading..."
@@ -701,7 +701,7 @@ msgstr "Hacer un pago a"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
-msgstr ""
+msgstr "Quizá después"
 
 #: public/views/includes/copayers.html:4
 #: public/views/modals/multi-payment.html:40
@@ -717,7 +717,7 @@ msgstr "Mensaje del negocio"
 
 #: public/views/walletHome.html:385
 msgid "Merkle proof"
-msgstr ""
+msgstr "Prueba \"Merkle\""
 
 #: public/views/paymentUri.html:17
 msgid "Message"
@@ -729,15 +729,15 @@ msgstr "Movido"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr ""
+msgstr "Monedero multidispositivo"
 
 #: public/views/walletHome.html:218
 msgid "My Byteball address"
-msgstr ""
+msgstr "Mi dirección Byteball"
 
 #: public/views/correspondentDevice.html:289
 msgid "My recording preference"
-msgstr ""
+msgstr "Mis preferencias de grabación"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -749,16 +749,16 @@ msgstr "Nueva Semilla Aleatoria"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
-msgstr ""
+msgstr "¡Nueva versión disponible!"
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
-msgstr ""
+msgstr "Nuevos testigos (Witnesses)"
 
 #: public/views/authConfirmation.html:22
 #: src/js/controllers/index.js:402
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
@@ -783,11 +783,11 @@ msgstr "Nota"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Ofrecer contrato"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "Se recomienda borrar de este dispositivo la semilla, una vez recordada o transcrita."
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
