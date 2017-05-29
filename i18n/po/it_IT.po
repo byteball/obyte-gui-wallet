@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
-"PO-Revision-Date: 2017-05-29 10:26-0400\n"
+"PO-Revision-Date: 2017-05-29 10:32-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -597,11 +597,11 @@ msgstr "Home"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
@@ -946,7 +946,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "Ripristina dal Seed"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
@@ -970,11 +970,11 @@ msgstr ""
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Elimina un Dispositivo"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Rinomina:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -983,15 +983,15 @@ msgstr "Ripeti password"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "Ripeti la password"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Sostituisci"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr ""
+msgstr "Richiedi la password"
 
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:274
@@ -1000,7 +1000,7 @@ msgstr "Richiedi un importo specifico"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
-msgstr ""
+msgstr "Richiedi il Pagamento"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
