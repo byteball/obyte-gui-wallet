@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 04:03-0400\n"
+"PO-Revision-Date: 2017-05-29 04:12-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1076,7 +1076,7 @@ msgstr "Wallet wählen"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr "Selektiere Unterbrieftasche"
+msgstr "Selektiere Unter-Wallet"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
@@ -1155,15 +1155,15 @@ msgstr "Zeige alles"
 
 #: public/views/backup.html:38
 msgid "Show the Wallet Seed Anyway"
-msgstr "Seed der Brieftasche anzeigen"
+msgstr "Wallet-Seed anzeigen"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
-msgstr "Transaktion über dieser Brieftasche signieren?"
+msgstr "Transaktion über dieses Wallets signieren?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr "Brieftasche für kleine Ausgaben"
+msgstr "Standard Wallet"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1364,7 +1364,7 @@ msgstr "WARNUNG: Dieser Seed wurde mit einer Passphrase erzeugt. Um das Wallet w
 
 #: public/views/import.html:54
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr "Warnung: Dies löscht dauerhaft alle Ihre bestehenden Brieftaschen!"
+msgstr "Warnung: Dies löscht dauerhaft alle Ihre bestehenden Wallets!"
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
@@ -1384,7 +1384,7 @@ msgstr "Warte..."
 
 #: public/views/preferencesDeleteWallet.html:12
 msgid "Wallet"
-msgstr "Brieftasche"
+msgstr "Wallet"
 
 #: public/views/preferences.html:20
 msgid "Wallet Alias"
@@ -1409,7 +1409,7 @@ msgstr "Wallet-Name (bei der Erzeugung)"
 
 #: src/js/services/profileService.js:378
 msgid "Wallet already in Byteball:"
-msgstr "Brieftasche bereits in Byteball:"
+msgstr "Wallet bereits in Byteball:"
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1417,12 +1417,12 @@ msgstr "Name des Wallets"
 
 #: public/views/backup.html:28
 msgid "Wallet seed not available."
-msgstr "Seed der Brieftasche nicht verfügbar."
+msgstr "Wallet-Seed nicht verfügbar."
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
 msgid "Wallets"
-msgstr "Brieftaschen"
+msgstr "Wallets"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
@@ -1463,7 +1463,7 @@ msgstr "Kein Wallet vorhanden"
 #: public/views/backup.html:49
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr "Ihr Seed der Brieftasche:"
+msgstr "Ihr Wallet-Seed:"
 
 #: public/views/export.html:33
 msgid "Your export password"
