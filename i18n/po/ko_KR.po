@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 00:50-0400\n"
+"PO-Revision-Date: 2017-05-29 01:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(사이트는 당신의 잔액을 표시하지 않고 어떠한 돈도 들어가지 않습니다.)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -237,7 +237,7 @@ msgstr "채팅"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "보낼 장치 선택하기."
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -255,15 +255,15 @@ msgstr "닫기"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "공동 서명자 {{$index+1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "공동 서명자"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "멀티시그에 대한 공동 서명자"
 
 #: public/views/preferences.html:29
 msgid "Color"
@@ -275,7 +275,7 @@ msgstr "커밋 해시"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "파일을 압축하시겠습니까?(더 느립니다.)"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:403
@@ -283,20 +283,20 @@ msgstr ""
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr ""
+msgstr "확인하기"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "결제 확인"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "확인됨."
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "클립보드에 복사하기"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
@@ -304,11 +304,11 @@ msgstr ""
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
-msgstr ""
+msgstr "지불 계획안을 만들 수 없습니다."
 
 #: src/js/services/profileService.js:209
 msgid "Could not create using the specified extended private key"
-msgstr ""
+msgstr "특정한 확장된 개인 키를 사용하여 만들 수 없습니다."
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
