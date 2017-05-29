@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 01:40-0400\n"
+"PO-Revision-Date: 2017-05-29 02:41-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -19,7 +19,7 @@ msgstr "(사이트는 당신의 잔액을 표시하지 않고 어떠한 돈도 �
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
-msgstr "(이중 사용 가능성 있음)"
+msgstr "(이중 지불 가능성 있음)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
@@ -1164,7 +1164,7 @@ msgstr ""
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "소액 지출용 지갑"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1181,7 +1181,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
-msgstr ""
+msgstr "여전히 완료되지 않음"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/export.js:135
