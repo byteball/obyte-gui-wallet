@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 08:40-0400\n"
+"PO-Revision-Date: 2017-05-29 08:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -796,7 +796,7 @@ msgstr "Nur einfach signierte Wallets können wiederhergestellt werden."
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
 msgid "Oracle address:"
-msgstr "Oracle-Adresse:"
+msgstr "Orakel-Adresse:"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
@@ -808,7 +808,7 @@ msgstr "Verbundene Geräte"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
-msgstr "Privater Schlüssel des Paperwallets"
+msgstr "Privater Schlüssel des Papier-Wallets"
 
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
@@ -992,12 +992,12 @@ msgstr "Ersetzen"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr "Kennwort abfragen"
+msgstr "Kennwortabfrage"
 
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:274
 msgid "Request a specific amount"
-msgstr "Einen bestimmten Betrag anfordern"
+msgstr "Zahlungsanfrage"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
@@ -1005,7 +1005,7 @@ msgstr "Zahlung anfordern"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
-msgstr "Erforderliche Anzahl von Signaturen"
+msgstr "Erforderliche Anzahl an Signaturen"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
@@ -1090,7 +1090,7 @@ msgstr "Senden"
 
 #: public/views/walletHome.html:290
 msgid "Send All"
-msgstr "Alle senden"
+msgstr "Alles senden"
 
 #: public/views/modals/multi-payment.html:62
 msgid "Send Payment"
@@ -1106,7 +1106,7 @@ msgstr "Alles senden"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
-msgstr "Per E-Mail versenden"
+msgstr "Per E-Mail senden"
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
