@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 03:30-0400\n"
+"PO-Revision-Date: 2017-05-29 03:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -166,11 +166,11 @@ msgstr "뒤로"
 
 #: public/views/walletHome.html:210
 msgid "Backup now"
-msgstr "지금 백업"
+msgstr "지금 백업하기"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr "월렛 시드 백업하기."
+msgstr "월렛 시드 백업하기"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -182,12 +182,12 @@ msgstr "주소에 의한 잔고"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr "비트코인을 받기 전에 지갑의 키를 백업하길 강력히 권장합니다."
+msgstr "자금을 받기 전에 지갑의 키를 백업하길 강력히 권장합니다."
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr "지불 묶어두기."
+msgstr "지불 묶어두기"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
