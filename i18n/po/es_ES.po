@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 05:20-0400\n"
+"PO-Revision-Date: 2017-05-29 05:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -152,7 +152,7 @@ msgstr "Autoactualizar lista de testigos desde este hub"
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
 msgid "Available Balance"
-msgstr "Balance disponible"
+msgstr "Disponible"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -237,7 +237,7 @@ msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr "Elegir dispositivo al que enviar"
+msgstr "Elija dispositivo a emparejar"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -396,7 +396,7 @@ msgstr "No aceptada"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Descifrar un monedero de papel podría tomar unos 5 minutos. Por favor, sea paciente y no cierra la aplicación."
+msgstr "Descifrar un monedero de papel podría tomar unos 5 minutos. Por favor, sea paciente y no cierre la aplicación."
 
 #: public/views/walletHome.html:157
 msgid "Definition"
@@ -531,7 +531,7 @@ msgstr "Dirección completa:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr "Copia de Seg. completa"
+msgstr "Copia de seguridad completa"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
@@ -869,11 +869,11 @@ msgstr "Borrar permanentemente este monedero. ESTA ACCIÓN NO PUEDE SER REVERTID
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr ""
+msgstr "Monedero plano"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "Por favor, elija tipo de monedero"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -881,11 +881,11 @@ msgstr "Por favor ingrese los campos requeridos"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
-msgstr ""
+msgstr "Por favor, dé nombre a este dispositivo"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Puerto"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -893,7 +893,7 @@ msgstr "Portugués"
 
 #: public/views/modals/offer-contract.html:110
 msgid "Posted value:"
-msgstr ""
+msgstr "Valor publicado:"
 
 #: public/views/walletHome.html:153
 #: public/views/walletHome.html:25
@@ -902,15 +902,15 @@ msgstr "Preferencias"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr ""
+msgstr "Pulse de nuevo para salir"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "No se recuperarán activos privados (pej. blackbytes)."
 
 #: src/js/controllers/walletHome.js:1277
 msgid "Private payloads sent"
-msgstr ""
+msgstr "Datos privados enviados"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -918,11 +918,11 @@ msgstr "Código QR"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr "Lector de QR"
+msgstr "Lector QR"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
-msgstr ""
+msgstr "Reenviar datos privados"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
@@ -1076,11 +1076,11 @@ msgstr "Seleccionar un monedero"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr ""
+msgstr "Seleccionar submonedero"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
-msgstr ""
+msgstr "Seleccione su identidad"
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:449
@@ -1094,7 +1094,7 @@ msgstr "Enviar Todo"
 
 #: public/views/modals/multi-payment.html:62
 msgid "Send Payment"
-msgstr ""
+msgstr "Enviar pago"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
@@ -1114,7 +1114,7 @@ msgstr "Enviando los fondos..."
 
 #: public/views/walletHome.html:62
 msgid "Sending..."
-msgstr ""
+msgstr "Enviando..."
 
 #: public/views/walletHome.html:516
 msgid "Sent"
@@ -1126,7 +1126,7 @@ msgstr "Registro de sesión"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "Establecer contraseña"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
@@ -1138,7 +1138,7 @@ msgstr "Configurar notificaciones por correo electrónico podría debilitar su p
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
-msgstr ""
+msgstr "Opciones"
 
 #: public/views/modals/customized-amount.html:24
 #: public/views/walletHome.html:253
@@ -1147,7 +1147,7 @@ msgstr "Compartir dirección"
 
 #: public/views/walletHome.html:257
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Compartir esta dirección de monedero para recibir pagos."
 
 #: public/views/walletHome.html:567
 msgid "Show all"
@@ -1159,11 +1159,11 @@ msgstr "Mostrar la semilla de todos modos"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "¿Firmar transacción de gasto desde el monedero?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "Monedero de pequeños gastos"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1287,7 +1287,7 @@ msgstr ""
 #: public/views/walletHome.html:322
 #: public/views/walletHome.html:548
 msgid "To"
-msgstr "Para"
+msgstr "A"
 
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
@@ -1444,7 +1444,7 @@ msgstr ""
 
 #: public/views/backup.html:50
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "Apuntar y guardar en lugar seguro."
 
 #: src/js/services/profileService.js:606
 msgid "Wrong password"
@@ -1463,7 +1463,7 @@ msgstr "No tiene ningún monedero"
 #: public/views/backup.html:49
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr ""
+msgstr "Tu Semilla del Monedero:"
 
 #: public/views/export.html:33
 msgid "Your export password"
