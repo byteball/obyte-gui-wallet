@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 03:40-0400\n"
+"PO-Revision-Date: 2017-05-29 03:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -689,7 +689,7 @@ msgstr "Später"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
-msgstr ""
+msgstr "Light Wallet"
 
 #: src/js/controllers/disclaimer.js:13
 msgid "Loading..."
@@ -906,11 +906,11 @@ msgstr "Zum Beenden erneut drücken"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "Private Guthaben (z. B. blackbytes) werden nicht wiederhergestellt."
 
 #: src/js/controllers/walletHome.js:1277
 msgid "Private payloads sent"
-msgstr ""
+msgstr "Private Transaktionen gesendet"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1495,7 +1495,7 @@ msgstr "Tage"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
-msgstr ""
+msgstr "so oder so"
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
@@ -1516,7 +1516,7 @@ msgstr "im Hash-Baum"
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
-msgstr ""
+msgstr "in intelligenten Brieftaschen"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
