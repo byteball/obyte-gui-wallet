@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
-"PO-Revision-Date: 2017-05-29 10:32-0400\n"
+"PO-Revision-Date: 2017-05-29 10:42-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -50,7 +50,7 @@ msgstr "Accetta l'invito"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr "Accetta l'invito da un altro dispositivo"
+msgstr "Accetta invito da un altro dispositivo"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
@@ -118,7 +118,7 @@ msgstr "Anche"
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:371
 msgid "Amount"
-msgstr "Ammontare"
+msgstr "Importo"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
@@ -178,7 +178,7 @@ msgstr "Le parole di backup sono state rimosse"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr "Bilancio per indirizzo"
+msgstr "Saldo per indirizzo"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
