@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 04:50-0400\n"
+"PO-Revision-Date: 2017-05-29 05:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -555,7 +555,7 @@ msgstr "Neue Adresse erzeugen"
 
 #: public/views/walletHome.html:59
 msgid "Generating .csv file..."
-msgstr "CSV-Datei erzeugen..."
+msgstr ".csv Datei wird generiert..."
 
 #: public/views/translators.html:15
 #: public/views/translators.html:16
