@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-29 10:42-0400\n"
+"PO-Revision-Date: 2017-05-29 10:58-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -187,12 +187,12 @@ msgstr "Para marrjes së fondeve, rekomandohet që të kopjoni çelësat e porto
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Lidhe pagesën"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Lidheni pagesën me një kusht"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -200,7 +200,7 @@ msgstr "Bitcoin URI NUK është valid!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Të dy ju dhe {{correspondent.name}} aktivizuat regjistrimin e historisë lokale të chat-it."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -212,7 +212,7 @@ msgstr "ANULO"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "VAZHDONI"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -225,7 +225,7 @@ msgstr "Anulo"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Ndrro Hub-in"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -233,11 +233,11 @@ msgstr "Ndërrimi i nofkës së kuletës ndikon vetëm në emrin lokal të kulet
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Zgjidhni pajisjen të cilës i dërgoni"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -251,23 +251,23 @@ msgstr ""
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr ""
+msgstr "Mbyll"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Bashkë-nënshkruesi {{$index + 1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Bashkë-nënshkrues"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Bashkë-nënshkrues për multisig"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr ""
+msgstr "Ngjyra"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
@@ -275,7 +275,7 @@ msgstr ""
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "Kompreso skedarin? (Më ngadalë)"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:403
@@ -283,44 +283,44 @@ msgstr ""
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr ""
+msgstr "Konfirmo"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Konfirmo pagesën"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Konfirmuar"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "Kopjuar në clipboard"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Korrespondentët nuk janë restauruar."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
-msgstr ""
+msgstr "Nuk mund të krijohej propozimi për pagesë"
 
 #: src/js/services/profileService.js:209
 msgid "Could not create using the specified extended private key"
-msgstr ""
+msgstr "Nuk mund të krijohej duke përdorur çelësin e cekur privat të zgjeruar"
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
-msgstr ""
+msgstr "Nuk mund të krijohej duke përdorur çelësin e cekur publik të zgjeruar"
 
 #: src/js/services/profileService.js:202
 msgid "Could not create: Invalid wallet seed"
-msgstr ""
+msgstr "Nuk mund të krijohej: Fjalët e portofolit janë të pavlefshme"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr ""
+msgstr "Nuk mund të dekriptohej"
 
 #: public/views/walletHome.html:480
 msgid "Could not fetch transaction history"
@@ -531,44 +531,44 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Rezervë e plotë"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Portofol i plotë"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "Fondet u gjetën"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Fondet do të transferohen në"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
-msgstr ""
+msgstr "FILLO"
 
 #: public/views/walletHome.html:265
 msgid "Generate new address"
-msgstr ""
+msgstr "Gjenero një adresë të re"
 
 #: public/views/walletHome.html:59
 msgid "Generating .csv file..."
-msgstr ""
+msgstr "Gjenerimi i skedarit .csv ..."
 
 #: public/views/translators.html:15
 #: public/views/translators.html:16
 msgid "German"
-msgstr ""
+msgstr "Gjermanisht"
 
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr ""
+msgstr "Marrja e adresës për portofolin {{selectedWalletName}} ..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Preferencat globale"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
