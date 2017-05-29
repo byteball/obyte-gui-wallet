@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 04:33-0400\n"
+"PO-Revision-Date: 2017-05-29 04:43-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -461,7 +461,7 @@ msgstr "Editar"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "O bien tú o {{correspondent.name}} tiene deshabilitada la grabación del historial de chat. El historial no se ha grabado para ninguno."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -469,11 +469,11 @@ msgstr "Correo electrónico para notificaciones del monedero"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "Habilitar notificaciones push"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "Entre el dódigo de emparajamiento recibido desde el otro dispositivo, o use la cámara (icono esquina superior derecha) para escanear el código QR mostrado en el otro dispositivo."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
