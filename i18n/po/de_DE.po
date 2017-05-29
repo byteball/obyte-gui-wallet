@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-05-29 05:10-0400\n"
+"PO-Revision-Date: 2017-05-29 05:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -621,11 +621,11 @@ msgstr "Ich erhalte eine andere Zahlung:"
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
-msgstr "Wenn die Bedingung nicht erfüllt ist, kann ich dieses Geld zurücknehmen nach:"
+msgstr "Wenn die Bedingung nicht erfüllt ist, kann ich den Einsatz zurücknehmen nach:"
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
-msgstr "Wenn der Teilnehmer nicht zahlt, kann ich mein Geld zurücknehmen nach:"
+msgstr "Wenn der Teilnehmer nicht zahlt, kann ich mein Einsatz zurücknehmen nach:"
 
 #: public/views/import.html:40
 msgid "Import"
@@ -729,7 +729,7 @@ msgstr "EigenTX"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr "Mehrgeräte Brieftasche"
+msgstr "Mehrgeräte Wallet"
 
 #: public/views/walletHome.html:218
 msgid "My Byteball address"
@@ -745,7 +745,7 @@ msgstr "Netzwerk"
 
 #: src/js/controllers/create.js:29
 msgid "New Random Seed"
-msgstr "Neue Zufalls-Seed"
+msgstr "Neuer Zufalls-Seed"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
@@ -762,7 +762,7 @@ msgstr "Nein"
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
-msgstr "Noch keine Transaktionen"
+msgstr "Keine Transaktionen vorhanden"
 
 #: public/views/modals/bind.html:46
 #: public/views/modals/customized-amount.html:51
@@ -817,7 +817,7 @@ msgstr "Passwort"
 
 #: src/js/services/profileService.js:596
 msgid "Password needed"
-msgstr "Passwort benötigt"
+msgstr "Passwort erforderlich"
 
 #: src/js/controllers/password.js:33
 msgid "Passwords do not match"
@@ -833,7 +833,7 @@ msgstr "Zahlen und Anbieten"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
-msgstr "Zahlung angenommen"
+msgstr "Zahlung akzeptiert"
 
 #: public/views/modals/tx-status.html:16
 msgid "Payment Proposal Created"
@@ -926,7 +926,7 @@ msgstr "Private Transaktionen erneut senden"
 
 #: src/js/controllers/index.js:534
 msgid "Receive"
-msgstr "Erhalten"
+msgstr "Eingang"
 
 #: public/views/walletHome.html:514
 msgid "Received"
