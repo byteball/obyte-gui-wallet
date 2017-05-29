@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 13:00-0400\n"
+"PO-Revision-Date: 2017-05-29 13:11-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1172,7 +1172,7 @@ msgstr "스페인어"
 
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
-msgstr ""
+msgstr "시드 구체화 중..."
 
 #: public/views/preferences.html:49
 #: public/views/preferencesGlobal.html:82
@@ -1195,11 +1195,11 @@ msgstr "성공"
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
-msgstr ""
+msgstr "스윕 지갑"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
-msgstr ""
+msgstr "종이 지갑 스윕"
 
 #: public/views/walletHome.html:61
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
