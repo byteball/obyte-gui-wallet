@@ -43,10 +43,10 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 		self.setOngoingProcess("pairing");
 		correspondentListService.acceptInvitation(hub, pubkey, pairing_secret, function(err){
 			self.setOngoingProcess();
-			// acceptInvitation() will already open chat window
-			/*if (err)
+			if (err)
 				$scope.error = err;
-			else
+			// acceptInvitation() will already open chat window
+			/*else
 				go.path('correspondentDevices');*/
 		});
 	}

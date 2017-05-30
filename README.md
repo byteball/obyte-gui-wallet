@@ -92,7 +92,18 @@ Byteball uses a single extended private key for all wallets, BIP44 is used for w
 * Windows: `%LOCALAPPDATA%\byteball`
 
 
+## Translations
 
+Byteball uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/byteball) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the Byteball documentation and application text into your native language.
+
+To download and build using the latest translations from Crowdin, please use the following commands:
+
+```sh
+cd i18n
+node crowdin_download.js
+```
+
+This will download all partial and complete language translations while also cleaning out any untranslated ones.
 
 
 ## Support

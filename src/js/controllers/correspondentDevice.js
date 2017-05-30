@@ -48,7 +48,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					};
 					$scope.autoScrollEnabled = true;
 					$scope.messageEvents.push(correspondentListService.parseMessage(message));
-					$scope.$digest();
+					$timeout(function(){
+						$scope.$digest();
+					});
 					chatStorage.store(correspondent.device_address, JSON.stringify({state: newState}), 0, 'system');
 				}
 				/*if (!pref) {
@@ -102,7 +104,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
 				$scope.messageEvents.push(msg_obj);
 				$scope.message = "";
-				$scope.$apply();
+				$timeout(function(){
+					$scope.$apply();
+				});
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
@@ -362,7 +366,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
 								if (err.match(/no funded/))
-									err = "Not enough confirmed funds";
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								if ($scope)
 									$scope.error = err;
 								return;
@@ -494,7 +498,20 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				var checkDuplicatePayment = function(cb){
+					var objFirstPayment = objMultiPaymentRequest.payments[0];
+					db.query(
+						"SELECT 1 FROM outputs JOIN unit_authors USING(unit) JOIN my_addresses ON unit_authors.address=my_addresses.address \n\
+						WHERE outputs.address=? AND amount=? LIMIT 1",
+						[objFirstPayment.address, objFirstPayment.amount],
+						function(rows){
+							$scope.bAlreadyPaid = (rows.length > 0);
+							cb();
+						}
+					);
+				};
 				arrFuncs.push(findMyAddresses);
+				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){
 					if (err)
 						$scope.error = err;

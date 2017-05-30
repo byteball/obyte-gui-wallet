@@ -2,7 +2,16 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: byteball\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: byteball\n"
+"X-Crowdin-Language: sq\n"
+"X-Crowdin-File: /master/i18n/po/template.pot\n"
+"Last-Translator: testz <testzcrypto@gmail.com>\n"
+"Language-Team: Albanian\n"
+"Language: sq_AL\n"
+"PO-Revision-Date: 2017-05-28 13:29-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -33,7 +42,7 @@ msgstr ""
 #: src/js/controllers/walletHome.js:117
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr ""
+msgstr "Prano"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
@@ -58,13 +67,13 @@ msgstr ""
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
-msgstr ""
+msgstr "Shto kuletë"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
 #: public/views/paymentUri.html:15
 msgid "Address"
-msgstr ""
+msgstr "Adresa"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -73,15 +82,15 @@ msgstr ""
 
 #: public/views/preferences.html:45
 msgid "Advanced"
-msgstr ""
+msgstr "Avancuar"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr ""
+msgstr "Pranoj"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr ""
+msgstr "Nofka për <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
@@ -109,7 +118,7 @@ msgstr ""
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:371
 msgid "Amount"
-msgstr ""
+msgstr "Shuma"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
@@ -126,7 +135,7 @@ msgstr ""
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
 msgid "Are you sure you want to delete this wallet?"
-msgstr ""
+msgstr "Jeni i sigurtë që doni të fshini këtë kuletë?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
@@ -143,7 +152,7 @@ msgstr ""
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
 msgid "Available Balance"
-msgstr ""
+msgstr "Shuma në dispozicion"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -153,11 +162,11 @@ msgstr ""
 #: public/views/modals/destination-address.html:9
 #: public/views/modals/tx-details.html:5
 msgid "Back"
-msgstr ""
+msgstr "Prapa"
 
 #: public/views/walletHome.html:210
 msgid "Backup now"
-msgstr ""
+msgstr "Krijo kopjen rezervë tani"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
@@ -187,7 +196,7 @@ msgstr ""
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr ""
+msgstr "Bitcoin URI NUK është valid!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
@@ -195,11 +204,11 @@ msgstr ""
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
-msgstr ""
+msgstr "Shfletues i pambështetur"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr ""
+msgstr "ANULO"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
@@ -212,7 +221,7 @@ msgstr ""
 #: src/js/controllers/walletHome.js:118
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr ""
+msgstr "Anulo"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
@@ -220,7 +229,7 @@ msgstr ""
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr ""
+msgstr "Ndërrimi i nofkës së kuletës ndikon vetëm në emrin lokal të kuletës."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
@@ -635,8 +644,7 @@ msgid "Including pending confirmation"
 msgstr ""
 
 #: public/views/walletHome.html:499
-msgid ""
-"Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr ""
 

@@ -59,8 +59,11 @@
         </div>
         <div >
         </div>
-        <button type="submit" class="button black round expand" ng-disabled="bDisabled" ng-style="{'background-color':color}" ng-click="pay()" translate>
+        <button ng-if="!bAlreadyPaid" type="submit" class="button black round expand" ng-disabled="bDisabled" ng-style="{'background-color':color}" ng-click="pay()" translate>
           Send Payment
+        </button>
+        <button ng-if="bAlreadyPaid" type="button" class="button black round expand" disabled ng-style="{'background-color':color}" translate>
+          Already Paid
         </button>
     </div>
   </div>

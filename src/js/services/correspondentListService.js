@@ -365,7 +365,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					historyEndForCorrespondent[correspondent.device_address] = true;
 				for (var i in messages) {
 					var message = messages[i];
-					var msg_ts = new Date(message.creation_date.replace(' ', 'T'));
+					var msg_ts = new Date(message.creation_date.replace(' ', 'T')+'.000Z');
 					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
 						messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
@@ -532,6 +532,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//return setTimeout(cb, 5000);
 		if (device_pubkey === device.getMyDevicePubKey())
 			return cb("cannot pair with myself");
+		if (!device.isValidPubKey(device_pubkey))
+			return cb("invalid peer public key");
 		// the correspondent will be initially called 'New', we'll rename it as soon as we receive the reverse pairing secret back
 		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, 'New', function(device_address){
 			device.startWaitingForPairing(function(reversePairingInfo){

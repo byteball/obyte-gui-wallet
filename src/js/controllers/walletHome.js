@@ -829,7 +829,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 						if (err.match(/device address/))
 							err = "This is a private asset, please send it only by clicking links from chat";
 						if (err.match(/no funded/))
-							err = "Not enough confirmed funds";
+							err = "Not enough spendable funds, make sure all your funds are confirmed";
 						return self.setSendError(err);
 					}
 					var binding = self.binding;
@@ -1111,6 +1111,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var form = $scope.sendForm;
 		if (!form || !form.amount) // disappeared?
 			return console.log('form.amount has disappeared');
+		if (indexScope.arrBalances.length === 0)
+			return;
 		if (indexScope.arrBalances[indexScope.assetIndex].asset === 'base'){
 			this._amount = null;
 			this.bSendAll = true;

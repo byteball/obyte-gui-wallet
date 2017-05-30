@@ -4,7 +4,7 @@
     left: 15px;
     width: auto !important;
     text-align: left;
-    line-height: 1em;
+    /*line-height: 1em;*/
 }
 </style>
 
@@ -58,6 +58,7 @@
       <span translate ng-show="index.onGoingProcessName == 'recreating'">Recreating Wallet...</span>
       <span translate ng-show="index.onGoingProcessName == 'generatingCSV'">Generating .csv file...</span>
       <span translate ng-show="index.onGoingProcessName == 'Syncing'">Syncing... {{index.syncProgress}}</span>
+      <span translate ng-show="index.onGoingProcessName == 'handling_private'">Syncing... {{index.count_unhandled_private_payments}} private payments left</span>
       <span translate ng-show="index.onGoingProcessName == 'sending'">Sending...</span>
     </div>
   </div>
@@ -122,7 +123,7 @@
             	background-color: {{index.backgroundColor}};
             }
           </style>
-                    <div class="size-14" ng-if="balance.shared">
+                    <div class="size-14" ng-if="balance.shared !== undefined">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
 							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.sharedStr}}</span>
@@ -346,7 +347,7 @@
 					  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
 				  </a>
 			  </div>
-			  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind payment to condition click correspondent address in chat</div>  
+			  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
 			  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
 				  <a dropdown-toggle="#binding-drop" data-options="align:top">
 					  <span translate class="text-gray">Bind the payment to a condition</span>
