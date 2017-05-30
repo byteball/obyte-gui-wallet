@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 13:11-0400\n"
+"PO-Revision-Date: 2017-05-29 20:20-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1267,7 +1267,7 @@ msgstr "이 선택은 나중에 바꾸실 수 없습니다."
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr ""
+msgstr "이것은 개인 자산입니다, 차트의 링크만을 클릭하여 보내거나 자신의 다른 지갑으로 보내시기를 바랍니다."
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
@@ -1296,7 +1296,7 @@ msgstr ""
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "개인 정보 보호를 위해, 한번 주소를 사용할 경우 새 주소가 자동으로 생성됩니다."
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
@@ -1308,7 +1308,7 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
-msgstr ""
+msgstr "거래"
 
 #: public/views/walletHome.html:505
 msgid "Transactions<br> Downloaded"
@@ -1341,15 +1341,15 @@ msgstr ""
 
 #: public/views/walletHome.html:175
 msgid "Unsent transactions"
-msgstr ""
+msgstr "전송되지 않은 거래"
 
 #: public/views/walletHome.html:51
 msgid "Updating Wallet..."
-msgstr ""
+msgstr "지갑 업데이트중..."
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
-msgstr ""
+msgstr "{{version}}으로 업그레이드"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1369,7 +1369,7 @@ msgstr "경고: 기존의 모든 지갑은 영구적으로 삭제될 것입니�
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
-msgstr ""
+msgstr "경고:"
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
@@ -1488,7 +1488,7 @@ msgstr ""
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "채팅 기록 삭제"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
