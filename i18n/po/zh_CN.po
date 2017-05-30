@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-05-30 02:51-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -102,7 +102,7 @@ msgstr "欢迎为Byteball的翻译添砖加瓦，注册crowdin.com并参与Byteb
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "已付款"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -126,7 +126,7 @@ msgstr ""
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "在其他设备上批准创建钱包"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
