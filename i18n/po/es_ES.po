@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2017-05-29 12:11-0400\n"
+"PO-Revision-Date: 2017-05-30 09:41-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -27,7 +27,7 @@ msgstr "1. Pago al contrato:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr "Quien puede desbloquear el contrato:"
+msgstr "Quién puede desbloquear el contrato:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -122,7 +122,7 @@ msgstr "Importe"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr "Un evento es posteado por un oráculo:"
+msgstr "Un oráculo publica un evento:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
@@ -143,11 +143,11 @@ msgstr "Activo"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr "Autoactualizar lista de testigos desde el hub"
+msgstr "Actualizar lista de testigos desde el hub"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr "Autoactualizar lista de testigos desde este hub"
+msgstr "Actualizar lista de testigos desde este hub"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,11 +170,11 @@ msgstr "Realizar copia de seguridad ahora"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr "Respaldar copia de la semilla"
+msgstr "Respaldar semilla del monedero"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr "Las palabras de la copia de seguridad fueron borradas"
+msgstr "Borradas palabras de la copia de seguridad"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
@@ -182,7 +182,7 @@ msgstr "Balance por Dirección"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr "Antes de recibir fondos, es altamente recomendable realizar una copia de seguridad."
+msgstr "Antes de recibir fondos, es muy recomendable realizar una copia de seguridad."
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
@@ -229,7 +229,7 @@ msgstr "Cambiar hub:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Cambiar el alias del monedero solo afecta al nombre del monedero local."
+msgstr "Cambiar el alias sólo afecta al nombre del monedero local."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
