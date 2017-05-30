@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-05-29 20:20-0400\n"
+"PO-Revision-Date: 2017-05-29 20:30-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1135,7 +1135,7 @@ msgstr "패스워드 설정"
 
 #: public/views/preferencesEmail.html:38
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr ""
+msgstr "이메일 알람 설정은 지갑 서비스 제공자가 공격 당할 경우 개인 정보 보호를 약하게 할 수 있습니다. 공격자가 지갑 주소와 잔액을 볼 수 있지만 그 이상은 볼 수 없습니다."
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
@@ -1267,7 +1267,7 @@ msgstr "이 선택은 나중에 바꾸실 수 없습니다."
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr "이것은 개인 자산입니다, 차트의 링크만을 클릭하여 보내거나 자신의 다른 지갑으로 보내시기를 바랍니다."
+msgstr "이것은 개인 자산입니다, 채팅의 링크만을 클릭하여 보내거나 자신의 다른 지갑으로 보내시기를 바랍니다."
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
@@ -1509,7 +1509,7 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
-msgstr ""
+msgstr "이벤트가 오라클에 의해 개시된 경우:"
 
 #: public/views/modals/bind.html:77
 msgid "in merkle tree"
