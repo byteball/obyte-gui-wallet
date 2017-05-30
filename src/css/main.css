@@ -1180,6 +1180,37 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 /*/////////////////////////////////////////////////*/
 
+.mtabset {
+	width: 100%;
+	display: inline-flex;
+	justify-content: space-between;
+	height: calc(100% + 1px);
+}
+
+.mtab-title {
+	color: #8597A7;
+	border: 1px solid #8597A7;
+  	border-width: 1px;
+  	flex: 1 1 0;
+  	background: #efefef;
+  	cursor: pointer;
+  	border-radius: 3px 3px 0 0;
+}
+.mtab-title.active {
+	color: #2C3E50;
+	border-color: #2C3E50;
+	background-color: #FFF;
+	border-bottom-width: 0px;
+}
+
+.mtab {
+	display: none;
+	border-top: 1px solid #2C3E50;
+}
+.mtab.active{
+	display: block;
+}
+
 .tabbable {
   margin-bottom: 1.2rem;
 }

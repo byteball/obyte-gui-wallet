@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	var self = this;
 	
 	var wallet = require('byteballcore/wallet.js');
+	var bots = require('byteballcore/bots.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
@@ -78,6 +79,10 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			});
 		
 			$scope.list = ab;
+
+			bots.load(function(rows){
+				$scope.bots = rows;
+			});
 			$scope.$digest();
 		});
 	};
