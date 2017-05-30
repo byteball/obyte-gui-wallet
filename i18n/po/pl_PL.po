@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
-"PO-Revision-Date: 2017-05-28 16:44-0400\n"
+"PO-Revision-Date: 2017-05-30 19:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,11 +23,11 @@ msgstr "(przypuszczalne podwójne wydanie środków)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr "Płatność na rzecz kontraktu:"
+msgstr "1. Płatność na rzecz kontraktu:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr "Kto może odblokować kontrakt:"
+msgstr "2. Kto może odblokować kontrakt:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
