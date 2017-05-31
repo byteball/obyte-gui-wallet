@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-31 10:54-0400\n"
+"PO-Revision-Date: 2017-05-31 11:11-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -367,7 +367,7 @@ msgstr "Krijo {{requiredCosigners}}-of-{{totalCosigners}} portofolin"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Krijuar:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -379,7 +379,7 @@ msgstr ""
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "FSHIJ FJALËT"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
@@ -388,76 +388,76 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "Refuzuar"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "Dekriptimi i një portofoli letër mund të marrë rreth 5 minuta në këtë pajisje. Ju lutemi të keni durim dhe ta mbani të hapur aplikacionin."
 
 #: public/views/walletHome.html:157
 msgid "Definition"
-msgstr ""
+msgstr "Përkufizimi"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "Përcaktimi i adresës së zgjuar"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "Përcaktimi i adresave"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
-msgstr ""
+msgstr "Fshije Portofolin"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
-msgstr ""
+msgstr "Fshije portofolin"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
-msgstr ""
+msgstr "Strategjia e Derivimit"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
 #: public/views/modals/tx-details.html:25
 msgid "Details"
-msgstr ""
+msgstr "Detajet"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "Adresa e pajisjes"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "Emri i pajisjes"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Emri i pajisjes është i dukshëm për pajisjet e tjera me të cilat komunikoni."
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr ""
+msgstr "Nuk e gjeni gjuhën tuaj në Crowdin? Kontaktoni Pronarin në Crowdin! Ne do të dëshironim të mbështesim gjuhën tuaj."
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:41
 msgid "Done"
-msgstr ""
+msgstr "E kryer"
 
 #: public/views/walletHome.html:575
 msgid "Download CSV file"
-msgstr ""
+msgstr "Shkarko skedarin CSV"
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
-msgstr ""
+msgstr "Redakto"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
