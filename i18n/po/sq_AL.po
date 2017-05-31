@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-31 10:50-0400\n"
+"PO-Revision-Date: 2017-05-31 10:54-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -338,32 +338,32 @@ msgstr "Nuk mund të importohej. Kontrollo skedarin e hyrjes dhe fjalëkalimin"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "Nuk mund të njohë një QR kod të vlefshëm të Byteball"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
-msgstr ""
+msgstr "Nuk mund të dërgohet pagesa"
 
 #: public/views/walletHome.html:22
 msgid "Create"
-msgstr ""
+msgstr "Krijo"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Krijo një portofol të ri"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
 msgid "Create new wallet"
-msgstr ""
+msgstr "Krijo portofol të ri"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "Krijo portofolin e ri së bashku me?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "Krijo {{requiredCosigners}}-of-{{totalCosigners}} portofolin"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
