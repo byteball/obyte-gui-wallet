@@ -87,8 +87,8 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			bots.load(function(err, rows){
 				$scope.botsError = err;
 				$scope.bots = rows;
+				$scope.$digest();
 			});
-			$scope.$digest();
 		});
 	};
 	
