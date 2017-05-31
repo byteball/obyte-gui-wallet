@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Albanian\n"
 "Language: sq_AL\n"
-"PO-Revision-Date: 2017-05-29 11:04-0400\n"
+"PO-Revision-Date: 2017-05-31 10:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -324,17 +324,17 @@ msgstr "Nuk mund të dekriptohej"
 
 #: public/views/walletHome.html:480
 msgid "Could not fetch transaction history"
-msgstr ""
+msgstr "Nuk mund të e nxjerr historinë e transaksionit"
 
 #: src/js/services/profileService.js:432
 #: src/js/services/profileService.js:459
 #: src/js/services/profileService.js:481
 msgid "Could not import"
-msgstr ""
+msgstr "Nuk mund të importohej"
 
 #: src/js/services/profileService.js:409
 msgid "Could not import. Check input file and password"
-msgstr ""
+msgstr "Nuk mund të importohej. Kontrollo skedarin e hyrjes dhe fjalëkalimin"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
