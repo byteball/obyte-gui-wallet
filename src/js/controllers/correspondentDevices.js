@@ -33,6 +33,10 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		go.path('correspondentDevices.correspondentDevice');
 	};
 
+	$scope.showBot = function(bot) {
+		$state.go('correspondentDevices.bot', {id: bot.id});
+	};
+
 	$scope.toggleEditCorrespondentList = function() {
 		$scope.editCorrespondentList = !$scope.editCorrespondentList;
 		$scope.selectedCorrespondentList = {};

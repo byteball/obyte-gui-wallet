@@ -1,0 +1,46 @@
+<!--div
+  class="topbar-container"
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Accept invitation'; goBackToState = 'addCorrespondentDevice'; showCamera = true">
+</div-->
+
+<div ng-controller="botController">
+
+<nav class="tab-bar">
+  <section class="left-small">
+    <a
+      ng-click="$root.go('correspondentDevices', 'correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
+      <span class="text-back">{{'Back'|translate}}</span>
+    </a>
+  </section>
+
+  <section class="right-small">
+    <qr-scanner on-scan="onQrCodeScanned(data)" before-scan="beforeQrCodeScan()"></qr-scanner>
+  </section>
+
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+      {{'Bot Store'|translate}}
+    </h1>
+  </section>
+</nav>
+
+
+
+<div class="columns m20t m20b" >
+	<h1>{{bot.name}}</h1>
+  <div class="m20b" translate>{{bot.description}}</div>
+  
+  <div class="row">
+    <div>
+      <input ng-if="bot.isPaired" type="button" class="button expand round" value="{{'Open chat'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="open(bot)">
+      <input ng-if="!bot.isPaired" type="button" class="button expand round" value="{{'Add Bot'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="pair(bot)">
+    </div>
+  </div>
+</div>
+      
+
+
+    <div class="extra-margin-bottom"></div>
+</div>
+<div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>
