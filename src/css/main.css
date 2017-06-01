@@ -1188,12 +1188,12 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .mtab-title {
-	color: #8597A7;
-	border: 1px solid #8597A7;
-	border-bottom-color: #2C3E50;
+	color: #A5B7C7;
+	border: 1px solid #A5B7C7;
+	border-bottom-color: #8C9EB0;
   	border-width: 1px;
   	flex: 1 1 0;
-  	background: #efefef;
+  	background: #f7f7f7;
   	cursor: pointer;
   	border-radius: 3px 3px 0 0;
 	font-size: 14px;
@@ -1201,8 +1201,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif
 }
 .mtab-title.active {
-	color: #2C3E50;
-	border-color: #2C3E50;
+	color: #8C9EB0;
+	border-color: #8C9EB0;
 	background-color: #FFF;
 	border-bottom-width: 0px;
 }
