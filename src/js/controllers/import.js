@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		var self = this;
-		self.imported = false;
+		self.importing = false;
 		self.password = '';
 		self.error = '';
 		self.iOs = isMobile.iOS();
@@ -151,7 +151,7 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function showError(text) {
-			self.imported = false;
+			self.importing = false;
 			self.error = text;
 			$timeout(function() {
 				$rootScope.$apply();
@@ -163,7 +163,7 @@ angular.module('copayApp.controllers').controller('importController',
 			if(isCordova) {
 				zip.loadAsync(decrypt(data, password)).then(function(zip) {
 					if (!zip.file('light')) {
-						self.imported = false;
+						self.importing = false;
 						self.error = 'Mobile version supports only light wallets.';
 						$timeout(function() {
 							$rootScope.$apply();
@@ -172,7 +172,7 @@ angular.module('copayApp.controllers').controller('importController',
 					else {
 						writeDBAndFileStorageMobile(zip, function(err) {
 							if (err) return showError(err);
-							self.imported = false;
+							self.importing = false;
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
@@ -197,7 +197,7 @@ angular.module('copayApp.controllers').controller('importController',
 					setTimeout(function() {
 						writeDBAndFileStoragePC(function(err) {
 							if (err) return showError(err);
-							self.imported = false;
+							self.importing = false;
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
@@ -225,7 +225,7 @@ angular.module('copayApp.controllers').controller('importController',
 		};
 		
 		self.walletImport = function() {
-			self.imported = true;
+			self.importing = true;
 			self.error = '';
 			if(isMobile.Android() && self.androidVersion < 5){
 				fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
