@@ -231,7 +231,8 @@ angular.module('copayApp.controllers').controller('importController',
 				fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
 					unzipAndWriteFiles(data, self.password);
 				})
-			}else {
+			}
+			else if ($scope.file){
 				fileSystemService.readFileFromForm($scope.file, function(err, data) {
 					if (err) return showError(err);
 					unzipAndWriteFiles(data, self.password);
