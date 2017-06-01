@@ -1185,6 +1185,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	display: inline-flex;
 	justify-content: space-between;
 	height: 100%;
+  vertical-align: top;
 }
 
 .mtab-title {
