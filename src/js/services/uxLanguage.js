@@ -48,6 +48,9 @@ angular.module('copayApp.services')
       isoCode: 'zh_CN',
       useIdeograms: true,
     }, {
+      name: '한국어',
+      isoCode: 'ko_KR',
+    }, {
       name: 'Pусский',
       isoCode: 'ru_RU',
     }, {
