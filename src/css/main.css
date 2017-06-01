@@ -1184,12 +1184,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	width: 100%;
 	display: inline-flex;
 	justify-content: space-between;
-	height: calc(100% + 1px);
+	height: 100%;
 }
 
 .mtab-title {
 	color: #8597A7;
 	border: 1px solid #8597A7;
+	border-bottom-color: #2C3E50;
   	border-width: 1px;
   	flex: 1 1 0;
   	background: #efefef;
@@ -1205,7 +1206,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .mtab {
 	display: none;
-	border-top: 1px solid #2C3E50;
 }
 .mtab.active{
 	display: block;

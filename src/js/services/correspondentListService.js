@@ -514,6 +514,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.loadMoreHistory = loadMoreHistory;
 	root.checkAndInsertDate = checkAndInsertDate;
 	root.parseMessage = parseMessage;
+	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
