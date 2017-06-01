@@ -15,7 +15,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr "(Situs tersebut tidak dapat melihat saldo anda dan tidak memerlukan dana)"
+msgstr "(Situs tersebut tidak dapat melihat saldo anda dan tidak dipungut biaya)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"

@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-06-01 07:25-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -23,19 +23,19 @@ msgstr "(mogelijk dubbel besteed)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "Betaling aan het contract:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "Wie dit contract kan ontgrendelen:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Een portemonnee voor gedecentraliseerde waarde"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Over Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -46,7 +46,7 @@ msgstr "Accepteer"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Uitnodiging accepteren"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
@@ -54,11 +54,11 @@ msgstr "Aanvaard de uitnodiging van het andere toestel"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Profiel"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Nieuw apparaat toevoegen"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
@@ -102,7 +102,7 @@ msgstr "Alle bijdrages aan de vertaling van Byteball zijn welkom. Meld u aan bij
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Reeds betaald"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -143,11 +143,11 @@ msgstr "Bezitting"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Auto-update de getuigenlijst van de hub"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Auto-update de getuigenlijst van deze hub"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -221,11 +221,11 @@ msgstr "VERDER"
 #: src/js/controllers/walletHome.js:118
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Verander hub:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -233,7 +233,7 @@ msgstr "Wijziging van de portefeuille-alias is enkel van toepassing op de naam v
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
@@ -271,7 +271,7 @@ msgstr "Kleur"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
-msgstr ""
+msgstr "Hash toevoegen"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
@@ -287,11 +287,11 @@ msgstr "Bevestig"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Betaling bevestigen"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Bevestigd"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
@@ -426,7 +426,7 @@ msgstr "Afleidingsmethode"
 #: public/views/modals/multi-payment.html:17
 #: public/views/modals/tx-details.html:25
 msgid "Details"
-msgstr ""
+msgstr "Details"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
@@ -581,7 +581,7 @@ msgstr "Grieks"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr ""
+msgstr "Hardware wallet"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
@@ -593,27 +593,27 @@ msgstr "Geschiedenis"
 
 #: src/js/controllers/index.js:530
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "Hub URL"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
-msgstr ""
+msgstr "Ik bevestig dat ik deze voorwaarden gelezen en begrepen en ga hiermee akkoord."
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "Ik betaal:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -625,7 +625,7 @@ msgstr "Wanneer niet aan de conditie voldaan wordt, kan ik dit geld later terugn
 
 #: public/views/modals/offer-contract.html:59
 msgid "If the peer doesn't pay, I can take my money back after:"
-msgstr ""
+msgstr "Als de peer niet betaald, kan ik mijn geld terug krijgen na:"
 
 #: public/views/import.html:40
 msgid "Import"
@@ -685,7 +685,7 @@ msgstr "Taal"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "Later"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
@@ -783,7 +783,7 @@ msgstr "Vermelding"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "Een contract aanbieden"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
@@ -813,7 +813,7 @@ msgstr ""
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
-msgstr ""
+msgstr "Wachtwoord"
 
 #: src/js/services/profileService.js:596
 msgid "Password needed"
@@ -825,11 +825,11 @@ msgstr "Wachtwoorden komen niet overeen"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr ""
+msgstr "Voer hier uw papier portemonnee privé sleutel in"
 
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
-msgstr ""
+msgstr "Betaal en bied aan"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -853,11 +853,11 @@ msgstr "Betaling Verzonden"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "Peer betaalt aan:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
-msgstr ""
+msgstr "Peer betaalt:"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
@@ -914,11 +914,11 @@ msgstr "Private payloads zijn verzonden"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
-msgstr ""
+msgstr "QR Code"
 
 #: public/views/modals/scanner.html:8
 msgid "QR-Scanner"
-msgstr ""
+msgstr "QR-Scanner"
 
 #: public/views/modals/tx-details.html:115
 msgid "Re-send private payloads"
@@ -939,7 +939,7 @@ msgstr "Ontvangers"
 
 #: public/views/walletHome.html:38
 msgid "Reconnecting to Wallet Service..."
-msgstr ""
+msgstr "Opnieuw verbinden met portemonnee Service..."
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
@@ -971,11 +971,11 @@ msgstr "Verwijder"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Een apparaat verwijderen"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Naam wijzigen:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1021,7 +1021,7 @@ msgstr "Russisch"
 
 #: public/views/includes/password.html:32
 msgid "SET"
-msgstr ""
+msgstr "INSTELLEN"
 
 #: public/views/editCorrespondentDevice.html:49
 #: public/views/modals/destination-address.html:132
@@ -1048,7 +1048,7 @@ msgstr "Scan portefeuillebedragen"
 
 #: public/views/walletHome.html:98
 msgid "Scan status finished with error"
-msgstr ""
+msgstr "Scan beeïndigd met fout"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
@@ -1060,7 +1060,7 @@ msgstr "Scan uw vingerafdruk a.u.b."
 
 #: public/views/walletHome.html:57
 msgid "Scanning Wallet funds..."
-msgstr ""
+msgstr "Portemonnee inhoud scannen..."
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
@@ -1102,7 +1102,7 @@ msgstr "Verstuur adressen met e-mail"
 
 #: public/views/walletHome.html:372
 msgid "Send all"
-msgstr ""
+msgstr "Alles verzenden"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
@@ -1114,7 +1114,7 @@ msgstr "Bezig met het versturen van bedragen..."
 
 #: public/views/walletHome.html:62
 msgid "Sending..."
-msgstr ""
+msgstr "Verzenden..."
 
 #: public/views/walletHome.html:516
 msgid "Sent"
@@ -1126,7 +1126,7 @@ msgstr "Log van de sessie"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "Maak een wachtwoord aan"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
@@ -1148,7 +1148,7 @@ msgstr "Adres (mede)delen"
 
 #: public/views/walletHome.html:257
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Deel dit portemonnee-adres om betalingen te ontvangen."
 
 #: public/views/walletHome.html:567
 msgid "Show all"
@@ -1211,7 +1211,7 @@ msgstr "Bezig met synchroniseren... {{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1316,7 +1316,7 @@ msgstr "Transacties<br> Downloaded"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
-msgstr ""
+msgstr "Vertalers credits"
 
 #: public/views/preferencesAbout.html:34
 msgid "Translators"

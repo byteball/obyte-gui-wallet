@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-06-01 07:25-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -102,7 +102,7 @@ msgstr "欢迎为Byteball的翻译添砖加瓦，注册crowdin.com并参与Byteb
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "已付款"
 
 #: public/views/walletHome.html:128
 msgid "Also"
@@ -126,7 +126,7 @@ msgstr ""
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "在其他设备上批准创建钱包"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -139,15 +139,15 @@ msgstr "您确定要删除此钱包吗？"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "资产"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "自动更新见证人列表"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "从这个集线器自动更新见证人列表"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,7 +170,7 @@ msgstr "立即备份"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "备份钱包种子"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -187,7 +187,7 @@ msgstr "在收到资金之前，强烈建议您备份您的钱包密钥。"
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "绑定付款"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
@@ -212,7 +212,7 @@ msgstr "取消"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "继续"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -287,11 +287,11 @@ msgstr "确认"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "确认付款"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "已确认"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
@@ -367,7 +367,7 @@ msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "创建于:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -430,12 +430,12 @@ msgstr "详情"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "设备地址"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "设备名"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
@@ -469,7 +469,7 @@ msgstr "通过电子邮件发送钱包通知"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "启用推送通知消息"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
@@ -486,20 +486,20 @@ msgstr "生成钱包时出错"
 
 #: public/views/modals/bind.html:65
 msgid "Expected value:"
-msgstr ""
+msgstr "预期值:"
 
 #: public/views/export.html:51
 msgid "Export"
-msgstr ""
+msgstr "导出"
 
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
 msgid "Export completed successfully"
-msgstr ""
+msgstr "导出成功"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr ""
+msgstr "正在导出..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
@@ -523,19 +523,19 @@ msgstr "法语"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "来自"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
-msgstr ""
+msgstr "完整地址:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "完整备份"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "重钱包"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
@@ -585,7 +585,7 @@ msgstr "硬件钱包"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "隐藏钱包种子"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -597,7 +597,7 @@ msgstr "首页"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "主机"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
@@ -613,7 +613,7 @@ msgstr "我确定我已经读过，理解并且同意这些条款。"
 
 #: public/views/modals/offer-contract.html:22
 msgid "I pay:"
-msgstr ""
+msgstr "我支付:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
@@ -881,11 +881,11 @@ msgstr "请输入必填字段"
 
 #: public/views/splash.html:77
 msgid "Please name this device"
-msgstr ""
+msgstr "请为此设备命名"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "端口号"
 
 #: public/views/translators.html:17
 msgid "Portuguese"
@@ -988,7 +988,7 @@ msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "替换"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
@@ -1094,7 +1094,7 @@ msgstr "全部发送"
 
 #: public/views/modals/multi-payment.html:62
 msgid "Send Payment"
-msgstr ""
+msgstr "发送付款"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
@@ -1114,7 +1114,7 @@ msgstr "正在发送资金..."
 
 #: public/views/walletHome.html:62
 msgid "Sending..."
-msgstr ""
+msgstr "正在发送..."
 
 #: public/views/walletHome.html:516
 msgid "Sent"
@@ -1126,7 +1126,7 @@ msgstr "会话日志"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "设置密码"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
@@ -1210,7 +1210,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR匿名"
 
 #: public/views/walletHome.html:481
 #: public/views/walletHome.html:94
@@ -1336,7 +1336,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "以字节为单位"
 
 #: public/views/walletHome.html:175
 msgid "Unsent transactions"
@@ -1368,7 +1368,7 @@ msgstr ""
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
-msgstr ""
+msgstr "警告:"
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
