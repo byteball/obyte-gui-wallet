@@ -1180,26 +1180,67 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 /*/////////////////////////////////////////////////*/
 
+.mtabset {
+	width: 100%;
+	display: inline-flex;
+	justify-content: space-between;
+	height: calc(100% + 1px);
+}
+
+.mtab-title {
+	color: #8597A7;
+	border: 1px solid #8597A7;
+  	border-width: 1px;
+  	flex: 1 1 0;
+  	background: #efefef;
+  	cursor: pointer;
+  	border-radius: 3px 3px 0 0;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif
+}
+.mtab-title.active {
+	color: #2C3E50;
+	border-color: #2C3E50;
+	background-color: #FFF;
+	border-bottom-width: 0px;
+}
+
+.mtab {
+	display: none;
+	border-top: 1px solid #2C3E50;
+}
+.mtab.active{
+	display: block;
+}
+
 .tabbable {
-  border: 2px solid #213140;
-  border-radius: 3px;
   margin-bottom: 1.2rem;
 }
 
 .tabs dd.active a {
-  color: #fff;
   background-color: transparent;
+  border: 1px solid #213140;
+  border-width: 1px 1px 0 1px;
+}
+
+.tabs dd:first-child a {
+  border-left-width: 0;
+}
+.tabs dd:last-child a {
+  border-right-width: 0;
 }
 
 .tabs dd>a {
-  background: #213140;
+  background: #efefef;
   text-transform: uppercase;
   color: #3E4F5D;
   padding: 1rem;
   text-align: center;
-  height: 64px;
+  height: 40px;
   font-size: 14px;
-  line-height: 15px;
+  line-height: 10px;
+  border-bottom: 1px solid #213140;
 }
 
 .tabs-content {

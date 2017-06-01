@@ -211,15 +211,17 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		self.oldAndroidInputFileClick = function() {
-			window.plugins.mfilechooser.open([], function (uri) {
-				self.oldAndroidFilePath = 'file://' + uri;
-				self.oldAndroidFileName = uri.split('/').pop();
-				$timeout(function() {
-					$rootScope.$apply();
+			if(isMobile.Android() && self.androidVersion < 5) {
+				window.plugins.mfilechooser.open([], function(uri) {
+					self.oldAndroidFilePath = 'file://' + uri;
+					self.oldAndroidFileName = uri.split('/').pop();
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}, function(error) {
+					alert(error);
 				});
-			}, function (error) {
-				alert(error);
-			});
+			}
 		};
 		
 		self.walletImport = function() {

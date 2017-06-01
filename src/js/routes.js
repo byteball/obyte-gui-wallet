@@ -256,6 +256,16 @@ angular
           },
         }
       })
+      .state('correspondentDevices.bot', {
+        url: '/bot/:id',
+        walletShouldBeComplete: false,
+        needProfile: true,
+        views: {
+          'dialog': {
+            templateUrl: 'views/bot.html'
+          },
+        }
+      })
       .state('authConfirmation', {
         url: '/authConfirmation',
         walletShouldBeComplete: true,

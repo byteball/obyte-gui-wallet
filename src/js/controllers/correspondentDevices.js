@@ -6,6 +6,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	var self = this;
 	
 	var wallet = require('byteballcore/wallet.js');
+	var bots = require('byteballcore/bots.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
@@ -30,6 +31,10 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		correspondentListService.currentCorrespondent = correspondent;
 		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
 		go.path('correspondentDevices.correspondentDevice');
+	};
+
+	$scope.showBot = function(bot) {
+		$state.go('correspondentDevices.bot', {id: bot.id});
 	};
 
 	$scope.toggleEditCorrespondentList = function() {
@@ -78,7 +83,12 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			});
 		
 			$scope.list = ab;
-			$scope.$digest();
+
+			bots.load(function(err, rows){
+				$scope.botsError = err;
+				$scope.bots = rows;
+				$scope.$digest();
+			});
 		});
 	};
 	
