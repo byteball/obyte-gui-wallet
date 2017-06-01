@@ -34,6 +34,9 @@ angular.module('copayApp.services')
       name: 'Magyar',
       isoCode: 'hu_HU',
     }, {
+      name: 'Shqip',
+      isoCode: 'sq_AL',
+    }, {
       name: 'Ελληνικά',
       isoCode: 'el_GR',
     }, {
@@ -44,6 +47,9 @@ angular.module('copayApp.services')
       name: '中文',
       isoCode: 'zh_CN',
       useIdeograms: true,
+    }, {
+      name: '한국어',
+      isoCode: 'ko_KR',
     }, {
       name: 'Pусский',
       isoCode: 'ru_RU',

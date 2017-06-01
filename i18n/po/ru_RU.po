@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-05-28 13:29-0400\n"
+"PO-Revision-Date: 2017-06-01 07:25-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -27,7 +27,7 @@ msgstr "Оплата на контракт:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr "Кто может потратить из контракта:"
+msgstr "2. Кто может разблокировать контракт:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
@@ -1162,7 +1162,7 @@ msgstr "Подписать транзакцию из кошелька?"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "Кошелёк малых расходов"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1548,15 +1548,15 @@ msgstr "{{address}} может быть потрачен, если:"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{{cancel_label || 'Отмена'}}"
 
 #: src/js/controllers/walletHome.js:1318
 msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr ""
+msgstr "{{fee}} будет использовано для оплаты комиссии"
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"

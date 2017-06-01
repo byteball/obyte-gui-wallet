@@ -15,7 +15,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(Il sito non vedrà il tuo saldo e soldi non saranno spesi)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -23,19 +23,19 @@ msgstr "(possibile doppia spesa)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. Pagamento del contratto:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Chi può sbloccare il contratto:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Un portafoglio per una valuta decentralizzata"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Riguardo Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
@@ -46,24 +46,24 @@ msgstr "Accetta"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Accetta l'invito"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Accetta invito da un altro dispositivo"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Account"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Aggiungi un nuovo dispositivo"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr ""
+msgstr "Aggiungi una nuova voce"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -78,7 +78,7 @@ msgstr "Indirizzo"
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "Rubrica indirizzi"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
@@ -94,19 +94,19 @@ msgstr "Alias per <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Tutti gli indirizzi del portafoglio"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Tutti i contributi di traduzione di Byteball sono i benvenuti. Iscriviti a crowdin.com e unisciti al progetto Byteball presso"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Già pagato"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Anche"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -118,7 +118,7 @@ msgstr ""
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:371
 msgid "Amount"
-msgstr "Ammontare"
+msgstr "Importo"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
@@ -126,11 +126,11 @@ msgstr ""
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Approva la creazione di un portafoglio su altri dispositivi"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Sei realmente sicuro di voler rimuovere le parole che hai precedentemente salvato?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -139,7 +139,7 @@ msgstr "Sei sicuro di voler eliminare questo portafoglio?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Asset"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -170,15 +170,15 @@ msgstr "Esegui backup ora"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Backup seed del portafoglio"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Le parole di backup sono state rimosse"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr ""
+msgstr "Saldo per indirizzo"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
@@ -523,7 +523,7 @@ msgstr "Francese"
 
 #: public/views/modals/tx-details.html:53
 msgid "From"
-msgstr ""
+msgstr "Da"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Full address:"
@@ -531,7 +531,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Backup completo"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
@@ -593,15 +593,15 @@ msgstr "Storico"
 
 #: src/js/controllers/index.js:530
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
@@ -946,7 +946,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "Ripristina dal Seed"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
@@ -970,11 +970,11 @@ msgstr ""
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "Elimina un Dispositivo"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "Rinomina:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -983,15 +983,15 @@ msgstr "Ripeti password"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "Ripeti la password"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Sostituisci"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr ""
+msgstr "Richiedi la password"
 
 #: public/views/modals/customized-amount.html:8
 #: public/views/walletHome.html:274
@@ -1000,7 +1000,7 @@ msgstr "Richiedi un importo specifico"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
-msgstr ""
+msgstr "Richiedi il Pagamento"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"

@@ -1088,9 +1088,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateLocalTxHistory(fc, function(err) {
         self.updatingTxHistory[walletId] = false;
         if (err)
-          self.txHistoryError = true;
-
-        $rootScope.$apply();
+			self.txHistoryError = true;
+		$timeout(function() {
+        	$rootScope.$apply();
+		});
       });
     });
   };
