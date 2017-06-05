@@ -319,14 +319,14 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			  <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.alias || index.walletName)}}
+				  	</span> ({{(index.shared_address || index.alias || index.walletName)}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
 			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.alias || index.walletName)}}
+			  		<span translate>Request payment</span> ({{(index.shared_address || index.alias || index.walletName)}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
