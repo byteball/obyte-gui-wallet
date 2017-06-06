@@ -52,6 +52,10 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	document.addEventListener('backbutton', function() {
 		back();
 	}, false);
+
+	document.addEventListener('keydown', function(e) {
+		if (e.which == 37) back();
+	}, false);
 	
 	root.back = back;
 	root.arrHistory = arrHistory;

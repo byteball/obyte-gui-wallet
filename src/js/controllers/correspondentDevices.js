@@ -21,8 +21,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
 	    if (toState.name === 'correspondentDevices') {
 	        $scope.readList();
-	        $rootScope.$emit('Local/SetTab', 'chat', true);
-	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+	    	setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;$rootScope.$emit('Local/SetTab', 'chat', true);}, 5);
 	    }
 	});
 
