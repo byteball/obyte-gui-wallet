@@ -61,7 +61,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	}
 	
 	function clearHistory() {
-		arrHistory = [];
+		arrHistory.splice(0);
 	}
 	
 	document.addEventListener('backbutton', function() {
