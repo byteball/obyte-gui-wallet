@@ -116,6 +116,11 @@ module.exports = function(grunt) {
           'public/byteball.js': ['public/byteball.js'],
           'public/angular.js': ['public/angular.js']
         }
+      },
+	  light: {
+        files: {
+          'public/light.js': ['public/light.js']
+        }
       }
     },
     nggettext_extract: {
@@ -233,6 +238,13 @@ module.exports = function(grunt) {
             },
             src: 'public/byteball.js',
             dest: 'public/byteball.js'
+        },
+	    light:{
+		    options:{
+			    exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit']
+		    },
+		    src: 'src/js/light.js',
+		    dest: 'public/light.js'
         }
     },
     // .deb proved to be very slow to produce and install: lintian spends a lot of time verifying a .bin file
@@ -299,4 +311,6 @@ module.exports = function(grunt) {
   grunt.registerTask('deb', ['debian_package:linux64']);
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
+  grunt.registerTask('light', ['browserify:light', 'uglify:light']);
+  grunt.registerTask('light-fast', ['browserify:light']);
 };
