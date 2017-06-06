@@ -49,16 +49,11 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		}
 	}
 	
-	function clearHistory() {
-		//arrHistory = [];
-	}
-	
 	document.addEventListener('backbutton', function() {
 		back();
 	}, false);
 	
 	root.back = back;
 	root.arrHistory = arrHistory;
-	root.clearHistory = clearHistory;
 	return root;
 });
