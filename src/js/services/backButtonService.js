@@ -13,7 +13,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	
 	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
 		var lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
-		if (from.name == "" || lastState && (to.name != lastState.to && toParams != lastState.toParams))
+		if (from.name == "" || !lastState || (lastState && to.name != lastState.to && toParams != lastState.toParams))
 			arrHistory.push({to: to.name, toParams: toParams, from: from.name, fromParams: fromParams});
 		if (to.name == "walletHome")
 			$rootScope.$emit('Local/SetTab', 'walletHome', true);
@@ -50,7 +50,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	}
 	
 	function clearHistory() {
-		arrHistory = [];
+		//arrHistory = [];
 	}
 	
 	document.addEventListener('backbutton', function() {
