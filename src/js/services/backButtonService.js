@@ -12,16 +12,20 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	var shownExitMessage = false;
 	
 	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
-		var lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
-		if (lastState && to.name == lastState.from && lodash.isEqual(toParams, lastState.fromParams)) // jumped back in history
-			arrHistory.pop();
+		// if we navigated to point already been somewhere in history -> cut all the history past this point
+		for (var i = 0; i < arrHistory.length; i++) {
+			var state = arrHistory[i];
+			if (to.name == state.to && lodash.isEqual(toParams, state.toParams)) {
+				arrHistory.splice(i+1);
+				break;
+			}
+		}
 
 		lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
-		if (from.name == "" || !lastState // first state
+		if (from.name == "" // first state
 			|| (lastState && !(to.name == lastState.to && lodash.isEqual(toParams, lastState.toParams)))) // jumped back in history 
 			arrHistory.push({to: to.name, toParams: toParams, from: from.name, fromParams: fromParams});
 		if (to.name == "walletHome") {
-			clearHistory();
 			$rootScope.$emit('Local/SetTab', 'walletHome', true);
 		}
 		root.menuOpened = false;
