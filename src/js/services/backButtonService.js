@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('copayApp.services').factory('backButton', function($log, $rootScope, gettextCatalog, $deepStateRedirect, $document, $timeout, go, $state) {
+angular.module('copayApp.services').factory('backButton', function($log, $rootScope, gettextCatalog, $deepStateRedirect, $document, $timeout, go, $state, lodash) {
 	var root = {};
 	
 	root.menuOpened = false;
@@ -13,7 +13,12 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	
 	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
 		var lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
-		if (from.name == "" || !lastState || (lastState && to.name != lastState.to && toParams != lastState.toParams))
+		if (lastState && to.name == lastState.from && lodash.isEqual(toParams, lastState.fromParams)) // jumped back in history
+			arrHistory.pop();
+
+		lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
+		if (from.name == "" || !lastState // first state
+			|| (lastState && !(to.name == lastState.to && lodash.isEqual(toParams, lastState.toParams)))) // jumped back in history 
 			arrHistory.push({to: to.name, toParams: toParams, from: from.name, fromParams: fromParams});
 		if (to.name == "walletHome") {
 			clearHistory();
