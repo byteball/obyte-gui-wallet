@@ -8,51 +8,57 @@ angular.module('copayApp.services')
       isoCode: 'en',
     }, {
       name: 'Français',
-      isoCode: 'fr',
+      isoCode: 'fr_FR',
     }, {
       name: 'Italiano',
-      isoCode: 'it',
+      isoCode: 'it_IT',
     }, {
       name: 'Deutsch',
-      isoCode: 'de',
+      isoCode: 'de_DE',
     }, {
       name: 'Español',
-      isoCode: 'es',
+      isoCode: 'es_ES',
     }, {
       name: 'Português',
-      isoCode: 'pt',
+      isoCode: 'pt_PT',
     }, {
       name: 'Nederlands',
-      isoCode: 'nl',
+      isoCode: 'nl_NL',
     }, {
       name: 'Svenska',
-      isoCode: 'sv',
+      isoCode: 'sv_SE',
     }, {
       name: 'Polski',
-      isoCode: 'pl',
+      isoCode: 'pl_PL',
     }, {
       name: 'Magyar',
-      isoCode: 'hu',
+      isoCode: 'hu_HU',
+    }, {
+      name: 'Shqip',
+      isoCode: 'sq_AL',
     }, {
       name: 'Ελληνικά',
-      isoCode: 'el',
+      isoCode: 'el_GR',
     }, {
       name: '日本語',
-      isoCode: 'ja',
+      isoCode: 'ja_jp',
       useIdeograms: true,
     }, {
       name: '中文',
-      isoCode: 'zh',
+      isoCode: 'zh_CN',
       useIdeograms: true,
     }, {
+      name: '한국어',
+      isoCode: 'ko_KR',
+    }, {
       name: 'Pусский',
-      isoCode: 'ru',
+      isoCode: 'ru_RU',
     }, {
       name: 'Bahasa Indonesia',
-      isoCode: 'id',
+      isoCode: 'id_ID',
     }, {
       name: 'Türk',
-      isoCode: 'tr',
+      isoCode: 'tr_TR',
     }];
 
     root.currentLanguage = null;

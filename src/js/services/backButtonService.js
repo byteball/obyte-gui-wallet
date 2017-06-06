@@ -52,18 +52,22 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		else {
 			if (arrHistory[arrHistory.length - 2]) {
 				var path = arrHistory[arrHistory.length - 2].substr(2);
-				arrHistory.splice(arrHistory.length - 2, 2);
-				if (path) {
-					$deepStateRedirect.reset(path);
-					go.path(path);
-					if(path === 'correspondentDevices.correspondentDevice'){
-						$timeout(function() {
-							$rootScope.$emit('Local/SetTab', 'chat', true);
-						}, 100);
-					}
-				}
-				else {
+				if (path.indexOf('correspondentDevices.bot') != -1) {
 					go.walletHome();
+				} else {
+					arrHistory.splice(arrHistory.length - 2, 2);
+					if (path) {
+						$deepStateRedirect.reset(path);
+						go.path(path);
+						if(path === 'correspondentDevices.correspondentDevice'){
+							$timeout(function() {
+								$rootScope.$emit('Local/SetTab', 'chat', true);
+							}, 100);
+						}
+					}
+					else {
+						go.walletHome();
+					}
 				}
 			}
 			else {

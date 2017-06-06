@@ -2,102 +2,111 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: byteball\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: byteball\n"
+"X-Crowdin-Language: sq\n"
+"X-Crowdin-File: /master/i18n/po/template.pot\n"
+"Last-Translator: testz <testzcrypto@gmail.com>\n"
+"Language-Team: Albanian\n"
+"Language: sq_AL\n"
+"PO-Revision-Date: 2017-06-01 07:25-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr ""
+msgstr "(Faqja nuk mund ta shohë bilancin tuaj dhe nuk do të shpenzohen para)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
-msgstr ""
+msgstr "(Shpenzimet e dyfishta të mundshme)"
 
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
-msgstr ""
+msgstr "1. Pagesa e kontratës:"
 
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
-msgstr ""
+msgstr "2. Kush mund ta zhbllokojë kontratën:"
 
 #: public/views/splash.html:50
 msgid "A wallet for decentralized value"
-msgstr ""
+msgstr "Një portofol për vlerë të decentralizuar"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Rreth Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
 #: src/js/controllers/walletHome.js:117
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr ""
+msgstr "Prano"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Prano ftesën"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Prano ftesën prej paisjes tjetër"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Llogaria"
 
 #: public/views/correspondentDevices.html:31
 msgid "Add a new device"
-msgstr ""
+msgstr "Shto një paisje të re"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr ""
+msgstr "Shto një hyrje të re"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
-msgstr ""
+msgstr "Shto kuletë"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
 #: public/views/paymentUri.html:15
 msgid "Address"
-msgstr ""
+msgstr "Adresa"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "Adresari"
 
 #: public/views/preferences.html:45
 msgid "Advanced"
-msgstr ""
+msgstr "Avancuar"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr ""
+msgstr "Pranoj"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr ""
+msgstr "Nofka për <i>{{index.walletName}}</i>"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Të gjitha adresat e portfolit"
 
 #: public/views/translators.html:26
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Të gjitha kontributet në përkthimin e Byteball janë të mirëseardhura. Regjistrohuni në crowdin.com dhe bashkohuni me projektin Byteball në"
 
 #: public/views/modals/multi-payment.html:65
 msgid "Already Paid"
-msgstr ""
+msgstr "Paguar tashmë"
 
 #: public/views/walletHome.html:128
 msgid "Also"
-msgstr ""
+msgstr "Poashtu"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/bind.html:32
@@ -109,41 +118,41 @@ msgstr ""
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:371
 msgid "Amount"
-msgstr ""
+msgstr "Shuma"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "Një ngjarje është postuar nga një orakull:"
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Mirato krijimin e portofolit në pajisje të tjera"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr ""
+msgstr "Jeni i sigurt që doni të fshini fjalët e ruajtjes?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
 msgid "Are you sure you want to delete this wallet?"
-msgstr ""
+msgstr "Jeni i sigurtë që doni të fshini këtë kuletë?"
 
 #: public/views/modals/customized-amount.html:71
 msgid "Asset"
-msgstr ""
+msgstr "Aset"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Auto-rifreskim i listës së dëshmitarëve nga hub-i"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Auto-rifreskim i listës së dëshmitarëve nga hub-i"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
 msgid "Available Balance"
-msgstr ""
+msgstr "Shuma në dispozicion"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/correspondentDevice.html:14
@@ -153,57 +162,57 @@ msgstr ""
 #: public/views/modals/destination-address.html:9
 #: public/views/modals/tx-details.html:5
 msgid "Back"
-msgstr ""
+msgstr "Prapa"
 
 #: public/views/walletHome.html:210
 msgid "Backup now"
-msgstr ""
+msgstr "Krijo kopjen rezervë tani"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Ruaji fjalët (seeds) e portfolit"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
-msgstr ""
+msgstr "Fjalët e ruajtjes janë fshirë"
 
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
-msgstr ""
+msgstr "Bilanci nga Adresa"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr ""
+msgstr "Para marrjes së fondeve, rekomandohet që të kopjoni çelësat e portofolit tuaj."
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr ""
+msgstr "Lidhe pagesën"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Lidheni pagesën me një kusht"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr ""
+msgstr "Bitcoin URI NUK është valid!"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Të dy ju dhe {{correspondent.name}} aktivizuat regjistrimin e historisë lokale të chat-it."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
-msgstr ""
+msgstr "Shfletues i pambështetur"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
-msgstr ""
+msgstr "ANULO"
 
 #: public/views/splash.html:39
 msgid "CONTINUE"
-msgstr ""
+msgstr "VAZHDONI"
 
 #: public/views/modals/destination-address.html:127
 #: public/views/walletHome.html:446
@@ -212,23 +221,23 @@ msgstr ""
 #: src/js/controllers/walletHome.js:118
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
-msgstr ""
+msgstr "Anulo"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "Ndrro Hub-in"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr ""
+msgstr "Ndërrimi i nofkës së kuletës ndikon vetëm në emrin lokal të kuletës."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Zgjidhni pajisjen të cilës i dërgoni"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -242,23 +251,23 @@ msgstr ""
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 msgid "Close"
-msgstr ""
+msgstr "Mbyll"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Bashkë-nënshkruesi {{$index + 1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Bashkë-nënshkrues"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Bashkë-nënshkrues për multisig"
 
 #: public/views/preferences.html:29
 msgid "Color"
-msgstr ""
+msgstr "Ngjyra"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
@@ -266,7 +275,7 @@ msgstr ""
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "Kompreso skedarin? (Më ngadalë)"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:403
@@ -274,91 +283,91 @@ msgstr ""
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
-msgstr ""
+msgstr "Konfirmo"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Konfirmo pagesën"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
-msgstr ""
+msgstr "Konfirmuar"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:33
 #: src/js/controllers/walletHome.js:387
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "Kopjuar në clipboard"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Korrespondentët nuk janë restauruar."
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
-msgstr ""
+msgstr "Nuk mund të krijohej propozimi për pagesë"
 
 #: src/js/services/profileService.js:209
 msgid "Could not create using the specified extended private key"
-msgstr ""
+msgstr "Nuk mund të krijohej duke përdorur çelësin e cekur privat të zgjeruar"
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
-msgstr ""
+msgstr "Nuk mund të krijohej duke përdorur çelësin e cekur publik të zgjeruar"
 
 #: src/js/services/profileService.js:202
 msgid "Could not create: Invalid wallet seed"
-msgstr ""
+msgstr "Nuk mund të krijohej: Fjalët e portofolit janë të pavlefshme"
 
 #: src/js/controllers/backup.js:83
 msgid "Could not decrypt"
-msgstr ""
+msgstr "Nuk mund të dekriptohej"
 
 #: public/views/walletHome.html:480
 msgid "Could not fetch transaction history"
-msgstr ""
+msgstr "Nuk mund të e nxjerr historinë e transaksionit"
 
 #: src/js/services/profileService.js:432
 #: src/js/services/profileService.js:459
 #: src/js/services/profileService.js:481
 msgid "Could not import"
-msgstr ""
+msgstr "Nuk mund të importohej"
 
 #: src/js/services/profileService.js:409
 msgid "Could not import. Check input file and password"
-msgstr ""
+msgstr "Nuk mund të importohej. Kontrollo skedarin e hyrjes dhe fjalëkalimin"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "Nuk mund të njohë një QR kod të vlefshëm të Byteball"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
-msgstr ""
+msgstr "Nuk mund të dërgohet pagesa"
 
 #: public/views/walletHome.html:22
 msgid "Create"
-msgstr ""
+msgstr "Krijo"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Krijo një portofol të ri"
 
 #: public/views/add.html:15
 #: public/views/create.html:165
 msgid "Create new wallet"
-msgstr ""
+msgstr "Krijo portofol të ri"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "Krijo portofolin e ri së bashku me?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "Krijo {{requiredCosigners}}-of-{{totalCosigners}} portofolin"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Krijuar:"
 
 #: public/views/splash.html:71
 msgid "Creating Profile..."
@@ -370,7 +379,7 @@ msgstr ""
 
 #: public/views/backup.html:84
 msgid "DELETE WORDS"
-msgstr ""
+msgstr "FSHIJ FJALËT"
 
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
@@ -379,76 +388,76 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "Refuzuar"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "Dekriptimi i një portofoli letër mund të marrë rreth 5 minuta në këtë pajisje. Ju lutemi të keni durim dhe ta mbani të hapur aplikacionin."
 
 #: public/views/walletHome.html:157
 msgid "Definition"
-msgstr ""
+msgstr "Përkufizimi"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "Përcaktimi i adresës së zgjuar"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "Përcaktimi i adresave"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
-msgstr ""
+msgstr "Fshije Portofolin"
 
 #: public/views/preferencesDeleteWallet.html:23
 msgid "Delete wallet"
-msgstr ""
+msgstr "Fshije portofolin"
 
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
-msgstr ""
+msgstr "Strategjia e Derivimit"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
 #: public/views/modals/tx-details.html:25
 msgid "Details"
-msgstr ""
+msgstr "Detajet"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "Adresa e pajisjes"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "Emri i pajisjes"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Emri i pajisjes është i dukshëm për pajisjet e tjera me të cilat komunikoni."
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr ""
+msgstr "Nuk e gjeni gjuhën tuaj në Crowdin? Kontaktoni Pronarin në Crowdin! Ne do të dëshironim të mbështesim gjuhën tuaj."
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:41
 msgid "Done"
-msgstr ""
+msgstr "E kryer"
 
 #: public/views/walletHome.html:575
 msgid "Download CSV file"
-msgstr ""
+msgstr "Shkarko skedarin CSV"
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
-msgstr ""
+msgstr "Redakto"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
@@ -522,61 +531,61 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Rezervë e plotë"
 
 #: public/views/splash.html:25
 msgid "Full wallet"
-msgstr ""
+msgstr "Portofol i plotë"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "Fondet u gjetën"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Fondet do të transferohen në"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
-msgstr ""
+msgstr "FILLO"
 
 #: public/views/walletHome.html:265
 msgid "Generate new address"
-msgstr ""
+msgstr "Gjenero një adresë të re"
 
 #: public/views/walletHome.html:59
 msgid "Generating .csv file..."
-msgstr ""
+msgstr "Gjenerimi i skedarit .csv ..."
 
 #: public/views/translators.html:15
 #: public/views/translators.html:16
 msgid "German"
-msgstr ""
+msgstr "Gjermanisht"
 
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr ""
+msgstr "Marrja e adresës për portofolin {{selectedWalletName}} ..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Preferencat globale"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr ""
+msgstr "Ktheu mbrapa"
 
 #: public/views/translators.html:18
 #: public/views/translators.html:19
 msgid "Greek"
-msgstr ""
+msgstr "Greqisht"
 
 #: public/views/preferences.html:37
 msgid "Hardware wallet"
-msgstr ""
+msgstr "Portofoli i Pajisjes"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Fshih fjalët e portofolit"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -635,8 +644,7 @@ msgid "Including pending confirmation"
 msgstr ""
 
 #: public/views/walletHome.html:499
-msgid ""
-"Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
+msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr ""
 

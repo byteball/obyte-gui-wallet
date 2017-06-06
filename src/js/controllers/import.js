@@ -7,6 +7,8 @@ angular.module('copayApp.controllers').controller('importController',
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('byteballcore/conf');
+		var userAgent = navigator.userAgent;
+		
 		if(isCordova) {
 			var zip = new JSZip();
 		}else{
@@ -14,11 +16,15 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		var self = this;
-		self.imported = false;
+		self.importing = false;
 		self.password = '';
 		self.error = '';
 		self.iOs = isMobile.iOS();
+		self.android = isMobile.Android() && window.cordova;
 		self.arrBackupFiles = [];
+		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
+		self.oldAndroidFilePath = null;
+		self.oldAndroidFileName = '';
 		
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/Byteball/';
@@ -145,7 +151,7 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function showError(text) {
-			self.imported = false;
+			self.importing = false;
 			self.error = text;
 			$timeout(function() {
 				$rootScope.$apply();
@@ -157,7 +163,7 @@ angular.module('copayApp.controllers').controller('importController',
 			if(isCordova) {
 				zip.loadAsync(decrypt(data, password)).then(function(zip) {
 					if (!zip.file('light')) {
-						self.imported = false;
+						self.importing = false;
 						self.error = 'Mobile version supports only light wallets.';
 						$timeout(function() {
 							$rootScope.$apply();
@@ -166,7 +172,7 @@ angular.module('copayApp.controllers').controller('importController',
 					else {
 						writeDBAndFileStorageMobile(zip, function(err) {
 							if (err) return showError(err);
-							self.imported = false;
+							self.importing = false;
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
@@ -191,7 +197,7 @@ angular.module('copayApp.controllers').controller('importController',
 					setTimeout(function() {
 						writeDBAndFileStoragePC(function(err) {
 							if (err) return showError(err);
-							self.imported = false;
+							self.importing = false;
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
@@ -204,13 +210,35 @@ angular.module('copayApp.controllers').controller('importController',
 			}
 		}
 		
+		self.oldAndroidInputFileClick = function() {
+			if(isMobile.Android() && self.androidVersion < 5) {
+				window.plugins.mfilechooser.open([], function(uri) {
+					self.oldAndroidFilePath = 'file://' + uri;
+					self.oldAndroidFileName = uri.split('/').pop();
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}, function(error) {
+					alert(error);
+				});
+			}
+		};
+		
 		self.walletImport = function() {
-			self.imported = true;
 			self.error = '';
-			fileSystemService.readFileFromForm($scope.file, function(err, data) {
-				if (err) return showError(err);
-				unzipAndWriteFiles(data, self.password);
-			});
+			if(isMobile.Android() && self.androidVersion < 5){
+				self.importing = true;
+				fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
+					unzipAndWriteFiles(data, self.password);
+				})
+			}
+			else if ($scope.file){
+				self.importing = true;
+				fileSystemService.readFileFromForm($scope.file, function(err, data) {
+					if (err) return showError(err);
+					unzipAndWriteFiles(data, self.password);
+				});
+			}
 		};
 		
 		self.iosWalletImportFromFile = function(fileName) {

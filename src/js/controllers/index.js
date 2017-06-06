@@ -20,6 +20,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
+  self.arrBalances = [];
+  self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
     /*
@@ -136,6 +138,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setOngoingProcess('Syncing', false);
         self.syncProgress = "";
     });
+    eventBus.on('unhandled_private_payments_left', function(count_left){ // light only
+		var bChanged = (self.count_unhandled_private_payments !== count_left);
+		self.count_unhandled_private_payments = count_left;
+		if (bChanged)
+			self.setOngoingProcess('handling_private', count_left>0);
+	});
     eventBus.on('refresh_light_started', function(){
 		console.log('refresh_light_started');
         self.setOngoingProcess('Syncing', true);
@@ -462,7 +470,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			objSharedWallet.total = assocSharedByAddress[sa];
 			if($scope.asset == 'base'){
 				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'base') + ' ' + self.unitName;
-			}else if($scope.asset == self.BLACKBYTES_ASSET){
+			}else if($scope.asset == constants.BLACKBYTES_ASSET){
 				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'blackbytes') + ' ' + self.bbUnitName;
 			}
 			arrSharedWallets.push(objSharedWallet);
@@ -859,7 +867,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.unitValue = config.unitValue;
     self.unitName = config.unitName;
     self.bbUnitName = config.bbUnitName;
-
+	
     self.arrBalances = [];
     for (var asset in assocBalances){
         var balanceInfo = assocBalances[asset];
@@ -880,7 +888,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
             balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
             balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
-			if (balanceInfo.shared)
+			if (typeof balanceInfo.shared === 'number')
 				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
         }
         self.arrBalances.push(balanceInfo);
@@ -1080,9 +1088,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.updateLocalTxHistory(fc, function(err) {
         self.updatingTxHistory[walletId] = false;
         if (err)
-          self.txHistoryError = true;
-
-        $rootScope.$apply();
+			self.txHistoryError = true;
+		$timeout(function() {
+        	$rootScope.$apply();
+		});
       });
     });
   };

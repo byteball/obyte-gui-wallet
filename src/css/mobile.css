@@ -99,6 +99,7 @@ _:-ms-fullscreen, :root .main {
   color: #7A8C9E;
   font-weight: 500;
   font-size: 14px;
+  display: inline-block;
 }
 
 .tab-bar-section.middle {
@@ -843,6 +844,30 @@ textarea:focus
 .tab-container.selected a {
   color: #2C3E50;
   font-weight: 600;
+}
+
+.rn-carousel-control {
+	top: 0%;
+	height: 100%;
+}
+.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
+	opacity: 0.6;
+	font-size: 80px;
+	background-color: rgb(74, 144, 226);
+}
+.rn-carousel-control.rn-carousel-control-next {
+	right: -0.2em;
+    width: 15%;
+}
+.rn-carousel-control.rn-carousel-control-prev {
+	left: -0.2em;
+    width: 15%;
+}
+.rn-carousel-control.rn-carousel-control-prev:before {
+	content: "‹";
+}
+.rn-carousel-control.rn-carousel-control-next:before {
+	content: "›";
 }
 
 /* removes 300ms in IE * /
