@@ -137,6 +137,7 @@ function initWallet() {
 
 	function setWalletNameAndColor(walletName) {
 		var color = root.config.colorFor ? root.config.colorFor[root.focusedClient.credentials.walletId] : '#4A90E2';
+		if(!color) color = '#4A90E2';
 		getFromId('name1Color').style.color = color;
 		getFromId('name1').innerHTML = walletName;
 		getFromId('name2').innerHTML = walletName;
@@ -151,19 +152,19 @@ function initWallet() {
 	function setBalancesAndPages(balances) {
 		var htmlBalances = '';
 		var htmlPages = '';
-		var pages = 0;
+		var slideNumber = 0;
 
-		function addHtml(key, amount, pages) {
-			var firstPage = pages === 0;
+		function addHtml(key, amount, slideNumber) {
+			var firstPage = slideNumber === 0;
 			var asset = key;
 			if (asset === 'base') asset = 'bytes';
 			else if (asset === BLACKBYTES_ASSET) asset = 'blackbytes';
-			htmlBalances += '<li id="balance' + pages + '" style="display: ' + ( firstPage ? 'inline-block' : 'none') + ';"><div><strong class="size-36">' + formatAmount(amount, asset) + '</strong></div></li>';
-			htmlPages += '<span id="page' + pages + '" ' + (firstPage ? 'class="active"' : '') + '>●</span>';
+			htmlBalances += '<li id="balance' + slideNumber + '" style="display: ' + ( firstPage ? 'inline-block' : 'none') + ';"><div><strong class="size-36">' + formatAmount(amount, asset) + '</strong></div></li>';
+			htmlPages += '<span id="page' + slideNumber + '" ' + (firstPage ? 'class="active"' : '') + '>●</span>';
 		}
 
 		for (var key in balances) {
-			addHtml(key, balances[key].stable, pages++);
+			addHtml(key, balances[key].stable, slideNumber++);
 		}
 		getFromId('balances').innerHTML = htmlBalances;
 		getFromId('pages').innerHTML = htmlPages;
@@ -273,7 +274,7 @@ function initWallet() {
 		root.focusedClient = root.walletClients[walletId];
 		writeFile('focusedWalletId', walletId, function() {
 		});
-		initFocusedWallet();
+		initFocusedWallet(function() {});
 		openOrCloseMenu();
 	}
 	
@@ -390,10 +391,12 @@ function _swipeListener() {
 
 	function handleTouchStart(evt) {
 		amountBg = false;
-		for (var i = 0, l = evt.path.length; i < l; i++) {
-			if (evt.path[i].id === 'amountBg') {
-				amountBg = true;
-				break;
+		if(evt.path) {
+			for (var i = 0, l = evt.path.length; i < l; i++) {
+				if (evt.path[i].id === 'amountBg') {
+					amountBg = true;
+					break;
+				}
 			}
 		}
 		xDown = evt.touches[0].clientX;
