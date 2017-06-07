@@ -220,7 +220,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					profileService.unlockFC(null, function(err) {
 						if (err){
 							$scope.error = err.message;
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						$scope.payAndOffer();
@@ -517,7 +519,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						$scope.error = err;
 					else
 						$scope.bDisabled = false;
-					$scope.$apply();
+					$timeout(function(){
+						$scope.$apply();
+					});
 				});
 			}
 			else
@@ -546,7 +550,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					profileService.unlockFC(null, function(err) {
 						if (err){
 							$scope.error = err.message;
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						$scope.pay();
@@ -587,7 +593,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var arrNonBaseAssets = Object.keys(assocOutputsByAsset).filter(function(asset){ return (asset !== 'base'); });
 						if (arrNonBaseAssets.length > 1){
 							$scope.error = 'more than 1 non-base asset not supported';
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						var asset = (arrNonBaseAssets.length > 0) ? arrNonBaseAssets[0] : null;

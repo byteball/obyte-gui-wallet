@@ -293,7 +293,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			  $scope.creation_ts = creation_ts;
 			  walletDefinedByAddresses.readSharedAddressCosigners(address, function(cosigners){
 				  $scope.cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
-				  $scope.$apply();
+				  $timeout(function(){
+					  $scope.$apply();
+				  });
 			  });
 		  });
 	  });
