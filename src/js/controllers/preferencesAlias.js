@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('preferencesAliasController',
         }
         $scope.$emit('Local/AliasUpdated');
         $timeout(function(){
-          go.path('preferences');
+          go.path('walletPreferences');
         }, 50);
       });
 

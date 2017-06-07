@@ -9,12 +9,12 @@
   <h4></h4>
   <ul class="no-bullet m0">
 
-    <li  ng-click="$root.go('information')">
+    <li  ng-click="$root.go('walletPreferences.advanced.information')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Wallet Information</div>
     </li>
 
-    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('paperWallet')">
+    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('walletPreferences.advanced.paperWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Sweep paper wallet</div>
     </li>
@@ -26,7 +26,7 @@
     </li>
     -->
  
-    <li ng-click="$root.go('delete')">
+    <li ng-click="$root.go('walletPreferences.advanced.delete')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Delete Wallet</div>
     </li>

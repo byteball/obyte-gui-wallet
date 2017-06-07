@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Delete Wallet'; goBackToState = 'preferencesAdvanced'">
+  ng-init="titleSection='Delete Wallet'; goBackToState = 'walletPreferences.advanced'">
 </div>
 
 
@@ -20,7 +20,7 @@
   </div>
   <div class="columns text-center">
     <p translate class="size-14 text-gray">Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED</p>
-    <button class="button round expand warning" ng-click="preferences.deleteWallet()" translate>
+    <button class="button round expand warning" ng-click="walletPreferences.advanced.deleteWallet()" translate>
       Delete wallet
     </button>
   </div>

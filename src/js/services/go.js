@@ -91,11 +91,11 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	};
 
 	root.preferences = function() {
-		$state.go('preferences');
+		$state.go('walletPreferences');
 	};
 
 	root.preferencesGlobal = function() {
-		$state.go('preferencesGlobal');
+		$state.go('preferences');
 	};
 
 	root.reload = function() {

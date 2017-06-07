@@ -13,13 +13,13 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	
 	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
 		// if we navigated to point already been somewhere in history -> cut all the history past this point
-		for (var i = 0; i < arrHistory.length; i++) {
+		/*for (var i = 0; i < arrHistory.length; i++) {
 			var state = arrHistory[i];
 			if (to.name == state.to && lodash.isEqual(toParams, state.toParams)) {
 				arrHistory.splice(i+1);
 				break;
 			}
-		}
+		}*/
 
 		lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
 		if (from.name == "" // first state
@@ -53,15 +53,21 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 					}, 2000);
 				}
 			} else {
-				if (currentState.to.indexOf(currentState.from) != -1)
-					$deepStateRedirect.reset(currentState.from);
-				$state.go(currentState.from, currentState.fromParams);
+				var parent_state = $state.get('^');
+				if (parent_state.name) {
+					$deepStateRedirect.reset(parent_state.name);
+					$state.go(parent_state);	
+				} else {
+					if ($state.includes(currentState.from, currentState.fromParams))
+						$deepStateRedirect.reset(currentState.from);
+					$state.go(currentState.from, currentState.fromParams);
+				}
 			}
 		}
 	}
 	
 	function clearHistory() {
-		arrHistory.splice(0);
+		arrHistory.splice(1);
 	}
 	
 	document.addEventListener('backbutton', function() {

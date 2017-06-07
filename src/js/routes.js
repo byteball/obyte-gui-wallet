@@ -126,21 +126,6 @@ angular
           }
         }
       })
-      .state('payment', {
-        url: '/uri-payment/:data',
-        templateUrl: 'views/paymentUri.html',
-        views: {
-          'main': {
-            templateUrl: 'views/paymentUri.html',
-          },
-        },
-        needProfile: true
-      })
-      .state('selectWalletForPayment', {
-        url: '/selectWalletForPayment',
-        controller: 'walletForPaymentController',
-        needProfile: true
-      })
       .state('import', {
         url: '/import',
         needProfile: true,
@@ -149,21 +134,6 @@ angular
             templateUrl: 'views/import.html'
           },
         }
-      })
-      .state('importProfile', {
-        url: '/importProfile',
-        templateUrl: 'views/importProfile.html',
-        needProfile: false
-      })
-      .state('importLegacy', {
-        url: '/importLegacy',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/importLegacy.html',
-          },
-        }
-
       })
       .state('create', {
         url: '/create',
@@ -181,17 +151,6 @@ angular
         views: {
           'main': {
             templateUrl: 'views/copayers.html'
-          },
-        }
-      })
-      .state('preferences', {
-        url: '/preferences',
-        templateUrl: 'views/preferences.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferences.html',
           },
         }
       })
@@ -276,125 +235,146 @@ angular
           },
         }
       })
-      .state('preferencesDeviceName', {
-        url: '/preferencesDeviceName',
-        walletShouldBeComplete: false,
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesDeviceName.html'
-          },
-        }
-      })
-      .state('preferencesHub', {
-        url: '/preferencesHub',
-        walletShouldBeComplete: false,
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesHub.html'
-          },
-        }
-      })
-      .state('preferencesLanguage', {
-        url: '/preferencesLanguage',
+      .state('walletPreferences', {
+        url: '/walletPreferences',
+        templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main': {
-            templateUrl: 'views/preferencesLanguage.html'
+            templateUrl: 'views/preferences.html',
           },
         }
       })
-      .state('preferencesUnit', {
-        url: '/preferencesUnit',
-        templateUrl: 'views/preferencesUnit.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesUnit.html'
-          },
-        }
-      })
-      .state('preferencesBbUnit', {
-        url: '/preferencesBbUnit',
-        templateUrl: 'views/preferencesBbUnit.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesBbUnit.html'
-          },
-        }
-      })
-
-    .state('preferencesAdvanced', {
-      url: '/preferencesAdvanced',
-      templateUrl: 'views/preferencesAdvanced.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAdvanced.html'
-        },
-      }
-    })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
+      .state('walletPreferences.color', {
+        url: '/color',
         templateUrl: 'views/preferencesColor.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesColor.html'
           },
         }
       })
 
-      .state('preferencesAlias', {
-        url: '/preferencesAlias',
+      .state('walletPreferences.alias', {
+        url: '/alias',
         templateUrl: 'views/preferencesAlias.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesAlias.html'
           },
 
         }
       })
-      .state('preferencesEmail', {
-        url: '/preferencesEmail',
-        templateUrl: 'views/preferencesEmail.html',
+      .state('walletPreferences.advanced', {
+	      url: '/advanced',
+	      templateUrl: 'views/preferencesAdvanced.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesAdvanced.html'
+	        },
+	      }
+	    })
+      .state('walletPreferences.advanced.information', {
+        url: '/information',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
-            templateUrl: 'views/preferencesEmail.html'
+          'main@': {
+            templateUrl: 'views/preferencesInformation.html'
           },
-
         }
       })
-      .state('delete', {
+      .state('walletPreferences.advanced.paperWallet', {
+        url: '/paperWallet',
+        templateUrl: 'views/paperWallet.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/paperWallet.html'
+          },
+        }
+      })
+      .state('walletPreferences.advanced.delete', {
         url: '/delete',
         templateUrl: 'views/preferencesDeleteWallet.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesDeleteWallet.html'
           },
         }
       })
-      .state('information', {
-        url: '/information',
+      .state('preferences.deviceName', {
+        url: '/deviceName',
+        walletShouldBeComplete: false,
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesDeviceName.html'
+          },
+        }
+      })
+      .state('preferences.hub', {
+        url: '/hub',
+        walletShouldBeComplete: false,
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesHub.html'
+          },
+        }
+      })
+      .state('preferences.language', {
+        url: '/language',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
-            templateUrl: 'views/preferencesInformation.html'
+          'main@': {
+            templateUrl: 'views/preferencesLanguage.html'
           },
+        }
+      })
+      .state('preferences.unit', {
+        url: '/unit',
+        templateUrl: 'views/preferencesUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesUnit.html'
+          },
+        }
+      })
+      .state('preferences.bbUnit', {
+        url: '/bbUnit',
+        templateUrl: 'views/preferencesBbUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesBbUnit.html'
+          },
+        }
+      })
+      .state('preferences.email', {
+        url: '/email',
+        templateUrl: 'views/preferencesEmail.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEmail.html'
+          },
+
         }
       })
 
@@ -452,17 +432,6 @@ angular
           },
         }
       })
-      .state('paperWallet', {
-        url: '/paperWallet',
-        templateUrl: 'views/paperWallet.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/paperWallet.html'
-          },
-        }
-      })
       .state('backup', {
         url: '/backup',
         templateUrl: 'views/backup.html',
@@ -496,8 +465,8 @@ angular
 		      }
 	      }
       })
-      .state('preferencesGlobal', {
-        url: '/preferencesGlobal',
+      .state('preferences', {
+        url: '/preferences',
         needProfile: true,
         views: {
           'main': {
