@@ -2,6 +2,7 @@ var bFsInitialized = false;
 var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
 var balances = require('byteballcore/balances');
 var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
+
 function initWallet() {
 	var root = {};
 	root.profile = null;
@@ -154,17 +155,14 @@ function initWallet() {
 		var htmlPages = '';
 		var slideNumber = 0;
 
-		function addHtml(key, amount, slideNumber) {
+		function addHtml(asset, amount, slideNumber) {
 			var firstPage = slideNumber === 0;
-			var asset = key;
-			if (asset === 'base') asset = 'bytes';
-			else if (asset === BLACKBYTES_ASSET) asset = 'blackbytes';
 			htmlBalances += '<li id="balance' + slideNumber + '" style="display: ' + ( firstPage ? 'inline-block' : 'none') + ';"><div><strong class="size-36">' + formatAmount(amount, asset) + '</strong></div></li>';
 			htmlPages += '<span id="page' + slideNumber + '" ' + (firstPage ? 'class="active"' : '') + '>●</span>';
 		}
 
-		for (var key in balances) {
-			addHtml(key, balances[key].stable, slideNumber++);
+		for (var asset in balances) {
+			addHtml(asset, balances[asset].stable, slideNumber++);
 		}
 		getFromId('balances').innerHTML = htmlBalances;
 		getFromId('pages').innerHTML = htmlPages;
@@ -278,46 +276,20 @@ function initWallet() {
 		openOrCloseMenu();
 	}
 	
-	function formatAmount(bytes, unit) {
-		function addSeparators(nStr, thousands, decimal, minDecimals) {
-			nStr = nStr.replace('.', decimal);
-			var x = nStr.split(decimal);
-			var x0 = x[0];
-			var x1 = x[1];
-			
-			x1 = x1.replace(/[0]+$/, '');
-			var x2 = x.length > 1 && parseInt(x[1]) ? decimal + x1 : '';
-
-			if (navigator && navigator.vendor && navigator.vendor.indexOf('Apple') >= 0) {
-				x0 = x0.replace(/\B(?=(\d{3})+(?!\d))/g, thousands);
-				return x0 + x2;
-			}
-			else {
-				return parseFloat(x0 + x2).toLocaleString([], {maximumFractionDigits: 20});
-			}
-		}
-
-		var Constants = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/constants');
+	function formatAmount(bytes, asset) {
 		var setting = root.config.wallet.settings;
-		var name = unit;
+		var name = asset;
 		var unitCode;
-
-		if(unit === 'base'){
+		if(asset === 'base'){
 			name = setting.unitName;
 			unitCode = setting.unitCode;
-		}else if(unit === BLACKBYTES_ASSET){
+		}else if(asset === BLACKBYTES_ASSET){
 			name = setting.bbUnitName;
 			unitCode = setting.bbUnitCode;
 		}else {
 			unitCode = 'one';
 		}
-		
-		var u = Constants.UNITS[unitCode];
-		var intAmountLength = Math.floor(bytes / u.value).toString().length;
-		var digits = intAmountLength >= 6 || unit === 'one' ? 0 : 6 - intAmountLength;
-		var amount = (bytes / u.value).toFixed(digits);
-		
-		return addSeparators(amount, ',', '.', u.minDecimals) + ' ' + name;
+		return utils.formatAmount(bytes, unitCode) + ' ' + name;
 	}
 
 	root.showCompleteClient = showCompleteClient;
