@@ -1,7 +1,7 @@
 var bFsInitialized = false;
 var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
 var balances = require('byteballcore/balances');
-
+var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
 function initWallet() {
 	var root = {};
 	root.profile = null;
@@ -387,14 +387,14 @@ function _swipeListener() {
 	var root = {};
 	var xDown = null;
 	var yDown = null;
-	var amountBg = false;
+	var focusOnAmountBg = false;
 
 	function handleTouchStart(evt) {
-		amountBg = false;
+		focusOnAmountBg = false;
 		if(evt.path) {
 			for (var i = 0, l = evt.path.length; i < l; i++) {
 				if (evt.path[i].id === 'amountBg') {
-					amountBg = true;
+					focusOnAmountBg = true;
 					break;
 				}
 			}
@@ -426,13 +426,13 @@ function _swipeListener() {
 	}
 	function listen(direction) {
 		if(direction === 'left'){
-			if(amountBg){
+			if(focusOnAmountBg){
 				slider.next();
 			}else if(menuIsOpen()){
 				openOrCloseMenu();
 			}
 		}else if(direction === 'right'){
-			if(amountBg){
+			if(focusOnAmountBg){
 				slider.prev();
 			}else if(!menuIsOpen()){
 				openOrCloseMenu();
