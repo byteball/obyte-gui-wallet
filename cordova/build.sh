@@ -176,8 +176,8 @@ cp node_modules/byteballcore/initial.byteball.sqlite $PROJECT/www
 cp node_modules/byteballcore/initial.byteball-light.sqlite $PROJECT/www
 checkOK
 
-node $BUILDDIR/replaceForLightClient.js $PROJECT
-rm $PROJECT/www/lightClient.html
+node $BUILDDIR/replaceForPartialClient.js $PROJECT
+rm $PROJECT/www/partialClient.html
 checkOK
 
 cd $BUILDDIR

@@ -898,7 +898,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		self.assetIndex = 0;
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
-	if(isCordova) wallet.showFullClient();
+	if(isCordova) wallet.showCompleteClient();
 	console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
 	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
 

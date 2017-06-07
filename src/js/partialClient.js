@@ -1,5 +1,6 @@
 var bFsInitialized = false;
 var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
+var balances = require('byteballcore/balances');
 
 function initWallet() {
 	var root = {};
@@ -60,99 +61,6 @@ function initWallet() {
 
 		root.walletClients[credentials.walletId] = client;
 		root.walletClients[credentials.walletId].started = true;
-	}
-
-	function readBalance(wallet, handleBalance) {
-		var db = require('byteballcore/db');
-		var walletIsAddress = typeof wallet === 'string' && wallet.length === 32;
-		var join_my_addresses = walletIsAddress ? "" : "JOIN my_addresses USING(address)";
-		var where_condition = walletIsAddress ? "address=?" : "wallet=?";
-		var assocBalances = {base: {stable: 0, pending: 0}};
-		db.query(
-			"SELECT asset, is_stable, SUM(amount) AS balance \n\
-			FROM outputs " + join_my_addresses + " CROSS JOIN units USING(unit) \n\
-		WHERE is_spent=0 AND " + where_condition + " AND sequence='good' \n\
-		GROUP BY asset, is_stable",
-			[wallet],
-			function(rows) {
-				for (var i = 0; i < rows.length; i++) {
-					var row = rows[i];
-					var asset = row.asset || "base";
-					if (!assocBalances[asset])
-						assocBalances[asset] = {stable: 0, pending: 0};
-					assocBalances[asset][row.is_stable ? 'stable' : 'pending'] = row.balance;
-				}
-				var my_addresses_join = walletIsAddress ? "" : "my_addresses CROSS JOIN";
-				var using = walletIsAddress ? "" : "USING(address)";
-				db.query(
-					"SELECT SUM(total) AS total FROM ( \n\
-					SELECT SUM(amount) AS total FROM " + my_addresses_join + " witnessing_outputs " + using + " WHERE is_spent=0 AND " + where_condition + " \n\
-				UNION ALL \n\
-				SELECT SUM(amount) AS total FROM " + my_addresses_join + " headers_commission_outputs " + using + " WHERE is_spent=0 AND " + where_condition + " )",
-					[wallet, wallet],
-					function(rows) {
-						if (rows.length) {
-							assocBalances["base"]["stable"] += rows[0].total;
-						}
-						// add 0-balance assets
-						db.query(
-							"SELECT DISTINCT outputs.asset, is_private \n\
-							FROM outputs " + join_my_addresses + " CROSS JOIN units USING(unit) LEFT JOIN assets ON asset=assets.unit \n\
-						WHERE " + where_condition + " AND sequence='good'",
-							[wallet],
-							function(rows) {
-								for (var i = 0; i < rows.length; i++) {
-									var row = rows[i];
-									var asset = row.asset || "base";
-									if (!assocBalances[asset])
-										assocBalances[asset] = {stable: 0, pending: 0};
-									assocBalances[asset].is_private = row.is_private;
-								}
-								handleBalance(assocBalances);
-							}
-						);
-					}
-				);
-			}
-		);
-	}
-
-	function readSharedBalance(wallet, handleBalance) {
-		var db = require('byteballcore/db');
-		var assocBalances = {};
-
-		db.query("SELECT DISTINCT shared_address FROM my_addresses JOIN shared_address_signing_paths USING(address) WHERE wallet=?", [wallet], function(rows) {
-			var arrSharedAddresses = rows.map(function(row) {
-				return row.shared_address;
-			});
-			if (arrSharedAddresses.length === 0)
-				return handleBalance(assocBalances);
-			db.query(
-				"SELECT asset, address, is_stable, SUM(amount) AS balance \n\
-				FROM outputs CROSS JOIN units USING(unit) \n\
-				WHERE is_spent=0 AND sequence='good' AND address IN(?) \n\
-				GROUP BY asset, address, is_stable \n\
-				UNION ALL \n\
-				SELECT NULL AS asset, address, 1 AS is_stable, SUM(amount) AS balance FROM witnessing_outputs \n\
-				WHERE is_spent=0 AND address IN(?) GROUP BY address \n\
-				UNION ALL \n\
-				SELECT NULL AS asset, address, 1 AS is_stable, SUM(amount) AS balance FROM headers_commission_outputs \n\
-				WHERE is_spent=0 AND address IN(?) GROUP BY address",
-				[arrSharedAddresses, arrSharedAddresses, arrSharedAddresses],
-				function(rows) {
-					for (var i = 0; i < rows.length; i++) {
-						var row = rows[i];
-						var asset = row.asset || "base";
-						if (!assocBalances[asset])
-							assocBalances[asset] = {};
-						if (!assocBalances[asset][row.address])
-							assocBalances[asset][row.address] = {stable: 0, pending: 0};
-						assocBalances[asset][row.address][row.is_stable ? 'stable' : 'pending'] += row.balance;
-					}
-					handleBalance(assocBalances);
-				}
-			);
-		});
 	}
 
 	function initFS(cb) {
@@ -278,7 +186,7 @@ function initWallet() {
 		getFromId('walletList').innerHTML = html;
 	}
 
-	function loadFullClient(showClient) {
+	function loadCompleteClient(showClient) {
 		self._bByteballCoreLoaded = false; //"fix" : Looks like you are loading multiple copies of byteball core, which is not supported. Running 'npm dedupe' might help.
 		var body = document.body;
 		var page = document.createElement('div');
@@ -291,14 +199,14 @@ function initWallet() {
 			byteballJS.src = 'byteball.js';
 			body.appendChild(byteballJS);
 			byteballJS.onload = function() {
-				if(showClient) showFullClient();
+				if(showClient) showCompleteClient();
 			}
 		};
 
 		body.appendChild(angularJs);
 	}
 
-	function showFullClient() {
+	function showCompleteClient() {
 		getFromId('splash').style.display = 'none';
 		swipeListener.close();
 		var pages = document.getElementsByClassName('page');
@@ -310,10 +218,10 @@ function initWallet() {
 
 	function initFocusedWallet(cb) {
 		setWalletNameAndColor(root.focusedClient.credentials.walletName);
-		readBalance(root.focusedClient.credentials.walletId, function(assocBalances) {
+		balances.readBalance(root.focusedClient.credentials.walletId, function(assocBalances) {
 			if (!assocBalances[BLACKBYTES_ASSET])
 				assocBalances[BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
-			readSharedBalance(root.focusedClient.credentials.walletId, function(assocSharedBalances) {
+			balances.readSharedBalance(root.focusedClient.credentials.walletId, function(assocSharedBalances) {
 				for (var asset in assocSharedBalances)
 					if (!assocBalances[asset])
 						assocBalances[asset] = {stable: 0, pending: 0};
@@ -328,14 +236,14 @@ function initWallet() {
 		readStorage(function(agreeDisclaimer, profile, focusedWalletId, config) {
 			if (!agreeDisclaimer || !profile) {
 				getFromId('splash').style.display = 'block';
-				loadFullClient(true);
+				loadCompleteClient(true);
 				return;
 			}
 			root.config = config;
 			decryptOnMobile(profile, function(err, profile) {
 				if(err){
 					getFromId('splash').style.display = 'block';
-					loadFullClient(true);
+					loadCompleteClient(true);
 					return;
 				}
 				root.profile = createObjProfile(profile);
@@ -350,9 +258,9 @@ function initWallet() {
 				if (root.focusedClient.length === 0)
 					root.focusedClient = root.walletClients[Object.keys(root.walletClients)[0]];
 				initFocusedWallet(function() {
-					console.log('LIGHT LOAD END!!!');
+					console.log('partial client load end');
 					setWalletsInMenu();
-					loadFullClient();
+					loadCompleteClient();
 				});
 			});
 		});
@@ -411,7 +319,7 @@ function initWallet() {
 		return addSeparators(amount, ',', '.', u.minDecimals) + ' ' + name;
 	}
 
-	root.showFullClient = showFullClient;
+	root.showCompleteClient = showCompleteClient;
 	root.loadProfile = loadProfile;
 	root.selectWallet = selectWallet;
 	return root;
@@ -503,9 +411,9 @@ function _swipeListener() {
 
 		if (Math.abs(xDiff) > Math.abs(yDiff)) {
 			if (xDiff > 0) {
-				listener('left');
+				listen('left');
 			} else {
-				listener('right');
+				listen('right');
 			}
 		}
 
@@ -513,7 +421,7 @@ function _swipeListener() {
 		yDown = null;
 		
 	}
-	function listener(direction) {
+	function listen(direction) {
 		if(direction === 'left'){
 			if(amountBg){
 				slider.next();
