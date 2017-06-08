@@ -1,7 +1,7 @@
-var bFsInitialized = false;
 var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
 var balances = require('byteballcore/balances');
 var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
+var fileSystem = require('./fileStorage');
 
 function initWallet() {
 	var root = {};
@@ -64,71 +64,11 @@ function initWallet() {
 		root.walletClients[credentials.walletId].started = true;
 	}
 
-	function initFS(cb) {
-		if (bFsInitialized) return cb(null);
-
-		function onFileSystemSuccess(fileSystem) {
-			console.log('File system started: ', fileSystem.name, fileSystem.root.name);
-			bFsInitialized = true;
-			return cb(null);
-		}
-
-		function fail(evt) {
-			var msg = 'Could not init file system: ' + evt.target.error.code;
-			console.log(msg);
-			return cb(msg);
-		}
-
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
-	}
-
-	function readFile(name, cb) {
-		initFS(function() {
-			window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-				dir.getFile(name, {
-					create: false
-				}, function(fileEntry) {
-					if (!fileEntry) return cb(null, false);
-					fileEntry.file(function(file) {
-						var reader = new FileReader();
-						reader.onloadend = function() {
-							var fileBuffer = Buffer.from(new Uint8Array(this.result));
-							cb(null, fileBuffer);
-						};
-						reader.readAsArrayBuffer(file);
-					});
-				}, function() {
-					return cb(null, false);
-				});
-			}, function() {
-			});
-		});
-	}
-
-	function writeFile(name, data, cb) {
-		initFS(function() {
-			window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dir) {
-				dir.getFile(name, {create: true, exclusive: false}, function(fileEntry) {
-					if (!fileEntry) return cb(null, false);
-					fileEntry.createWriter(function(writer) {
-						writer.onwriteend = function() {
-							cb(null);
-						};
-						writer.write(data);
-					}, cb);
-				}, function() {
-					return cb(null, false);
-				});
-			}, function() {
-			});
-		});
-	}
-
 	function readStorage(cb) {
-		readFile('agreeDisclaimer', function(err, agreeDisclaimer) {
-			readFile('profile', function(err, profile) {
-				readFile('focusedWalletId', function(err, focusedWalletId) {
-					readFile('config', function(err, config) {
+		fileSystem.get('agreeDisclaimer', function(err, agreeDisclaimer) {
+			fileSystem.get('profile', function(err, profile) {
+				fileSystem.get('focusedWalletId', function(err, focusedWalletId) {
+					fileSystem.get('config', function(err, config) {
 						cb(agreeDisclaimer, profile, focusedWalletId, JSON.parse(config));
 					});
 				});
@@ -270,8 +210,7 @@ function initWallet() {
 		divFocusedClient.className = divFocusedClient.className.replace('selected').trim();
 		getFromId('w' + walletId).className += 'selected';
 		root.focusedClient = root.walletClients[walletId];
-		writeFile('focusedWalletId', walletId, function() {
-		});
+		fileSystem.set('focusedWalletId', walletId, function() {});
 		initFocusedWallet(function() {});
 		openOrCloseMenu();
 	}
