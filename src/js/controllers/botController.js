@@ -32,7 +32,7 @@ angular.module('copayApp.controllers').controller('botController',
 
 	$scope.open = function(bot) {
 		correspondentListService.setCurrentCorrespondent(bot.device_address, function(){
-			go.path('correspondentDevices.correspondentDevice');
+			go.path('correspondentDevices.device');
 		});
 	}
 });

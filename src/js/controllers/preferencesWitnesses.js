@@ -19,7 +19,7 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
       if ($scope.autoUpdWitnessesList) return;
 
       witnessListService.currentWitness = witness;
-      go.path('preferencesEditWitness');
+      go.path('preferences.witnesses.edit');
     };
 
 

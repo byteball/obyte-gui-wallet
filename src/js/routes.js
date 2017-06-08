@@ -85,26 +85,7 @@ angular
         }
       });
 
-    $stateProvider
-      .state('translators', {
-        url: '/translators',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/translators.html'
-          }
-        }
-      })
-      .state('disclaimer', {
-        url: '/disclaimer',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/disclaimer.html',
-          }
-        }
-      })
+    $stateProvider      
       .state('walletHome', {
         url: '/',
         walletShouldBeComplete: true,
@@ -126,15 +107,7 @@ angular
           }
         }
       })
-      .state('import', {
-        url: '/import',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/import.html'
-          },
-        }
-      })
+      
       .state('create', {
         url: '/create',
         templateUrl: 'views/create.html',
@@ -166,8 +139,8 @@ angular
           },
         }
       })
-      .state('correspondentDevices.correspondentDevice', {
-        url: '/correspondentDevice',
+      .state('correspondentDevices.device', {
+        url: '/device',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
@@ -176,18 +149,18 @@ angular
           },
         }
       })
-      .state('correspondentDevices.editCorrespondentDevice', {
-        url: '/editCorrespondentDevice',
+      .state('correspondentDevices.device.edit', {
+        url: '/edit',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/editCorrespondentDevice.html'
           },
         }
       })
-    .state('correspondentDevices.addCorrespondentDevice', {
-      url: '/addCorrespondentDevice',
+    .state('correspondentDevices.add', {
+      url: '/add',
       needProfile: true,
       views: {
         'dialog': {
@@ -195,22 +168,22 @@ angular
         },
       }
     })
-      .state('correspondentDevices.inviteCorrespondentDevice', {
-        url: '/inviteCorrespondentDevice',
+      .state('correspondentDevices.add.invite', {
+        url: '/invite',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/inviteCorrespondentDevice.html'
           },
         }
       })
-      .state('correspondentDevices.acceptCorrespondentInvitation', {
+      .state('correspondentDevices.add.accept', {
         url: '/acceptCorrespondentInvitation',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/acceptCorrespondentInvitation.html'
           },
         }
@@ -313,6 +286,15 @@ angular
           },
         }
       })
+      .state('preferences', {
+        url: '/preferences',
+        needProfile: true,
+        views: {
+          'main': {
+            templateUrl: 'views/preferencesGlobal.html',
+          },
+        }
+      })
       .state('preferences.deviceName', {
         url: '/deviceName',
         walletShouldBeComplete: false,
@@ -332,6 +314,17 @@ angular
             templateUrl: 'views/preferencesHub.html'
           },
         }
+      })
+       .state('preferences.tor', {
+	      url: '/tor',
+	      templateUrl: 'views/preferencesTor.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main@': {
+			      templateUrl: 'views/preferencesTor.html'
+		      }
+	      }
       })
       .state('preferences.language', {
         url: '/language',
@@ -377,40 +370,101 @@ angular
 
         }
       })
+      .state('preferences.witnesses', {
+	      url: '/witnesses',
+	      templateUrl: 'views/preferencesWitnesses.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesWitnesses.html'
+	        },
+	      }
+	    })
+      .state('preferences.witnesses.edit', {
+        url: '/edit',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditWitness.html'
+          },
+        }
+      })
+      .state('preferences.backupSeed', {
+        url: '/backupSeed',
+        templateUrl: 'views/backup.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/backup.html'
+          },
+        }
+      })
+      .state('preferences.recoveryFromSeed', {
+	      url: '/recoveryFromSeed',
+	      templateUrl: 'views/recoveryFromSeed.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main@': {
+			      templateUrl: 'views/recoveryFromSeed.html'
+		      }
+	      }
+      })
+      .state('preferences.export', {
+        url: '/export',
+        templateUrl: 'views/export.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/export.html'
+          },
+        }
+      })
+      .state('preferences.import', {
+        url: '/import',
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/import.html'
+          },
+        }
+      })
 
-    .state('about', {
+    .state('preferences.about', {
       url: '/about',
       templateUrl: 'views/preferencesAbout.html',
       walletShouldBeComplete: true,
       needProfile: true,
       views: {
-        'main': {
+        'main@': {
           templateUrl: 'views/preferencesAbout.html'
         },
       }
     })
-    .state('witnesses', {
-      url: '/witnesses',
-      templateUrl: 'views/preferencesWitnesses.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesWitnesses.html'
-        },
-      }
-    })
-      .state('preferencesEditWitness', {
-        url: '/preferencesEditWitness',
+    .state('preferences.about.disclaimer', {
+        url: '/disclaimer',
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/disclaimer.html',
+          }
+        }
+      })
+    .state('preferences.about.translators', {
+        url: '/translators',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
-            templateUrl: 'views/preferencesEditWitness.html'
-          },
+          'main@': {
+            templateUrl: 'views/translators.html'
+          }
         }
       })
-      .state('logs', {
+    .state('preferences.about.logs', {
         url: '/logs',
         templateUrl: 'views/preferencesLogs.html',
         walletShouldBeComplete: true,
@@ -420,71 +474,6 @@ angular
             templateUrl: 'views/preferencesLogs.html'
           },
         }
-      })
-      .state('export', {
-        url: '/export',
-        templateUrl: 'views/export.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/export.html'
-          },
-        }
-      })
-      .state('backup', {
-        url: '/backup',
-        templateUrl: 'views/backup.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/backup.html'
-          },
-        }
-      })
-      .state('recoveryFromSeed', {
-	      url: '/recoveryFromSeed',
-	      templateUrl: 'views/recoveryFromSeed.html',
-	      walletShouldBeComplete: true,
-	      needProfile: true,
-	      views: {
-		      'main': {
-			      templateUrl: 'views/recoveryFromSeed.html'
-		      }
-	      }
-      })
-      .state('preferencesTor', {
-	      url: '/preferencesTor',
-	      templateUrl: 'views/preferencesTor.html',
-	      walletShouldBeComplete: true,
-	      needProfile: true,
-	      views: {
-		      'main': {
-			      templateUrl: 'views/preferencesTor.html'
-		      }
-	      }
-      })
-      .state('preferences', {
-        url: '/preferences',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesGlobal.html',
-          },
-        }
-      })
-      .state('settings', {
-        url: '/settings',
-        controller: 'settingsController',
-        templateUrl: 'views/settings.html',
-        needProfile: false
-      })
-      .state('warning', {
-        url: '/warning',
-        controller: 'warningController',
-        templateUrl: 'views/warning.html',
-        needProfile: false
       })
 
     .state('add', {
@@ -565,7 +554,7 @@ angular
               $state.transitionTo('splash');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
-              $state.transitionTo('disclaimer');
+              $state.transitionTo('preferences.about.disclaimer');
             } else {
               throw new Error(err); // TODO
             }

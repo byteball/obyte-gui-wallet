@@ -69,7 +69,7 @@ angular.module('copayApp.controllers').controller('splashController',
 
 	this.init = function() {
 		storageService.getDisclaimerFlag(function(err, val) {
-			if (!val) go.path('disclaimer');
+			if (!val) go.path('preferences.about.disclaimer');
 
 			if (profileService.profile) {
 				go.walletHome();

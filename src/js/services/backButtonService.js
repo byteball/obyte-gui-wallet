@@ -58,9 +58,11 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 					$deepStateRedirect.reset(parent_state.name);
 					$state.go(parent_state);	
 				} else {
-					if ($state.includes(currentState.from, currentState.fromParams))
-						$deepStateRedirect.reset(currentState.from);
-					$state.go(currentState.from, currentState.fromParams);
+					if (currentState.from.indexOf(currentState.to) != -1) { // prev state is a child of current one
+						go.walletHome();
+					} else {
+						$state.go(currentState.from, currentState.fromParams);
+					}
 				}
 			}
 		}

@@ -24,7 +24,7 @@
       </div>
       <div translate>Hub</div>
     </li>
-	<li ng-show="!index.isCordova" ng-click="$root.go('preferencesTor')">
+	<li ng-show="!index.isCordova" ng-click="$root.go('preferences.tor')">
       <div class="right text-gray">
         {{prefGlobal.torEnabled?'On':'Off'}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -66,7 +66,7 @@
     
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('witnesses')">
+    <li ng-click="$root.go('preferences.witnesses')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Witnesses</div>
     </li>
@@ -90,7 +90,7 @@
   <h4></h4>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferences.backupSeed')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <span class="text-warning" ng-show="index.needsBackup">
           <i class="fi-alert"></i><span translate>Still not done</span>
@@ -102,7 +102,7 @@
   </ul>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferences.recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -111,7 +111,7 @@
   </ul>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('export')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferences.export')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -120,7 +120,7 @@
   </ul>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('import')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferences.import')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -130,7 +130,7 @@
     
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('about')">
+    <li ng-click="$root.go('preferences.about')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>About Byteball</div>
     </li>

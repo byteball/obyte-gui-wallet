@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		correspondent.hub = $scope.hub;
 		var device = require('byteballcore/device.js');
 		device.updateCorrespondentProps(correspondent, function(){
-			go.path('correspondentDevices.correspondentDevice');
+			go.path('correspondentDevices.device');
 		});
 	};
 
@@ -28,12 +28,12 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
         $scope.ok = function() {
           $modalInstance.close(true);
-          go.path('correspondentDevices.correspondentDevice');
+          go.path('correspondentDevices.device');
 
         };
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
-          go.path('correspondentDevices.editCorrespondentDevice');
+          go.path('correspondentDevices.device.edit');
         };
       };
 

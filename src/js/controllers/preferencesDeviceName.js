@@ -17,7 +17,7 @@ angular.module('copayApp.controllers').controller('preferencesDeviceNameControll
           return;
         }
         $timeout(function(){
-          go.path('preferencesGlobal');
+          go.path('preferences');
         }, 50);
       });
 

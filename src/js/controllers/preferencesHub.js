@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
           return;
         }
         $timeout(function(){
-          go.path('preferencesGlobal');
+          go.path('preferences');
         }, 50);
       });
       if (this.currentAutoUpdWitnessesList != $scope.autoUpdWitnessesList) {

@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 					}
 					if (close) {
 						$timeout(function() {
-							go.path('preferencesGlobal');
+							go.path('preferences');
 						}, 50);
 					}
 				});
