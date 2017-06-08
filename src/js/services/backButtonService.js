@@ -42,23 +42,17 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		else {
 			var currentState = arrHistory.pop();
 			if (!currentState || currentState.from == "") {
-				if (shownExitMessage) {
-				navigator.app.exitApp();
-				}
-				else {
-					shownExitMessage = true;
-					window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-					$timeout(function() {
-						shownExitMessage = false;
-					}, 2000);
-				}
+				askAndExit();
 			} else {
 				var parent_state = $state.get('^');
-				if (parent_state.name) {
+				if (parent_state.name) { // go up on state tree
 					$deepStateRedirect.reset(parent_state.name);
 					$state.go(parent_state);	
-				} else {
-					if (currentState.from.indexOf(currentState.to) != -1) { // prev state is a child of current one
+				} else { // go back across history
+					var targetState = $state.get(currentState.from);
+					if (targetState.modal || (currentState.to == "walletHome" && $rootScope.tab == "walletHome")) { // don't go to modal and don't go to anywhere wfom home screen
+						askAndExit();
+					} else if (currentState.from.indexOf(currentState.to) != -1) { // prev state is a child of current one
 						go.walletHome();
 					} else {
 						$state.go(currentState.from, currentState.fromParams);
@@ -68,6 +62,19 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		}
 	}
 	
+	function askAndExit(){
+		if (shownExitMessage) {
+			navigator.app.exitApp();
+		}
+		else {
+			shownExitMessage = true;
+			window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+			$timeout(function() {
+				shownExitMessage = false;
+			}, 2000);
+		}
+	}
+
 	function clearHistory() {
 		arrHistory.splice(1);
 	}

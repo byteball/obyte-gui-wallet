@@ -213,6 +213,7 @@ angular
         templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
         needProfile: true,
+        modal: true,
         views: {
           'main': {
             templateUrl: 'views/preferences.html',
@@ -289,6 +290,7 @@ angular
       .state('preferences', {
         url: '/preferences',
         needProfile: true,
+        modal: true,
         views: {
           'main': {
             templateUrl: 'views/preferencesGlobal.html',
