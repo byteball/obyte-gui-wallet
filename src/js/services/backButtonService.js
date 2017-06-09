@@ -42,6 +42,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		else {
 			var currentState = arrHistory.pop();
 			if (!currentState || currentState.from == "") {
+				arrHistory.push(currentState);
 				askAndExit();
 			} else {
 				var parent_state = $state.get('^');
