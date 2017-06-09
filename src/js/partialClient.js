@@ -118,7 +118,7 @@ function initWallet() {
 			var walletId = credentials.walletId;
 
 			html += '<li onclick="wallet.selectWallet(\'' + walletId + '\')" id="w' + walletId + '" class="nav-item ' + (walletId === selectedWalletId ? 'selected' : '') + '">' +
-				'<a class="oh"><div class="avatar-wallet " style="background-color: ' + (colors ? colors[walletId] : '#4A90E2') + '">' + credentials.walletName.substr(0, 1) + ' </div>' +
+				'<a class="oh"><div class="avatar-wallet " style="background-color: ' + (colors && colors[walletId] ? colors[walletId] : '#4A90E2') + '">' + credentials.walletName.substr(0, 1) + ' </div>' +
 				'<div class="name-wallet m8t">' + credentials.walletName + '</div></a></li>';
 		}
 
@@ -199,7 +199,9 @@ function initWallet() {
 				initFocusedWallet(function() {
 					console.log('partial client load end');
 					setWalletsInMenu();
-					loadCompleteClient();
+					setTimeout(function() {
+						loadCompleteClient();
+					}, 100);
 				});
 			});
 		});
@@ -276,17 +278,28 @@ function setSlider(assocBalances) {
 }
 
 //menu
+var menuAnimated = false;
 window.openOrCloseMenu = function() {
+	if (menuAnimated) return;
 	var menuDiv = document.getElementsByClassName('off-canvas-wrap')[1];
-	if (menuDiv.className.indexOf('move-right') === -1) {
-		menuDiv.className = menuDiv.className.trim() + ' move-right';
-	} else {
-		menuDiv.className = menuDiv.className.replace('move-right', '').trim();
+	if (menuDiv) {
+		menuAnimated = true;
+		if (menuDiv.className.indexOf('move-right') === -1) {
+			menuDiv.className = menuDiv.className.trim() + ' move-right';
+			setTimeout(function() {
+				menuAnimated = false;
+			}, 200);
+		} else {
+			menuDiv.className = menuDiv.className.replace('move-right', '').trim();
+			setTimeout(function() {
+				menuAnimated = false;
+			}, 200);
+		}
 	}
 };
 
 window.menuIsOpen = function() {
-	return document.getElementsByClassName('off-canvas-wrap')[1].className.indexOf('move-right') !== -1;
+	return document.getElementsByClassName('off-canvas-wrap')[1] && document.getElementsByClassName('off-canvas-wrap')[1].className.indexOf('move-right') !== -1;
 };
 
 
