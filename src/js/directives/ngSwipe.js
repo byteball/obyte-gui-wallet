@@ -7,8 +7,8 @@
 
 function makeSwipeDirective(directiveName, direction, eventName) {
   angular.module('copayApp.directives')
-    .directive(directiveName, ['$parse', '$swipe',
-      function($parse, $swipe) {
+    .directive(directiveName, ['$parse', '$swipe', '$timeout',
+      function($parse, $swipe, $timeout) {
         // The maximum vertical delta for a swipe should be less than 75px.
         var MAX_VERTICAL_DISTANCE = 75;
         // Vertical distance should not be more than a fraction of the horizontal distance.
@@ -48,11 +48,13 @@ function makeSwipeDirective(directiveName, direction, eventName) {
             },
             'move': function(coords, event) {
               if (validSwipe(coords)) {
-                scope.$apply(function() {
-                  element.triggerHandler(eventName);
-                  swipeHandler(scope, {
-                    $event: event
-                  });
+                $timeout(function() {
+	                scope.$apply(function() {
+		                element.triggerHandler(eventName);
+		                swipeHandler(scope, {
+			                $event: event
+		                });
+	                });
                 });
               }
             }
