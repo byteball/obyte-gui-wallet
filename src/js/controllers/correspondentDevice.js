@@ -628,7 +628,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							if (err){
 								if (chatScope){
 									setError(err);
-									chatScope.$apply();
+									$timeout(function() {
+										chatScope.$apply();
+									});
 								}
 								return;
 							}
