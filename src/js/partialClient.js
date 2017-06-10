@@ -199,9 +199,7 @@ function initWallet() {
 				initFocusedWallet(function() {
 					console.log('partial client load end');
 					setWalletsInMenu();
-					setTimeout(function() {
-						loadCompleteClient();
-					}, 100);
+					loadCompleteClient();
 				});
 			});
 		});
