@@ -70,6 +70,7 @@ function initWallet() {
 			fileSystem.get('profile', function(err, profile) {
 				fileSystem.get('focusedWalletId', function(err, focusedWalletId) {
 					fileSystem.get('config', function(err, config) {
+						window.config = config;
 						cb(agreeDisclaimer, profile, focusedWalletId, config ? JSON.parse(config) : config);
 					});
 				});
