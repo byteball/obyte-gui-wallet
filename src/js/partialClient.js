@@ -2,7 +2,7 @@ var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
 var balances = require('byteballcore/balances');
 var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
 var fileSystem = require('./fileStorage');
-var completeClientUploaded = false;
+var completeClientLoaded = false;
 
 function initWallet() {
 	var root = {};
@@ -79,7 +79,7 @@ function initWallet() {
 	}
 
 	function setWalletNameAndColor(walletName) {
-		if(completeClientUploaded) return;
+		if(completeClientLoaded) return;
 		var color = root.config.colorFor ? root.config.colorFor[root.focusedClient.credentials.walletId] : '#4A90E2';
 		if(!color) color = '#4A90E2';
 		getFromId('name1Color').style.color = color;
@@ -94,7 +94,7 @@ function initWallet() {
 	}
 
 	function setBalancesAndPages(balances) {
-		if(completeClientUploaded) return;
+		if(completeClientLoaded) return;
 		var htmlBalances = '';
 		var htmlPages = '';
 		var slideNumber = 0;
@@ -113,7 +113,7 @@ function initWallet() {
 	}
 
 	function setWalletsInMenu() {
-		if(completeClientUploaded) return;
+		if(completeClientLoaded) return;
 		var selectedWalletId = root.focusedClient.credentials.walletId;
 		var colors = root.config.colorFor;
 		var html = '';
@@ -157,7 +157,7 @@ function initWallet() {
 		if (pages.length === 2) {
 			document.getElementsByClassName('page')[1].remove();
 			document.getElementsByClassName('page')[0].style.display = 'block';
-			completeClientUploaded = true;
+			completeClientLoaded = true;
 		}
 	}
 
@@ -212,7 +212,7 @@ function initWallet() {
 	}
 
 	function selectWallet(walletId) {
-		if(completeClientUploaded) return;
+		if(completeClientLoaded) return;
 		var divFocusedClient = getFromId('w' + root.focusedClient.credentials.walletId);
 		divFocusedClient.className = divFocusedClient.className.replace('selected').trim();
 		getFromId('w' + walletId).className += 'selected';
@@ -258,7 +258,7 @@ function _slider(assocBalances) {
 	self.numberOfSlides = Object.keys(assocBalances).length - 1;
 
 	function setPage(prev, next) {
-		if(completeClientUploaded) return;
+		if(completeClientLoaded) return;
 		getFromId('balance' + prev).style.display = 'none';
 		getFromId('balance' + next).style.display = 'block';
 		getFromId('page' + prev).className = '';
@@ -286,7 +286,7 @@ function setSlider(assocBalances) {
 //menu
 var menuAnimated = false;
 window.openOrCloseMenu = function() {
-	if(completeClientUploaded) return;
+	if(completeClientLoaded) return;
 	if (menuAnimated) return;
 	var menuDiv = document.getElementsByClassName('off-canvas-wrap')[1];
 	if (menuDiv) {
