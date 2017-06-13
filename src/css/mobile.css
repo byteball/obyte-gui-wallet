@@ -873,3 +873,19 @@ textarea:focus
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */
+
+#splash{
+  background-color: #283c4f;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  font-size: 44px;
+  display: none;
+}
+#splash > div{
+  margin-top: 47%;
+}

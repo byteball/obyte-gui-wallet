@@ -42,7 +42,9 @@ angular.module('copayApp.controllers').controller('splashController',
 			if (!conf.bLight)
 				throw Error("Failed to switch to light, please restart the app");
 			self.step = 'device_name';
-			$scope.$apply();
+			$timeout(function(){
+				$scope.$apply();
+			});
 		});
 	};
 	

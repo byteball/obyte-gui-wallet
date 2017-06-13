@@ -60,7 +60,7 @@ angular
               if (window.cordova)
                 console.log(args.join(' '));
               historicLog.add(level, args.join(' '));
-              orig.apply(null, args);
+	          orig.apply(null, args);
             } catch (e) {
               console.log('ERROR (at log decorator):', e, args[0]);
             }

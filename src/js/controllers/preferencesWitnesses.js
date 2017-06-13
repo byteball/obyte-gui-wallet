@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesWitnessesController',
-  function($scope, go, witnessListService, autoUpdatingWitnessesList){
+  function($scope, go, witnessListService, autoUpdatingWitnessesList, $timeout){
     var self = this;
     this.witnesses = [];
     console.log('preferencesWitnessesController');
@@ -11,7 +11,9 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
     var myWitnesses = require('byteballcore/my_witnesses.js');
     myWitnesses.readMyWitnesses(function(arrWitnesses){
         self.witnesses = arrWitnesses;
-        $scope.$apply();
+	    $timeout(function(){
+		    $scope.$apply();
+	    });
         console.log('preferencesWitnessesController set witnesses '+arrWitnesses);
     }, 'wait');
 

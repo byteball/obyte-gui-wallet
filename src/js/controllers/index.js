@@ -489,7 +489,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
 					self.bHasMerkle = bHasMerkle;
-					$rootScope.$apply();
+					$timeout(function() {
+						$rootScope.$apply();
+					});
 				});
 			}
 			else
@@ -898,6 +900,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		self.assetIndex = 0;
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
+	if(isCordova) wallet.showCompleteClient();
 	console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
 	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
 
