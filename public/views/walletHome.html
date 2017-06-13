@@ -21,7 +21,7 @@
     </div>
     <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
 
-    <div class="text-center text-gray p20v" ng-click="$root.go('walletPreferences')">
+    <div class="text-center text-gray p20v" ng-click="$root.go('preferences')">
       <button class=" outline round dark-gray tiny" translate> Preferences </button>
     </div>
   </div>
@@ -148,7 +148,7 @@
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('walletPreferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
               <i class="fi-widget size-18 vm wallet-settings"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
@@ -206,7 +206,7 @@
           </div>
 
           <button class="m20t button black expand round"
-            ng-click="$root.go('preferences.backupSeed')" ng-style="{'background-color':index.backgroundColor}" >
+            ng-click="$root.go('preferencesGlobal.backup')" ng-style="{'background-color':index.backgroundColor}" >
             <span translate>Backup now</span>
           </button>
         </div>

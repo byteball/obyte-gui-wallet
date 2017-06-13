@@ -91,7 +91,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	};
 
 	root.preferences = function() {
-		$state.go('walletPreferences');
+		$state.go('preferences');
 	};
 
 	root.preferencesGlobal = function() {

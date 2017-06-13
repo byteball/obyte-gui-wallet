@@ -27,6 +27,6 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     }
 
     function goBack(){
-        go.path('preferences.witnesses');
+        go.path('preferencesGlobal.preferencesWitnesses');
     }
   });

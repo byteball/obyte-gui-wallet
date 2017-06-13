@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		console.log("showCorrespondent", correspondent);
 		correspondentListService.currentCorrespondent = correspondent;
 		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
-		go.path('correspondentDevices.device');
+		go.path('correspondentDevices.correspondentDevice');
 	};
 
 	$scope.showBot = function(bot) {
@@ -52,7 +52,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	$scope.beginAddCorrespondent = function() {
 		console.log("beginAddCorrespondent");
 		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
-		go.path('correspondentDevices.add');
+		go.path('correspondentDevices.addCorrespondentDevice');
 	};
 
 
@@ -110,6 +110,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			// remove device
 			device.removeCorrespondentDevice(device_address, function() {
 				$scope.hideRemove = true;
+				correspondentListService.currentCorrespondent = null;
 				$scope.readList();
 				$rootScope.$emit('Local/SetTab', 'chat', true);
 				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);

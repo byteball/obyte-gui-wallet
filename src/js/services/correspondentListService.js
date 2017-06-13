@@ -55,7 +55,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else {
 				$rootScope.newMessagesCount[peer_address] = 1;
 			}
-			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.device') || root.currentCorrespondent.device_address != peer_address)) {
+			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
 				root.messageEventsByCorrespondent[peer_address].push({
 					bIncoming: false,
 					message: 'new messages',
@@ -74,8 +74,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-				$stickyState.reset('correspondentDevices.device');
-				go.path('correspondentDevices.device');
+				$stickyState.reset('correspondentDevices.correspondentDevice');
+				go.path('correspondentDevices.correspondentDevice');
 			});
 		}
 		else
@@ -450,7 +450,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			device.readCorrespondent(peer_address, function(correspondent){
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
 			});
-			go.path('correspondentDevices.device');
+			go.path('correspondentDevices.correspondentDevice');
 		});
 	});
 	
@@ -465,7 +465,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on('paired', function(device_address){
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // refresh the list
-		if (!$state.is('correspondentDevices.device'))
+		if (!$state.is('correspondentDevices.correspondentDevice'))
 			return;
 		if (!root.currentCorrespondent)
 			return;
@@ -482,7 +482,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	 eventBus.on('removed_paired_device', function(device_address){
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // todo show popup after refreshing the list
-		if (!$state.is('correspondentDevices.device'))
+		if (!$state.is('correspondentDevices.correspondentDevice'))
 		 	return;
 		if (!root.currentCorrespondent)
 		 	return;
@@ -547,10 +547,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			// open chat window with the newly added correspondent
 			device.readCorrespondent(device_address, function(correspondent){
 				root.currentCorrespondent = correspondent;
-				if (!$state.is('correspondentDevices.device'))
-					go.path('correspondentDevices.device');
+				if (!$state.is('correspondentDevices.correspondentDevice'))
+					go.path('correspondentDevices.correspondentDevice');
 				else {
-					$stickyState.reset('correspondentDevices.device');
+					$stickyState.reset('correspondentDevices.correspondentDevice');
 					$state.reload();
 				}
 			});

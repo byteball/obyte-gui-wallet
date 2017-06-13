@@ -72,13 +72,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.device')) {
+		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
 			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
 		}
 	});
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
-	    if (toState.name === 'correspondentDevices.device') {
+	    if (toState.name === 'correspondentDevices.correspondentDevice') {
 	        $rootScope.tab = $scope.index.tab = 'chat';
 	        $scope.newMessagesCount[correspondentListService.currentCorrespondent.device_address] = 0;
 	    } else
@@ -702,7 +702,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.editCorrespondent = function() {
-		go.path('correspondentDevices.device.edit');
+		go.path('correspondentDevices.correspondentDevice.editCorrespondentDevice');
 	};
 
 	$scope.loadMoreHistory = function(cb) {
