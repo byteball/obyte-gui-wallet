@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Advanced'; goBackToState = 'preferences'">
+  ng-init="titleSection='Advanced'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesAdvancedController as preferences">
@@ -9,24 +9,24 @@
   <h4></h4>
   <ul class="no-bullet m0">
 
-    <li  ng-click="$root.go('information')">
+    <li  ng-click="$root.go('preferences.preferencesAdvanced.preferencesInformation')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Wallet Information</div>
     </li>
 
-    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('paperWallet')">
+    <li ng-show="index.network == 'livenet'" class="text-capitalize" ng-click="$root.go('preferences.preferencesAdvanced.paperWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Sweep paper wallet</div>
     </li>
  
     <!-- was not adapted from copay
-    <li  ng-click="$root.go('export')">
+    <li  ng-click="$root.go('preferencesGlobal.export')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Export Wallet</div>
     </li>
     -->
  
-    <li ng-click="$root.go('delete')">
+    <li ng-click="$root.go('preferences.preferencesAdvanced.preferencesDeleteWallet')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Delete Wallet</div>
     </li>

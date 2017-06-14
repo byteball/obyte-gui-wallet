@@ -99,7 +99,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     eventBus.on('uncaught_error', function(error_message, error_object) {
     	if (error_message.indexOf('ECONNREFUSED') >= 0 || error_message.indexOf('host is unreachable') >= 0){
 			$rootScope.$emit('Local/ShowAlert', "Error connecting to TOR", 'fi-alert', function() {
-				go.path('preferencesTor');
+				go.path('preferencesGlobal.preferencesTor');
 			});
     		return;
 		}
@@ -1425,7 +1425,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
-      go.path('import');
+      go.path('preferencesGlobal.import');
     });
   });
 
