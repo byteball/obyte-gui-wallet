@@ -38,9 +38,10 @@ android-prod:
 	cordova/build.sh ANDROID --clear
 #	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
 	cd ../byteballbuilds/project-ANDROID && cordova build android --release
-	#jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ../copay.keystore -signedjar cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk  cordova/project/platforms/android/build/outputs/apk/android-release-unsigned.apk copay_play 
-	#../android-sdk-macosx/build-tools/21.1.1/zipalign -v 4 cordova/project/platforms/android/build/outputs/apk/android-release-signed.apk cordova/project/platforms/android/build/outputs/apk/android-release-signed-aligned.apk 
 	
+android-prod-fast:
+	cordova/build.sh ANDROID
+	cd ../byteballbuilds/project-ANDROID && cordova build android --release
 
 android-debug:
 	cordova/build.sh ANDROID --dbgjs --clear
