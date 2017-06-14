@@ -157,7 +157,7 @@ if $DBGJS
 then
 	echo "${OpenColor}${Green}* Generating byteball bundle (debug js)...${CloseColor}"
 	cd $BUILDDIR/..
-	grunt cordova-prod
+	grunt cordova
 	checkOK
 else
 	echo "${OpenColor}${Green}* Generating byteball bundle...${CloseColor}"
