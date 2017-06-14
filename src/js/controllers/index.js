@@ -99,7 +99,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     eventBus.on('uncaught_error', function(error_message, error_object) {
     	if (error_message.indexOf('ECONNREFUSED') >= 0 || error_message.indexOf('host is unreachable') >= 0){
 			$rootScope.$emit('Local/ShowAlert', "Error connecting to TOR", 'fi-alert', function() {
-				go.path('preferencesTor');
+				go.path('preferencesGlobal.preferencesTor');
 			});
     		return;
 		}
@@ -366,14 +366,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						cb();
                     },
                     function(){
+	                    var config = configService.getSync().wallet.settings;
+	                    var unitName = config.unitName;
+	                    var bbUnitName = config.bbUnitName;
+	                    
                         var arrDestinations = [];
                         for (var asset in assocAmountByAssetAndAddress){
 							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
-                            var currency = (asset !== "base") 
-								? (asset === constants.BLACKBYTES_ASSET ? "blackbytes" : "of asset "+formatted_asset) 
-								: "bytes";
+							var currency = "of asset "+formatted_asset;
+							var assetName = asset; 
+							if(asset === 'base'){
+								currency = unitName;
+								assetName = 'base';
+							}else if(asset === constants.BLACKBYTES_ASSET){
+								currency = bbUnitName;
+								assetName = 'blackbytes';
+							}
                             for (var address in assocAmountByAssetAndAddress[asset])
-                                arrDestinations.push(assocAmountByAssetAndAddress[asset][address] + " " + currency + " to " + address);
+                                arrDestinations.push(profileService.formatAmount(assocAmountByAssetAndAddress[asset][address], assetName) + " " + currency + " to " + address);
                         }
                         var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
                         var question = gettextCatalog.getString('Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?');
@@ -489,7 +499,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
 					self.bHasMerkle = bHasMerkle;
-					$rootScope.$apply();
+					$timeout(function() {
+						$rootScope.$apply();
+					});
 				});
 			}
 			else
@@ -898,6 +910,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		self.assetIndex = 0;
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
+	if(isCordova) wallet.showCompleteClient();
 	console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
 	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
 
@@ -1412,7 +1425,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.noFocusedWallet = true;
       self.isComplete = null;
       self.walletName = null;
-      go.path('import');
+      go.path('preferencesGlobal.import');
     });
   });
 
