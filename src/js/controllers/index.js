@@ -366,14 +366,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						cb();
                     },
                     function(){
+	                    var config = configService.getSync().wallet.settings;
+	                    var unitName = config.unitName;
+	                    var bbUnitName = config.bbUnitName;
+	                    
                         var arrDestinations = [];
                         for (var asset in assocAmountByAssetAndAddress){
 							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
-                            var currency = (asset !== "base") 
-								? (asset === constants.BLACKBYTES_ASSET ? "blackbytes" : "of asset "+formatted_asset) 
-								: "bytes";
+							var currency = "of asset "+formatted_asset;
+							var assetName = asset; 
+							if(asset === 'base'){
+								currency = unitName;
+								assetName = 'base';
+							}else if(asset === constants.BLACKBYTES_ASSET){
+								currency = bbUnitName;
+								assetName = 'blackbytes';
+							}
                             for (var address in assocAmountByAssetAndAddress[asset])
-                                arrDestinations.push(assocAmountByAssetAndAddress[asset][address] + " " + currency + " to " + address);
+                                arrDestinations.push(profileService.formatAmount(assocAmountByAssetAndAddress[asset][address], assetName) + " " + currency + " to " + address);
                         }
                         var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
                         var question = gettextCatalog.getString('Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?');
