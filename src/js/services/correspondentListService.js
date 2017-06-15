@@ -67,7 +67,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				});
 			}
 		}
-		console.log('addMessageEvent', body, message_counter);
 		var msg_obj = {
 			bIncoming: bIncoming,
 			message: body,
@@ -87,7 +86,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function insertMsg(messages, msg_obj) {
-		console.log('insertMsg', msg_obj);
 		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
 			var message = messages[i];
 			if (message.message_counter === undefined || message.message_counter && msg_obj.message_counter > message.message_counter) {
