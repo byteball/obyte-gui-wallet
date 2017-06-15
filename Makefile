@@ -37,11 +37,11 @@ ios-debug:
 android-prod:
 	cordova/build.sh ANDROID --clear
 #	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
-	cd ../byteballbuilds/project-ANDROID && cordova run android --device --release
+	cd ../byteballbuilds/project-ANDROID && cordova run android --device
 	
 android-prod-fast:
 	cordova/build.sh ANDROID
-	cd ../byteballbuilds/project-ANDROID && cordova run android --device --release
+	cd ../byteballbuilds/project-ANDROID && cordova run android --device
 
 android-debug:
 	cordova/build.sh ANDROID --dbgjs --clear
