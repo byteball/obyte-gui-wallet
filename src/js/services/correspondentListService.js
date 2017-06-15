@@ -45,9 +45,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, message_counter){
-		if (!root.messageEventsByCorrespondent[peer_address])
-			root.messageEventsByCorrespondent[peer_address] = [];
+	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load){
+		if (!root.messageEventsByCorrespondent[peer_address] && !skip_history_load) {
+			return loadMoreHistory({device_address: peer_address}, function() {
+				addMessageEvent(bIncoming, peer_address, body, message_counter, true);
+			});
+		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		if (bIncoming) {
 			if (peer_address in $rootScope.newMessagesCount)
@@ -64,6 +67,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				});
 			}
 		}
+		console.log('addMessageEvent', body, message_counter);
 		var msg_obj = {
 			bIncoming: bIncoming,
 			message: body,
@@ -83,6 +87,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function insertMsg(messages, msg_obj) {
+		console.log('insertMsg', msg_obj);
 		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
 			var message = messages[i];
 			if (message.message_counter === undefined || message.message_counter && msg_obj.message_counter > message.message_counter) {
