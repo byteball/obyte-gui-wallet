@@ -117,21 +117,46 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             // ios doesn't exit
         });
     });
+	
+	function readLastDateString(cb){
+		var conf = require('byteballcore/conf.js');
+		if (conf.storage !== 'sqlite')
+			return cb();
+		var db = require('byteballcore/db.js');
+		db.query(
+			"SELECT int_value FROM unit_authors JOIN data_feeds USING(unit) \n\
+			WHERE address=? AND feed_name='timestamp' \n\
+			ORDER BY unit_authors.rowid DESC LIMIT 1",
+			[configService.TIMESTAMPER_ADDRESS],
+			function(rows){
+				if (rows.length === 0)
+					return cb();
+				var ts = rows[0].int_value;
+				cb('at '+$filter('date')(ts, 'short'));
+			}
+		);
+	}
+	
+	function setSyncProgress(percent){
+		readLastDateString(function(strProgress){
+			self.syncProgress = strProgress || (percent + "% of new units");
+			$timeout(function() {
+				$rootScope.$apply();
+			});
+		});
+	}
     
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
-        self.syncProgress = "0% of new units";
+		setSyncProgress(0);
     });
     eventBus.on('catchup_balls_left', function(count_left){
     	if (catchup_balls_at_start === -1) {
     		catchup_balls_at_start = count_left;
     	}
     	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
-        self.syncProgress = "" + percent + "% of new units";
-		$timeout(function() {
-		  $rootScope.$apply();
-		});
+		setSyncProgress(percent);
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
