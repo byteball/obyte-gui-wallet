@@ -330,6 +330,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + display_dest_address;
 						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
+					else if (args.what === 'input' && (args.asset && args.amount || !args.asset && !args.amount) && args.address){
+						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
+						return 'there was a transaction that spends '+how_much+' from '+args.address;
+					}
 					return JSON.stringify(arrSubdefinition);
 
 				default:
