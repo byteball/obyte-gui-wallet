@@ -513,6 +513,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
 
+		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		async.eachSeries(
+			arrSharedWallets,
+			function(objSharedWallet, cb){
+				walletDefinedByAddresses.readSharedAddressCosigners(objSharedWallet.shared_address, function(cosigners){
+					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
+					objSharedWallet.creation_ts = cosigners[0].creation_ts;
+					cb();
+				});
+			},
+			function(){
+				$timeout(function(){
+					$scope.$apply();
+				});
+			}
+		);
 
 		$scope.cancel = function() {
 			breadcrumbs.add('openSubwalletModal cancel');
@@ -522,7 +538,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
 			if (shared_address){
-				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
 					self.bHasMerkle = bHasMerkle;
 					walletDefinedByAddresses.readSharedAddressCosigners(shared_address, function(cosigners){
