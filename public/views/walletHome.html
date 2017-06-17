@@ -254,8 +254,9 @@
                 </span>
               </div>
               <div class="line-t size-12 text-center">
-				<span translate>Share this wallet address to receive payments.</span>
-				<span ng-if="!index.shared_address" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
+				<span ng-if="index.shared_address" translate>This address is shared with {{index.shared_address_cosigners}}.</span>
+				<span ng-if="!index.shared_address" translate>Share this wallet address to receive payments.</span>
+				<span ng-if="!index.shared_address && 0" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
               </div>
             </div>
           </div>

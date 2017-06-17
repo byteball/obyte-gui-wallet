@@ -524,8 +524,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
 					self.bHasMerkle = bHasMerkle;
-					$timeout(function() {
-						$rootScope.$apply();
+					walletDefinedByAddresses.readSharedAddressCosigners(shared_address, function(cosigners){
+						self.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
+						$timeout(function(){
+							$rootScope.$apply();
+						});
 					});
 				});
 			}
