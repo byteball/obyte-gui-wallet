@@ -70,6 +70,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				description += "\n(ignored)";
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
+			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
 			description += "Program: "+conf.program+' '+conf.program_version+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
