@@ -30,7 +30,7 @@
 		<form class="columns" ng-submit="import.walletImport()">
 			<label><span translate>Your wallet file:</span></label>
 			<div ng-show="import.android && import.androidVersion < 5">
-				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round">Choose File</button>
+				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
 				{{import.oldAndroidFileName}}
 			</div>
 			<input ng-show="!import.android || import.androidVersion>=5" type="file" ng-file-select>
