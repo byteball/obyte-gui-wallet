@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     
     var conf = require('byteballcore/conf.js');
 	$scope.protocol = conf.program;
-	$scope.qr_version = (conf.program === 'byteball') ? 5 : 6; // longer code doesn't fit into version 5
+	$scope.qr_version = (conf.program === 'byteball') ? 7 : 7; // longer code doesn't fit into version 5
     $scope.isCordova = isCordova;
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
