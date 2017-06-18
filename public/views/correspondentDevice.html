@@ -65,7 +65,7 @@
     	vertical-align: baseline;
     }
     #drop {
-    	max-width: 250px;
+    	max-width: 300px;
     	left: 15px;
     	width: auto !important;
     	text-align: left;
@@ -316,17 +316,17 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
 			  <li class="dropup-item">
-			  <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+			    <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.shared_address || index.alias || index.walletName)}}
+				  	</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
 			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.shared_address || index.alias || index.walletName)}}
+			  		<span translate>Request payment</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>

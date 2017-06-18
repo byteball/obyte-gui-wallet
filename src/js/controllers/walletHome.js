@@ -284,6 +284,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.color = fc.backgroundColor;
 	  $scope.address = address;
+	  $scope.shared_address_cosigners = indexScope.shared_address_cosigners;
 	  
 	  var walletGeneral = require('byteballcore/wallet_general.js');
 	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
@@ -291,11 +292,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts){
 			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], true);
 			  $scope.creation_ts = creation_ts;
-			  walletDefinedByAddresses.readSharedAddressCosigners(address, function(cosigners){
-				  $scope.cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
-				  $timeout(function(){
-					  $scope.$apply();
-				  });
+			  $timeout(function(){
+				  $scope.$apply();
 			  });
 		  });
 	  });
