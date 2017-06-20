@@ -51,7 +51,8 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 					$state.go(parent_state);	
 				} else { // go back across history
 					var targetState = $state.get(currentState.from);
-					if (targetState.modal || (currentState.to == "walletHome" && $rootScope.tab == "walletHome")) { // don't go to modal and don't go to anywhere wfom home screen
+					if (targetState.modal || (currentState.to == "walletHome" && $rootScope.tab == "walletHome")) { // don't go to modal and don't go to anywhere wfom home screen 
+						arrHistory.push(currentState);
 						askAndExit();
 					} else if (currentState.from.indexOf(currentState.to) != -1) { // prev state is a child of current one
 						go.walletHome();
