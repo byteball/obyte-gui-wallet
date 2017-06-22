@@ -114,6 +114,9 @@
     <li ng-if="btx.action == 'sent' && isPrivate" class="p10 oh">
       <input type="submit" ng-click="showCorrespondentList()" class="button expand black round" value="{{'Re-send private payloads'|translate}}" ng-style="{'background-color':index.backgroundColor}">
     </li>
+    <li ng-if="m > 1 && isPrivate" class="p10 oh">
+      <input type="submit" ng-click="reSendPrivateMultiSigPayment()" class="button expand black round" value="{{'Re-send private payloads (multisig)'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+    </li>
   </ul>
 
 
