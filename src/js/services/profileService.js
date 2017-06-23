@@ -103,7 +103,7 @@ angular.module('copayApp.services')
 		breadcrumbs.add('unlockWalletAndInitDevice');
 		//Hide the mainSection
 		var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
-			mainSectionElement.css('visibility','hidden');
+		mainSectionElement.css('visibility','hidden');
 
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
