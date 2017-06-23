@@ -1181,7 +1181,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.modalOpened = true;
     var self = this;
     var fc = profileService.focusedClient;
-    var ModalInstanceCtrl = function($scope, $rootScope, $modalInstance) {
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.btx = btx;
       var assetIndex = lodash.findIndex(indexScope.arrBalances, {asset: btx.asset});
       $scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
@@ -1228,9 +1228,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			}
 
 			indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function (arrRecipientChains, arrCosignerChains) {
-				var sharedAddress = $rootScope.getSharedAddress();
-				if(sharedAddress){
-					walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [sharedAddress], null, success);
+				if(indexScope.shared_address){
+					walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], null, success);
 				}else {
 					wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, success);
 				}

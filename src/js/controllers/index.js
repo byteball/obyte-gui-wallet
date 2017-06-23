@@ -1316,8 +1316,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     };
     
 
-    $rootScope.getSharedAddress = function(){return self.shared_address;}
-
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
     self.txHistory = self.completeHistory = [];
