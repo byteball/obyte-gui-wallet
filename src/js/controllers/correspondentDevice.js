@@ -392,7 +392,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
-							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 							if (contract.peer_pays_to === 'me')
 								issueNextAddress(); // make sure the address is not reused
 						});
