@@ -1181,13 +1181,13 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     $rootScope.modalOpened = true;
     var self = this;
     var fc = profileService.focusedClient;
-    var ModalInstanceCtrl = function($scope, $modalInstance) {
+    var ModalInstanceCtrl = function($scope, $rootScope, $modalInstance) {
       $scope.btx = btx;
       var assetIndex = lodash.findIndex(indexScope.arrBalances, {asset: btx.asset});
       $scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
-      $scope.m = fc.credentials.m;
+      $scope.n = fc.credentials.n;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);
@@ -1218,14 +1218,22 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		$scope.reSendPrivateMultiSigPayment = function () {
 			var indivisible_asset = require('byteballcore/indivisible_asset');
 			var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys');
+			var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses');
 			var fc = profileService.focusedClient;
-			indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function (arrRecipientChains, arrCosignerChains) {
-				wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, function () {
-					$timeout(function () {
-						notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
-					});
-				});
 
+			function success() {
+				$timeout(function () {
+					notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
+				});
+			}
+
+			indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function (arrRecipientChains, arrCosignerChains) {
+				var sharedAddress = $rootScope.getSharedAddress();
+				if(sharedAddress){
+					walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [sharedAddress], null, success);
+				}else {
+					wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, success);
+				}
 			});
 		};
 
