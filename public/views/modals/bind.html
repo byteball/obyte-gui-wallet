@@ -28,7 +28,7 @@
 	</div>
 	
 	<div class="row" ng-if="binding.type == 'reverse_payment'">
-		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+		<div class="large-6 medium-6 small-6 columns" style="padding-right: 10px">
 			<input type="number" min="0" ng-attr-placeholder="{{'Amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="binding.reverseAmount" name="reverseAmount" valid-amount="{{binding.reverseAsset}}" required autocomplete="off" style="text-align: right">
 		</div>
 		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px">
@@ -84,7 +84,7 @@
 		If the condition is not met, I can take this money back after: 
 	</h4>
 	<div class="row">
-		<div class="large-6 medium-6 small-6 columns" style="padding-right: 0px">
+		<div class="large-6 medium-6 small-6 columns" style="padding-right: 10px">
 			<input type="number" min="0.1" required name="timeout" ng-model="binding.timeout" style="text-align: right">
 		</div>
 		<div class="large-6 medium-6 small-6 columns" style="padding-left: 0px; margin-top: 8px; font-size: 13px; color: #6A7D90" translate>
