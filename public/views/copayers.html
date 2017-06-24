@@ -4,6 +4,14 @@
   ng-init="">
 </div>
 
+<style>
+.cancel_wallet a {
+	color: #883333;
+	border: 1px dashed #883333;
+	border-width: 0 0 1px 0;
+}
+</style>
+
 <div class="content" ng-controller="copayersController as copayers" ng-init="copayers.init()">
   <div>
     <div class="row m10t text-center">
@@ -27,6 +35,7 @@
     </div>
   </div>
 
+  <div class="cancel_wallet columns"><a href="#" ng-click="copayers.deleteWallet()" translate>cancel wallet creation</a></div>
 
 </div>
 
