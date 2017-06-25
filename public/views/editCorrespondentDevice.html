@@ -1,14 +1,6 @@
 
 <div ng-controller="editCorrespondentDeviceController">
 
-<style>
-.purge_chat a {
-	color: #883333;
-	border: 1px dashed #883333;
-	border-width: 0 0 1px 0;
-}
-</style>
-
 <!--div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
@@ -54,9 +46,13 @@
           </div>
         </form>
     </div>
-      
-    <div class="purge_chat columns"><a href="#" ng-click="purge_chat()" translate>clear chat history</a></div>
-
-    <div class="extra-margin-bottom"></div>
+    <div class="purge_chat">
+                  <input type="submit"
+                     class="button round"
+                     value="{{'Clear chat history'|translate}}"
+                     ng-disabled="!editForm.$valid"
+                     ng-style="{'background-color':backgroundColor}"
+                     ng-click="purge_chat()">
+    </div>
 </div>
 <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

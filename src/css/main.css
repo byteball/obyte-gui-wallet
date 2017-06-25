@@ -794,7 +794,10 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
-
+.purge_chat {
+    margin: auto;
+    width: 50%;
+}
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
