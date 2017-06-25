@@ -798,6 +798,11 @@ table tbody tr:last-child td {
     margin: auto;
     width: 50%;
 }
+
+.right-small a:hover, .left-small a:hover {
+  color: #6D7884;
+}
+
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
