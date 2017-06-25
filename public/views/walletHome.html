@@ -237,7 +237,7 @@
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-16">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -261,21 +261,21 @@
             </div>
           </div>
         </div>
-        <div class="row m20t" ng-if="!index.shared_address">
+        <div class="row m15t text-center" ng-if="!index.shared_address">
           <div class="large-12 columns">
-            <button class="button black expand round m0" ng-click="home.setAddress(true)"
+            <button class="button black expand round m0 size-12" ng-click="home.setAddress(true)"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
               Generate new address
             </button>
           </div>
         </div>
-        <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])">
-            <i class="fi-bitcoin"></i>
-            <span translate>Request a specific amount</span>
-          </a>
+        <div class="m15t text-center" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+             <button class="button black round m0 size-12" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])"
+              ng-style="{'background-color':index.backgroundColor}" translate>
+              Request a specific amount</button>
         </div>
       </div>
+        <div class="extra-margin-bottom"></div>
     </div> <!-- END Receive -->
 
 
