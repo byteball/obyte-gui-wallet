@@ -796,7 +796,8 @@ table tbody tr:last-child td {
 
 .purge_chat {
     margin: auto;
-    width: 50%;
+    width: 100%;
+    text-align: center;
 }
 
 .right-small a:hover, .left-small a:hover {
