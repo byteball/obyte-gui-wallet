@@ -192,6 +192,11 @@ function initWallet() {
 					return;
 				}
 				root.profile = createObjProfile(profile);
+				//If password is set hide wallet display, show splash instead
+				if(root.profile.xPrivKeyEncrypted)
+				{
+					getFromId('splash').style.display = 'block';
+				}
 				root.profile.credentials.forEach(function(credentials) {
 					setWalletClients(credentials);
 				});
