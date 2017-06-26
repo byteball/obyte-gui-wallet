@@ -869,6 +869,9 @@ textarea:focus
 .rn-carousel-control.rn-carousel-control-next:before {
 	content: "›";
 }
+.f-dropdown li {
+	width: 100%;
+}
 
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /
