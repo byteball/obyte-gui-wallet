@@ -798,6 +798,12 @@ table tbody tr:last-child td {
     margin: auto;
     width: 100%;
     text-align: center;
+    color: #883333;
+}
+
+.purge_chat a {
+    color: #883333;
+    text-decoration: underline;
 }
 
 .right-small a:hover, .left-small a:hover {
