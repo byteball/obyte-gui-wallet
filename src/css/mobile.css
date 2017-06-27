@@ -880,6 +880,19 @@ textarea:focus
 	left: auto  !important;
 	right: 9px  !important;
 }
+.f-dropdown ul li a {
+	font-size: 0.875rem;
+	color: #555555;
+}
+span[selectable] {
+	border-bottom: 1px dashed black;
+	cursor: pointer;
+}
+input.inline {
+	width: auto;
+	display: inline;
+	margin-bottom: 0;
+}
 
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /

@@ -1364,4 +1364,46 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
     this.setAddress();
   }
+}).directive('selectable', function ($rootScope, $timeout) {
+	return {
+		restrict: 'A',
+		scope: {
+			bindObj: "=model",
+			bindProp: "@prop",
+			targetProp: "@exclusionBind"
+		},
+		link: function (scope, elem, attrs) {
+			$timeout(function(){
+				var dropdown = angular.element(document.querySelector(attrs.selectable));
+				
+				dropdown.find('li').on('click', function(e){
+					var li = angular.element(this);
+					elem.html(li.find('a').html());
+					scope.bindObj[scope.bindProp] = li.attr('data-value');
+					$rootScope.$digest();
+				});
+				scope.$watch(function(scope){return scope.bindObj[scope.bindProp]}, function(newValue, oldValue) {
+					angular.forEach(dropdown.find('li'), function(element){
+						var li = angular.element(element);
+						if (li.attr('data-value') == newValue) {
+							elem.html(li.find('a').html());
+						}
+					});
+				});
+				elem.html(dropdown.find('a').eq(0).html());
+
+				if (scope.targetProp) {
+					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
+						angular.forEach(dropdown.find('li'), function(element){
+							var li = angular.element(element);
+							if (li.attr('data-value') != newValue) {
+								elem.html(li.find('a').html());
+								scope.bindObj[scope.bindProp] = li.attr('data-value');
+							}
+						});
+					});
+				}
+			});
+		}
+	};
 });
