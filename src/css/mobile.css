@@ -370,7 +370,7 @@ a.missing-copayers {
   padding: 1rem 0.7rem;
 }
 
-.modal-content ul li .external-link, .modal-content ul li .external-link a {
+.modal-content ul li .external-link, .modal-content ul li .external-link a, .modal-content ul li a.blue-link {
   font-size: 14px;
   color: #3498DB;
 }
@@ -868,6 +868,9 @@ textarea:focus
 }
 .rn-carousel-control.rn-carousel-control-next:before {
 	content: "›";
+}
+.f-dropdown li {
+	width: 100%;
 }
 
 /* removes 300ms in IE * /
