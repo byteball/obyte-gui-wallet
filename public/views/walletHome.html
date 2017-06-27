@@ -299,7 +299,7 @@
                 <span class="db text-bold">
                     <span translate>Available Balance</span>:
                 </span>
-                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
+                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as ( (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET ? balance.stableStr : balance.stable.toLocaleString() + ' of ' + balance.asset) + (balance.pending ? ' (confirmed)' : '') ) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
             </div>
         </h4>
       </div>
