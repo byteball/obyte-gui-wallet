@@ -237,7 +237,7 @@
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-16">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -270,8 +270,7 @@
           </div>
         </div>
         <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])">
-            <i class="fi-bitcoin"></i>
+          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])">
             <span translate>Request a specific amount</span>
           </a>
         </div>

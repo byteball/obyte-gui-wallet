@@ -794,6 +794,21 @@ table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.purge_chat {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    color: #883333;
+}
+
+.purge_chat a {
+    color: #883333;
+    text-decoration: underline;
+}
+
+.right-small a:hover, .left-small a:hover {
+  color: #6D7884;
+}
 
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 

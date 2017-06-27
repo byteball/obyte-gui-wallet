@@ -412,7 +412,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		$scope.bbUnitValue = walletSettings.bbUnitValue;
 		$scope.bbUnitName = walletSettings.bbUnitName;
 		$scope.isCordova = isCordova;
-		$scope.buttonLabel = 'Generate QR Code';
+		$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
 		$scope.protocol = conf.program;
 
 
