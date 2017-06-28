@@ -1351,8 +1351,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   /* Start setup */
 
   this.bindTouchDown();
+  this.setSendFormInputs();
   if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
     this.setAddress();
-    this.setSendFormInputs();
   }
 });
