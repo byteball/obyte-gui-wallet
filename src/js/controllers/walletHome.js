@@ -9,6 +9,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   var self = this;
   var home = this;
   var conf = require('byteballcore/conf.js');
+  var chatStorage = require('byteballcore/chat_storage.js');
   this.protocol = conf.program;
   $rootScope.hideMenuBar = false;
   $rootScope.wpInputFocused = false;
@@ -843,7 +844,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 							var paymentRequestCode = 'byteball:'+my_address+'?amount='+binding.reverseAmount+'&asset='+encodeURIComponent(binding.reverseAsset);
 							var paymentRequestText = '[reverse payment]('+paymentRequestCode+')';
 							device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
-							correspondentListService.messageEventsByCorrespondent[recipient_device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
+ 							correspondentListService.addMessageEvent(false, recipient_device_address, body);
+ 							device.readCorrespondent(recipient_device_address, function(correspondent){
+ 			 					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+			 				});
 							// issue next address to avoid reusing the reverse payment address
 							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
 						}
