@@ -362,7 +362,7 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a,  .modal-content ul li a {
+.sidebar ul.off-canvas-list li a,  .modal-content ul:not(.f-dropdown) li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
@@ -883,6 +883,13 @@ textarea:focus
 .f-dropdown ul li a {
 	font-size: 0.875rem;
 	color: #555555;
+}
+.f-dropdown li a .check {
+	display: none;
+	float: right;
+}
+.f-dropdown li.selected a .check {
+	display: inline;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;

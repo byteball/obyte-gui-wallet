@@ -1,3 +1,14 @@
+<style>
+.p20l {
+	padding-left: 20px;
+}
+.w30 {
+	width: 30px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+</style>
 <nav class="tab-bar">
   <section class="left-small">
     <a ng-click="cancel()" class="p10">
@@ -16,49 +27,50 @@
 	<form name="contractForm">
 
 	<span translate>I pay</span>
-	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right" class="inline">
+	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 	<span selectable="#myasset" dropdown-toggle="#myasset" data-model="contract" data-prop="myAsset"></span>
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a translate>{{info.displayName}}</a>
+			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>,<br>
 	<span translate>peer pays</span>
-	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.peerAmount" name="peerAmount" valid-amount="{{contract.peerAsset}}" required autocomplete="off" style="text-align: right" class="inline">
+	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.peerAmount" name="peerAmount" valid-amount="{{contract.peerAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 	<span selectable="#peerasset" dropdown-toggle="#peerasset" data-model="contract" data-prop="peerAsset"></span>
 		<ul id="peerasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a translate>{{info.displayName}}</a>
+			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
 		  </li>
-		</ul><br>
+		</ul>
 	<span translate>to</span>
 	<span selectable="#peerpaysto" dropdown-toggle="#peerpaysto" data-model="contract" data-prop="peer_pays_to"></span>
 		<ul id="peerpaysto" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="dest in arrPeerPaysTos" class="dropup-item" data-value="{{dest.value}}">
-			<a translate>{{dest.display_value}}</a>
+			<a><span translate>{{dest.display_value}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>.<br>
 
 	<span translate>If the peer doesn't pay, I can take my money back after</span>
-	<input type="number" min="0.1" required name="time2out" id="tim2eout" ng-model="contract.timeout" style="text-align: right; width: 30px" class="inline">
+	<input type="number" min="0.1" required name="time2out" id="tim2eout" ng-model="contract.timeout" style="text-align: right" class="inline w30">
 	<span translate>hours</span>.<br><br>
 
 	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a translate>{{party.display_value}}</a>
+			<a><span translate>{{party.display_value}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 	<span translate>can unlock the contract</span> 
-	<span translate>if an event is posted by an oracle</span>
-	<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 290px;"><br>
-	<span translate>on feed name</span>
+	<span translate>if an event is posted</span><br>
+	<span translate class="p20l">by an oracle</span>
+	<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 270px;"><br>
+	<span translate class="p20l">on feed name</span>
 	<input class="m0 inline" type="text" id="feed_name" name="feed_name" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required ><br>
-	<span translate>with expected value</span>
+	<span translate class="p20l">with expected value</span>
 	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
-			<a translate>{{relation}}</a>
+			<a><span translate>{{relation}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 	<input class="m0 inline" type="text" id="feed_value" name="feed_value" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required>,<br>
@@ -66,11 +78,11 @@
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a translate>{{party.display_value}}</a>
+			<a><span translate>{{party.display_value}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 	<span translate>after the contract expires in</span>
-	<input type="number" min="0.01" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right; width: 30px" class="inline">
+	<input type="number" min="0.01" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right" class="inline w30">
 	<span translate>days</span>.
 
 	<div class="" ng-show="index.m < index.n && index.m > 1" style="margin-top: 20px;">
