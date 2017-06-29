@@ -9,7 +9,7 @@
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
   <h4></h4>
   <ul class="no-bullet m0 ">
-    <li  ng-click="$root.go('preferencesDeviceName')">
+    <li  ng-click="$root.go('preferencesGlobal.preferencesDeviceName')">
       <div class="right text-gray">
         {{prefGlobal.deviceName}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -17,35 +17,35 @@
       <div translate>Device name</div>
     </li>
 
-    <li  ng-click="$root.go('preferencesHub')">
+    <li  ng-click="$root.go('preferencesGlobal.preferencesHub')">
       <div class="right text-gray">
         {{prefGlobal.hub}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Hub</div>
     </li>
-	<li ng-show="!index.isCordova" ng-click="$root.go('preferencesTor')">
+	<li ng-show="!index.isCordova" ng-click="$root.go('preferencesGlobal.preferencesTor')">
       <div class="right text-gray">
-        {{prefGlobal.torEnabled?'On':'Off'}}
+        <span translate>{{prefGlobal.torEnabled?'On':'Off'}}</span>
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>TOR</div>
 	</li>
-    <li ng-click="$root.go('preferencesLanguage')">
+    <li ng-click="$root.go('preferencesGlobal.preferencesLanguage')">
       <div class="right text-gray">
         {{prefGlobal.currentLanguageName|translate}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Language</div>
     </li>
-    <li ng-click="$root.go('preferencesUnit')">
+    <li ng-click="$root.go('preferencesGlobal.preferencesUnit')">
       <div class="right text-gray">
         {{prefGlobal.unitName}}
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Unit for bytes</div>
     </li>
-	  <li ng-click="$root.go('preferencesBbUnit')">
+	  <li ng-click="$root.go('preferencesGlobal.preferencesBbUnit')">
       <div class="right text-gray">
         {{prefGlobal.bbUnitName}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -66,7 +66,7 @@
     
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('witnesses')">
+    <li ng-click="$root.go('preferencesGlobal.preferencesWitnesses')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Witnesses</div>
     </li>
@@ -90,7 +90,7 @@
   <h4></h4>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('backup')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <span class="text-warning" ng-show="index.needsBackup">
           <i class="fi-alert"></i><span translate>Still not done</span>
@@ -102,7 +102,7 @@
   </ul>
 
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferencesGlobal.recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -111,7 +111,7 @@
   </ul>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('export')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -120,7 +120,7 @@
   </ul>
 	
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('import')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferencesGlobal.import')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
@@ -130,7 +130,7 @@
     
   <h4></h4>
   <ul class="no-bullet m0">
-    <li ng-click="$root.go('about')">
+    <li ng-click="$root.go('preferencesGlobal.preferencesAbout')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>About Byteball</div>
     </li>

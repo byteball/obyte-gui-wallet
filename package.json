@@ -1,8 +1,8 @@
 {
   "name": "byteball",
-  "description": "A wallet for decentralized value",
+  "description": "Smart payments made simple",
   "author": "Byteball",
-  "version": "1.8.5",
+  "version": "1.9.1",
   "keywords": [
     "wallet",
     "byteball",

@@ -111,8 +111,11 @@
  
     </span>
     </li>
-    <li ng-if="btx.action == 'sent' && isPrivate" class="p10 oh">
-      <input type="submit" ng-click="showCorrespondentList()" class="button expand black round" value="{{'Re-send private payloads'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+    <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
+		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
+    </li>
+    <li ng-if="n > 1 && isPrivate" class="line-b p10 oh">
+		If any of your cosigner devices doesn't see this payment, you can <a class="blue-link" style="padding: 0" ng-click="reSendPrivateMultiSigPayment()" translate>re-send private payloads to cosigners</a>
     </li>
   </ul>
 

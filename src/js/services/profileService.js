@@ -20,9 +20,11 @@ angular.module('copayApp.services')
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
 		if(asset == 'blackbytes') {
 			return this.Utils.formatAmount(amount, config.bbUnitCode, opts);
-		}else{
+		}else if(asset == 'base'){
 			return this.Utils.formatAmount(amount, config.unitCode, opts);
-		}
+		}else{
+		    return amount;
+        }
     };
 
     root._setFocus = function(walletId, cb) {
@@ -99,11 +101,20 @@ angular.module('copayApp.services')
     function unlockWalletAndInitDevice(){
         // wait till the wallet fully loads
 		breadcrumbs.add('unlockWalletAndInitDevice');
+		//Hide the mainSection
+		var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+		mainSectionElement.css('visibility','hidden');
+
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
 			breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
             root.insistUnlockFC(null, function(){
 				breadcrumbs.add('unlockWalletAndInitDevice unlocked');
+
+				//After unlock, make mainSection visible again
+				var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+				mainSectionElement.css('visibility','visible');
+
                 if (!root.focusedClient.credentials.xPrivKey)
                     throw Error("xPrivKey still not set after unlock");
                 console.log('unlocked: '+root.focusedClient.credentials.xPrivKey);

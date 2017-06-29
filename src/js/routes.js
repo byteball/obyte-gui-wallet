@@ -1,6 +1,7 @@
 'use strict';
 
 var unsupported, isaosp;
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
@@ -60,7 +61,7 @@ angular
               if (window.cordova)
                 console.log(args.join(' '));
               historicLog.add(level, args.join(' '));
-              orig.apply(null, args);
+	          orig.apply(null, args);
             } catch (e) {
               console.log('ERROR (at log decorator):', e, args[0]);
             }
@@ -85,26 +86,7 @@ angular
         }
       });
 
-    $stateProvider
-      .state('translators', {
-        url: '/translators',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/translators.html'
-          }
-        }
-      })
-      .state('disclaimer', {
-        url: '/disclaimer',
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/disclaimer.html',
-          }
-        }
-      })
+    $stateProvider      
       .state('walletHome', {
         url: '/',
         walletShouldBeComplete: true,
@@ -126,45 +108,7 @@ angular
           }
         }
       })
-      .state('payment', {
-        url: '/uri-payment/:data',
-        templateUrl: 'views/paymentUri.html',
-        views: {
-          'main': {
-            templateUrl: 'views/paymentUri.html',
-          },
-        },
-        needProfile: true
-      })
-      .state('selectWalletForPayment', {
-        url: '/selectWalletForPayment',
-        controller: 'walletForPaymentController',
-        needProfile: true
-      })
-      .state('import', {
-        url: '/import',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/import.html'
-          },
-        }
-      })
-      .state('importProfile', {
-        url: '/importProfile',
-        templateUrl: 'views/importProfile.html',
-        needProfile: false
-      })
-      .state('importLegacy', {
-        url: '/importLegacy',
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/importLegacy.html',
-          },
-        }
-
-      })
+      
       .state('create', {
         url: '/create',
         templateUrl: 'views/create.html',
@@ -184,17 +128,6 @@ angular
           },
         }
       })
-      .state('preferences', {
-        url: '/preferences',
-        templateUrl: 'views/preferences.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferences.html',
-          },
-        }
-      })
       .state('correspondentDevices', {
         url: '/correspondentDevices',
         walletShouldBeComplete: false,
@@ -208,7 +141,7 @@ angular
         }
       })
       .state('correspondentDevices.correspondentDevice', {
-        url: '/correspondentDevice',
+        url: '/device',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
@@ -217,18 +150,18 @@ angular
           },
         }
       })
-      .state('correspondentDevices.editCorrespondentDevice', {
-        url: '/editCorrespondentDevice',
+      .state('correspondentDevices.correspondentDevice.editCorrespondentDevice', {
+        url: '/edit',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/editCorrespondentDevice.html'
           },
         }
       })
     .state('correspondentDevices.addCorrespondentDevice', {
-      url: '/addCorrespondentDevice',
+      url: '/add',
       needProfile: true,
       views: {
         'dialog': {
@@ -236,22 +169,22 @@ angular
         },
       }
     })
-      .state('correspondentDevices.inviteCorrespondentDevice', {
-        url: '/inviteCorrespondentDevice',
+      .state('correspondentDevices.addCorrespondentDevice.inviteCorrespondentDevice', {
+        url: '/invite',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/inviteCorrespondentDevice.html'
           },
         }
       })
-      .state('correspondentDevices.acceptCorrespondentInvitation', {
+      .state('correspondentDevices.addCorrespondentDevice.acceptCorrespondentInvitation', {
         url: '/acceptCorrespondentInvitation',
         walletShouldBeComplete: false,
         needProfile: true,
         views: {
-          'dialog': {
+          'dialog@correspondentDevices': {
             templateUrl: 'views/acceptCorrespondentInvitation.html'
           },
         }
@@ -276,246 +209,274 @@ angular
           },
         }
       })
-      .state('preferencesDeviceName', {
-        url: '/preferencesDeviceName',
-        walletShouldBeComplete: false,
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesDeviceName.html'
-          },
-        }
-      })
-      .state('preferencesHub', {
-        url: '/preferencesHub',
-        walletShouldBeComplete: false,
-        needProfile: false,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesHub.html'
-          },
-        }
-      })
-      .state('preferencesLanguage', {
-        url: '/preferencesLanguage',
+      .state('preferences', {
+        url: '/preferences',
+        templateUrl: 'views/preferences.html',
         walletShouldBeComplete: true,
         needProfile: true,
+        modal: true,
         views: {
           'main': {
-            templateUrl: 'views/preferencesLanguage.html'
+            templateUrl: 'views/preferences.html',
           },
         }
       })
-      .state('preferencesUnit', {
-        url: '/preferencesUnit',
-        templateUrl: 'views/preferencesUnit.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesUnit.html'
-          },
-        }
-      })
-      .state('preferencesBbUnit', {
-        url: '/preferencesBbUnit',
-        templateUrl: 'views/preferencesBbUnit.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesBbUnit.html'
-          },
-        }
-      })
-
-    .state('preferencesAdvanced', {
-      url: '/preferencesAdvanced',
-      templateUrl: 'views/preferencesAdvanced.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAdvanced.html'
-        },
-      }
-    })
-      .state('preferencesColor', {
-        url: '/preferencesColor',
+      .state('preferences.preferencesColor', {
+        url: '/color',
         templateUrl: 'views/preferencesColor.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesColor.html'
           },
         }
       })
 
-      .state('preferencesAlias', {
-        url: '/preferencesAlias',
+      .state('preferences.preferencesAlias', {
+        url: '/alias',
         templateUrl: 'views/preferencesAlias.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesAlias.html'
           },
 
         }
       })
-      .state('preferencesEmail', {
-        url: '/preferencesEmail',
-        templateUrl: 'views/preferencesEmail.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesEmail.html'
-          },
-
-        }
-      })
-      .state('delete', {
-        url: '/delete',
-        templateUrl: 'views/preferencesDeleteWallet.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesDeleteWallet.html'
-          },
-        }
-      })
-      .state('information', {
+      .state('preferences.preferencesAdvanced', {
+	      url: '/advanced',
+	      templateUrl: 'views/preferencesAdvanced.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesAdvanced.html'
+	        },
+	      }
+	    })
+      .state('preferences.preferencesAdvanced.preferencesInformation', {
         url: '/information',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/preferencesInformation.html'
           },
         }
       })
-
-    .state('about', {
-      url: '/about',
-      templateUrl: 'views/preferencesAbout.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesAbout.html'
-        },
-      }
-    })
-    .state('witnesses', {
-      url: '/witnesses',
-      templateUrl: 'views/preferencesWitnesses.html',
-      walletShouldBeComplete: true,
-      needProfile: true,
-      views: {
-        'main': {
-          templateUrl: 'views/preferencesWitnesses.html'
-        },
-      }
-    })
-      .state('preferencesEditWitness', {
-        url: '/preferencesEditWitness',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesEditWitness.html'
-          },
-        }
-      })
-      .state('logs', {
-        url: '/logs',
-        templateUrl: 'views/preferencesLogs.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/preferencesLogs.html'
-          },
-        }
-      })
-      .state('export', {
-        url: '/export',
-        templateUrl: 'views/export.html',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main': {
-            templateUrl: 'views/export.html'
-          },
-        }
-      })
-      .state('paperWallet', {
+      .state('preferences.preferencesAdvanced.paperWallet', {
         url: '/paperWallet',
         templateUrl: 'views/paperWallet.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
+          'main@': {
             templateUrl: 'views/paperWallet.html'
           },
         }
       })
-      .state('backup', {
-        url: '/backup',
-        templateUrl: 'views/backup.html',
+      .state('preferences.preferencesAdvanced.preferencesDeleteWallet', {
+        url: '/delete',
+        templateUrl: 'views/preferencesDeleteWallet.html',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
-          'main': {
-            templateUrl: 'views/backup.html'
+          'main@': {
+            templateUrl: 'views/preferencesDeleteWallet.html'
           },
         }
-      })
-      .state('recoveryFromSeed', {
-	      url: '/recoveryFromSeed',
-	      templateUrl: 'views/recoveryFromSeed.html',
-	      walletShouldBeComplete: true,
-	      needProfile: true,
-	      views: {
-		      'main': {
-			      templateUrl: 'views/recoveryFromSeed.html'
-		      }
-	      }
-      })
-      .state('preferencesTor', {
-	      url: '/preferencesTor',
-	      templateUrl: 'views/preferencesTor.html',
-	      walletShouldBeComplete: true,
-	      needProfile: true,
-	      views: {
-		      'main': {
-			      templateUrl: 'views/preferencesTor.html'
-		      }
-	      }
       })
       .state('preferencesGlobal', {
         url: '/preferencesGlobal',
         needProfile: true,
+        modal: true,
         views: {
           'main': {
             templateUrl: 'views/preferencesGlobal.html',
           },
         }
       })
-      .state('settings', {
-        url: '/settings',
-        controller: 'settingsController',
-        templateUrl: 'views/settings.html',
-        needProfile: false
+      .state('preferencesGlobal.preferencesDeviceName', {
+        url: '/deviceName',
+        walletShouldBeComplete: false,
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesDeviceName.html'
+          },
+        }
       })
-      .state('warning', {
-        url: '/warning',
-        controller: 'warningController',
-        templateUrl: 'views/warning.html',
-        needProfile: false
+      .state('preferencesGlobal.preferencesHub', {
+        url: '/hub',
+        walletShouldBeComplete: false,
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesHub.html'
+          },
+        }
+      })
+       .state('preferencesGlobal.preferencesTor', {
+	      url: '/tor',
+	      templateUrl: 'views/preferencesTor.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main@': {
+			      templateUrl: 'views/preferencesTor.html'
+		      }
+	      }
+      })
+      .state('preferencesGlobal.preferencesLanguage', {
+        url: '/language',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesLanguage.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesUnit', {
+        url: '/unit',
+        templateUrl: 'views/preferencesUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesUnit.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesBbUnit', {
+        url: '/bbUnit',
+        templateUrl: 'views/preferencesBbUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesBbUnit.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesEmail', {
+        url: '/email',
+        templateUrl: 'views/preferencesEmail.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEmail.html'
+          },
+
+        }
+      })
+      .state('preferencesGlobal.preferencesWitnesses', {
+	      url: '/witnesses',
+	      templateUrl: 'views/preferencesWitnesses.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesWitnesses.html'
+	        },
+	      }
+	    })
+      .state('preferencesGlobal.preferencesWitnesses.preferencesEditWitness', {
+        url: '/edit',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditWitness.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.backup', {
+        url: '/backup',
+        templateUrl: 'views/backup.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/backup.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.recoveryFromSeed', {
+	      url: '/recoveryFromSeed',
+	      templateUrl: 'views/recoveryFromSeed.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+		      'main@': {
+			      templateUrl: 'views/recoveryFromSeed.html'
+		      }
+	      }
+      })
+      .state('preferencesGlobal.export', {
+        url: '/export',
+        templateUrl: 'views/export.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/export.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.import', {
+        url: '/import',
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/import.html'
+          },
+        }
+      })
+
+    .state('preferencesGlobal.preferencesAbout', {
+      url: '/about',
+      templateUrl: 'views/preferencesAbout.html',
+      walletShouldBeComplete: true,
+      needProfile: true,
+      views: {
+        'main@': {
+          templateUrl: 'views/preferencesAbout.html'
+        },
+      }
+    })
+    .state('preferencesGlobal.preferencesAbout.disclaimer', {
+        url: '/disclaimer',
+        needProfile: false,
+        views: {
+          'main@': {
+            templateUrl: 'views/disclaimer.html',
+          }
+        }
+      })
+    .state('preferencesGlobal.preferencesAbout.translators', {
+        url: '/translators',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/translators.html'
+          }
+        }
+      })
+    .state('preferencesGlobal.preferencesAbout.preferencesLogs', {
+        url: '/logs',
+        templateUrl: 'views/preferencesLogs.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesLogs.html'
+          },
+        }
       })
 
     .state('add', {
@@ -584,19 +545,27 @@ angular
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       if (!profileService.profile && toState.needProfile) {
-
+		  
         // Give us time to open / create the profile
         event.preventDefault();
 
+		if (!profileService.assocVisitedFromStates)
+			profileService.assocVisitedFromStates = {};
+		breadcrumbs.add('$stateChangeStart no profile from '+fromState.name+' to '+toState.name);
+		if (profileService.assocVisitedFromStates[fromState.name] && !fromState.name)
+			return breadcrumbs.add("already loading profile, ignoring duplicate $stateChangeStart from "+fromState.name);
+		profileService.assocVisitedFromStates[fromState.name] = true;
+
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
+		  delete profileService.assocVisitedFromStates[fromState.name];
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
               $state.transitionTo('splash');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
-              $state.transitionTo('disclaimer');
+              $state.transitionTo('preferencesGlobal.preferencesAbout.disclaimer');
             } else {
               throw new Error(err); // TODO
             }

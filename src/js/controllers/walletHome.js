@@ -284,6 +284,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.color = fc.backgroundColor;
 	  $scope.address = address;
+	  $scope.shared_address_cosigners = indexScope.shared_address_cosigners;
 	  
 	  var walletGeneral = require('byteballcore/wallet_general.js');
 	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
@@ -291,8 +292,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts){
 			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], true);
 			  $scope.creation_ts = creation_ts;
-			  walletDefinedByAddresses.readSharedAddressCosigners(address, function(cosigners){
-				  $scope.cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
+			  $timeout(function(){
 				  $scope.$apply();
 			  });
 		  });
@@ -412,7 +412,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		$scope.bbUnitValue = walletSettings.bbUnitValue;
 		$scope.bbUnitName = walletSettings.bbUnitName;
 		$scope.isCordova = isCordova;
-		$scope.buttonLabel = 'Generate QR Code';
+		$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
 		$scope.protocol = conf.program;
 
 
@@ -1187,6 +1187,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
       $scope.settings = walletSettings;
       $scope.color = fc.backgroundColor;
+      $scope.n = fc.credentials.n;
 
       $scope.getAmount = function(amount) {
         return self.getAmount(amount);
@@ -1213,7 +1214,28 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
       $scope.showCorrespondentList = function() {
         self.showCorrespondentListToReSendPrivPayloads(btx);
       };
-      
+
+		$scope.reSendPrivateMultiSigPayment = function () {
+			var indivisible_asset = require('byteballcore/indivisible_asset');
+			var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys');
+			var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses');
+			var fc = profileService.focusedClient;
+
+			function success() {
+				$timeout(function () {
+					notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
+				});
+			}
+
+			indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function (arrRecipientChains, arrCosignerChains) {
+				if(indexScope.shared_address){
+					walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], null, success);
+				}else {
+					wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, success);
+				}
+			});
+		};
+
       $scope.cancel = function() {
 		breadcrumbs.add('dismiss tx details');
 		try{
@@ -1280,6 +1302,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				});
 				
 			};
+
 			
 			$scope.back = function() {
 				self.openTxModal(btx);
@@ -1328,8 +1351,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   /* Start setup */
 
   this.bindTouchDown();
-  if (profileService.focusedClient) {
+  this.setSendFormInputs();
+  if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
     this.setAddress();
-    this.setSendFormInputs();
   }
 });

@@ -94,9 +94,6 @@ if [ ! -d $PROJECT ]; then
 	fi
 	checkOK
 
-	cordova plugin add cordova-plugin-splashscreen
-	checkOK
-
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
 
@@ -160,7 +157,7 @@ if $DBGJS
 then
 	echo "${OpenColor}${Green}* Generating byteball bundle (debug js)...${CloseColor}"
 	cd $BUILDDIR/..
-	grunt cordova-prod
+	grunt cordova
 	checkOK
 else
 	echo "${OpenColor}${Green}* Generating byteball bundle...${CloseColor}"
@@ -179,7 +176,8 @@ cp node_modules/byteballcore/initial.byteball.sqlite $PROJECT/www
 cp node_modules/byteballcore/initial.byteball-light.sqlite $PROJECT/www
 checkOK
 
-sed "s/<\!-- PLACEHOLDER: CORDOVA SRIPT -->/<script type='text\/javascript' charset='utf-8' src='cordova.js'><\/script>/g" public/index.html > $PROJECT/www/index.html
+node $BUILDDIR/replaceForPartialClient.js $PROJECT
+rm $PROJECT/www/partialClient.html
 checkOK
 
 cd $BUILDDIR

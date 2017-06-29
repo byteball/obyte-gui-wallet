@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('copayApp.services').factory('backButton', function($log, $rootScope, gettextCatalog, $deepStateRedirect, $document, $timeout, go) {
+angular.module('copayApp.services').factory('backButton', function($log, $rootScope, gettextCatalog, $deepStateRedirect, $document, $timeout, go, $state, lodash) {
 	var root = {};
 	
 	root.menuOpened = false;
@@ -11,19 +11,25 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 	var body = $document.find('body').eq(0);
 	var shownExitMessage = false;
 	
-	window.addEventListener("hashchange", function() {
-		var path = location.hash.replace(/\//g, '.');
-		if (!root.dontDeletePath && path == arrHistory[arrHistory.length - 2]) {
-			arrHistory.pop();
-		}
-		else {
-			if (arrHistory[arrHistory.length - 1] == '#.correspondentDevices' && !(/correspondentDevices/.test(path))) arrHistory = [];
-			arrHistory.push(path);
-			if (arrHistory[arrHistory.length - 2] == '#.correspondentDevices.correspondentDevice' && path == '#.correspondentDevices') arrHistory.splice(arrHistory.length - 2, 1);
-			if (root.dontDeletePath) root.dontDeletePath = false;
+	$rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from, fromParams){
+		// if we navigated to point already been somewhere in history -> cut all the history past this point
+		/*for (var i = 0; i < arrHistory.length; i++) {
+			var state = arrHistory[i];
+			if (to.name == state.to && lodash.isEqual(toParams, state.toParams)) {
+				arrHistory.splice(i+1);
+				break;
+			}
+		}*/
+
+		lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
+		if (from.name == "" // first state
+			|| (lastState && !(to.name == lastState.to && lodash.isEqual(toParams, lastState.toParams)))) // jumped back in history 
+			arrHistory.push({to: to.name, toParams: toParams, from: from.name, fromParams: fromParams});
+		if (to.name == "walletHome") {
+			$rootScope.$emit('Local/SetTab', 'walletHome', true);
 		}
 		root.menuOpened = false;
-	}, false);
+	});
 	
 	function back() {
 		if (body.hasClass('modal-open')) {
@@ -33,53 +39,55 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			go.swipe();
 			root.menuOpened = false;
 		}
-		else if (location.hash == '#/' && arrHistory.length <= 1) {
-			if (shownExitMessage) {
-				navigator.app.exitApp();
-			}
-			else {
-				shownExitMessage = true;
-				window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
-				$timeout(function() {
-					shownExitMessage = false;
-				}, 2000);
-			}
-		}
-		else if (location.hash == '#/correspondentDevices/correspondentDevice') {
-			$deepStateRedirect.reset('correspondentDevices');
-			go.path('correspondentDevices');
-		}
 		else {
-			if (arrHistory[arrHistory.length - 2]) {
-				var path = arrHistory[arrHistory.length - 2].substr(2);
-				arrHistory.splice(arrHistory.length - 2, 2);
-				if (path) {
-					$deepStateRedirect.reset(path);
-					go.path(path);
-					if(path === 'correspondentDevices.correspondentDevice'){
-						$timeout(function() {
-							$rootScope.$emit('Local/SetTab', 'chat', true);
-						}, 100);
+			var currentState = arrHistory.pop();
+			if (!currentState || currentState.from == "") {
+				arrHistory.push(currentState);
+				askAndExit();
+			} else {
+				var parent_state = $state.get('^');
+				if (parent_state.name) { // go up on state tree
+					$deepStateRedirect.reset(parent_state.name);
+					$state.go(parent_state);	
+				} else { // go back across history
+					var targetState = $state.get(currentState.from);
+					if (targetState.modal || (currentState.to == "walletHome" && $rootScope.tab == "walletHome")) { // don't go to modal and don't go to anywhere wfom home screen 
+						arrHistory.push(currentState);
+						askAndExit();
+					} else if (currentState.from.indexOf(currentState.to) != -1) { // prev state is a child of current one
+						go.walletHome();
+					} else {
+						$state.go(currentState.from, currentState.fromParams);
 					}
 				}
-				else {
-					go.walletHome();
-				}
-			}
-			else {
-				arrHistory = [];
-				go.walletHome();
 			}
 		}
 	}
 	
+	function askAndExit(){
+		if (shownExitMessage) {
+			navigator.app.exitApp();
+		}
+		else {
+			shownExitMessage = true;
+			window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+			$timeout(function() {
+				shownExitMessage = false;
+			}, 2000);
+		}
+	}
+
 	function clearHistory() {
-		arrHistory = [];
+		arrHistory.splice(1);
 	}
 	
 	document.addEventListener('backbutton', function() {
 		back();
 	}, false);
+
+	/*document.addEventListener('keydown', function(e) {
+		if (e.which == 37) back();
+	}, false);*/
 	
 	root.back = back;
 	root.arrHistory = arrHistory;

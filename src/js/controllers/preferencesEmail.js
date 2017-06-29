@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('preferencesEmailController',
       this.saving = true;
       $scope.$emit('Local/EmailSettingUpdated', self.email, function() {
         self.saving = false;
-        go.path('preferences');
+        go.path('preferencesGlobal');
       });
     };
   });

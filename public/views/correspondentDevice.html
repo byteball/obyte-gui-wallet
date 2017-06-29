@@ -4,7 +4,7 @@
 <!--div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection=correspondent.name; goBackToState = 'correspondentDevices'; showCamera = true">
+  ng-init="titleSection=correspondent.name; goBackToState = true; showCamera = true">
 </div-->
 
   <nav class="tab-bar">
@@ -65,7 +65,7 @@
     	vertical-align: baseline;
     }
     #drop {
-    	max-width: 250px;
+    	max-width: 300px;
     	left: 15px;
     	width: auto !important;
     	text-align: left;
@@ -247,11 +247,13 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	padding: 8px 0 !important;
 	display: inline-block !important;
 	max-width: calc(100% - 10px);
+	float: left;
 }
 .ellipsis-end {
-	float: right;
+	float: left;
 	width: 10px;
 	padding: 8px 0;
+	color: #555555;
 }
 </style>
 
@@ -315,22 +317,22 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
             <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
 			  <li class="dropup-item">
-			  <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+			    <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.alias || index.walletName)}}
+				  	</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
 			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.alias || index.walletName)}}
+			  		<span translate>Request payment</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			</ul>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="Text message to {{correspondent.name}}"></textarea>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"

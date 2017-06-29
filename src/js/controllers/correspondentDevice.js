@@ -220,7 +220,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					profileService.unlockFC(null, function(err) {
 						if (err){
 							$scope.error = err.message;
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						$scope.payAndOffer();
@@ -390,7 +392,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
-							correspondentListService.messageEventsByCorrespondent[correspondent.device_address].push({bIncoming: false, message: correspondentListService.formatOutgoingMessage(paymentRequestText)});
+							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 							if (contract.peer_pays_to === 'me')
 								issueNextAddress(); // make sure the address is not reused
 						});
@@ -517,7 +521,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						$scope.error = err;
 					else
 						$scope.bDisabled = false;
-					$scope.$apply();
+					$timeout(function(){
+						$scope.$apply();
+					});
 				});
 			}
 			else
@@ -546,7 +552,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					profileService.unlockFC(null, function(err) {
 						if (err){
 							$scope.error = err.message;
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						$scope.pay();
@@ -587,7 +595,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var arrNonBaseAssets = Object.keys(assocOutputsByAsset).filter(function(asset){ return (asset !== 'base'); });
 						if (arrNonBaseAssets.length > 1){
 							$scope.error = 'more than 1 non-base asset not supported';
-							$scope.$apply();
+							$timeout(function(){
+								$scope.$apply();
+							});
 							return;
 						}
 						var asset = (arrNonBaseAssets.length > 0) ? arrNonBaseAssets[0] : null;
@@ -620,7 +630,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							if (err){
 								if (chatScope){
 									setError(err);
-									chatScope.$apply();
+									$timeout(function() {
+										chatScope.$apply();
+									});
 								}
 								return;
 							}
@@ -702,7 +714,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.editCorrespondent = function() {
-		go.path('correspondentDevices.editCorrespondentDevice');
+		go.path('correspondentDevices.correspondentDevice.editCorrespondentDevice');
 	};
 
 	$scope.loadMoreHistory = function(cb) {

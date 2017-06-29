@@ -12,7 +12,7 @@
   <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
 
-    <li  ng-click="$root.go('preferencesAlias')">
+    <li  ng-click="$root.go('preferences.preferencesAlias')">
       <div class="right text-gray">
         {{index.alias||index.walletName}}
         <i class="icon-arrow-right3 size-24"></i>
@@ -21,7 +21,7 @@
     </li>
 
 
-    <li ng-click="$root.go('preferencesColor')">
+    <li ng-click="$root.go('preferences.preferencesColor')">
       <div class="right text-gray">
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
         <i class="icon-arrow-right3 size-24"></i>
@@ -40,7 +40,7 @@
     <h4>
     </h4>
  
-    <li ng-click="$root.go('preferencesAdvanced')">
+    <li ng-click="$root.go('preferences.preferencesAdvanced')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
       <div translate>Advanced</div>
     </li>

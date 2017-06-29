@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Invite new device'; goBackToState = 'correspondentDevices.addCorrespondentDevice'; showCamera = true; ">
+  ng-init="titleSection='Invite new device'|translate; goBackToState = true; showCamera = true; ">
 </div>
 
 
@@ -24,7 +24,7 @@
           <div class="row">
               <input type="button" 
                      class="button expand outline dark-gray round" 
-                     ng-click="$root.go(goBackToState, resetState || false); goBackToState = null"
+                     ng-click="$root.go('^', true); goBackToState = null"
                      value="{{'Done'|translate}}">
           </div>
         </div>

@@ -17,7 +17,7 @@
 	<ul class="no-bullet subwallets">
 		<li class="line-b" ng-class="{'selected': !indexCtl.shared_address}">
 			<a ng-click="selectSubwallet()" class="db oh">
-				<div class="avatar-wallet">{{(indexCtl.alias || indexCtl.walletName) | limitTo: 1}}</div>
+				<div class="avatar-wallet" style="margin-top:5px">{{(indexCtl.alias || indexCtl.walletName) | limitTo: 1}}</div>
 				<div class="ellipsis name-wallet text-bold">{{(indexCtl.alias || indexCtl.walletName)}}</div>
 				<div class="size-12">
 					<span ng-if="asset == 'base' || asset == indexCtl.BLACKBYTES_ASSET">{{mainWalletBalanceInfo.totalStr}}</span>
@@ -27,11 +27,19 @@
 		</li>
 		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px">
 			<a ng-click="selectSubwallet(sw.shared_address)" class="db oh">
-				<div class="avatar-wallet">{{sw.shared_address | limitTo: 1}}</div>
-				<div class="ellipsis name-wallet text-bold">{{sw.shared_address}}</div>
-				<div class="size-12">
-					<span ng-if="asset == 'base' || asset == indexCtl.BLACKBYTES_ASSET">{{sw.totalStr}}</span>
-					<span ng-if="asset != 'base' && asset != indexCtl.BLACKBYTES_ASSET">{{sw.total.toLocaleString()}}</span>
+				<div class="avatar-wallet" style="margin-top:5px">{{sw.shared_address | limitTo: 1}}</div>
+				<div style="display: inline-block">
+					<div class="ellipsis name-wallet text-bold">{{sw.shared_address}}</div>
+					<div class="size-12">
+						<span ng-if="asset == 'base' || asset == indexCtl.BLACKBYTES_ASSET">{{sw.totalStr}}</span>
+						<span ng-if="asset != 'base' && asset != indexCtl.BLACKBYTES_ASSET">{{sw.total.toLocaleString()}}</span>
+					</div>
+					<div class="size-12"><span translate>with</span> {{sw.shared_address_cosigners}}</div>
+					<div class="size-12">
+						<span translate>created</span> 
+						<time>{{ sw.creation_ts * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
+						<time>({{ sw.creation_ts * 1000 | amTimeAgo}})</time>
+					</div>
 				</div>
 			</a>
 		</li>

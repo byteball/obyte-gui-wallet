@@ -14,8 +14,7 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     }
     
     var conf = require('byteballcore/conf.js');
-	$scope.protocol = conf.program;
-	$scope.qr_version = (conf.program === 'byteball') ? 5 : 6; // longer code doesn't fit into version 5
+    $scope.protocol = conf.program;
     $scope.isCordova = isCordova;
     var fc = profileService.focusedClient;
     $scope.color = fc.backgroundColor;
@@ -43,6 +42,26 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     correspondentListService.startWaitingForPairing(function(pairingInfo){
         console.log("beginAddCorrespondent " + pairingInfo.pairing_secret);
         $scope.code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
+
+        function determineQRcodeVersionFromString( inputtext ) {
+            // maximum characters per QR code version using ECC level m
+            // source: http://www.qrcode.com/en/about/version.html
+            var maxCharsforQRVersion = [0,14,26,42,62,84,106,122,152,180,213];
+            var qrversion = 5;
+            // find lowest version number that has enough space for our text
+            for (var i = (maxCharsforQRVersion.length-1); i > 0 ; i--) {
+                if ( maxCharsforQRVersion[i] >= inputtext.length)
+                {
+                    qrversion = i;
+                }
+            }
+
+            return qrversion;
+        }
+
+        var qrstring = $scope.protocol + ":" +$scope.code;  //as passed to the qr generator in inviteCorrespondentDevice.html
+        $scope.qr_version = determineQRcodeVersionFromString( qrstring );
+
         $scope.$digest();
         //$timeout(function(){$scope.$digest();}, 100);
         var eventName = 'paired_by_secret-'+pairingInfo.pairing_secret;

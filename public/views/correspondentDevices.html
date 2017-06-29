@@ -1,12 +1,12 @@
 <div ng-controller="correspondentDevicesController">
 
-<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')">
+<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState"
-      ng-click="$root.go(goBackToState, resetState || false); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
 
@@ -42,7 +42,7 @@
 		          <a ng-show="selectedCorrespondentList[correspondent.device_address]" 
 		            ng-hide="hideRemoveButton(correspondent.removable)"
 		            class="removeCorrespondentList" 
-		            ng-click="remove(correspondent.device_address)" translate><i class="fi-trash size-24"></i></a>
+		            ng-click="remove(correspondent.device_address)"><i class="fi-trash size-24"></i></a>
 		          <a class="selectCorrespondentList" 
 		            ng-show="editCorrespondentList" 
 		            ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
@@ -77,7 +77,7 @@
 		          <div ng-click="showBot(bot)" class="pointer"> 
 		            {{bot.name}}
 		            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-		            <div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px"><span translate>Added</span></div>
+		            <div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
 		          </div>
 		        </li>
 		      </ul>

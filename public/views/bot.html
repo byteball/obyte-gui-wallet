@@ -1,7 +1,7 @@
 <!--div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Accept invitation'; goBackToState = 'addCorrespondentDevice'; showCamera = true">
+  ng-init="titleSection='Accept invitation'; goBackToState = true; showCamera = true">
 </div-->
 
 <div ng-controller="botController">
@@ -26,15 +26,14 @@
 </nav>
 
 
-
-<div class="columns m20t m20b" >
-  <h1 style="font-weight: 200; margin-bottom: 25px">{{bot.name}}</h1>
-  <div class="m30b" translate>{{bot.description}}</div>
+<div class="columns m20t" style="position: absolute; margin-bottom: 60px;">
+	<h1 style="font-weight: 200; margin-bottom: 25px">{{bot.name}}</h1>
+  	<div class="m30b" translate dynamic="bot.description"></div>
   
   <div class="row">
     <div>
-      <input ng-if="bot.isPaired" type="button" class="button expand round" value="{{'Open chat'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="open(bot)">
-      <input ng-if="!bot.isPaired" type="button" class="button expand round" value="{{'Add Bot'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="pair(bot)">
+      <input ng-if="bot.isPaired" type="button" class="button expand round" value="{{'Open chat'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="open(bot)" ng-disabled="!bot">
+      <input ng-if="!bot.isPaired" type="button" class="button expand round" value="{{'Add Bot'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="pair(bot)" ng-disabled="!bot">
     </div>
   </div>
 </div>

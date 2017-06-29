@@ -42,7 +42,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	};
 
 	root.path = function(path, cb) {
-		$state.transitionTo(path)
+		$state.go(path)
 		.then(function() {
 			console.log("transition done "+path);
 			if (cb) return cb();
@@ -106,7 +106,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	// Global go. This should be in a better place TODO
 	// We dont do a 'go' directive, to use the benefits of ng-touch with ng-click
 	$rootScope.go = function(path, resetState) {
-		if (resetState) $deepStateRedirect.reset(resetState);
+		var targetState = $state.get(path);
+		if (resetState) $deepStateRedirect.reset(targetState.name);
 		root.path(path);
 	};
 

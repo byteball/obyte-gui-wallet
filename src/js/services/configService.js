@@ -93,50 +93,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   root.get = function(cb) {
 
 	storageService.getConfig(function(err, localConfig) {
-	  if (localConfig) {
-		configCache = JSON.parse(localConfig);
-
-		//these ifs are to avoid migration problems
-		if (!configCache.wallet) {
-		  configCache.wallet = defaultConfig.wallet;
-		}
-		if (!configCache.wallet.settings.unitCode) {
-		  configCache.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
-		}
-		if (!configCache.wallet.settings.unitValue){
-			if(configCache.wallet.settings.unitToBytes){
-				configCache.wallet.settings.unitValue = configCache.wallet.settings.unitToBytes; 
-			}else{
-				configCache.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
-			}
-		}
-		if (!configCache.wallet.settings.bbUnitName) {
-		  configCache.wallet.settings.bbUnitName = defaultConfig.wallet.settings.bbUnitName;
-		}
-		if (!configCache.wallet.settings.bbUnitValue) {
-		  configCache.wallet.settings.bbUnitValue = defaultConfig.wallet.settings.bbUnitValue;
-		}
-		if (!configCache.wallet.settings.bbUnitDecimals) {
-		  configCache.wallet.settings.bbUnitDecimals = defaultConfig.wallet.settings.bbUnitDecimals;
-		}
-		if (!configCache.wallet.settings.bbUnitCode) {
-		  configCache.wallet.settings.bbUnitCode = defaultConfig.wallet.settings.bbUnitCode;
-		}
-		if (!configCache.pushNotifications) {
-		  configCache.pushNotifications = defaultConfig.pushNotifications;
-		}
-		if (!configCache.hub)
-			configCache.hub = defaultConfig.hub;
-		if (!configCache.deviceName)
-			configCache.deviceName = defaultConfig.getDeviceName();
-		
-		checkAndReplaceOldUnitCode(configCache.wallet.settings);
-	  } else {
-		configCache = lodash.clone(defaultConfig);
-		configCache.deviceName = defaultConfig.getDeviceName();
-	  };
-
-	  $log.debug('Preferences read:', configCache)
+	  configCache = migrateLocalConfig(localConfig);
+	  $log.debug('Preferences read:', configCache);
 	  return cb(err, configCache);
 	});
   };
@@ -169,6 +127,58 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   root.getDefaults = function() {
 	return lodash.clone(defaultConfig);
   };
+  
+  if(window.config){
+	  configCache = migrateLocalConfig(window.config);
+  }else{
+  	root.get(function() {});
+  }
+  
+  function migrateLocalConfig(localConfig) {
+	  if (localConfig) {
+		  var _config = JSON.parse(localConfig);
+
+		  //these ifs are to avoid migration problems
+		  if (!_config.wallet) {
+			  _config.wallet = defaultConfig.wallet;
+		  }
+		  if (!_config.wallet.settings.unitCode) {
+			  _config.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
+		  }
+		  if (!_config.wallet.settings.unitValue){
+			  if(_config.wallet.settings.unitToBytes){
+				  configCache.wallet.settings.unitValue = configCache.wallet.settings.unitToBytes;
+			  }else{
+				  configCache.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
+			  }
+		  }
+		  if (!_config.wallet.settings.bbUnitName) {
+			  _config.wallet.settings.bbUnitName = defaultConfig.wallet.settings.bbUnitName;
+		  }
+		  if (!_config.wallet.settings.bbUnitValue) {
+			  _config.wallet.settings.bbUnitValue = defaultConfig.wallet.settings.bbUnitValue;
+		  }
+		  if (!_config.wallet.settings.bbUnitDecimals) {
+			  _config.wallet.settings.bbUnitDecimals = defaultConfig.wallet.settings.bbUnitDecimals;
+		  }
+		  if (!_config.wallet.settings.bbUnitCode) {
+			  _config.wallet.settings.bbUnitCode = defaultConfig.wallet.settings.bbUnitCode;
+		  }
+		  if (!_config.pushNotifications) {
+			  _config.pushNotifications = defaultConfig.pushNotifications;
+		  }
+		  if (!_config.hub)
+			  _config.hub = defaultConfig.hub;
+		  if (!_config.deviceName)
+			  _config.deviceName = defaultConfig.getDeviceName();
+
+		  checkAndReplaceOldUnitCode(_config.wallet.settings);
+	  } else {
+		  _config = lodash.clone(defaultConfig);
+		  _config.deviceName = defaultConfig.getDeviceName();
+	  }
+	  return _config;
+  }
   
   function checkAndReplaceOldUnitCode(setting) {
 	  switch (setting.unitCode){

@@ -1,13 +1,13 @@
 <div
 		class="topbar-container"
 		ng-include="'views/includes/topbar.html'"
-		ng-init="titleSection='Restore from full backup';  goBackToState = 'preferencesGlobal'; noColor = true">
+		ng-init="titleSection='Restore from full backup';  goBackToState = true; noColor = true">
 </div>
 
 <div class="content preferences" ng-controller="importController as import">
 	<h4></h4>
 
-	<div class="onGoingProcess" ng-show="import.imported">
+	<div class="onGoingProcess" ng-show="import.importing">
 		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
 			<div class="spinner">
 				<div class="rect1"></div>
@@ -30,12 +30,12 @@
 		<form class="columns" ng-submit="import.walletImport()">
 			<label><span translate>Your wallet file:</span></label>
 			<div ng-show="import.android && import.androidVersion < 5">
-				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round">Choose File</button>
+				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
 				{{import.oldAndroidFileName}}
 			</div>
 			<input ng-show="!import.android || import.androidVersion>=5" type="file" ng-file-select>
 			<input type="password" placeholder="Password" ng-model="import.password">
-			<input ng-disabled="import.imported || import.password == '' || (!file && !import.oldAndroidFilePath)" type="submit"
+			<input ng-disabled="import.importing || import.password == '' || (!file && !import.oldAndroidFilePath)" type="submit"
 				   class="button expand black round"
 				   value="{{'Import'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 		</form>
