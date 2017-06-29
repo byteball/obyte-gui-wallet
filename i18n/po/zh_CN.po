@@ -11,11 +11,11 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2017-06-01 07:25-0400\n"
+"PO-Revision-Date: 2017-06-27 03:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr "(站点不能看到你的余额并且没有钱会被花掉)"
+msgstr "(站点看不到你的余额，也无须花费)"
 
 #: public/views/walletHome.html:525
 msgid "(possible double spend)"
@@ -90,7 +90,7 @@ msgstr "同意"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr "<i>{{index.walletName}}</i>的别名"
+msgstr "<i>{{index.walletName}}</i>别名"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
@@ -122,11 +122,11 @@ msgstr "金额"
 
 #: public/views/modals/bind.html:26
 msgid "An event is posted by an oracle:"
-msgstr ""
+msgstr "事件是由 oracle 发布："
 
 #: public/views/copayers.html:11
 msgid "Approve wallet creation on other devices"
-msgstr "在其他设备上批准创建钱包"
+msgstr "允许在其他设备上创建钱包"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -147,7 +147,7 @@ msgstr "自动更新见证人列表"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr "从这个集线器自动更新见证人列表"
+msgstr "从这个Hub自动更新见证人列表"
 
 #: public/views/includes/available-balance.html:7
 #: public/views/walletHome.html:299
@@ -170,7 +170,7 @@ msgstr "立即备份"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr "备份钱包种子"
+msgstr "备份钱包的seed"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -182,17 +182,17 @@ msgstr "地址余额"
 
 #: public/views/walletHome.html:204
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr "在收到资金之前，强烈建议您备份您的钱包密钥。"
+msgstr "接收资金之前，强烈建议您备份钱包密匙。"
 
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr "绑定付款"
+msgstr "绑定支付"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "绑定支付条件"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -200,7 +200,7 @@ msgstr "比特币URI无效！"
 
 #: public/views/correspondentDevice.html:280
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "您和{{correspondent.name}}都启用了本地聊天记录。"
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -225,11 +225,11 @@ msgstr "取消"
 
 #: public/views/editCorrespondentDevice.html:43
 msgid "Change hub:"
-msgstr ""
+msgstr "更改Hub："
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr "更改钱包别名仅影响本地钱包名称。"
+msgstr "更改钱包别名只会影响本地钱包名称。"
 
 #: src/js/controllers/index.js:546
 msgid "Chat"
@@ -237,7 +237,7 @@ msgstr "对话"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "选择要发送到的设备"
 
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
@@ -255,11 +255,11 @@ msgstr "关闭"
 
 #: public/views/create.html:80
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "共同签署人 {{$index + 1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "共同签署人"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
@@ -275,7 +275,7 @@ msgstr "提交哈希值"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "是否压缩文件？（较慢）"
 
 #: src/js/controllers/copayers.js:10
 #: src/js/controllers/index.js:403
@@ -287,7 +287,7 @@ msgstr "确认"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr "确认付款"
+msgstr "确认支付"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
@@ -300,19 +300,19 @@ msgstr "已复制到剪贴板"
 
 #: public/views/recoveryFromSeed.html:61
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "通讯没有恢复。"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not create payment proposal"
-msgstr "无法创建付款协议"
+msgstr "无法创建支付协议"
 
 #: src/js/services/profileService.js:209
 msgid "Could not create using the specified extended private key"
-msgstr "指定的扩展私钥无法进行创建"
+msgstr "无法使用指定的扩展私钥创建"
 
 #: src/js/services/profileService.js:219
 msgid "Could not create using the specified extended public key"
-msgstr "指定的扩展公钥无法进行创建"
+msgstr "无法使用指定的扩展公钥创建"
 
 #: src/js/services/profileService.js:202
 msgid "Could not create: Invalid wallet seed"
@@ -338,7 +338,7 @@ msgstr "无法导入，请检查输入文件和密码"
 
 #: src/js/controllers/walletHome.js:48
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "无法识别有效的 Byteball QR码"
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
@@ -359,11 +359,11 @@ msgstr "创建新的钱包"
 
 #: src/js/controllers/index.js:243
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "一起创建新的钱包？"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "创建共{{requiredCosigners}} 人签署, 其中{{totalCosigners}} 人签署即通过的钱包"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -384,7 +384,7 @@ msgstr "删除文档"
 #: public/views/modals/bind.html:57
 #: public/views/modals/offer-contract.html:102
 msgid "Data feed name:"
-msgstr ""
+msgstr "数据源名称："
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -392,7 +392,7 @@ msgstr "日期"
 
 #: src/js/controllers/index.js:213
 msgid "Declined"
-msgstr ""
+msgstr "已拒绝"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
@@ -400,15 +400,15 @@ msgstr "解密纸钱包在这台设备上可能需要花费5分钟时间，请�
 
 #: public/views/walletHome.html:157
 msgid "Definition"
-msgstr ""
+msgstr "定义"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "智能地址的定义"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "地址的定义"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
@@ -439,7 +439,7 @@ msgstr "设备名"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "与您通信的其他设备可以看到设备名称。"
 
 #: public/views/translators.html:29
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
@@ -461,7 +461,7 @@ msgstr "编辑"
 
 #: public/views/correspondentDevice.html:283
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "您或{{correspondent.name}}都会禁用聊天记录记录。 任何人都不会保存历史记录。"
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
@@ -473,7 +473,7 @@ msgstr "启用推送通知消息"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "输入从其他设备接收的配对码，或使用相机（右上角的图标）扫描其他设备上显示的QR码。"
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
@@ -543,7 +543,7 @@ msgstr "建立资金"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "资金将会转移到"
 
 #: public/views/splash.html:80
 msgid "GET STARTED"
@@ -568,7 +568,7 @@ msgstr "{{selectedWalletName}} 获取钱包地址中 ..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr "全局设置"
+msgstr "全局首选项"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
@@ -601,11 +601,11 @@ msgstr "主机"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "Hub URL"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -617,7 +617,7 @@ msgstr "我支付:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
-msgstr ""
+msgstr "我收到另一笔款项："
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
@@ -651,7 +651,7 @@ msgstr "多宗交易的钱包，其首次交易历史同步可能需要几分钟
 
 #: public/views/correspondentDevice.html:319
 msgid "Insert my address"
-msgstr ""
+msgstr "插入我的地址"
 
 #: public/views/walletHome.html:518
 msgid "Invalid"
@@ -663,7 +663,7 @@ msgstr "指纹识别无效"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
+msgstr "邀请其他设备"
 
 #: public/views/translators.html:12
 #: public/views/translators.html:13
@@ -685,11 +685,11 @@ msgstr "语言设定"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "稍后"
 
 #: public/views/splash.html:33
 msgid "Light wallet"
-msgstr ""
+msgstr "轻钱包"
 
 #: src/js/controllers/disclaimer.js:13
 msgid "Loading..."
@@ -701,7 +701,7 @@ msgstr "支付至"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
-msgstr ""
+msgstr "稍后再说"
 
 #: public/views/includes/copayers.html:4
 #: public/views/modals/multi-payment.html:40
@@ -729,7 +729,7 @@ msgstr "移动"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr ""
+msgstr "多设备钱包"
 
 #: public/views/walletHome.html:218
 msgid "My Byteball address"
@@ -749,16 +749,16 @@ msgstr "新的随机种子"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
-msgstr ""
+msgstr "有新版本可用！"
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
-msgstr ""
+msgstr "新的证人"
 
 #: public/views/authConfirmation.html:22
 #: src/js/controllers/index.js:402
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
@@ -783,24 +783,24 @@ msgstr "注意"
 
 #: public/views/modals/offer-contract.html:8
 msgid "Offer a contract"
-msgstr ""
+msgstr "签定合约"
 
 #: public/views/backup.html:78
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "一旦你写下你的钱包种子，建议从这个设备中删除它。"
 
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
-msgstr ""
+msgstr "只有单签钱包能恢复。"
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
 msgid "Oracle address:"
-msgstr ""
+msgstr "Oracle 地址："
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "配对"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
@@ -853,7 +853,7 @@ msgstr "付款已发送"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
-msgstr ""
+msgstr "对方支付到:"
 
 #: public/views/modals/offer-contract.html:36
 msgid "Peer pays:"
@@ -869,11 +869,11 @@ msgstr "永久删除此钱包。 此操作无法撤销！"
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr ""
+msgstr "普通钱包"
 
 #: public/views/splash.html:20
 msgid "Please choose the type of this wallet"
-msgstr ""
+msgstr "请选择这个钱包的类型"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -902,11 +902,11 @@ msgstr "偏好设定"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr ""
+msgstr "再次点击退出"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "私人资产(如: blackbytes)不能恢复。"
 
 #: src/js/controllers/walletHome.js:1277
 msgid "Private payloads sent"
@@ -943,15 +943,15 @@ msgstr "正在重新连接到钱包服务..."
 
 #: public/views/recoveryFromSeed.html:53
 msgid "Recover"
-msgstr ""
+msgstr "恢复"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "从备份的seed中恢复"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
-msgstr ""
+msgstr "恢复仅在完整钱包中可用。"
 
 #: public/views/walletHome.html:58
 msgid "Recreating Wallet..."
@@ -959,7 +959,7 @@ msgstr "重新创建钱包中…"
 
 #: src/js/controllers/index.js:165
 msgid "Refused"
-msgstr ""
+msgstr "拒绝"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -971,11 +971,11 @@ msgstr "删除"
 
 #: public/views/correspondentDevices.html:37
 msgid "Remove a device"
-msgstr ""
+msgstr "移除设备"
 
 #: public/views/editCorrespondentDevice.html:41
 msgid "Rename:"
-msgstr ""
+msgstr "重命名:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -984,7 +984,7 @@ msgstr "重复密码"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "再次确认密码"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
@@ -1001,15 +1001,15 @@ msgstr "要求特定金额"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
-msgstr ""
+msgstr "请求付款"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
-msgstr "选择必要的签名数"
+msgstr "所需签名数"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
-msgstr ""
+msgstr "从完整备份中还原"
 
 #: public/views/splash.html:60
 msgid "Retrying..."
@@ -1036,7 +1036,7 @@ msgstr "保存"
 
 #: public/views/preferencesEmail.html:21
 msgid "Saving preferences..."
-msgstr "保存设置中……"
+msgstr "正在保存设置..."
 
 #: public/views/preferences.html:55
 msgid "Scan Fingerprint"
@@ -1052,7 +1052,7 @@ msgstr "查询结果出现错误"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
-msgstr ""
+msgstr "使用其他设备扫描上述QR码，或将此配对码发送到其他设备："
 
 #: src/js/controllers/index.js:1432
 msgid "Scan your fingerprint please"
@@ -1064,7 +1064,7 @@ msgstr "查询钱包余额中…"
 
 #: public/views/recoveryFromSeed.html:31
 msgid "Scanning for addresses..."
-msgstr ""
+msgstr "正在扫描地址..."
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
@@ -1080,7 +1080,7 @@ msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
-msgstr ""
+msgstr "选择您的身份"
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:449
@@ -1147,7 +1147,7 @@ msgstr "分享地址"
 
 #: public/views/walletHome.html:257
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "分享这个钱包地址来接收付款。"
 
 #: public/views/walletHome.html:567
 msgid "Show all"
@@ -1155,15 +1155,15 @@ msgstr "显示所有"
 
 #: public/views/backup.html:38
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "无论如何显示钱包种子"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "从钱包签署交易支出？"
 
 #: src/js/services/profileService.js:261
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "小额支付钱包"
 
 #: public/views/translators.html:20
 msgid "Spanish"
@@ -1206,7 +1206,7 @@ msgstr ""
 
 #: public/views/walletHome.html:60
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "同步...{{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
@@ -1225,19 +1225,19 @@ msgstr "使用条款"
 
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
-msgstr ""
+msgstr "将公示预期值在："
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "通过Hub从其他设备接收消息。"
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "该Hub建议更换以下证人："
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr ""
+msgstr "对方收到此付款，如果："
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
@@ -1246,11 +1246,11 @@ msgstr "钱包 \"{{walletName}}\"已被删除"
 
 #: public/views/splash.html:34
 msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately."
-msgstr ""
+msgstr "钱包将包含少量与您有关的信息，钱包服务者将能够知道你的余额和交易信息，但你可以立即开始使用钱包。"
 
 #: public/views/splash.html:26
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
-msgstr ""
+msgstr "钱包将包含整个Byteball数据库的最新状态。 这个选项对于隐私更好，但会消耗更多的资源，初始同步将需要几个小时。"
 
 #: public/views/correspondentDevice.html:294
 msgid "Their recording preference"
@@ -1262,15 +1262,15 @@ msgstr "没有钱包可以进行付款"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "选择钱包类型以后无法更改"
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr ""
+msgstr "这是一个私人资产，只能通过点击聊天中的链接发送或发送到您的其他钱包。"
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
-msgstr ""
+msgstr "此款项被绑定到一个条件"
 
 #: public/views/modals/tx-details.html:73
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
@@ -1278,7 +1278,7 @@ msgstr "此交易已失效，可能由于尝试双重支付导致。"
 
 #: public/views/recoveryFromSeed.html:58
 msgid "This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "这将永久删除您现有的所有钱包！"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
@@ -1287,15 +1287,15 @@ msgstr ""
 #: public/views/walletHome.html:322
 #: public/views/walletHome.html:548
 msgid "To"
-msgstr "至："
+msgstr "到"
 
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr ""
+msgstr "要将付款绑定到条件，请点击在聊天中对方的地址"
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "为了保护您的隐私，一旦你使用了它们之后都会自动生成新的地址。"
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
@@ -1303,7 +1303,7 @@ msgstr "锁定总余额"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "共同签署者总数"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
@@ -1332,11 +1332,11 @@ msgstr "未确认"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "Blackbytes单位"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr "以字节为单位"
+msgstr "Blackbytes单位"
 
 #: public/views/walletHome.html:175
 msgid "Unsent transactions"
@@ -1348,7 +1348,7 @@ msgstr "钱包更新中…"
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
-msgstr ""
+msgstr "升级到 {{version}}"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1364,7 +1364,7 @@ msgstr "注意：这个种子是由密码创建的。要恢复这个钱包，需
 
 #: public/views/import.html:54
 msgid "WARNING: This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "警告： 这个操作将永久删除您现有的钱包 ！"
 
 #: public/views/recoveryFromSeed.html:56
 msgid "WARNINGS:"
@@ -1372,11 +1372,11 @@ msgstr "警告:"
 
 #: public/views/splash.html:49
 msgid "WELCOME TO BYTEBALL"
-msgstr ""
+msgstr "欢迎来到 BYTEBALL"
 
 #: public/views/copayers.html:16
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "等待共同签署者"
 
 #: public/views/copayers.html:25
 msgid "Waiting..."
@@ -1409,7 +1409,7 @@ msgstr "钱包名称 (创建时)"
 
 #: src/js/services/profileService.js:378
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "钱包已存在Byteball中："
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1417,7 +1417,7 @@ msgstr "钱包名称"
 
 #: public/views/backup.html:28
 msgid "Wallet seed not available."
-msgstr ""
+msgstr "钱包种子不可用。"
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
@@ -1432,19 +1432,19 @@ msgstr "注意！"
 #: public/views/modals/offer-contract.html:144
 #: public/views/walletHome.html:411
 msgid "Who signs:"
-msgstr ""
+msgstr "签署者："
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr ""
+msgstr "见证地址"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "见证人"
 
 #: public/views/backup.html:50
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "把它写下来，把它放在一个安全的地方。"
 
 #: src/js/services/profileService.js:606
 msgid "Wrong password"
@@ -1463,7 +1463,7 @@ msgstr "您没有钱包"
 #: public/views/backup.html:49
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr ""
+msgstr "你的钱包种子："
 
 #: public/views/export.html:33
 msgid "Your export password"
@@ -1475,7 +1475,7 @@ msgstr "您的密码"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr ""
+msgstr "你的钱包文件："
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
@@ -1483,19 +1483,19 @@ msgstr "您的钱包密码将被加密，密码无法被恢复，一定要记下
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
-msgstr ""
+msgstr "合同到期时间："
 
 #: public/views/editCorrespondentDevice.html:58
 msgid "clear chat history"
-msgstr ""
+msgstr "清除聊天记录"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
-msgstr ""
+msgstr "天"
 
 #: public/views/modals/bind.html:78
 msgid "either way"
-msgstr ""
+msgstr "无论哪种方式"
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
@@ -1504,7 +1504,7 @@ msgstr ""
 #: public/views/modals/bind.html:90
 #: public/views/modals/offer-contract.html:66
 msgid "hours"
-msgstr ""
+msgstr "小时"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
@@ -1516,7 +1516,7 @@ msgstr ""
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
-msgstr ""
+msgstr "在智能钱包"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
@@ -1532,11 +1532,11 @@ msgstr "任意"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "正在发送"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "到"
 
 #: public/views/walletHome.html:387
 #: public/views/walletHome.html:398
@@ -1549,7 +1549,7 @@ msgstr ""
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
@@ -1574,4 +1574,4 @@ msgstr ""
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
-msgstr ""
+msgstr "{{wordsC.text}}"

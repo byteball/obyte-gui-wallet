@@ -259,7 +259,7 @@ module.exports = function(grunt) {
                     name: 'Byteball',
                     email: 'byteball@byteball.org'
                 },
-                long_description: 'A wallet for decentralized value',
+                long_description: 'Smart payments made simple',
                 target_architecture: 'amd64'
             }
         }

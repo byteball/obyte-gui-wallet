@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-06-01 07:25-0400\n"
+"PO-Revision-Date: 2017-06-27 03:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -187,12 +187,12 @@ msgstr "До получения средств, настоятельно рек�
 #: public/views/modals/bind.html:100
 #: public/views/modals/bind.html:8
 msgid "Bind payment"
-msgstr "Связать платёж"
+msgstr "Связать платеж"
 
 #: public/views/walletHome.html:346
 #: public/views/walletHome.html:353
 msgid "Bind the payment to a condition"
-msgstr "Привязать платёж к условию"
+msgstr "Привязать платеж к условию"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -287,7 +287,7 @@ msgstr "Подтвердить"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr "Подтвердить платёж"
+msgstr "Подтвердить платеж"
 
 #: public/views/modals/tx-details.html:108
 msgid "Confirmed"
@@ -342,7 +342,7 @@ msgstr "Не удалось распознать действительный By
 
 #: src/js/controllers/walletHome.js:597
 msgid "Could not send payment"
-msgstr "Не удалось отправить платёж"
+msgstr "Не удалось отправить платеж"
 
 #: public/views/walletHome.html:22
 msgid "Create"
@@ -363,7 +363,7 @@ msgstr "Создать новый кошелек вместе с?"
 
 #: public/views/create.html:161
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Создать кошелёк {{requiredCosigners}}-из-{{totalCosigners}}"
+msgstr "Создать кошелек {{requiredCosigners}}-из-{{totalCosigners}}"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -469,7 +469,7 @@ msgstr "Укажите адрес электронной почты для по�
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr "Push-уведомления"
+msgstr "Включить push-уведомлений"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
@@ -515,7 +515,7 @@ msgstr "Комиссия"
 
 #: public/views/modals/tx-details.html:103
 msgid "Finality"
-msgstr "Завершённость"
+msgstr "Завершенность"
 
 #: public/views/translators.html:11
 msgid "French"
@@ -617,7 +617,7 @@ msgstr "Я плачу:"
 
 #: public/views/modals/bind.html:25
 msgid "I receive another payment:"
-msgstr "Я получаю другой платёж:"
+msgstr "Я получаю другой платеж:"
 
 #: public/views/modals/bind.html:83
 msgid "If the condition is not met, I can take this money back after:"
@@ -696,7 +696,7 @@ msgstr "Загрузка..."
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
-msgstr "Сделать платёж"
+msgstr "Сделать платеж"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
@@ -832,7 +832,7 @@ msgstr "Заплатить и предложить"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
-msgstr "Платёж принят"
+msgstr "Платеж принят"
 
 #: public/views/modals/tx-status.html:16
 msgid "Payment Proposal Created"
@@ -844,11 +844,11 @@ msgstr "Предложение платежа"
 
 #: public/views/modals/tx-status.html:38
 msgid "Payment Rejected"
-msgstr "Платёж отклонён"
+msgstr "Платеж отклонен"
 
 #: public/views/modals/tx-status.html:5
 msgid "Payment Sent"
-msgstr "Платёж отправлен"
+msgstr "Платеж отправлен"
 
 #: public/views/modals/offer-contract.html:50
 msgid "Peer pays to:"
@@ -901,7 +901,7 @@ msgstr "Предпочтения"
 
 #: src/js/services/backButtonService.js:42
 msgid "Press again to exit"
-msgstr "Нажмите ещё раз для выхода"
+msgstr "Нажмите еще раз для выхода"
 
 #: public/views/recoveryFromSeed.html:59
 msgid "Private assets (such as blackbytes) are not recovered."
@@ -1000,7 +1000,7 @@ msgstr "Запросить определенную сумму"
 
 #: public/views/correspondentDevice.html:328
 msgid "Request payment"
-msgstr "Запросить платёж"
+msgstr "Запросить платеж"
 
 #: public/views/create.html:64
 msgid "Required number of signatures"
@@ -1093,7 +1093,7 @@ msgstr "Отправить все"
 
 #: public/views/modals/multi-payment.html:62
 msgid "Send Payment"
-msgstr "Отправить платёж"
+msgstr "Отправить платеж"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
@@ -1154,7 +1154,7 @@ msgstr "Показать все"
 
 #: public/views/backup.html:38
 msgid "Show the Wallet Seed Anyway"
-msgstr "Всё равно показать мнемонику (seed) кошелька"
+msgstr "Все равно показать мнемонику (seed) кошелька"
 
 #: src/js/controllers/index.js:379
 msgid "Sign transaction spending  from wallet ?"
@@ -1236,7 +1236,7 @@ msgstr "Хаб предлагает заменить следующих свид
 
 #: public/views/modals/bind.html:22
 msgid "The peer receives this payment if:"
-msgstr "Контрагент получает этот платёж если:"
+msgstr "Контрагент получает этот платеж если:"
 
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/preferencesDelete.js:56
@@ -1257,11 +1257,11 @@ msgstr "Их выбор о сохранении чата"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
-msgstr "Нет кошельков, чтобы осуществить этот платёж"
+msgstr "Нет кошельков, чтобы осуществить этот платеж"
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr "Выбор не может быть изменён позже"
+msgstr "Выбор не может быть изменен позже"
 
 #: public/views/walletHome.html:315
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
@@ -1269,7 +1269,7 @@ msgstr "Это частный актив, пожалуйста, отправля
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
-msgstr "Платёж привязан к условию"
+msgstr "Платеж привязан к условию"
 
 #: public/views/modals/tx-details.html:73
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
@@ -1290,7 +1290,7 @@ msgstr "Кому"
 
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr "Чтобы привязать платёж к условию, кликайте адрес контрагента в чате"
+msgstr "Чтобы привязать платеж к условию, кликайте адрес контрагента в чате"
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
@@ -1474,7 +1474,7 @@ msgstr "Ваш пароль"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr "Файл кошелька"
+msgstr "Файл кошелька:"
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
@@ -1548,7 +1548,7 @@ msgstr "{{address}} может быть потрачен, если:"
 
 #: public/views/modals/customized-amount.html:75
 msgid "{{buttonLabel}}"
-msgstr "{{buttonLabel}}"
+msgstr ""
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"

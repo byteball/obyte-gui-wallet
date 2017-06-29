@@ -5,7 +5,7 @@ var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 var objectHash = require('byteballcore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext) {
 	var root = {};
 	var device = require('byteballcore/device.js');
 	var wallet = require('byteballcore/wallet.js');
@@ -105,7 +105,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown drop-to4p drop-4up" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">Pay to this address</a></li><li><a ng-click="offerContract(\''+address+'\')">Offer a contract</a></li></ul>';
+			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown drop-to4p drop-4up" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>';
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
@@ -329,6 +329,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						var display_dest_address = (bOwnAddress ? 'you' : args.address);
 						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + display_dest_address;
 						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+					}
+					else if (args.what === 'input' && (args.asset && args.amount || !args.asset && !args.amount) && args.address){
+						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
+						return 'there was a transaction that spends '+how_much+' from '+args.address;
 					}
 					return JSON.stringify(arrSubdefinition);
 

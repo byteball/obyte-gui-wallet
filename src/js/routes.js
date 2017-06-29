@@ -1,6 +1,7 @@
 'use strict';
 
 var unsupported, isaosp;
+var breadcrumbs = require('byteballcore/breadcrumbs.js');
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
@@ -544,12 +545,20 @@ angular
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
       if (!profileService.profile && toState.needProfile) {
-
+		  
         // Give us time to open / create the profile
         event.preventDefault();
 
+		if (!profileService.assocVisitedFromStates)
+			profileService.assocVisitedFromStates = {};
+		breadcrumbs.add('$stateChangeStart no profile from '+fromState.name+' to '+toState.name);
+		if (profileService.assocVisitedFromStates[fromState.name] && !fromState.name)
+			return breadcrumbs.add("already loading profile, ignoring duplicate $stateChangeStart from "+fromState.name);
+		profileService.assocVisitedFromStates[fromState.name] = true;
+
         // Try to open local profile
         profileService.loadAndBindProfile(function(err) {
+		  delete profileService.assocVisitedFromStates[fromState.name];
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
