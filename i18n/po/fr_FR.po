@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2017-06-01 07:25-0400\n"
+"PO-Revision-Date: 2017-06-27 03:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -166,7 +166,7 @@ msgstr "Retour"
 
 #: public/views/walletHome.html:210
 msgid "Backup now"
-msgstr "Sauvegarder"
+msgstr "Sauvegarder maintenant"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
@@ -585,7 +585,7 @@ msgstr "Portefeuille matériel"
 
 #: public/views/backup.html:39
 msgid "Hide the Wallet Seed"
-msgstr "Cacher la graine d'aléa du portefeuille"
+msgstr "Masquer la graine du portefeuille"
 
 #: src/js/controllers/index.js:542
 msgid "History"
@@ -947,7 +947,7 @@ msgstr "Récupérer"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr "Récupération à partie de la graine"
+msgstr "Récupération à partir de la graine"
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Recovery is only available in full wallets."
@@ -1417,7 +1417,7 @@ msgstr "Nom du portefeuille"
 
 #: public/views/backup.html:28
 msgid "Wallet seed not available."
-msgstr "Graine d'aléas du portefeuille non disponible"
+msgstr "Graine du portefeuille n’est pas disponible."
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
@@ -1463,7 +1463,7 @@ msgstr "Vous n'avez aucun portefeuille"
 #: public/views/backup.html:49
 #: public/views/recoveryFromSeed.html:50
 msgid "Your Wallet Seed:"
-msgstr "La graine d'aléas de votre portefeuille"
+msgstr "Votre graine du portefeuille :"
 
 #: public/views/export.html:33
 msgid "Your export password"

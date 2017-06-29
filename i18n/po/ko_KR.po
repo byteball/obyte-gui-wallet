@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-06-01 07:25-0400\n"
+"PO-Revision-Date: 2017-06-27 03:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -130,7 +130,7 @@ msgstr "다른 장치에서의 지갑 생성에 승인"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
-msgstr "정말로 백업 단어를 삭제하시겠습니까?"
+msgstr "정말로 백업 단어를 삭제 하시겠습니까?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
@@ -1271,7 +1271,7 @@ msgstr "이것은 개인 자산입니다, 채팅의 링크만을 클릭하여 �
 
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
-msgstr ""
+msgstr "이 지불 은 조건이 만족되어야 지급됩니다."
 
 #: public/views/modals/tx-details.html:73
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
@@ -1288,11 +1288,11 @@ msgstr "이것은 당신의 모든 기존 지갑을 영구히 삭제 할 것입�
 #: public/views/walletHome.html:322
 #: public/views/walletHome.html:548
 msgid "To"
-msgstr ""
+msgstr "받는 사람"
 
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr ""
+msgstr "지불의 조건을 부여 하려면 채팅에 동료의 주소를 클릭 하십시오"
 
 #: public/views/walletHome.html:258
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
@@ -1300,11 +1300,11 @@ msgstr "개인 정보 보호를 위해, 한번 주소를 사용할 경우 새 �
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
-msgstr ""
+msgstr "총 고정 잔액"
 
 #: public/views/create.html:56
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "전체 공동서명자 수"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
@@ -1320,11 +1320,11 @@ msgstr "번역에 도움을 주신 분들"
 
 #: public/views/preferencesAbout.html:34
 msgid "Translators"
-msgstr ""
+msgstr "번역자"
 
 #: src/js/controllers/walletHome.js:645
 msgid "Unable to send transaction proposal"
-msgstr ""
+msgstr "거래 제안서 발송 불가"
 
 #: public/views/modals/tx-details.html:105
 #: public/views/walletHome.html:536
@@ -1337,7 +1337,7 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "바이트 단위"
 
 #: public/views/walletHome.html:175
 msgid "Unsent transactions"
@@ -1476,11 +1476,11 @@ msgstr "당신의 비밀번호"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr ""
+msgstr "당신의 지갑 파일:"
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
-msgstr ""
+msgstr "지갑 키는 암호화 됩니다. 비밀번호는 복구 될수 없읍니다. 반드시 기록해 두세요."
 
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
@@ -1496,7 +1496,7 @@ msgstr ""
 
 #: public/views/modals/bind.html:78
 msgid "either way"
-msgstr ""
+msgstr "어느 쪽이 든"
 
 #: public/views/modals/bind.html:76
 msgid "explicitly"
@@ -1505,7 +1505,7 @@ msgstr ""
 #: public/views/modals/bind.html:90
 #: public/views/modals/offer-contract.html:66
 msgid "hours"
-msgstr ""
+msgstr "시간"
 
 #: public/views/modals/offer-contract.html:79
 msgid "if an event is posted by an oracle:"
@@ -1517,7 +1517,7 @@ msgstr ""
 
 #: public/views/walletHome.html:131
 msgid "in smart wallets"
-msgstr ""
+msgstr "스마트 지갑에"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
@@ -1533,7 +1533,7 @@ msgstr "선택사항"
 #: src/js/controllers/walletHome.js:788
 #: src/js/controllers/walletHome.js:824
 msgid "sending"
-msgstr ""
+msgstr "보내기"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
