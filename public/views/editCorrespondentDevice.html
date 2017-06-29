@@ -1,18 +1,10 @@
 
 <div ng-controller="editCorrespondentDeviceController">
 
-<style>
-.purge_chat a {
-	color: #883333;
-	border: 1px dashed #883333;
-	border-width: 0 0 1px 0;
-}
-</style>
-
 <!--div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='{{name}}'; goBackToState = 'correspondentDevice'; showCamera = true">
+  ng-init="titleSection='{{name}}'; goBackToState = true; showCamera = true">
 </div-->
 
 <nav class="tab-bar">
@@ -54,9 +46,7 @@
           </div>
         </form>
     </div>
-      
     <div class="purge_chat columns"><a href="#" ng-click="purge_chat()" translate>clear chat history</a></div>
-
     <div class="extra-margin-bottom"></div>
 </div>
 <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

@@ -206,7 +206,7 @@
           </div>
 
           <button class="m20t button black expand round"
-            ng-click="$root.go('backup')" ng-style="{'background-color':index.backgroundColor}" >
+            ng-click="$root.go('preferencesGlobal.backup')" ng-style="{'background-color':index.backgroundColor}" >
             <span translate>Backup now</span>
           </button>
         </div>
@@ -237,7 +237,7 @@
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-16">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -254,8 +254,9 @@
                 </span>
               </div>
               <div class="line-t size-12 text-center">
-				<span translate>Share this wallet address to receive payments.</span>
-				<span ng-if="!index.shared_address" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
+				<span ng-if="index.shared_address" translate>This address is shared with {{index.shared_address_cosigners}}.</span>
+				<span ng-if="!index.shared_address" translate>Share this wallet address to receive payments.</span>
+				<span ng-if="!index.shared_address && 0" translate>To protect your privacy, new addresses are generated automatically once you use them.</span>
               </div>
             </div>
           </div>
@@ -269,8 +270,7 @@
           </div>
         </div>
         <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-12 text-gray" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])">
-            <i class="fi-bitcoin"></i>
+          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
             <span translate>Request a specific amount</span>
           </a>
         </div>
@@ -298,7 +298,7 @@
                 <span class="db text-bold">
                     <span translate>Available Balance</span>:
                 </span>
-                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
+                <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as ( (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET ? balance.stableStr : balance.stable.toLocaleString() + ' of ' + balance.asset) + (balance.pending ? ' (confirmed)' : '') ) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.bSendAll=false"></select>
             </div>
         </h4>
       </div>

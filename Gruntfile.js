@@ -116,6 +116,11 @@ module.exports = function(grunt) {
           'public/byteball.js': ['public/byteball.js'],
           'public/angular.js': ['public/angular.js']
         }
+      },
+	  partialClient: {
+        files: {
+          'public/partialClient.js': ['public/partialClient.js']
+        }
       }
     },
     nggettext_extract: {
@@ -233,6 +238,13 @@ module.exports = function(grunt) {
             },
             src: 'public/byteball.js',
             dest: 'public/byteball.js'
+        },
+	    partialClient:{
+		    options:{
+			    exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit']
+		    },
+		    src: 'src/js/partialClient.js',
+		    dest: 'public/partialClient.js'
         }
     },
     // .deb proved to be very slow to produce and install: lintian spends a lot of time verifying a .bin file
@@ -247,7 +259,7 @@ module.exports = function(grunt) {
                     name: 'Byteball',
                     email: 'byteball@byteball.org'
                 },
-                long_description: 'A wallet for decentralized value',
+                long_description: 'Smart payments made simple',
                 target_architecture: 'amd64'
             }
         }
@@ -299,4 +311,6 @@ module.exports = function(grunt) {
   grunt.registerTask('deb', ['debian_package:linux64']);
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
+  grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
+  grunt.registerTask('partial-fast', ['browserify:partialClient']);
 };

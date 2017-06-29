@@ -4,7 +4,7 @@
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
     <a ng-show="goBackToState"
-      ng-click="$root.go(goBackToState, resetState || false); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+      ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
       <span class="text-back">{{'Back'|translate}}</span>
     </a>
 

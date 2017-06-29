@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-06-01 07:25-0400\n"
+"PO-Revision-Date: 2017-06-27 03:39-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -229,7 +229,7 @@ msgstr "Hub ändern:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Änderung am Aliase haben nur Auswirkungen auf den lokalen Namen des Wallets."
+msgstr "Änderung am Alias hat nur Auswirkungen auf den lokalen Namen des Wallets."
 
 #: src/js/controllers/index.js:546
 msgid "Chat"

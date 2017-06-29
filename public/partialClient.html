@@ -1,0 +1,80 @@
+<div class="page" style="display: none">
+  <div class="onGoingProcess">
+    <div class="onGoingProcess-content" id="spinnerBg">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+      <span translate> Starting the engines... </span>
+    </div>
+  </div>
+  <div class="off-canvas-wrap" id="off-canvas-wrap">
+    <div class="inner-wrap">
+      <div>
+        <nav class="sidebar left-off-canvas-menu">
+          <header>
+            <div negative="true" width="80">
+              <img style="margin-right: -3px" alt="Byteball"
+                   src="img/icons/icon-white-32.png">
+              <br><span style="margin-left: -1px">Byteball</span>
+            </div>
+          </header>
+          <ul class="off-canvas-list" id="walletList"></ul>
+        </nav>
+      </div>
+      <div id="sectionContainer">
+        <div id="mainSection">
+          <section class="main">
+            <div class="tab-bar">
+              <section class="left-small">
+                <a id="hamburger" class="p10" onclick="openOrCloseMenu()"><i
+                        class="fi-list size-24"></i></a>
+              </section>
+              <section class="middle tab-bar-section">
+                <h1 class="title ellipsis" id="name1Color"
+                    style="color: rgb(74, 144, 226);">
+                  <span id="name1"></span>
+                </h1>
+              </section>
+            </div>
+
+            <div>
+              <div class="oh">
+                <div id="walletHome" class="walletHome tab-view tab-in">
+                  <div class="oh">
+                    <div class="amount" id="amountBg">
+                      <div style="position: relative;">
+                        <ul id="balances" rn-carousel></ul>
+                        <div id="pages" class="rn-carousel-indicator"></div>
+                      </div>
+                    </div>
+                    <div class="pr columns line-b">
+                      <div class="avatar-wallet left" id="subStrName"
+                           style="background-color: rgb(74, 144, 226);">S
+                      </div>
+                      <div class="wallet-info">
+                        <p class="m0" id="name2"></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="extra-margin-bottom"></div>
+                </div>
+              </div>
+            </div>
+            <div class="extra-margin-bottom"></div>
+          </section>
+        </div>
+      </div>
+      <a class="close-menu" onclick="openOrCloseMenu()"></a>
+    </div>
+  </div>
+</div>
+<div id="splash">
+  <div>
+    <div><img src="img/icons/icon-white-128.png" width="64"></div>
+    <div>Byteball</div>
+  </div>
+</div>

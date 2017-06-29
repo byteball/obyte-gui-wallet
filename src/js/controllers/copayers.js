@@ -18,11 +18,12 @@ angular.module('copayApp.controllers').controller('copayersController',
       }
       self.loading = false;
       self.isCordova = isCordova;
+	  $rootScope.$emit('Local/BalanceUpdated', {});
     };
 
     var _modalDeleteWallet = function() {
-      var ModalInstanceCtrl = function($scope, $modalInstance, gettext) {
-        $scope.title = delete_msg;
+      var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
+        $scope.title = $sce.trustAsHtml(delete_msg);;
           $scope.yes_icon = 'fi-trash';
           $scope.yes_button_class = 'warning';
           $scope.cancel_button_class = 'light-gray outline';
@@ -31,7 +32,6 @@ angular.module('copayApp.controllers').controller('copayersController',
         $scope.ok = function() {
           $scope.loading = true;
           $modalInstance.close(accept_msg);
-
         };
         $scope.cancel = function() {
           $modalInstance.dismiss(cancel_msg);

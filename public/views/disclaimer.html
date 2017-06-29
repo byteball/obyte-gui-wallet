@@ -3,7 +3,7 @@
 		ng-if="agreed && index.hasProfile"
 		class="topbar-container"
 		ng-include="'views/includes/topbar.html'"
-		ng-init="titleSection='Terms of Use';  goBackToState = 'about'; noColor = true">
+		ng-init="titleSection='Terms of Use';  goBackToState = true; noColor = true">
 	</div>
 
 	<div class="content p20b" ng-class="{'disclaimer':!index.hasProfile}">

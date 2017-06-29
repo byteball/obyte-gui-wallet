@@ -1,7 +1,7 @@
 <!--div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Accept invitation'; goBackToState = 'addCorrespondentDevice'; showCamera = true">
+  ng-init="titleSection='Accept invitation'; goBackToState = true; showCamera = true">
 </div-->
 
 <div ng-controller="acceptCorrespondentInvitationController">
@@ -46,7 +46,7 @@
         <form name="pairingCodeForm" class="p10" no-validate>
 		  <span translate>Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device.</span>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
-          <input type="text" id="code" name="code" ng-model="code" required>
+          <input type="text" placeholder="{{'Pairing code'|translate}}" id="code" name="code" ng-model="code" required>
           <div class="row">
             <div>
               <input type="submit" 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova) {
+  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova, backButton) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -26,6 +26,7 @@ angular.module('copayApp.controllers').controller('sidebarController',
     };
 
     self.switchWallet = function(selectedWalletId, currentWalletId) {
+    	backButton.menuOpened = false;
       if (selectedWalletId == currentWalletId) return;
       self.walletSelection = false;
       profileService.setAndStoreFocus(selectedWalletId, function() {
