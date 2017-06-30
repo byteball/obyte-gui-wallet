@@ -810,6 +810,10 @@ table tbody tr:last-child td {
   color: #6D7884;
 }
 
+.hovereffect:hover{
+ background: #EFEFEF;
+}
+
 /*////////////////////////////  BUTTON OUTLINE  ////////////////////////////*/
 
 .button.outline,
@@ -843,14 +847,17 @@ button.outline.dark-gray:focus {
 }
 
 .button.outline.light-gray,
-.button.outline.light-gray:hover,
 .button.outline.light-gray:focus,
 button.outline.light-gray,
-button.outline.light-gray:hover,
 button.outline.light-gray:focus {
   background-color: transparent;
   border: 1px solid #CED5DC;
   color: #7A8C9E;
+}
+
+.button.outline.light-gray:hover,
+button.outline.light-gray:hover {
+  background-color: #EFEFEF;
 }
 
 .button.outline.white,

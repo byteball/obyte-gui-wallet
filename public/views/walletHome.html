@@ -148,7 +148,7 @@
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0 hovereffect" ng-if="!index.shared_address">
               <i class="fi-widget size-18 vm wallet-settings"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
