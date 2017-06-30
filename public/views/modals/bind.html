@@ -24,11 +24,11 @@
 	<span selectable="#binding_type" dropdown-toggle="#binding_type" data-model="binding" data-prop="type"></span>
         <ul id="binding_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li class="dropup-item" data-value="reverse_payment">
-			<a translate>i receive another payment of</a>
+			<a><span translate>i receive another payment of</span><span class="check">✔</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="data">
-		  	<a translate>an event is posted by an oracle</a>
+		  	<a><span translate>an event is posted by an oracle</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 
@@ -37,11 +37,21 @@
 	<span ng-if="binding.type == 'reverse_payment'" selectable="#asset" dropdown-toggle="#asset" data-model="binding" data-prop="reverseAsset"></span>
 		<ul id="asset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a translate>{{info.displayName}}</a>
+			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 
-	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 290px;"><br ng-if="binding.type == 'data'">
+	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 290px;">
+	<span ng-if="binding.type == 'data'" style="display: inline-block; margin-right: 20px;" class="right">
+		<span class="has-error right size-12" ng-show="bindForm.oracle_address.$invalid && binding.oracle_address">
+			<i class="icon-close-circle size-14"></i>
+			<span class="vm" translate>Not valid</span>
+		</span>
+		<small class="right text-primary" ng-show="!bindForm.oracle_address.$invalid">
+			<i class="icon-checkmark-circle size-14"></i>
+		</small>
+	</span>
+	<br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>on feed name</span>
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required ><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>with expected value of</span>
@@ -50,15 +60,15 @@
 	<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span>
 		<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li class="dropup-item" data-value="explicit">
-			<a translate>explicitly</a>
+			<a><span translate>explicitly</span><span class="check">✔</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="merkle">
-		  	<a translate>in merkle tree</a>
+		  	<a><span translate>in merkle tree</span><span class="check">✔</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="either">
-		  	<a translate>either way</a>
+		  	<a><span translate>either way</span><span class="check">✔</span></a>
 		  </li>
 		</ul>
 		.
