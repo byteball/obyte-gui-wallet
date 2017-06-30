@@ -162,6 +162,13 @@ module.exports = function(grunt) {
         src: 'bower_components/foundation-icon-fonts/foundation-icons.*',
         dest: 'public/icons/'
       },
+      modules: {
+        expand: true,
+        flatten: true,
+        options: {timestamp: true, mode: true},
+        src: ['src/js/fileStorage.js'],
+        dest: 'public/'
+      },
       osx: {
         expand: true,
         flatten: true,
@@ -296,7 +303,7 @@ module.exports = function(grunt) {
   //grunt.loadNpmTasks('grunt-debian-package');
   grunt.loadNpmTasks('innosetup-compiler');
 
-  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons']);
+  grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
   grunt.registerTask('cordova', ['default', 'browserify']);
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   //grunt.registerTask('prod', ['default', 'uglify']);
