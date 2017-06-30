@@ -221,21 +221,21 @@ module.exports = function(grunt) {
     compress: {
       linux32: {
         options: {
-          archive: '../byteballbuilds/byteball-linux32.zip'
+          archive: '../byteballbuilds/byteball-tn-linux32.zip'
         },
         expand: true,
         cwd: '../byteballbuilds/Byteball-TN/linux32/',
         src: ['**/*'],
-        dest: 'byteball-linux32/'
+        dest: 'byteball-tn-linux32/'
       },
       linux64: {
         options: {
-          archive: '../byteballbuilds/byteball-linux64.zip'
+          archive: '../byteballbuilds/byteball-tn-linux64.zip'
         },
         expand: true,
         cwd: '../byteballbuilds/Byteball-TN/linux64/',
         src: ['**/*'],
-        dest: 'byteball-linux64/'
+        dest: 'byteball-tn-linux64/'
       }
     },
     browserify: {
