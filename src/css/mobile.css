@@ -899,6 +899,8 @@ input.inline {
 	width: auto;
 	display: inline;
 	margin-bottom: 0;
+	padding-bottom: 0;
+	height: 25px;
 }
 
 /* removes 300ms in IE * /
