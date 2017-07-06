@@ -278,7 +278,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div id="recording-drop" class="f-dropdown" data-dropdown-content>
+      <div id="recording-drop" class="f-dropdown pos-at-cursor" data-dropdown-content>
       <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref" translate>
       	Both you and {{correspondent.name}} enabled local chat history recording.
       </div>
