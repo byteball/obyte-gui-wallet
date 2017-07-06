@@ -2,7 +2,7 @@
 Type=Application
 Version=1.0
 Name=Byteball
-Comment=A wallet for decentralized value
+Comment=Smart payments made simple
 Exec=bash -c 'cd $(dirname %k) && ./Byteball %u'
 Icon=icon-white-256.png
 Terminal=false

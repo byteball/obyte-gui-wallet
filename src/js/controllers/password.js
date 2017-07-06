@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('passwordController',
     document.getElementById("passwordInput").focus();
 
     self.close = function(cb) {
-      return cb('No password given');
+      return cb(gettext('No password given'));
     };
 
     self.set = function(isSetup, cb) {

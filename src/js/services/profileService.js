@@ -89,23 +89,34 @@ angular.module('copayApp.services')
     
     
     function saveTempKeys(tempDeviceKey, prevTempDeviceKey, onDone){
-        console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
-        root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
-        if (prevTempDeviceKey)
-            root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
-        storageService.storeProfile(root.profile, function(err) {
-            onDone(err);
+		$timeout(function(){
+			console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
+			root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
+			if (prevTempDeviceKey)
+				root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
+			storageService.storeProfile(root.profile, function(err) {
+				onDone(err);
+			});
         });
     }
 
     function unlockWalletAndInitDevice(){
         // wait till the wallet fully loads
 		breadcrumbs.add('unlockWalletAndInitDevice');
+		//Hide the mainSection
+		var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+		mainSectionElement.css('visibility','hidden');
+
         var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
             removeListener();
 			breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
             root.insistUnlockFC(null, function(){
 				breadcrumbs.add('unlockWalletAndInitDevice unlocked');
+
+				//After unlock, make mainSection visible again
+				var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+				mainSectionElement.css('visibility','visible');
+
                 if (!root.focusedClient.credentials.xPrivKey)
                     throw Error("xPrivKey still not set after unlock");
                 console.log('unlocked: '+root.focusedClient.credentials.xPrivKey);

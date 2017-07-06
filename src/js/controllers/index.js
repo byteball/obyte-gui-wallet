@@ -70,6 +70,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				description += "\n(ignored)";
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
+			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
 			description += "Program: "+conf.program+' '+conf.program_version+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
@@ -117,21 +118,46 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             // ios doesn't exit
         });
     });
+	
+	function readLastDateString(cb){
+		var conf = require('byteballcore/conf.js');
+		if (conf.storage !== 'sqlite')
+			return cb();
+		var db = require('byteballcore/db.js');
+		db.query(
+			"SELECT int_value FROM unit_authors JOIN data_feeds USING(unit) \n\
+			WHERE address=? AND feed_name='timestamp' \n\
+			ORDER BY unit_authors.rowid DESC LIMIT 1",
+			[configService.TIMESTAMPER_ADDRESS],
+			function(rows){
+				if (rows.length === 0)
+					return cb();
+				var ts = rows[0].int_value;
+				cb('at '+$filter('date')(ts, 'short'));
+			}
+		);
+	}
+	
+	function setSyncProgress(percent){
+		readLastDateString(function(strProgress){
+			self.syncProgress = strProgress || (percent + "% of new units");
+			$timeout(function() {
+				$rootScope.$apply();
+			});
+		});
+	}
     
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
-        self.syncProgress = "0% of new units";
+		setSyncProgress(0);
     });
     eventBus.on('catchup_balls_left', function(count_left){
     	if (catchup_balls_at_start === -1) {
     		catchup_balls_at_start = count_left;
     	}
     	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
-        self.syncProgress = "" + percent + "% of new units";
-		$timeout(function() {
-		  $rootScope.$apply();
-		});
+		setSyncProgress(percent);
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
@@ -487,6 +513,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
 
+		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		async.eachSeries(
+			arrSharedWallets,
+			function(objSharedWallet, cb){
+				walletDefinedByAddresses.readSharedAddressCosigners(objSharedWallet.shared_address, function(cosigners){
+					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
+					objSharedWallet.creation_ts = cosigners[0].creation_ts;
+					cb();
+				});
+			},
+			function(){
+				$timeout(function(){
+					$scope.$apply();
+				});
+			}
+		);
 
 		$scope.cancel = function() {
 			breadcrumbs.add('openSubwalletModal cancel');
@@ -496,11 +538,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
 			if (shared_address){
-				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 				walletDefinedByAddresses.determineIfHasMerkle(shared_address, function(bHasMerkle){
 					self.bHasMerkle = bHasMerkle;
-					$timeout(function() {
-						$rootScope.$apply();
+					walletDefinedByAddresses.readSharedAddressCosigners(shared_address, function(cosigners){
+						self.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
+						$timeout(function(){
+							$rootScope.$apply();
+						});
 					});
 				});
 			}
