@@ -15,6 +15,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   $rootScope.wpInputFocused = false;
   var config = configService.getSync();
   var configWallet = config.wallet;
+  var useChangeAddresses = config.useChangeAddresses;
   var indexScope = $scope.index;
   $scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
     
@@ -820,6 +821,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					recipient_device_address: recipient_device_address
 				};
+				if (useChangeAddresses === false)
+					opts.noChangeAddresses = true;
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
 					indexScope.setOngoingProcess(gettext('sending'), false);
