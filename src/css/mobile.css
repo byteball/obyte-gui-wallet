@@ -82,10 +82,10 @@ _:-ms-fullscreen, :root .main {
 /* Fix Firefox */
 @-moz-document url-prefix() {
   .extra-margin-bottom {
-    display: block;
-    height: 45px;
-    overflow: hidden;
-    clear: both;
+	display: block;
+	height: 45px;
+	overflow: hidden;
+	clear: both;
   }
 }
 
@@ -163,7 +163,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .menu-toggle {
-    padding-top: 1rem !important;
+	padding-top: 1rem !important;
 }
 
 .amount {
@@ -857,11 +857,11 @@ textarea:focus
 }
 .rn-carousel-control.rn-carousel-control-next {
 	right: -0.2em;
-    width: 15%;
+	width: 15%;
 }
 .rn-carousel-control.rn-carousel-control-prev {
 	left: -0.2em;
-    width: 15%;
+	width: 15%;
 }
 .rn-carousel-control.rn-carousel-control-prev:before {
 	content: "‹";
@@ -871,6 +871,14 @@ textarea:focus
 }
 .f-dropdown li {
 	width: 100%;
+}
+.f-dropdown.right:before {
+	left: auto !important;
+	right: 10px !important;
+}
+.f-dropdown.right:after {
+	left: auto  !important;
+	right: 9px  !important;
 }
 
 /* removes 300ms in IE * /
