@@ -4,18 +4,6 @@
 	ng-init="titleSection='Recovery'; goBackToState = true">
 </div>
 
-<style>
-	.preferences ul.warnings{
-		margin-left: 0px;
-		background-color: transparent;
-	}
-	.preferences ul.warnings li{
-		cursor: auto !important;
-		overflow: auto;
-		white-space: normal;
-	}
-</style>
-
 <div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
 	<h4></h4>
 
@@ -59,6 +47,7 @@
 				<li translate>Private assets (such as blackbytes) are not recovered.</li>
 				<li translate>Only single-sig wallets can be recovered.</li>
 				<li translate>Correspondents are not restored.</li>
+				<li translate>Do not clone wallets, stop using the original wallet with this seed.</li>
 			</ul>
 		</div>
 	</div>

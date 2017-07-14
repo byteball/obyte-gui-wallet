@@ -1570,3 +1570,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .gray-13.label-aligned-with-select{
 	margin-top: 10px;
 }
+
+.preferences ul.warnings{
+	margin-left: 0px;
+	background-color: transparent;
+}
+.preferences ul.warnings li{
+	cursor: auto !important;
+	overflow: auto;
+	white-space: normal;
+}
