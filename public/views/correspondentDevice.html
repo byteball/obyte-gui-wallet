@@ -97,7 +97,7 @@
     }*/
     .bubble{
         padding: 10px 15px;
-        margin: 0px 15px;
+        margin: 0px 7px;
         border-radius: 18px;
         position: relative;
         max-width: 80%;
@@ -234,6 +234,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	color: #666;
 	font-size: 10px;
 	padding-top: 10px;
+	width: 12%;
 }
 .send-form .textinput::-webkit-input-placeholder {
 	white-space: nowrap;
@@ -259,7 +260,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
     
   <div class="onGoingProcess" ng-show="onGoingProcess">
-    <div class="onGoingProcess-content" ng-style="{'background-color':profileService.focusedClient.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -278,7 +279,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div id="recording-drop" class="f-dropdown" data-dropdown-content>
+      <div id="recording-drop" class="f-dropdown pos-at-cursor" data-dropdown-content>
       <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref" translate>
       	Both you and {{correspondent.name}} enabled local chat history recording.
       </div>
@@ -336,7 +337,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"
-                     ng-style="{'background-color':profileService.focusedClient.backgroundColor}" 
+                     ng-style="{'background-color':index.backgroundColor}" 
                      ng-click="send()"><i class="size-18 icon-paperplane"></i></button>
           <!--<div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">

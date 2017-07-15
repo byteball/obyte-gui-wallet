@@ -89,12 +89,14 @@ angular.module('copayApp.services')
     
     
     function saveTempKeys(tempDeviceKey, prevTempDeviceKey, onDone){
-        console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
-        root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
-        if (prevTempDeviceKey)
-            root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
-        storageService.storeProfile(root.profile, function(err) {
-            onDone(err);
+		$timeout(function(){
+			console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
+			root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
+			if (prevTempDeviceKey)
+				root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
+			storageService.storeProfile(root.profile, function(err) {
+				onDone(err);
+			});
         });
     }
 

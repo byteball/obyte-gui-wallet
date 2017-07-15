@@ -24,7 +24,7 @@
 						<input type="radio" name="wallet_type" value="full" ng-model="splash.wallet_type" id="wallet_type_full">
 						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Full wallet</label>
 						<p class="text-gray size-14 m0 text-light" translate>
-							The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours.
+							The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync.
 						</p>
 					</div>
 					
@@ -32,7 +32,7 @@
 						<input type="radio" name="wallet_type" value="light" ng-model="splash.wallet_type" id="wallet_type_light">
 						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_light" translate>Light wallet</label>
 						<p class="text-gray size-14 m0 text-light" translate>
-							The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately.
+							The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional.
 						</p>
 					</div>
 					
@@ -74,12 +74,21 @@
 			<div class="row" ng-show="!splash.creatingProfile">
 				<div class="start-button large-8 medium-8 small-8 medium-centered small-centered large-centered columns">
 
-					<label><span class="text-gray" translate>Please name this device</span></label>
-					<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
+					<div ng-show="!splash.bDeviceNameSet">
+						<label><span class="text-gray" translate>Please name this device</span></label>
+						<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
 
-					<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
-						GET STARTED
-					</button>
+						<button ng-click="splash.saveDeviceName()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
+							CONTINUE
+						</button>
+					</div>
+					<div ng-show="splash.bDeviceNameSet">
+						<p class="text-gray size-14 m0 text-light m20b" translate>Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu.</p>
+						<p class="text-gray size-14 m0 text-light m20b" translate>Also in the Settings menu, you will find security options such as setting a password.</p>
+						<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" translate>
+							GET STARTED
+						</button>
+					</div>
 					<!--
 					<p class="text-gray m5b size-12" translate>Already have a wallet?</p>
 					<button  ng-click="splash.create(true)" class="button round outline dark-gray tiny" ng-disabled="!splash.deviceName" translate>Import backup </button>

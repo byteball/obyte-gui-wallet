@@ -19,8 +19,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatScope = $scope;
 	var indexScope = $scope.index;
 	$rootScope.tab = $scope.index.tab = 'chat';
-	$scope.profileService = profileService;
-	$scope.backgroundColor = profileService.focusedClient.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
 //	var myPaymentAddress = indexScope.shared_address;
@@ -797,7 +795,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
-		msgField.focus();
+		$timeout(function(){msgField.focus()});
 		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
 	}
 	

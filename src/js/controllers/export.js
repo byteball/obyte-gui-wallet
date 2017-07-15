@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification) {
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification) {
 
 		var async = require('async');
 		var crypto = require('crypto');
@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
 
 		function saveFile(file, cb) {
-			var backupFilename = 'ByteballBackup' + Date.now() + '.encrypted';
+			var backupFilename = 'ByteballBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
 				var inputFile = document.getElementById('nwExportInputFile');
 				inputFile.setAttribute("nwsaveas", backupFilename);

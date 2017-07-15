@@ -145,8 +145,10 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
+	if [ $CURRENT_OS == "ANDROID" ]; then
 	cordova plugin add https://github.com/phonegap-build/PushPlugin.git
 	checkOK
+	fi
 	
 	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
 	checkOK

@@ -147,9 +147,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		  }
 		  if (!_config.wallet.settings.unitValue){
 			  if(_config.wallet.settings.unitToBytes){
-				  configCache.wallet.settings.unitValue = configCache.wallet.settings.unitToBytes;
+				  _config.wallet.settings.unitValue = _config.wallet.settings.unitToBytes;
 			  }else{
-				  configCache.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
+				  _config.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
 			  }
 		  }
 		  if (!_config.wallet.settings.bbUnitName) {

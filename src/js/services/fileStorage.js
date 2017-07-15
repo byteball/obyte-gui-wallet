@@ -2,7 +2,7 @@
 
 angular.module('copayApp.services')
   .factory('fileStorageService', function() {
-    var fileStorage = require('../src/js/fileStorage');
+    var fileStorage = require('./fileStorage.js');
     var root = {};
     
     root.get = function(k, cb) {

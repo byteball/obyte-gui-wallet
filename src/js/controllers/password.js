@@ -8,6 +8,9 @@ angular.module('copayApp.controllers').controller('passwordController',
     var pass1;
 
     self.isVerification = false;
+	
+	var fc = profileService.focusedClient;
+	self.bHasMnemonic = (fc.credentials && fc.credentials.mnemonic);
 
     document.getElementById("passwordInput").focus();
 
