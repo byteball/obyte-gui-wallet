@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
-"PO-Revision-Date: 2017-06-27 03:39-0400\n"
+"PO-Revision-Date: 2017-07-14 13:12-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -21,6 +21,14 @@ msgstr "(Strona nie zobaczy Twojego salda i żadne środki nie zostaną wysłane
 msgid "(possible double spend)"
 msgstr "(przypuszczalne podwójne wydanie środków)"
 
+#: public/views/create.html:82
+msgid "-- Select co-signer --"
+msgstr "-- Wybierz współsygnatariusza --"
+
+#: src/js/controllers/backup.js:18
+msgid ".  Better yet, use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your smartphone.  Just the wallet seed is not enough."
+msgstr ". Lepiej jednak używaj portfeli z wieloma podpisami i redundancją, to znaczy portfel 1-z-2 z jednym kluczem na tym urządzeniu, a drugim kluczem na Twoim smartfonie. Same słowa źródłowe portfela nie są wystarczające."
+
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
 msgstr "1. Płatność na rzecz kontraktu:"
@@ -28,10 +36,6 @@ msgstr "1. Płatność na rzecz kontraktu:"
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
 msgstr "2. Kto może odblokować kontrakt:"
-
-#: public/views/splash.html:50
-msgid "A wallet for decentralized value"
-msgstr "Portfel zdecentralizowanej wartości"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -56,7 +60,11 @@ msgstr "Akceptuj zaproszenie od innego urządzenia"
 msgid "Account"
 msgstr "Konto"
 
-#: public/views/correspondentDevices.html:31
+#: public/views/bot.html:36
+msgid "Add Bot"
+msgstr "Dodaj bota"
+
+#: public/views/correspondentDevices.html:60
 msgid "Add a new device"
 msgstr "Dodaj nowe urządzenie"
 
@@ -68,6 +76,10 @@ msgstr "Dodaj nowy wpis"
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
 msgstr "Dodaj portfel"
+
+#: public/views/correspondentDevices.html:80
+msgid "Added"
+msgstr "Dodano"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
@@ -86,7 +98,11 @@ msgstr "Zaawansowane"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr "Akceptuj"
+msgstr "Zgoda"
+
+#: public/views/translators.html:34
+msgid "Albanian"
+msgstr "Albański"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
@@ -96,7 +112,7 @@ msgstr "Alias dla <i>{{index.walletName}}</i>"
 msgid "All Wallet Addresses"
 msgstr "Wszystkie adresy portfela"
 
-#: public/views/translators.html:26
+#: public/views/translators.html:52
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
 msgstr "Zapraszamy wszystkich do tłumaczenia Byteball. Utwórz konto na crowdin.com i dołącz do projektu Byteball"
 
@@ -124,9 +140,9 @@ msgstr "Kwota"
 msgid "An event is posted by an oracle:"
 msgstr "Wydarzenie jest ogłaszane przez wyrocznię:"
 
-#: public/views/copayers.html:11
+#: public/views/copayers.html:19
 msgid "Approve wallet creation on other devices"
-msgstr "Zaakceptuj utworzenie portfela na innych urządzeniach"
+msgstr "Akceptuj utworzenie portfela na innych urządzeniach"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -155,8 +171,10 @@ msgid "Available Balance"
 msgstr "Dostępne saldo"
 
 #: public/views/acceptCorrespondentInvitation.html:13
+#: public/views/bot.html:13
 #: public/views/correspondentDevice.html:14
-#: public/views/editCorrespondentDevice.html:22
+#: public/views/correspondentDevices.html:10
+#: public/views/editCorrespondentDevice.html:14
 #: public/views/includes/topbar.html:8
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/destination-address.html:9
@@ -198,13 +216,22 @@ msgstr "Powiąż płatność z warunkiem"
 msgid "Bitcoin URI is NOT valid!"
 msgstr "URI Bitcoin jest niepoprawne!"
 
-#: public/views/correspondentDevice.html:280
+#: public/views/bot.html:23
+#: public/views/correspondentDevices.html:29
+msgid "Bot Store"
+msgstr "Bot Store"
+
+#: public/views/correspondentDevice.html:282
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr "Zarówno ty jak i {{correspondent.name}} włączyliście lokalne rejestrowanie historii czatu."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
 msgstr "Niewspierana przeglądarka"
+
+#: public/views/modals/destination-address.html:119
+msgid "Byteball address"
+msgstr "Adres Byteball"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -223,7 +250,7 @@ msgstr "KONTYNUUJ"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: public/views/editCorrespondentDevice.html:43
+#: public/views/editCorrespondentDevice.html:35
 msgid "Change hub:"
 msgstr "Zmień hub:"
 
@@ -231,14 +258,25 @@ msgstr "Zmień hub:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Zmiana aliasu porfela wpływa tylko na lokalną nazwę porfela."
 
-#: src/js/controllers/index.js:546
+#: src/js/controllers/index.js:602
 msgid "Chat"
 msgstr "Czat"
+
+#: public/views/translators.html:45
+#: public/views/translators.html:46
+#: public/views/translators.html:47
+msgid "Chinese"
+msgstr "Chiński"
+
+#: public/views/import.html:33
+msgid "Choose File"
+msgstr "Wybierz plik"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
 msgstr "Wybierz urządzenie, na które wysłać"
 
+#: public/views/correspondentDevices.html:16
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
@@ -278,7 +316,7 @@ msgid "Compress the file? (Slower)"
 msgstr "Skompresować plik? (Wolniejsze)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:403
+#: src/js/controllers/index.js:439
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
@@ -293,7 +331,11 @@ msgstr "Potwierdź płatność"
 msgid "Confirmed"
 msgstr "Potwierdzone"
 
-#: src/js/controllers/inviteCorrespondentDevice.js:33
+#: public/views/correspondentDevices.html:26
+msgid "Contacts"
+msgstr "Kontakty"
+
+#: src/js/controllers/inviteCorrespondentDevice.js:32
 #: src/js/controllers/walletHome.js:387
 msgid "Copied to clipboard"
 msgstr "Skopiowano do schowka"
@@ -306,19 +348,19 @@ msgstr "Korespondenci nie zostali przywróceni"
 msgid "Could not create payment proposal"
 msgstr "Nie można utworzyć propozycji płatności"
 
-#: src/js/services/profileService.js:209
+#: src/js/services/profileService.js:220
 msgid "Could not create using the specified extended private key"
 msgstr "Nie można utworzyć przy użyciu określonego rozszerzonego klucza prywatnego"
 
-#: src/js/services/profileService.js:219
+#: src/js/services/profileService.js:230
 msgid "Could not create using the specified extended public key"
 msgstr "Nie można utworzyć przy użyciu określonego rozszerzonego klucza publicznego"
 
-#: src/js/services/profileService.js:202
+#: src/js/services/profileService.js:213
 msgid "Could not create: Invalid wallet seed"
 msgstr "Nie można utworzyć: Niepoprawne słowa źródłowe portfela"
 
-#: src/js/controllers/backup.js:83
+#: src/js/controllers/backup.js:85
 msgid "Could not decrypt"
 msgstr "Nie można odszyfrować"
 
@@ -326,13 +368,13 @@ msgstr "Nie można odszyfrować"
 msgid "Could not fetch transaction history"
 msgstr "Nie można pobrać historii transakcji"
 
-#: src/js/services/profileService.js:432
-#: src/js/services/profileService.js:459
-#: src/js/services/profileService.js:481
+#: src/js/services/profileService.js:443
+#: src/js/services/profileService.js:470
+#: src/js/services/profileService.js:492
 msgid "Could not import"
 msgstr "Nie można zaimportować"
 
-#: src/js/services/profileService.js:409
+#: src/js/services/profileService.js:420
 msgid "Could not import. Check input file and password"
 msgstr "Nie można zaimportować. Sprawdź plik wejściowy i hasło."
 
@@ -357,7 +399,7 @@ msgstr "Utwórz nowy portfel"
 msgid "Create new wallet"
 msgstr "Utwórz nowy portfel"
 
-#: src/js/controllers/index.js:243
+#: src/js/controllers/index.js:269
 msgid "Create new wallet  together with  ?"
 msgstr "Utwórz nowy portfel razem z ?"
 
@@ -390,7 +432,7 @@ msgstr "Nazwa źródła danych:"
 msgid "Date"
 msgstr "Data"
 
-#: src/js/controllers/index.js:213
+#: src/js/controllers/index.js:239
 msgid "Declined"
 msgstr "Odmowa"
 
@@ -441,7 +483,7 @@ msgstr "Nazwa urządzenia"
 msgid "Device name is visible to other devices you communicate with."
 msgstr "Nazwa urządzenia jest widoczna dla innych urządzeń, z którymi się łączysz."
 
-#: public/views/translators.html:29
+#: public/views/translators.html:55
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Nie widzisz swojego języka na Crowdin? Skontaktuj się z Właścicielem na Crowdin! Chętnie dodamy wsparcie dla Twojego języka."
 
@@ -454,12 +496,20 @@ msgstr "Zrobione"
 msgid "Download CSV file"
 msgstr "Pobierz plik CSV"
 
+#: public/views/translators.html:37
+#: public/views/translators.html:38
+#: public/views/translators.html:39
+#: public/views/translators.html:40
+#: public/views/translators.html:41
+msgid "Dutch"
+msgstr "Holenderski"
+
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
 msgstr "Edytuj"
 
-#: public/views/correspondentDevice.html:283
+#: public/views/correspondentDevice.html:285
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "Zarówno ty jak i {{correspondent.name}} macie wyłączone nagrywanie historii czatu. Historia czatu nie jest teraz zapisywana przez nikogo."
 
@@ -479,8 +529,8 @@ msgstr "Wprowadź kod parowania otrzymany z drugiego urządzenia lub użyj apara
 msgid "Enter your password"
 msgstr "Wprowadź swoje hasło"
 
-#: src/js/services/profileService.js:266
-#: src/js/services/profileService.js:316
+#: src/js/services/profileService.js:277
+#: src/js/services/profileService.js:327
 msgid "Error creating wallet"
 msgstr "Błąd podczas tworzenia portfela"
 
@@ -518,6 +568,9 @@ msgid "Finality"
 msgstr "Finalność"
 
 #: public/views/translators.html:11
+#: public/views/translators.html:12
+#: public/views/translators.html:13
+#: public/views/translators.html:14
 msgid "French"
 msgstr "Francuski"
 
@@ -525,7 +578,7 @@ msgstr "Francuski"
 msgid "From"
 msgstr "Od"
 
-#: public/views/editCorrespondentDevice.html:35
+#: public/views/editCorrespondentDevice.html:27
 msgid "Full address:"
 msgstr "Pełny adres:"
 
@@ -549,7 +602,11 @@ msgstr "Środki zostaną przesłane do"
 msgid "GET STARTED"
 msgstr "ZACZNIJ TUTAJ"
 
-#: public/views/walletHome.html:265
+#: src/js/controllers/walletHome.js:415
+msgid "Generate QR Code"
+msgstr "Generuj kod QR"
+
+#: public/views/walletHome.html:266
 msgid "Generate new address"
 msgstr "Utwórz nowy adres"
 
@@ -557,8 +614,11 @@ msgstr "Utwórz nowy adres"
 msgid "Generating .csv file..."
 msgstr "Tworzenie pliku .csv..."
 
-#: public/views/translators.html:15
-#: public/views/translators.html:16
+#: public/views/translators.html:20
+#: public/views/translators.html:21
+#: public/views/translators.html:22
+#: public/views/translators.html:23
+#: public/views/translators.html:24
 msgid "German"
 msgstr "Niemiecki"
 
@@ -574,8 +634,9 @@ msgstr "Ustawienia globalne"
 msgid "Go back"
 msgstr "Wstecz"
 
-#: public/views/translators.html:18
-#: public/views/translators.html:19
+#: public/views/translators.html:27
+#: public/views/translators.html:28
+#: public/views/translators.html:29
 msgid "Greek"
 msgstr "Grecki"
 
@@ -587,11 +648,11 @@ msgstr "Portfel sprzętowy"
 msgid "Hide the Wallet Seed"
 msgstr "Ukryj słowa źródłowe portfela"
 
-#: src/js/controllers/index.js:542
+#: src/js/controllers/index.js:598
 msgid "History"
 msgstr "Historia"
 
-#: src/js/controllers/index.js:530
+#: src/js/controllers/index.js:586
 msgid "Home"
 msgstr "główna"
 
@@ -606,6 +667,10 @@ msgstr "Hub"
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
 msgstr "URL Hub-u"
+
+#: public/views/translators.html:42
+msgid "Hungarian"
+msgstr "Węgierski"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -643,13 +708,17 @@ msgstr "Importowanie portfela..."
 msgid "Including pending confirmation"
 msgstr "W tym oczekujące potwierdzenie"
 
+#: public/views/translators.html:36
+msgid "Indonesian"
+msgstr "Indonezyjski"
+
 #: public/views/walletHome.html:499
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Początkowa synchronizacja historii transakcji może zająć pewien czas dla portfeli z wieloma transakcjami.<br>\n"
 "          Proszę czekać."
 
-#: public/views/correspondentDevice.html:319
+#: public/views/correspondentDevice.html:321
 msgid "Insert my address"
 msgstr "Wprowadź mój adres"
 
@@ -657,7 +726,7 @@ msgstr "Wprowadź mój adres"
 msgid "Invalid"
 msgstr "Niepoprawne"
 
-#: src/js/controllers/index.js:1439
+#: src/js/controllers/index.js:1497
 msgid "Invalid Touch ID"
 msgstr "Niepoprawne Touch ID"
 
@@ -665,15 +734,21 @@ msgstr "Niepoprawne Touch ID"
 msgid "Invite the other device"
 msgstr "Zaproś inne urządzenie"
 
-#: public/views/translators.html:12
-#: public/views/translators.html:13
-#: public/views/translators.html:14
+#: public/views/translators.html:15
+#: public/views/translators.html:16
+#: public/views/translators.html:17
+#: public/views/translators.html:18
+#: public/views/translators.html:19
 msgid "Italian"
 msgstr "Włoski"
 
 #: public/views/translators.html:10
 msgid "Japanese"
 msgstr "Japoński"
+
+#: public/views/translators.html:44
+msgid "Korean"
+msgstr "Koreański"
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
@@ -735,9 +810,13 @@ msgstr "Portfel na wielu urządzeniach"
 msgid "My Byteball address"
 msgstr "Mój adres Byteball"
 
-#: public/views/correspondentDevice.html:289
+#: public/views/correspondentDevice.html:291
 msgid "My recording preference"
 msgstr "Moje ustawienia rejestrowania"
+
+#: public/views/modals/destination-address.html:121
+msgid "Name of the contact"
+msgstr "Nazwa kontaktu"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -756,9 +835,13 @@ msgid "New witnesses"
 msgstr "Nowi świadkowie"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:402
+#: src/js/controllers/index.js:438
 msgid "No"
 msgstr "Nie"
+
+#: src/js/controllers/password.js:15
+msgid "No password given"
+msgstr "Nie podano hasła"
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
@@ -782,6 +865,7 @@ msgid "Note"
 msgstr "Notatka"
 
 #: public/views/modals/offer-contract.html:8
+#: src/js/services/correspondentListService.js:108
 msgid "Offer a contract"
 msgstr "Zaproponuj kontrakt"
 
@@ -792,6 +876,10 @@ msgstr "Po zapisaniu słów źródłowych portfela, zaleca się usunięcie ich z
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
 msgstr "Tylko potfele z jednym podpisem mogą być przywrócone."
+
+#: public/views/bot.html:35
+msgid "Open chat"
+msgstr "Otwórz czat"
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
@@ -806,6 +894,10 @@ msgstr "Paruj"
 msgid "Paired devices"
 msgstr "Sparowane urządzenia"
 
+#: public/views/acceptCorrespondentInvitation.html:49
+msgid "Pairing code"
+msgstr "Kod parowania"
+
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
 msgstr "Prywatny Klucz Papierowego Portfela"
@@ -815,7 +907,7 @@ msgstr "Prywatny Klucz Papierowego Portfela"
 msgid "Passphrase"
 msgstr "Hasło"
 
-#: src/js/services/profileService.js:596
+#: src/js/services/profileService.js:607
 msgid "Password needed"
 msgstr "Wymagane hasło"
 
@@ -830,6 +922,10 @@ msgstr "Wklej tutaj klucz prywatny twojego portfela papierowego"
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
 msgstr "Zapłać i uruchom kontrakt"
+
+#: src/js/services/correspondentListService.js:108
+msgid "Pay to this address"
+msgstr "Zapłać na ten adres"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -883,11 +979,16 @@ msgstr "Proszę wypełnij wymagane pola"
 msgid "Please name this device"
 msgstr "Proszę nazwij to urządzenie"
 
+#: public/views/translators.html:35
+msgid "Polish"
+msgstr "Polski"
+
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Port"
 
-#: public/views/translators.html:17
+#: public/views/translators.html:25
+#: public/views/translators.html:26
 msgid "Portuguese"
 msgstr "Portugalski"
 
@@ -900,7 +1001,7 @@ msgstr "Ogłoszona wartość:"
 msgid "Preferences"
 msgstr "Ustawienia"
 
-#: src/js/services/backButtonService.js:42
+#: src/js/services/backButtonService.js:73
 msgid "Press again to exit"
 msgstr "Naciśnij ponownie, aby wyjść"
 
@@ -908,7 +1009,8 @@ msgstr "Naciśnij ponownie, aby wyjść"
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr "Prywatne aktywa (takie jak blackbyte) nie są przywracane."
 
-#: src/js/controllers/walletHome.js:1277
+#: src/js/controllers/walletHome.js:1226
+#: src/js/controllers/walletHome.js:1299
 msgid "Private payloads sent"
 msgstr "Prywatna płatność wysłana"
 
@@ -920,11 +1022,7 @@ msgstr "Kod QR"
 msgid "QR-Scanner"
 msgstr "Skaner QR"
 
-#: public/views/modals/tx-details.html:115
-msgid "Re-send private payloads"
-msgstr "Ponownie wyślij prywatną płatność"
-
-#: src/js/controllers/index.js:534
+#: src/js/controllers/index.js:590
 msgid "Receive"
 msgstr "Odbierz"
 
@@ -957,7 +1055,7 @@ msgstr "Przywracanie jest dostępne tylko w pełnej instalacji portfela"
 msgid "Recreating Wallet..."
 msgstr "Ponowne tworzenie Portfela..."
 
-#: src/js/controllers/index.js:165
+#: src/js/controllers/index.js:191
 msgid "Refused"
 msgstr "Odrzucono"
 
@@ -969,11 +1067,11 @@ msgstr "Informacje o wersji"
 msgid "Remove"
 msgstr "Usuń"
 
-#: public/views/correspondentDevices.html:37
+#: public/views/correspondentDevices.html:66
 msgid "Remove a device"
 msgstr "Usuń urządzenie"
 
-#: public/views/editCorrespondentDevice.html:41
+#: public/views/editCorrespondentDevice.html:33
 msgid "Rename:"
 msgstr "Zmień nazwę:"
 
@@ -999,7 +1097,7 @@ msgstr "Żądaj hasła"
 msgid "Request a specific amount"
 msgstr "Zażądaj konkretnej kwoty"
 
-#: public/views/correspondentDevice.html:328
+#: public/views/correspondentDevice.html:330
 msgid "Request payment"
 msgstr "Zażądaj płatności"
 
@@ -1015,7 +1113,8 @@ msgstr "Przywróć z pełnej kopii zapasowej"
 msgid "Retrying..."
 msgstr "Próbuję ponownie..."
 
-#: public/views/translators.html:21
+#: public/views/translators.html:32
+#: public/views/translators.html:33
 msgid "Russian"
 msgstr "Rosyjski"
 
@@ -1023,7 +1122,7 @@ msgstr "Rosyjski"
 msgid "SET"
 msgstr "USTAW"
 
-#: public/views/editCorrespondentDevice.html:49
+#: public/views/editCorrespondentDevice.html:41
 #: public/views/modals/destination-address.html:132
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
@@ -1054,7 +1153,7 @@ msgstr "Skanowanie zakończone błędem"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Zeskanuj powyższy kod QR przy użyciu drugiego urządzenia lub wyślij ten kod parowania na drugie urządzenie:"
 
-#: src/js/controllers/index.js:1432
+#: src/js/controllers/index.js:1490
 msgid "Scan your fingerprint please"
 msgstr "Zeskanuj proszę swój odcisk palca"
 
@@ -1084,7 +1183,7 @@ msgstr "Wybierz swoją tożsamość"
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:449
-#: src/js/controllers/index.js:538
+#: src/js/controllers/index.js:594
 msgid "Send"
 msgstr "Wyślij"
 
@@ -1145,7 +1244,7 @@ msgstr "Ustawienia"
 msgid "Share address"
 msgstr "Udostępnij adres"
 
-#: public/views/walletHome.html:257
+#: public/views/walletHome.html:258
 msgid "Share this wallet address to receive payments."
 msgstr "Udostępnij ten adres portfela, aby otrzymywać płatności."
 
@@ -1157,15 +1256,16 @@ msgstr "Pokaż wszystko"
 msgid "Show the Wallet Seed Anyway"
 msgstr "Pokaż słowa źródłowe portfela mimo to"
 
-#: src/js/controllers/index.js:379
+#: src/js/controllers/index.js:415
 msgid "Sign transaction spending  from wallet ?"
 msgstr "Podpisać transakcję wychodzącą z portfela?"
 
-#: src/js/services/profileService.js:261
+#: src/js/services/profileService.js:272
 msgid "Small Expenses Wallet"
 msgstr "Portfel Małych Wydatków"
 
-#: public/views/translators.html:20
+#: public/views/translators.html:30
+#: public/views/translators.html:31
 msgid "Spanish"
 msgstr "Hiszpański"
 
@@ -1185,12 +1285,17 @@ msgstr "Nadal nie ukończone"
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:202
-#: src/js/controllers/index.js:230
+#: src/js/controllers/index.js:228
+#: src/js/controllers/index.js:256
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1277
+#: src/js/controllers/walletHome.js:1226
+#: src/js/controllers/walletHome.js:1299
 msgid "Success"
 msgstr "Gotowe"
+
+#: public/views/translators.html:43
+msgid "Swedish"
+msgstr "Szwedzki"
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
@@ -1223,6 +1328,10 @@ msgstr "Kliknij, aby spróbować ponownie"
 msgid "Terms of Use"
 msgstr "Warunki korzystania"
 
+#: public/views/correspondentDevice.html:335
+msgid "Text message to"
+msgstr "Wiadomość tekstowa do"
+
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
 msgstr "Oczekiwana wartość będzie ogłoszona:"
@@ -1252,13 +1361,17 @@ msgstr "Portfel będzie zawierał minimum istotnych informacji. Dostawca portfel
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
 msgstr "Portfel będzie zawierał najbardziej aktualny stan całej bazy Byteball. Ta opcja jest lepsza pod względem prywatności, ale będzie zużywać więcej zasobów i początkowa synchronizacja zajmie kilka godzin."
 
-#: public/views/correspondentDevice.html:294
+#: public/views/correspondentDevice.html:296
 msgid "Their recording preference"
 msgstr "Jego/jej ustawienie rejestrowania"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
 msgstr "Nie istnieją portfele, by dokonać tej płatności"
+
+#: public/views/walletHome.html:257
+msgid "This address is shared with {{index.shared_address_cosigners}}."
+msgstr "Ten adres jest współdzielony z {{index.shared_address_cosigners}}."
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
@@ -1293,9 +1406,13 @@ msgstr "Do"
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Aby powiązać płatność z warunkiem, kliknij adres partnera w czacie"
 
-#: public/views/walletHome.html:258
+#: public/views/walletHome.html:259
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "W celu ochrony Twojej prywatności, nowe adresy są generowane automatycznie po ich użyciu."
+
+#: src/js/controllers/backup.js:17
+msgid "To restore your wallets, you will need a full backup of Byteball data at"
+msgstr "Aby przywrócić portfele, będziesz potrzebować pełną kopię zapasową danych Byteball"
 
 #: public/views/walletHome.html:182
 msgid "Total Locked Balance"
@@ -1374,11 +1491,11 @@ msgstr "OSTRZEŻENIA:"
 msgid "WELCOME TO BYTEBALL"
 msgstr "WITAJ W BYTEBALL"
 
-#: public/views/copayers.html:16
+#: public/views/copayers.html:24
 msgid "Waiting for co-signers"
 msgstr "Oczekiwanie na współsygnatariuszy"
 
-#: public/views/copayers.html:25
+#: public/views/copayers.html:33
 msgid "Waiting..."
 msgstr "Oczekiwanie..."
 
@@ -1407,7 +1524,7 @@ msgstr "Informacje o portfelu"
 msgid "Wallet Name (at creation)"
 msgstr "Nazwa portfela (w momencie utworzenia)"
 
-#: src/js/services/profileService.js:378
+#: src/js/services/profileService.js:389
 msgid "Wallet already in Byteball:"
 msgstr "Portfel jest już w Byteball:"
 
@@ -1446,13 +1563,13 @@ msgstr "Świadkowie"
 msgid "Write it down and keep it somewhere safe."
 msgstr "Zapisz te dane i przechowuj w bezpiecznym miejscu."
 
-#: src/js/services/profileService.js:606
+#: src/js/services/profileService.js:617
 msgid "Wrong password"
 msgstr "Niepoprawne hasło"
 
 #: public/views/authConfirmation.html:17
 #: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:401
+#: src/js/controllers/index.js:437
 msgid "Yes"
 msgstr "Tak"
 
@@ -1481,13 +1598,25 @@ msgstr "Plik Twojego portfela:"
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
 msgstr "Klucz Twojego portfela zostanie zaszyfrowany. Hasła nie da się odzyskać. Upewnij się, że je zapisałeś."
 
+#: public/views/create.html:84
+msgid "[ Add new co-signer device ]"
+msgstr "[ Dodaj nowe urządzenie współsygnatariusza ]"
+
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
 msgstr "po wygaśnięciu kontraktu po:"
 
-#: public/views/editCorrespondentDevice.html:58
+#: public/views/copayers.html:38
+msgid "cancel wallet creation"
+msgstr "anuluj tworzenie portfela"
+
+#: public/views/editCorrespondentDevice.html:49
 msgid "clear chat history"
 msgstr "wyczyść historię czatu"
+
+#: public/views/modals/select-subwallet.html:39
+msgid "created"
+msgstr "utworzono"
 
 #: public/views/modals/offer-contract.html:137
 msgid "days"
@@ -1527,6 +1656,14 @@ msgstr "zablokowane przez oczekujące płatności"
 msgid "optional"
 msgstr "opcjonalnie"
 
+#: public/views/modals/tx-details.html:115
+msgid "re-send private payloads"
+msgstr "ponownie wyślij prywatne płatności"
+
+#: public/views/modals/tx-details.html:118
+msgid "re-send private payloads to cosigners"
+msgstr "ponownie wyślij prywatne płatności do współsygnatariuszy"
+
 #: src/js/controllers/walletHome.js:686
 #: src/js/controllers/walletHome.js:692
 #: src/js/controllers/walletHome.js:788
@@ -1543,6 +1680,10 @@ msgstr "do"
 msgid "too long!"
 msgstr "za długie!"
 
+#: public/views/modals/select-subwallet.html:37
+msgid "with"
+msgstr "z"
+
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
 msgstr "{{address}} można wydać jeżeli:"
@@ -1555,7 +1696,7 @@ msgstr "{{buttonLabel}}"
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr "{{cancel_label || 'Anuluj'}}"
 
-#: src/js/controllers/walletHome.js:1318
+#: src/js/controllers/walletHome.js:1341
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} zostanie pobrane na prowizję sieci bitcoin"
 
@@ -1563,7 +1704,7 @@ msgstr "{{fee}} zostanie pobrane na prowizję sieci bitcoin"
 msgid "{{hrd.destinationAddress}} can be spent if:"
 msgstr "{{hrd.destinationAddress}} można wydać jeżeli:"
 
-#: public/views/copayers.html:18
+#: public/views/copayers.html:26
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-z-{{index.n}}"
@@ -1571,6 +1712,10 @@ msgstr "{{index.m}}-z-{{index.n}}"
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}}-z-{{item.n}}"
+
+#: public/views/preferencesGlobal.html:29
+msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
+msgstr "{{prefGlobal.torEnabled?'On':'Off'}}"
 
 #: public/views/backup.html:22
 msgid "{{wordsC.text}}"
