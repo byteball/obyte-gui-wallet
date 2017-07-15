@@ -19,8 +19,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatScope = $scope;
 	var indexScope = $scope.index;
 	$rootScope.tab = $scope.index.tab = 'chat';
-	$scope.profileService = profileService;
-	$scope.backgroundColor = profileService.focusedClient.backgroundColor;
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
 //	var myPaymentAddress = indexScope.shared_address;
