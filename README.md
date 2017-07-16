@@ -58,7 +58,7 @@ Then run Byteball desktop client:
 ### iOS
 
 - Install Xcode 7 (or newer)
-- Run `make ios-debug`
+- Run `make ios-debug`.  If it fails, create a symlink in your ../byteballbuilds from `ios` to `project-IOS`.
 
 ### macOS
 
