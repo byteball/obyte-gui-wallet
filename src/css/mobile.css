@@ -872,6 +872,9 @@ textarea:focus
 .f-dropdown li {
 	width: 100%;
 }
+.f-dropdown.small li {
+	font-size: 11px;
+}
 .f-dropdown.right:before {
 	left: auto !important;
 	right: 10px !important;
@@ -890,6 +893,17 @@ textarea:focus
 }
 .f-dropdown li.selected a .check {
 	display: inline;
+}
+.combobox-container {
+	position: relative;
+}
+.combobox-container:after {
+	font-family: 'icomoon' !important;
+	content: "\e601";
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	margin-top: -10px;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;
