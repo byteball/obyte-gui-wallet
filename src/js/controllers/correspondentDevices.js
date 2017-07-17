@@ -100,8 +100,10 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		mutex.lock(["remove_device"], function(unlock){
 			// check to be safe
 			wallet.determineIfDeviceCanBeRemoved(device_address, function(bRemovable) {
-				if (!bRemovable)
+				if (!bRemovable) {
+					unlock();
 					return console.log('device '+device_address+' is not removable');
+				}
 				var device = require('byteballcore/device.js');
 
 				// send message to paired device
