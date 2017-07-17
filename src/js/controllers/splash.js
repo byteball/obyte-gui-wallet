@@ -5,16 +5,19 @@ angular.module('copayApp.controllers').controller('splashController',
 	
 	var self = this;
 	
-	function saveDeviceName(){
+	this.saveDeviceName = function(){
 		console.log('saveDeviceName: '+self.deviceName);
 		var device = require('byteballcore/device.js');
 		device.setDeviceName(self.deviceName);
 		var opts = {deviceName: self.deviceName};
 		configService.set(opts, function(err) {
-			if (err)
-				self.$emit('Local/DeviceError', err);
+			$timeout(function(){
+				if (err)
+					self.$emit('Local/DeviceError', err);
+				self.bDeviceNameSet = true;
+			});
 		});
-	}
+	};
    
 	configService.get(function(err, config) {
 		if (err)
@@ -52,7 +55,7 @@ angular.module('copayApp.controllers').controller('splashController',
 		if (self.creatingProfile)
 			return console.log('already creating profile');
 		self.creatingProfile = true;
-		saveDeviceName();
+	//	saveDeviceName();
 
 		$timeout(function() {
 			profileService.create({noWallet: noWallet}, function(err) {

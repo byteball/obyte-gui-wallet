@@ -74,8 +74,14 @@ angular.module('copayApp.services')
         userLang = navigator.userLanguage || navigator.language;
       }
       userLang = userLang ? (userLang.split('-', 1)[0] || 'en') : 'en';
+		
+	  for (var i=0; i<root.availableLanguages.length; i++){
+		  var isoCode = root.availableLanguages[i].isoCode;
+		  if (userLang === isoCode.substr(0, 2))
+			  return isoCode;
+	  }
 
-      return userLang;
+      return 'en';
     };
 
     root._set = function(lang) {

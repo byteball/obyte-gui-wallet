@@ -74,12 +74,21 @@
 			<div class="row" ng-show="!splash.creatingProfile">
 				<div class="start-button large-8 medium-8 small-8 medium-centered small-centered large-centered columns">
 
-					<label><span class="text-gray" translate>Please name this device</span></label>
-					<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
+					<div ng-show="!splash.bDeviceNameSet">
+						<label><span class="text-gray" translate>Please name this device</span></label>
+						<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
 
-					<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
-						GET STARTED
-					</button>
+						<button ng-click="splash.saveDeviceName()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
+							CONTINUE
+						</button>
+					</div>
+					<div ng-show="splash.bDeviceNameSet">
+						<p class="text-gray size-14 m0 text-light m20b" translate>Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu.</p>
+						<p class="text-gray size-14 m0 text-light m20b" translate>Also in the Settings menu, you will find security options such as setting a password.</p>
+						<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" translate>
+							GET STARTED
+						</button>
+					</div>
 					<!--
 					<p class="text-gray m5b size-12" translate>Already have a wallet?</p>
 					<button  ng-click="splash.create(true)" class="button round outline dark-gray tiny" ng-disabled="!splash.deviceName" translate>Import backup </button>

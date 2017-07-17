@@ -2,7 +2,7 @@
   "name": "byteball",
   "description": "Smart payments made simple",
   "author": "Byteball",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "keywords": [
     "wallet",
     "byteball",
@@ -63,7 +63,7 @@
     "preconditions": "^1.0.8",
     "shelljs": "^0.3.0",
     "sjcl": "^1.0.2",
-    "unzip": "git+https://github.com/xJeneKx/unzip.git",
+    "unzip": "git+https://github.com/byteball/unzip.git",
     "zip": "git+https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {

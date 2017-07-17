@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl_NL\n"
-"PO-Revision-Date: 2017-06-27 03:39-0400\n"
+"PO-Revision-Date: 2017-06-29 21:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -21,6 +21,14 @@ msgstr "(De site kan uw saldo niet zien en er zal geen geld kunnen uitgegeven wo
 msgid "(possible double spend)"
 msgstr "(mogelijk dubbel besteed)"
 
+#: public/views/create.html:82
+msgid "-- Select co-signer --"
+msgstr ""
+
+#: src/js/controllers/backup.js:18
+msgid ".  Better yet, use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your smartphone.  Just the wallet seed is not enough."
+msgstr ""
+
 #: public/views/modals/offer-contract.html:18
 msgid "1. Payment to the contract:"
 msgstr "Betaling aan het contract:"
@@ -28,10 +36,6 @@ msgstr "Betaling aan het contract:"
 #: public/views/modals/offer-contract.html:73
 msgid "2. Who can unlock the contract:"
 msgstr "Wie dit contract kan ontgrendelen:"
-
-#: public/views/splash.html:50
-msgid "A wallet for decentralized value"
-msgstr "Een portemonnee voor gedecentraliseerde waarde"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
@@ -56,7 +60,11 @@ msgstr "Aanvaard de uitnodiging van het andere toestel"
 msgid "Account"
 msgstr "Profiel"
 
-#: public/views/correspondentDevices.html:31
+#: public/views/bot.html:36
+msgid "Add Bot"
+msgstr ""
+
+#: public/views/correspondentDevices.html:60
 msgid "Add a new device"
 msgstr "Nieuw apparaat toevoegen"
 
@@ -68,6 +76,10 @@ msgstr "Voeg een nieuw entry toe"
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
 msgstr "Portefeuille toevoegen"
+
+#: public/views/correspondentDevices.html:80
+msgid "Added"
+msgstr ""
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
@@ -88,6 +100,10 @@ msgstr "Gevorderd"
 msgid "Agree"
 msgstr "Akkoord"
 
+#: public/views/translators.html:34
+msgid "Albanian"
+msgstr ""
+
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr "Alias voor <i>{{index.walletName}}</i>"
@@ -96,7 +112,7 @@ msgstr "Alias voor <i>{{index.walletName}}</i>"
 msgid "All Wallet Addresses"
 msgstr "Alle portefeuille adressen"
 
-#: public/views/translators.html:26
+#: public/views/translators.html:52
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
 msgstr "Alle bijdrages aan de vertaling van Byteball zijn welkom. Meld u aan bij crowdin.com en sluit u aan bij het Byteball project"
 
@@ -124,7 +140,7 @@ msgstr "Bedrag"
 msgid "An event is posted by an oracle:"
 msgstr "Een gebeurtenis is gepubliceerd door een oracle"
 
-#: public/views/copayers.html:11
+#: public/views/copayers.html:19
 msgid "Approve wallet creation on other devices"
 msgstr "Bevestig de aanmaak van de portefeuille op de andere toestellen"
 
@@ -155,8 +171,10 @@ msgid "Available Balance"
 msgstr "Beschikbaar saldo"
 
 #: public/views/acceptCorrespondentInvitation.html:13
+#: public/views/bot.html:13
 #: public/views/correspondentDevice.html:14
-#: public/views/editCorrespondentDevice.html:22
+#: public/views/correspondentDevices.html:10
+#: public/views/editCorrespondentDevice.html:14
 #: public/views/includes/topbar.html:8
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/destination-address.html:9
@@ -198,13 +216,22 @@ msgstr "Koppel de betaling aan een conditie"
 msgid "Bitcoin URI is NOT valid!"
 msgstr "Bitcoin URI is NIET geldig!"
 
-#: public/views/correspondentDevice.html:280
+#: public/views/bot.html:23
+#: public/views/correspondentDevices.html:29
+msgid "Bot Store"
+msgstr ""
+
+#: public/views/correspondentDevice.html:282
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr ""
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
 msgstr "Deze browser is niet ondersteund"
+
+#: public/views/modals/destination-address.html:119
+msgid "Byteball address"
+msgstr ""
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -223,7 +250,7 @@ msgstr "VERDER"
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: public/views/editCorrespondentDevice.html:43
+#: public/views/editCorrespondentDevice.html:35
 msgid "Change hub:"
 msgstr "Verander hub:"
 
@@ -231,14 +258,25 @@ msgstr "Verander hub:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Wijziging van de portefeuille-alias is enkel van toepassing op de naam van de lokale portefeuille."
 
-#: src/js/controllers/index.js:546
+#: src/js/controllers/index.js:602
 msgid "Chat"
 msgstr "Chat"
+
+#: public/views/translators.html:45
+#: public/views/translators.html:46
+#: public/views/translators.html:47
+msgid "Chinese"
+msgstr ""
+
+#: public/views/import.html:33
+msgid "Choose File"
+msgstr ""
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
 msgstr "Kies het toestel waarnaar je wil sturen"
 
+#: public/views/correspondentDevices.html:16
 #: public/views/includes/topbar.html:13
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
@@ -278,7 +316,7 @@ msgid "Compress the file? (Slower)"
 msgstr "Het bestand verkleinen? (trager)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:403
+#: src/js/controllers/index.js:439
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:119
 #: src/js/services/confirmDialog.js:10
@@ -293,7 +331,11 @@ msgstr "Betaling bevestigen"
 msgid "Confirmed"
 msgstr "Bevestigd"
 
-#: src/js/controllers/inviteCorrespondentDevice.js:33
+#: public/views/correspondentDevices.html:26
+msgid "Contacts"
+msgstr ""
+
+#: src/js/controllers/inviteCorrespondentDevice.js:32
 #: src/js/controllers/walletHome.js:387
 msgid "Copied to clipboard"
 msgstr "Gekopieerd naar klipbord"
@@ -306,19 +348,19 @@ msgstr "Correspondenten zijn niet teruggeplaatst."
 msgid "Could not create payment proposal"
 msgstr "Betalingsvoorstel werd niet gecreeerd"
 
-#: src/js/services/profileService.js:209
+#: src/js/services/profileService.js:220
 msgid "Could not create using the specified extended private key"
 msgstr "Aanmaken is niet mogelijk met deze uitgebreide private sleutel"
 
-#: src/js/services/profileService.js:219
+#: src/js/services/profileService.js:230
 msgid "Could not create using the specified extended public key"
 msgstr "Aanmaken is niet mogelijk met deze uitgebreide publieke sleutel"
 
-#: src/js/services/profileService.js:202
+#: src/js/services/profileService.js:213
 msgid "Could not create: Invalid wallet seed"
 msgstr "Creatie mislukt: Ongeldig portefeuille seed"
 
-#: src/js/controllers/backup.js:83
+#: src/js/controllers/backup.js:85
 msgid "Could not decrypt"
 msgstr "Ontcijferen is mislukt"
 
@@ -326,13 +368,13 @@ msgstr "Ontcijferen is mislukt"
 msgid "Could not fetch transaction history"
 msgstr "De transactiehistoriek kon niet opgehaald worden"
 
-#: src/js/services/profileService.js:432
-#: src/js/services/profileService.js:459
-#: src/js/services/profileService.js:481
+#: src/js/services/profileService.js:443
+#: src/js/services/profileService.js:470
+#: src/js/services/profileService.js:492
 msgid "Could not import"
 msgstr "Importeren is mislukt"
 
-#: src/js/services/profileService.js:409
+#: src/js/services/profileService.js:420
 msgid "Could not import. Check input file and password"
 msgstr "Importeren is mislukt. Controleer het input bestand en het paswoord"
 
@@ -357,7 +399,7 @@ msgstr "Maak een nieuwe portefeuille"
 msgid "Create new wallet"
 msgstr "Maak nieuwe portefeuille"
 
-#: src/js/controllers/index.js:243
+#: src/js/controllers/index.js:269
 msgid "Create new wallet  together with  ?"
 msgstr "Maak een nieuwe portefeuille samen met ?"
 
@@ -390,7 +432,7 @@ msgstr "Naam van data feed:"
 msgid "Date"
 msgstr "Datum"
 
-#: src/js/controllers/index.js:213
+#: src/js/controllers/index.js:239
 msgid "Declined"
 msgstr "Afgewezen"
 
@@ -441,7 +483,7 @@ msgstr "Naam van het toestel"
 msgid "Device name is visible to other devices you communicate with."
 msgstr "De naam van het toestel is zichtbaar voor de andere toestellen waarmee u communiceert."
 
-#: public/views/translators.html:29
+#: public/views/translators.html:55
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Is uw taal niet zichtbaar op Crowdin?  Neem contact op met de eigenaar van Crowdin!  Wij willen graag uw taal toevoegen."
 
@@ -454,12 +496,20 @@ msgstr "Beeindigd"
 msgid "Download CSV file"
 msgstr "Download CSV bestand"
 
+#: public/views/translators.html:37
+#: public/views/translators.html:38
+#: public/views/translators.html:39
+#: public/views/translators.html:40
+#: public/views/translators.html:41
+msgid "Dutch"
+msgstr ""
+
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
 msgstr "Wijzig"
 
-#: public/views/correspondentDevice.html:283
+#: public/views/correspondentDevice.html:285
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr ""
 
@@ -479,8 +529,8 @@ msgstr "Geef de ontvangen koppelcode van het andere toestel in, of gebruik uw ca
 msgid "Enter your password"
 msgstr "Vul paswoord in"
 
-#: src/js/services/profileService.js:266
-#: src/js/services/profileService.js:316
+#: src/js/services/profileService.js:277
+#: src/js/services/profileService.js:327
 msgid "Error creating wallet"
 msgstr "Fout bij het aanmaken van een portefeuille"
 
@@ -518,6 +568,9 @@ msgid "Finality"
 msgstr "Finaliteit"
 
 #: public/views/translators.html:11
+#: public/views/translators.html:12
+#: public/views/translators.html:13
+#: public/views/translators.html:14
 msgid "French"
 msgstr "Frans"
 
@@ -525,7 +578,7 @@ msgstr "Frans"
 msgid "From"
 msgstr "Van"
 
-#: public/views/editCorrespondentDevice.html:35
+#: public/views/editCorrespondentDevice.html:27
 msgid "Full address:"
 msgstr "Volledig adres:"
 
@@ -549,7 +602,11 @@ msgstr "De fondsen zullen overgemaakt worden aan"
 msgid "GET STARTED"
 msgstr "START"
 
-#: public/views/walletHome.html:265
+#: src/js/controllers/walletHome.js:415
+msgid "Generate QR Code"
+msgstr ""
+
+#: public/views/walletHome.html:266
 msgid "Generate new address"
 msgstr "Genereer een nieuw adres"
 
@@ -557,8 +614,11 @@ msgstr "Genereer een nieuw adres"
 msgid "Generating .csv file..."
 msgstr "Bezig met aanmaken van .csv bestand…"
 
-#: public/views/translators.html:15
-#: public/views/translators.html:16
+#: public/views/translators.html:20
+#: public/views/translators.html:21
+#: public/views/translators.html:22
+#: public/views/translators.html:23
+#: public/views/translators.html:24
 msgid "German"
 msgstr "Duits"
 
@@ -574,8 +634,9 @@ msgstr "Algemene voorkeuren"
 msgid "Go back"
 msgstr "Ga terug"
 
-#: public/views/translators.html:18
-#: public/views/translators.html:19
+#: public/views/translators.html:27
+#: public/views/translators.html:28
+#: public/views/translators.html:29
 msgid "Greek"
 msgstr "Grieks"
 
@@ -587,11 +648,11 @@ msgstr "Hardware wallet"
 msgid "Hide the Wallet Seed"
 msgstr "Verberg de sleutel van de portefeuille"
 
-#: src/js/controllers/index.js:542
+#: src/js/controllers/index.js:598
 msgid "History"
 msgstr "Geschiedenis"
 
-#: src/js/controllers/index.js:530
+#: src/js/controllers/index.js:586
 msgid "Home"
 msgstr "Home"
 
@@ -606,6 +667,10 @@ msgstr "Hub"
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
 msgstr "Hub URL"
+
+#: public/views/translators.html:42
+msgid "Hungarian"
+msgstr ""
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -643,13 +708,17 @@ msgstr "Portefeuille wordt geimporteerd..."
 msgid "Including pending confirmation"
 msgstr "Samen met pending confirmatie"
 
+#: public/views/translators.html:36
+msgid "Indonesian"
+msgstr ""
+
 #: public/views/walletHome.html:499
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "De synchronisatie van de initiele transactiehistoriek kan enkele minuten duren voor portefeuilles met veel transacties. <br>\n"
 "\tBlijf geduldig wachten."
 
-#: public/views/correspondentDevice.html:319
+#: public/views/correspondentDevice.html:321
 msgid "Insert my address"
 msgstr "Mijn adres toevoegen"
 
@@ -657,7 +726,7 @@ msgstr "Mijn adres toevoegen"
 msgid "Invalid"
 msgstr "Ongeldig"
 
-#: src/js/controllers/index.js:1439
+#: src/js/controllers/index.js:1497
 msgid "Invalid Touch ID"
 msgstr "Ongeldig Touch ID"
 
@@ -665,15 +734,21 @@ msgstr "Ongeldig Touch ID"
 msgid "Invite the other device"
 msgstr "Nodig het andere toestel uit"
 
-#: public/views/translators.html:12
-#: public/views/translators.html:13
-#: public/views/translators.html:14
+#: public/views/translators.html:15
+#: public/views/translators.html:16
+#: public/views/translators.html:17
+#: public/views/translators.html:18
+#: public/views/translators.html:19
 msgid "Italian"
 msgstr "Italiaans"
 
 #: public/views/translators.html:10
 msgid "Japanese"
 msgstr "Japanees"
+
+#: public/views/translators.html:44
+msgid "Korean"
+msgstr ""
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
@@ -735,8 +810,12 @@ msgstr "Portefeuille over meerdere toestellen"
 msgid "My Byteball address"
 msgstr "Mijn Byteball adres"
 
-#: public/views/correspondentDevice.html:289
+#: public/views/correspondentDevice.html:291
 msgid "My recording preference"
+msgstr ""
+
+#: public/views/modals/destination-address.html:121
+msgid "Name of the contact"
 msgstr ""
 
 #: public/views/paymentUri.html:18
@@ -756,9 +835,13 @@ msgid "New witnesses"
 msgstr "Nieuwe getuigen"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:402
+#: src/js/controllers/index.js:438
 msgid "No"
 msgstr "Neen"
+
+#: src/js/controllers/password.js:15
+msgid "No password given"
+msgstr ""
 
 #: public/views/walletHome.html:483
 msgid "No transactions yet"
@@ -782,6 +865,7 @@ msgid "Note"
 msgstr "Vermelding"
 
 #: public/views/modals/offer-contract.html:8
+#: src/js/services/correspondentListService.js:108
 msgid "Offer a contract"
 msgstr "Een contract aanbieden"
 
@@ -792,6 +876,10 @@ msgstr "Wanneer u de sleutel van uw portefeuille hebt genoteerd, is het aanbevol
 #: public/views/recoveryFromSeed.html:60
 msgid "Only single-sig wallets can be recovered."
 msgstr "Alleen portefeuilles met 1 enkele ondertekenaar kunnen gerecupereerd worden"
+
+#: public/views/bot.html:35
+msgid "Open chat"
+msgstr ""
 
 #: public/views/modals/bind.html:42
 #: public/views/modals/offer-contract.html:87
@@ -806,6 +894,10 @@ msgstr "Koppel"
 msgid "Paired devices"
 msgstr "Gekoppelde toestellen"
 
+#: public/views/acceptCorrespondentInvitation.html:49
+msgid "Pairing code"
+msgstr ""
+
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
 msgstr ""
@@ -815,7 +907,7 @@ msgstr ""
 msgid "Passphrase"
 msgstr "Wachtwoord"
 
-#: src/js/services/profileService.js:596
+#: src/js/services/profileService.js:607
 msgid "Password needed"
 msgstr "Paswoord is nodig"
 
@@ -830,6 +922,10 @@ msgstr "Voer hier uw papier portemonnee privé sleutel in"
 #: public/views/modals/offer-contract.html:170
 msgid "Pay and offer"
 msgstr "Betaal en bied aan"
+
+#: src/js/services/correspondentListService.js:108
+msgid "Pay to this address"
+msgstr ""
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -883,11 +979,16 @@ msgstr "Vul de verplichte velden in"
 msgid "Please name this device"
 msgstr "Geef de naam voor dit toestel"
 
+#: public/views/translators.html:35
+msgid "Polish"
+msgstr ""
+
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Poort"
 
-#: public/views/translators.html:17
+#: public/views/translators.html:25
+#: public/views/translators.html:26
 msgid "Portuguese"
 msgstr "Portugees"
 
@@ -900,7 +1001,7 @@ msgstr ""
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: src/js/services/backButtonService.js:42
+#: src/js/services/backButtonService.js:73
 msgid "Press again to exit"
 msgstr "Druk opnieuw om te beeindigen"
 
@@ -908,7 +1009,8 @@ msgstr "Druk opnieuw om te beeindigen"
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr "De private bezittingen (zoals blackbytes) zijn niet hersteld."
 
-#: src/js/controllers/walletHome.js:1277
+#: src/js/controllers/walletHome.js:1226
+#: src/js/controllers/walletHome.js:1299
 msgid "Private payloads sent"
 msgstr "Private payloads zijn verzonden"
 
@@ -920,11 +1022,7 @@ msgstr "QR Code"
 msgid "QR-Scanner"
 msgstr "QR-Scanner"
 
-#: public/views/modals/tx-details.html:115
-msgid "Re-send private payloads"
-msgstr ""
-
-#: src/js/controllers/index.js:534
+#: src/js/controllers/index.js:590
 msgid "Receive"
 msgstr "Ontvang"
 
@@ -957,7 +1055,7 @@ msgstr "Herstellen is enkel mogelijk in volledige portefeuilles"
 msgid "Recreating Wallet..."
 msgstr "Bezig met het opnieuw aanmaken van de portefeuille..."
 
-#: src/js/controllers/index.js:165
+#: src/js/controllers/index.js:191
 msgid "Refused"
 msgstr "Geweigerd"
 
@@ -969,11 +1067,11 @@ msgstr "Informatie over de release"
 msgid "Remove"
 msgstr "Verwijder"
 
-#: public/views/correspondentDevices.html:37
+#: public/views/correspondentDevices.html:66
 msgid "Remove a device"
 msgstr "Een apparaat verwijderen"
 
-#: public/views/editCorrespondentDevice.html:41
+#: public/views/editCorrespondentDevice.html:33
 msgid "Rename:"
 msgstr "Naam wijzigen:"
 
@@ -999,7 +1097,7 @@ msgstr "Paswoord opvragen"
 msgid "Request a specific amount"
 msgstr "Opvragen van een bepaald bedrag"
 
-#: public/views/correspondentDevice.html:328
+#: public/views/correspondentDevice.html:330
 msgid "Request payment"
 msgstr "Betaling opvragen"
 
@@ -1015,7 +1113,8 @@ msgstr "Terugplaatsen vanaf volledige backup"
 msgid "Retrying..."
 msgstr "Opnieuw…"
 
-#: public/views/translators.html:21
+#: public/views/translators.html:32
+#: public/views/translators.html:33
 msgid "Russian"
 msgstr "Russisch"
 
@@ -1023,7 +1122,7 @@ msgstr "Russisch"
 msgid "SET"
 msgstr "INSTELLEN"
 
-#: public/views/editCorrespondentDevice.html:49
+#: public/views/editCorrespondentDevice.html:41
 #: public/views/modals/destination-address.html:132
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
@@ -1054,7 +1153,7 @@ msgstr "Scan beeïndigd met fout"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Scan de bovenstaande QR code met het andere toestel, of stuur deze koppelcode naar het andere toestel:"
 
-#: src/js/controllers/index.js:1432
+#: src/js/controllers/index.js:1490
 msgid "Scan your fingerprint please"
 msgstr "Scan uw vingerafdruk a.u.b."
 
@@ -1084,7 +1183,7 @@ msgstr "Selecteer uw identiteit"
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:449
-#: src/js/controllers/index.js:538
+#: src/js/controllers/index.js:594
 msgid "Send"
 msgstr "Verstuur"
 
@@ -1146,7 +1245,7 @@ msgstr "Instellingen"
 msgid "Share address"
 msgstr "Adres (mede)delen"
 
-#: public/views/walletHome.html:257
+#: public/views/walletHome.html:258
 msgid "Share this wallet address to receive payments."
 msgstr "Deel dit portemonnee-adres om betalingen te ontvangen."
 
@@ -1158,15 +1257,16 @@ msgstr "Toon alles"
 msgid "Show the Wallet Seed Anyway"
 msgstr "Toon hoe dan ook de sleutel van de portefeuille"
 
-#: src/js/controllers/index.js:379
+#: src/js/controllers/index.js:415
 msgid "Sign transaction spending  from wallet ?"
 msgstr "Onderteken transactie uitgaven van de portefeuille ? "
 
-#: src/js/services/profileService.js:261
+#: src/js/services/profileService.js:272
 msgid "Small Expenses Wallet"
 msgstr "Portefeuille voor kleine uitgaven"
 
-#: public/views/translators.html:20
+#: public/views/translators.html:30
+#: public/views/translators.html:31
 msgid "Spanish"
 msgstr "Spaans"
 
@@ -1186,12 +1286,17 @@ msgstr "Nog niet voltooid"
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:202
-#: src/js/controllers/index.js:230
+#: src/js/controllers/index.js:228
+#: src/js/controllers/index.js:256
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1277
+#: src/js/controllers/walletHome.js:1226
+#: src/js/controllers/walletHome.js:1299
 msgid "Success"
 msgstr "Succes"
+
+#: public/views/translators.html:43
+msgid "Swedish"
+msgstr ""
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
@@ -1224,6 +1329,10 @@ msgstr "(Tap) om te herbeginnen"
 msgid "Terms of Use"
 msgstr "Gebruikersvoorwaarden"
 
+#: public/views/correspondentDevice.html:335
+msgid "Text message to"
+msgstr ""
+
 #: public/views/modals/bind.html:73
 msgid "The expected value will be posted:"
 msgstr "De verwachte waarde zal getoond worden:"
@@ -1253,13 +1362,17 @@ msgstr "De portefeuille zal zo weinig mogelijk informatie over u bevatten.  De p
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will consume more resources and the initial sync will take several hours."
 msgstr "De portefeuille zal de meest actuele toestand van de Byteball database bevatten.  Deze optie is beter voor uw privacy, maar zal meer middelen nodig hebben en de initiele synchronisatie zal enkele uren duren."
 
-#: public/views/correspondentDevice.html:294
+#: public/views/correspondentDevice.html:296
 msgid "Their recording preference"
 msgstr ""
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
 msgstr "Er zijn geen portefeuilles om deze betaling uit te voeren"
+
+#: public/views/walletHome.html:257
+msgid "This address is shared with {{index.shared_address_cosigners}}."
+msgstr ""
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
@@ -1294,8 +1407,12 @@ msgstr "Naar"
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr ""
 
-#: public/views/walletHome.html:258
+#: public/views/walletHome.html:259
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
+msgstr ""
+
+#: src/js/controllers/backup.js:17
+msgid "To restore your wallets, you will need a full backup of Byteball data at"
 msgstr ""
 
 #: public/views/walletHome.html:182
@@ -1375,11 +1492,11 @@ msgstr "WAARSCHUWINGEN:"
 msgid "WELCOME TO BYTEBALL"
 msgstr "WELKOM BIJ BYTEBALL"
 
-#: public/views/copayers.html:16
+#: public/views/copayers.html:24
 msgid "Waiting for co-signers"
 msgstr "Wachtend op mede-ondertekenaars"
 
-#: public/views/copayers.html:25
+#: public/views/copayers.html:33
 msgid "Waiting..."
 msgstr "Wachtend…"
 
@@ -1408,7 +1525,7 @@ msgstr "Informatie over portefeuille"
 msgid "Wallet Name (at creation)"
 msgstr "Portefeuille naam (bij aanmaak)"
 
-#: src/js/services/profileService.js:378
+#: src/js/services/profileService.js:389
 msgid "Wallet already in Byteball:"
 msgstr "Portefeuille bestaat reeds in Byteball: "
 
@@ -1447,13 +1564,13 @@ msgstr "Getuigen"
 msgid "Write it down and keep it somewhere safe."
 msgstr "Noteer het en bewaar het op een veilige plaats."
 
-#: src/js/services/profileService.js:606
+#: src/js/services/profileService.js:617
 msgid "Wrong password"
 msgstr "Verkeerd paswoord"
 
 #: public/views/authConfirmation.html:17
 #: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:401
+#: src/js/controllers/index.js:437
 msgid "Yes"
 msgstr "Ja"
 
@@ -1482,12 +1599,24 @@ msgstr "Uw bestand van de portefeuille"
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
 msgstr ""
 
+#: public/views/create.html:84
+msgid "[ Add new co-signer device ]"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:127
 msgid "after the contract expires in:"
 msgstr ""
 
-#: public/views/editCorrespondentDevice.html:58
+#: public/views/copayers.html:38
+msgid "cancel wallet creation"
+msgstr ""
+
+#: public/views/editCorrespondentDevice.html:49
 msgid "clear chat history"
+msgstr ""
+
+#: public/views/modals/select-subwallet.html:39
+msgid "created"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:137
@@ -1528,6 +1657,14 @@ msgstr "Geblokkeerd door betalingen in uitvoering"
 msgid "optional"
 msgstr "optioneel"
 
+#: public/views/modals/tx-details.html:115
+msgid "re-send private payloads"
+msgstr ""
+
+#: public/views/modals/tx-details.html:118
+msgid "re-send private payloads to cosigners"
+msgstr ""
+
 #: src/js/controllers/walletHome.js:686
 #: src/js/controllers/walletHome.js:692
 #: src/js/controllers/walletHome.js:788
@@ -1544,6 +1681,10 @@ msgstr "naar"
 msgid "too long!"
 msgstr "te lang!"
 
+#: public/views/modals/select-subwallet.html:37
+msgid "with"
+msgstr ""
+
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
 msgstr "{{address}}kan worden uitgegeven als:"
@@ -1556,7 +1697,7 @@ msgstr ""
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1318
+#: src/js/controllers/walletHome.js:1341
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} zullen worden afgehouden als kosten voor het bitcoin netwerk"
 
@@ -1564,13 +1705,17 @@ msgstr "{{fee}} zullen worden afgehouden als kosten voor het bitcoin netwerk"
 msgid "{{hrd.destinationAddress}} can be spent if:"
 msgstr ""
 
-#: public/views/copayers.html:18
+#: public/views/copayers.html:26
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr ""
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
+msgstr ""
+
+#: public/views/preferencesGlobal.html:29
+msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
 msgstr ""
 
 #: public/views/backup.html:22
