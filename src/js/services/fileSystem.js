@@ -6,6 +6,7 @@ angular.module('copayApp.services')
 		bFsInitialized = false;
 	
 	var fs = require('fs' + '');
+	var pathLib = require('path' + '');
 	try {
 		var desktopApp = require('byteballcore/desktop_app.js' + '');
 	} catch (e) {
@@ -192,6 +193,26 @@ angular.module('copayApp.services')
 		else {
 			return desktopApp.getAppDataDir();
 		}
+	};
+
+	root.recursiveMkdir = function(path, mode, callback) {
+		var parentDir = pathLib.dirname(path);
+		
+		fs.stat(parentDir, function(err, stats) {
+			if (err && err.code !== 'ENOENT')
+				throw Error("failed to stat dir: "+err);
+
+			if (err && err.code === 'ENOENT') {
+				root.recursiveMkdir(parentDir, mode, function(err) {
+					if (err)
+						callback(err);
+					else
+						fs.mkdir(path, mode, callback);
+				});
+			} else {
+				fs.mkdir(path, mode, callback);
+			}
+		});
 	};
 	
 	return root;
