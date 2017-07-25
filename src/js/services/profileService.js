@@ -267,6 +267,7 @@ angular.module('copayApp.services')
             if (err)
                 return cb(err);
             var config = configService.getSync();
+			require('byteballcore/wallet.js'); // load hub/ message handlers
 			var device = require('byteballcore/device.js');
             var tempDeviceKey = device.genPrivKey();
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
