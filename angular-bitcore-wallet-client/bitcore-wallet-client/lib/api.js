@@ -450,13 +450,13 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
             account: opts.account
         });
     } else {
-        log.info('Using existing keys');
+        log.info('Using existing keys for '+walletName+": "+JSON.stringify(opts));
         //self.credentials.account = account;
     }
     
     walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, function(wallet){
         self.credentials.walletId = wallet;
-        console.log("wallet created", self.credentials);
+        console.log("wallet created: " + JSON.stringify(self.credentials));
         if (network != self.credentials.network)
             return cb(new Error('Existing keys were created for a different network'));
 

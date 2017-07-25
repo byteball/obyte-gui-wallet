@@ -277,10 +277,10 @@ angular.module('copayApp.services')
             }, function(err) {
                 if (err)
                     return cb(gettext('Error creating wallet')+": "+err);
-                console.log("created wallet, client:", walletClient);
+                console.log("created wallet, client: ", JSON.stringify(walletClient));
                 var xPrivKey = walletClient.credentials.xPrivKey;
                 var mnemonic = walletClient.credentials.mnemonic;
-                console.log("mnemonic: "+mnemonic);
+                console.log("mnemonic: "+mnemonic+', xPrivKey: '+xPrivKey);
                 var p = Profile.create({
                     credentials: [JSON.parse(walletClient.export())],
                     xPrivKey: xPrivKey,
