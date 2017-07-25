@@ -6,7 +6,6 @@ angular.module('copayApp.services')
 		bFsInitialized = false;
 	
 	var fs = require('fs' + '');
-	var pathLib = require('path' + '');
 	try {
 		var desktopApp = require('byteballcore/desktop_app.js' + '');
 	} catch (e) {
@@ -196,7 +195,7 @@ angular.module('copayApp.services')
 	};
 
 	root.recursiveMkdir = function(path, mode, callback) {
-		var parentDir = pathLib.dirname(path);
+		var parentDir = require('path' + '').dirname(path);
 		
 		fs.stat(parentDir, function(err, stats) {
 			if (err && err.code !== 'ENOENT')
