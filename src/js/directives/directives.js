@@ -162,6 +162,35 @@ angular.module('copayApp.directives')
       };
     }
   ])
+  .directive('validFeedValue', ['configService',
+    function(configService) {
+
+      return {
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+          var validator = function(value) {
+          	var oracle = configService.oracles[attrs.validFeedValue];
+          	if (!oracle || !oracle.feedvalues_filter) {
+          		ctrl.$setValidity('validFeedValue', true);
+              	return value;
+          	}
+          	for (var i in oracle.feedvalues_filter) {
+          		var matcher = new RegExp(oracle.feedvalues_filter[i], "g");
+      			if (matcher.test(value)) {
+	              ctrl.$setValidity('validFeedValue', true);
+	              return value;
+	            }
+          	}
+            ctrl.$setValidity('validFeedValue', false);
+            return value;
+          };
+
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
   .directive('loading', function() {
     return {
       restrict: 'A',

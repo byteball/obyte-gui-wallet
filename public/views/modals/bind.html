@@ -54,7 +54,7 @@
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required >
 	<br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>with expected value of</span>
-	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
+	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>posted</span>
 	<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span>
 		<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
