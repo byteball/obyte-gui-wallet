@@ -49,27 +49,10 @@
 			<a><b translate>{{oracle.name}}</b><br><span>{{address}}</span></a>
 		  </li>
 	  </ul>
-	<span ng-if="binding.type == 'data'" style="display: inline-block; margin-right: 20px;" class="right">
-		<span class="has-error right size-12" ng-show="bindForm.oracle_address.$invalid && binding.oracle_address">
-			<i class="icon-close-circle size-14"></i>
-			<span class="vm" translate>Not valid</span>
-		</span>
-		<small class="right text-primary" ng-show="!bindForm.oracle_address.$invalid">
-			<i class="icon-checkmark-circle size-14"></i>
-		</small>
-	</span>
 	<br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>on feed name</span>
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required >
-	<span ng-if="binding.type == 'data'" style="display: inline-block; margin-right: 20px;" class="">
-		<span class="has-error right size-12" ng-show="bindForm.feed_name.$invalid && binding.feed_name">
-			<i class="icon-close-circle size-14"></i>
-			<span class="vm" translate>Not valid</span>
-		</span>
-		<small class="right text-primary" ng-show="!bindForm.feed_name.$invalid">
-			<i class="icon-checkmark-circle size-14"></i>
-		</small>
-	</span><br ng-if="binding.type == 'data'">
+	<br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>with expected value of</span>
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>posted</span>
