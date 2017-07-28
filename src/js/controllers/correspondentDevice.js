@@ -163,6 +163,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
+		$scope.oracles = configService.oracles;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			var config = configService.getSync();

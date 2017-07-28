@@ -21,6 +21,14 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var constants = require('byteballcore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
+
+  root.oracles = {
+		"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {name: "Bitcoin Oracle", feednames_filter: ["^bitcoin_merkle$", "^random[\\d]+$"]},
+		"JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC" : {name: "Crypto exchange rates", feednames_filter: ["^[\\d\\w]+_[\\d\\w]+$"]},
+		"GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN" : {name: "Flight delay tracker", feednames_filter: ["^[\\w\\d]+-\\d{4}-\\d{2}-\\d{2}$"]},
+		"TKT4UESIKTTRALRRLWS4SENSTJX6ODCW" : {name: "Sports betting on soccer", feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"]},
+		"I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT" : {name: "Timestamp", feednames_filter: ["^timestamp$"]}
+	};
 	
   var defaultConfig = {
 	// wallet limits

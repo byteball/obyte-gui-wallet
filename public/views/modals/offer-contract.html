@@ -31,7 +31,7 @@
 	<span selectable="#myasset" dropdown-toggle="#myasset" data-model="contract" data-prop="myAsset"></span>
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
+			<a><span translate>{{info.displayName}}</span></a>
 		  </li>
 		</ul>,<br>
 	<span translate>peer pays</span>
@@ -39,14 +39,14 @@
 	<span selectable="#peerasset" dropdown-toggle="#peerasset" data-model="contract" data-prop="peerAsset"></span>
 		<ul id="peerasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
+			<a><span translate>{{info.displayName}}</span></a>
 		  </li>
 		</ul>
 	<span translate>to</span>
 	<span selectable="#peerpaysto" dropdown-toggle="#peerpaysto" data-model="contract" data-prop="peer_pays_to"></span>
 		<ul id="peerpaysto" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="dest in arrPeerPaysTos" class="dropup-item" data-value="{{dest.value}}">
-			<a><span translate>{{dest.display_value}}</span><span class="check">✔</span></a>
+			<a><span translate>{{dest.display_value}}</span></a>
 		  </li>
 		</ul>.<br>
 
@@ -57,20 +57,45 @@
 	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a><span translate>{{party.display_value}}</span><span class="check">✔</span></a>
+			<a><span translate>{{party.display_value}}</span></a>
 		  </li>
 		</ul>
 	<span translate>can unlock the contract</span> 
 	<span translate>if an event is posted</span><br>
 	<span translate class="p20l">by an oracle</span>
-	<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 270px;"><br>
+	<span class="combobox-container">
+		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 270px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address">
+	</span>
+	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 290px;">
+		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
+			<a><b translate>{{oracle.name}}</b><br><span>{{address}}</span></a>
+		  </li>
+	  </ul>
+	  <span style="display: inline-block; margin-right: 20px;" class="right">
+		<span class="has-error right size-12" ng-show="contractForm.oracle_address.$invalid && contract.oracle_address">
+			<i class="icon-close-circle size-14"></i>
+			<span class="vm" translate>Not valid</span>
+		</span>
+		<small class="right text-primary" ng-show="!contractForm.oracle_address.$invalid">
+			<i class="icon-checkmark-circle size-14"></i>
+		</small>
+	</span><br>
 	<span translate class="p20l">on feed name</span>
-	<input class="m0 inline" type="text" id="feed_name" name="feed_name" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required ><br>
+	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required >
+	<span style="display: inline-block; margin-right: 20px;" class="">
+		<span class="has-error right size-12" ng-show="contractForm.feed_name.$invalid && contract.feed_name">
+			<i class="icon-close-circle size-14"></i>
+			<span class="vm" translate>Not valid</span>
+		</span>
+		<small class="right text-primary" ng-show="!contractForm.feed_name.$invalid">
+			<i class="icon-checkmark-circle size-14"></i>
+		</small>
+	</span><br>
 	<span translate class="p20l">with expected value</span>
 	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
-			<a><span translate>{{relation}}</span><span class="check">✔</span></a>
+			<a><span translate>{{relation}}</span></a>
 		  </li>
 		</ul>
 	<input class="m0 inline" type="text" id="feed_value" name="feed_value" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required>,<br>
@@ -78,7 +103,7 @@
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a><span translate>{{party.display_value}}</span><span class="check">✔</span></a>
+			<a><span translate>{{party.display_value}}</span></a>
 		  </li>
 		</ul>
 	<span translate>after the contract expires in</span>

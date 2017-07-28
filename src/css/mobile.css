@@ -883,13 +883,15 @@ textarea:focus
 	left: auto  !important;
 	right: 9px  !important;
 }
-.f-dropdown ul li a {
-	font-size: 0.875rem;
-	color: #555555;
+.f-dropdown li a {
+	position: relative;
 }
 .f-dropdown li a .check {
 	display: none;
-	float: right;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	margin-top: -10px;
 }
 .f-dropdown li.selected a .check {
 	display: inline;
@@ -904,6 +906,7 @@ textarea:focus
 	right: 5px;
 	top: 50%;
 	margin-top: -10px;
+	z-index: -1;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;
@@ -916,7 +919,12 @@ input.inline {
 	padding-bottom: 0;
 	height: 25px;
 }
-
+input.inline.ng-invalid {
+	border-bottom: 1px solid #FF5B5B;
+}
+input.inline.ng-valid {
+	border-bottom: 1px solid #7CC789;
+}
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */

@@ -24,11 +24,11 @@
 	<span selectable="#binding_type" dropdown-toggle="#binding_type" data-model="binding" data-prop="type"></span>
         <ul id="binding_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li class="dropup-item" data-value="reverse_payment">
-			<a><span translate>I receive another payment of</span><span class="check">✔</span></a>
+			<a><span translate>I receive another payment of</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="data">
-		  	<a><span translate>an event is posted by an oracle</span><span class="check">✔</span></a>
+		  	<a><span translate>an event is posted by an oracle</span></a>
 		  </li>
 		</ul>
 
@@ -37,16 +37,16 @@
 	<span ng-if="binding.type == 'reverse_payment'" selectable="#asset" dropdown-toggle="#asset" data-model="binding" data-prop="reverseAsset"></span>
 		<ul id="asset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a><span translate>{{info.displayName}}</span><span class="check">✔</span></a>
+			<a><span translate>{{info.displayName}}</span></a>
 		  </li>
 		</ul>
 
 	<span ng-if="binding.type == 'data'" class="combobox-container">
 		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 290px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address">
 	</span>
-	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="left: 120px; max-width: 290px;">
-		<li ng-repeat="oracle in oracles" class="dropup-item" data-value="{{oracle}}">
-			<a><span translate>{{oracle}}</span><span class="check">✔</span></a>
+	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 290px;">
+		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
+			<a><b translate>{{oracle.name}}</b><br><span>{{address}}</span></a>
 		  </li>
 	  </ul>
 	<span ng-if="binding.type == 'data'" style="display: inline-block; margin-right: 20px;" class="right">
@@ -60,22 +60,31 @@
 	</span>
 	<br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>on feed name</span>
-	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required ><br ng-if="binding.type == 'data'">
+	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required >
+	<span ng-if="binding.type == 'data'" style="display: inline-block; margin-right: 20px;" class="">
+		<span class="has-error right size-12" ng-show="bindForm.feed_name.$invalid && binding.feed_name">
+			<i class="icon-close-circle size-14"></i>
+			<span class="vm" translate>Not valid</span>
+		</span>
+		<small class="right text-primary" ng-show="!bindForm.feed_name.$invalid">
+			<i class="icon-checkmark-circle size-14"></i>
+		</small>
+	</span><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>with expected value of</span>
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>posted</span>
 	<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span>
 		<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li class="dropup-item" data-value="explicit">
-			<a><span translate>explicitly</span><span class="check">✔</span></a>
+			<a><span translate>explicitly</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="merkle">
-		  	<a><span translate>in merkle tree</span><span class="check">✔</span></a>
+		  	<a><span translate>in merkle tree</span></a>
 		  </li>
 		  <div class="clear"></div>
 		  <li class="dropup-item" data-value="either">
-		  	<a><span translate>either way</span><span class="check">✔</span></a>
+		  	<a><span translate>either way</span></a>
 		  </li>
 		</ul>
 		.

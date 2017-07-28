@@ -37,14 +37,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
   $scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-  var oracles = {
-		"P2P exchange": "FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH",
-		"Crypto exchange rates": "JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC",
-		"Flight delay tracker": "GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN",
-		"Sports betting on soccer": "TKT4UESIKTTRALRRLWS4SENSTJX6ODCW",
-		"Timestamp": "I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT"
-	};
-
   var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
     console.log('paymentRequest event '+address+', '+amount);
     $rootScope.$emit('Local/SetTab', 'send');
@@ -948,7 +940,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					$scope.binding.feed_type = self.binding.feed_type;
 				}
 			}
-			$scope.oracles = oracles;
+			$scope.oracles = configService.oracles;
 			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
@@ -1400,6 +1392,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					});
 				});
 				dropdown.find('a').eq(0)[0].click();
+				angular.forEach(dropdown.find('a'), function(el){
+					angular.element(el).append('<span class="check">✔</span>');
+				});
 
 				if (scope.targetProp) {
 					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
