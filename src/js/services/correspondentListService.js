@@ -321,6 +321,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
+					if (args.what === 'output' && args.asset && args.amount && args.address)
+						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
 					return JSON.stringify(arrSubdefinition);
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){

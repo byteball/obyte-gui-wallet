@@ -68,6 +68,7 @@ Credentials.createWithMnemonic = function(network, passphrase, language, account
 
     var m = new Mnemonic(wordsForLang[language]);
     while (!Mnemonic.isValid(m.toString())) {
+		console.log('--- retrying mnemonic generation');
         m = new Mnemonic(wordsForLang[language])
     };
     var x = new Credentials();
@@ -79,7 +80,7 @@ Credentials.createWithMnemonic = function(network, passphrase, language, account
     x.mnemonic = m.phrase;
     x.mnemonicHasPassphrase = !!passphrase;
 
-    console.log("credentials: createWithMnemonic", network, passphrase, language, account);
+    console.log("credentials: createWithMnemonic " + network + ', ' + passphrase + ',' + language + ',' + account);
 
     return x;
 };
@@ -165,11 +166,13 @@ Credentials.prototype._expand = function() {
   }
 
   if (this.xPrivKey) {
+	console.log('_expand path: '+this.getBaseAddressDerivationPath());
     var xPrivKey = new Bitcore.HDPrivateKey.fromString(this.xPrivKey);
 
     // this extra derivation is not to share a non hardened xPubKey to the server.
     var addressDerivation = xPrivKey.derive(this.getBaseAddressDerivationPath());
     this.xPubKey = (new Bitcore.HDPublicKey(addressDerivation)).toString();
+	console.log('_expand xPubKey: '+this.xPubKey);
   } else {
   }
 

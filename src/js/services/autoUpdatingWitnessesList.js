@@ -15,7 +15,7 @@ angular.module('copayApp.services')
 	var myWitnesses = require('byteballcore/my_witnesses.js');
     device.getWitnessesFromHub(function(err, arrWitnessesFromHub){
       if (arrWitnessesFromHub) {
-       myWitnesses.readMyWitnesses(function(arrWitnesses){
+        myWitnesses.readMyWitnesses(function(arrWitnesses){
           root.addWitnesses = arrWitnessesFromHub.filter(function(witness){
             return arrWitnesses.indexOf(witness) == -1;
           });

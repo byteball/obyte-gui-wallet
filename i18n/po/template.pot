@@ -91,10 +91,6 @@ msgstr ""
 msgid "Agree"
 msgstr ""
 
-#: public/views/translators.html:34
-msgid "Albanian"
-msgstr ""
-
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
 msgstr ""
@@ -220,7 +216,7 @@ msgstr ""
 msgid "Bot Store"
 msgstr ""
 
-#: public/views/correspondentDevice.html:283
+#: public/views/correspondentDevice.html:288
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr ""
 
@@ -260,12 +256,6 @@ msgstr ""
 
 #: src/js/controllers/index.js:602
 msgid "Chat"
-msgstr ""
-
-#: public/views/translators.html:45
-#: public/views/translators.html:46
-#: public/views/translators.html:47
-msgid "Chinese"
 msgstr ""
 
 #: public/views/import.html:33
@@ -500,20 +490,12 @@ msgstr ""
 msgid "Download CSV file"
 msgstr ""
 
-#: public/views/translators.html:37
-#: public/views/translators.html:38
-#: public/views/translators.html:39
-#: public/views/translators.html:40
-#: public/views/translators.html:41
-msgid "Dutch"
-msgstr ""
-
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
 msgstr ""
 
-#: public/views/correspondentDevice.html:286
+#: public/views/correspondentDevice.html:291
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr ""
 
@@ -571,13 +553,6 @@ msgstr ""
 msgid "Finality"
 msgstr ""
 
-#: public/views/translators.html:11
-#: public/views/translators.html:12
-#: public/views/translators.html:13
-#: public/views/translators.html:14
-msgid "French"
-msgstr ""
-
 #: public/views/modals/tx-details.html:53
 msgid "From"
 msgstr ""
@@ -618,14 +593,6 @@ msgstr ""
 msgid "Generating .csv file..."
 msgstr ""
 
-#: public/views/translators.html:20
-#: public/views/translators.html:21
-#: public/views/translators.html:22
-#: public/views/translators.html:23
-#: public/views/translators.html:24
-msgid "German"
-msgstr ""
-
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr ""
@@ -636,12 +603,6 @@ msgstr ""
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr ""
-
-#: public/views/translators.html:27
-#: public/views/translators.html:28
-#: public/views/translators.html:29
-msgid "Greek"
 msgstr ""
 
 #: public/views/preferences.html:37
@@ -670,10 +631,6 @@ msgstr ""
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
-
-#: public/views/translators.html:42
-msgid "Hungarian"
 msgstr ""
 
 #: public/views/disclaimer.html:36
@@ -720,17 +677,13 @@ msgstr ""
 msgid "Including pending confirmation"
 msgstr ""
 
-#: public/views/translators.html:36
-msgid "Indonesian"
-msgstr ""
-
 #: public/views/walletHome.html:499
 msgid ""
 "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr ""
 
-#: public/views/correspondentDevice.html:322
+#: public/views/correspondentDevice.html:327
 msgid "Insert my address"
 msgstr ""
 
@@ -744,22 +697,6 @@ msgstr ""
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
-
-#: public/views/translators.html:15
-#: public/views/translators.html:16
-#: public/views/translators.html:17
-#: public/views/translators.html:18
-#: public/views/translators.html:19
-msgid "Italian"
-msgstr ""
-
-#: public/views/translators.html:10
-msgid "Japanese"
-msgstr ""
-
-#: public/views/translators.html:44
-msgid "Korean"
 msgstr ""
 
 #: public/views/modals/destination-address.html:120
@@ -822,7 +759,7 @@ msgstr ""
 msgid "My Byteball address"
 msgstr ""
 
-#: public/views/correspondentDevice.html:292
+#: public/views/correspondentDevice.html:297
 msgid "My recording preference"
 msgstr ""
 
@@ -991,17 +928,8 @@ msgstr ""
 msgid "Please name this device"
 msgstr ""
 
-#: public/views/translators.html:35
-msgid "Polish"
-msgstr ""
-
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
-
-#: public/views/translators.html:25
-#: public/views/translators.html:26
-msgid "Portuguese"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:110
@@ -1109,7 +1037,7 @@ msgstr ""
 msgid "Request a specific amount"
 msgstr ""
 
-#: public/views/correspondentDevice.html:331
+#: public/views/correspondentDevice.html:336
 msgid "Request payment"
 msgstr ""
 
@@ -1123,11 +1051,6 @@ msgstr ""
 
 #: public/views/splash.html:60
 msgid "Retrying..."
-msgstr ""
-
-#: public/views/translators.html:32
-#: public/views/translators.html:33
-msgid "Russian"
 msgstr ""
 
 #: public/views/includes/password.html:32
@@ -1276,11 +1199,6 @@ msgstr ""
 msgid "Small Expenses Wallet"
 msgstr ""
 
-#: public/views/translators.html:30
-#: public/views/translators.html:31
-msgid "Spanish"
-msgstr ""
-
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
 msgstr ""
@@ -1303,10 +1221,6 @@ msgstr ""
 #: src/js/controllers/walletHome.js:1235
 #: src/js/controllers/walletHome.js:1308
 msgid "Success"
-msgstr ""
-
-#: public/views/translators.html:43
-msgid "Swedish"
 msgstr ""
 
 #: public/views/paperWallet.html:64
@@ -1340,7 +1254,7 @@ msgstr ""
 msgid "Terms of Use"
 msgstr ""
 
-#: public/views/correspondentDevice.html:336
+#: public/views/correspondentDevice.html:341
 msgid "Text message to"
 msgstr ""
 
@@ -1373,7 +1287,7 @@ msgstr ""
 msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr ""
 
-#: public/views/correspondentDevice.html:297
+#: public/views/correspondentDevice.html:302
 msgid "Their recording preference"
 msgstr ""
 
