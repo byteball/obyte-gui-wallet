@@ -828,10 +828,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					profileService.bKeepUnlocked = false;
 					if (err){
 						if (typeof err === 'object'){
- 							err = JSON.stringify(err);
- 							eventBus.emit('nonfatal_error', "error object from sendMultiPayment: "+err, new Error());
- 						}
- 						else if (err.match(/device address/))
+							err = JSON.stringify(err);
+							eventBus.emit('nonfatal_error', "error object from sendMultiPayment: "+err, new Error());
+						}
+						else if (err.match(/device address/))
 							err = "This is a private asset, please send it only by clicking links from chat";
 						else if (err.match(/no funded/))
 							err = "Not enough spendable funds, make sure all your funds are confirmed";
