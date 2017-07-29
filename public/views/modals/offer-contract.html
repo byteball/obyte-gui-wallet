@@ -8,6 +8,12 @@
 .w80 {
 	width: 80px !important;
 }
+.capitalize span {
+	display: inline-block;
+}
+.capitalize span:first-letter {
+	text-transform: uppercase;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -54,7 +60,7 @@
 	<input type="number" min="0.1" required name="time2out" id="tim2eout" ng-model="contract.timeout" style="text-align: right" class="inline w30">
 	<span translate>hours</span>.<br><br>
 
-	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party"></span>
+	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="padding-right: 5px;"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
 			<a><span translate>{{party.display_value}}</span></a>
@@ -62,7 +68,7 @@
 		</ul>
 	<span translate>can unlock the contract</span> 
 	<span translate>if an event is posted by an oracle</span><br>
-	<span class="combobox-container">
+	<span class="combobox-container p20l">
 		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address">
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 290px;">
@@ -83,7 +89,7 @@
 		</ul>
 	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:100px">,<br>
 	<span translate>or</span>
-	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party"></span>
+	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party" style="padding:0 5px;"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
 			<a><span translate>{{party.display_value}}</span></a>
