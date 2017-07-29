@@ -524,6 +524,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				});
 			},
 			function(){
+				arrSharedWallets.sort(function(o1, o2){ return (o2.creation_ts - o1.creation_ts); });
 				$timeout(function(){
 					$scope.$apply();
 				});
