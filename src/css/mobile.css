@@ -890,7 +890,7 @@ textarea:focus
 	display: none;
 	position: absolute;
 	top: 50%;
-	right: 0;
+	right: -5px;
 	margin-top: -10px;
 }
 .f-dropdown li.selected a .check {
@@ -919,10 +919,10 @@ input.inline {
 	padding-bottom: 0;
 	height: 25px;
 }
-input.inline.ng-invalid {
+input.inline.ng-dirty.ng-invalid {
 	border-bottom: 1px solid #FF5B5B;
 }
-input.inline.ng-valid {
+input.inline.ng-dirty.ng-valid {
 	border-bottom: 1px solid #7CC789;
 }
 /* removes 300ms in IE * /

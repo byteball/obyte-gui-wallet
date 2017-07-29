@@ -61,10 +61,9 @@
 		  </li>
 		</ul>
 	<span translate>can unlock the contract</span> 
-	<span translate>if an event is posted</span><br>
-	<span translate class="p20l">by an oracle</span>
+	<span translate>if an event is posted by an oracle</span><br>
 	<span class="combobox-container">
-		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 270px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address">
+		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address">
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 290px;">
 		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
@@ -82,7 +81,7 @@
 			<a><span translate>{{relation}}</span></a>
 		  </li>
 		</ul>
-	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required>,<br>
+	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:100px">,<br>
 	<span translate>or</span>
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
@@ -90,7 +89,7 @@
 			<a><span translate>{{party.display_value}}</span></a>
 		  </li>
 		</ul>
-	<span translate>after the contract expires in</span>
+	<span translate>can unlock the contract after it expires in</span>
 	<input type="number" min="0.01" required name="expiry" id="expiry" ng-model="contract.expiry" style="text-align: right" class="inline w30">
 	<span translate>days</span>.
 

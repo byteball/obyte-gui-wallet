@@ -1391,10 +1391,17 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 						}
 					});
 				});
-				dropdown.find('a').eq(0)[0].click();
-				angular.forEach(dropdown.find('a'), function(el){
-					angular.element(el).append('<span class="check">✔</span>');
+				var selected = false;
+				angular.forEach(dropdown.find('li'), function(el){
+					var li = angular.element(el);
+					var a = angular.element(li.find('a'));
+					a.append('<span class="check">✔</span>');
+					if (scope.bindObj[scope.bindProp] == li.attr('data-value')) {
+						a[0].click();
+						selected = true;
+					}
 				});
+				if (!selected) dropdown.find('a').eq(0)[0].click();
 
 				if (scope.targetProp) {
 					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {

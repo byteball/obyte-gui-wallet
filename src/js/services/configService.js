@@ -30,7 +30,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		},
 		"JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC" : {
 			name: "Crypto exchange rates",
-			feednames_filter: ["^[\\d\\w]+_[\\d\\w]+$"],
+			feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
 			feedvalues_filter: ["^[\\d\\.]+$"]
 		},
 		"GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN" : {
