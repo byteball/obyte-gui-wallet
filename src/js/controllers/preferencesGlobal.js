@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.deviceName = config.deviceName;
       this.myDeviceAddress = require('byteballcore/device.js').getMyDeviceAddress();
       this.hub = config.hub;
+      $scope.useChangeAddresses = !!config.useChangeAddresses;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
       this.torEnabled = conf.socksHost && conf.socksPort;
       $scope.pushNotifications = config.pushNotifications.enabled;
@@ -72,9 +73,15 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       }
     });
 
+    var unwatchUseChangeAddresses = $scope.$watch('useChangeAddresses', function(val) {
+      configService.set({useChangeAddresses: val}, function (err) {
+	console.log(err);
+      });
+    });
 
     $scope.$on('$destroy', function() {
         unwatchPushNotifications();
         unwatchEncrypt();
+        unwatchUseChangeAddresses();
     });
   });

@@ -57,6 +57,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	},
 
 	hub: (constants.alt === '2' && isTestnet) ? 'byteball.org/bb-test' : 'byteball.org/bb',
+	useChangeAddresses: true,
 
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
@@ -197,6 +198,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		  }
 		  if (!_config.hub)
 			  _config.hub = defaultConfig.hub;
+		  if (_config.useChangeAddresses !== !!_config.useChangeAddresses)
+			  _config.useChangeAddresses = defaultConfig.useChangeAddresses;
 		  if (!_config.deviceName)
 			  _config.deviceName = defaultConfig.getDeviceName();
 
