@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
-			$scope.arrPeerPaysTos = [{value: 'me', display_value: "I"}, {value: 'contract', display_value: "this contract"}];
+			$scope.arrPeerPaysTos = [{value: 'me', display_value: "me"}, {value: 'contract', display_value: "this contract"}];
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
