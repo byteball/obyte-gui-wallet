@@ -853,6 +853,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
  							device.readCorrespondent(recipient_device_address, function(correspondent){
  			 					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 			 				});
+
 							// issue next address to avoid reusing the reverse payment address
 							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
 						}
@@ -943,6 +944,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					$scope.binding.feed_type = self.binding.feed_type;
 				}
 			}
+			$scope.oracles = configService.oracles;
 			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
@@ -1364,4 +1366,59 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
     this.setAddress();
   }
+}).directive('selectable', function ($rootScope, $timeout) {
+	return {
+		restrict: 'A',
+		scope: {
+			bindObj: "=model",
+			bindProp: "@prop",
+			targetProp: "@exclusionBind"
+		},
+		link: function (scope, elem, attrs) {
+			$timeout(function(){
+				var dropdown = angular.element(document.querySelector(attrs.selectable));
+				
+				dropdown.find('li').on('click', function(e){
+					var li = angular.element(this);
+					elem.html(li.find('a').find('span').eq(0).html());
+					scope.bindObj[scope.bindProp] = li.attr('data-value');
+					if(!$rootScope.$$phase) $rootScope.$digest();
+				});
+				scope.$watch(function(scope){return scope.bindObj[scope.bindProp]}, function(newValue, oldValue) {
+					angular.forEach(dropdown.find('li'), function(element){
+						var li = angular.element(element);
+						if (li.attr('data-value') == newValue) {
+							elem.html(li.find('a').find('span').eq(0).html());
+							li.addClass('selected');
+						} else {
+							li.removeClass('selected');
+						}
+					});
+				});
+				var selected = false;
+				angular.forEach(dropdown.find('li'), function(el){
+					var li = angular.element(el);
+					var a = angular.element(li.find('a'));
+					a.append('<span class="check">✔</span>');
+					if (scope.bindObj[scope.bindProp] == li.attr('data-value')) {
+						a[0].click();
+						selected = true;
+					}
+				});
+				if (!selected) dropdown.find('a').eq(0)[0].click();
+
+				if (scope.targetProp) {
+					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
+						angular.forEach(dropdown.find('li'), function(element){
+							var li = angular.element(element);
+							if (li.attr('data-value') != newValue) {
+								li[0].click();
+								scope.bindObj[scope.bindProp] = li.attr('data-value');
+							}
+						});
+					});
+				}
+			});
+		}
+	};
 });
