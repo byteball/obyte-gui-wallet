@@ -540,10 +540,12 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 		Wallet.sendMultiPayment(opts, cb);
 	}
 	else{
+		opts.wallet = self.credentials.walletId;
+		if (opts.change_address)
+			return Wallet.sendMultiPayment(opts, cb);
 		// create a new change address or select first unused one
 		walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
 			opts.change_address = objAddr.address;
-			opts.wallet = self.credentials.walletId;
 			Wallet.sendMultiPayment(opts, cb);
 		});
 	}

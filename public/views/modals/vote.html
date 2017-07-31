@@ -1,0 +1,63 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Confirm vote
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	
+	<h4 class="title m0 row columns" translate>Question:</h4>
+	<div class="m10b m10t row columns size-14" >
+		{{question}}
+	</div>
+	
+	<h4 class="title m0 row columns" translate>Answer:</h4>
+	<div class="m20b m10t row columns size-14" >
+		{{choice}}
+	</div>
+	
+	<div class="" ng-show="index.m < index.n && index.m > 1">
+		<h4 class="title m0 row columns" translate>Who signs:</h4>
+		<div class="row columns large-12 medium-12">
+			<ul class="no-bullet m20b whopays">
+			  <li class="" ng-repeat="copayer in index.copayers">
+				  <span class="size-12 text-gray" ng-show="copayer.me">
+					  <i class="icon-contact size-24 m10r"></i>{{'Me'|translate}} <i class="fi-check m5 right"></i>
+				  </span>
+				  <div class="size-12" style="width: 100%" ng-show="!copayer.me" ng-click="copayer.signs = !copayer.signs">
+					  <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{copayer.device_address.substr(0,4)}}...) <i class="m5 right" ng-class="copayer.signs ? 'fi-check' : ''"></i>
+				  </div>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	
+  <div class="row m20t">
+    <div class="large-12 large-centered columns">
+        <div >
+        </div>
+        <div >
+        </div>
+        <button type="submit" class="button black round expand" ng-disabled="bDisabled || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="vote()" translate>
+          Confirm Vote
+        </button>
+    </div>
+  </div>
+
+  <div class="text-gray size-12 text-center" translate>The vote will be signed by all your funded addresses</div>
+
+</div>
