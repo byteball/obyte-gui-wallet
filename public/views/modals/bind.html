@@ -34,7 +34,7 @@
 
 	<input ng-if="binding.type == 'reverse_payment'" type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="binding.reverseAmount" name="reverseAmount" valid-amount="{{binding.reverseAsset}}" required autocomplete="off" style="text-align: right;" class="inline">
 
-	<span ng-if="binding.type == 'reverse_payment'" selectable="#asset" dropdown-toggle="#asset" data-model="binding" data-prop="reverseAsset"></span>
+	<span ng-if="binding.type == 'reverse_payment'" selectable="#asset" dropdown-toggle="#asset" data-model="binding" data-prop="reverseAsset"></span><span ng-if="binding.type == 'reverse_payment'">.</span>
 		<ul id="asset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
 			<a><span translate>{{info.displayName}}</span></a>
@@ -56,7 +56,7 @@
 	<span ng-if="binding.type == 'data'" translate>with expected value of</span>
 	<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
 	<span ng-if="binding.type == 'data'" translate>posted</span>
-	<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span>
+	<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span><span ng-if="binding.type == 'data'">.</span>
 		<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li class="dropup-item" data-value="explicit">
 			<a><span translate>explicitly</span></a>
@@ -70,7 +70,7 @@
 		  	<a><span translate>either way</span></a>
 		  </li>
 		</ul>
-		.
+		
 	<div class="clear"></div><br>
 	<span translate>If the condition is not met, I can take this money back after</span>
 	<input type="number" min="0.1" required name="timeout" ng-model="binding.timeout" style="text-align: right; width: 30px;" class="inline">
