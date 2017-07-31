@@ -815,6 +815,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
 							shared_address: indexScope.shared_address,
 							change_address: arrAddresses[0],
