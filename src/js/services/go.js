@@ -1,5 +1,3 @@
-'use strict';
-
 var eventBus = require('byteballcore/event_bus.js');
 
 angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState) {
@@ -165,20 +163,20 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var fs = require('fs'+'');
 		var path = require('path'+'');
 		var child_process = require('child_process'+'');
-		var package = require('../package.json'+''); // relative to html root
+		var pkg = require('../package.json'+''); // relative to html root
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
-			fs.writeFile(applicationsDir + '/' +package.name+'.desktop', "[Desktop Entry]\n\
+			fs.writeFile(applicationsDir + '/' +pkg.name+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+package.name+"\n\
-Comment="+package.description+"\n\
+Name="+pkg.name+"\n\
+Comment="+pkg.description+"\n\
 Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/icon-white-outline.iconset/icon_256x256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package.name+";\n\
+MimeType=x-scheme-handler/"+pkg.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				if (err)

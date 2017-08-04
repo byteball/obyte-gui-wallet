@@ -11,7 +11,7 @@ var getCommitHash = function() {
 
 	var hash = shell.exec('git rev-parse HEAD', {
 		silent: true
-	}).output.trim().substr(0, 7);
+	}).stdout.trim().substr(0, 7);
 	if (hash === 'fatal: ')
 		return 'n/a';
 	return hash;
