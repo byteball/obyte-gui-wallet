@@ -26,14 +26,7 @@
 	</span>
 	</div>
 
-	<div ng-show="recFromSeed.bLight">
-		<div class="row">
-			<div class="columns center" translate>
-				Recovery is only available in full wallets.
-			</div>
-		</div>
-	</div>
-	<div ng-show="!recFromSeed.bLight">
+	<div>
 		<form name="settingsDeviceNameForm" class="columns" ng-submit="recFromSeed.recoveryForm()">
 			<label><span translate>Your Wallet Seed:</span></label>
 			<textarea id="inputMnemonic" ng-model="recFromSeed.inputMnemonic"></textarea>
