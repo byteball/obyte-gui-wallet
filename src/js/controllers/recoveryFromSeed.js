@@ -18,8 +18,6 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		var db = require('byteballcore/db.js');
 		var network = require('byteballcore/network');
 		var myWitnesses = require('byteballcore/my_witnesses');
-		var _ws = null;
-		var _arrWitnesses = null;
 
 		var self = this;
 
@@ -31,18 +29,12 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.assocIndexesToWallets = {};
 
 		function getWsAndWitnesses(cb) {
-			if (_ws) {
-				cb(_ws, _arrWitnesses);
-			} else {
-				network.findOutboundPeerOrConnect(conf.WS_PROTOCOL + configService.getSync().hub, function (err, ws) {
-					myWitnesses.readMyWitnesses(function (arrWitnesses) {
-						if (err) throw err;
-						_ws = ws;
-						_arrWitnesses = arrWitnesses;
-						cb(ws, arrWitnesses);
-					});
+			network.findOutboundPeerOrConnect(conf.WS_PROTOCOL + configService.getSync().hub, function (err, ws) {
+				myWitnesses.readMyWitnesses(function (arrWitnesses) {
+					if (err) throw err;
+					cb(ws, arrWitnesses);
 				});
-			}
+			});
 		}
 
 		function determineIfAddressUsed(address, cb) {
@@ -160,13 +152,13 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 					addAddress(self.assocIndexesToWallets[accounts[currentAccount]], 0, 0, assocMaxAddressIndexes[accounts[currentAccount]].main + 20);
 				}
 			}
-			
-			
+
+
 			startAddToNewWallet(0);
 		}
-		
+
 		function createWallets(arrWalletIndexes, cb) {
-			
+
 			function createWallet(n) {
 				var account = parseInt(arrWalletIndexes[n]);
 				var opts = {};
@@ -178,14 +170,14 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				opts.extendedPrivateKey = self.xPrivKey;
 				opts.mnemonic = self.inputMnemonic;
 				opts.account = account;
-				
+
 				profileService.createWallet(opts, function(err, walletId) {
 					self.assocIndexesToWallets[account] = walletId;
 					n++;
 					(n < arrWalletIndexes.length) ? createWallet(n) : cb();
 				});
 			}
-			
+
 			createWallet(0);
 		}
 
@@ -211,6 +203,16 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 						addresses: arrTmpAddresses,
 						witnesses: arrWitnesses
 					}, false, function (ws, request, response) {
+						if(response && response.error){
+							var breadcrumbs = require('byteballcore/breadcrumbs.js');
+							breadcrumbs.add('Error scanForAddressesAndWalletsInLightClient: ' + response.error);
+							self.error = 'When scanning an error occurred, please try again later.';
+							self.scanning = false;
+							$timeout(function () {
+								$rootScope.$apply();
+							});
+							return;
+						}
 						if (Object.keys(response).length) {
 							lastUsedWalletIndex = currentWalletIndex;
 							if (is_change) {
@@ -244,7 +246,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			setCurrentWallet();
 		}
 
-		function cleanAndAddingWalletsAndAddresses(assocMaxAddressIndexes) {
+		function cleanAndAddWalletsAndAddresses(assocMaxAddressIndexes) {
 			var device = require('byteballcore/device');
 			var arrWalletIndexes = Object.keys(assocMaxAddressIndexes);
 			if (arrWalletIndexes.length) {
@@ -279,9 +281,9 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
 					if (self.bLight) {
-						scanForAddressesAndWalletsInLightClient(self.inputMnemonic, cleanAndAddingWalletsAndAddresses);
+						scanForAddressesAndWalletsInLightClient(self.inputMnemonic, cleanAndAddWalletsAndAddresses);
 					} else {
-						scanForAddressesAndWallets(self.inputMnemonic, cleanAndAddingWalletsAndAddresses);
+						scanForAddressesAndWallets(self.inputMnemonic, cleanAndAddWalletsAndAddresses);
 					}
 				} else {
 					self.error = 'Seed is not valid';
