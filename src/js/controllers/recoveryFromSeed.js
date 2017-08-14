@@ -28,15 +28,6 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		self.xPrivKey = '';
 		self.assocIndexesToWallets = {};
 
-		function getWsAndWitnesses(cb) {
-			network.findOutboundPeerOrConnect(conf.WS_PROTOCOL + configService.getSync().hub, function (err, ws) {
-				if(err) return cb(err);
-				myWitnesses.readMyWitnesses(function (arrWitnesses) {
-					cb(null, ws, arrWitnesses);
-				});
-			});
-		}
-
 		function determineIfAddressUsed(address, cb) {
 			db.query("SELECT 1 FROM outputs WHERE address = ? LIMIT 1", [address], function(outputsRows) {
 				if (outputsRows.length === 1)
@@ -198,19 +189,11 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 					var index = (is_change ? assocMaxAddressIndexes[currentWalletIndex].change : assocMaxAddressIndexes[currentWalletIndex].main) + i;
 					arrTmpAddresses.push(objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + is_change + '/' + index)}]));
 				}
-				getWsAndWitnesses(function (err, ws, arrWitnesses) {
-					if(err){
-						self.error = 'Failed to connect to the hub.';
-						self.scanning = false;
-						$timeout(function () {
-							$rootScope.$apply();
-						});
-						return;
-					}
-					network.sendRequest(ws, 'light/get_history', {
+				myWitnesses.readMyWitnesses(function (arrWitnesses) {
+					network.requestFromLightVendor('light/get_history', {
 						addresses: arrTmpAddresses,
 						witnesses: arrWitnesses
-					}, false, function (ws, request, response) {
+					}, function (ws, request, response) {
 						if(response && response.error){
 							var breadcrumbs = require('byteballcore/breadcrumbs.js');
 							breadcrumbs.add('Error scanForAddressesAndWalletsInLightClient: ' + response.error);
