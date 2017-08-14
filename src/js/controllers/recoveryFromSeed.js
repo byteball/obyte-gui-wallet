@@ -30,9 +30,9 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 
 		function getWsAndWitnesses(cb) {
 			network.findOutboundPeerOrConnect(conf.WS_PROTOCOL + configService.getSync().hub, function (err, ws) {
+				if(err) return cb(err);
 				myWitnesses.readMyWitnesses(function (arrWitnesses) {
-					if (err) throw err;
-					cb(ws, arrWitnesses);
+					cb(null, ws, arrWitnesses);
 				});
 			});
 		}
@@ -198,7 +198,15 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 					var index = (is_change ? assocMaxAddressIndexes[currentWalletIndex].change : assocMaxAddressIndexes[currentWalletIndex].main) + i;
 					arrTmpAddresses.push(objectHash.getChash160(["sig", {"pubkey": wallet_defined_by_keys.derivePubkey(xPubKey, 'm/' + is_change + '/' + index)}]));
 				}
-				getWsAndWitnesses(function (ws, arrWitnesses) {
+				getWsAndWitnesses(function (err, ws, arrWitnesses) {
+					if(err){
+						self.error = 'Failed to connect to the hub.';
+						self.scanning = false;
+						$timeout(function () {
+							$rootScope.$apply();
+						});
+						return;
+					}
 					network.sendRequest(ws, 'light/get_history', {
 						addresses: arrTmpAddresses,
 						witnesses: arrWitnesses
