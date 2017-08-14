@@ -1399,7 +1399,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				angular.forEach(dropdown.find('li'), function(el){
 					var li = angular.element(el);
 					var a = angular.element(li.find('a'));
-					a.append('<span class="check">✔</span>');
+					a.append('<i class="fi-check check"></i>');
 					if (scope.bindObj[scope.bindProp] == li.attr('data-value')) {
 						a[0].click();
 						selected = true;
