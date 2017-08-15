@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('recoveryFromSeed',
-	function ($rootScope, $scope, $log, $timeout, profileService, isCordova, configService) {
+	function ($rootScope, $scope, $log, $timeout, profileService) {
 
 		var async = require('async');
 		var conf = require('byteballcore/conf.js');
 		var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
 		var objectHash = require('byteballcore/object_hash.js');
 		try{
-			var ecdsa = isCordova ? require('secp256k1/js') : require('secp256k1' + '');
+			var ecdsa = require('secp256k1');
 		}
 		catch(e){
 			var ecdsa = require('byteballcore/node_modules/secp256k1' + '');
@@ -269,6 +269,8 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 
 		self.recoveryForm = function() {
 			if (self.inputMnemonic) {
+				self.error = '';
+				self.inputMnemonic = self.inputMnemonic.toLowerCase();
 				if ((self.inputMnemonic.split(' ').length % 3 === 0) && Mnemonic.isValid(self.inputMnemonic)) {
 					self.scanning = true;
 					if (self.bLight) {
