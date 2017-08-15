@@ -117,6 +117,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                 process.exit();
             // ios doesn't exit
         });
+	    if(isCordova) wallet.showCompleteClient();
     });
 	
 	function readLastDateString(cb){
@@ -146,7 +147,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			});
 		});
 	}
-    
+
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);

@@ -4,6 +4,12 @@ var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/l
 var fileSystem = require('./fileStorage');
 var completeClientLoaded = false;
 
+window.onerror = function (message) {
+	console.error(new Error('Error partialClient: ' + message));
+	getFromId('splash').style.display = 'block';
+	wallet.loadCompleteClient(true);
+};
+
 function initWallet() {
 	var root = {};
 	root.profile = null;
@@ -246,6 +252,7 @@ function initWallet() {
 	root.showCompleteClient = showCompleteClient;
 	root.loadProfile = loadProfile;
 	root.selectWallet = selectWallet;
+	root.loadCompleteClient = loadCompleteClient;
 	return root;
 }
 
