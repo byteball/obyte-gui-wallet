@@ -910,6 +910,7 @@ textarea:focus
 	height: 15px;
 	border-radius: 100px;
 	background-color: #fff;
+  pointer-events: none;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;
