@@ -42,7 +42,7 @@
 		</ul>
 
 	<span ng-if="binding.type == 'data'" class="combobox-container">
-		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address">
+		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address" autocomplete="off">
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 280px;">
 		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
