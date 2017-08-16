@@ -906,7 +906,10 @@ textarea:focus
 	right: 5px;
 	top: 50%;
 	margin-top: -10px;
-	z-index: -1;
+	z-index: 1;
+	height: 15px;
+	border-radius: 100px;
+	background-color: #fff;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;
