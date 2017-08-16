@@ -921,6 +921,7 @@ input.inline {
 	margin-bottom: 0;
 	padding-bottom: 0;
 	height: 25px;
+	font-size: 16px;
 }
 input.inline.ng-dirty.ng-invalid {
 	border-bottom: 1px solid #FF5B5B;
