@@ -212,6 +212,8 @@ if [ $CURRENT_OS == "IOS" ]; then
 
 	echo "IOS project!!!"
 
+	cp -R ios $PROJECT/../
+	checkOK
 #  mkdir -p $PROJECT/platforms/ios
 #  checkOK
 #

@@ -906,7 +906,11 @@ textarea:focus
 	right: 5px;
 	top: 50%;
 	margin-top: -10px;
-	z-index: -1;
+	z-index: 1;
+	height: 15px;
+	border-radius: 100px;
+	background-color: #fff;
+  pointer-events: none;
 }
 span[selectable] {
 	border-bottom: 1px dashed black;
@@ -917,7 +921,8 @@ input.inline {
 	display: inline;
 	margin-bottom: 0;
 	padding-bottom: 0;
-	height: 25px;
+	height: 28px;
+	font-size: 16px;
 }
 input.inline.ng-dirty.ng-invalid {
 	border-bottom: 1px solid #FF5B5B;
