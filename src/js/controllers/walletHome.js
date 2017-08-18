@@ -1405,7 +1405,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 						selected = true;
 					}
 				});
-				if (!selected) dropdown.find('a').eq(0)[0].click();
+				if (!selected && typeof attrs.notSelected == "undeifned") dropdown.find('a').eq(0)[0].click();
 
 				if (scope.targetProp) {
 					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {

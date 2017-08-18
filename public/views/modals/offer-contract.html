@@ -69,7 +69,7 @@
 	<span translate>can unlock the contract</span> 
 	<span translate>if an event is posted by an oracle</span><br>
 	<span class="combobox-container p20l">
-		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address" autocomplete="off">
+		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="contract.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="contract" data-prop="oracle_address" autocomplete="off" not-selected>
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 280px;">
 		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
@@ -81,13 +81,13 @@
 	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required style="width: 180px;">
 	<br>
 	<span translate class="p20l">with expected value</span>
-	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px;"></span>
+	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center;"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
 			<a><span translate>{{relation}}</span></a>
 		  </li>
 		</ul>
-	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:115px">,<br>
+	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:100px">,<br>
 	<span translate>or</span>
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party" style="padding:0 5px;"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
@@ -126,7 +126,7 @@
 		</div>
 		<div >
 		</div>
-		<button type="button" class="button black round expand" ng-disabled="!contract.timeout || !contract.myAmount || !contract.peerAmount || contractForm.myAmount.$invalid|| contractForm.peerAmount.$invalid || !contract.oracle_address || contractForm.oracle_address.$invalid || !contract.feed_name || !contract.feed_value || !contract.expiry || !index.isEnoughSignersSelected() || bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+		<button type="button" class="button black round expand" ng-disabled="!contract.timeout || !contract.myAmount || !contract.peerAmount || contract.peerAmount.$invalid || contractForm.myAmount.$invalid || !contract.oracle_address || contractForm.oracle_address.$invalid || !contract.feed_name || contractForm.feed_name.$invalid || !contract.feed_value || contractForm.feed_value.$invalid || !contract.expiry || !index.isEnoughSignersSelected() || bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
 			Pay and offer
 		</button>
 	</div>
