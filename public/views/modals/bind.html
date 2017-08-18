@@ -42,7 +42,7 @@
 		</ul>
 
 	<span ng-if="binding.type == 'data'" class="combobox-container">
-		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address" autocomplete="off">
+		<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address" autocomplete="off" not-selected>
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 280px;">
 		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
@@ -81,7 +81,7 @@
 		</div>
 		<div >
 		</div>
-		<button type="button" class="button black round expand" ng-disabled="!binding.timeout || (binding.type == 'reverse_payment' ? (!binding.reverseAmount || bindForm.reverseAmount.$invalid) : (!binding.oracle_address || bindForm.oracle_address.$invalid || !binding.feed_name || !binding.feed_value))" ng-style="{'background-color':color}" ng-click="bind()" translate>
+		<button type="button" class="button black round expand" ng-disabled="!binding.timeout || (binding.type == 'reverse_payment' ? (!binding.reverseAmount || bindForm.reverseAmount.$invalid) : (!binding.oracle_address || bindForm.oracle_address.$invalid || !binding.feed_name || bindForm.feed_name.$invalid || !binding.feed_value || bindForm.feed_value.$invalid))" ng-style="{'background-color':color}" ng-click="bind()" translate>
 			Bind payment
 		</button>
 	</div>
