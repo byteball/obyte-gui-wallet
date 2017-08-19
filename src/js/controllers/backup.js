@@ -9,15 +9,11 @@ angular.module('copayApp.controllers').controller('wordsController',
     self.show = false;
     var fc = profileService.focusedClient;
 	
-	if (isCordova)
-		self.text = "To protect your funds, please use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer.  Just the wallet seed is not enough.";
-	else{
+	if (!isCordova){
 		var desktopApp = require('byteballcore/desktop_app.js'+'');
-		var appDataDir = desktopApp.getAppDataDir();
-        restoreText1 = gettext("To restore your wallets, you will need a full backup of Byteball data at ");
-        restoreText2 = gettext(".  Better yet, use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your smartphone.  Just the wallet seed is not enough.");
-		self.text = restoreText1 + appDataDir + restoreText2;
+		self.appDataDir = desktopApp.getAppDataDir();
 	}
+	self.isCordova = isCordova;
 
 
     if (fc.isPrivKeyEncrypted()) self.credentialsEncrypted = true;
