@@ -111,6 +111,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (error_object && error_object.bIgnore)
 			return;
         self.showErrorPopup(error_message, function() {
+			var db = require('byteballcore/db.js');
+			db.close();
             if (self.isCordova && navigator && navigator.app) // android
                 navigator.app.exitApp();
             else if (process.exit) // nwjs
