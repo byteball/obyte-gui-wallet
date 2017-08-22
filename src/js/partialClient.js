@@ -262,6 +262,13 @@ document.addEventListener("deviceready", function() {
 	wallet.loadProfile();
 });
 
+setTimeout(function () {
+	var divTextDbLock = getFromId('textDbLock');
+	if(divTextDbLock){
+		divTextDbLock.style.display = 'inline-block';
+	}
+}, 15000);
+
 
 //slider
 function _slider(assocBalances) {
