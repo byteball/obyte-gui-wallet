@@ -139,7 +139,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-ios-requires-fullscreen
 	checkOK
 
-	cordova plugin add cordova-sqlite-plugin
+	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
 
 	cordova plugin add cordova-plugin-device-name
