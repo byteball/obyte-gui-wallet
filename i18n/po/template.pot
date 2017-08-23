@@ -1673,16 +1673,8 @@ msgstr ""
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr ""
 
-#: public/views/modals/bind.html:40
-msgid "{{info.displayName}}"
-msgstr ""
-
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr ""
-
-#: public/views/modals/bind.html:49
-msgid "{{oracle.name}}"
 msgstr ""
 
 #: public/views/preferencesGlobal.html:29
