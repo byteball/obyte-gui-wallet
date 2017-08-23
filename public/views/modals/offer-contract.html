@@ -37,7 +37,7 @@
 	<span selectable="#myasset" dropdown-toggle="#myasset" data-model="contract" data-prop="myAsset"></span>,
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a><span translate>{{info.displayName}}</span></a>
+			<a><span >{{info.displayName}}</span></a>
 		  </li>
 		</ul><br>
 	<span translate>peer pays</span>
@@ -45,14 +45,14 @@
 	<span selectable="#peerasset" dropdown-toggle="#peerasset" data-model="contract" data-prop="peerAsset"></span>
 		<ul id="peerasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
-			<a><span translate>{{info.displayName}}</span></a>
+			<a><span >{{info.displayName}}</span></a>
 		  </li>
 		</ul>
 	<span translate>to</span>
 	<span selectable="#peerpaysto" dropdown-toggle="#peerpaysto" data-model="contract" data-prop="peer_pays_to"></span>.
 		<ul id="peerpaysto" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="dest in arrPeerPaysTos" class="dropup-item" data-value="{{dest.value}}">
-			<a><span translate>{{dest.display_value}}</span></a>
+			<a><span >{{dest.display_value}}</span></a>
 		  </li>
 		</ul><br>
 
@@ -63,7 +63,7 @@
 	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="padding-right: 5px;"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a><span translate>{{party.display_value}}</span></a>
+			<a><span >{{party.display_value}}</span></a>
 		  </li>
 		</ul>
 	<span translate>can unlock the contract</span> 
@@ -73,7 +73,7 @@
 	</span>
 	  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 280px;">
 		<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
-			<a><b translate>{{oracle.name}}</b><br><span>{{address}}</span></a>
+			<a><b >{{oracle.name}}</b><br><span>{{address}}</span></a>
 		  </li>
 	  </ul>
 	  <br>
@@ -84,7 +84,7 @@
 	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 22px"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
-			<a><span translate>{{relation}}</span></a>
+			<a><span >{{relation}}</span></a>
 		  </li>
 		</ul>
 	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:100px">,<br>
@@ -92,7 +92,7 @@
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party" style="padding:0 5px;"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
-			<a><span translate>{{party.display_value}}</span></a>
+			<a><span >{{party.display_value}}</span></a>
 		  </li>
 		</ul>
 	<span translate>can unlock the contract after it expires in</span>
