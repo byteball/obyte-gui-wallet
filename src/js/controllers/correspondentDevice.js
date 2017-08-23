@@ -163,6 +163,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
+		$scope.oracles = configService.oracles;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			var config = configService.getSync();
@@ -173,7 +174,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
-			$scope.arrParties = [{value: 'me', display_value: "me"}, {value: 'peer', display_value: "the peer"}];
+			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
 			$scope.arrPeerPaysTos = [{value: 'me', display_value: "me"}, {value: 'contract', display_value: "this contract"}];
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
@@ -697,6 +698,180 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 
+	
+	$scope.sendVote = function(voteJsonBase64){
+		var async = require('async');
+		var db = require('byteballcore/db.js');
+		var objectHash = require('byteballcore/object_hash.js');
+		var network = require('byteballcore/network.js');
+		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		console.log("vote "+voteJson);
+		var objVote = JSON.parse(voteJson);
+		$rootScope.modalOpened = true;
+		var self = this;
+		var fc = profileService.focusedClient;
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.choice = objVote.choice;
+			$scope.color = fc.backgroundColor;
+			$scope.bDisabled = true;
+			setPollQuestion(true);
+			
+			function setPollQuestion(bFirstAttempt){
+				db.query("SELECT question FROM polls WHERE unit=?", [objVote.poll_unit], function(rows){
+					if (rows.length > 1)
+						throw Error("more than 1 poll?");
+					if (rows.length === 0){
+						if (conf.bLight && bFirstAttempt){
+							$scope.question = '[Fetching the question...]';
+							network.requestProofsOfJointsIfNewOrUnstable([objVote.poll_unit], function(err){
+								if (err){
+									$scope.error = err;
+									return scopeApply();
+								}
+								setPollQuestion();
+							});
+						}
+						else
+							$scope.question = '[No such poll: '+objVote.poll_unit+']';
+					}
+					else{
+						$scope.question = rows[0].question;
+						$scope.bDisabled = false;
+					}
+					scopeApply();
+				});
+			}
+			
+			function scopeApply(){
+				$timeout(function(){
+					$scope.$apply();
+				});
+			}
+
+			function readVotingAddresses(handleAddresses){
+				if (indexScope.shared_address)
+					return handleAddresses([indexScope.shared_address]);
+				db.query(
+					"SELECT address, SUM(amount) AS total FROM my_addresses JOIN outputs USING(address) \n\
+					WHERE wallet=? AND is_spent=0 AND asset IS NULL GROUP BY address ORDER BY total DESC LIMIT 16", 
+					[fc.credentials.walletId], 
+					function(rows){
+						var arrAddresses = rows.map(function(row){ return row.address; });
+						handleAddresses(arrAddresses);
+					}
+				);
+			}
+			
+			$scope.vote = function() {
+				console.log('vote');
+				
+				if (fc.isPrivKeyEncrypted()) {
+					profileService.unlockFC(null, function(err) {
+						if (err){
+							$scope.error = err.message;
+							return scopeApply();
+						}
+						$scope.vote();
+					});
+					return;
+				}
+				
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						return scopeApply();
+					}
+					
+					readVotingAddresses(function(arrAddresses){
+						if (arrAddresses.length === 0){
+							$scope.error = "Cannot vote, no funded addresses.";
+							return scopeApply();
+						}
+						var payload = {unit: objVote.poll_unit, choice: objVote.choice};
+						var objMessage = {
+							app: 'vote',
+							payload_location: "inline",
+							payload_hash: objectHash.getBase64Hash(payload),
+							payload: payload
+						};
+
+						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+						if (fc.credentials.m < fc.credentials.n)
+							indexScope.copayers.forEach(function(copayer){
+								if (copayer.me || copayer.signs)
+									arrSigningDeviceAddresses.push(copayer.device_address);
+							});
+						else if (indexScope.shared_address)
+							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
+						var current_vote_key = require('crypto').createHash("sha256").update(voteJson).digest('base64');
+						if (current_vote_key === indexScope.current_vote_key){
+							$rootScope.$emit('Local/ShowErrorAlert', "This vote is already under way");
+							$modalInstance.dismiss('cancel');
+							return;
+						}
+						var recipient_device_address = lodash.clone(correspondent.device_address);
+						indexScope.current_vote_key = current_vote_key;
+						fc.sendMultiPayment({
+							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							paying_addresses: arrAddresses,
+							signing_addresses: arrAddresses,
+							shared_address: indexScope.shared_address,
+							change_address: arrAddresses[0],
+							messages: [objMessage]
+						}, function(err){ // can take long if multisig
+							delete indexScope.current_vote_key;
+							if (err){
+								if (chatScope){
+									setError(err);
+									$timeout(function() {
+										chatScope.$apply();
+									});
+								}
+								return;
+							}
+							var body = 'voted:'+objVote.choice;
+							device.sendMessageToDevice(recipient_device_address, 'text', body);
+							correspondentListService.addMessageEvent(false, recipient_device_address, body);
+							$rootScope.$emit("NewOutgoingTx");
+						});
+						$modalInstance.dismiss('cancel');
+					});
+					
+				});
+			}; // vote
+			
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/vote.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+		
+	}; // sendVote
+	
+	
+	
+	
 	// send a command to the bot
 	$scope.sendCommand = function(command, description){
 		console.log("will send command "+command);
@@ -795,7 +970,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
-		$timeout(function(){msgField.focus()});
+		$timeout(function(){$rootScope.$digest()});
 		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
 	}
 	

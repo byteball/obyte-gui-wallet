@@ -111,12 +111,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (error_object && error_object.bIgnore)
 			return;
         self.showErrorPopup(error_message, function() {
+			var db = require('byteballcore/db.js');
+			db.close();
             if (self.isCordova && navigator && navigator.app) // android
                 navigator.app.exitApp();
             else if (process.exit) // nwjs
                 process.exit();
             // ios doesn't exit
         });
+	    if(isCordova) wallet.showCompleteClient();
     });
 	
 	function readLastDateString(cb){
@@ -146,7 +149,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			});
 		});
 	}
-    
+
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
@@ -524,6 +527,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				});
 			},
 			function(){
+				arrSharedWallets.sort(function(o1, o2){ return (o2.creation_ts - o1.creation_ts); });
 				$timeout(function(){
 					$scope.$apply();
 				});

@@ -193,6 +193,26 @@ angular.module('copayApp.services')
 			return desktopApp.getAppDataDir();
 		}
 	};
+
+	root.recursiveMkdir = function(path, mode, callback) {
+		var parentDir = require('path' + '').dirname(path);
+		
+		fs.stat(parentDir, function(err, stats) {
+			if (err && err.code !== 'ENOENT')
+				throw Error("failed to stat dir: "+err);
+
+			if (err && err.code === 'ENOENT') {
+				root.recursiveMkdir(parentDir, mode, function(err) {
+					if (err)
+						callback(err);
+					else
+						fs.mkdir(path, mode, callback);
+				});
+			} else {
+				fs.mkdir(path, mode, callback);
+			}
+		});
+	};
 	
 	return root;
 });

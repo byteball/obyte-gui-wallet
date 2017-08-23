@@ -82,10 +82,10 @@ _:-ms-fullscreen, :root .main {
 /* Fix Firefox */
 @-moz-document url-prefix() {
   .extra-margin-bottom {
-    display: block;
-    height: 45px;
-    overflow: hidden;
-    clear: both;
+	display: block;
+	height: 45px;
+	overflow: hidden;
+	clear: both;
   }
 }
 
@@ -163,7 +163,7 @@ _:-ms-fullscreen, :root .main {
 }
 
 .menu-toggle {
-    padding-top: 1rem !important;
+	padding-top: 1rem !important;
 }
 
 .amount {
@@ -362,7 +362,7 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a,  .modal-content ul li a {
+.sidebar ul.off-canvas-list li a,  .modal-content ul:not(.f-dropdown) li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
@@ -857,11 +857,11 @@ textarea:focus
 }
 .rn-carousel-control.rn-carousel-control-next {
 	right: -0.2em;
-    width: 15%;
+	width: 15%;
 }
 .rn-carousel-control.rn-carousel-control-prev {
 	left: -0.2em;
-    width: 15%;
+	width: 15%;
 }
 .rn-carousel-control.rn-carousel-control-prev:before {
 	content: "‹";
@@ -872,7 +872,64 @@ textarea:focus
 .f-dropdown li {
 	width: 100%;
 }
-
+.f-dropdown.small li {
+	font-size: 11px;
+}
+.f-dropdown.right:before {
+	left: auto !important;
+	right: 10px !important;
+}
+.f-dropdown.right:after {
+	left: auto  !important;
+	right: 9px  !important;
+}
+.f-dropdown li a {
+	position: relative;
+}
+.f-dropdown li a .check {
+	display: none;
+	position: absolute;
+	top: 50%;
+	right: -5px;
+	margin-top: -10px;
+}
+.f-dropdown li.selected a .check {
+	display: inline;
+}
+.combobox-container {
+	position: relative;
+}
+.combobox-container:after {
+	font-family: 'icomoon' !important;
+	content: "\e601";
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	margin-top: -10px;
+	z-index: 1;
+	height: 15px;
+	border-radius: 100px;
+	background-color: #fff;
+  pointer-events: none;
+}
+span[selectable] {
+	border-bottom: 1px dashed black;
+	cursor: pointer;
+}
+input.inline {
+	width: auto;
+	display: inline;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	height: 28px;
+	font-size: 16px;
+}
+input.inline.ng-dirty.ng-invalid {
+	border-bottom: 1px solid #FF5B5B;
+}
+input.inline.ng-dirty.ng-valid {
+	border-bottom: 1px solid #7CC789;
+}
 /* removes 300ms in IE * /
 -ms-touch-action: manipulation; /* IE10 /
 touch-action: manipulation; /* IE11+ */

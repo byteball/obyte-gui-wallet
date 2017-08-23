@@ -5,12 +5,12 @@ var init = function(cb) {
 	if (_dir) return cb(null, _fs, _dir);
 
 	function onFileSystemSuccess(fileSystem) {
-		console.log('File system started: ', fileSystem.name, fileSystem.root.name);
+		console.log('File system started: ' + fileSystem.name + ', ' + fileSystem.root.name);
 		_fs = fileSystem;
 		getDir(function(err, newDir) {
 			if (err || !newDir.nativeURL) return cb(err);
 			_dir = newDir;
-			console.log("Got main dir:", _dir.nativeURL);
+			console.log("Got main dir: " + _dir.nativeURL);
 			return cb(null, _fs, _dir);
 		});
 	}
@@ -54,7 +54,7 @@ var get = function(k, cb) {
 
 				reader.onloadend = function(e) {
 					if (this.result)
-						console.log("Read: ", this.result);
+						console.log("Read: " + this.result);
 					return cb(null, this.result)
 				};
 
@@ -95,7 +95,7 @@ var set = function(k, v, cb) {
 					v = v.toString();
 				}
 
-				console.log('Writing:', k, v);
+				console.log('Writing: '+k+'='+v);
 				fileWriter.write(v);
 
 			}, cb);

@@ -236,13 +236,18 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	padding-top: 10px;
 	width: 12%;
 }
+@media (max-width: 350px) {
+	.msg-ts {
+		font-size: 8px;
+	}
+}
 .send-form .textinput::-webkit-input-placeholder {
 	white-space: nowrap;
 }
 .dropup-item {
 	display: inline-block;
 	max-width: 100%;
-	padding: 0 10px;
+	padding: 0 15px 0 10px;
 }
 .dropup-item-link {
 	padding: 8px 0 !important;
@@ -316,7 +321,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
           	class="chatbutton left"
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
 
-            <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
+            <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content >
 			  <li class="dropup-item">
 			    <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
 				  	<span translate>

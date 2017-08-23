@@ -127,6 +127,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
 			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
+		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+			var objVote = getVoteFromJsonBase64(voteJsonBase64);
+			if (!objVote)
+				return '[invalid vote request]';
+			return '<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
@@ -165,6 +170,20 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		return arrMovements;
 	}
 	
+	function getVoteFromJsonBase64(voteJsonBase64){
+		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		console.log(voteJson);
+		try{
+			var objVote = JSON.parse(voteJson);
+		}
+		catch(e){
+			return null;
+		}
+		if (!ValidationUtils.isStringOfLength(objVote.poll_unit, 44) || typeof objVote.choice !== 'string')
+			return null;
+		return objVote;
+	}
+	
 	function getPaymentsByAsset(objMultiPaymentRequest){
 		var assocPaymentsByAsset = {};
 		objMultiPaymentRequest.payments.forEach(function(objPayment){
@@ -193,6 +212,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!arrMovements)
 				return '[invalid payment request]';
 			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
+		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+			var objVote = getVoteFromJsonBase64(voteJsonBase64);
+			if (!objVote)
+				return '[invalid vote request]';
+			return '<i>Vote request: '+objVote.choice+'</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
@@ -321,6 +345,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'has':
 					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
+					if (args.what === 'output' && args.asset && args.amount && args.address)
+						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + (arrMyAddresses.indexOf(args.address) >=0 ? 'you' : args.address);
 					return JSON.stringify(arrSubdefinition);
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){

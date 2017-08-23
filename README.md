@@ -50,6 +50,9 @@ Then run Byteball desktop client:
 
 ## Build Byteball App Bundles
 
+All app bundles will be placed at `../byteballbuilds` dir, so create it first: `mkdir -p ../byteballbuilds`
+
+
 ### Android
 
 - Install Android SDK
@@ -58,7 +61,12 @@ Then run Byteball desktop client:
 ### iOS
 
 - Install Xcode 7 (or newer)
+- Install Cordova 6 `npm install cordova@6 -g`
 - Run `make ios-debug`
+  * In case of ios-deploy missing error: `npm install -g ios-deploy`
+  * In case of `DeviceSupport` missing error, run `cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/ && sudo ln -s 10.3.1\ \(14E8301\)/ 10.3`
+  * If you encounter 'bitcore' not found after app launch, install it also `npm install bitcore-lib` and remove `../bytebalbuilds/project-IOS` folder completely, then rerun make again.
+  * On code signing error, open Xcode project `../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj` in Xcode, open project properties, select Byteball target and set your AppleID account as a team. Xcode may also ask you to change bundle identifier to be unique, just append any random string to 'org.byteball.wallet' bundle identifier.
 
 ### macOS
 

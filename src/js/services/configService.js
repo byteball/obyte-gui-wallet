@@ -21,6 +21,34 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var constants = require('byteballcore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
+
+  root.oracles = {
+		"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {
+			name: "Bitcoin Oracle",
+			feednames_filter: ["^bitcoin_merkle$", "^random[\\d]+$"],
+			feedvalues_filter: ["^[13][a-km-zA-HJ-NP-Z1-9]{25,34}\\:[0-9\\.]+$", "^\\d{1,6}$"]
+		},
+		"JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC" : {
+			name: "Crypto exchange rates",
+			feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
+			feedvalues_filter: ["^[\\d\\.]+$"]
+		},
+		"GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN" : {
+			name: "Flight delay tracker",
+			feednames_filter: ["^[\\w\\d]+-\\d{4}-\\d{2}-\\d{2}$"],
+			feedvalues_filter: ["^[\\d]+$"]
+		},
+		"TKT4UESIKTTRALRRLWS4SENSTJX6ODCW" : {
+			name: "Sports betting on soccer",
+			feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"],
+			feedvalues_filter: ["^[\\w\\d]+$"]
+		},
+		"I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT" : {
+			name: "Timestamp",
+			feednames_filter: ["^timestamp$"],
+			feedvalues_filter: ["^\\d{13,}$"]
+		}
+	};
 	
   var defaultConfig = {
 	// wallet limits

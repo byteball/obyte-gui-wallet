@@ -853,6 +853,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
  							device.readCorrespondent(recipient_device_address, function(correspondent){
  			 					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 			 				});
+
 							// issue next address to avoid reusing the reverse payment address
 							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
 						}
@@ -943,6 +944,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					$scope.binding.feed_type = self.binding.feed_type;
 				}
 			}
+			$scope.oracles = configService.oracles;
 			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');

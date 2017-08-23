@@ -17,22 +17,26 @@
 			<div class="row text-left" style="margin-top: 40px">
 				<div class="start-button large-10 medium-10 small-10 medium-centered small-centered large-centered columns">
 
-					<label><span class="text-white size-14" translate>Please choose the type of this wallet</span></label>
+					<label><span class="text-white size-14" translate>Please choose how much data to store in your wallet</span></label>
 					<p class="text-gray size-14 m0 text-light" translate>This choice cannot be changed later</p>
 					
 					<div class="m20t">
-						<input type="radio" name="wallet_type" value="full" ng-model="splash.wallet_type" id="wallet_type_full">
-						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Full wallet</label>
+						<div style="display: table">
+							<div style="display: table-cell; padding-right: 10px"><input type="radio" name="wallet_type" value="full" ng-model="splash.wallet_type" id="wallet_type_full"></div>
+							<div style="display: table-cell"><label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Download the entire Byteball database</label></div>
+						</div>
 						<p class="text-gray size-14 m0 text-light" translate>
-							The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync.
+							This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync.
 						</p>
 					</div>
 					
 					<div class="m20t">
-						<input type="radio" name="wallet_type" value="light" ng-model="splash.wallet_type" id="wallet_type_light">
-						<label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_light" translate>Light wallet</label>
+						<div style="display: table">
+							<div style="display: table-cell; padding-right: 10px"><input type="radio" name="wallet_type" value="light" ng-model="splash.wallet_type" id="wallet_type_light"></div>
+							<div style="display: table-cell"><label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_light" translate>Keep only data relevant to you</label></div>
+						</div>
 						<p class="text-gray size-14 m0 text-light" translate>
-							The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional.
+							The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional.
 						</p>
 					</div>
 					
