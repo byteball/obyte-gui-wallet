@@ -373,7 +373,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
-							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset);
+							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
 							var paymentRequestCode;
 							if (contract.peer_pays_to === 'contract'){
 								var arrPayments = [{address: shared_address, amount: peer_amount, asset: contract.peerAsset}];
@@ -637,8 +637,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							$rootScope.$emit("NewOutgoingTx");
 							var assocPaymentsByAsset = correspondentListService.getPaymentsByAsset(objMultiPaymentRequest);
+							var bToSharedAddress = objMultiPaymentRequest.payments.some(function(objPayment){
+								return assocSharedDestinationAddresses[objPayment.address];
+							});
 							for (var asset in assocPaymentsByAsset)
-								eventBus.emit('sent_payment', recipient_device_address, assocPaymentsByAsset[asset], asset);
+								eventBus.emit('sent_payment', recipient_device_address, assocPaymentsByAsset[asset], asset, bToSharedAddress);
 						});
 						$modalInstance.dismiss('cancel');
 					});
