@@ -248,6 +248,11 @@ ul.copayer-list img {
   border-top: 3px solid #122232;
 }
 
+.bottombar-item a:hover {
+  color: #D5D9DC;
+
+}
+
 .bottombar-item a.active {
   color: #E4E8EC;
   background-color: #122232;
@@ -405,6 +410,11 @@ ul.correspondentList li a.removeCorrespondentList {
   background: #E4E8EC;
   line-height: 24px;
 }
+
+ul.off-canvas-list li a:hover {
+    color: #D0DBE6;
+}
+
 
 /*
  * Remove all vendors hover / shadow / fade

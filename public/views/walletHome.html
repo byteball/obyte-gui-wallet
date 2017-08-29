@@ -148,7 +148,7 @@
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0 hovereffect" ng-if="!index.shared_address">
               <i class="fi-widget size-18 vm wallet-settings"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
@@ -509,7 +509,7 @@
       <div ng-show="index.txHistory[0]">
         <div ng-repeat="btx in index.txHistory"
           ng-click="home.openTxModal(btx)"
-          class="row collapse last-transactions-content">
+          class="row collapse last-transactions-content hovereffect">
           <div class="large-3 medium-3 small-3 columns">
             <span class="label tu radius" ng-show="btx.action == 'received'"
               ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
