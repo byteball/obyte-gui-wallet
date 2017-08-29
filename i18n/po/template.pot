@@ -16,18 +16,6 @@ msgstr ""
 msgid "-- Select co-signer --"
 msgstr ""
 
-#: src/js/controllers/backup.js:18
-msgid ".  Better yet, use multisig wallets with redundancy, e.g. 1-of-2 wallet with one key on this device and another key on your smartphone.  Just the wallet seed is not enough."
-msgstr ""
-
-#: public/views/modals/offer-contract.html:18
-msgid "1. Payment to the contract:"
-msgstr ""
-
-#: public/views/modals/offer-contract.html:73
-msgid "2. Who can unlock the contract:"
-msgstr ""
-
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
 msgstr ""
@@ -111,7 +99,7 @@ msgstr ""
 msgid "Also"
 msgstr ""
 
-#: public/views/splash.html:87
+#: public/views/splash.html:91
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr ""
 
@@ -120,19 +108,16 @@ msgid "Also, don't forget to delete your seed"
 msgstr ""
 
 #: public/views/includes/output.html:6
-#: public/views/modals/bind.html:32
 #: public/views/modals/customized-amount.html:38
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
-#: public/views/modals/offer-contract.html:27
-#: public/views/modals/offer-contract.html:41
 #: public/views/paymentUri.html:16
 #: public/views/walletHome.html:371
 msgid "Amount"
 msgstr ""
 
-#: public/views/modals/bind.html:26
-msgid "An event is posted by an oracle:"
+#: public/views/modals/vote.html:22
+msgid "Answer:"
 msgstr ""
 
 #: public/views/copayers.html:19
@@ -197,8 +182,12 @@ msgstr ""
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr ""
 
-#: public/views/modals/bind.html:100
+#: public/views/backup.html:26
+msgid "Better yet, use multisig wallets with redundancy,"
+msgstr ""
+
 #: public/views/modals/bind.html:8
+#: public/views/modals/bind.html:84
 msgid "Bind payment"
 msgstr ""
 
@@ -232,8 +221,8 @@ msgstr ""
 msgid "CANCEL"
 msgstr ""
 
-#: public/views/splash.html:39
-#: public/views/splash.html:81
+#: public/views/splash.html:43
+#: public/views/splash.html:85
 msgid "CONTINUE"
 msgstr ""
 
@@ -254,7 +243,7 @@ msgstr ""
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
-#: src/js/controllers/index.js:602
+#: src/js/controllers/index.js:606
 msgid "Chat"
 msgstr ""
 
@@ -275,9 +264,10 @@ msgstr ""
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
-#: public/views/modals/offer-contract.html:4
+#: public/views/modals/offer-contract.html:21
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
+#: public/views/modals/vote.html:4
 msgid "Close"
 msgstr ""
 
@@ -306,15 +296,23 @@ msgid "Compress the file? (Slower)"
 msgstr ""
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:439
+#: src/js/controllers/index.js:442
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:120
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr ""
 
+#: public/views/modals/vote.html:55
+msgid "Confirm Vote"
+msgstr ""
+
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
+msgstr ""
+
+#: public/views/modals/vote.html:8
+msgid "Confirm vote"
 msgstr ""
 
 #: public/views/modals/tx-details.html:108
@@ -330,7 +328,7 @@ msgstr ""
 msgid "Copied to clipboard"
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:49
+#: public/views/recoveryFromSeed.html:42
 msgid "Correspondents are not restored."
 msgstr ""
 
@@ -350,7 +348,7 @@ msgstr ""
 msgid "Could not create: Invalid wallet seed"
 msgstr ""
 
-#: src/js/controllers/backup.js:85
+#: src/js/controllers/backup.js:81
 msgid "Could not decrypt"
 msgstr ""
 
@@ -358,13 +356,13 @@ msgstr ""
 msgid "Could not fetch transaction history"
 msgstr ""
 
-#: src/js/services/profileService.js:445
-#: src/js/services/profileService.js:472
-#: src/js/services/profileService.js:494
+#: src/js/services/profileService.js:446
+#: src/js/services/profileService.js:473
+#: src/js/services/profileService.js:495
 msgid "Could not import"
 msgstr ""
 
-#: src/js/services/profileService.js:422
+#: src/js/services/profileService.js:423
 msgid "Could not import. Check input file and password"
 msgstr ""
 
@@ -389,7 +387,7 @@ msgstr ""
 msgid "Create new wallet"
 msgstr ""
 
-#: src/js/controllers/index.js:269
+#: src/js/controllers/index.js:272
 msgid "Create new wallet  together with  ?"
 msgstr ""
 
@@ -401,7 +399,7 @@ msgstr ""
 msgid "Created:"
 msgstr ""
 
-#: public/views/splash.html:71
+#: public/views/splash.html:75
 msgid "Creating Profile..."
 msgstr ""
 
@@ -409,20 +407,15 @@ msgstr ""
 msgid "Creating Wallet..."
 msgstr ""
 
-#: public/views/backup.html:84
+#: public/views/backup.html:93
 msgid "DELETE WORDS"
-msgstr ""
-
-#: public/views/modals/bind.html:57
-#: public/views/modals/offer-contract.html:102
-msgid "Data feed name:"
 msgstr ""
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
 msgstr ""
 
-#: src/js/controllers/index.js:239
+#: src/js/controllers/index.js:242
 msgid "Declined"
 msgstr ""
 
@@ -473,8 +466,12 @@ msgstr ""
 msgid "Device name is visible to other devices you communicate with."
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:50
+#: public/views/recoveryFromSeed.html:43
 msgid "Do not clone wallets, stop using the original wallet with this seed."
+msgstr ""
+
+#: public/views/backup.html:59
+msgid "Do not use it to clone the wallet."
 msgstr ""
 
 #: public/views/translators.html:55
@@ -488,6 +485,10 @@ msgstr ""
 
 #: public/views/walletHome.html:575
 msgid "Download CSV file"
+msgstr ""
+
+#: public/views/splash.html:26
+msgid "Download the entire Byteball database"
 msgstr ""
 
 #: public/views/correspondentDevice.html:26
@@ -515,13 +516,9 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
-#: src/js/services/profileService.js:279
-#: src/js/services/profileService.js:329
+#: src/js/services/profileService.js:280
+#: src/js/services/profileService.js:330
 msgid "Error creating wallet"
-msgstr ""
-
-#: public/views/modals/bind.html:65
-msgid "Expected value:"
 msgstr ""
 
 #: public/views/export.html:51
@@ -565,10 +562,6 @@ msgstr ""
 msgid "Full backup"
 msgstr ""
 
-#: public/views/splash.html:25
-msgid "Full wallet"
-msgstr ""
-
 #: public/views/paperWallet.html:58
 msgid "Funds found"
 msgstr ""
@@ -577,7 +570,7 @@ msgstr ""
 msgid "Funds will be transferred to"
 msgstr ""
 
-#: public/views/splash.html:88
+#: public/views/splash.html:92
 msgid "GET STARTED"
 msgstr ""
 
@@ -609,15 +602,15 @@ msgstr ""
 msgid "Hardware wallet"
 msgstr ""
 
-#: public/views/backup.html:39
+#: public/views/backup.html:45
 msgid "Hide the Wallet Seed"
 msgstr ""
 
-#: src/js/controllers/index.js:598
+#: src/js/controllers/index.js:602
 msgid "History"
 msgstr ""
 
-#: src/js/controllers/index.js:586
+#: src/js/controllers/index.js:590
 msgid "Home"
 msgstr ""
 
@@ -637,20 +630,20 @@ msgstr ""
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr ""
 
-#: public/views/modals/offer-contract.html:22
-msgid "I pay:"
+#: public/views/modals/offer-contract.html:35
+msgid "I pay"
 msgstr ""
 
-#: public/views/modals/bind.html:25
-msgid "I receive another payment:"
+#: public/views/modals/bind.html:27
+msgid "I receive another payment of"
 msgstr ""
 
-#: public/views/modals/bind.html:83
-msgid "If the condition is not met, I can take this money back after:"
+#: public/views/modals/bind.html:75
+msgid "If the condition is not met, I can take this money back after"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:59
-msgid "If the peer doesn't pay, I can take my money back after:"
+msgid "If the peer doesn't pay, I can take my money back after"
 msgstr ""
 
 #: public/views/import.html:58
@@ -691,12 +684,20 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/js/controllers/index.js:1497
+#: src/js/controllers/index.js:1501
 msgid "Invalid Touch ID"
 msgstr ""
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
+msgstr ""
+
+#: public/views/backup.html:22
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets and private assets such as blackbytes."
+msgstr ""
+
+#: public/views/splash.html:36
+msgid "Keep only data relevant to you"
 msgstr ""
 
 #: public/views/modals/destination-address.html:120
@@ -709,10 +710,6 @@ msgstr ""
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
-
-#: public/views/splash.html:33
-msgid "Light wallet"
 msgstr ""
 
 #: src/js/controllers/disclaimer.js:13
@@ -729,7 +726,8 @@ msgstr ""
 
 #: public/views/includes/copayers.html:4
 #: public/views/modals/multi-payment.html:40
-#: public/views/modals/offer-contract.html:149
+#: public/views/modals/offer-contract.html:108
+#: public/views/modals/vote.html:33
 #: public/views/preferencesInformation.html:76
 #: public/views/walletHome.html:416
 msgid "Me"
@@ -784,7 +782,7 @@ msgid "New witnesses"
 msgstr ""
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:438
+#: src/js/controllers/index.js:441
 msgid "No"
 msgstr ""
 
@@ -796,10 +794,8 @@ msgstr ""
 msgid "No transactions yet"
 msgstr ""
 
-#: public/views/modals/bind.html:46
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:112
-#: public/views/modals/offer-contract.html:91
 #: public/views/walletHome.html:327
 #: public/views/walletHome.html:363
 msgid "Not valid"
@@ -813,26 +809,21 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:8
+#: public/views/modals/offer-contract.html:25
 #: src/js/services/correspondentListService.js:108
 msgid "Offer a contract"
 msgstr ""
 
-#: public/views/backup.html:78
+#: public/views/backup.html:87
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:48
+#: public/views/recoveryFromSeed.html:41
 msgid "Only single-sig wallets can be recovered."
 msgstr ""
 
 #: public/views/bot.html:35
 msgid "Open chat"
-msgstr ""
-
-#: public/views/modals/bind.html:42
-#: public/views/modals/offer-contract.html:87
-msgid "Oracle address:"
 msgstr ""
 
 #: public/views/acceptCorrespondentInvitation.html:54
@@ -856,7 +847,7 @@ msgstr ""
 msgid "Passphrase"
 msgstr ""
 
-#: src/js/services/profileService.js:609
+#: src/js/services/profileService.js:610
 msgid "Password needed"
 msgstr ""
 
@@ -868,7 +859,7 @@ msgstr ""
 msgid "Paste your paper wallet private key here"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:170
+#: public/views/modals/offer-contract.html:129
 msgid "Pay and offer"
 msgstr ""
 
@@ -896,14 +887,6 @@ msgstr ""
 msgid "Payment Sent"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:50
-msgid "Peer pays to:"
-msgstr ""
-
-#: public/views/modals/offer-contract.html:36
-msgid "Peer pays:"
-msgstr ""
-
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
 msgstr ""
@@ -917,23 +900,19 @@ msgid "Plain Wallet"
 msgstr ""
 
 #: public/views/splash.html:20
-msgid "Please choose the type of this wallet"
+msgid "Please choose how much data to store in your wallet"
 msgstr ""
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
 msgstr ""
 
-#: public/views/splash.html:78
+#: public/views/splash.html:82
 msgid "Please name this device"
 msgstr ""
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
-
-#: public/views/modals/offer-contract.html:110
-msgid "Posted value:"
 msgstr ""
 
 #: public/views/walletHome.html:153
@@ -945,12 +924,12 @@ msgstr ""
 msgid "Press again to exit"
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:47
+#: public/views/recoveryFromSeed.html:40
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1235
-#: src/js/controllers/walletHome.js:1308
+#: src/js/controllers/walletHome.js:1237
+#: src/js/controllers/walletHome.js:1310
 msgid "Private payloads sent"
 msgstr ""
 
@@ -962,7 +941,11 @@ msgstr ""
 msgid "QR-Scanner"
 msgstr ""
 
-#: src/js/controllers/index.js:590
+#: public/views/modals/vote.html:17
+msgid "Question:"
+msgstr ""
+
+#: src/js/controllers/index.js:594
 msgid "Receive"
 msgstr ""
 
@@ -979,7 +962,7 @@ msgstr ""
 msgid "Reconnecting to Wallet Service..."
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:41
+#: public/views/recoveryFromSeed.html:34
 msgid "Recover"
 msgstr ""
 
@@ -987,15 +970,11 @@ msgstr ""
 msgid "Recovery from seed"
 msgstr ""
 
-#: public/views/recoveryFromSeed.html:31
-msgid "Recovery is only available in full wallets."
-msgstr ""
-
 #: public/views/walletHome.html:58
 msgid "Recreating Wallet..."
 msgstr ""
 
-#: src/js/controllers/index.js:191
+#: src/js/controllers/index.js:194
 msgid "Refused"
 msgstr ""
 
@@ -1049,7 +1028,7 @@ msgstr ""
 msgid "Restore from full backup"
 msgstr ""
 
-#: public/views/splash.html:60
+#: public/views/splash.html:64
 msgid "Retrying..."
 msgstr ""
 
@@ -1088,7 +1067,7 @@ msgstr ""
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr ""
 
-#: src/js/controllers/index.js:1490
+#: src/js/controllers/index.js:1494
 msgid "Scan your fingerprint please"
 msgstr ""
 
@@ -1118,7 +1097,7 @@ msgstr ""
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:449
-#: src/js/controllers/index.js:594
+#: src/js/controllers/index.js:598
 msgid "Send"
 msgstr ""
 
@@ -1187,15 +1166,15 @@ msgstr ""
 msgid "Show all"
 msgstr ""
 
-#: public/views/backup.html:38
+#: public/views/backup.html:44
 msgid "Show the Wallet Seed Anyway"
 msgstr ""
 
-#: src/js/controllers/index.js:415
+#: src/js/controllers/index.js:418
 msgid "Sign transaction spending  from wallet ?"
 msgstr ""
 
-#: src/js/services/profileService.js:274
+#: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
 msgstr ""
 
@@ -1215,11 +1194,11 @@ msgstr ""
 #: src/js/controllers/copayers.js:75
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:228
-#: src/js/controllers/index.js:256
+#: src/js/controllers/index.js:231
+#: src/js/controllers/index.js:259
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1235
-#: src/js/controllers/walletHome.js:1308
+#: src/js/controllers/walletHome.js:1237
+#: src/js/controllers/walletHome.js:1310
 msgid "Success"
 msgstr ""
 
@@ -1258,10 +1237,6 @@ msgstr ""
 msgid "Text message to"
 msgstr ""
 
-#: public/views/modals/bind.html:73
-msgid "The expected value will be posted:"
-msgstr ""
-
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
 msgstr ""
@@ -1270,8 +1245,12 @@ msgstr ""
 msgid "The hub suggests replacing the following witnesses:"
 msgstr ""
 
-#: public/views/modals/bind.html:22
-msgid "The peer receives this payment if:"
+#: public/views/modals/bind.html:23
+msgid "The peer receives this payment if"
+msgstr ""
+
+#: public/views/modals/vote.html:61
+msgid "The vote will be signed by all your funded addresses"
 msgstr ""
 
 #: src/js/controllers/copayers.js:75
@@ -1279,12 +1258,8 @@ msgstr ""
 msgid "The wallet \"{{walletName}}\" was deleted"
 msgstr ""
 
-#: public/views/splash.html:34
-msgid "The wallet will contain minimum information relevant to you.  The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
-msgstr ""
-
-#: public/views/splash.html:26
-msgid "The wallet will contain the most current state of the entire Byteball database.  This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
+#: public/views/splash.html:38
+msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr ""
 
 #: public/views/correspondentDevice.html:302
@@ -1307,6 +1282,10 @@ msgstr ""
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
 msgstr ""
 
+#: public/views/splash.html:28
+msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
+msgstr ""
+
 #: public/views/walletHome.html:347
 msgid "This payment is bound to a condition"
 msgstr ""
@@ -1316,7 +1295,7 @@ msgid "This transaction has become invalid; possibly due to a double spend attem
 msgstr ""
 
 #: public/views/import.html:57
-#: public/views/recoveryFromSeed.html:46
+#: public/views/recoveryFromSeed.html:39
 msgid "This will permanently delete all your existing wallets!"
 msgstr ""
 
@@ -1329,16 +1308,16 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#: public/views/backup.html:24
+msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
+msgstr ""
+
 #: public/views/walletHome.html:350
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr ""
 
 #: public/views/walletHome.html:259
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
-
-#: src/js/controllers/backup.js:17
-msgid "To restore your wallets, you will need a full backup of Byteball data at"
 msgstr ""
 
 #: public/views/walletHome.html:182
@@ -1406,16 +1385,16 @@ msgstr ""
 msgid "WARNING: Backup needed"
 msgstr ""
 
-#: public/views/backup.html:68
+#: public/views/backup.html:77
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr ""
 
 #: public/views/import.html:55
-#: public/views/recoveryFromSeed.html:44
+#: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr ""
 
-#: public/views/splash.html:49
+#: public/views/splash.html:53
 msgid "WELCOME TO BYTEBALL"
 msgstr ""
 
@@ -1452,7 +1431,7 @@ msgstr ""
 msgid "Wallet Name (at creation)"
 msgstr ""
 
-#: src/js/services/profileService.js:391
+#: src/js/services/profileService.js:392
 msgid "Wallet already in Byteball:"
 msgstr ""
 
@@ -1460,7 +1439,7 @@ msgstr ""
 msgid "Wallet name"
 msgstr ""
 
-#: public/views/backup.html:28
+#: public/views/backup.html:34
 msgid "Wallet seed not available."
 msgstr ""
 
@@ -1474,7 +1453,8 @@ msgid "Warning!"
 msgstr ""
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:144
+#: public/views/modals/offer-contract.html:103
+#: public/views/modals/vote.html:28
 #: public/views/walletHome.html:411
 msgid "Who signs:"
 msgstr ""
@@ -1487,17 +1467,17 @@ msgstr ""
 msgid "Witnesses"
 msgstr ""
 
-#: public/views/backup.html:50
+#: public/views/backup.html:56
 msgid "Write it down and keep it somewhere safe."
 msgstr ""
 
-#: src/js/services/profileService.js:619
+#: src/js/services/profileService.js:620
 msgid "Wrong password"
 msgstr ""
 
 #: public/views/authConfirmation.html:17
 #: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:437
+#: src/js/controllers/index.js:440
 msgid "Yes"
 msgstr ""
 
@@ -1505,8 +1485,8 @@ msgstr ""
 msgid "You do not have a wallet"
 msgstr ""
 
-#: public/views/backup.html:49
-#: public/views/recoveryFromSeed.html:38
+#: public/views/backup.html:55
+#: public/views/recoveryFromSeed.html:31
 msgid "Your Wallet Seed:"
 msgstr ""
 
@@ -1526,7 +1506,7 @@ msgstr ""
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
 msgstr ""
 
-#: public/views/splash.html:86
+#: public/views/splash.html:90
 msgid "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu."
 msgstr ""
 
@@ -1534,8 +1514,22 @@ msgstr ""
 msgid "[ Add new co-signer device ]"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:127
-msgid "after the contract expires in:"
+#: public/views/modals/bind.html:35
+#: public/views/modals/offer-contract.html:36
+#: public/views/modals/offer-contract.html:44
+msgid "amount"
+msgstr ""
+
+#: public/views/modals/bind.html:31
+msgid "an event is posted by an oracle"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:69
+msgid "can unlock the contract"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:98
+msgid "can unlock the contract after it expires in"
 msgstr ""
 
 #: public/views/copayers.html:38
@@ -1550,28 +1544,36 @@ msgstr ""
 msgid "created"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:137
+#: public/views/modals/offer-contract.html:100
 msgid "days"
 msgstr ""
 
-#: public/views/modals/bind.html:78
+#: public/views/backup.html:28
+msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
+msgstr ""
+
+#: public/views/backup.html:27
+msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
+msgstr ""
+
+#: public/views/modals/bind.html:70
 msgid "either way"
 msgstr ""
 
-#: public/views/modals/bind.html:76
+#: public/views/modals/bind.html:62
 msgid "explicitly"
 msgstr ""
 
-#: public/views/modals/bind.html:90
-#: public/views/modals/offer-contract.html:66
+#: public/views/modals/bind.html:77
+#: public/views/modals/offer-contract.html:61
 msgid "hours"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:79
-msgid "if an event is posted by an oracle:"
+#: public/views/modals/offer-contract.html:70
+msgid "if an event is posted by an oracle"
 msgstr ""
 
-#: public/views/modals/bind.html:77
+#: public/views/modals/bind.html:66
 msgid "in merkle tree"
 msgstr ""
 
@@ -1583,9 +1585,30 @@ msgstr ""
 msgid "locked by pending payments"
 msgstr ""
 
+#: public/views/modals/bind.html:53
+#: public/views/modals/offer-contract.html:80
+msgid "on feed name"
+msgstr ""
+
 #: public/views/walletHome.html:386
 #: public/views/walletHome.html:397
 msgid "optional"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:91
+msgid "or"
+msgstr ""
+
+#: public/views/backup.html:24
+msgid "or backup all Byteball data at"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:43
+msgid "peer pays"
+msgstr ""
+
+#: public/views/modals/bind.html:58
+msgid "posted"
 msgstr ""
 
 #: public/views/modals/tx-details.html:115
@@ -1604,6 +1627,7 @@ msgid "sending"
 msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:17
+#: public/views/modals/offer-contract.html:51
 msgid "to"
 msgstr ""
 
@@ -1614,6 +1638,14 @@ msgstr ""
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:83
+msgid "with expected value"
+msgstr ""
+
+#: public/views/modals/bind.html:56
+msgid "with expected value of"
 msgstr ""
 
 #: public/views/modals/address-definition.html:16
@@ -1628,7 +1660,7 @@ msgstr ""
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1350
+#: src/js/controllers/walletHome.js:1352
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
 
@@ -1647,8 +1679,4 @@ msgstr ""
 
 #: public/views/preferencesGlobal.html:29
 msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
-msgstr ""
-
-#: public/views/backup.html:22
-msgid "{{wordsC.text}}"
 msgstr ""

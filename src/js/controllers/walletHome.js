@@ -841,7 +841,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					self.resetForm();
 					$rootScope.$emit("NewOutgoingTx");
 					if (recipient_device_address){ // show payment in chat window
-						eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset);
+						eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
 						if (binding && binding.reverseAmount){ // create a request for reverse payment
 							if (!my_address)
 								throw Error('my address not known');
