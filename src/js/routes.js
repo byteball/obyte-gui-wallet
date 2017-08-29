@@ -113,6 +113,7 @@ angular
         url: '/create',
         templateUrl: 'views/create.html',
         needProfile: true,
+        modal: true,
         views: {
           'main': {
             templateUrl: 'views/create.html'
