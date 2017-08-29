@@ -702,6 +702,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
 
 		self.needsBackup = false;
+		self.singleAddressWallet = false;
 		self.openWallet();
         /*if (fc.isPrivKeyExternal()) {
             self.needsBackup = false;
@@ -1296,8 +1297,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
       self.addressbook = ab;
     });
-  };
-    
+  };   
     
 
     function getNumberOfSelectedSigners(){
