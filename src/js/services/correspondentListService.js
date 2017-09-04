@@ -61,7 +61,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
 				root.messageEventsByCorrespondent[peer_address].push({
 					bIncoming: false,
-					message: 'new messages',
+					message: '<span>new messages</span>',
 					type: 'system',
 					new_message_delim: true
 				});
@@ -400,7 +400,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var message = messages[i];
 					var msg_ts = new Date(message.creation_date.replace(' ', 'T')+'.000Z');
 					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
-						messageEvents.unshift({type: 'system', bIncoming: false, message: last_msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+						messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + last_msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
 					last_msg_ts = msg_ts;
 					if (message.type == "text") {
@@ -414,7 +414,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000), chat_recording_status: message.chat_recording_status});
 				}
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
-					messageEvents.unshift({type: 'system', bIncoming: false, message: (last_msg_ts ? last_msg_ts : new Date()).toDateString(), timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
+					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
 				$rootScope.$digest();
 				if (cb) cb();
@@ -428,7 +428,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var msg_ts = new Date(message.timestamp * 1000);
 		var last_msg_ts = new Date(messageEvents[messageEvents.length-1].timestamp * 1000);
 		if (last_msg_ts.getDay() != msg_ts.getDay()) {
-			messageEvents.push({type: 'system', bIncoming: false, message: msg_ts.toDateString(), timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+			messageEvents.push({type: 'system', bIncoming: false, message: "<span>" + msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 		}
 	}
 
@@ -436,7 +436,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		switch (message.type) {
 			case "system":
 				message.message = JSON.parse(message.message);
-				message.message = "chat recording " + (message.message.state ? "&nbsp;" : "") + "<b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
+				message.message = "<span>chat recording " + (message.message.state ? "&nbsp;" : "") + "</span><b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
 				message.chat_recording_status = true;
 				break;
 		}
