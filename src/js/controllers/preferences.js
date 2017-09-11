@@ -75,38 +75,27 @@ angular.module('copayApp.controllers').controller('preferencesController',
       unwatchRequestTouchid();
     });
 
-	$scope.$watch('singleAddressWallet', function(newValue, oldValue) {
+	$scope.$watch('index.isSingleAddress', function(newValue, oldValue) {
+		if (oldValue == newValue) return;
+		
+	    var fc = profileService.focusedClient;
+	    var walletId = fc.credentials.walletId;
+	    var config = configService.getSync();
 
-    this.colorOpts = configService.colorOpts;
+	    config.isSingleAddress = config.isSingleAddress || {};
+	    fc.isSingleAddress = config.isSingleAddress[walletId] || false;
 
-    var fc = profileService.focusedClient;
-    var walletId = fc.credentials.walletId;
-
-    var config = configService.getSync();
-    config.colorFor = config.colorFor || {};
-    this.color = config.colorFor[walletId] || '#4A90E2';
-
-    this.save = function(color) {
-      var self = this;
-      var opts = {
-        colorFor: {}
-      };
-      opts.colorFor[walletId] = color;
-
-      configService.set(opts, function(err) {
-        if (err) {
-          $scope.$emit('Local/DeviceError', err);
-          return;
-        }
-        self.color = color;
-        $scope.$emit('Local/ColorUpdated');
-      });
-
-    };
-
-
-		if (!oldValue && newValue) {
-			
-		}
+	    var opts = {
+			isSingleAddress: {}
+		};
+		opts.isSingleAddress[walletId] = newValue;
+	    configService.set(opts, function(err) {
+	        if (err) {
+	          $scope.$emit('Local/DeviceError', err);
+	          return;
+	        }
+	        fc.isSingleAddress = newValue;
+	        $scope.$emit('Local/SingleAddressFlagUpdated');
+	      });
 	});
   });

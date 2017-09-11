@@ -690,6 +690,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.copayers = [];
         self.updateColor();
         self.updateAlias();
+        self.updateSingleAddressFlag();
         self.setAddressbook();
 
         console.log("reading cosigners");
@@ -918,6 +919,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.backgroundColor = config.colorFor[self.walletId] || '#4A90E2';
     var fc = profileService.focusedClient;
     fc.backgroundColor = self.backgroundColor;
+  };
+
+  self.updateSingleAddressFlag = function() {
+    var config = configService.getSync();
+    config.isSingleAddress = config.isSingleAddress || {};
+    self.isSingleAddress = config.isSingleAddress[self.walletId];
+    var fc = profileService.focusedClient;
+    fc.isSingleAddress = self.isSingleAddress;
   };
 
   self.setBalance = function(assocBalances, assocSharedBalances) {
@@ -1340,6 +1349,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/AliasUpdated', function(event) {
     self.updateAlias();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  });
+
+  $rootScope.$on('Local/SingleAddressFlagUpdated', function(event) {
+    self.updateSingleAddressFlag();
     $timeout(function() {
       $rootScope.$apply();
     });
