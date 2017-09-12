@@ -8,10 +8,10 @@
 .w80 {
 	width: 80px !important;
 }
-.capitalize span {
+span.capitalize {
 	display: inline-block;
 }
-.capitalize span:first-letter {
+span.capitalize:first-letter {
 	text-transform: uppercase;
 }
 form[name="contractForm"] {
@@ -55,6 +55,7 @@ form[name="contractForm"] {
 			<a><span >{{info.displayName|translate}}</span></a>
 		  </li>
 		</ul>
+	&nbsp;&nbsp;
 	<span selectable="#peerpaysto" dropdown-toggle="#peerpaysto" data-model="contract" data-prop="peer_pays_to"></span>.
 		<ul id="peerpaysto" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="dest in arrPeerPaysTos" class="dropup-item" data-value="{{dest.value}}">
@@ -66,7 +67,7 @@ form[name="contractForm"] {
 	<input type="number" min="0.1" required name="time2out" id="time2out" ng-model="contract.timeout" style="text-align: right" class="inline w30">
 	<span translate>hours</span>.<br><br>
 
-	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="padding: 0 5px; display: inline-block; min-width: 30px; text-align: center; height: 22px"></span>
+	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="display: inline-block; min-width: 15px; text-align: left; height: 22px"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
 			<a><span >{{party.display_value|translate}}</span></a>
