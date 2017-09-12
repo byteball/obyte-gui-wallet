@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			feedvalues_filter: ["^[\\d]+$"]
 		},
 		"TKT4UESIKTTRALRRLWS4SENSTJX6ODCW" : {
-			name: "Sports betting on soccer",
+			name: "Sports betting",
 			feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"],
 			feedvalues_filter: ["^[\\w\\d]+$"]
 		},

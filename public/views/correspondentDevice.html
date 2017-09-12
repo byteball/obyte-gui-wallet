@@ -15,7 +15,7 @@
     </a>
     </section>
 
-    <section class="middle tab-bar-section">
+    <section class="middle tab-bar-section" style="overflow: hidden;">
 	    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
 	      {{correspondent.name}}
 	    </h1>
@@ -323,7 +323,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
             <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content >
 			  <li class="dropup-item">
-			    <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+			    <a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
 				  	<span translate>
 				  		Insert my address
 				  	</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
