@@ -68,7 +68,7 @@ form[name="contractForm"] {
 	<input type="number" min="0.1" required name="time2out" id="time2out" ng-model="contract.timeout" style="text-align: right" class="inline w30">
 	<span translate>hours</span>.<br><br>
 
-	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="display: inline-block; min-width: 15px; text-align: left; height: 22px"></span>
+	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="display: inline-block; min-width: 18px; text-align: left; height: 22px"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
 			<a><span >{{party.display_value|translate}}</span></a>
@@ -85,7 +85,7 @@ form[name="contractForm"] {
 		  </li>
 	  </ul>
 	  <br>
-	<span translate class="p10l" style="display: inline-block; margin-top: 10px;">on feed name</span>
+	<span translate class="p10l" style="display: inline-block;">on feed name</span>
 	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required style="width: 177px;">
 	<br>
 	<span translate class="p10l">with expected value</span>
