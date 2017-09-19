@@ -931,7 +931,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				return info;
 			});
 			$scope.binding = { // defaults
-				type: 'reverse_payment',
+				type: fc.isSingleAddress ? 'data' : 'reverse_payment',
 				timeout: 4,
 				reverseAsset: 'base',
 				feed_type: 'either'
