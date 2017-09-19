@@ -105,7 +105,8 @@ angular.module('copayApp.controllers').controller('createController',
 			n: $scope.totalCosigners,
 			name: form.walletName.$modelValue,
 			networkName: 'livenet',
-			cosigners: []
+			cosigners: [],
+			isSingleAddress: $scope.isSingleAddress
 		};
 		if ($scope.totalCosigners > 1){
 			opts.cosigners = lodash.uniq(self.cosigners.map(function(cosigner){ return cosigner.device_address; }));
@@ -175,6 +176,10 @@ angular.module('copayApp.controllers').controller('createController',
 					$rootScope.$emit('Local/ShowAlert', "Please approve wallet creation on other devices", 'fi-key', function(){
 						go.walletHome();
 					});*/
+
+				if (opts.isSingleAddress) {
+					profileService.setSingleAddressFlag(true);
+				}
 			});
 		}, 100);
 	}

@@ -363,6 +363,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	if (indexScope.shared_address && forceNew)
 		throw Error('attempt to generate for shared address');
 
+	if (fc.isSingleAddress && forceNew)
+		throw Error('attempt to generate for single address wallets');
+
     self.generatingAddress = true;
     $timeout(function() {
       addressService.getAddress(fc.credentials.walletId, forceNew, function(err, addr) {
@@ -707,7 +710,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 				var my_address;
 				// never reuse addresses as the required output could be already present
-				walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
+				useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 					my_address = addressInfo.address;
 					if (self.binding.type === 'reverse_payment'){
 						var arrSeenCondition = ['seen', {
@@ -820,53 +823,56 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					recipient_device_address: recipient_device_address
 				};
-				fc.sendMultiPayment(opts, function(err){
-					// if multisig, it might take very long before the callback is called
-					indexScope.setOngoingProcess(gettext('sending'), false);
-					breadcrumbs.add('done payment in '+asset+', err='+err);
-					delete self.current_payment_key;
-					profileService.bKeepUnlocked = false;
-					if (err){
-						if (typeof err === 'object'){
-							err = JSON.stringify(err);
-							eventBus.emit('nonfatal_error', "error object from sendMultiPayment: "+err, new Error());
+				useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
+					opts.change_address = addressInfo.address;
+					fc.sendMultiPayment(opts, function(err){
+						// if multisig, it might take very long before the callback is called
+						indexScope.setOngoingProcess(gettext('sending'), false);
+						breadcrumbs.add('done payment in '+asset+', err='+err);
+						delete self.current_payment_key;
+						profileService.bKeepUnlocked = false;
+						if (err){
+							if (typeof err === 'object'){
+								err = JSON.stringify(err);
+								eventBus.emit('nonfatal_error', "error object from sendMultiPayment: "+err, new Error());
+							}
+							else if (err.match(/device address/))
+								err = "This is a private asset, please send it only by clicking links from chat";
+							else if (err.match(/no funded/))
+								err = "Not enough spendable funds, make sure all your funds are confirmed";
+							return self.setSendError(err);
 						}
-						else if (err.match(/device address/))
-							err = "This is a private asset, please send it only by clicking links from chat";
-						else if (err.match(/no funded/))
-							err = "Not enough spendable funds, make sure all your funds are confirmed";
-						return self.setSendError(err);
-					}
-					var binding = self.binding;
-					self.resetForm();
-					$rootScope.$emit("NewOutgoingTx");
-					if (recipient_device_address){ // show payment in chat window
-						eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
-						if (binding && binding.reverseAmount){ // create a request for reverse payment
-							if (!my_address)
-								throw Error('my address not known');
-							var paymentRequestCode = 'byteball:'+my_address+'?amount='+binding.reverseAmount+'&asset='+encodeURIComponent(binding.reverseAsset);
-							var paymentRequestText = '[reverse payment]('+paymentRequestCode+')';
-							device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
-							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
- 							correspondentListService.addMessageEvent(false, recipient_device_address, body);
- 							device.readCorrespondent(recipient_device_address, function(correspondent){
- 			 					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
-			 				});
+						var binding = self.binding;
+						self.resetForm();
+						$rootScope.$emit("NewOutgoingTx");
+						if (recipient_device_address){ // show payment in chat window
+							eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
+							if (binding && binding.reverseAmount){ // create a request for reverse payment
+								if (!my_address)
+									throw Error('my address not known');
+								var paymentRequestCode = 'byteball:'+my_address+'?amount='+binding.reverseAmount+'&asset='+encodeURIComponent(binding.reverseAsset);
+								var paymentRequestText = '[reverse payment]('+paymentRequestCode+')';
+								device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
+								var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
+	 							correspondentListService.addMessageEvent(false, recipient_device_address, body);
+	 							device.readCorrespondent(recipient_device_address, function(correspondent){
+	 			 					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+				 				});
 
-							// issue next address to avoid reusing the reverse payment address
-							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
+								// issue next address to avoid reusing the reverse payment address
+								if (!fc.isSingleAddress) walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
+							}
 						}
-					}
-					else // redirect to history
-						$rootScope.$emit('Local/SetTab', 'history');
-				});
-				/*
-				if (fc.credentials.n > 1){
-					$rootScope.$emit('Local/ShowAlert', "Transaction created.\nPlease approve it on the other devices.", 'fi-key', function(){
-						go.walletHome();
+						else // redirect to history
+							$rootScope.$emit('Local/SetTab', 'history');
 					});
-				}*/
+				});
+			}
+
+			function useOrIssueNextAddress(wallet, is_change, handleAddress) {
+				if (fc.isSingleAddress)
+					handleAddress({address: self.addr[fc.credentials.walletId]});
+				else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 			}
         
         });
@@ -945,6 +951,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				}
 			}
 			$scope.oracles = configService.oracles;
+			$scope.isSingleAddress = fc.isSingleAddress;
 			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');

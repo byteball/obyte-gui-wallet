@@ -58,6 +58,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     function sendBugReport(error_message, error_object){
+    		return;
         var conf = require('byteballcore/conf.js');
         var network = require('byteballcore/network.js');
         var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
@@ -262,7 +263,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     
     // in arrOtherCosigners, 'other' is relative to the initiator
-    eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners){
+    eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
 		var device = require('byteballcore/device.js');
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
@@ -290,6 +291,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									walletClient.credentials.addWalletInfo(walletName, m, n);
 									updatePublicKeyRing(walletClient);
 									profileService._addWalletClient(walletClient, {}, function(){
+										if (isSingleAddress) {
+											profileService.setSingleAddressFlag(true);
+										}
 										console.log("switched to newly approved wallet "+walletId);
 									});
 								}

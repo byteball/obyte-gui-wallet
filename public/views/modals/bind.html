@@ -23,7 +23,7 @@
 	<span translate>The peer receives this payment if </span>
 	<span selectable="#binding_type" dropdown-toggle="#binding_type" data-model="binding" data-prop="type"></span>
         <ul id="binding_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
-		  <li class="dropup-item" data-value="reverse_payment">
+		  <li class="dropup-item" data-value="reverse_payment" ng-if="!isSingleAddress">
 			<a><span translate>I receive another payment of</span></a>
 		  </li>
 		  <div class="clear"></div>
