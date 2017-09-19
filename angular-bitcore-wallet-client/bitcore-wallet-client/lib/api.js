@@ -462,7 +462,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
 
         self.credentials.addWalletInfo(walletName, m, n);
         cb(null);
-    }, opts.isSingleAddressWallet);
+    }, opts.isSingleAddress);
 };
 
 
