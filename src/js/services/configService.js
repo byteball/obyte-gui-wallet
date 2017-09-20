@@ -72,6 +72,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  spendUnconfirmed: false,
 	  reconnectDelay: 5000,
 	  idleDurationMin: 4,
+	  singleAddress: false,
 	  settings: {
 		unitName: 'bytes',
 		unitValue: 1,

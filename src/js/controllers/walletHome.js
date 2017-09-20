@@ -363,6 +363,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	if (indexScope.shared_address && forceNew)
 		throw Error('attempt to generate for shared address');
 
+	if (fc.isSingleAddress && forceNew)
+		throw Error('attempt to generate for single address wallets');
+
     self.generatingAddress = true;
     $timeout(function() {
       addressService.getAddress(fc.credentials.walletId, forceNew, function(err, addr) {
@@ -707,7 +710,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 				var my_address;
 				// never reuse addresses as the required output could be already present
-				walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
+				useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 					my_address = addressInfo.address;
 					if (self.binding.type === 'reverse_payment'){
 						var arrSeenCondition = ['seen', {
@@ -818,7 +821,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					amount: amount,
 					send_all: self.bSendAll,
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					recipient_device_address: recipient_device_address
+					recipient_device_address: recipient_device_address,
+					isSingleAddress: fc.isSingleAddress
 				};
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
@@ -855,18 +859,19 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			 				});
 
 							// issue next address to avoid reusing the reverse payment address
-							walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
+							if (!fc.isSingleAddress) walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(){});
 						}
 					}
 					else // redirect to history
 						$rootScope.$emit('Local/SetTab', 'history');
 				});
-				/*
-				if (fc.credentials.n > 1){
-					$rootScope.$emit('Local/ShowAlert', "Transaction created.\nPlease approve it on the other devices.", 'fi-key', function(){
-						go.walletHome();
-					});
-				}*/
+				
+			}
+
+			function useOrIssueNextAddress(wallet, is_change, handleAddress) {
+				if (fc.isSingleAddress)
+					handleAddress({address: self.addr[fc.credentials.walletId]});
+				else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 			}
         
         });
@@ -925,7 +930,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				return info;
 			});
 			$scope.binding = { // defaults
-				type: 'reverse_payment',
+				type: fc.isSingleAddress ? 'data' : 'reverse_payment',
 				timeout: 4,
 				reverseAsset: 'base',
 				feed_type: 'either'
@@ -945,6 +950,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				}
 			}
 			$scope.oracles = configService.oracles;
+			$scope.isSingleAddress = fc.isSingleAddress;
 			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');

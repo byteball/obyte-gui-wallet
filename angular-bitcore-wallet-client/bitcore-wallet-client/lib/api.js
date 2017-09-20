@@ -454,7 +454,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
         //self.credentials.account = account;
     }
     
-    walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, function(wallet){
+    walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function(wallet){
         self.credentials.walletId = wallet;
         console.log("wallet created: " + JSON.stringify(self.credentials));
         if (network != self.credentials.network)
@@ -545,10 +545,17 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 		if (opts.change_address)
 			return Wallet.sendMultiPayment(opts, cb);
 		// create a new change address or select first unused one
-		walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
-			opts.change_address = objAddr.address;
-			Wallet.sendMultiPayment(opts, cb);
-		});
+		if (!opts.isSingleAddress) {
+			walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
+				opts.change_address = objAddr.address;
+				Wallet.sendMultiPayment(opts, cb);
+			});
+		} else {
+			walletDefinedByKeys.readAddresses(self.credentials.walletId, {}, function(addresses){
+				opts.change_address = addresses[0].address;
+				Wallet.sendMultiPayment(opts, cb);
+			});
+		}
 	}
 };
 

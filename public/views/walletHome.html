@@ -261,7 +261,7 @@
             </div>
           </div>
         </div>
-        <div class="row m20t" ng-if="!index.shared_address">
+        <div class="row m20t" ng-if="!index.shared_address && !index.isSingleAddress">
           <div class="large-12 columns">
             <button class="button black expand round m0" ng-click="home.setAddress(true)"
               ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>

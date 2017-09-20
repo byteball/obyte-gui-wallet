@@ -1,77 +1,89 @@
 'use strict';
 
-angular.module('copayApp.controllers').controller('preferencesController',
-  function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage) {
-    
-    this.init = function() {
-      var config = configService.getSync();
-      this.unitName = config.wallet.settings.unitName;
-      this.currentLanguageName = uxLanguage.getCurrentLanguageName();
-      $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
-      var fc = profileService.focusedClient;
-      if (fc) {
-        //$scope.encrypt = fc.hasPrivKeyEncrypted();
-        this.externalSource = null;
-        // TODO externalAccount
-        //this.externalIndex = fc.getExternalIndex();
-      }
+angular.module('copayApp.controllers')
+	.controller('preferencesController',
+		function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage, $q) {
 
-      if (window.touchidAvailable) {
-        var walletId = fc.credentials.walletId;
-        this.touchidAvailable = true;
-        config.touchIdFor = config.touchIdFor || {};
-        $scope.touchid = config.touchIdFor[walletId];
-      }
-    };
+			this.init = function() {
+				var config = configService.getSync();
+				this.unitName = config.wallet.settings.unitName;
+				this.currentLanguageName = uxLanguage.getCurrentLanguageName();
+				$scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
+				var fc = profileService.focusedClient;
+				if (fc) {
+					//$scope.encrypt = fc.hasPrivKeyEncrypted();
+					this.externalSource = null;
 
-    var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
-      if (newVal == oldVal) return;
-      var opts = {
-        wallet: {
-          spendUnconfirmed: newVal
-        }
-      };
-      configService.set(opts, function(err) {
-        $rootScope.$emit('Local/SpendUnconfirmedUpdated');
-        if (err) $log.debug(err);
-      });
-    });
+					var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+					walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function(addresses) {
+						$scope.numAddresses = addresses.length;
+						$rootScope.$apply();
+					});
+					$scope.numCosigners = fc.credentials.n;
+					// TODO externalAccount
+					//this.externalIndex = fc.getExternalIndex();
+				}
 
+				if (window.touchidAvailable) {
+					var walletId = fc.credentials.walletId;
+					this.touchidAvailable = true;
+					config.touchIdFor = config.touchIdFor || {};
+					$scope.touchid = config.touchIdFor[walletId];
+				}
+			};
 
-    var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {
-      if (newVal == oldVal || $scope.touchidError) {
-        $scope.touchidError = false;
-        return;
-      }
-      var walletId = profileService.focusedClient.credentials.walletId;
+			var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
+				if (newVal == oldVal) return;
+				var opts = {
+					wallet: {
+						spendUnconfirmed: newVal
+					}
+				};
+				configService.set(opts, function(err) {
+					$rootScope.$emit('Local/SpendUnconfirmedUpdated');
+					if (err) $log.debug(err);
+				});
+			});
 
-      var opts = {
-        touchIdFor: {}
-      };
-      opts.touchIdFor[walletId] = newVal;
+			var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {
+				if (newVal == oldVal || $scope.touchidError) {
+					$scope.touchidError = false;
+					return;
+				}
+				var walletId = profileService.focusedClient.credentials.walletId;
 
-      $rootScope.$emit('Local/RequestTouchid', function(err) {
-        if (err) { 
-          $log.debug(err);
-          $timeout(function() {
-            $scope.touchidError = true;
-            $scope.touchid = oldVal;
-          }, 100);
-        }
-        else {
-          configService.set(opts, function(err) {
-            if (err) {
-              $log.debug(err);
-              $scope.touchidError = true;
-              $scope.touchid = oldVal;
-            }
-          });
-        }
-      });
-    });
+				var opts = {
+					touchIdFor: {}
+				};
+				opts.touchIdFor[walletId] = newVal;
 
-    $scope.$on('$destroy', function() {
-      unwatchSpendUnconfirmed();
-      unwatchRequestTouchid();
-    });
-  });
+				$rootScope.$emit('Local/RequestTouchid', function(err) {
+					if (err) {
+						$log.debug(err);
+						$timeout(function() {
+							$scope.touchidError = true;
+							$scope.touchid = oldVal;
+						}, 100);
+					}
+					else {
+						configService.set(opts, function(err) {
+							if (err) {
+								$log.debug(err);
+								$scope.touchidError = true;
+								$scope.touchid = oldVal;
+							}
+						});
+					}
+				});
+			});
+
+			$scope.$on('$destroy', function() {
+				unwatchSpendUnconfirmed();
+				unwatchRequestTouchid();
+			});
+
+			$scope.$watch('index.isSingleAddress', function(newValue, oldValue) {
+				if (oldValue == newValue) return;
+				profileService.setSingleAddressFlag(newValue);
+			});
+		});
