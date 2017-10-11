@@ -880,7 +880,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
   	this.switchForms = function() {
   		this.bSendAll = false;
-  		if ($scope.assetIndexSelectorValue == -1) {
+  		if ($scope.assetIndexSelectorValue < 0) {
   			this.shownForm = 'data';
   		} else {
   			$scope.index.assetIndex = $scope.assetIndexSelectorValue;
@@ -893,15 +893,29 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var objectHash = require('byteballcore/object_hash.js');
 		var fc = profileService.focusedClient;
 		var value = {};
+		var app = "data_feed";
+		switch ($scope.assetIndexSelectorValue) {
+			case -2:
+				app = "attestation"
+				break;
+			case -3:
+				app = "profile"
+				break;
+			case -4:
+				app = "data"
+				break;
+		}
 		$scope.home.feedvaluespairs.forEach(function(pair){
 			value[pair.name] = pair.value;
 		});
 		if (Object.keys(value).length === 0) {
-			self.setSendError("Provide at least one datafeed value");
+			self.setSendError("Provide at least one value");
 			return;
 		}
+		if (app == "attestation")
+			value = {profile: value};
 		var objMessage = {
-			app: "data_feed",
+			app: app,
 			payload_location: "inline",
 			payload_hash: objectHash.getBase64Hash(value),
 			payload: value
