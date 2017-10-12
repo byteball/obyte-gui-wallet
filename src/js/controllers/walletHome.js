@@ -895,25 +895,39 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var value = {};
 		var app = "data_feed";
 		switch ($scope.assetIndexSelectorValue) {
+			case -1:
+				app = "data_feed";
+				break;
 			case -2:
-				app = "attestation"
+				app = "attestation";
 				break;
 			case -3:
-				app = "profile"
+				app = "profile";
 				break;
 			case -4:
-				app = "data"
+				app = "data";
+				break;
+			default:
+				throw "invalid asset selected";
 				break;
 		}
 		$scope.home.feedvaluespairs.forEach(function(pair){
+			if (value[pair.name]) {
+				self.setSendError("All keys must be unique");
+				return;
+			}
 			value[pair.name] = pair.value;
 		});
 		if (Object.keys(value).length === 0) {
 			self.setSendError("Provide at least one value");
 			return;
 		}
-		if (app == "attestation")
-			value = {profile: value};
+		if (app == "attestation") {
+			value = {
+				address: $scope.home.attestation_address,
+				profile: value
+			};
+		}
 		var objMessage = {
 			app: app,
 			payload_location: "inline",
