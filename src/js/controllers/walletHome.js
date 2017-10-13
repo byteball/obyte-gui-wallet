@@ -893,7 +893,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var objectHash = require('byteballcore/object_hash.js');
 		var fc = profileService.focusedClient;
 		var value = {};
-		var app = "data_feed";
+		var app;
 		switch ($scope.assetIndexSelectorValue) {
 			case -1:
 				app = "data_feed";
@@ -908,23 +908,26 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				app = "data";
 				break;
 			default:
-				throw "invalid asset selected";
+				throw new Error("invalid asset selected");
 				break;
 		}
+		var errored = false;
 		$scope.home.feedvaluespairs.forEach(function(pair){
 			if (value[pair.name]) {
 				self.setSendError("All keys must be unique");
+				errored = true;
 				return;
 			}
 			value[pair.name] = pair.value;
 		});
+		if (errored) return;
 		if (Object.keys(value).length === 0) {
 			self.setSendError("Provide at least one value");
 			return;
 		}
 		if (app == "attestation") {
 			value = {
-				address: $scope.home.attestation_address,
+				address: $scope.home.attested_address,
 				profile: value
 			};
 		}
