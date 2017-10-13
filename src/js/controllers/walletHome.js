@@ -878,6 +878,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }, 100);
   };
 
+  $scope.$watch('index.assetIndex', function(newVal, oldVal){
+  	$scope.assetIndexSelectorValue = newVal;
+  });
   	this.switchForms = function() {
   		this.bSendAll = false;
   		if ($scope.assetIndexSelectorValue < 0) {

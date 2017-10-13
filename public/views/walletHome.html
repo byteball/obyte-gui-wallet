@@ -303,7 +303,7 @@ input.datafeed_input {
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
-                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'blackbytes' : balance.asset)) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString() + ' ' + balance.unitName)) + (balance.pending ? ' confirmed' : ' available') + ')'}}</option>
+                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'blackbytes' : balance.asset)) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' confirmed' : ' available') + ')'}}</option>
                 	<option ng-value="-1" translate>data into datafeed</option>
                 	<option ng-value="-2" translate>attestation</option>
                 	<option ng-value="-3" translate>profile</option>
