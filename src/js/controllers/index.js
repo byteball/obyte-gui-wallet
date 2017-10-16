@@ -956,13 +956,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			}
 		}
         if (asset === "base" || asset == self.BLACKBYTES_ASSET){
-			var assetName = asset !== "base" ? 'blackbytes' : 'base';
-			var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
-            balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
-            balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
-            balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
-			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
+				var assetName = asset !== "base" ? 'blackbytes' : 'base';
+				var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
+	        balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
+	        balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
+	        balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
+				if (typeof balanceInfo.shared === 'number')
+					balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
         }
         self.arrBalances.push(balanceInfo);
     }
@@ -1152,7 +1152,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
 
-    if (!fc.isComplete() || self.updatingTxHistory[walletId]) return;
+    if (!fc.isComplete() || self.arrBalances.length === 0 || self.updatingTxHistory[walletId]) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
