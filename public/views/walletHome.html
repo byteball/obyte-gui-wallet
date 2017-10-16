@@ -415,7 +415,14 @@ input.datafeed_input {
               </div>
             </div>
 
-            <cosigners></cosigners>
+            <div class="" ng-show="index.m < index.n && index.m > 1">
+                <div class="large-12 medium-12">
+                    <label>
+                        <span translate>Who signs:</span>
+                    </label>
+            			<cosigners></cosigners>
+            		</div>
+            </div>
 
             <div class="row" ng-show="!home.onGoingProcess">
               <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount)">
@@ -458,7 +465,7 @@ input.datafeed_input {
 					<label>
 						<span translate>Address to attest</span>
 					</label>
-					<input type="text" ng-model="home.attested_address" placeholder="Byteball address" valid-address ng-required="true">
+					<input ng-if="assetIndexSelectorValue == -2" type="text" ng-model="home.attested_address" placeholder="Byteball address" valid-address ng-required="true">
 				</div>
 				<div class="row m20t">
 					<label>
@@ -476,7 +483,14 @@ input.datafeed_input {
 					</a>
 				</div>
 
-            <cosigners></cosigners>
+            <div class="" ng-show="index.m < index.n && index.m > 1">
+                <div class="large-12 medium-12">
+                    <label>
+                        <span translate>Who signs:</span>
+                    </label>
+            			<cosigners></cosigners>
+            		</div>
+            </div>
 
             <div class="row m20t" ng-show="!home.onGoingProcess">
               <div class="columns">

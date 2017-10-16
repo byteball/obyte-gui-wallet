@@ -928,45 +928,67 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			self.setSendError("Provide at least one value");
 			return;
 		}
-		if (app == "attestation") {
-			value = {
-				address: $scope.home.attested_address,
-				profile: value
-			};
-		}
-		var objMessage = {
-			app: app,
-			payload_location: "inline",
-			payload_hash: objectHash.getBase64Hash(value),
-			payload: value
-		};
-		var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-		if (fc.credentials.m < fc.credentials.n)
-			indexScope.copayers.forEach(function(copayer){
-				if (copayer.me || copayer.signs)
-					arrSigningDeviceAddresses.push(copayer.device_address);
-			});
-		else if (indexScope.shared_address)
-			arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 
-		indexScope.setOngoingProcess(gettext('sending'), true);
-		
-		fc.sendMultiPayment({
-			arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-			paying_addresses: [self.addr[fc.credentials.walletId]],
-			signing_addresses: [self.addr[fc.credentials.walletId]],
-			shared_address: indexScope.shared_address,
-			change_address: self.addr[fc.credentials.walletId],
-			messages: [objMessage]
-		}, function(err){ // can take long if multisig
-			indexScope.setOngoingProcess(gettext('sending'), false);
-			if (err){
-				self.setSendError(err);
+		if (fc.isPrivKeyEncrypted()) {
+			profileService.unlockFC(null, function(err) {
+				if (err)
+					return self.setSendError(err.message);
+				return self.submitData();
+			});
+			return;
+		}
+
+		profileService.requestTouchid(function(err) {
+			if (err) {
+				profileService.lockFC();
+				indexScope.setOngoingProcess(gettext('sending'), false);
+				self.error = err;
+				$timeout(function() {
+					$scope.$digest();
+				}, 1);
 				return;
 			}
-			breadcrumbs.add('done submitting data into feeds ' + Object.keys(value).join(','));
-			self.resetDataForm();
-			$rootScope.$emit('Local/SetTab', 'history');
+
+			if (app == "attestation") {
+				value = {
+					address: $scope.home.attested_address,
+					profile: value
+				};
+			}
+			var objMessage = {
+				app: app,
+				payload_location: "inline",
+				payload_hash: objectHash.getBase64Hash(value),
+				payload: value
+			};
+			var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+			if (fc.credentials.m < fc.credentials.n)
+				indexScope.copayers.forEach(function(copayer){
+					if (copayer.me || copayer.signs)
+						arrSigningDeviceAddresses.push(copayer.device_address);
+				});
+			else if (indexScope.shared_address)
+				arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
+
+			indexScope.setOngoingProcess(gettext('sending'), true);
+			
+			fc.sendMultiPayment({
+				arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+				paying_addresses: [self.addr[fc.credentials.walletId]],
+				signing_addresses: [self.addr[fc.credentials.walletId]],
+				shared_address: indexScope.shared_address,
+				change_address: self.addr[fc.credentials.walletId],
+				messages: [objMessage]
+			}, function(err){ // can take long if multisig
+				indexScope.setOngoingProcess(gettext('sending'), false);
+				if (err){
+					self.setSendError(err);
+					return;
+				}
+				breadcrumbs.add('done submitting data into feeds ' + Object.keys(value).join(','));
+				self.resetDataForm();
+				$rootScope.$emit('Local/SetTab', 'history');
+			});
 		});
 	}
 

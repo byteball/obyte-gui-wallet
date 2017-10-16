@@ -31,7 +31,12 @@
 	  </ul>
   </div>
 	
-	<cosigners></cosigners>
+	<div class="" ng-show="index.m < index.n && index.m > 1">
+		<h4 class="title m0 row columns" translate>Who signs:</h4>
+        <div class="row columns large-12 medium-12">
+    			<cosigners></cosigners>
+    		</div>
+    </div>
 	
 	<div ng-if="error" class="row columns">
 		<span class="has-error size-12">
