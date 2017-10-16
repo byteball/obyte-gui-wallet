@@ -461,11 +461,11 @@ input.datafeed_input {
 				<div class="row m20t text-gray size-12 text-center" ng-show="assetIndexSelectorValue == -4" translate>
 					Post arbitrary key-value pairs of data into byteball network.
 				</div>
-				<div class="row m20t" ng-show="assetIndexSelectorValue == -2">
+				<div class="row m20t" ng-if="assetIndexSelectorValue == -2">
 					<label>
 						<span translate>Address to attest</span>
 					</label>
-					<input ng-if="assetIndexSelectorValue == -2" type="text" ng-model="home.attested_address" placeholder="Byteball address" valid-address ng-required="true">
+					<input type="text" ng-model="home.attested_address" placeholder="Byteball address" valid-address ng-required="true">
 				</div>
 				<div class="row m20t">
 					<label>
