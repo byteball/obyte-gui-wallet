@@ -450,16 +450,16 @@ input.datafeed_input {
             </div>
 
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -1" translate>
-					Post values into datafeeds manually, like oracles.
+					Post values into datafeeds manually, be an oracle.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -2" translate>
-					Attest any byteball address, filling it's profile data.
+					Attest profile data linked to any Byteball address.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -3" translate>
-					Post you profile data.
+					Post your profile data, anything you want to say about yourself.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -4" translate>
-					Post arbitrary key-value pairs of data into byteball network.
+					Post arbitrary key-value pairs of data into Byteball network.
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -2">
 					<label style="float: left;">
@@ -514,8 +514,8 @@ input.datafeed_input {
         </div>
       </div>
       <div ng-show="home.shownForm=='data' && !index.isSingleAddress">
-      	<div class="large-12 large-centered columns" translate>
-      		To be able to send arbitrary data into byteball network, please choose single-address wallet first or create one.
+      	<div class="large-12 large-centered columns" style="padding-top: 10px" translate>
+      		To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one.
       	</div>
       </div>
       <!--div class="row columns m20t" ng-hide="home.canSendPayment()">

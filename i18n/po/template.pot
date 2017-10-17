@@ -146,7 +146,7 @@ msgid "Asset"
 msgstr ""
 
 #: public/views/walletHome.html:455
-msgid "Attest any byteball address, filling it's profile data."
+msgid "Attest profile data linked to any Byteball address."
 msgstr ""
 
 #: public/views/walletHome.html:308
@@ -937,15 +937,15 @@ msgid "Port"
 msgstr ""
 
 #: public/views/walletHome.html:461
-msgid "Post arbitrary key-value pairs of data into byteball network."
+msgid "Post arbitrary key-value pairs of data into Byteball network."
 msgstr ""
 
 #: public/views/walletHome.html:452
-msgid "Post values into datafeeds manually, like oracles."
+msgid "Post values into datafeeds manually, be an oracle."
 msgstr ""
 
 #: public/views/walletHome.html:458
-msgid "Post you profile data."
+msgid "Post your profile data, anything you want to say about yourself."
 msgstr ""
 
 #: public/views/walletHome.html:157
@@ -961,8 +961,8 @@ msgstr ""
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1365
-#: src/js/controllers/walletHome.js:1438
+#: src/js/controllers/walletHome.js:1367
+#: src/js/controllers/walletHome.js:1440
 msgid "Private payloads sent"
 msgstr ""
 
@@ -1245,8 +1245,8 @@ msgstr ""
 #: src/js/controllers/index.js:231
 #: src/js/controllers/index.js:259
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1365
-#: src/js/controllers/walletHome.js:1438
+#: src/js/controllers/walletHome.js:1367
+#: src/js/controllers/walletHome.js:1440
 msgid "Success"
 msgstr ""
 
@@ -1365,7 +1365,7 @@ msgid "To be able to restore everything, please create a full backup (find the o
 msgstr ""
 
 #: public/views/walletHome.html:517
-msgid "To be able to send arbitrary data into byteball network, please choose single-address wallet first or create one."
+msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
 msgstr ""
 
 #: public/views/walletHome.html:360
@@ -1692,9 +1692,9 @@ msgstr ""
 #: src/js/controllers/walletHome.js:696
 #: src/js/controllers/walletHome.js:792
 #: src/js/controllers/walletHome.js:829
-#: src/js/controllers/walletHome.js:944
-#: src/js/controllers/walletHome.js:973
-#: src/js/controllers/walletHome.js:983
+#: src/js/controllers/walletHome.js:946
+#: src/js/controllers/walletHome.js:975
+#: src/js/controllers/walletHome.js:985
 msgid "sending"
 msgstr ""
 
@@ -1731,7 +1731,7 @@ msgstr ""
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1480
+#: src/js/controllers/walletHome.js:1482
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
 
