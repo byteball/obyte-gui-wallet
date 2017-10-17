@@ -481,8 +481,8 @@ input.datafeed_input {
 						<span translate>Values</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" placeholder="{{[-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : 'Datafeed name'}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
-						<input type="text" ng-model="pair.value" placeholder="{{[-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : 'Datafeed value'}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
+						<input type="text" ng-model="pair.name" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : (assetIndexSelectorValue == -4 ? 'Field' : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
+						<input type="text" ng-model="pair.value" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
 						<a ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
 					<div class="clear"></div>
