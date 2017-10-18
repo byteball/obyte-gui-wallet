@@ -262,7 +262,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     
     // in arrOtherCosigners, 'other' is relative to the initiator
-    eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners){
+    eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
 		var device = require('byteballcore/device.js');
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
@@ -290,6 +290,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									walletClient.credentials.addWalletInfo(walletName, m, n);
 									updatePublicKeyRing(walletClient);
 									profileService._addWalletClient(walletClient, {}, function(){
+										if (isSingleAddress) {
+											profileService.setSingleAddressFlag(true);
+										}
 										console.log("switched to newly approved wallet "+walletId);
 									});
 								}
@@ -690,6 +693,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.copayers = [];
         self.updateColor();
         self.updateAlias();
+        self.updateSingleAddressFlag();
         self.setAddressbook();
 
         console.log("reading cosigners");
@@ -702,6 +706,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
 
 		self.needsBackup = false;
+		self.singleAddressWallet = false;
 		self.openWallet();
         /*if (fc.isPrivKeyExternal()) {
             self.needsBackup = false;
@@ -919,6 +924,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     fc.backgroundColor = self.backgroundColor;
   };
 
+  self.updateSingleAddressFlag = function() {
+    var config = configService.getSync();
+    config.isSingleAddress = config.isSingleAddress || {};
+    self.isSingleAddress = config.isSingleAddress[self.walletId];
+    var fc = profileService.focusedClient;
+    fc.isSingleAddress = self.isSingleAddress;
+  };
+
   self.setBalance = function(assocBalances, assocSharedBalances) {
     if (!assocBalances) return;
     var config = configService.getSync().wallet.settings;
@@ -943,13 +956,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			}
 		}
         if (asset === "base" || asset == self.BLACKBYTES_ASSET){
-			var assetName = asset !== "base" ? 'blackbytes' : 'base';
-			var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
-            balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
-            balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
-            balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
-			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
+				var assetName = asset !== "base" ? 'blackbytes' : 'base';
+				var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
+	        balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
+	        balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
+	        balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
+				if (typeof balanceInfo.shared === 'number')
+					balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
         }
         self.arrBalances.push(balanceInfo);
     }
@@ -1139,7 +1152,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
 
-    if (!fc.isComplete() || self.updatingTxHistory[walletId]) return;
+    if (!fc.isComplete() || self.arrBalances.length === 0 || self.updatingTxHistory[walletId]) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
@@ -1296,8 +1309,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }
       self.addressbook = ab;
     });
-  };
-    
+  };   
     
 
     function getNumberOfSelectedSigners(){
@@ -1340,6 +1352,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/AliasUpdated', function(event) {
     self.updateAlias();
+    $timeout(function() {
+      $rootScope.$apply();
+    });
+  });
+
+  $rootScope.$on('Local/SingleAddressFlagUpdated', function(event) {
+    self.updateSingleAddressFlag();
     $timeout(function() {
       $rootScope.$apply();
     });

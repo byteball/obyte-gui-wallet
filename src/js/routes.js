@@ -17,7 +17,8 @@ if (window && window.navigator) {
 //Setting up route
 angular
   .module('copayApp')
-  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider) {
+  .config(function(historicLogProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $compileProvider, $qProvider) {
+  	$qProvider.errorOnUnhandledRejections(false);
     $urlRouterProvider.otherwise('/');
 
     $logProvider.debugEnabled(true);
@@ -113,6 +114,7 @@ angular
         url: '/create',
         templateUrl: 'views/create.html',
         needProfile: true,
+        modal: true,
         views: {
           'main': {
             templateUrl: 'views/create.html'

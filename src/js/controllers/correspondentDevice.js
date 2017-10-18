@@ -175,7 +175,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
-			$scope.arrPeerPaysTos = [{value: 'me', display_value: "me"}, {value: 'contract', display_value: "this contract"}];
+			$scope.arrPeerPaysTos = [{value: 'me', display_value: "to me"}, {value: 'contract', display_value: "to this contract"}];
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -373,7 +373,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
-							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset);
+							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
 							var paymentRequestCode;
 							if (contract.peer_pays_to === 'contract'){
 								var arrPayments = [{address: shared_address, amount: peer_amount, asset: contract.peerAsset}];
@@ -637,8 +637,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							$rootScope.$emit("NewOutgoingTx");
 							var assocPaymentsByAsset = correspondentListService.getPaymentsByAsset(objMultiPaymentRequest);
+							var bToSharedAddress = objMultiPaymentRequest.payments.some(function(objPayment){
+								return assocSharedDestinationAddresses[objPayment.address];
+							});
 							for (var asset in assocPaymentsByAsset)
-								eventBus.emit('sent_payment', recipient_device_address, assocPaymentsByAsset[asset], asset);
+								eventBus.emit('sent_payment', recipient_device_address, assocPaymentsByAsset[asset], asset, bToSharedAddress);
 						});
 						$modalInstance.dismiss('cancel');
 					});

@@ -170,6 +170,7 @@ fi
 
 echo "${OpenColor}${Green}* Copying files...${CloseColor}"
 cd $BUILDDIR/..
+mkdir $PROJECT/www
 cp -af public/** $PROJECT/www
 checkOK
 

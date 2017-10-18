@@ -1,3 +1,12 @@
+<style type="text/css">
+.bot_name {
+	text-overflow: ellipsis;
+    width: 75%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+</style>
 <div ng-controller="correspondentDevicesController">
 
 <nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -73,9 +82,9 @@
 	    </div>
 	    <div class="mtab" ng-class="{'active': mtab == 2}">
 	    	 <ul class="no-bullet m0 correspondentList">
-		        <li class="p10 line-b" ng-repeat="bot in bots">
+		        <li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">
 		          <div ng-click="showBot(bot)" class="pointer"> 
-		            {{bot.name}}
+		            <span class="bot_name">{{bot.name}}</span>
 		            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
 		            <div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
 		          </div>

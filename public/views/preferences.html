@@ -29,6 +29,17 @@
       <div translate>Color</div>
     </li>
 
+    <li style="padding: 13px 20px 5px">
+	    <div class="right text-gray">
+	        <switch ng-model="index.isSingleAddress" class="green right" data-disabled="numAddresses > 1 || numCosigners > 1"></switch>
+	    </div>
+	    <div translate>Single address wallet</div>
+	    <div class="description m10b">
+      	<span ng-if="!(numAddresses > 1 || numCosigners > 1)" translate>Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains.</span>
+      	<span ng-if="numAddresses > 1 || numCosigners > 1" translate>This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice</span>
+      </div>
+     </li>
+
     <li ng-show="index.isPrivKeyExternal">
       <div class="right text-gray">
         {{preferences.externalSource}} 

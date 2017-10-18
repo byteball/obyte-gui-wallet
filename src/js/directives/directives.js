@@ -429,5 +429,19 @@ angular.module('copayApp.directives')
 				}
 			});
 		}
-	};
-});;
+	}}).directive('cosigners', function() {
+    return {
+      restrict: 'E',
+      template: '<ul class="no-bullet m20b whopays">\
+                  <li class="" ng-repeat="copayer in index.copayers">\
+                      <span class="size-12 text-gray" ng-show="copayer.me">\
+                          <i class="icon-contact size-24 m10r"></i>{{\'Me\'|translate}} <i class="fi-check m5 right"></i>\
+                      </span>\
+                      <div class="size-12" style="width: 100%" ng-show="!copayer.me" ng-click="copayer.signs = !copayer.signs">\
+                          <i class="icon-contact size-24 m10r"></i> {{copayer.name}} ({{copayer.device_address.substr(0,4)}}...) <i class="m5 right" ng-class="copayer.signs ? \'fi-check\' : \'\'"></i>\
+                      </div>\
+                  </li>\
+                </ul>\
+                '
+    }
+  });

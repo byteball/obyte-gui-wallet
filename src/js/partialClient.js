@@ -253,6 +253,7 @@ function initWallet() {
 	root.loadProfile = loadProfile;
 	root.selectWallet = selectWallet;
 	root.loadCompleteClient = loadCompleteClient;
+	root.clientCompleteLoaded = function(){return completeClientLoaded;};
 	return root;
 }
 
