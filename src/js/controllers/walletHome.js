@@ -821,8 +821,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					amount: amount,
 					send_all: self.bSendAll,
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					recipient_device_address: recipient_device_address,
-					isSingleAddress: fc.isSingleAddress
+					recipient_device_address: recipient_device_address
 				};
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
@@ -869,8 +868,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			}
 
 			function useOrIssueNextAddress(wallet, is_change, handleAddress) {
-				if (fc.isSingleAddress)
-					handleAddress({address: self.addr[fc.credentials.walletId]});
+				if (fc.isSingleAddress) {
+					addressService.getAddress(fc.credentials.walletId, false, function(err, addr) {
+						handleAddress({address: addr});
+					});
+				}
 				else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 			}
         
@@ -976,10 +978,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			
 			fc.sendMultiPayment({
 				arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-				paying_addresses: [self.addr[fc.credentials.walletId]],
-				signing_addresses: [self.addr[fc.credentials.walletId]],
 				shared_address: indexScope.shared_address,
-				change_address: self.addr[fc.credentials.walletId],
 				messages: [objMessage]
 			}, function(err){ // can take long if multisig
 				indexScope.setOngoingProcess(gettext('sending'), false);
