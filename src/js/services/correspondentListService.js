@@ -82,7 +82,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			});
 		}
 		else
-			$rootScope.$digest();
+			$timeout(function(){
+				$rootScope.$digest();
+			});
 	}
 
 	function insertMsg(messages, msg_obj) {
@@ -422,7 +424,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
 					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
-				$rootScope.$digest();
+				$timeout(function(){
+					$rootScope.$digest();
+				});
 				if (cb) cb();
 			});
 		});
@@ -473,7 +477,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					message_counter: message_counter
 				};
 				insertMsg(root.messageEventsByCorrespondent[correspondent_address], parseMessage(message));
-				$rootScope.$digest();
+				$timeout(function(){
+					$rootScope.$digest();
+				});
 				chatStorage.store(correspondent_address, JSON.stringify({state: newState}), 0, 'system');
 			}
 			if (root.currentCorrespondent && root.currentCorrespondent.device_address == correspondent_address) {
@@ -516,7 +522,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		device.readCorrespondent(device_address, function(correspondent){
 			// do not assign a new object, just update its property (this object was already bound to a model)
 			root.currentCorrespondent.name = correspondent.name;
-			$rootScope.$digest();
+			$timeout(function(){
+				$rootScope.$digest();
+			});
 		});
 	});
 
