@@ -868,8 +868,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			}
 
 			function useOrIssueNextAddress(wallet, is_change, handleAddress) {
-				if (fc.isSingleAddress)
-					handleAddress({address: self.addr[fc.credentials.walletId]});
+				if (fc.isSingleAddress) {
+					addressService.getAddress(fc.credentials.walletId, false, function(err, addr) {
+						handleAddress({address: addr});
+					});
+				}
 				else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 			}
         
