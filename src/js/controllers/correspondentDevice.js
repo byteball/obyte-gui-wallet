@@ -492,9 +492,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							$scope.arrHumanReadableDefinitions = [];
 							for (var destinationAddress in objMultiPaymentRequest.definitions){
 								var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+								var assocSignersByPath = objMultiPaymentRequest.definitions[destinationAddress].signers;
+								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
+								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
+									throw Error("inconsistent peer addresses");
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [])
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses)
 								});
 							}
 							cb();

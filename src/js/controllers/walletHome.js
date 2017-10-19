@@ -291,10 +291,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 	  walletGeneral.readMyAddresses(function(arrMyAddresses){
 		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts){
-			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], true);
-			  $scope.creation_ts = creation_ts;
-			  $timeout(function(){
-				  $scope.$apply();
+			  walletDefinedByAddresses.readSharedAddressPeerAddresses(address, function(arrPeerAddresses){
+				  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses, true);
+				  $scope.creation_ts = creation_ts;
+				  $timeout(function(){
+					  $scope.$apply();
+				  });
 			  });
 		  });
 	  });
