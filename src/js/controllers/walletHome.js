@@ -992,6 +992,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		});
 	}
 
+	this.sendPaymentByEmail = function() {
+		
+	}
+
 	this.resetDataForm = function() {
 		this.resetError();
 		$scope.home.feedvaluespairs=[{}];

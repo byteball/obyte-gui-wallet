@@ -343,7 +343,7 @@ input.datafeed_input {
               </div>
 
               <div class="input">
-                <input ng-show="sendPaymentForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+                <input ng-show="sendPaymentForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
                 <div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
                   {{index.addressbook[_address] || _address}}
                 </div>

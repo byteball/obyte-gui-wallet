@@ -15,42 +15,56 @@ function selectText(element) {
 
   }
 }
+
+function checkAddress(value, ctrl) {
+	var ValidationUtils = require('byteballcore/validation_utils.js');
+	if (!profileService.focusedClient)
+		return false;
+
+	if (typeof value == 'undefined') {
+		ctrl.$pristine = true;
+		return false;
+	}
+
+	// byteball uri
+	var conf = require('byteballcore/conf.js');
+	var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
+	var arrMatches = value.match(re);
+	if (arrMatches) {
+		ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(arrMatches[1]));
+		return value;
+	}
+
+	// Regular Address
+	ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(value));
+	return value;
+	
+}
+
 angular.module('copayApp.directives')
 .directive('validAddress', ['$rootScope', 'profileService',
     function($rootScope, profileService) {
       return {
         require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {          
+				var validator = function(value) {
+					return checkAddress(value, ctrl);
+				};
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
+.directive('validAddressOrEmail', ['$rootScope', 'profileService',
+    function($rootScope, profileService) {
+      return {
+        require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          var ValidationUtils = require('byteballcore/validation_utils.js');
           var validator = function(value) {
-            if (!profileService.focusedClient)
-              return;
-			  
-            if (typeof value == 'undefined') {
-              ctrl.$pristine = true;
-              return;
-            }
-
-            // Regular url
-            if (/^https?:\/\//.test(value)) {
-              ctrl.$setValidity('validAddress', true);
-              return value;
-            }
-
-            // byteball uri
-			var conf = require('byteballcore/conf.js');
-			var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
-			var arrMatches = value.match(re);
-            if (arrMatches) {
-              ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(arrMatches[1]));
-              return value;
-            }
-
-            // Regular Address
-            ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(value));
-            return value;
-          };
-
+          		if (checkAddress(value, ctrl) !== false || checkEmail(value, ctrl) !== false)
+          			return value;
+				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
