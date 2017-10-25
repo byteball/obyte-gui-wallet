@@ -16,13 +16,9 @@ function selectText(element) {
   }
 }
 
-function checkAddress(value, ctrl) {
+function isValidAddress(value) {
 	var ValidationUtils = require('byteballcore/validation_utils.js');
-	if (!profileService.focusedClient)
-		return false;
-
-	if (typeof value == 'undefined') {
-		ctrl.$pristine = true;
+	if (!value) {
 		return false;
 	}
 
@@ -31,14 +27,19 @@ function checkAddress(value, ctrl) {
 	var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
 	var arrMatches = value.match(re);
 	if (arrMatches) {
-		ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(arrMatches[1]));
-		return value;
+		return ValidationUtils.isValidAddress(arrMatches[1]);
 	}
 
-	// Regular Address
-	ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(value));
-	return value;
-	
+	return ValidationUtils.isValidAddress(value);
+}
+
+function isValidEmail(value) {
+	if (typeof value == 'undefined') {
+		return false;
+	}
+
+	 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(value);
 }
 
 angular.module('copayApp.directives')
@@ -48,7 +49,16 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {          
 				var validator = function(value) {
-					return checkAddress(value, ctrl);
+					if (!profileService.focusedClient)
+						return;
+					if (!value) {
+						ctrl.$setPristine();
+						return;
+					}
+					var valid = isValidAddress(value);
+					ctrl.$setValidity('validAddress', valid);
+					if (valid)
+						return value;
 				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
@@ -61,9 +71,17 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          var validator = function(value) {
-          		if (checkAddress(value, ctrl) !== false || checkEmail(value, ctrl) !== false)
-          			return value;
+          	var validator = function(value) {
+          		if (!profileService.focusedClient)
+						return;
+					if (!value) {
+						ctrl.$setPristine();
+						return;
+					}
+					var valid = isValidAddress(value) || isValidEmail(value);
+					ctrl.$setValidity('validAddressOrEmail', valid);
+					if (valid)
+						return value;
 				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
