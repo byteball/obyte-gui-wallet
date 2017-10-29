@@ -35,11 +35,170 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
 	
+	
+	//This function generates a html string from the font render parameters
+	function renderFont(parameters) {
+		var htmlstring = "";
+
+		if (parameters.length > 0) {
+			htmlstring = "<font";
+		
+			//Loop through parameters and parse these
+			for (i = 1; i < parameters.length; i++) {
+
+				//size="x" parameter
+				if (parameters[i].substring(0, 6) == "size=\"") {
+					end = parameters[i].indexOf("\"", 6);
+					//Sanity check: Font size bigger then 3 digits not allowed
+					if (end <= 9) {
+						var value = parameters[i].substring(6, end);
+						htmlstring += " size=\"" + value + "\"";
+					}
+				}
+
+				//color="#6495ED" parameter
+				if (parameters[i].substring(0, 8) == "color=\"#") {
+					end = parameters[i].indexOf("\"", 8);
+					//Sanity check: color parameter must have 6 chars
+					if (end == 14) {
+						var value = parameters[i].substring(8, end);
+						htmlstring += " color=\"#" + value + "\"";
+					}
+				}
+
+				//face="verdana" parameter
+				if (parameters[i].substring(0, 6) == "face=\"") {
+					end = parameters[i].indexOf("\"", 6);
+					//Sanity check: font name max 50 chars
+					if (end <= 56) {
+						var value = parameters[i].substring(6, end);
+						htmlstring += " face=\"" + value + "\"";
+					}
+				}
+			}
+			htmlstring += ">";
+		}
+		return htmlstring;
+	}
+
+	//This function selects the matching render function and returns a html string
+	function handleRenderParameters(parameters) {
+		var htmlstring = "";
+
+		if (parameters.length > 0) {
+			//Switch by type of render item
+			switch (parameters[0]) {
+				case "font":
+					htmlstring = renderFont(parameters);
+					break;
+				case "/font":
+					htmlstring = "</font>";
+					break;
+				case "b":
+					htmlstring = "<b>";
+					break;
+				case "/b":
+					htmlstring = "</b>";
+					break;
+				case "i":
+					htmlstring = "<i>";
+					break;
+				case "/i":
+					htmlstring = "</i>";
+					break;
+				case "u":
+					htmlstring = "<u>";
+					break;
+				case "/u":
+					htmlstring = "</u>";
+					break;
+				case "sup":
+					htmlstring = "<sup>";
+					break;
+				case "/sup":
+					htmlstring = "</sup>";
+					break;
+				case "sub":
+					htmlstring = "<sub>";
+					break;
+				case "/sub":
+					htmlstring = "</sub>";
+					break;
+				case "mark":
+					htmlstring = "<mark>";
+					break;
+				case "/mark":
+					htmlstring = "</mark>";
+					break;
+				case "del":
+					htmlstring = "<del>";
+					break;
+				case "/del":
+					htmlstring = "</del>";
+					break;
+				default:
+					htmlstring = "";
+			}
+		}
+		return htmlstring;
+	}
+
+	//This function parses a string for the rendertag
+	//It replaces one occurrence of the rendertag with its html equivalent
+	function parseAndRender(text, renderTag) {
+		//Search for start
+		var RenderTagStart = text.indexOf("{" + renderTag);
+
+		if (RenderTagStart > -1) {
+			//Search for end
+			var RenderTagEnd = text.indexOf("}", RenderTagStart);
+
+			if (RenderTagEnd > -1) {
+
+				//Get what we want to parse
+				var toParse = text.substring(RenderTagStart + 1, RenderTagEnd);
+
+				//Get parameters
+				var RenderParameters = toParse.split(" ");
+
+				//Get replacement string
+				var replacementstring = handleRenderParameters(RenderParameters);
+
+				if(replacementstring !== "")
+				{
+					text = text.replace(text.substring(RenderTagStart, RenderTagEnd + 1), replacementstring);
+				}
+			}
+		}
+		return text;
+	}
+
+	//This function iterates through the text string until all rendertags have been replaced with their html counterparts
+	function loopParseandRender(text, rendertags) {
+		var toRender = rendertags.split(",");
+	
+		//parse and render tags until everything replaced
+		for (var i = 0; i < toRender.length; i++) {
+			var oldtext = "";
+			while (oldtext !== text) {
+				oldtext = text;
+				text = parseAndRender(text, String(toRender[i]));
+			}
+		}
+		return text;
+	}
+
+	//This functions looks for Rendertags and replaces them with the corresponding html items
+	function applyRenderOptions(text){
+		return loopParseandRender(text, "font,/font,b,/b,i,/i,u,/u,sup,/sup,sub,/sub,mark,/mark,del,/del");
+	}
+	
 	function addIncomingMessageEvent(from_address, body, message_counter){
 		var walletGeneral = require('byteballcore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
+			body = applyRenderOptions(body);
 			console.log("body with markup: "+body);
 			addMessageEvent(true, from_address, body, message_counter);
 		});
@@ -415,6 +574,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						if (message.is_incoming) {
 							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
 							message.message = text2html(message.message);
+							message.message = applyRenderOptions(message.message);
 						} else {
 							message.message = formatOutgoingMessage(message.message);
 						}
