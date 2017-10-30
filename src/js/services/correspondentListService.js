@@ -50,7 +50,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				if (parameters[i].substring(0, 6) == "size=\"") {
 					end = parameters[i].indexOf("\"", 6);
 					//Sanity check: Font size bigger then 3 digits not allowed
-					if (end <= 9) {
+					if ( (end > -1) && (end <= 9) ) {
 						var value = parameters[i].substring(6, end);
 						htmlstring += " size=\"" + value + "\"";
 					}
@@ -69,8 +69,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				//face="verdana" parameter
 				if (parameters[i].substring(0, 6) == "face=\"") {
 					end = parameters[i].indexOf("\"", 6);
-					//Sanity check: font name max 50 chars
-					if (end <= 56) {
+					//Sanity check: font name max 30 chars
+					if ( (end>-1) && (end <= 36) ) {
 						var value = parameters[i].substring(6, end);
 						htmlstring += " face=\"" + value + "\"";
 					}
