@@ -940,8 +940,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	
 	function readMyPaymentAddress(cb){
-		if (indexScope.shared_address)
-			return cb(indexScope.shared_address);
+	//	if (indexScope.shared_address)
+	//		return cb(indexScope.shared_address);
 		addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, address) {
 			cb(address);
 		});
