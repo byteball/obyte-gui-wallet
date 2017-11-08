@@ -150,6 +150,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
 
+	eventBus.on('started_db_upgrade', function(){
+		$timeout(function() {
+			if (self.bUpgradingDb === undefined)
+				self.bUpgradingDb = true;
+			$rootScope.$apply();
+		}, 100);
+	});
+	eventBus.on('finished_db_upgrade', function(){
+		$timeout(function() {
+			self.bUpgradingDb = false;
+			$rootScope.$apply();
+		});
+	});
+	
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
