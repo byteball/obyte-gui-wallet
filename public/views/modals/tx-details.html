@@ -38,7 +38,14 @@
         <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
       </span>
     </span>
-    </li> 
+    </li>
+
+    <li ng-if="btx.to" class="line-b p10 oh" ng-click="copyAddress(btx.to)">
+	    <span class="text-gray" translate>To email</span>:
+	    <span class="right">
+		    <contact class="enable_text_select" address="{{btx.to}}"></contact>
+	    </span>
+    </li>
 
     <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
@@ -111,6 +118,20 @@
  
     </span>
     </li>
+
+    <li ng-if="btx.to" class="line-b p10 oh">
+	    <span class="text-gray" translate>Was claimed</span>?
+	    <span class="right" >
+	      <span class="text-warning" ng-show="!btx.claimed" translate>
+	        not claimed
+	      </span>
+	      <span class="label gray radius" ng-show="btx.claimed" translate>
+	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
+	      </span>
+	 
+	    </span>
+    </li>
+
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
 		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
     </li>

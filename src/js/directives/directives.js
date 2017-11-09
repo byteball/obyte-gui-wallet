@@ -34,12 +34,8 @@ function isValidAddress(value) {
 }
 
 function isValidEmail(value) {
-	if (typeof value == 'undefined') {
-		return false;
-	}
-
-	 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(value);
+	var ValidationUtils = require('byteballcore/validation_utils.js');
+	return ValidationUtils.isValidEmail(value);
 }
 
 angular.module('copayApp.directives')
@@ -51,14 +47,8 @@ angular.module('copayApp.directives')
 				var validator = function(value) {
 					if (!profileService.focusedClient)
 						return;
-					if (!value) {
-						ctrl.$setPristine();
-						return;
-					}
-					var valid = isValidAddress(value);
-					ctrl.$setValidity('validAddress', valid);
-					if (valid)
-						return value;
+					ctrl.$setValidity('validAddress', isValidAddress(value));
+					return value;
 				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
@@ -74,14 +64,8 @@ angular.module('copayApp.directives')
           	var validator = function(value) {
           		if (!profileService.focusedClient)
 						return;
-					if (!value) {
-						ctrl.$setPristine();
-						return;
-					}
-					var valid = isValidAddress(value) || isValidEmail(value);
-					ctrl.$setValidity('validAddressOrEmail', valid);
-					if (valid)
-						return value;
+					ctrl.$setValidity('validAddressOrEmail', isValidAddress(value) || isValidEmail(value));
+					return value;
 				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);

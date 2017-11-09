@@ -584,9 +584,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         },
         set: function(newValue) {
           $scope.__address = self.onAddressChange(newValue);
-          if ($scope.sendPaymentForm && $scope.sendPaymentForm.address.$valid) {
-            self.lockAddress = true;
-          }
         },
         enumerable: true,
         configurable: true
@@ -670,9 +667,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return self.setSendError(gettext(msg));
     }
 
+   var ValidationUtils = require('byteballcore/validation_utils.js');
+   var address = form.address.$modelValue;
+   var isEmail = !ValidationUtils.isValidAddress(address);
+   if (isEmail) address = "textcoin:" + address;
 	var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
 	console.log("asset "+asset);
-	var address = form.address.$modelValue;
 	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 	var amount = form.amount.$modelValue;
 	var merkle_proof = '';
@@ -706,6 +706,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			
 			var device = require('byteballcore/device.js');
 			if (self.binding){
+				if (isEmail)
+					throw Error("can't send bound payment to email");
 				if (!recipient_device_address)
 					throw Error('recipient device address not known');
 				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
@@ -823,9 +825,39 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					amount: amount,
 					send_all: self.bSendAll,
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					recipient_device_address: recipient_device_address
+					recipient_device_address: recipient_device_address,
+					unsecure_send_ask: function(email, answer) {
+						var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
+				        $scope.title = $sce.trustAsHtml(gettextCatalog.getString('We can not securely send message to '+email+'. Do you want to try to send it without encryption?'));
+				        $scope.cancel_button_class = 'light-gray outline';
+				        $scope.loading = false;
+
+				        $scope.ok = function() {
+				          $scope.loading = true;
+				          $modalInstance.close(gettextCatalog.getString('Yes'));
+				        };
+				        $scope.cancel = function() {
+				          $modalInstance.dismiss(gettextCatalog.getString('No'));
+				        };
+				      };
+
+				      var modalInstance = $modal.open({
+				        templateUrl: 'views/modals/confirmation.html',
+				        windowClass: animationService.modalAnimated.slideUp,
+				        controller: ModalInstanceCtrl
+				      });
+
+				      modalInstance.result.finally(function() {
+				        var m = angular.element(document.getElementsByClassName('reveal-modal'));
+				        m.addClass(animationService.modalAnimated.slideOutDown);
+				      });
+
+				      modalInstance.result.then(function(ok) {
+				        answer(ok);
+				      });
+					}
 				};
-				fc.sendMultiPayment(opts, function(err){
+				fc.sendMultiPayment(opts, function(err, unit, mnemonics){
 					// if multisig, it might take very long before the callback is called
 					indexScope.setOngoingProcess(gettext('sending'), false);
 					breadcrumbs.add('done payment in '+asset+', err='+err);
@@ -994,10 +1026,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		});
 	}
 
-	this.sendPaymentByEmail = function() {
-		
-	}
-
 	this.resetDataForm = function() {
 		this.resetError();
 		$scope.home.feedvaluespairs=[{}];
@@ -1146,7 +1174,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		form.address.$setViewValue(to);
 		form.address.$isValid = true;
 		form.address.$render();
-		this.lockAddress = true;
 	}
   
   this.setForm = function(to, amount, comment, asset, recipient_device_address) {
