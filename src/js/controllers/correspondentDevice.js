@@ -182,6 +182,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					info.displayName = walletSettings.unitName;
 				else if (b.asset === constants.BLACKBYTES_ASSET)
 					info.displayName = walletSettings.bbUnitName;
+				else if (profileService.assetMetadata[b.asset])
+					info.displayName = profileService.assetMetadata[b.asset].name;
 				else
 					info.displayName = 'of '+b.asset.substr(0, 4);
 				return info;
@@ -247,6 +249,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						my_amount *= walletSettings.unitValue;
 					if (contract.myAsset === constants.BLACKBYTES_ASSET)
 						my_amount *= walletSettings.bbUnitValue;
+					if (profileService.assetMetadata[contract.myAsset])
+						my_amount *= Math.pow(10, profileService.assetMetadata[contract.myAsset].decimals || 0);
 					my_amount = Math.round(my_amount);
 					
 					var peer_amount = contract.peerAmount;
@@ -254,6 +258,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						peer_amount *= walletSettings.unitValue;
 					if (contract.peerAsset === constants.BLACKBYTES_ASSET)
 						throw Error("peer asset cannot be blackbytes");
+					if (profileService.assetMetadata[contract.peerAsset])
+						peer_amount *= Math.pow(10, profileService.assetMetadata[contract.peerAsset].decimals || 0);
 					peer_amount = Math.round(peer_amount);
 					
 					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
@@ -1023,11 +1029,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
 				if (!asset)
 					throw Error("no asset");
-				var amountInSmallestUnits = (asset === 'base') ? parseInt((amount * $scope.unitValue).toFixed(0)) : (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
+				var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
 				var params = 'amount='+amountInSmallestUnits;
 				if (asset !== 'base')
 					params += '&asset='+encodeURIComponent(asset);
-				var units = (asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : ('of '+asset));
+				var units = profileService.getUnitName(asset);
 				appendText('['+amount+' '+units+'](byteball:'+myPaymentAddress+'?'+params+')');
 				$modalInstance.dismiss('cancel');
 			};

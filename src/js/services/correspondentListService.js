@@ -294,6 +294,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			amount /= bbUnitValue;
 			return amount + ' ' + bbUnitName;
 		}
+		else if (profileService.assetMetadata[asset]){
+			amount /= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
+			return amount + ' ' + profileService.assetMetadata[asset].name;
+		}
 		else
 			return amount + ' of ' + asset;
 	}
