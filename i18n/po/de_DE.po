@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
-"PO-Revision-Date: 2017-10-18 03:42-0400\n"
+"PO-Revision-Date: 2017-10-19 00:40-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -63,7 +63,7 @@ msgstr "Neuen Eintrag hinzufügen"
 
 #: public/views/walletHome.html:491
 msgid "Add fields"
-msgstr ""
+msgstr "Felder hinzufügen"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -81,7 +81,7 @@ msgstr "Adresse"
 
 #: public/views/walletHome.html:466
 msgid "Address to attest"
-msgstr ""
+msgstr "Adresse die bestätigt werden soll"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -437,7 +437,7 @@ msgstr "Wallet-Seed löschen"
 
 #: public/views/walletHome.html:310
 msgid "Data"
-msgstr ""
+msgstr "Daten"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"

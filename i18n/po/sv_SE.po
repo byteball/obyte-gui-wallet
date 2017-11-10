@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
-"PO-Revision-Date: 2017-10-18 03:41-0400\n"
+"PO-Revision-Date: 2017-11-05 01:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -1675,7 +1675,7 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:99
 msgid "or"
-msgstr ""
+msgstr "eller"
 
 #: public/views/backup.html:24
 msgid "or backup all Byteball data at"
@@ -1709,7 +1709,7 @@ msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "till"
 
 #: public/views/walletHome.html:397
 #: public/views/walletHome.html:408

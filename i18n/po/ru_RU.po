@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2017-10-18 03:50-0400\n"
+"PO-Revision-Date: 2017-10-24 14:50-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -208,7 +208,7 @@ msgstr "До получения средств, настоятельно рек�
 
 #: public/views/backup.html:26
 msgid "Better yet, use multisig wallets with redundancy,"
-msgstr "Еще лучше, используйте кошельки с мульти подписью и с избыточностью,"
+msgstr "А лучше используйте кошельки с мультиподписью и избыточностью,"
 
 #: public/views/modals/bind.html:8
 #: public/views/modals/bind.html:86
@@ -227,7 +227,7 @@ msgstr "Bitcoin URI не действителен!"
 #: public/views/bot.html:23
 #: public/views/correspondentDevices.html:38
 msgid "Bot Store"
-msgstr "Магазин ботов"
+msgstr "Боты"
 
 #: public/views/correspondentDevice.html:288
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
@@ -441,7 +441,7 @@ msgstr "Данные"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"
-msgstr ""
+msgstr "Данные в фиде"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -500,7 +500,7 @@ msgstr "Имя устройства видимо для других устро�
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Do not clone wallets, stop using the original wallet with this seed."
-msgstr "Не клонируйте кошельки, прекратите использовать исходный кошелёк с этой мнемофразой (seed)."
+msgstr "Не клонируйте кошельки, после восстановления прекратите использовать исходный кошелёк с этой мнемофразой (seed)."
 
 #: public/views/backup.html:59
 msgid "Do not use it to clone the wallet."
@@ -950,11 +950,11 @@ msgstr "Отправить в Byteball произвольные пары клю�
 
 #: public/views/walletHome.html:452
 msgid "Post values into datafeeds manually, be an oracle."
-msgstr ""
+msgstr "Вставить данные в фид вручную как оракул."
 
 #: public/views/walletHome.html:458
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "Опубликовать свои произвольные данные, всё что вы хотите сказать."
 
 #: public/views/walletHome.html:157
 #: public/views/walletHome.html:29
@@ -1223,12 +1223,12 @@ msgstr "Подписать транзакцию из кошелька?"
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "Кошелёк с одним адресом"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "Кошелёк с одним адресом (монокошелёк) не создаёт новый адрес для каждой транзакции, сдача всегда приходит на этот единственный адрес кошелька."
 
 #: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
@@ -1352,7 +1352,7 @@ msgstr "Эта транзакция стала недействительной;
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "Этот кошелёк не может быть сконвертировать в кошелёк с одним адресом (монокошелёк), т. к. уже имеет несколько адресов или используется на нескольких устройствах"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1374,7 +1374,7 @@ msgstr "Полная резервная копия позволит сохран
 
 #: public/views/walletHome.html:517
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "Чтобы отправить свои произвольные данные в сеть Byteball, переключите в режим кошелька с единственным адресом (монокошелёк) или создайте новый кошелёк."
 
 #: public/views/walletHome.html:360
 msgid "To bind the payment to a condition, please click the peer's address in chat"
@@ -1556,7 +1556,7 @@ msgstr "Да"
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "Вы не можете привязать транзакцию к встречному платежу при использовании кошелька с единственным адресом (монокошелька). Используйте обычный кошелёк с несколькими адресами и переведите деньги на него."
 
 #: public/views/walletHome.html:24
 msgid "You do not have a wallet"
@@ -1607,7 +1607,7 @@ msgstr "может разблокировать контракт"
 
 #: public/views/modals/offer-contract.html:106
 msgid "can unlock the contract after it expires in"
-msgstr "может разблокировать контракт по истечении срока его действия в"
+msgstr "может разблокировать контракт, когда тот истечёт через"
 
 #: public/views/copayers.html:38
 msgid "cancel wallet creation"
@@ -1627,7 +1627,7 @@ msgstr "дней"
 
 #: public/views/backup.html:28
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
-msgstr "например, кошелёк 1-из-2, один ключ на этом устройстве, а другой ключ на ноутбуке."
+msgstr "например, кошелёк 1-из-2, один ключ на этом устройстве, а другой ключ на ПК/ноутбуке."
 
 #: public/views/backup.html:27
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."

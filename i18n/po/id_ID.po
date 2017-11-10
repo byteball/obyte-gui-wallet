@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2017-10-18 03:42-0400\n"
+"PO-Revision-Date: 2017-10-18 22:11-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -63,7 +63,7 @@ msgstr "Tambahkan catatan baru"
 
 #: public/views/walletHome.html:491
 msgid "Add fields"
-msgstr ""
+msgstr "Tambah isian-isian"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -81,7 +81,7 @@ msgstr "Alamat"
 
 #: public/views/walletHome.html:466
 msgid "Address to attest"
-msgstr ""
+msgstr "Alamat untuk membuktikan"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -156,11 +156,11 @@ msgstr "Aset"
 
 #: public/views/walletHome.html:455
 msgid "Attest profile data linked to any Byteball address."
-msgstr ""
+msgstr "Membuktikan data profil terkait dengan alamat Byteball."
 
 #: public/views/walletHome.html:308
 msgid "Attestation"
-msgstr ""
+msgstr "Pengesahan"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -437,11 +437,11 @@ msgstr "HAPUS KATA-KATA"
 
 #: public/views/walletHome.html:310
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"
-msgstr ""
+msgstr "Data ke dalam datafeed"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -947,15 +947,15 @@ msgstr "Port"
 
 #: public/views/walletHome.html:461
 msgid "Post arbitrary key-value pairs of data into Byteball network."
-msgstr ""
+msgstr "Terbitkan data pasangan kunci-nilai arbitrary ke jaringan Byteball."
 
 #: public/views/walletHome.html:452
 msgid "Post values into datafeeds manually, be an oracle."
-msgstr ""
+msgstr "Terbitkan nilai-nilai ke datafeed secara manual, menjadi peramal."
 
 #: public/views/walletHome.html:458
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "Terbitkan data profil anda, apa pun yang ingin anda katakan tentang diri anda."
 
 #: public/views/walletHome.html:157
 #: public/views/walletHome.html:29
@@ -977,7 +977,7 @@ msgstr "Muatan pribadi dikirim"
 
 #: public/views/walletHome.html:309
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1224,12 +1224,12 @@ msgstr "Menandatangani pengeluaran transaksi dari dompet ?"
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "Dompet alamat tunggal"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "Dompet alamat tunggal tidak akan membuat alamat baru pada setiap transaksi, kembalian akan selalu ditujukan ke satu-satunya alamat pada dompet."
 
 #: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
@@ -1353,7 +1353,7 @@ msgstr "Transaksi ini telah menjadi tidak sah; mungkin karena upaya pembayaran g
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "Dompet ini tidak dapat dikonversi ke dompet alamat tunggal karena sudah terdiri dari beberapa alamat atau multi perangkat"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1375,7 +1375,7 @@ msgstr "Untuk dapat mengembalikan segalanya, silakan membuat cadangan lengkap (p
 
 #: public/views/walletHome.html:517
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "Agar dapat mengirim data yang berubah-ubah ke jaringan Byteball, silakan beralih ke dompet alamat tunggal terlebih dahulu atau buat yang baru."
 
 #: public/views/walletHome.html:360
 msgid "To bind the payment to a condition, please click the peer's address in chat"
@@ -1440,7 +1440,7 @@ msgstr "Pemutahiran ke {{version}}"
 
 #: public/views/walletHome.html:481
 msgid "Values"
-msgstr ""
+msgstr "Nilai-nilai"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1523,7 +1523,7 @@ msgstr "Peringatan!"
 
 #: public/views/walletHome.html:303
 msgid "What to send"
-msgstr ""
+msgstr "Apa yang dikirim"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
@@ -1557,7 +1557,7 @@ msgstr "Ya"
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "Anda tidak dapat mengikat transaksi anda untuk membalikkan pembayaran karena anda menggunakan dompet alamat tunggal. Gunakan dompet non alamat tunggal dan kemudian transfer uang ke dompet ini."
 
 #: public/views/walletHome.html:24
 msgid "You do not have a wallet"
