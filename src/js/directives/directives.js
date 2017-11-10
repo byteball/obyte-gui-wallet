@@ -80,8 +80,8 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('validAmount', ['configService',
-    function(configService) {
+  .directive('validAmount', ['configService', 'profileService',
+    function(configService, profileService) {
 
       return {
         require: 'ngModel',
@@ -106,6 +106,10 @@ angular.module('copayApp.directives')
 			else if (asset === constants.BLACKBYTES_ASSET){
 				unitValue = settings.bbUnitValue;
 				decimals = Number(settings.bbUnitDecimals);
+			}
+			else if (profileService.assetMetadata[asset]){
+				decimals = profileService.assetMetadata[asset].decimals || 0;
+				unitValue = Math.pow(10, decimals);
 			}
 			  
             var vNum = Number((value * unitValue).toFixed(0));

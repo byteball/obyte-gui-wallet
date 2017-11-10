@@ -106,15 +106,15 @@ input.datafeed_input {
             <ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
-						<strong class="size-36" ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.totalStr}}</strong>
-						<div ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">
+						<strong class="size-36" ng-if="balance.totalStr">{{balance.totalStr}}</strong>
+						<div ng-if="!balance.totalStr">
 							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
 							<div class="of-asset">of {{balance.asset}}</div>
 						</div>
 						<div class="size-14" ng-if="balance.pending">
 							<span translate>Including pending confirmation</span>:
-							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.pendingStr}}</span>
-							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.pending.toLocaleString()}}</span>
+							<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
+							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
 						</div>
 					</div>
           <style ng-if="index.isCordova">
@@ -130,8 +130,8 @@ input.datafeed_input {
                     <div class="size-14" ng-if="balance.shared !== undefined">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
-							<span ng-if="balance.asset == 'base' || balance.asset == index.BLACKBYTES_ASSET">{{balance.sharedStr}}</span>
-							<span ng-if="balance.asset != 'base' && balance.asset != index.BLACKBYTES_ASSET">{{balance.shared.toLocaleString()}}</span>
+							<span ng-if="balance.sharedStr">{{balance.sharedStr}}</span>
+							<span ng-if="!balance.sharedStr">{{balance.shared.toLocaleString()}}</span>
 							<span translate>in smart wallets</span>
 						</a>
                     </div>
@@ -227,8 +227,8 @@ input.datafeed_input {
                 </span>
               </div>
 
-              <div class="text-center" ng-click="home.copyAddress(home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
-                <qrcode size="220" data="{{home.protocol}}:{{home.addr[index.walletId]}}"></qrcode>
+              <div class="text-center" ng-click="home.copyAddress(index.shared_address || home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
+                <qrcode size="220" data="{{home.protocol}}:{{index.shared_address || home.addr[index.walletId]}}"></qrcode>
                 <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                   <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
                     <div class="spinner" style="margin-top:80px">
@@ -303,7 +303,7 @@ input.datafeed_input {
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
-                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : balance.asset)) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' confirmed' : ' available') + ')'}}</option>
+                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' confirmed' : ' available') + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed</option>
                 	<option ng-value="-2" translate>Attestation</option>
                 	<option ng-value="-3" translate>Profile</option>
@@ -385,7 +385,8 @@ input.datafeed_input {
                     <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
-                      <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
+                      <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name}}</a>
+                      <a class="postfix" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
                   </div>
                 </div>
               </div>
@@ -532,7 +533,7 @@ input.datafeed_input {
     <div id="history" class="history tab-view">
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:0 10px;">
-            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' || balance.asset == index.BLACKBYTES_ASSET  ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
+            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
         </h4>
       </div>
       <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory[index.walletId]">

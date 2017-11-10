@@ -150,6 +150,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
 
+	eventBus.on('started_db_upgrade', function(){
+		$timeout(function() {
+			if (self.bUpgradingDb === undefined)
+				self.bUpgradingDb = true;
+			$rootScope.$apply();
+		}, 100);
+	});
+	eventBus.on('finished_db_upgrade', function(){
+		$timeout(function() {
+			self.bUpgradingDb = false;
+			$rootScope.$apply();
+		});
+	});
+	
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
@@ -399,23 +413,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                     },
                     function(){
 	                    var config = configService.getSync().wallet.settings;
-	                    var unitName = config.unitName;
-	                    var bbUnitName = config.bbUnitName;
 	                    
                         var arrDestinations = [];
                         for (var asset in assocAmountByAssetAndAddress){
 							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
 							var currency = "of asset "+formatted_asset;
-							var assetName = asset; 
-							if(asset === 'base'){
-								currency = unitName;
-								assetName = 'base';
-							}else if(asset === constants.BLACKBYTES_ASSET){
-								currency = bbUnitName;
-								assetName = 'blackbytes';
+							var assetIndex = lodash.findIndex(self.arrBalances, {asset: asset});
+							var assetInfo = self.arrBalances[assetIndex];
+							if (asset === 'base')
+								currency = config.unitName;
+							else if(asset === constants.BLACKBYTES_ASSET)
+								currency = config.bbUnitName;
+							else if (assetInfo.name)
+								currency = assetInfo.name;
+                            for (var address in assocAmountByAssetAndAddress[asset]){
+								var formatted_amount = profileService.formatAmount(assocAmountByAssetAndAddress[asset][address], asset);
+                                arrDestinations.push(formatted_amount + " " + currency + " to " + address);
 							}
-                            for (var address in assocAmountByAssetAndAddress[asset])
-                                arrDestinations.push(profileService.formatAmount(assocAmountByAssetAndAddress[asset][address], assetName) + " " + currency + " to " + address);
                         }
                         var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
                         var question = gettextCatalog.getString('Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?');
@@ -505,16 +519,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var arrSharedWallets = [];
 		$scope.mainWalletBalanceInfo = self.arrMainWalletBalances[self.assetIndex];
 		$scope.asset = $scope.mainWalletBalanceInfo.asset;
-		var assocSharedByAddress = self.arrBalances[self.assetIndex].assocSharedByAddress;
+		var asset = $scope.asset;
+		var assetInfo = self.arrBalances[self.assetIndex];
+		var assocSharedByAddress = assetInfo.assocSharedByAddress;
 		for (var sa in assocSharedByAddress) {
 			var objSharedWallet = {};
 			objSharedWallet.shared_address = sa;
 			objSharedWallet.total = assocSharedByAddress[sa];
-			if($scope.asset == 'base'){
-				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'base') + ' ' + self.unitName;
-			}else if($scope.asset == constants.BLACKBYTES_ASSET){
-				objSharedWallet.totalStr = profileService.formatAmount(assocSharedByAddress[sa], 'blackbytes') + ' ' + self.bbUnitName;
-			}
+			if (asset === 'base' || asset === constants.BLACKBYTES_ASSET || $scope.mainWalletBalanceInfo.name)
+				objSharedWallet.totalStr = profileService.formatAmountWithUnit(assocSharedByAddress[sa], asset);
 			arrSharedWallets.push(objSharedWallet);
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
@@ -931,7 +944,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     fc.isSingleAddress = self.isSingleAddress;
   };
-
+	
   self.setBalance = function(assocBalances, assocSharedBalances) {
     if (!assocBalances) return;
     var config = configService.getSync().wallet.settings;
@@ -955,14 +968,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				balanceInfo.assocSharedByAddress[sa] = total_on_shared_address;
 			}
 		}
-        if (asset === "base" || asset == self.BLACKBYTES_ASSET){
-				var assetName = asset !== "base" ? 'blackbytes' : 'base';
-				var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
-	        balanceInfo.totalStr = profileService.formatAmount(balanceInfo.total, assetName) + ' ' + unitName;
-	        balanceInfo.stableStr = profileService.formatAmount(balanceInfo.stable, assetName) + ' ' + unitName;
-	        balanceInfo.pendingStr = profileService.formatAmount(balanceInfo.pending, assetName) + ' ' + unitName;
-				if (typeof balanceInfo.shared === 'number')
-					balanceInfo.sharedStr = profileService.formatAmount(balanceInfo.shared, assetName) + ' ' + unitName;
+		if (balanceInfo.name)
+			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
+        if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
+			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
+			balanceInfo.pendingStr = profileService.formatAmountWithUnit(balanceInfo.pending, asset);
+			if (typeof balanceInfo.shared === 'number')
+				balanceInfo.sharedStr = profileService.formatAmountWithUnit(balanceInfo.shared, asset);
         }
         self.arrBalances.push(balanceInfo);
     }

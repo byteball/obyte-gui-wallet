@@ -1,6 +1,7 @@
 'use strict';
 
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, pushNotificationsService, isCordova, gettext, gettextCatalog, nodeWebkit, uxLanguage) {
@@ -11,23 +12,64 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
     
+	root.assetMetadata = {};
 
     root.Utils = bwcService.getUtils();
     root.formatAmount = function(amount, asset, opts) {
-      var config = configService.getSync().wallet.settings;
+		var config = configService.getSync().wallet.settings;
       //if (config.unitCode == 'byte') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-		if(asset == 'blackbytes') {
+		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)
 			return this.Utils.formatAmount(amount, config.bbUnitCode, opts);
-		}else if(asset == 'base'){
+		else if (asset === 'base' || asset === 'bytes')
 			return this.Utils.formatAmount(amount, config.unitCode, opts);
-		}else{
+		else if (root.assetMetadata[asset]){
+			var decimals = root.assetMetadata[asset].decimals || 0;
+			return (amount / Math.pow(10, decimals)).toLocaleString([], {maximumFractionDigits: decimals});
+		}
+		else
 		    return amount;
-        }
     };
 
-    root._setFocus = function(walletId, cb) {
+    root.formatAmountWithUnit = function(amount, asset, opts) {
+		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
+    };
+
+    root.getUnitName = function(asset) {
+		var config = configService.getSync().wallet.settings;
+		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)
+			return config.bbUnitName;
+		else if (asset === 'base' || asset === 'bytes')
+			return config.unitName;
+		else if (root.assetMetadata[asset])
+			return root.assetMetadata[asset].name;
+		else
+			return "of "+asset;
+    };
+
+ 	root.getAmountInSmallestUnits = function(amount, asset){
+		console.log(amount, asset, self.unitValue);
+		if (asset === 'base')
+			amount *= self.unitValue;
+		else if (asset === constants.BLACKBYTES_ASSET)
+			amount *= self.bbUnitValue;
+		else if (root.assetMetadata[asset])
+			amount *= Math.pow(10, root.assetMetadata[asset].decimals || 0);
+		return Math.round(amount);
+	};
+	
+	root.getAmountInDisplayUnits = function(amount, asset){
+		if (asset === 'base')
+			amount /= self.unitValue;
+		else if (asset === constants.BLACKBYTES_ASSET)
+			amount /= self.bbUnitValue;
+		else if (root.assetMetadata[asset])
+			amount /= Math.pow(10, root.assetMetadata[asset].decimals || 0);
+		return amount;
+	};
+
+	root._setFocus = function(walletId, cb) {
       $log.debug('Set focus:', walletId);
 
       // Set local object

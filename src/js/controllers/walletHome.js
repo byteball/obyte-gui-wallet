@@ -291,10 +291,12 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	  var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 	  walletGeneral.readMyAddresses(function(arrMyAddresses){
 		  walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts){
-			  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], true);
-			  $scope.creation_ts = creation_ts;
-			  $timeout(function(){
-				  $scope.$apply();
+			  walletDefinedByAddresses.readSharedAddressPeerAddresses(address, function(arrPeerAddresses){
+				  $scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses, true);
+				  $scope.creation_ts = creation_ts;
+				  $timeout(function(){
+					  $scope.$apply();
+				  });
 			  });
 		  });
 	  });
@@ -435,15 +437,14 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			if ($scope.index.arrBalances.length === 0)
 				return console.log('openCustomizedAmountModal: no balances yet');
 			var amount = form.amount.$modelValue;
-			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
+			var asset = assetInfo.asset;
 			if (!asset)
 				throw Error("no asset");
-			var amountInSmallestUnits = (asset === 'base') 
-				? parseInt((amount * $scope.unitValue).toFixed(0)) 
-				: (asset === constants.BLACKBYTES_ASSET ? parseInt((amount * $scope.bbUnitValue).toFixed(0)) : amount);
+			var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
 			$timeout(function() {
 				$scope.customizedAmountUnit = 
-					amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : 'of ' + asset));
+					amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : (assetInfo.name || 'of ' + asset)));
 				$scope.amountInSmallestUnits = amountInSmallestUnits;
 				$scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
 			}, 1);
@@ -668,7 +669,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
         return self.setSendError(gettext(msg));
     }
 
-	var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+	var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
+	var asset = assetInfo.asset;
 	console.log("asset "+asset);
 	var address = form.address.$modelValue;
 	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
@@ -678,8 +680,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		merkle_proof = form.merkle_proof.$modelValue.trim();
 	if (asset === "base")
 		amount *= unitValue;
-	if (asset === constants.BLACKBYTES_ASSET)
+	else if (asset === constants.BLACKBYTES_ASSET)
 		amount *= bbUnitValue;
+	else if (assetInfo.decimals)
+		amount *= Math.pow(10, assetInfo.decimals);
 	amount = Math.round(amount);
 
 	var current_payment_key = ''+asset+address+amount;
@@ -821,8 +825,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					amount: amount,
 					send_all: self.bSendAll,
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					recipient_device_address: recipient_device_address,
-					isSingleAddress: fc.isSingleAddress
+					recipient_device_address: recipient_device_address
 				};
 				fc.sendMultiPayment(opts, function(err){
 					// if multisig, it might take very long before the callback is called
@@ -869,8 +872,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			}
 
 			function useOrIssueNextAddress(wallet, is_change, handleAddress) {
-				if (fc.isSingleAddress)
-					handleAddress({address: self.addr[fc.credentials.walletId]});
+				if (fc.isSingleAddress) {
+					addressService.getAddress(fc.credentials.walletId, false, function(err, addr) {
+						handleAddress({address: addr});
+					});
+				}
 				else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 			}
         
@@ -879,7 +885,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
   };
 
   $scope.$watch('index.assetIndex', function(newVal, oldVal){
-  	if (newVal == oldVal) return;
   	$scope.assetIndexSelectorValue = newVal;
   	self.switchForms();
   });
@@ -976,10 +981,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			
 			fc.sendMultiPayment({
 				arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-				paying_addresses: [self.addr[fc.credentials.walletId]],
-				signing_addresses: [self.addr[fc.credentials.walletId]],
 				shared_address: indexScope.shared_address,
-				change_address: self.addr[fc.credentials.walletId],
 				messages: [objMessage]
 			}, function(err){ // can take long if multisig
 				indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1049,6 +1051,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					info.displayName = self.unitName;
 				else if (b.asset === constants.BLACKBYTES_ASSET)
 					info.displayName = self.bbUnitName;
+				else if (profileService.assetMetadata[b.asset])
+					info.displayName = profileService.assetMetadata[b.asset].name;
 				else
 					info.displayName = 'of '+b.asset.substr(0, 4);
 				return info;
@@ -1064,7 +1068,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				$scope.binding.timeout = self.binding.timeout;
 				if (self.binding.type === 'reverse_payment'){
 					$scope.binding.reverseAsset = self.binding.reverseAsset;
-					$scope.binding.reverseAmount = getAmountInDisplayUnits(self.binding.reverseAmount, self.binding.reverseAsset);
+					$scope.binding.reverseAmount = profileService.getAmountInDisplayUnits(self.binding.reverseAmount, self.binding.reverseAsset);
 				}
 				else{
 					$scope.binding.oracle_address = self.binding.oracle_address;
@@ -1084,7 +1088,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 				var binding = {type: $scope.binding.type};
 				if (binding.type === 'reverse_payment'){
 					binding.reverseAsset = $scope.binding.reverseAsset;
-					binding.reverseAmount = getAmountInSmallestUnits($scope.binding.reverseAmount, $scope.binding.reverseAsset);
+					binding.reverseAmount = profileService.getAmountInSmallestUnits($scope.binding.reverseAmount, $scope.binding.reverseAsset);
 				}
 				else{
 					binding.oracle_address = $scope.binding.oracle_address;
@@ -1118,23 +1122,6 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 	};
 	
-	function getAmountInSmallestUnits(amount, asset){
-		console.log(amount, asset, self.unitValue);
-		if (asset === 'base')
-			amount *= self.unitValue;
-		else if (asset === constants.BLACKBYTES_ASSET)
-			amount *= self.bbUnitValue;
-		return Math.round(amount);
-	}
-	
-	function getAmountInDisplayUnits(amount, asset){
-		if (asset === 'base')
-			amount /= self.unitValue;
-		else if (asset === constants.BLACKBYTES_ASSET)
-			amount /= self.bbUnitValue;
-		return amount;
-	}
-
 	this.setToAddress = function(to) {
 		var form = $scope.sendPaymentForm;
 		if (!form || !form.address) // disappeared?
@@ -1161,15 +1148,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
 	if (amount) {
-		if (asset === 'base')
-			amount /= this.unitValue;
-		if (asset === constants.BLACKBYTES_ASSET)
-			amount /= this.bbUnitValue;
 	//	form.amount.$setViewValue("" + amount);
 	//	form.amount.$isValid = true;
         this.lockAmount = true;
 		$timeout(function(){
-			form.amount.$setViewValue("" + amount);
+			form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
 			form.amount.$isValid = true;
 			form.amount.$render();
 		});
@@ -1254,7 +1237,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			return console.log('form.amount has disappeared');
 		if (indexScope.arrBalances.length === 0)
 			return;
-		if (indexScope.arrBalances[indexScope.assetIndex].asset === 'base'){
+		var assetInfo = indexScope.arrBalances[indexScope.assetIndex];
+		if (assetInfo.asset === 'base'){
 			this._amount = null;
 			this.bSendAll = true;
 			form.amount.$setViewValue('');
@@ -1262,9 +1246,11 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 			form.amount.$render();
 		}
 		else{
-			var full_amount = indexScope.arrBalances[indexScope.assetIndex].stable;
-			if (indexScope.arrBalances[indexScope.assetIndex].asset === constants.BLACKBYTES_ASSET)
+			var full_amount = assetInfo.stable;
+			if (assetInfo.asset === constants.BLACKBYTES_ASSET)
 				full_amount /= this.bbUnitValue;
+			else if (assetInfo.decimals)
+				full_amount /= Math.pow(10, assetInfo.decimals);
 			form.amount.$setViewValue(''+full_amount);
 			form.amount.$render();
 		}

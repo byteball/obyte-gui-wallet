@@ -20,8 +20,8 @@
 				<div class="avatar-wallet" style="margin-top:5px">{{(indexCtl.alias || indexCtl.walletName) | limitTo: 1}}</div>
 				<div class="ellipsis name-wallet text-bold">{{(indexCtl.alias || indexCtl.walletName)}}</div>
 				<div class="size-12">
-					<span ng-if="asset == 'base' || asset == indexCtl.BLACKBYTES_ASSET">{{mainWalletBalanceInfo.totalStr}}</span>
-					<span ng-if="asset != 'base' && asset != indexCtl.BLACKBYTES_ASSET">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
+					<span ng-if="mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.totalStr}}</span>
+					<span ng-if="!mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
 				</div>
 			</a>
 		</li>
@@ -31,8 +31,8 @@
 				<div style="display: inline-block; width: calc(100% - 50px)">
 					<div class="ellipsis name-wallet text-bold">{{sw.shared_address}}</div>
 					<div class="size-12">
-						<span ng-if="asset == 'base' || asset == indexCtl.BLACKBYTES_ASSET">{{sw.totalStr}}</span>
-						<span ng-if="asset != 'base' && asset != indexCtl.BLACKBYTES_ASSET">{{sw.total.toLocaleString()}}</span>
+						<span ng-if="sw.totalStr">{{sw.totalStr}}</span>
+						<span ng-if="!sw.totalStr">{{sw.total.toLocaleString()}}</span>
 					</div>
 					<div class="size-12 ellipsis"><span translate>with</span> {{sw.shared_address_cosigners}}</div>
 					<div class="size-12 ellipsis">

@@ -545,7 +545,7 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 		if (opts.change_address)
 			return Wallet.sendMultiPayment(opts, cb);
 		// create a new change address or select first unused one
-		if (!opts.isSingleAddress) {
+		if (!self.isSingleAddress) {
 			walletDefinedByKeys.issueOrSelectNextChangeAddress(self.credentials.walletId, function(objAddr){
 				opts.change_address = objAddr.address;
 				Wallet.sendMultiPayment(opts, cb);
