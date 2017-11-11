@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     	if (catchup_balls_at_start === -1) {
     		catchup_balls_at_start = count_left;
     	}
-    	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
+    	var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
 		setSyncProgress(percent);
     });
     eventBus.on('catching_up_done', function(){
