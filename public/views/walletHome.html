@@ -127,7 +127,7 @@ input.datafeed_input {
             	background-color: {{index.backgroundColor}};
             }
           </style>
-                    <div class="size-14" ng-if="balance.shared !== undefined">
+                    <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
 							<span ng-if="balance.sharedStr">{{balance.sharedStr}}</span>
