@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
-"PO-Revision-Date: 2017-10-18 03:42-0400\n"
+"PO-Revision-Date: 2017-10-21 01:10-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -63,7 +63,7 @@ msgstr "エントリーの追加"
 
 #: public/views/walletHome.html:491
 msgid "Add fields"
-msgstr ""
+msgstr "入力欄を追加"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -81,7 +81,7 @@ msgstr "アドレス"
 
 #: public/views/walletHome.html:466
 msgid "Address to attest"
-msgstr ""
+msgstr "認証するアドレス"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -156,11 +156,11 @@ msgstr "資産"
 
 #: public/views/walletHome.html:455
 msgid "Attest profile data linked to any Byteball address."
-msgstr ""
+msgstr "Byteballアドレスにリンクされたプロフィールデータを認証します。"
 
 #: public/views/walletHome.html:308
 msgid "Attestation"
-msgstr ""
+msgstr "個人認証"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -437,11 +437,11 @@ msgstr "フレーズを削除"
 
 #: public/views/walletHome.html:310
 msgid "Data"
-msgstr ""
+msgstr "データ"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"
-msgstr ""
+msgstr "データフィード"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -947,15 +947,15 @@ msgstr "ポート"
 
 #: public/views/walletHome.html:461
 msgid "Post arbitrary key-value pairs of data into Byteball network."
-msgstr ""
+msgstr "Byteballネットワークにデータの任意のキーと値のペアをポストします。"
 
 #: public/views/walletHome.html:452
 msgid "Post values into datafeeds manually, be an oracle."
-msgstr ""
+msgstr "オラクルになるために、データフィードに手動で値をポストします。"
 
 #: public/views/walletHome.html:458
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "自分自身について自由に記述したプロフィールデータをポストします。"
 
 #: public/views/walletHome.html:157
 #: public/views/walletHome.html:29
@@ -977,7 +977,7 @@ msgstr "プライベートペイロード送信"
 
 #: public/views/walletHome.html:309
 msgid "Profile"
-msgstr ""
+msgstr "プロフィール"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1224,12 +1224,12 @@ msgstr "ウォレットからの支払いに署名しますか？"
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "シングルアドレスウォレット"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "シングルアドレスウォレットはすべての取引に対して新しいアドレスを生成しません。変更は常にウォレットに含まれている唯一のアドレスに対して行われます。"
 
 #: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
@@ -1317,7 +1317,7 @@ msgstr "ウォレット \"{{walletName}}\" が削除されました"
 
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
-msgstr "ウォレットベンダーはあなたの残高の一部を知ることができ、どのトランザクションがあなたのものかを見ることができますが、ウォレットをすぐにフル機能で使用することができます。"
+msgstr "ウォレットベンダーはあなたの残高の一部を知ることができ、どの取引があなたのものかを見ることができますが、ウォレットをすぐにフル機能で使用することができます。"
 
 #: public/views/correspondentDevice.html:302
 msgid "Their recording preference"
@@ -1353,7 +1353,7 @@ msgstr "この取引が無効になりました。二重払いの可能性があ
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "このウォレットは既に複数のアドレスやデバイスで構成されているため、シングルアドレスウォレットに変換できません。"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1375,7 +1375,7 @@ msgstr "すべてを復元可能にするためには、フルバックアップ
 
 #: public/views/walletHome.html:517
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "Byteballネットワークに任意のデータを送信可能にするためには、まずシングルアドレスウォレットに切り替えるか、作成してください。"
 
 #: public/views/walletHome.html:360
 msgid "To bind the payment to a condition, please click the peer's address in chat"
@@ -1440,7 +1440,7 @@ msgstr "{{version}} にアップグレード"
 
 #: public/views/walletHome.html:481
 msgid "Values"
-msgstr ""
+msgstr "値"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1523,7 +1523,7 @@ msgstr "注意！"
 
 #: public/views/walletHome.html:303
 msgid "What to send"
-msgstr ""
+msgstr "送信内容"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
@@ -1557,7 +1557,7 @@ msgstr "はい"
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "シングルアドレスウォレットでは取引をリバースペイメントに紐付けすることができません。シングルアドレスではないウォレットを使用し、このウォレットに送金してください。"
 
 #: public/views/walletHome.html:24
 msgid "You do not have a wallet"

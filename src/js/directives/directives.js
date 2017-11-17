@@ -115,13 +115,56 @@ angular.module('copayApp.directives')
 	           return value;
 	        }
           };
+         ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
+  .directive('validAmount', ['configService', 'profileService',
+    function(configService, profileService) {
+
+      return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ctrl) {
+          var val = function(value) {
+			//console.log('-- scope', ctrl);
+			/*if (scope.home && scope.home.bSendAll){
+				console.log('-- send all');
+				ctrl.$setValidity('validAmount', true);
+				return value;
+			}*/
+			//console.log('-- amount');
+			var constants = require('byteballcore/constants.js');
+			var asset = attrs.validAmount;
+            var settings = configService.getSync().wallet.settings;
+			var unitValue = 1;
+			var decimals = 0;
+			if (asset === 'base'){
+				unitValue = settings.unitValue;
+				decimals = Number(settings.unitDecimals);
+			}
+			else if (asset === constants.BLACKBYTES_ASSET){
+				unitValue = settings.bbUnitValue;
+				decimals = Number(settings.bbUnitDecimals);
+			}
+			else if (profileService.assetMetadata[asset]){
+				decimals = profileService.assetMetadata[asset].decimals || 0;
+				unitValue = Math.pow(10, decimals);
+			}
+			  
+            var vNum = Number((value * unitValue).toFixed(0));
+
+            if (typeof value == 'undefined' || value == 0) {
+              ctrl.$pristine = true;
+            }
 
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
       };
     }
-  ])
+  }])
   .directive('validFeedName', ['configService',
     function(configService) {
 

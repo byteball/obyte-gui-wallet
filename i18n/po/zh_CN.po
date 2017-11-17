@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2017-10-18 03:42-0400\n"
+"PO-Revision-Date: 2017-11-09 01:51-0500\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -63,7 +63,7 @@ msgstr "添加新条目"
 
 #: public/views/walletHome.html:491
 msgid "Add fields"
-msgstr ""
+msgstr "添加字段"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -81,7 +81,7 @@ msgstr "地址"
 
 #: public/views/walletHome.html:466
 msgid "Address to attest"
-msgstr ""
+msgstr "地址证明"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -160,7 +160,7 @@ msgstr ""
 
 #: public/views/walletHome.html:308
 msgid "Attestation"
-msgstr ""
+msgstr "认证"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -437,7 +437,7 @@ msgstr "删除文档"
 
 #: public/views/walletHome.html:310
 msgid "Data"
-msgstr ""
+msgstr "数据"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"
@@ -730,7 +730,7 @@ msgstr "只有钱包种子是不够的。 用这个单独的种子，你将无�
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
-msgstr ""
+msgstr "只保留与您相关的数据"
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
@@ -931,7 +931,7 @@ msgstr "普通钱包"
 
 #: public/views/splash.html:20
 msgid "Please choose how much data to store in your wallet"
-msgstr ""
+msgstr "请选择要存储在您的钱包中的数据"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -955,7 +955,7 @@ msgstr ""
 
 #: public/views/walletHome.html:458
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "发布您的个人数据，任何要说的话。"
 
 #: public/views/walletHome.html:157
 #: public/views/walletHome.html:29
@@ -1224,12 +1224,12 @@ msgstr "从钱包签署交易支出？"
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "单地址钱包"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "单地址钱包不会为每个交易产生新地址，余额改变将始终转到钱包包含的唯一地址上。"
 
 #: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
@@ -1304,7 +1304,7 @@ msgstr "该Hub建议更换以下证人："
 
 #: public/views/modals/bind.html:23
 msgid "The peer receives this payment if"
-msgstr ""
+msgstr "对方收到此付款，如果："
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1317,7 +1317,7 @@ msgstr "钱包 \"{{walletName}}\"已被删除"
 
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
-msgstr ""
+msgstr "钱包服务者将能够知道你的余额和交易信息，但你可以立即开始使用功能齐全的钱包。"
 
 #: public/views/correspondentDevice.html:302
 msgid "Their recording preference"
@@ -1341,7 +1341,7 @@ msgstr "这是一个私人资产，只能通过点击聊天中的链接发送或
 
 #: public/views/splash.html:28
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
-msgstr ""
+msgstr "此选项对隐私更好, 但将占用数 gb 的存储空间, 初始同步将需要数天时间。 同步时 CPU 负载会很高。"
 
 #: public/views/walletHome.html:357
 msgid "This payment is bound to a condition"
@@ -1353,7 +1353,7 @@ msgstr "此交易已失效，可能由于尝试双重支付导致。"
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "这个钱包不能转换为单地址钱包, 因为它已经包含多个地址或多设备绑定"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1371,11 +1371,11 @@ msgstr "到"
 
 #: public/views/backup.html:24
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
-msgstr ""
+msgstr "为了能够恢复所有的东西, 请创建一个完整的备份 (在菜单中找到该选项)"
 
 #: public/views/walletHome.html:517
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "为了能够将任意数据发送到 Byteball 网络, 请先切换到 single-address 钱包或创建一个。"
 
 #: public/views/walletHome.html:360
 msgid "To bind the payment to a condition, please click the peer's address in chat"

@@ -44,15 +44,8 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       
       fc.getListOfBalancesOnAddresses(function(listOfBalances) {
       	listOfBalances = listOfBalances.map(function(row) {
-      		if (row.asset == 'base' || row.asset == constants.BLACKBYTES_ASSET) {
-      			var assetName = row.asset !== "base" ? 'blackbytes' : 'base';
-      			var unitName = row.asset !== "base" ? config.bbUnitName : config.unitName;
-				row.amount = profileService.formatAmount(row.amount, assetName, {dontRound: true}) + ' ' + unitName;
-				return row;
-			}
-			else {
-				return row;
-			}
+			row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
+			return row;
 		});
       	//groupBy address
       	var assocListOfBalances = {};

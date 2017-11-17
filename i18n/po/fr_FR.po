@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2017-10-18 03:41-0400\n"
+"PO-Revision-Date: 2017-10-20 09:00-0400\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
@@ -63,7 +63,7 @@ msgstr "Ajouter une nouvelle entrée"
 
 #: public/views/walletHome.html:491
 msgid "Add fields"
-msgstr ""
+msgstr "Ajouter des champs"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -81,7 +81,7 @@ msgstr "Adresse"
 
 #: public/views/walletHome.html:466
 msgid "Address to attest"
-msgstr ""
+msgstr "Adresse à attester"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -156,11 +156,11 @@ msgstr "Valeurs"
 
 #: public/views/walletHome.html:455
 msgid "Attest profile data linked to any Byteball address."
-msgstr ""
+msgstr "Attester les données de profil liées à toute adresse Byteball."
 
 #: public/views/walletHome.html:308
 msgid "Attestation"
-msgstr ""
+msgstr "Attestation"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -437,11 +437,11 @@ msgstr "SUPPRIMER LES MOTS"
 
 #: public/views/walletHome.html:310
 msgid "Data"
-msgstr ""
+msgstr "Données"
 
 #: public/views/walletHome.html:307
 msgid "Data into datafeed"
-msgstr ""
+msgstr "Données dans le flux de données"
 
 #: public/views/modals/tx-details.html:78
 msgid "Date"
@@ -947,15 +947,15 @@ msgstr "Port"
 
 #: public/views/walletHome.html:461
 msgid "Post arbitrary key-value pairs of data into Byteball network."
-msgstr ""
+msgstr "Poster des paires clé-valeur arbitraires dans le réseau Byteball."
 
 #: public/views/walletHome.html:452
 msgid "Post values into datafeeds manually, be an oracle."
-msgstr ""
+msgstr "Poster les valeurs dans les flux de données manuellement, être un oracle."
 
 #: public/views/walletHome.html:458
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "Publier vos données de profil, tout ce que vous voulez dire au sujet de vous-même."
 
 #: public/views/walletHome.html:157
 #: public/views/walletHome.html:29
@@ -977,7 +977,7 @@ msgstr "Charge privée envoyée"
 
 #: public/views/walletHome.html:309
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1224,12 +1224,12 @@ msgstr "Signer la transaction de dépense depuis le portefeuille ?"
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "Portefeuille d'adresse unique"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "Les portefeuilles d'adresses uniques ne généreront pas de nouvelles adresses pour chaque transaction, le changement ira toujours à l'adresse unique que contient le portefeuille."
 
 #: src/js/services/profileService.js:275
 msgid "Small Expenses Wallet"
@@ -1353,7 +1353,7 @@ msgstr "Cette transaction est devenue invalide ; il s'agit peut-être d'une tent
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "Ce portefeuille ne peut pas être converti en portefeuille d'adresse unique car il est déjà composé d'adresses multiples ou multidevice"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1375,7 +1375,7 @@ msgstr "Pour être en mesure de restaurer tout, veuillez créer une sauvegarde c
 
 #: public/views/walletHome.html:517
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "Pour pouvoir envoyer des données arbitraires dans le réseau Byteball, veuillez d'abord passer à un portefeuille à adresse unique ou en créer un."
 
 #: public/views/walletHome.html:360
 msgid "To bind the payment to a condition, please click the peer's address in chat"
@@ -1440,7 +1440,7 @@ msgstr "Mettre à jour vers {{version}}"
 
 #: public/views/walletHome.html:481
 msgid "Values"
-msgstr ""
+msgstr "Valeurs"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1523,7 +1523,7 @@ msgstr "Attention !"
 
 #: public/views/walletHome.html:303
 msgid "What to send"
-msgstr ""
+msgstr "Quoi envoyer"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
@@ -1557,7 +1557,7 @@ msgstr "Oui"
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "Vous ne pouvez pas lier votre transaction au paiement inverse car vous utilisez un portefeuille contenant une seule adresse. Utilisez un portefeuille multi-adresse, puis transférez l'argent vers ce portefeuille."
 
 #: public/views/walletHome.html:24
 msgid "You do not have a wallet"
