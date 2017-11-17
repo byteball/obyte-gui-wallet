@@ -96,55 +96,28 @@ angular.module('copayApp.directives')
       };
     }
   ])
-  .directive('validAmount', ['configService',
-    function(configService) {
-
+  .directive('validMnemonic', [function() {
       return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, ctrl) {
-          var val = function(value) {
-			//console.log('-- scope', ctrl);
-			/*if (scope.home && scope.home.bSendAll){
-				console.log('-- send all');
-				ctrl.$setValidity('validAmount', true);
-				return value;
-			}*/
-			//console.log('-- amount');
-			var constants = require('byteballcore/constants.js');
-			var asset = attrs.validAmount;
-            var settings = configService.getSync().wallet.settings;
-			var unitValue = 1;
-			var decimals = 0;
-			if (asset === 'base'){
-				unitValue = settings.unitValue;
-				decimals = Number(settings.unitDecimals);
-			}
-			else if (asset === constants.BLACKBYTES_ASSET){
-				unitValue = settings.bbUnitValue;
-				decimals = Number(settings.bbUnitDecimals);
-			}
-			  
-            var vNum = Number((value * unitValue).toFixed(0));
+      	require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+        	var Mnemonic = require('bitcore-mnemonic');
+         var validator = function(value) {
+         	try {
+	            if (Mnemonic.isValid(value)) {
+	              ctrl.$setValidity('validMnemonic', true);
+	              return value;
+	            } else {
+	              ctrl.$setValidity('validMnemonic', false);
+	              return value;
+	            }
+	        } catch(ex) {
+	        		ctrl.$setValidity('validMnemonic', false);
+	           return value;
+	        }
+          };
 
-            if (typeof value == 'undefined' || value == 0) {
-              ctrl.$pristine = true;
-            }
-
-            if (typeof vNum == "number" && vNum > 0) {
-              var sep_index = ('' + value).indexOf('.');
-              var str_value = ('' + value).substring(sep_index + 1);
-              if (sep_index > 0 && str_value.length > decimals) {
-                ctrl.$setValidity('validAmount', false);
-              } else {
-                ctrl.$setValidity('validAmount', true);
-              }
-            } else {
-              ctrl.$setValidity('validAmount', false);
-            }
-            return value;
-          }
-          ctrl.$parsers.unshift(val);
-          ctrl.$formatters.unshift(val);
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
         }
       };
     }

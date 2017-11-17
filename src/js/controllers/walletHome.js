@@ -315,8 +315,8 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	  };
 		
       $scope.cancel = function() {
-		breadcrumbs.add('openSharedAddressDefinitionModal cancel');
-		$modalInstance.dismiss('cancel');
+			breadcrumbs.add('openSharedAddressDefinitionModal cancel');
+			$modalInstance.dismiss('cancel');
       };
 
     };
@@ -484,6 +484,50 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 		var m = angular.element(document.getElementsByClassName('reveal-modal'));
 		m.addClass(animationService.modalAnimated.slideOutDown);
 	});
+  };
+
+  this.openClaimTextcoinModal = function(addr) {
+    $rootScope.modalOpened = true;
+    var fc = profileService.focusedClient;
+    var ModalInstanceCtrl = function($scope, $modalInstance) {
+		$scope.color = fc.backgroundColor;
+		$scope.buttonLabel = gettextCatalog.getString('Claim funds');
+
+		$scope.submitForm = function(form) {
+			$modalInstance.close(form.mnemonic.$modelValue);
+		};
+
+		$scope.cancel = function() {
+			breadcrumbs.add('openCustomizedAmountModal: cancel');
+			$modalInstance.dismiss('cancel');
+		};
+    };
+
+    var modalInstance = $modal.open({
+        templateUrl: 'views/modals/claim-textcoin.html',
+        windowClass: animationService.modalAnimated.slideUp,
+        controller: ModalInstanceCtrl,
+        scope: $scope
+    });
+
+    var disableCloseModal = $rootScope.$on('closeModal', function() {
+		breadcrumbs.add('openClaimTextcoinModal: on closeModal');
+		modalInstance.dismiss('cancel');
+    });
+
+	modalInstance.result.finally(function(val) {
+		$rootScope.modalOpened = false;
+		disableCloseModal();
+		var m = angular.element(document.getElementsByClassName('reveal-modal'));
+		m.addClass(animationService.modalAnimated.slideOutDown);
+	});
+
+	modalInstance.result.then(function(mnemonic) {
+     if (mnemonic) {
+			var wallet = require('byteballcore/wallet.js');
+			wallet.receiveTextCoin(mnemonic, addr, function(){});
+		}
+   });
   };
 
   // Send 
