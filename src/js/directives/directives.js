@@ -162,7 +162,7 @@ angular.module('copayApp.directives')
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
-      };
+      }
     }
   }])
   .directive('validFeedName', ['configService',
