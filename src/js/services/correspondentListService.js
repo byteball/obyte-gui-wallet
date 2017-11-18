@@ -136,6 +136,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case "/del":
 					htmlstring = "</del>";
 					break;
+				case "alignleft":
+					htmlstring = "<div style=\"float:left;\">";
+					break;
+				case "alignright":
+					htmlstring = "<div style=\"float:right;\">";
+					break;
+				case "aligncenter":
+					htmlstring = "<div style=\"text-align: center;\">";
+					break;
+				case "/align":
+					htmlstring = "</div>";
+					break;
 				default:
 					htmlstring = "";
 			}
@@ -190,7 +202,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	//This functions looks for Rendertags and replaces them with the corresponding html items
 	function applyRenderOptions(text){
-		return loopParseandRender(text, "font,/font,b,/b,i,/i,u,/u,sup,/sup,sub,/sub,mark,/mark,del,/del");
+		return loopParseandRender(text, "font,/font,b,/b,i,/i,u,/u,sup,/sup,sub,/sub,mark,/mark,del,/del,alignleft,alignright,aligncenter,/align");
 	}
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
