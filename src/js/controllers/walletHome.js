@@ -447,6 +447,10 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 					amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : (assetInfo.name || 'of ' + asset)));
 				$scope.amountInSmallestUnits = amountInSmallestUnits;
 				$scope.asset_param = (asset === 'base') ? '' : '&asset='+encodeURIComponent(asset);
+				//prepare QR Code
+				$scope.code = $scope.addr+'?amount=' + $scope.amountInSmallestUnits + $scope.asset_param;
+				var qrstring = $scope.protocol + ":" + $scope.code;  //as passed to the qr generator in customized-amount.html
+				$scope.qr_version = correspondentListService.determineQRcodeVersionFromString( qrstring );
 			}, 1);
 		};
 

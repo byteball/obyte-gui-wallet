@@ -35,6 +35,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
 	
+	function determineQRcodeVersionFromString( inputtext ) {
+		// maximum characters per QR code version using ECC level m
+		// source: http://www.qrcode.com/en/about/version.html
+		var maxCharsforQRVersion = [0,14,26,42,62,84,106,122,152,180,213];
+		var qrversion = 5;
+		// find lowest version number that has enough space for our text
+		for (var i = (maxCharsforQRVersion.length-1); i > 0 ; i--) {
+			if ( maxCharsforQRVersion[i] >= inputtext.length)
+			{
+				qrversion = i;
+			}
+		}
+		return qrversion;
+	}
+	
 	function addIncomingMessageEvent(from_address, body, message_counter){
 		var walletGeneral = require('byteballcore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
@@ -569,6 +584,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.parseMessage = parseMessage;
 	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	root.addMessageEvent = addMessageEvent;
+	root.determineQRcodeVersionFromString = determineQRcodeVersionFromString;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
