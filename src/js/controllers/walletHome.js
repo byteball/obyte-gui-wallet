@@ -839,9 +839,9 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 							eventBus.emit('nonfatal_error', "error object from sendMultiPayment: "+err, new Error());
 						}
 						else if (err.match(/device address/))
-							err = "This is a private asset, please send it only by clicking links from chat";
+							err = gettext("This is a private asset, please send it only by clicking links from chat");
 						else if (err.match(/no funded/))
-							err = "Not enough spendable funds, make sure all your funds are confirmed";
+							err = gettext("Not enough spendable funds, make sure all your funds are confirmed");
 						return self.setSendError(err);
 					}
 					var binding = self.binding;
