@@ -4,7 +4,7 @@
 var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
 	
 	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
@@ -174,8 +174,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
-			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
-			$scope.arrPeerPaysTos = [{value: 'me', display_value: "to me"}, {value: 'contract', display_value: "to this contract"}];
+			$scope.arrParties = [{value: 'me', display_value: gettext("I")}, {value: 'peer', display_value: gettext("the peer")}];
+			$scope.arrPeerPaysTos = [{value: 'me', display_value: gettext("to me")}, {value: 'contract', display_value: gettext("to this contract")}];
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -185,7 +185,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				else if (profileService.assetMetadata[b.asset])
 					info.displayName = profileService.assetMetadata[b.asset].name;
 				else
-					info.displayName = 'of '+b.asset.substr(0, 4);
+					info.displayName = gettext('of')+' '+b.asset.substr(0, 4);
 				return info;
 			});
 			$scope.arrPublicAssetInfos = $scope.arrAssetInfos.filter(function(b){ return !b.is_private; });
@@ -257,13 +257,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					if (contract.peerAsset === "base")
 						peer_amount *= walletSettings.unitValue;
 					if (contract.peerAsset === constants.BLACKBYTES_ASSET)
-						throw Error("peer asset cannot be blackbytes");
+						throw Error(gettext("peer asset cannot be blackbytes"));
 					if (profileService.assetMetadata[contract.peerAsset])
 						peer_amount *= Math.pow(10, profileService.assetMetadata[contract.peerAsset].decimals || 0);
 					peer_amount = Math.round(peer_amount);
 					
 					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
-						$scope.error = "The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.";
+						$scope.error = gettext("The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.");
 						$timeout(function() {
 							$scope.$digest();
 						}, 1);
@@ -371,9 +371,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							profileService.bKeepUnlocked = false;
 							if (err){
 								if (err.match(/device address/))
-									err = "This is a private asset, please send it only by clicking links from chat";
+									err = gettext("This is a private asset, please send it only by clicking links from chat");
 								if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
+									err = gettext("Not enough spendable funds, make sure all your funds are confirmed");
 								if ($scope)
 									$scope.error = err;
 								return;
