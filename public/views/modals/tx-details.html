@@ -124,7 +124,8 @@
 	    <span class="right" >
 	      <span class="text-warning" ng-show="!btx.claimed" translate>
 	        not claimed
-	      </span>
+	   	</span>
+	      (<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic);cancel()" style="padding: 0; color: inherit;">claim back</a>)
 	      <span class="label gray radius" ng-show="btx.claimed" translate>
 	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
 	      </span>

@@ -523,11 +523,23 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 
 	modalInstance.result.then(function(mnemonic) {
      if (mnemonic) {
-			var wallet = require('byteballcore/wallet.js');
-			wallet.receiveTextCoin(mnemonic, addr, function(){});
+     		claimTextCoin(mnemonic, addr);
 		}
    });
   };
+
+  function claimTextCoin(mnemonic, addr) {
+		var wallet = require('byteballcore/wallet.js');
+		wallet.receiveTextCoin(mnemonic, addr, function(err, unit){
+			if (err)
+				return $rootScope.$emit('Local/ShowErrorAlert', err);
+			indexScope.updateTxHistory();
+			$rootScope.$emit('Local/SetTab', 'history');
+		});
+  }
+  $rootScope.$on('claimTextcoin', function(event, mnemonic) {
+  		claimTextCoin(mnemonic, self.addr[profileService.focusedClient.credentials.walletId]);
+  });
 
   // Send 
 
@@ -711,6 +723,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
     }
 
    var ValidationUtils = require('byteballcore/validation_utils.js');
+   var wallet = require('byteballcore/wallet.js');
    var address = form.address.$modelValue;
    var isEmail = !ValidationUtils.isValidAddress(address);
    if (isEmail) address = "textcoin:" + address;
@@ -719,6 +732,7 @@ angular.module('copayApp.controllers').controller('walletHomeController', functi
 	console.log("asset "+asset);
 	var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 	var amount = form.amount.$modelValue;
+	if (isEmail) amount += wallet.TEXTCOIN_CLAIM_FEE;
 	var merkle_proof = '';
 	if (form.merkle_proof && form.merkle_proof.$modelValue)
 		merkle_proof = form.merkle_proof.$modelValue.trim();
