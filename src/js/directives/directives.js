@@ -476,4 +476,6 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  });
+  }).filter('encodeURIComponent', function() {
+    return window.encodeURIComponent;
+});;

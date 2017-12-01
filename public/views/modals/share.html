@@ -1,0 +1,29 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Send payment using social media
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch">
+  <div ng-show="!amountInSmallestUnits" class="row m20t">
+    <div class="large-12 large-centered columns">
+        <div ng-if="address">
+          <button ng-if="isCordova" ng-click="shareToEmail()">{{buttonLabel}}</button>
+          <a href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
+        </div>
+        <div>
+        	<textarea>
+				{{text}}
+			</textarea>
+        </div>
+    </div>
+  </div>
+
+</div>

@@ -40,10 +40,10 @@
     </span>
     </li>
 
-    <li ng-if="btx.to" class="line-b p10 oh" ng-click="copyAddress(btx.to)">
+    <li ng-if="btx.textAddress" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress)">
 	    <span class="text-gray" translate>To email</span>:
 	    <span class="right">
-		    <contact class="enable_text_select" address="{{btx.to}}"></contact>
+		    <contact class="enable_text_select" address="{{btx.textAddress}}"></contact>
 	    </span>
     </li>
 
@@ -119,19 +119,23 @@
     </span>
     </li>
 
-    <li ng-if="btx.to" class="line-b p10 oh">
+    <li ng-if="btx.textcoin" class="line-b p10 oh">
 	    <span class="text-gray" translate>Was claimed</span>?
 	    <span class="right" >
 	      <span class="text-warning" ng-show="!btx.claimed" translate>
 	        not claimed
 	   	</span>
-	      (<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic);cancel()" style="padding: 0; color: inherit;">claim back</a>)
+	      <span ng-show="!btx.claimed">
+	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic);cancel()" style="padding: 0; color: inherit;">claim back</a>)
+	      </span>
 	      <span class="label gray radius" ng-show="btx.claimed" translate>
 	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
 	      </span>
 	 
 	    </span>
     </li>
+
+    <button ng-if="btx.textcoin" ng-click="shareAgain()">Share again</button>
 
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
 		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
