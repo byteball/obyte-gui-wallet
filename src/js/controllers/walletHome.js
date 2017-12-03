@@ -1501,7 +1501,7 @@ angular.module('copayApp.controllers')
 							window.ignoreMobilePause = true;
 						}
 						window.plugins.socialsharing.shareWithOptions({
-							message: "Here is your link to receive bytes: http://teddyidm.eu.ngrok.io/index.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
+							message: "Here is your link to receive bytes: http://teddyidm.eu.ngrok.io/index.html#textcoin?" + btx.mnemonic, subject: "You received byteball transaction"
 						});
 					} else {
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic);
