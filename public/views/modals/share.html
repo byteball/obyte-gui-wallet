@@ -6,7 +6,7 @@
   </section>
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" ng-style="{'color':color}" translate>
-      Send payment using social media
+      Share
     </h1>
   </section>
 </nav>
@@ -15,13 +15,13 @@
   <div ng-show="!amountInSmallestUnits" class="row m20t">
     <div class="large-12 large-centered columns">
         <div ng-if="address">
-          <button ng-if="isCordova" ng-click="shareToEmail()">{{buttonLabel}}</button>
-          <a href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
+        	<p>Click the button to send email</p>
+          <button ng-if="isCordova" class="button black round expand" ng-style="{'background-color':index.backgroundColor}" ng-click="shareToEmail()">{{buttonLabel}}</button>
+          <a class="button black round expand" ng-style="{'background-color':index.backgroundColor}" href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
         </div>
         <div>
-        	<textarea>
-				{{text}}
-			</textarea>
+        	<p><span ng-if="address">Or </span>copy text and send by yourself:</p>
+        	<textarea readonly rows=4 onclick="this.focus();this.select()">{{text}}</textarea>
         </div>
     </div>
   </div>
