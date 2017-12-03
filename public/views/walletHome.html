@@ -367,7 +367,7 @@ input.datafeed_input {
               </div>
             </div>
 
-            <div class="mtabset">
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">
 		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>To byteball address / email</div>
 		    	<div class="mtab-title" ng-click="mtab = 2" ng-class="{'active': mtab == 2}">Share via message</div>
 		    </div>
@@ -375,6 +375,9 @@ input.datafeed_input {
 		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse">
+	              	<label for="address" class="left" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base'">
+	                  <span translate>To byteball address</span>
+	                </label>
 	                <span ng-hide="sendPaymentForm.address.$pristine">
 	                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
 	                    <i class="icon-close-circle size-14"></i>
@@ -384,6 +387,7 @@ input.datafeed_input {
 	                    <i class="icon-checkmark-circle size-14"></i>
 	                  </small>
 	                </span>
+	                &nbsp;
 	              </div>
 
 	              <div class="input">
@@ -458,7 +462,7 @@ input.datafeed_input {
 
         	<div class="mtab" ng-class="{'active': mtab == 2}">
         		<br>
-        		<p translate>Click on this button to create payment and share it via direct message in social networks</p>
+        		<p translate>Click this button to create payment and share it via private message in chat apps</p>
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>

@@ -15,7 +15,7 @@
   <div ng-show="!amountInSmallestUnits" class="row m20t">
     <div class="large-12 large-centered columns">
         <div ng-if="address">
-        	<p>Click the button to send email</p>
+        	<p translate>Click the button to resend email</p>
           <button ng-if="isCordova" class="button black round expand" ng-style="{'background-color':index.backgroundColor}" ng-click="shareToEmail()">{{buttonLabel}}</button>
           <a class="button black round expand" ng-style="{'background-color':index.backgroundColor}" href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
         </div>

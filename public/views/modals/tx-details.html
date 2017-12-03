@@ -135,8 +135,9 @@
 	    </span>
     </li>
 
-    <button  class="button white round expand" ng-if="btx.textcoin && !btx.claimed" ng-click="shareAgain()">Share again</button>
-
+    <li ng-if="btx.textcoin && !btx.claimed" class="line-b p10 oh">
+		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="shareAgain()" translate>share again</a>
+    </li>
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
 		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
     </li>

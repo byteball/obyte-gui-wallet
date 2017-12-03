@@ -687,7 +687,7 @@ angular.module('copayApp.controllers')
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.color = fc.backgroundColor;
-				$scope.buttonLabel = gettextCatalog.getString('Send email');
+				$scope.buttonLabel = gettextCatalog.getString('Resend email');
 				$scope.isCordova = isCordova;
 				$scope.address = addr;
 				$scope.mnemonic = mnemonic;
