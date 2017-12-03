@@ -359,10 +359,11 @@ input.datafeed_input {
             </div>
 
             <div class="mtabset">
-			    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" translate="" style="color: rgb(250, 167, 127);">To byteball address</div>
-			    	<div class="mtab-title" ng-click="mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" donttranslate="" style="color: rgb(250, 167, 127);">Share to social media</div>
-			    </div>
-			    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
+		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" translate="" style="color: rgb(250, 167, 127);">To byteball address</div>
+		    	<div class="mtab-title" ng-click="mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" donttranslate="" style="color: rgb(250, 167, 127);">Share to social media</div>
+		    </div>
+		    
+		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse">
 	                <label for="address" class="left" >
@@ -403,56 +404,55 @@ input.datafeed_input {
 	            </div>
 
 	            <div class="row" ng-show="index.bHasMerkle">
-              <div class="large-12 columns">
-                <label for="merkle_proof"><span translate>Merkle proof</span>
-                  <small translate ng-hide="!sendPaymentForm.merkle_proof.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendPaymentForm.merkle_proof.$invalid && !sendPaymentForm.merkle_proof.$pristine">too long!</small>
-                </label>
-                <div class="input">
-                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row" ng-hide="home.hideNote">
-              <div class="large-12 columns">
-                <label for="comment"><span translate>Note</span>
-                  <small translate ng-hide="!sendPaymentForm.comment.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendPaymentForm.comment.$invalid && !sendPaymentForm.comment.$pristine">too long!</small>
-                </label>
-                <div class="input">
-                  <textarea id="comment" ng-disabled="home.blockUx" name="comment"
-                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
-                    ng-blur="home.formFocus(false)"></textarea>
-                </div>
-              </div>
-            </div>
+	              <div class="large-12 columns">
+	                <label for="merkle_proof"><span translate>Merkle proof</span>
+	                  <small translate ng-hide="!sendPaymentForm.merkle_proof.$pristine">optional</small>
+	                  <small translate class="has-error" ng-show="sendPaymentForm.merkle_proof.$invalid && !sendPaymentForm.merkle_proof.$pristine">too long!</small>
+	                </label>
+	                <div class="input">
+	                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
+	                </div>
+	              </div>
+            	</div>
+	            <div class="row" ng-hide="home.hideNote">
+	              <div class="large-12 columns">
+	                <label for="comment"><span translate>Note</span>
+	                  <small translate ng-hide="!sendPaymentForm.comment.$pristine">optional</small>
+	                  <small translate class="has-error" ng-show="sendPaymentForm.comment.$invalid && !sendPaymentForm.comment.$pristine">too long!</small>
+	                </label>
+	                <div class="input">
+	                  <textarea id="comment" ng-disabled="home.blockUx" name="comment"
+	                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
+	                    ng-blur="home.formFocus(false)"></textarea>
+	                </div>
+	              </div>
+	            </div>
 
-            <div class="" ng-show="index.m < index.n && index.m > 1">
-                <div class="large-12 medium-12">
-                    <label>
-                        <span translate>Who signs:</span>
-                    </label>
-            			<cosigners></cosigners>
+	            <div class="" ng-show="index.m < index.n && index.m > 1">
+	                <div class="large-12 medium-12">
+	                    <label>
+	                        <span translate>Who signs:</span>
+	                    </label>
+	        			<cosigners></cosigners>
             		</div>
-            </div>
+	            </div>
 
-            <div class="row" ng-show="!home.onGoingProcess">
-              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount)">
-                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
-              </div>
-              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
-                  ng-style="{'background-color':index.backgroundColor}"  translate>
-                  Send
-                </button>
-              </div>
+	            <div class="row" ng-show="!home.onGoingProcess">
+	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount)">
+	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
+	              </div>
+	              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount)}">
+	                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+	                  ng-style="{'background-color':index.backgroundColor}"  translate>
+	                  Send
+	                </button>
+	              </div>
+	            </div>
+        	</div>
 
-            </div>
-	        </div>
-
-	        	<div class="mtab" ng-class="{'active': mtab == 2}">
-	        		<button type="submit" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate>Share to social media</button>
-	        	</div>
+        	<div class="mtab" ng-class="{'active': mtab == 2}">
+        		<button type="submit" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate>Share to social media</button>
+        	</div>
           </form>
         </div>
       </div>

@@ -1496,7 +1496,16 @@ angular.module('copayApp.controllers')
 					btx.textAddress = "";
 				}
 				$scope.shareAgain = function() {
-					self.openShareTextcoinModal(btx.textAddress, btx.mnemonic);
+					if (isCordova) {
+						if (isMobile.Android() || isMobile.Windows()) {
+							window.ignoreMobilePause = true;
+						}
+						window.plugins.socialsharing.shareWithOptions({
+							message: "Here is your link to receive bytes: http://teddyidm.eu.ngrok.io/index.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
+						});
+					} else {
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic);
+					}
 				}
 
 

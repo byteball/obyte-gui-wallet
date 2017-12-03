@@ -126,7 +126,7 @@
 	        not claimed
 	   	</span>
 	      <span ng-show="!btx.claimed">
-	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic);cancel()" style="padding: 0; color: inherit;">claim back</a>)
+	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic.split('-').join(' '));cancel()" style="padding: 0; color: inherit;">claim back</a>)
 	      </span>
 	      <span class="label gray radius" ng-show="btx.claimed" translate>
 	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
@@ -135,7 +135,7 @@
 	    </span>
     </li>
 
-    <button ng-if="btx.textcoin" ng-click="shareAgain()">Share again</button>
+    <button ng-if="btx.textcoin && !btx.claimed" ng-click="shareAgain()">Share again</button>
 
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
 		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
