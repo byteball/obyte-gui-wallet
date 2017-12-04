@@ -680,19 +680,20 @@ angular.module('copayApp.controllers')
 			};
 		};
 
-		this.openShareTextcoinModal = function(addr, mnemonic) {
+		this.openShareTextcoinModal = function(addr, mnemonic, isResend) {
 			var text = "Your link: https://byteball.org/openapp.html#textcoin?" + mnemonic;
 			var subject = "You received byteball transaction";
 			$rootScope.modalOpened = true;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.color = fc.backgroundColor;
-				$scope.buttonLabel = gettextCatalog.getString('Resend email');
+				$scope.buttonLabel = gettextCatalog.getString((isResend ? 're' : '' ) + 'send email');
 				$scope.isCordova = isCordova;
 				$scope.address = addr;
 				$scope.mnemonic = mnemonic;
 				$scope.text = text;
 				$scope.subject = subject;
+				$scope.isResend = isResend;
 
 				$scope.shareToEmail = function() {
 					window.plugins.socialsharing.shareViaEmail(text, subject, [addr]);
@@ -742,7 +743,7 @@ angular.module('copayApp.controllers')
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
-			if (!form.address.$modelValue) {
+			if ($scope.mtab == 2 && !form.address.$modelValue) { // clicked 'share via message' button
 				form.address.$setValidity('validAddressOrEmail', true);
 			}
 			if (form.$invalid) {
@@ -813,8 +814,11 @@ angular.module('copayApp.controllers')
 
 					var device = require('byteballcore/device.js');
 					if (self.binding) {
-						if (isTextcoin)
-							throw Error("can't send bound payment using share menu");
+						if (isTextcoin) {
+							delete self.current_payment_key;
+							indexScope.setOngoingProcess(gettext('sending'), false);
+							return self.setSendError(err);
+						}
 						if (!recipient_device_address)
 							throw Error('recipient device address not known');
 						var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
@@ -1476,7 +1480,7 @@ angular.module('copayApp.controllers')
 							message: "Here is your link to receive bytes: https://byteball.org/#textcoin?" + btx.mnemonic, subject: "You received byteball transaction"
 						});
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, true);
 					}
 				}
 

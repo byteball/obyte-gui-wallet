@@ -103,6 +103,7 @@ angular.module('copayApp.directives')
         	var Mnemonic = require('bitcore-mnemonic');
          var validator = function(value) {
          	try {
+         		value = value.split('-').join(' ');
 	            if (Mnemonic.isValid(value)) {
 	              ctrl.$setValidity('validMnemonic', true);
 	              return value;
