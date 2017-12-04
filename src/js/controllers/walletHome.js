@@ -682,7 +682,7 @@ angular.module('copayApp.controllers')
 
 		this.openShareTextcoinModal = function(addr, mnemonic, isResend) {
 			var text = "Your link: https://byteball.org/openapp.html#textcoin?" + mnemonic;
-			var subject = "You received byteball transaction";
+			var subject = "Byteball user beamed you money";
 			$rootScope.modalOpened = true;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -998,7 +998,7 @@ angular.module('copayApp.controllers')
 											window.ignoreMobilePause = true;
 										}
 										window.plugins.socialsharing.shareWithOptions({
-											message: "Here is your link to receive bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
+											message: "Here is your link to receive bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "Byteball user beamed you money"
 										});
 									} else {
 										self.openShareTextcoinModal(null, mnemonic);
@@ -1477,7 +1477,7 @@ angular.module('copayApp.controllers')
 							window.ignoreMobilePause = true;
 						}
 						window.plugins.socialsharing.shareWithOptions({
-							message: "Here is your link to receive bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "You received byteball transaction"
+							message: "Here is your link to receive bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "Byteball user beamed you money"
 						});
 					} else {
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, true);
