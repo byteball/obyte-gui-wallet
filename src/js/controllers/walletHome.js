@@ -779,7 +779,6 @@ angular.module('copayApp.controllers')
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
 			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
-			if (isTextcoin) amount += wallet.TEXTCOIN_CLAIM_FEE;
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
 				merkle_proof = form.merkle_proof.$modelValue.trim();
@@ -790,6 +789,7 @@ angular.module('copayApp.controllers')
 			else if (assetInfo.decimals)
 				amount *= Math.pow(10, assetInfo.decimals);
 			amount = Math.round(amount);
+			if (isTextcoin) amount += wallet.TEXTCOIN_CLAIM_FEE;
 
 			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
@@ -943,35 +943,7 @@ angular.module('copayApp.controllers')
 							amount: amount,
 							send_all: self.bSendAll,
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-							recipient_device_address: recipient_device_address,
-							insecure_send_ask: function(email, answer) {
-								var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
-									$scope.title = $sce.trustAsHtml(gettextCatalog.getString('We cannot securely send message to ' + email + '. Do you want to try to send it without encryption?<br>BEWARE: transaction was sent already, if you decline, then you HAVE to claim your funds back using History tab.'));
-									$scope.cancel_button_class = 'light-gray outline';
-									$scope.loading = false;
-
-									$scope.ok = function() {
-										$scope.loading = true;
-										$modalInstance.close(gettextCatalog.getString('Yes'));
-										answer(true);
-									};
-									$scope.cancel = function() {
-										$modalInstance.dismiss(gettextCatalog.getString('No'));
-										answer(false);
-									};
-								};
-
-								var modalInstance = $modal.open({
-									templateUrl: 'views/modals/confirmation.html',
-									windowClass: animationService.modalAnimated.slideUp,
-									controller: ModalInstanceCtrl
-								});
-
-								modalInstance.result.finally(function() {
-									var m = angular.element(document.getElementsByClassName('reveal-modal'));
-									m.addClass(animationService.modalAnimated.slideOutDown);
-								});
-							}
+							recipient_device_address: recipient_device_address
 						};
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called

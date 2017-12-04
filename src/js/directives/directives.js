@@ -159,12 +159,25 @@ angular.module('copayApp.directives')
               ctrl.$pristine = true;
             }
 
-          ctrl.$parsers.unshift(validator);
-          ctrl.$formatters.unshift(validator);
+          	if (typeof vNum == "number" && vNum > 0) {
+	          	var sep_index = ('' + value).indexOf('.');
+	            var str_value = ('' + value).substring(sep_index + 1);
+	            if (sep_index > 0 && str_value.length > decimals) {
+	                ctrl.$setValidity('validAmount', false);
+	            } else {
+	                ctrl.$setValidity('validAmount', true);
+             	}
+            } else {
+              ctrl.$setValidity('validAmount', false);
+            }
+            return value;
+          }
+          ctrl.$parsers.unshift(val);
+          ctrl.$formatters.unshift(val);
         }
       }
     }
-  }])
+  ])
   .directive('validFeedName', ['configService',
     function(configService) {
 
