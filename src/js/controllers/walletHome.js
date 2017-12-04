@@ -817,7 +817,7 @@ angular.module('copayApp.controllers')
 						if (isTextcoin) {
 							delete self.current_payment_key;
 							indexScope.setOngoingProcess(gettext('sending'), false);
-							return self.setSendError(err);
+							return self.setSendError("you can send bound payments to byteball adresses only");
 						}
 						if (!recipient_device_address)
 							throw Error('recipient device address not known');
