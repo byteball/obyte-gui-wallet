@@ -998,7 +998,7 @@ angular.module('copayApp.controllers')
 											window.ignoreMobilePause = true;
 										}
 										window.plugins.socialsharing.shareWithOptions({
-											message: "Here is your link to receive bytes", subject: "You received byteball transaction", url: "Your link: https://byteball.org/openapp.html#textcoin?" + mnemonic
+											message: "Here is your link to receive bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
 										});
 									} else {
 										self.openShareTextcoinModal(null, mnemonic);
