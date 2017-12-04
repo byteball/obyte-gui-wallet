@@ -775,10 +775,13 @@ angular.module('copayApp.controllers')
 			// address can be [bytreball_addr, email, empty => social sharing]
 			var isTextcoin = !ValidationUtils.isValidAddress(address);
 			var isEmail = ValidationUtils.isValidEmail(address);
-			if (isTextcoin) address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
+			if (isTextcoin)
+				address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
+			if (isTextcoin && asset !== 'base')
+				return self.setSendError("only bytes can be sent as textcoin now");
 			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
