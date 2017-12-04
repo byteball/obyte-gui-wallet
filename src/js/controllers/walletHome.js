@@ -790,7 +790,7 @@ angular.module('copayApp.controllers')
 			else if (assetInfo.decimals)
 				amount *= Math.pow(10, assetInfo.decimals);
 			amount = Math.round(amount);
-			if (isTextcoin) amount += wallet.TEXTCOIN_CLAIM_FEE;
+			if (isTextcoin) amount += constants.TEXTCOIN_CLAIM_FEE;
 
 			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
