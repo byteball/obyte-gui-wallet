@@ -532,7 +532,21 @@ angular.module('copayApp.controllers')
 			});
 		}
 		$rootScope.$on('claimTextcoin', function(event, mnemonic) {
-			claimTextCoin(mnemonic, self.addr[profileService.focusedClient.credentials.walletId]);
+			var addr = self.addr[profileService.focusedClient.credentials.walletId];
+			if (addr) {
+				claimTextCoin(mnemonic, addr);
+			} else {
+				addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, addr) {
+					if (addr) {
+						self.addr[profileService.focusedClient.credentials.walletId] = addr;
+						claimTextCoin(mnemonic, addr);
+					}
+
+					$timeout(function() {
+						$scope.$digest();
+					});
+				});
+			}
 		});
 
 		// Send 
