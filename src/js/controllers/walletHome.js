@@ -525,6 +525,7 @@ angular.module('copayApp.controllers')
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit) {
+				$rootScope.$emit('closeModal');
 				if (err)
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
 				indexScope.updateTxHistory();
@@ -694,8 +695,8 @@ angular.module('copayApp.controllers')
 			};
 		};
 
-		this.openShareTextcoinModal = function(addr, mnemonic, isResend) {
-			var text = "Your link: https://byteball.org/openapp.html#textcoin?" + mnemonic;
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
+			var text = "Your link to claim " + amount + " bytes : https://byteball.org/openapp.html#textcoin?" + mnemonic;
 			var subject = "You received byteball transaction";
 			$rootScope.modalOpened = true;
 			var fc = profileService.focusedClient;
@@ -1005,17 +1006,17 @@ angular.module('copayApp.controllers')
 								var mnemonic = mnemonics[address];						
 
 								if (isEmail) {
-									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic);
+									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
 								} else {
 									if (isCordova) {
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
 										window.plugins.socialsharing.shareWithOptions({
-											message: "Here is your link to receive bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
+											message: "Here is your link to receive "+(amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "You received byteball transaction"
 										});
 									} else {
-										self.openShareTextcoinModal(null, mnemonic);
+										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
 									}
 								}
 
@@ -1055,7 +1056,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			//$scope.$apply();
+			this.resetForm();
 		}
 
 		this.submitData = function() {
@@ -1491,10 +1492,10 @@ angular.module('copayApp.controllers')
 							window.ignoreMobilePause = true;
 						}
 						window.plugins.socialsharing.shareWithOptions({
-							message: "Here is your link to receive bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "You received byteball transaction"
+							message: "Here is your link to receive "+(btx.amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "You received byteball transaction"
 						});
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, true);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
 					}
 				}
 
