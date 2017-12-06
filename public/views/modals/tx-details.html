@@ -126,7 +126,7 @@
 	        not claimed
 	   	</span>
 	      <span ng-show="!btx.claimed" class="external-link">
-	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic.split('-').join(' '));cancel()" style="padding: 0; color: inherit;">claim back</a>)
+	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic.split('-').join(' '));" style="padding: 0; color: inherit;">claim back</a>)
 	      </span>
 	      <span class="label gray radius" ng-show="btx.claimed" translate>
 	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
