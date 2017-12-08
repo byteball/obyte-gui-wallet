@@ -697,7 +697,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic) {
 			return {
-				message: "Here is your link to receive "+amount+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
