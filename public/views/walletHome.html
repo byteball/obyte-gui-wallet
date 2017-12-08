@@ -378,7 +378,7 @@ input.datafeed_input {
               </div>
             </div>
 
-            <div class="mtabset" ng-show="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base' && !home.lockAddress">
 		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>To byteball address or email</div>
 		    	<div class="mtab-title" ng-click="mtab = 2" ng-class="{'active': mtab == 2}">Share via message</div>
 		    </div>
@@ -386,7 +386,7 @@ input.datafeed_input {
 		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
-	              	<label for="address" class="left" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base'">
+	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base') || home.lockAddress">
 	                  <span translate>To byteball address</span>
 	                </label>
 	                <span>
