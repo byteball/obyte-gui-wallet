@@ -1065,6 +1065,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
+			$scope.mtab = 1;
 		}
 
 		this.submitData = function() {
@@ -1308,58 +1309,60 @@ angular.module('copayApp.controllers')
 
 		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 			this.resetError();
-			delete this.binding;
-			var form = $scope.sendPaymentForm;
-			if (!form || !form.address) // disappeared?
-				return console.log('form.address has disappeared');
-			if (to) {
-				form.address.$setViewValue(to);
-				form.address.$isValid = true;
-				form.address.$render();
-				this.lockAddress = true;
-				if (recipient_device_address) // must be already paired
-					assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-			}
+			$timeout((function() {
+				delete this.binding;
+				var form = $scope.sendPaymentForm;
+				if (!form || !form.address) // disappeared?
+					return console.log('form.address has disappeared');
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+				}
 
-			if (amount) {
-				//	form.amount.$setViewValue("" + amount);
-				//	form.amount.$isValid = true;
-				this.lockAmount = true;
-				$timeout(function() {
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
+				if (amount) {
+					//	form.amount.$setViewValue("" + amount);
+					//	form.amount.$isValid = true;
+					this.lockAmount = true;
+					$timeout(function() {
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					});
+				}
+				else {
+					this.lockAmount = false;
+					form.amount.$pristine = true;
+					form.amount.$setViewValue('');
 					form.amount.$render();
-				});
-			}
-			else {
-				this.lockAmount = false;
-				form.amount.$pristine = true;
-				form.amount.$setViewValue('');
-				form.amount.$render();
-			}
-			//	form.amount.$render();
+				}
+				//	form.amount.$render();
 
-			if (form.merkle_proof) {
-				form.merkle_proof.$setViewValue('');
-				form.merkle_proof.$render();
-			}
-			if (comment) {
-				form.comment.$setViewValue(comment);
-				form.comment.$isValid = true;
-				form.comment.$render();
-			}
+				if (form.merkle_proof) {
+					form.merkle_proof.$setViewValue('');
+					form.merkle_proof.$render();
+				}
+				if (comment) {
+					form.comment.$setViewValue(comment);
+					form.comment.$isValid = true;
+					form.comment.$render();
+				}
 
-			if (asset) {
-				var assetIndex = lodash.findIndex($scope.index.arrBalances, {
-					asset: asset
-				});
-				if (assetIndex < 0)
-					throw Error("failed to find asset index of asset " + asset);
-				$scope.index.assetIndex = assetIndex;
-				this.lockAsset = true;
-			}
-			else
-				this.lockAsset = false;
+				if (asset) {
+					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
+						asset: asset
+					});
+					if (assetIndex < 0)
+						throw Error("failed to find asset index of asset " + asset);
+					$scope.index.assetIndex = assetIndex;
+					this.lockAsset = true;
+				}
+				else
+					this.lockAsset = false;
+			}).bind(this), 1);
 		};
 
 		this.resetForm = function() {
