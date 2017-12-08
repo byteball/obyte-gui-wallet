@@ -19,6 +19,15 @@ input.datafeed_input {
 .mtab-title.active {
 	color: #34495E;
 }
+.hor-link {
+	max-width: 45%;
+	display: inline-block;
+	padding: 0 30px;
+	line-height: 1em;
+}
+.hor-link:nth-child(1) {
+	border-right: 1px solid #E9E9EC;
+}
 </style>
 
 
@@ -282,16 +291,18 @@ input.datafeed_input {
             </button>
           </div>
         </div>
-        <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
-            <span translate>Request a specific amount</span>
-          </a>
-        </div>
-        <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-14" ng-click="home.openClaimTextcoinModal(home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
-            <span translate>Claim funds using mnemonic</span>
-          </a>
-        </div>
+        <div class="m20t text-center m30b">
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+	          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
+	            <span translate>Request a specific amount</span>
+	          </a>
+	        </div>
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+	          <a class="size-14" ng-click="home.openClaimTextcoinModal(home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
+	            <span translate>Claim funds using textcoin</span>
+	          </a>
+	        </div>
+	    </div>
       </div>
     </div> <!-- END Receive -->
 
