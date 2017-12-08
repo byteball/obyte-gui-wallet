@@ -61,7 +61,6 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-        	attrs.selectable
           	var validator = function(value) {
           		if (!profileService.focusedClient)
 						return;

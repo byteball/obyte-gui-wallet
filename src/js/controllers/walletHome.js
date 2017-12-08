@@ -695,9 +695,17 @@ angular.module('copayApp.controllers')
 			};
 		};
 
+		function getShareMessage(amount, mnemonic) {
+			return {
+				message: "Here is your link to receive "+amount+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				subject: "Byteball user beamed you money"
+			}
+		}
+
 		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
-			var text = "Your link to claim " + amount + " bytes : https://byteball.org/openapp.html#textcoin?" + mnemonic;
-			var subject = "Byteball user beamed you money";
+			var msg = getShareMessage(amount, mnemonic);
+			var text = msg.message;
+			var subject = msg.subject;
 			$rootScope.modalOpened = true;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -1015,10 +1023,7 @@ angular.module('copayApp.controllers')
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
-										window.plugins.socialsharing.shareWithOptions({
-
-											message: "Here is your link to receive "+(amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "Byteball user beamed you money"
-										});
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount-constants.TEXTCOIN_CLAIM_FEE, mnemonic));
 									} else {
 										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
 									}
@@ -1060,7 +1065,6 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			this.resetForm();
 		}
 
 		this.submitData = function() {
@@ -1495,9 +1499,7 @@ angular.module('copayApp.controllers')
 						if (isMobile.Android() || isMobile.Windows()) {
 							window.ignoreMobilePause = true;
 						}
-						window.plugins.socialsharing.shareWithOptions({
-							message: "Here is your link to receive "+(btx.amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "Byteball user beamed you money"
-						});
+						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount-constants.TEXTCOIN_CLAIM_FEE, btx.mnemonic));
 					} else {
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
 					}

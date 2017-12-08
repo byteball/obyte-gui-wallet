@@ -378,7 +378,7 @@ input.datafeed_input {
 	              	<label for="address" class="left" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base'">
 	                  <span translate>To byteball address</span>
 	                </label>
-	                <span ng-hide="sendPaymentForm.address.$pristine">
+	                <span>
 	                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
 	                    <i class="icon-close-circle size-14"></i>
 	                    <span class="vm" translate>Not valid</span>
