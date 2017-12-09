@@ -111,6 +111,7 @@ angular.module('copayApp.controllers')
 			disableFocusListener();
 			disableResumeListener();
 			disableOngoingProcessListener();
+			disableClaimTextcoinListener();
 			$rootScope.hideMenuBar = false;
 			eventBus.removeListener("new_wallet_address", onNewWalletAddress);
 		});
@@ -532,7 +533,7 @@ angular.module('copayApp.controllers')
 				$rootScope.$emit('Local/SetTab', 'history');
 			});
 		}
-		$rootScope.$on('claimTextcoin', function(event, mnemonic) {
+		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
 				claimTextCoin(mnemonic, addr);
