@@ -475,6 +475,14 @@ input.datafeed_input {
         	<div class="mtab" ng-class="{'active': mtab == 2}">
         		<br>
         		<p translate>Click this button to create payment and share it via private message in chat apps</p>
+        		<div class="" ng-show="index.m < index.n && index.m > 1">
+	                <div class="large-12 medium-12">
+	                    <label>
+	                        <span translate>Who signs:</span>
+	                    </label>
+	        			<cosigners></cosigners>
+            		</div>
+	            </div>
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>
