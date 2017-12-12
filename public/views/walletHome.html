@@ -10,13 +10,13 @@ input.datafeed_input {
 	width: 40%;
 	display: inline-block;
 }
-.mtab-title {
+#send .mtab-title {
 	padding: 5px;
 	font-weight: bold;
 	font-size: 11px;
 	text-transform: uppercase;
 }
-.mtab-title.active {
+#send .mtab-title.active {
 	color: #34495E;
 }
 .hor-link {
@@ -25,8 +25,8 @@ input.datafeed_input {
 	padding: 0 30px;
 	line-height: 1em;
 }
-.hor-link:nth-child(1) {
-	border-right: 1px solid #E9E9EC;
+.hor-link:nth-child(2) {
+	border-left: 1px solid #E9E9EC;
 }
 </style>
 
@@ -297,7 +297,7 @@ input.datafeed_input {
 	            <span translate>Request a specific amount</span>
 	          </a>
 	        </div>
-	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-if="!index.shared_address">
 	          <a class="size-14" ng-click="home.openClaimTextcoinModal(home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
 	            <span translate>Claim funds using textcoin</span>
 	          </a>
@@ -460,10 +460,10 @@ input.datafeed_input {
 	            </div>
 
 	            <div class="row" ng-show="!home.onGoingProcess">
-	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount)">
+	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount || home.bSendAll)">
 	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
-	              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount)}">
+	              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount || home.bSendAll)}">
 	                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
@@ -475,6 +475,14 @@ input.datafeed_input {
         	<div class="mtab" ng-class="{'active': mtab == 2}">
         		<br>
         		<p translate>Click this button to create payment and share it via private message in chat apps</p>
+        		<div class="" ng-show="index.m < index.n && index.m > 1">
+	                <div class="large-12 medium-12">
+	                    <label>
+	                        <span translate>Who signs:</span>
+	                    </label>
+	        			<cosigners></cosigners>
+            		</div>
+	            </div>
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>
