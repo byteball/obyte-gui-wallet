@@ -20,7 +20,7 @@
           <a class="button black round expand" ng-style="{'background-color':index.backgroundColor}" href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
         </div>
         <div>
-        	<p><span ng-if="address" translate>Or </span><span translate>copy the text below and send it to the recipient via any messaging app or print it on paper</span>:</p>
+        	<p><span ng-if="address" translate>Or </span> <span translate>copy the text below and send it to the recipient via any messaging app, or print it on paper</span>:</p>
         	<textarea readonly rows=4 onclick="this.focus();this.select()">{{text}}</textarea>
         </div>
     </div>

@@ -111,6 +111,7 @@ angular.module('copayApp.controllers')
 			disableFocusListener();
 			disableResumeListener();
 			disableOngoingProcessListener();
+			disableClaimTextcoinListener();
 			$rootScope.hideMenuBar = false;
 			eventBus.removeListener("new_wallet_address", onNewWalletAddress);
 		});
@@ -532,7 +533,7 @@ angular.module('copayApp.controllers')
 				$rootScope.$emit('Local/SetTab', 'history');
 			});
 		}
-		$rootScope.$on('claimTextcoin', function(event, mnemonic) {
+		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
 				claimTextCoin(mnemonic, addr);
@@ -697,7 +698,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic) {
 			return {
-				message: "Here is your link to receive "+amount+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
