@@ -1494,10 +1494,6 @@ angular.module('copayApp.controllers')
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
 
-				if (btx.textAddress) btx.textcoin = true;
-				if (!ValidationUtils.isValidEmail(btx.textAddress)) {
-					btx.textAddress = "";
-				}
 				$scope.shareAgain = function() {
 					if (isCordova) {
 						if (isMobile.Android() || isMobile.Windows()) {
@@ -1507,6 +1503,41 @@ angular.module('copayApp.controllers')
 					} else {
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
 					}
+				}
+
+				$scope.eraseTextcoin = function() {
+					(function(){
+						var wallet = require('byteballcore/wallet.js');
+						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
+							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove an ability to claim it back or to resend'));
+							$scope.cancel_button_class = 'light-gray outline';
+							$scope.loading = false;
+
+							$scope.ok = function() {
+								$scope.loading = true;
+								$modalInstance.close(gettextCatalog.getString('Yes'));
+								
+								wallet.eraseTextcoin(btx.unit, btx.addressTo);
+								
+								indexScope.updateTxHistory();
+								$rootScope.$emit('Local/SetTab', 'history');
+							};
+							$scope.cancel = function() {
+								$modalInstance.dismiss(gettextCatalog.getString('No'));
+							};
+						};
+
+						var modalInstance = $modal.open({
+							templateUrl: 'views/modals/confirmation.html',
+							windowClass: animationService.modalAnimated.slideUp,
+							controller: ModalInstanceCtrl
+						});
+
+						modalInstance.result.finally(function() {
+							var m = angular.element(document.getElementsByClassName('reveal-modal'));
+							m.addClass(animationService.modalAnimated.slideOutDown);
+						});
+					})();
 				}
 
 
