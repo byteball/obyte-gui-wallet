@@ -1512,10 +1512,11 @@ angular.module('copayApp.controllers')
 							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove an ability to claim it back or to resend'));
 							$scope.cancel_button_class = 'light-gray outline';
 							$scope.loading = false;
+							$scope.confirm_label = gettextCatalog.getString('Confirm');
 
 							$scope.ok = function() {
 								$scope.loading = true;
-								$modalInstance.close(gettextCatalog.getString('Yes'));
+								$modalInstance.close(gettextCatalog.getString('Confirm'));
 								
 								wallet.eraseTextcoin(btx.unit, btx.addressTo);
 								
