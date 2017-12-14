@@ -292,7 +292,7 @@ input.datafeed_input {
           </div>
         </div>
         <div class="m20t text-center m30b">
-	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]">
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-style="{'max-width' : (index.shared_address ? '100%' : '45%')}">
 	          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
 	            <span translate>Request a specific amount</span>
 	          </a>
@@ -408,7 +408,7 @@ input.datafeed_input {
 	                  {{index.addressbook[_address] || _address}}
 	                </div>-->
 	                <a class="postfix size-12 m0 text-gray" ng-hide="home.blockUx || home.lockAddress" ng-click="openDestinationAddressModal(index.otherWallets, _address)">
-	                  <i class="icon-wallet size-18"></i>
+	                  <i class="icon-wallet size-18" style="margin-right: -3px"></i>
 	                </a>
 	              </div>
 				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
@@ -658,6 +658,12 @@ input.datafeed_input {
             <div ng-show="!btx.message">
               <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}} 
             </div>
+            <span ng-show="btx.textAddress" class="small-10">
+              <span translate>To email</span>: {{btx.textAddress}} 
+            </span>
+            <span ng-show="btx.isTextcoin" class="small-2 right">
+              <span class="label tu light-gray radius">textcoin</span>
+            </span>
           </div>
         </div>
 
