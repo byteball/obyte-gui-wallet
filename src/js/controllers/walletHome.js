@@ -530,7 +530,7 @@ angular.module('copayApp.controllers')
 				if (err)
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
 				indexScope.updateTxHistory();
-				$rootScope.$emit('Local/SetTab', 'history');
+				$rootScope.$emit('Local/SetTab', 'history', null, true);
 			});
 		}
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {

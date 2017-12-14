@@ -1516,9 +1516,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/SetTab', function(event, tab, reset) {
+  $rootScope.$on('Local/SetTab', function(event, tab, reset, swtichToHome) {
     console.log("SetTab "+tab+", reset "+reset);
-    self.setTab(tab, reset);
+    self.setTab(tab, reset, null, swtichToHome);
   });
 
   $rootScope.$on('Local/RequestTouchid', function(event, cb) {
