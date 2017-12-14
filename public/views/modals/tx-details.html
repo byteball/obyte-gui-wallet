@@ -119,7 +119,7 @@
     </span>
     </li>
 
-    <li ng-if="btx.textcoin" class="line-b p10 oh">
+    <li ng-if="btx.isTextcoin" class="line-b p10 oh">
 	    <span class="text-gray" translate>Was claimed?</span>
 	    <span class="right" >
 	      <span class="text-warning" ng-show="!btx.claimed" translate>
@@ -135,10 +135,10 @@
 	    </span>
     </li>
 
-    <li ng-if="btx.textcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
+    <li ng-if="btx.isTextcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
 		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="shareAgain()" translate>share again</a>
     </li>
-    <li ng-if="btx.textcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
+    <li ng-if="btx.isTextcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
 		You can erase textcoin from your wallet <a class="blue-link" style="padding: 0" ng-click="eraseTextcoin()" translate>erase textcoin</a>
     </li>
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
