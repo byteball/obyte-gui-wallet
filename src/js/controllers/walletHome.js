@@ -526,8 +526,12 @@ angular.module('copayApp.controllers')
 			var wallet = require('byteballcore/wallet.js');
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit) {
 				$rootScope.$emit('closeModal');
-				if (err)
+				if (err) {
+					if (err.indexOf("not confirmed") !== -1) {
+						store_mnemonic_back();
+					}
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
+				}
 				indexScope.updateTxHistory();
 				$rootScope.$emit('Local/SetTab', 'history');
 			});
@@ -1670,4 +1674,15 @@ angular.module('copayApp.controllers')
 		if (profileService.focusedClient && profileService.focusedClient.isComplete()) {
 			this.setAddress();
 		}
+
+		var store_mnemonic_back = function(){};
+		window.plugins.appPreferences.fetch(function(referrer){
+			if (referrer) {
+				window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
+				store_mnemonic_back = function() {
+					window.plugins.appPreferences.store(function(){}, function(){}, 'referrer', referrer);
+				};
+				$rootScope.$emit("claimTextcoin", referrer);
+			}
+		}, function(){}, "referrer");
 	});
