@@ -111,6 +111,7 @@ angular.module('copayApp.controllers')
 			disableFocusListener();
 			disableResumeListener();
 			disableOngoingProcessListener();
+			disableClaimTextcoinListener();
 			$rootScope.hideMenuBar = false;
 			eventBus.removeListener("new_wallet_address", onNewWalletAddress);
 		});
@@ -533,10 +534,10 @@ angular.module('copayApp.controllers')
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
 				}
 				indexScope.updateTxHistory();
-				$rootScope.$emit('Local/SetTab', 'history');
+				$rootScope.$emit('Local/SetTab', 'history', null, true);
 			});
 		}
-		$rootScope.$on('claimTextcoin', function(event, mnemonic) {
+		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
 				claimTextCoin(mnemonic, addr);
@@ -699,9 +700,17 @@ angular.module('copayApp.controllers')
 			};
 		};
 
+		function getShareMessage(amount, mnemonic) {
+			return {
+				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				subject: "Byteball user beamed you money"
+			}
+		}
+
 		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
-			var text = "Your link to claim " + amount + " bytes : https://byteball.org/openapp.html#textcoin?" + mnemonic;
-			var subject = "Byteball user beamed you money";
+			var msg = getShareMessage(amount, mnemonic);
+			var text = msg.message;
+			var subject = msg.subject;
 			$rootScope.modalOpened = true;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -1019,10 +1028,7 @@ angular.module('copayApp.controllers')
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
-										window.plugins.socialsharing.shareWithOptions({
-
-											message: "Here is your link to receive "+(amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes https://byteball.org/openapp.html#textcoin?" + mnemonic, subject: "Byteball user beamed you money"
-										});
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount-constants.TEXTCOIN_CLAIM_FEE, mnemonic));
 									} else {
 										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
 									}
@@ -1064,7 +1070,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			this.resetForm();
+			$scope.mtab = 1;
 		}
 
 		this.submitData = function() {
@@ -1308,58 +1314,60 @@ angular.module('copayApp.controllers')
 
 		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
 			this.resetError();
-			delete this.binding;
-			var form = $scope.sendPaymentForm;
-			if (!form || !form.address) // disappeared?
-				return console.log('form.address has disappeared');
-			if (to) {
-				form.address.$setViewValue(to);
-				form.address.$isValid = true;
-				form.address.$render();
-				this.lockAddress = true;
-				if (recipient_device_address) // must be already paired
-					assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-			}
+			$timeout((function() {
+				delete this.binding;
+				var form = $scope.sendPaymentForm;
+				if (!form || !form.address) // disappeared?
+					return console.log('form.address has disappeared');
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+				}
 
-			if (amount) {
-				//	form.amount.$setViewValue("" + amount);
-				//	form.amount.$isValid = true;
-				this.lockAmount = true;
-				$timeout(function() {
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
+				if (amount) {
+					//	form.amount.$setViewValue("" + amount);
+					//	form.amount.$isValid = true;
+					this.lockAmount = true;
+					$timeout(function() {
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					});
+				}
+				else {
+					this.lockAmount = false;
+					form.amount.$pristine = true;
+					form.amount.$setViewValue('');
 					form.amount.$render();
-				});
-			}
-			else {
-				this.lockAmount = false;
-				form.amount.$pristine = true;
-				form.amount.$setViewValue('');
-				form.amount.$render();
-			}
-			//	form.amount.$render();
+				}
+				//	form.amount.$render();
 
-			if (form.merkle_proof) {
-				form.merkle_proof.$setViewValue('');
-				form.merkle_proof.$render();
-			}
-			if (comment) {
-				form.comment.$setViewValue(comment);
-				form.comment.$isValid = true;
-				form.comment.$render();
-			}
+				if (form.merkle_proof) {
+					form.merkle_proof.$setViewValue('');
+					form.merkle_proof.$render();
+				}
+				if (comment) {
+					form.comment.$setViewValue(comment);
+					form.comment.$isValid = true;
+					form.comment.$render();
+				}
 
-			if (asset) {
-				var assetIndex = lodash.findIndex($scope.index.arrBalances, {
-					asset: asset
-				});
-				if (assetIndex < 0)
-					throw Error("failed to find asset index of asset " + asset);
-				$scope.index.assetIndex = assetIndex;
-				this.lockAsset = true;
-			}
-			else
-				this.lockAsset = false;
+				if (asset) {
+					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
+						asset: asset
+					});
+					if (assetIndex < 0)
+						throw Error("failed to find asset index of asset " + asset);
+					$scope.index.assetIndex = assetIndex;
+					this.lockAsset = true;
+				}
+				else
+					this.lockAsset = false;
+			}).bind(this), 1);
 		};
 
 		this.resetForm = function() {
@@ -1490,21 +1498,51 @@ angular.module('copayApp.controllers')
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
 
-				if (btx.textAddress) btx.textcoin = true;
-				if (!ValidationUtils.isValidEmail(btx.textAddress)) {
-					btx.textAddress = "";
-				}
 				$scope.shareAgain = function() {
 					if (isCordova) {
 						if (isMobile.Android() || isMobile.Windows()) {
 							window.ignoreMobilePause = true;
 						}
-						window.plugins.socialsharing.shareWithOptions({
-							message: "Here is your link to receive "+(btx.amount-constants.TEXTCOIN_CLAIM_FEE)+" bytes: https://byteball.org/openapp.html#textcoin?" + btx.mnemonic, subject: "Byteball user beamed you money"
-						});
+						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount-constants.TEXTCOIN_CLAIM_FEE, btx.mnemonic));
 					} else {
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
 					}
+				}
+
+				$scope.eraseTextcoin = function() {
+					(function(){
+						var wallet = require('byteballcore/wallet.js');
+						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
+							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove an ability to claim it back or to resend'));
+							$scope.cancel_button_class = 'light-gray outline';
+							$scope.loading = false;
+							$scope.confirm_label = gettextCatalog.getString('Confirm');
+
+							$scope.ok = function() {
+								$scope.loading = true;
+								$modalInstance.close(gettextCatalog.getString('Confirm'));
+								
+								wallet.eraseTextcoin(btx.unit, btx.addressTo);
+								
+								indexScope.updateTxHistory();
+								$rootScope.$emit('Local/SetTab', 'history');
+							};
+							$scope.cancel = function() {
+								$modalInstance.dismiss(gettextCatalog.getString('No'));
+							};
+						};
+
+						var modalInstance = $modal.open({
+							templateUrl: 'views/modals/confirmation.html',
+							windowClass: animationService.modalAnimated.slideUp,
+							controller: ModalInstanceCtrl
+						});
+
+						modalInstance.result.finally(function() {
+							var m = angular.element(document.getElementsByClassName('reveal-modal'));
+							m.addClass(animationService.modalAnimated.slideOutDown);
+						});
+					})();
 				}
 
 
