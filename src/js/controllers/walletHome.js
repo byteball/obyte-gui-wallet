@@ -696,7 +696,7 @@ angular.module('copayApp.controllers')
 			};
 		};
 
-		function getShareMessage(amount, mnemonic) {
+		function getShareMessage(amount, mnemonic, asset) {
 			return {
 				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
@@ -804,8 +804,8 @@ angular.module('copayApp.controllers')
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
-			if (isTextcoin && asset !== 'base')
-				return self.setSendError("only bytes can be sent as textcoin now");
+			if (isTextcoin && assetInfo.is_private)
+				return self.setSendError("private assets can not be sent as textcoins yet");
 			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
@@ -817,7 +817,7 @@ angular.module('copayApp.controllers')
 			else if (assetInfo.decimals)
 				amount *= Math.pow(10, assetInfo.decimals);
 			amount = Math.round(amount);
-			if (isTextcoin) amount += constants.TEXTCOIN_CLAIM_FEE;
+			if (isTextcoin && asset === "base") amount += constants.TEXTCOIN_CLAIM_FEE;
 
 			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
@@ -969,13 +969,18 @@ angular.module('copayApp.controllers')
 							shared_address: indexScope.shared_address,
 							merkle_proof: merkle_proof,
 							asset: asset,
-							to_address: to_address,
 							do_not_email: true,
-							amount: amount,
 							send_all: self.bSendAll,
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
+						if (asset === "base") {
+							opts.to_address = to_address;
+							opts.amount = amount;
+						} else {
+							opts.asset_outputs = [{address: to_address, amount: amount}];
+							opts.base_outputs = [{address: to_address, amount: constants.TEXTCOIN_ASSET_CLAIM_FEE}];
+						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
