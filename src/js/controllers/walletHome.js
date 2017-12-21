@@ -1714,13 +1714,15 @@ angular.module('copayApp.controllers')
 		}
 
 		var store_mnemonic_back = function(){};
-		window.plugins.appPreferences.fetch(function(referrer){
-			if (referrer) {
-				window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
-				store_mnemonic_back = function() {
-					window.plugins.appPreferences.store(function(){}, function(){}, 'referrer', referrer);
-				};
-				$rootScope.$emit("claimTextcoin", referrer);
-			}
-		}, function(){}, "referrer");
+		if (isCordova){
+			window.plugins.appPreferences.fetch(function(referrer){
+				if (referrer) {
+					window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
+					store_mnemonic_back = function() {
+						window.plugins.appPreferences.store(function(){}, function(){}, 'referrer', referrer);
+					};
+					$rootScope.$emit("claimTextcoin", referrer);
+				}
+			}, function(){}, "referrer");
+		}
 	});
