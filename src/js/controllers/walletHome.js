@@ -697,14 +697,26 @@ angular.module('copayApp.controllers')
 		};
 
 		function getShareMessage(amount, mnemonic, asset) {
+			if (!asset || asset == "base") {
+				amount -= constants.TEXTCOIN_CLAIM_FEE;
+				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
+				asset = "GB";
+			} else {
+				//indexScope.arrBalances[$scope.index.assetIndex]
+				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
+				if (assetInfo && assetInfo.name) {
+					asset = assetInfo.name;
+					amount /= Math.pow(10, assetInfo.decimals);
+				}
+			}
 			return {
-				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + ": https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
 
-		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
-			var msg = getShareMessage(amount, mnemonic);
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend, asset) {
+			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
 			$rootScope.modalOpened = true;
@@ -1023,15 +1035,15 @@ angular.module('copayApp.controllers')
 								var mnemonic = mnemonics[address];						
 
 								if (isEmail) {
-									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount, false, asset);
 								} else {
 									if (isCordova) {
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
-										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount-constants.TEXTCOIN_CLAIM_FEE, mnemonic));
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
 									} else {
-										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+										self.openShareTextcoinModal(null, mnemonic, amount, false, asset);
 									}
 								}
 
@@ -1504,9 +1516,9 @@ angular.module('copayApp.controllers')
 						if (isMobile.Android() || isMobile.Windows()) {
 							window.ignoreMobilePause = true;
 						}
-						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount-constants.TEXTCOIN_CLAIM_FEE, btx.mnemonic));
+						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount, btx.mnemonic, btx.asset));
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, true, btx.asset);
 					}
 				}
 
