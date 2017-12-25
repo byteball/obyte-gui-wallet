@@ -386,7 +386,7 @@ input.datafeed_input {
 		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
-	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base') || home.lockAddress">
+	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].is_private) || home.lockAddress">
 	                  <span translate>To byteball address</span>
 	                </label>
 	                <span>

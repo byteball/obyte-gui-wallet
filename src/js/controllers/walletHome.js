@@ -525,12 +525,23 @@ angular.module('copayApp.controllers')
 
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
-			wallet.receiveTextCoin(mnemonic, addr, function(err, unit) {
+			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$rootScope.$emit('closeModal');
 				if (err)
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
-				indexScope.updateTxHistory();
-				$rootScope.$emit('Local/SetTab', 'history', null, true);
+				if (asset) {
+					var disableBalanceListener = $rootScope.$on('Local/BalanceUpdated', function(assocBalances) {
+						var assetIndex = lodash.findIndex(indexScope.arrBalances, {
+							asset: asset
+						});
+						indexScope.assetIndex = assetIndex;
+						$rootScope.$emit('Local/SetTab', 'history', null, true);
+						disableBalanceListener();
+					});
+					indexScope.updateAll({triggerTxUpdate: true});
+				} else {
+					$rootScope.$emit('Local/SetTab', 'history', null, true);
+				}
 			});
 		}
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
