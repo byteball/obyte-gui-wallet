@@ -10,6 +10,24 @@ input.datafeed_input {
 	width: 40%;
 	display: inline-block;
 }
+#send .mtab-title, .modal-content .mtab-title {
+	padding: 5px;
+	font-weight: bold;
+	font-size: 11px;
+	text-transform: uppercase;
+}
+#send .mtab-title.active, .modal-content .mtab-title.active {
+	color: #34495E;
+}
+.hor-link {
+	max-width: 45%;
+	display: inline-block;
+	padding: 0 30px;
+	line-height: 1em;
+}
+.hor-link:nth-child(2) {
+	border-left: 1px solid #E9E9EC;
+}
 </style>
 
 
@@ -127,7 +145,7 @@ input.datafeed_input {
             	background-color: {{index.backgroundColor}};
             }
           </style>
-                    <div class="size-14" ng-if="balance.shared !== undefined">
+                    <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">
 							<span translate>Also</span>
 							<span ng-if="balance.sharedStr">{{balance.sharedStr}}</span>
@@ -273,11 +291,18 @@ input.datafeed_input {
             </button>
           </div>
         </div>
-        <div class="m20t text-center m30b" ng-show="!home.generatingAddress && home.addr[index.walletId]">
-          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
-            <span translate>Request a specific amount</span>
-          </a>
-        </div>
+        <div class="m20t text-center m30b">
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-style="{'max-width' : (index.shared_address ? '100%' : '45%')}">
+	          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
+	            <span translate>Request a specific amount</span>
+	          </a>
+	        </div>
+	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-if="!index.shared_address">
+	          <a class="size-14" ng-click="home.openClaimTextcoinModal(home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
+	            <span translate>Claim funds using textcoin</span>
+	          </a>
+	        </div>
+	    </div>
       </div>
     </div> <!-- END Receive -->
 
@@ -326,45 +351,6 @@ input.datafeed_input {
 			  This is a private asset, please send it only by clicking links in the chat or send it to your other wallets.
 		    </div>
 			  
-            <div ng-hide="home.hideAddress">
-              <div class="row collapse">
-                <label for="address" class="left" >
-                  <span translate>To</span>
-                </label>
-                <span ng-hide="sendPaymentForm.address.$pristine">
-                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
-                    <i class="icon-close-circle size-14"></i>
-                    <span class="vm" translate>Not valid</span>
-                  </span>
-                  <small class="right text-primary" ng-show="!sendPaymentForm.address.$invalid">
-                    <i class="icon-checkmark-circle size-14"></i>
-                  </small>
-                </span>
-              </div>
-
-              <div class="input">
-                <input ng-show="sendPaymentForm.address.$invalid" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" valid-address required ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-                <div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
-                  {{index.addressbook[_address] || _address}}
-                </div>
-                <a class="postfix size-12 m0 text-gray" ng-hide="home.blockUx || home.lockAddress" ng-click="openDestinationAddressModal(index.otherWallets, _address)">
-                  <i class="icon-wallet size-18"></i>
-                </a>
-              </div>
-			  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
-				  <a ng-click="home.openBindModal()">
-					  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
-					  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
-				  </a>
-			  </div>
-			  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
-			  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
-				  <a dropdown-toggle="#binding-drop" data-options="align:top">
-					  <span translate class="text-gray">Bind the payment to a condition</span>
-				  </a>
-			  </div>
-            </div>
-
             <div class="row"  ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue ">
@@ -391,52 +377,114 @@ input.datafeed_input {
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="index.bHasMerkle">
-              <div class="large-12 columns">
-                <label for="merkle_proof"><span translate>Merkle proof</span>
-                  <small translate ng-hide="!sendPaymentForm.merkle_proof.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendPaymentForm.merkle_proof.$invalid && !sendPaymentForm.merkle_proof.$pristine">too long!</small>
-                </label>
-                <div class="input">
-                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row" ng-hide="home.hideNote">
-              <div class="large-12 columns">
-                <label for="comment"><span translate>Note</span>
-                  <small translate ng-hide="!sendPaymentForm.comment.$pristine">optional</small>
-                  <small translate class="has-error" ng-show="sendPaymentForm.comment.$invalid && !sendPaymentForm.comment.$pristine">too long!</small>
-                </label>
-                <div class="input">
-                  <textarea id="comment" ng-disabled="home.blockUx" name="comment"
-                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
-                    ng-blur="home.formFocus(false)"></textarea>
-                </div>
-              </div>
-            </div>
 
-            <div class="" ng-show="index.m < index.n && index.m > 1">
-                <div class="large-12 medium-12">
-                    <label>
-                        <span translate>Who signs:</span>
-                    </label>
-            			<cosigners></cosigners>
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base' && !home.lockAddress">
+		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>To byteball address or email</div>
+		    	<div class="mtab-title" ng-click="mtab = 2;_address = null;" ng-class="{'active': mtab == 2}">Share via message</div>
+		    </div>
+
+		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
+	            <div ng-hide="home.hideAddress">
+	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
+	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base') || home.lockAddress">
+	                  <span translate>To byteball address</span>
+	                </label>
+	                <span>
+	                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
+	                    <i class="icon-close-circle size-14"></i>
+	                    <span class="vm" translate>Not valid</span>
+	                  </span>
+	                  <small class="right text-primary" ng-show="!sendPaymentForm.address.$invalid">
+	                    <i class="icon-checkmark-circle size-14"></i>
+	                  </small>
+	                </span>
+	            </div>
+
+	              <div class="input">
+	                <input ng-if="index.arrBalances[index.assetIndex].asset === 'base'" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-email ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+
+	                <input ng-if="index.arrBalances[index.assetIndex].asset !== 'base'" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
+	                  {{index.addressbook[_address] || _address}}
+	                </div>-->
+	                <a class="postfix size-12 m0 text-gray" ng-hide="home.blockUx || home.lockAddress" ng-click="openDestinationAddressModal(index.otherWallets, _address)">
+	                  <i class="icon-wallet size-18" style="margin-right: -3px;vertical-align: baseline;"></i>
+	                </a>
+	              </div>
+				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
+					  <a ng-click="home.openBindModal()">
+						  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
+						  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
+					  </a>
+				  </div>
+				  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
+				  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
+					  <a dropdown-toggle="#binding-drop" data-options="align:top">
+						  <span translate class="text-gray">Bind the payment to a condition</span>
+					  </a>
+				  </div>
+	            </div>
+
+	            <div class="row" ng-show="index.bHasMerkle">
+	              <div class="large-12 columns">
+	                <label for="merkle_proof"><span translate>Merkle proof</span>
+	                  <small translate ng-hide="!sendPaymentForm.merkle_proof.$pristine">optional</small>
+	                  <small translate class="has-error" ng-show="sendPaymentForm.merkle_proof.$invalid && !sendPaymentForm.merkle_proof.$pristine">too long!</small>
+	                </label>
+	                <div class="input">
+	                  <textarea id="merkle_proof" ng-disabled="home.blockUx" name="merkle_proof" maxlength="4096" ng-model="_merkle_proof"></textarea>
+	                </div>
+	              </div>
+            	</div>
+	            <div class="row" ng-hide="home.hideNote">
+	              <div class="large-12 columns">
+	                <label for="comment"><span translate>Note</span>
+	                  <small translate ng-hide="!sendPaymentForm.comment.$pristine">optional</small>
+	                  <small translate class="has-error" ng-show="sendPaymentForm.comment.$invalid && !sendPaymentForm.comment.$pristine">too long!</small>
+	                </label>
+	                <div class="input">
+	                  <textarea id="comment" ng-disabled="home.blockUx" name="comment"
+	                    ng-maxlength="500" ng-model="_comment" ng-focus="home.formFocus('msg')"
+	                    ng-blur="home.formFocus(false)"></textarea>
+	                </div>
+	              </div>
+	            </div>
+
+	            <div class="" ng-show="index.m < index.n && index.m > 1">
+	                <div class="large-12 medium-12">
+	                    <label>
+	                        <span translate>Who signs:</span>
+	                    </label>
+	        			<cosigners></cosigners>
             		</div>
-            </div>
+	            </div>
 
-            <div class="row" ng-show="!home.onGoingProcess">
-              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount)">
-                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
-              </div>
-              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount)}">
-                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
-                  ng-style="{'background-color':index.backgroundColor}"  translate>
-                  Send
-                </button>
-              </div>
+	            <div class="row" ng-show="!home.onGoingProcess">
+	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && (home.lockAddress || home.lockAmount || home.bSendAll)">
+	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
+	              </div>
+	              <div class="columns" ng-class="{'small-6 medium-6 large-6':(home.lockAddress || home.lockAmount || home.bSendAll)}">
+	                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+	                  ng-style="{'background-color':index.backgroundColor}"  translate>
+	                  Send
+	                </button>
+	              </div>
+	            </div>
+        	</div>
 
-            </div>
+        	<div class="mtab" ng-class="{'active': mtab == 2}">
+        		<br>
+        		<div class="" ng-show="index.m < index.n && index.m > 1">
+	                <div class="large-12 medium-12">
+	                    <label>
+	                        <span translate>Who signs:</span>
+	                    </label>
+	        			<cosigners></cosigners>
+            		</div>
+	            </div>
+	            <p translate>Click this button to create payment and share it via private message in chat apps or to create a paper wallet.</p>
+        		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
+        	</div>
           </form>
         </div>
       </div>
@@ -610,6 +658,12 @@ input.datafeed_input {
             <div ng-show="!btx.message">
               <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}} 
             </div>
+            <span ng-show="btx.textAddress" class="small-10">
+              <span translate>To email</span>: {{btx.textAddress}} 
+            </span>
+            <span ng-show="btx.isTextcoin" class="small-2 right">
+              <span class="label tu light-gray radius">textcoin</span>
+            </span>
           </div>
         </div>
 

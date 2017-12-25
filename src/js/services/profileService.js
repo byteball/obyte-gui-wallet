@@ -49,21 +49,22 @@ angular.module('copayApp.services')
     };
 
  	root.getAmountInSmallestUnits = function(amount, asset){
-		console.log(amount, asset, self.unitValue);
+		var config = configService.getSync().wallet.settings;
 		if (asset === 'base')
-			amount *= self.unitValue;
+			amount *= config.unitValue;
 		else if (asset === constants.BLACKBYTES_ASSET)
-			amount *= self.bbUnitValue;
+			amount *= config.bbUnitValue;
 		else if (root.assetMetadata[asset])
 			amount *= Math.pow(10, root.assetMetadata[asset].decimals || 0);
 		return Math.round(amount);
 	};
 	
 	root.getAmountInDisplayUnits = function(amount, asset){
+		var config = configService.getSync().wallet.settings;
 		if (asset === 'base')
-			amount /= self.unitValue;
+			amount /= config.unitValue;
 		else if (asset === constants.BLACKBYTES_ASSET)
-			amount /= self.bbUnitValue;
+			amount /= config.bbUnitValue;
 		else if (root.assetMetadata[asset])
 			amount /= Math.pow(10, root.assetMetadata[asset].decimals || 0);
 		return amount;

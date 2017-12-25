@@ -173,7 +173,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     	if (catchup_balls_at_start === -1) {
     		catchup_balls_at_start = count_left;
     	}
-    	var percent = Math.round((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100);
+    	var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
 		setSyncProgress(percent);
     });
     eventBus.on('catching_up_done', function(){
@@ -1516,9 +1516,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     go.walletHome();
   });
 
-  $rootScope.$on('Local/SetTab', function(event, tab, reset) {
+  $rootScope.$on('Local/SetTab', function(event, tab, reset, swtichToHome) {
     console.log("SetTab "+tab+", reset "+reset);
-    self.setTab(tab, reset);
+    self.setTab(tab, reset, null, swtichToHome);
   });
 
   $rootScope.$on('Local/RequestTouchid', function(event, cb) {

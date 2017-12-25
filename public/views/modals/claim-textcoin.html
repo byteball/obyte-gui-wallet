@@ -1,0 +1,43 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Claim funds by textcoin
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch">
+  <div ng-show="!amountInSmallestUnits" class="row m20t">
+    <div class="large-12 large-centered columns">
+      <form name="mnemonicForm" ng-submit="submitForm(mnemonicForm)" novalidate>
+        <div class="right" ng-hide="mnemonicForm.mnemonic.$pristine && !mnemonicForm.mnemonic.$modelValue ">
+          <span class="has-error right size-12" ng-if="mnemonicForm.mnemonic.$invalid">
+            <i class="icon-close-circle size-14"></i>
+            <span clas="vm" translate>Not valid</span>
+          </span>
+          <small class="text-primary right" ng-if="!mnemonicForm.mnemonic.$invalid">
+            <i class="icon-checkmark-circle size-14"></i>
+          </small>
+        </div>
+        <div >
+          <label for="mnemonic">
+            <span translate>Textcoin</span>
+          </label>
+          <div class="input">
+            <input type="text" id="mnemonic" name="mnemonic" ng-model="mnemonic" ng-attr-placeholder="{{'12 words separated by dashes'|translate}}" 
+            valid-mnemonic required autocomplete="off">
+          </div>
+        </div>
+        <button type="submit" class="button black round expand" ng-disabled="mnemonicForm.$invalid" ng-style="{'background-color':color}" translate>
+          {{buttonLabel}}
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>

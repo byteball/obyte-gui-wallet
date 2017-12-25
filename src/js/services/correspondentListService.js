@@ -134,6 +134,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objVote)
 				return '[invalid vote request]';
 			return '<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>';
+		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+			if (!objPrivateProfile)
+				return '[invalid profile]';
+			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
+			var arrFields = fields_list.split(',');
+			return '<a ng-click="choosePrivateProfile(\''+fields_list+'\')">[Request for profile]</a>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
@@ -186,6 +194,30 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		return objVote;
 	}
 	
+	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
+		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
+		console.log(privateProfileJson);
+		try{
+			var objPrivateProfile = JSON.parse(privateProfileJson);
+		}
+		catch(e){
+			return null;
+		}
+		if (!ValidationUtils.isStringOfLength(objPrivateProfile.unit, 44) || !ValidationUtils.isStringOfLength(objPrivateProfile.payload_hash, 44) || typeof objPrivateProfile.src_profile !== 'object')
+			return null;
+		var arrFirstFields = [];
+		for (var field in objPrivateProfile.src_profile){
+			var value = objPrivateProfile.src_profile[field];
+			if (!Array.isArray(value))
+				continue;
+			arrFirstFields.push(value[0]);
+			if (arrFirstFields.length === 2)
+				break;
+		}
+		objPrivateProfile._label = arrFirstFields.join(' ');
+		return objPrivateProfile;
+	}
+	
 	function getPaymentsByAsset(objMultiPaymentRequest){
 		var assocPaymentsByAsset = {};
 		objMultiPaymentRequest.payments.forEach(function(objPayment){
@@ -219,6 +251,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objVote)
 				return '[invalid vote request]';
 			return '<i>Vote request: '+objVote.choice+'</i>';
+		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+			if (!objPrivateProfile)
+				return '[invalid profile]';
+			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
+			var arrFields = fields_list.split(',');
+			return '[Request for profile fields '+fields_list+']';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
