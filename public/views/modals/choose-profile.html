@@ -1,0 +1,75 @@
+<nav class="tab-bar">
+	<section class="left-small">
+		<a ng-click="cancel()" class="p10">
+			<span class="text-close" translate>Close</span>
+		</a>
+	</section>
+	<section class="middle tab-bar-section">
+		<h1 class="title ellipsis" ng-style="{'color':color}" translate>
+			Choose private profile
+		</h1>
+	</section>
+</nav>
+
+<style>
+	.switch-container{
+		margin-left: 10px;
+		margin-top: -4px;
+	}
+	ul.profile-entries li {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+</style>
+
+<div class="modal-content fix-modals-touch">
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	<div class="row m20t">
+		<div class="large-12 large-centered columns" ng-if="arrProfiles.length > 0">
+			<select class="m10t" ng-model="selected_profile" ng-options="profile as profile._label for profile in arrProfiles"></select>
+			<div ng-if="selected_profile">
+				<ul class="no-bullet size-14" style="margin-bottom: 0px;">
+					<li class="m10b">
+						<span class="text-gray" translate>Attested by:</span><br>
+						<span class="enable_text_select">{{selected_profile.attestor_address}}</span>
+					</li>
+					<li class="m10b">
+						<span class="text-gray" translate>Attested address:</span><br>
+						<span class="enable_text_select">{{selected_profile.address}}</span>
+						<div ng-if="selected_profile.bCurrentAddress">
+							<span class="text-gray" translate>(current wallet)</span>
+						</div>
+						<div ng-if="!selected_profile.bCurrentAddress">
+							<span class="text-gray" translate>(my another wallet)</span>
+						</div>
+					</li>
+					<li class="m10b">
+						<span class="text-gray" translate>Choose which fields to send:</span>
+					</li>
+				</ul>
+				<ul class="no-bullet size-14 profile-entries" style="max-width: 320px; margin: auto">
+					<li class="" ng-repeat="entry in selected_profile.entries">
+						<span class="text-gray">{{getDisplayField(entry.field)}}:</span>
+						<div class="right switch-container"><switch ng-model="entry.provided" data-disabled="!entry.editable" class="green"></switch></div>
+						<span class="right">{{entry.value}}</span>
+					</li>
+				</ul>
+			</div>
+			<button class="button black round expand m20t" ng-click="send()" ng-disabled="bDisabled || noFieldsProvided()" ng-style="{'background-color':color}" translate>
+				Send this profile
+			</button>
+		</div>
+		<div class="large-12 large-centered columns" ng-if="arrProfiles.length === 0">
+			<p ng-if="requested" translate>No profiles matching the requested criteria.</p>
+			<p ng-if="!requested" translate>No profiles yet.</p>
+			<p ng-if="noProfiles" translate>You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store.</p>
+			<button class="button black round expand m20t" ng-click="cancel()" ng-disabled="bDisabled" ng-style="{'background-color':color}" translate>
+				Close
+			</button>
+		</div>
+	</div>
+</div>
