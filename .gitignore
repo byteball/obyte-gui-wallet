@@ -86,3 +86,4 @@ public/languages
 
 *.sublime-project
 *.sublime-workspace
+package-lock.json

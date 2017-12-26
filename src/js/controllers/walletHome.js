@@ -525,7 +525,7 @@ angular.module('copayApp.controllers')
 
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
-			wallet.receiveTextCoin(mnemonic, addr, function(err, unit) {
+			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$rootScope.$emit('closeModal');
 				if (err) {
 					if (err.indexOf("not confirmed") !== -1) {
@@ -533,8 +533,21 @@ angular.module('copayApp.controllers')
 					}
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
 				}
-				indexScope.updateTxHistory();
-				$rootScope.$emit('Local/SetTab', 'history', null, true);
+				if (asset) {
+					var disableBalanceListener = $rootScope.$on('Local/BalanceUpdated', function(assocBalances) {
+						var assetIndex = lodash.findIndex(indexScope.arrBalances, {
+							asset: asset
+						});
+						indexScope.assetIndex = assetIndex;
+						$rootScope.$emit('Local/SetTab', 'history', null, true);
+						disableBalanceListener();
+					});
+					indexScope.updateAll({triggerTxUpdate: true});
+				} else {
+					indexScope.assetIndex = 0;
+					indexScope.updateTxHistory();
+					$rootScope.$emit('Local/SetTab', 'history', null, true);
+				}
 			});
 		}
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
@@ -700,15 +713,27 @@ angular.module('copayApp.controllers')
 			};
 		};
 
-		function getShareMessage(amount, mnemonic) {
+		function getShareMessage(amount, mnemonic, asset) {
+			if (!asset || asset == "base") {
+				amount -= constants.TEXTCOIN_CLAIM_FEE;
+				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
+				asset = "GB";
+			} else {
+				//indexScope.arrBalances[$scope.index.assetIndex]
+				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
+				if (assetInfo && assetInfo.name) {
+					asset = assetInfo.name;
+					amount /= Math.pow(10, assetInfo.decimals);
+				}
+			}
 			return {
-				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + ": https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
 
-		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
-			var msg = getShareMessage(amount, mnemonic);
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, asset, isResend) {
+			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
 			$rootScope.modalOpened = true;
@@ -808,8 +833,8 @@ angular.module('copayApp.controllers')
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
-			if (isTextcoin && asset !== 'base')
-				return self.setSendError("only bytes can be sent as textcoin now");
+			if (isTextcoin && assetInfo.is_private)
+				return self.setSendError("private assets can not be sent as textcoins yet");
 			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
@@ -821,7 +846,7 @@ angular.module('copayApp.controllers')
 			else if (assetInfo.decimals)
 				amount *= Math.pow(10, assetInfo.decimals);
 			amount = Math.round(amount);
-			if (isTextcoin) amount += constants.TEXTCOIN_CLAIM_FEE;
+			if (isTextcoin && asset === "base") amount += constants.TEXTCOIN_CLAIM_FEE;
 
 			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
@@ -973,13 +998,18 @@ angular.module('copayApp.controllers')
 							shared_address: indexScope.shared_address,
 							merkle_proof: merkle_proof,
 							asset: asset,
-							to_address: to_address,
 							do_not_email: true,
-							amount: amount,
 							send_all: self.bSendAll,
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
+						if (asset === "base" || !isTextcoin) {
+							opts.to_address = to_address;
+							opts.amount = amount;
+						} else {
+							opts.asset_outputs = [{address: to_address, amount: amount}];
+							opts.base_outputs = [{address: to_address, amount: constants.TEXTCOIN_ASSET_CLAIM_FEE}];
+						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1022,15 +1052,15 @@ angular.module('copayApp.controllers')
 								var mnemonic = mnemonics[address];						
 
 								if (isEmail) {
-									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount, asset, false);
 								} else {
 									if (isCordova) {
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
-										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount-constants.TEXTCOIN_CLAIM_FEE, mnemonic));
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
 									} else {
-										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+										self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
 									}
 								}
 
@@ -1503,9 +1533,9 @@ angular.module('copayApp.controllers')
 						if (isMobile.Android() || isMobile.Windows()) {
 							window.ignoreMobilePause = true;
 						}
-						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount-constants.TEXTCOIN_CLAIM_FEE, btx.mnemonic));
+						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount, btx.mnemonic, btx.asset));
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true);
 					}
 				}
 

@@ -378,7 +378,7 @@ input.datafeed_input {
               </div>
             </div>
 
-            <div class="mtabset" ng-show="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base' && !home.lockAddress">
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && !index.arrBalances[index.assetIndex].is_private && !home.lockAddress">
 		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>To byteball address or email</div>
 		    	<div class="mtab-title" ng-click="mtab = 2;_address = null;" ng-class="{'active': mtab == 2}">Share via message</div>
 		    </div>
@@ -386,7 +386,7 @@ input.datafeed_input {
 		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
-	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base') || home.lockAddress">
+	              	<label for="address" class="left" ng-if="(index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].is_private) || home.lockAddress">
 	                  <span translate>To byteball address</span>
 	                </label>
 	                <span>
@@ -401,9 +401,9 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="index.arrBalances[index.assetIndex].asset === 'base'" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-email ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <input ng-if="!index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-email ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 
-	                <input ng-if="index.arrBalances[index.assetIndex].asset !== 'base'" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <input ng-if="index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
 	                  {{index.addressbook[_address] || _address}}
 	                </div>-->
