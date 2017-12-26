@@ -731,7 +731,7 @@ angular.module('copayApp.controllers')
 			}
 		}
 
-		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend, asset) {
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, asset, isResend) {
 			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
@@ -1051,7 +1051,7 @@ angular.module('copayApp.controllers')
 								var mnemonic = mnemonics[address];						
 
 								if (isEmail) {
-									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount, false, asset);
+									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount, asset, false);
 								} else {
 									if (isCordova) {
 										if (isMobile.Android() || isMobile.Windows()) {
@@ -1059,7 +1059,7 @@ angular.module('copayApp.controllers')
 										}
 										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
 									} else {
-										self.openShareTextcoinModal(null, mnemonic, amount, false, asset);
+										self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
 									}
 								}
 
@@ -1534,7 +1534,7 @@ angular.module('copayApp.controllers')
 						}
 						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount, btx.mnemonic, btx.asset));
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, true, btx.asset);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true);
 					}
 				}
 
