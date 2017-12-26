@@ -1580,3 +1580,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	overflow: auto;
 	white-space: normal;
 }
+
+form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
+	margin-bottom: -2px;
+}
