@@ -1002,7 +1002,7 @@ angular.module('copayApp.controllers')
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
-						if (asset === "base") {
+						if (asset === "base" || !isTextcoin) {
 							opts.to_address = to_address;
 							opts.amount = amount;
 						} else {
