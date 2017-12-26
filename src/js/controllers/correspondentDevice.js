@@ -4,11 +4,16 @@
 var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
 	
+	var async = require('async');
 	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
+	var ValidationUtils = require('byteballcore/validation_utils.js');
+	var objectHash = require('byteballcore/object_hash.js');
+	var db = require('byteballcore/db.js');
+	var network = require('byteballcore/network.js');
 	var device = require('byteballcore/device.js');
 	var eventBus = require('byteballcore/event_bus.js');
 	var conf = require('byteballcore/conf.js');
@@ -439,8 +444,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
-		var async = require('async');
-		var db = require('byteballcore/db.js');
 		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
@@ -713,10 +716,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	
 	$scope.sendVote = function(voteJsonBase64){
-		var async = require('async');
-		var db = require('byteballcore/db.js');
-		var objectHash = require('byteballcore/object_hash.js');
-		var network = require('byteballcore/network.js');
 		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
 		console.log("vote "+voteJson);
 		var objVote = JSON.parse(voteJson);
@@ -934,7 +933,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	function readLastMainChainIndex(cb){
 		if (conf.bLight){
-			var network = require('byteballcore/network.js');
 			network.requestFromLightVendor('get_last_mci', null, function(ws, request, response){
 				response.error ? cb(response.error) : cb(null, response);
 			});
@@ -1061,6 +1059,321 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
 	}
+	
+
+	
+	function parsePrivateProfile(objPrivateProfile, onDone){
+		function handleJoint(objJoint){
+			var attestor_address = objJoint.unit.authors[0].address;
+			var payload;
+			objJoint.unit.messages.forEach(function(message){
+				if (message.app !== 'attestation' || message.payload_hash !== objPrivateProfile.payload_hash)
+					return;
+				payload = message.payload;
+			});
+			if (!payload)
+				return onDone("no such payload hash in this unit");
+			var hidden_profile = {};
+			var bHasHiddenFields = false;
+			for (var field in objPrivateProfile.src_profile){
+				var value = objPrivateProfile.src_profile[field];
+				if (ValidationUtils.isArrayOfLength(value, 2))
+					hidden_profile[field] = objectHash.getBase64Hash(value);
+				else if (ValidationUtils.isStringOfLength(value, constants.HASH_LENGTH)){
+					hidden_profile[field] = value;
+					bHasHiddenFields = true;
+				}
+				else
+					return onDone("invalid src profile");
+			}
+			if (objectHash.getBase64Hash(hidden_profile) !== payload.profile.profile_hash)
+				return onDone("wrong profile hash");
+			db.query(
+				"SELECT 1 FROM my_addresses WHERE address=? UNION SELECT 1 FROM shared_addresses WHERE shared_address=?", 
+				[payload.address, payload.address],
+				function(rows){
+					var bMyAddress = (rows.length > 0);
+					if (bMyAddress && bHasHiddenFields){
+						console.log("profile of my address but has hidden fields");
+						bMyAddress = false;
+					}
+					onDone(null, payload.address, attestor_address, bMyAddress);
+				}
+			);
+		}
+		storage.readJoint(db, objPrivateProfile.unit, {
+			ifNotFound: function(){
+				eventBus.once('saved_unit-'+objPrivateProfile.unit, handleJoint);
+				if (conf.bLight)
+					network.requestHistoryFor([objPrivateProfile.unit], []);
+			},
+			ifFound: handleJoint
+		});
+	}
+	
+	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
+		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
+			handleResult(rows.length > 0);
+		});
+	}
+	
+	function getDisplayField(field){
+		switch (field){
+			case 'first_name': return gettext('First name');
+			case 'last_name': return gettext('Last name');
+			case 'dob': return gettext('Date of birth');
+			case 'country': return gettext('Country');
+			case 'us_state': return gettext('US state');
+			case 'id_number': return gettext('ID number');
+			case 'id_type': return gettext('ID type');
+			case 'id_subtype': return gettext('ID subtype');
+			default: return field;
+		}
+	}
+	
+	$scope.acceptPrivateProfile = function(privateProfileJsonBase64){
+		$rootScope.modalOpened = true;
+		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
+		var objPrivateProfile = JSON.parse(privateProfileJson);
+		var fc = profileService.focusedClient;
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.color = fc.backgroundColor;
+			var openProfile = {};
+			for (var field in objPrivateProfile.src_profile)
+				if (Array.isArray(objPrivateProfile.src_profile[field]))
+					openProfile[field] = objPrivateProfile.src_profile[field][0];
+			$scope.openProfile = openProfile;
+			$scope.bDisabled = true;
+			$scope.buttonLabel = gettext('Verifying the profile...');
+			parsePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
+				if (!$scope)
+					return;
+				if (error){
+					$scope.error = error;
+					$scope.buttonLabel = gettext('Bad profile');
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+					return;
+				}
+				$scope.address = address;
+				$scope.attestor_address = attestor_address;
+				$scope.bMyAddress = bMyAddress;
+				if (!bMyAddress)
+					return $timeout(function() {
+						$rootScope.$apply();
+					});
+				checkIfPrivateProfileExists(objPrivateProfile, function(bExists){
+					if (bExists)
+						$scope.buttonLabel = gettext('Already saved');
+					else{
+						$scope.buttonLabel = gettext('Store');
+						$scope.bDisabled = false;
+					}
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+			});
+			
+			$scope.getDisplayField = getDisplayField;
+
+			$scope.store = function() {
+				if (!$scope.bMyAddress)
+					throw Error("not my address");
+				db.query(
+					"INSERT "+db.getIgnore()+" INTO private_profiles (unit, payload_hash, attestor_address, address, src_profile) VALUES(?,?,?,?,?)", 
+					[objPrivateProfile.unit, objPrivateProfile.payload_hash, $scope.attestor_address, $scope.address, JSON.stringify(objPrivateProfile.src_profile)], 
+					function(res){
+						var private_profile_id = res.insertId;
+						var arrQueries = [];
+						for (var field in objPrivateProfile.src_profile){
+							var arrValueAndBlinding = objPrivateProfile.src_profile[field];
+							db.addQuery(arrQueries, "INSERT INTO private_profile_fields (private_profile_id, field, value, blinding) VALUES(?,?,?,?)", 
+								[private_profile_id, field, arrValueAndBlinding[0], arrValueAndBlinding[1] ]);
+						}
+						async.series(arrQueries, function(){
+							$timeout(function(){
+								$modalInstance.dismiss('cancel');
+							});
+						});
+					}
+				);
+			};
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/accept-profile.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
+	
+	
+	
+	$scope.choosePrivateProfile = function(fields_list){
+		$rootScope.modalOpened = true;
+		var arrFields = fields_list ? fields_list.split(',') : [];
+		var fc = profileService.focusedClient;
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.color = fc.backgroundColor;
+			$scope.requested = !!fields_list;
+			$scope.bDisabled = true;
+			var sql = fields_list
+				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
+					WHERE field IN(?) GROUP BY private_profile_id HAVING c=?"
+				: "SELECT * FROM private_profiles";
+			var params = fields_list ? [arrFields, arrFields.length] : [];
+			readMyPaymentAddress(function(current_address){
+				db.query(sql, params, function(rows){
+					var arrProfiles = [];
+					async.eachSeries(
+						rows,
+						function(row, cb){
+							var profile = row;
+							db.query(
+								"SELECT field, value, blinding FROM private_profile_fields WHERE private_profile_id=? ORDER BY rowid", 
+								[profile.private_profile_id], 
+								function(vrows){
+									profile.entries = vrows;
+									var assocValuesByField = {};
+									profile.entries.forEach(function(entry){
+										entry.editable = !fields_list;
+										if (arrFields.indexOf(entry.field) >= 0)
+											entry.provided = true;
+										assocValuesByField[entry.field] = entry.value;
+									});
+									if (fields_list){
+										profile._label = assocValuesByField[arrFields[0]];
+										if (arrFields[1])
+											profile._label += ' ' + assocValuesByField[arrFields[1]];
+									}
+									else{
+										profile._label = profile.entries[0].value;
+										if (profile.entries[1])
+											profile._label += ' ' + profile.entries[1].value;
+									}
+									profile.bCurrentAddress = (profile.address === current_address);
+									arrProfiles.push(profile);
+									cb();
+								}
+							);
+						},
+						function(){
+							// add date if duplicate labels
+							var assocLabels = {};
+							var assocDuplicateLabels = {};
+							arrProfiles.forEach(function(profile){
+								if (assocLabels[profile._label])
+									assocDuplicateLabels[profile._label] = true;
+								assocLabels[profile._label] = true;
+							});
+							arrProfiles.forEach(function(profile){
+								if (assocDuplicateLabels[profile._label])
+									profile._label += ' ' + profile.creation_date;
+							});
+							// sort profiles: current address first
+							arrProfiles.sort(function(p1, p2){
+								if (p1.bCurrentAddress && !p2.bCurrentAddress)
+									return -1;
+								if (!p1.bCurrentAddress && p2.bCurrentAddress)
+									return 1;
+								return (p1.creation_date > p2.creation_date) ? -1 : 1; // newest first
+							});
+							$scope.arrProfiles = arrProfiles;
+							$scope.selected_profile = arrProfiles[0];
+							$scope.bDisabled = false;
+							if (arrProfiles.length === 0){
+								if (!fields_list)
+									$scope.noProfiles = true;
+								else
+									db.query("SELECT 1 FROM private_profiles LIMIT 1", function(rows2){
+										if (rows2.length > 0)
+											return;
+										$scope.noProfiles = true;
+										$timeout(function() {
+											$rootScope.$apply();
+										});
+									});
+							}
+							$timeout(function() {
+								$rootScope.$apply();
+							});
+						}
+					);
+				});
+			});
+			
+			$scope.getDisplayField = getDisplayField;
+			
+			$scope.noFieldsProvided = function(){
+				var entries = $scope.selected_profile.entries;
+				for (var i=0; i<entries.length; i++)
+					if (entries[i].provided)
+						return false;
+				return true;
+			};
+			
+			$scope.send = function() {
+				var profile = $scope.selected_profile;
+				if (!profile)
+					throw Error("no selected profile");
+				var objPrivateProfile = {
+					unit: profile.unit,
+					payload_hash: profile.payload_hash,
+					src_profile: {}
+				};
+				profile.entries.forEach(function(entry){
+					var value = [entry.value, entry.blinding];
+					objPrivateProfile.src_profile[entry.field] = entry.provided ? value : objectHash.getBase64Hash(value);
+				});
+				console.log('will send '+JSON.stringify(objPrivateProfile));
+				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');
+				appendText('[Private profile](profile:'+privateProfileJsonBase64+')');
+				$modalInstance.dismiss('cancel');
+			};
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/choose-profile.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
+	
+	
 
 	function setOngoingProcess(name) {
 		if (isCordova) {

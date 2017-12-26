@@ -155,7 +155,7 @@ h4.title a {
   background: white;
 }
 
-.preferences ul li, ul.whopays li {
+.preferences ul li, ul.whopays li, ul.profile-entries li {
   padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
 }
