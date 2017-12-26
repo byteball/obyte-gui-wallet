@@ -1581,6 +1581,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	white-space: normal;
 }
 
-.f-dropdown.drop-top > *:last-child {
+form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
 	margin-bottom: -2px;
 }
