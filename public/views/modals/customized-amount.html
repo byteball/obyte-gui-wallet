@@ -19,7 +19,7 @@
       <qrcode size="220" version="{{qr_version}}" data="{{protocol}}:{{code}}"></qrcode>
       <div class="m10t text-center" ng-show="isCordova">
         <span class="button outline dark-gray tiny round"
-          ng-click="shareAddress('{{protocol}}:' + addr + '?amount=' + amountInSmallestUnits + asset_param)">
+          ng-click="shareAddress('{{protocol}}:{{code}}')">
           <i class="fi-share"></i>
           <span translate>Share address</span>
         </span>

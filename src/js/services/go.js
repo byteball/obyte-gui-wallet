@@ -138,6 +138,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					authService.objRequest = objRequest;
 					root.path('authConfirmation');
 				}
+				else if (objRequest.type === 'textcoin') {
+					$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
+				}
 				else
 					throw Error('unknown url type: '+objRequest.type);
 			}

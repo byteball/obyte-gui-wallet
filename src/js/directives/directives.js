@@ -15,42 +15,58 @@ function selectText(element) {
 
   }
 }
+
+function isValidAddress(value) {
+	var ValidationUtils = require('byteballcore/validation_utils.js');
+	if (!value) {
+		return false;
+	}
+
+	// byteball uri
+	var conf = require('byteballcore/conf.js');
+	var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
+	var arrMatches = value.match(re);
+	if (arrMatches) {
+		return ValidationUtils.isValidAddress(arrMatches[1]);
+	}
+
+	return ValidationUtils.isValidAddress(value);
+}
+
+function isValidEmail(value) {
+	var ValidationUtils = require('byteballcore/validation_utils.js');
+	return ValidationUtils.isValidEmail(value);
+}
+
 angular.module('copayApp.directives')
 .directive('validAddress', ['$rootScope', 'profileService',
     function($rootScope, profileService) {
       return {
         require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {          
+				var validator = function(value) {
+					if (!profileService.focusedClient)
+						return;
+					ctrl.$setValidity('validAddress', isValidAddress(value));
+					return value;
+				};
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
+.directive('validAddressOrEmail', ['$rootScope', 'profileService',
+    function($rootScope, profileService) {
+      return {
+        require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          var ValidationUtils = require('byteballcore/validation_utils.js');
-          var validator = function(value) {
-            if (!profileService.focusedClient)
-              return;
-			  
-            if (typeof value == 'undefined') {
-              ctrl.$pristine = true;
-              return;
-            }
-
-            // Regular url
-            if (/^https?:\/\//.test(value)) {
-              ctrl.$setValidity('validAddress', true);
-              return value;
-            }
-
-            // byteball uri
-			var conf = require('byteballcore/conf.js');
-			var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
-			var arrMatches = value.match(re);
-            if (arrMatches) {
-              ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(arrMatches[1]));
-              return value;
-            }
-
-            // Regular Address
-            ctrl.$setValidity('validAddress', ValidationUtils.isValidAddress(value));
-            return value;
-          };
-
+          	var validator = function(value) {
+          		if (!profileService.focusedClient)
+						return;
+					ctrl.$setValidity('validAddressOrEmail', isValidAddress(value) || isValidEmail(value));
+					return value;
+				};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
@@ -75,6 +91,32 @@ angular.module('copayApp.directives')
           };
 
           ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
+  .directive('validMnemonic', [function() {
+      return {
+      	require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {
+        	var Mnemonic = require('bitcore-mnemonic');
+         var validator = function(value) {
+         	try {
+         		value = value.split('-').join(' ');
+	            if (Mnemonic.isValid(value)) {
+	              ctrl.$setValidity('validMnemonic', true);
+	              return value;
+	            } else {
+	              ctrl.$setValidity('validMnemonic', false);
+	              return value;
+	            }
+	        } catch(ex) {
+	        		ctrl.$setValidity('validMnemonic', false);
+	           return value;
+	        }
+          };
+         ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
       };
@@ -118,14 +160,14 @@ angular.module('copayApp.directives')
               ctrl.$pristine = true;
             }
 
-            if (typeof vNum == "number" && vNum > 0) {
-              var sep_index = ('' + value).indexOf('.');
-              var str_value = ('' + value).substring(sep_index + 1);
-              if (sep_index > 0 && str_value.length > decimals) {
-                ctrl.$setValidity('validAmount', false);
-              } else {
-                ctrl.$setValidity('validAmount', true);
-              }
+          	if (typeof vNum == "number" && vNum > 0) {
+	          	var sep_index = ('' + value).indexOf('.');
+	            var str_value = ('' + value).substring(sep_index + 1);
+	            if (sep_index > 0 && str_value.length > decimals) {
+	                ctrl.$setValidity('validAmount', false);
+	            } else {
+	                ctrl.$setValidity('validAmount', true);
+             	}
             } else {
               ctrl.$setValidity('validAmount', false);
             }
@@ -134,7 +176,7 @@ angular.module('copayApp.directives')
           ctrl.$parsers.unshift(val);
           ctrl.$formatters.unshift(val);
         }
-      };
+      }
     }
   ])
   .directive('validFeedName', ['configService',
@@ -448,4 +490,6 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  });
+  }).filter('encodeURIComponent', function() {
+    return window.encodeURIComponent;
+});;

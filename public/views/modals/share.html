@@ -1,0 +1,48 @@
+<style>
+.mtab {
+	border: 1px solid #8C9EB0;
+	margin-top: -1px;
+}
+.mtab p {
+	padding: 5px;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Share
+    </h1>
+  </section>
+</nav>
+
+<div class="modal-content fix-modals-touch">
+  <div ng-show="!amountInSmallestUnits" class="row m20t">
+    <div class="large-12 large-centered columns">
+    	<div>
+    		<p><span translate>The money is stored on this textcoin:</span> <b class="enable_text_select">{{mnemonic}}</b></p>
+    	</div>
+        <div ng-if="address">
+        	<p translate>Click the button to <span ng-if="isResend">re</span>send email:</p>
+          <button ng-if="isCordova" class="button black round expand" ng-style="{'background-color':index.backgroundColor}" ng-click="shareToEmail()">{{buttonLabel}}</button>
+          <a class="button black round expand" ng-style="{'background-color':index.backgroundColor}" href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
+        </div>
+    	<div class="mtabset" ng-show="!address">
+	    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>send</div>
+	    	<div class="mtab-title" ng-click="mtab = 2;_address = null;" ng-class="{'active': mtab == 2}" translate>keep for myself</div>
+	    </div>
+        <div ng-class="{'active': mtab == 1, 'mtab': !address}" ng-init="mtab = 1">
+        	<p><span ng-if="address" translate>Or copy</span> <span translate ng-if="!address">Copy</span> <span translate>the text below and send it to the recipient via any messaging app</span>:</p>
+        	<textarea readonly rows=4 onclick="this.focus();this.select()" style="margin-bottom: 0px; border-bottom: 0px">{{text}}</textarea>
+        </div>
+        <div ng-class="{'active': mtab == 2, 'mtab': !address}" ng-if="!address">
+        	<p><span translate>Write down this textcoin on paper and store it securely. Claim it back anytime in the future using</span> <i translate>'Receive' tab → 'Claim funds using textcoin' button.</i><br><span translate>After writing it down, find this transaction in</span> <i translate>History</i> <span translate>and erase the textcoin to keep it safe from attackers.</span></p>
+        </div>
+    </div>
+  </div>
+
+</div>

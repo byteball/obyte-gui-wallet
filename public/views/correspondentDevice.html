@@ -337,6 +337,12 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
+			  <div class="clear"></div>
+			  <li class="dropup-item">
+			  	<a ng-click="choosePrivateProfile()" class="ellipsis dropup-item-link">
+			  		<span translate>Insert private profile</span>
+			  	</a>
+			  </li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 

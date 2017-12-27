@@ -38,7 +38,14 @@
         <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
       </span>
     </span>
-    </li> 
+    </li>
+
+    <li ng-if="btx.textAddress" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress)">
+	    <span class="text-gray" translate>To email</span>:
+	    <span class="right">
+		    <contact class="enable_text_select" address="{{btx.textAddress}}"></contact>
+	    </span>
+    </li>
 
     <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
@@ -111,11 +118,34 @@
  
     </span>
     </li>
+
+    <li ng-if="btx.isTextcoin" class="line-b p10 oh">
+	    <span class="text-gray" translate>Was claimed?</span>
+	    <span class="right" >
+	      <span class="text-warning" ng-show="!btx.claimed" translate>
+	        not claimed
+	   	</span>
+	      <span ng-show="!btx.claimed && btx.mnemonic" class="external-link">
+	      	(<a href="#" ng-click="$root.$emit('claimTextcoin', btx.mnemonic.split('-').join(' '));" style="padding: 0; color: inherit;">claim back</a>)
+	      </span>
+	      <span class="label gray radius" ng-show="btx.claimed" translate>
+	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
+	      </span>
+	 
+	    </span>
+    </li>
+
+    <li ng-if="btx.isTextcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
+		<span translate>If the recipient doesn't see your payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="shareAgain()" translate>share again</a>
+    </li>
+    <li ng-if="btx.isTextcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
+		<span translate>You can erase textcoin from your wallet</span> <a class="blue-link" style="padding: 0" ng-click="eraseTextcoin()" translate>erase textcoin</a>
+    </li>
     <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
-		If the recipient doesn't see your payment, you can <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
+		<span translate>If the recipient doesn't see your payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
     </li>
     <li ng-if="n > 1 && isPrivate" class="line-b p10 oh">
-		If any of your cosigner devices doesn't see this payment, you can <a class="blue-link" style="padding: 0" ng-click="reSendPrivateMultiSigPayment()" translate>re-send private payloads to cosigners</a>
+		<span translate>If any of your cosigner devices doesn't see this payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="reSendPrivateMultiSigPayment()" translate>re-send private payloads to cosigners</a>
     </li>
   </ul>
 

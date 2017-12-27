@@ -155,7 +155,7 @@ h4.title a {
   background: white;
 }
 
-.preferences ul li, ul.whopays li {
+.preferences ul li, ul.whopays li, ul.profile-entries li {
   padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
 }
@@ -1579,4 +1579,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	cursor: auto !important;
 	overflow: auto;
 	white-space: normal;
+}
+
+form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
+	margin-bottom: -2px;
 }
