@@ -539,10 +539,11 @@ angular.module('copayApp.controllers')
 							asset: asset
 						});
 						indexScope.assetIndex = assetIndex;
+						indexScope.updateTxHistory();
 						$rootScope.$emit('Local/SetTab', 'history', null, true);
 						disableBalanceListener();
 					});
-					indexScope.updateAll({triggerTxUpdate: true});
+					indexScope.updateAll();
 				} else {
 					indexScope.assetIndex = 0;
 					indexScope.updateTxHistory();
