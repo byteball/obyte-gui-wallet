@@ -317,6 +317,7 @@ angular.module('copayApp.services')
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Wallet');
             walletClient.createWallet(walletName, 1, 1, {
+			//	isSingleAddress: true,
                 network: 'livenet'
             }, function(err) {
                 if (err)
@@ -554,7 +555,8 @@ angular.module('copayApp.services')
 
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
-              return cb(err);
+				root.setSingleAddressFlag(true);
+				return cb(err);
             });
           });
         });
