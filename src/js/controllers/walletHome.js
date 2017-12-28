@@ -719,11 +719,11 @@ angular.module('copayApp.controllers')
 			var usd_amount_str = "";
 			if (!asset || asset == "base") {
 				amount -= constants.TEXTCOIN_CLAIM_FEE;
+				if (network.exchangeRates['GBYTE_USD']) {
+					usd_amount_str = " (" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+				}
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
 				asset = "GB";
-				if (network.exchangeRates['GBYTE_USD']) {
-					usd_amount_str = " (" + (amount/1e9)*network.exchangeRates['GBYTE_USD'] + " USD)";
-				}
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
