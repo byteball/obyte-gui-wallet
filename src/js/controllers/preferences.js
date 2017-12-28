@@ -10,28 +10,40 @@ angular.module('copayApp.controllers')
 				this.currentLanguageName = uxLanguage.getCurrentLanguageName();
 				$scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
 				var fc = profileService.focusedClient;
-				if (fc) {
-					//$scope.encrypt = fc.hasPrivKeyEncrypted();
-					this.externalSource = null;
-
-					var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-					walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function(addresses) {
-						$scope.numAddresses = addresses.length;
-						$rootScope.$apply();
-					});
-					$scope.numCosigners = fc.credentials.n;
-					// TODO externalAccount
-					//this.externalIndex = fc.getExternalIndex();
-				}
-
+				if (!fc)
+					return;
+				
 				if (window.touchidAvailable) {
 					var walletId = fc.credentials.walletId;
 					this.touchidAvailable = true;
 					config.touchIdFor = config.touchIdFor || {};
 					$scope.touchid = config.touchIdFor[walletId];
 				}
-			};
+				
+				//$scope.encrypt = fc.hasPrivKeyEncrypted();
+				this.externalSource = null;
 
+				$scope.numCosigners = fc.credentials.n;
+				var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+				var db = require('byteballcore/db.js');
+				walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function(addresses) {
+					$scope.numAddresses = addresses.length;
+					db.query(
+						"SELECT 1 FROM private_profiles WHERE address=? UNION SELECT 1 FROM attestations WHERE address=?", 
+						[addresses[0], addresses[0]], 
+						function(rows){
+							$scope.bHasAttestations = (rows.length > 0);
+							$scope.bEditable = ($scope.numAddresses === 1 && $scope.numCosigners === 1 && !$scope.bHasAttestations);
+							$timeout(function(){
+								$rootScope.$apply();
+							});
+						}
+					);
+				});
+				// TODO externalAccount
+				//this.externalIndex = fc.getExternalIndex();
+			};
+	
 			var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
 				if (newVal == oldVal) return;
 				var opts = {

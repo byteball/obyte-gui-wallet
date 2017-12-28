@@ -63,7 +63,9 @@ angular.module('copayApp.controllers').controller('splashController',
 					self.creatingProfile = false;
 					$log.warn(err);
 					self.error = err;
-					$scope.$apply();
+					$timeout(function(){
+						$scope.$apply();
+					});
 					/*$timeout(function() {
 						self.create(noWallet);
 					}, 3000);*/

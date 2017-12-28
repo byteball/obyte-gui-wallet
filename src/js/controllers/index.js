@@ -1120,7 +1120,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             link.setAttribute("download", filename);
             link.click();
           }
-          $rootScope.$apply();
+		  $timeout(function(){
+			  $rootScope.$apply();
+		  });
       });
     });
   };
