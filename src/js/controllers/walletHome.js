@@ -19,6 +19,7 @@ angular.module('copayApp.controllers')
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
 		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
+		var network = require('byteballcore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
@@ -715,8 +716,12 @@ angular.module('copayApp.controllers')
 		};
 
 		function getShareMessage(amount, mnemonic, asset) {
+			var usd_amount_str = "";
 			if (!asset || asset == "base") {
 				amount -= constants.TEXTCOIN_CLAIM_FEE;
+				if (network.exchangeRates['GBYTE_USD']) {
+					usd_amount_str = " (" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+				}
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
 				asset = "GB";
 			} else {
@@ -728,7 +733,7 @@ angular.module('copayApp.controllers')
 				}
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + ": https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
