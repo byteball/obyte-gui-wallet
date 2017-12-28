@@ -3,7 +3,6 @@
 var constants = require('byteballcore/constants.js');
 var eventBus = require('byteballcore/event_bus.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
-var network = require('byteballcore/network.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
@@ -20,6 +19,7 @@ angular.module('copayApp.controllers')
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
 		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
+		var network = require('byteballcore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
