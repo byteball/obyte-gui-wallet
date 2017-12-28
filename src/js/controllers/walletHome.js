@@ -3,6 +3,7 @@
 var constants = require('byteballcore/constants.js');
 var eventBus = require('byteballcore/event_bus.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var network = require('byteballcore/network.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
@@ -38,13 +39,6 @@ angular.module('copayApp.controllers')
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
-		var gbyte_price = 0;
-
-		eventBus.on('exchange_rates', function(rates){
-			if (rates['GBYTE_USD']) {
-				gbyte_price = rates['GBYTE_USD'];
-			}
-		});
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
@@ -727,8 +721,8 @@ angular.module('copayApp.controllers')
 				amount -= constants.TEXTCOIN_CLAIM_FEE;
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
 				asset = "GB";
-				if (gbyte_price) {
-					usd_amount_str = " (" + (amount/1e9)*gbyte_price + " USD)";
+				if (network.exchangeRates['GBYTE_USD']) {
+					usd_amount_str = " (" + (amount/1e9)*network.exchangeRates['GBYTE_USD'] + " USD)";
 				}
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
