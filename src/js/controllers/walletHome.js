@@ -38,6 +38,13 @@ angular.module('copayApp.controllers')
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
+		var gbyte_price = 0;
+
+		eventBus.on('exchange_rates', function(rates){
+			if (rates['GBYTE_USD']) {
+				gbyte_price = rates['GBYTE_USD'];
+			}
+		});
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
@@ -715,10 +722,14 @@ angular.module('copayApp.controllers')
 		};
 
 		function getShareMessage(amount, mnemonic, asset) {
+			var usd_amount_str = "";
 			if (!asset || asset == "base") {
 				amount -= constants.TEXTCOIN_CLAIM_FEE;
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
 				asset = "GB";
+				if (gbyte_price) {
+					usd_amount_str = " (" + (amount/1e9)*gbyte_price + " USD)";
+				}
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
@@ -728,7 +739,7 @@ angular.module('copayApp.controllers')
 				}
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + ": https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/openapp.html#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
