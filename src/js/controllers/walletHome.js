@@ -720,7 +720,7 @@ angular.module('copayApp.controllers')
 			if (!asset || asset == "base") {
 				amount -= constants.TEXTCOIN_CLAIM_FEE;
 				if (network.exchangeRates['GBYTE_USD']) {
-					usd_amount_str = " (" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
 				}
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
 				asset = "GB";
