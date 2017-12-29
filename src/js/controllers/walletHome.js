@@ -1055,7 +1055,9 @@ angular.module('copayApp.controllers')
 								}
 							}
 							else if (Object.keys(mnemonics).length) {
-								var mnemonic = mnemonics[address];						
+								var mnemonic = mnemonics[address];
+								if (opts.send_all && asset === "base")
+									amount = assetInfo.stable;
 
 								if (isEmail) {
 									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount, asset, false);
