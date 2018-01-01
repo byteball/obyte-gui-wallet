@@ -371,9 +371,11 @@ angular.module('copayApp.services')
                     cosigners: opts.cosigners,
                     isSingleAddress: opts.isSingleAddress
                 }, function(err) {
-                    if (err) 
-                        return cb(gettext('Error creating wallet')+": "+err);
-                    root._addWalletClient(walletClient, opts, cb);
+					$timeout(function(){
+						if (err) 
+							return cb(gettext('Error creating wallet')+": "+err);
+						root._addWalletClient(walletClient, opts, cb);
+					});
                 });
             });
         });
