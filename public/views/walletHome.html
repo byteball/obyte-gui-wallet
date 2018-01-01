@@ -129,10 +129,16 @@ input.datafeed_input {
 							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
 							<div class="of-asset">of {{balance.asset}}</div>
 						</div>
-						<div class="size-14" ng-if="balance.pending">
+						<div class="size-14 secondrow" ng-if="balance.pending">
 							<span translate>Including pending confirmation</span>:
 							<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
 							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === 'base' && home.exchangeRates.GBYTE_USD">
+							<span>≈ ${{ (balance.total * home.exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD">
+							<span>≈ ${{ (balance.total * home.exchangeRates.GBB_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 					</div>
           <style ng-if="index.isCordova">
@@ -144,6 +150,10 @@ input.datafeed_input {
           	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
             	background-color: {{index.backgroundColor}};
             }
+			.secondrow {
+				margin-top: -7px;
+				margin-bottom: 10px;
+			}
           </style>
                     <div class="size-14" ng-if="balance.shared">
 						<a ng-click="index.openSubwalletModal()">

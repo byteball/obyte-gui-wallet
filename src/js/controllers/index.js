@@ -150,6 +150,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
 
+	eventBus.on('rates_updated', function(){
+		$timeout(function() {
+			$rootScope.$apply();
+		});
+	});
 	eventBus.on('started_db_upgrade', function(){
 		$timeout(function() {
 			if (self.bUpgradingDb === undefined)
