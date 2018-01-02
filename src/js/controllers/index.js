@@ -141,9 +141,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		);
 	}
 	
-	function setSyncProgress(percent){
+	function readSyncPercent(cb){
+		var db = require('byteballcore/db.js');
+		db.query("SELECT COUNT(1) AS count_left FROM catchup_chain_balls", function(rows){
+			var count_left = rows[0].count_left;
+			if (count_left === 0)
+				return cb("0%");
+			if (catchup_balls_at_start === -1)
+				catchup_balls_at_start = count_left;
+			var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
+			cb(percent+'%');
+		});
+	}
+	
+	function readSyncProgress(cb){
 		readLastDateString(function(strProgress){
-			self.syncProgress = strProgress || (percent + "% of new units");
+			strProgress ? cb(strProgress) : readSyncPercent(cb);
+		});
+	}
+	
+	function setSyncProgress(){
+		readSyncProgress(function(strProgress){
+			self.syncProgress = strProgress;
 			$timeout(function() {
 				$rootScope.$apply();
 			});
@@ -172,14 +191,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
-		setSyncProgress(0);
+		setSyncProgress();
     });
-    eventBus.on('catchup_balls_left', function(count_left){
-    	if (catchup_balls_at_start === -1) {
-    		catchup_balls_at_start = count_left;
-    	}
-    	var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
-		setSyncProgress(percent);
+    eventBus.on('catchup_next_hash_tree', function(){
+		setSyncProgress();
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
