@@ -1554,7 +1554,7 @@ angular.module('copayApp.controllers')
 					(function(){
 						var wallet = require('byteballcore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
-							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove an ability to claim it back or to resend'));
+							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend'));
 							$scope.cancel_button_class = 'light-gray outline';
 							$scope.loading = false;
 							$scope.confirm_label = gettextCatalog.getString('Confirm');
