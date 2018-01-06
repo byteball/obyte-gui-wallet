@@ -553,6 +553,7 @@ angular.module('copayApp.controllers')
 				}
 			});
 		}
+	
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
@@ -1758,11 +1759,13 @@ angular.module('copayApp.controllers')
 		if (isCordova){
 			window.plugins.appPreferences.fetch(function(referrer){
 				if (referrer) {
+					console.log('==== referrer: '+referrer);
 					window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
 					store_mnemonic_back = function() {
 						window.plugins.appPreferences.store(function(){}, function(){}, 'referrer', referrer);
 					};
-					$rootScope.$emit("claimTextcoin", referrer);
+					if (referrer.split('-').length % 3 === 0)
+						$rootScope.$emit("claimTextcoin", referrer);
 				}
 			}, function(){}, "referrer");
 		}
