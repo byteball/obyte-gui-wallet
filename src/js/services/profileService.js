@@ -184,7 +184,7 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
-					require('byteballcore/wallet.js');
+					var Wallet = require('byteballcore/wallet.js');
 					var device = require('byteballcore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
@@ -204,6 +204,12 @@ angular.module('copayApp.services')
                     var prevTempDeviceKey = profile.prevTempDeviceKey ? Buffer.from(profile.prevTempDeviceKey, 'base64') : null;
                     device.setTempKeys(tempDeviceKey, prevTempDeviceKey, saveTempKeys);
                     $rootScope.$emit('Local/ProfileBound');
+					Wallet.readAssetMetadata(null, function(assocAssetMetadata){
+						for (var asset in assocAssetMetadata){
+							if (!root.assetMetadata[asset])
+								root.assetMetadata[asset] = assocAssetMetadata[asset];
+						}
+					});
                     return cb();
                 });
             });
