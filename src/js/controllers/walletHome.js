@@ -1759,7 +1759,6 @@ angular.module('copayApp.controllers')
 		if (isCordova){
 			window.plugins.appPreferences.fetch(function(referrer){
 				if (referrer) {
-					referrer = referrer.replace("textcoin?", "");
 					console.log('==== referrer: '+referrer);
 					window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
 					store_mnemonic_back = function() {
