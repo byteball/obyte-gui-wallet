@@ -73,6 +73,42 @@ angular.module('copayApp.directives')
       };
     }
   ])
+.directive('validAddresses', ['$rootScope', 'profileService',
+    function($rootScope, profileService) {
+      return {
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ctrl) {          
+				var validator = function(value) {
+					for (var key in ctrl.$error) {
+						if (key.indexOf('line-') > -1) delete ctrl.$error[key];
+					}
+					if (!profileService.focusedClient || !value)
+						return value;
+					var lines = value.split(/\r?\n/);
+					for (i = 0; i < lines.length; i++) {
+						var tokens = lines[i].split(/\b/);
+						if (tokens.length < 2) {
+							ctrl.$setValidity('validAddresses', false);
+							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+							return value;
+						}
+						var address = tokens[0];
+						var amount = tokens.pop();
+						if (!isValidAddress(address) || !Number.isInteger(+amount) || amount <= 0) {
+							ctrl.$setValidity('validAddresses', false);
+							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+							return value;
+						}
+					}
+					ctrl.$setValidity('validAddresses', true);
+					return value;
+				};
+          ctrl.$parsers.unshift(validator);
+          ctrl.$formatters.unshift(validator);
+        }
+      };
+    }
+  ])
   .directive('validUrl', [
 
     function() {
@@ -158,6 +194,7 @@ angular.module('copayApp.directives')
 
             if (typeof value == 'undefined' || value == 0) {
               ctrl.$pristine = true;
+              return value;
             }
 
           	if (typeof vNum == "number" && vNum > 0) {
@@ -492,4 +529,12 @@ angular.module('copayApp.directives')
     }
   }).filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
-});;
+})
+ .filter('objectKeys', [function() {
+    return function(item) {
+        if (!item) return null;
+        var keys = Object.keys(item);
+        keys.sort();
+        return keys;
+    };
+}]);;;
