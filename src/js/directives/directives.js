@@ -80,7 +80,7 @@ angular.module('copayApp.directives')
         link: function(scope, elem, attrs, ctrl) {          
 				var validator = function(value) {
 					for (var key in ctrl.$error) {
-						if (key.indexOf('line-') > -1) delete ctrl.$error[key];
+						if (key.indexOf('line-') > -1) ctrl.$setValidity(key, true);
 					}
 					if (!profileService.focusedClient || !value)
 						return value;
