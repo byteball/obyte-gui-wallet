@@ -85,6 +85,10 @@ angular.module('copayApp.directives')
 					if (!profileService.focusedClient || !value)
 						return value;
 					var lines = value.split(/\r?\n/);
+					if (lines.length > 120) {
+						ctrl.$setValidity('validAddresses', false);
+						return value;
+					}
 					for (i = 0; i < lines.length; i++) {
 						var tokens = lines[i].split(/\b/);
 						if (tokens.length < 2) {
