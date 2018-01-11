@@ -857,9 +857,6 @@ angular.module('copayApp.controllers')
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
 				if (isTextcoin && assetInfo.is_private)
 					return self.setSendError("private assets can not be sent as textcoins yet");
-				var merkle_proof = '';
-				if (form.merkle_proof && form.merkle_proof.$modelValue)
-					merkle_proof = form.merkle_proof.$modelValue.trim();
 				if (asset === "base")
 					amount *= unitValue;
 				else if (asset === constants.BLACKBYTES_ASSET)
@@ -871,6 +868,10 @@ angular.module('copayApp.controllers')
 
 				var current_payment_key = '' + asset + address + amount;
 			}
+			var merkle_proof = '';
+				if (form.merkle_proof && form.merkle_proof.$modelValue)
+					merkle_proof = form.merkle_proof.$modelValue.trim();
+				
 			if (current_payment_key === self.current_payment_key)
 				return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 			self.current_payment_key = current_payment_key;
