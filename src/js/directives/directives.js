@@ -90,7 +90,7 @@ angular.module('copayApp.directives')
 						return value;
 					}
 					for (i = 0; i < lines.length; i++) {
-						var tokens = lines[i].split(/\b/);
+						var tokens = lines[i].split(/[\s,;]/);
 						if (tokens.length < 2) {
 							ctrl.$setValidity('validAddresses', false);
 							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
@@ -98,7 +98,7 @@ angular.module('copayApp.directives')
 						}
 						var address = tokens[0];
 						var amount = tokens.pop();
-						if (!isValidAddress(address) || !Number.isInteger(+amount) || amount <= 0) {
+						if (!isValidAddress(address) || isNaN(+amount) || amount <= 0) {
 							ctrl.$setValidity('validAddresses', false);
 							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
 							return value;

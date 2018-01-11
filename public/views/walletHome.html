@@ -424,7 +424,7 @@ input.datafeed_input {
 	                <input ng-if="!home.send_multiple && !index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-email ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 
 	                <input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount in bytes&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U,100000&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ,5000&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses style="margin-bottom: 25px"></textarea>
+	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in bytes' : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U,100000&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ,5000&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses style="margin-bottom: 25px"></textarea>
 	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
 	                  {{index.addressbook[_address] || _address}}
 	                </div>-->
@@ -438,7 +438,7 @@ input.datafeed_input {
 						  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
 					  </a>
 				  </div>
-				  <div ng-if="index.arrBalances[index.assetIndex].asset === 'base' && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem; float: right;">
+				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem; float: right;">
 					  <a ng-click="home.lockAmount = home.send_multiple = !home.send_multiple" class="text-gray" style="border-bottom: 1px dashed grey;">
 						  <span ng-if="home.send_multiple" translate>single address</span>
 						  <span ng-if="!home.send_multiple" translate>multiple addresses</span>

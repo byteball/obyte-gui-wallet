@@ -837,13 +837,17 @@ angular.module('copayApp.controllers')
 
 			var isMultipleSend = !!form.addresses;
 			if (isMultipleSend) {
-				if (asset !== "base")
-					return self.setSendError("only bytes can be sent to multiple addresses");
-				var base_outputs = [];
+				if (assetInfo.is_private)
+					return self.setSendError("private assets can not be sent to multiple addresses");
+				var outputs = [];
 				form.addresses.$modelValue.split('\n').forEach(function(line){
-					var address = line.split(/\b/)[0];
-					var amount = line.split(/\b/).pop();
-					base_outputs.push({address: address, amount: +amount});
+					var tokens = line.split(/[\s,;]/);
+					var address = tokens[0];
+					var amount = tokens.pop();
+					if (assetInfo.decimals)
+						amount *= Math.pow(10, assetInfo.decimals);
+					amount = Math.round(amount);
+					outputs.push({address: address, amount: +amount});
 				});
 				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
 			} else {
@@ -869,9 +873,9 @@ angular.module('copayApp.controllers')
 				var current_payment_key = '' + asset + address + amount;
 			}
 			var merkle_proof = '';
-				if (form.merkle_proof && form.merkle_proof.$modelValue)
-					merkle_proof = form.merkle_proof.$modelValue.trim();
-				
+			if (form.merkle_proof && form.merkle_proof.$modelValue)
+				merkle_proof = form.merkle_proof.$modelValue.trim();
+
 			if (current_payment_key === self.current_payment_key)
 				return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 			self.current_payment_key = current_payment_key;
@@ -1031,7 +1035,10 @@ angular.module('copayApp.controllers')
 								opts.to_address = to_address;
 								opts.amount = amount;
 							} else {
-								opts.base_outputs = base_outputs;	
+								if (asset !== "base")
+									opts.asset_outputs = outputs;
+								else
+									opts.base_outputs = outputs;
 							}
 						} else {
 							opts.asset_outputs = [{address: to_address, amount: amount}];
