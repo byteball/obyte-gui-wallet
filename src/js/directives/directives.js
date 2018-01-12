@@ -564,4 +564,9 @@ angular.module('copayApp.directives')
         keys.sort();
         return keys;
     };
-}]);;;
+}])
+.filter('sumNumbers', [function(){
+	return function(str) {
+        return str ? str.split(/[\n\s,;]/).reduce(function(acc, val){return isNaN(+val) ? acc : acc + (+val)}, 0) : 0;
+    };
+}]);
