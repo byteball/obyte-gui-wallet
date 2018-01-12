@@ -73,40 +73,63 @@ angular.module('copayApp.directives')
       };
     }
   ])
-.directive('validAddresses', ['$rootScope', 'profileService',
-    function($rootScope, profileService) {
+.directive('validAddresses', ['$rootScope', 'profileService', 'configService', 
+    function($rootScope, profileService, configService) {
       return {
         require: 'ngModel',
-        link: function(scope, elem, attrs, ctrl) {          
-				var validator = function(value) {
-					for (var key in ctrl.$error) {
-						if (key.indexOf('line-') > -1) ctrl.$setValidity(key, true);
-					}
-					if (!profileService.focusedClient || !value)
-						return value;
-					var lines = value.split(/\r?\n/);
-					if (lines.length > 120) {
-						ctrl.$setValidity('validAddresses', false);
-						return value;
-					}
-					for (i = 0; i < lines.length; i++) {
-						var tokens = lines[i].split(/[\s,;]/);
-						if (tokens.length < 2) {
-							ctrl.$setValidity('validAddresses', false);
-							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
-							return value;
-						}
-						var address = tokens[0];
-						var amount = tokens.pop();
-						if (!isValidAddress(address) || isNaN(+amount) || amount <= 0) {
-							ctrl.$setValidity('validAddresses', false);
-							ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
-							return value;
-						}
-					}
-					ctrl.$setValidity('validAddresses', true);
+        link: function(scope, elem, attrs, ctrl) {
+    		var asset = attrs.validAddresses;       
+			var validator = function(value) {
+				for (var key in ctrl.$error) {
+					if (key.indexOf('line-') > -1) ctrl.$setValidity(key, true);
+				}
+				if (!profileService.focusedClient || !value)
 					return value;
-				};
+				var lines = value.split(/\r?\n/);
+				if (lines.length > 120) {
+					ctrl.$setValidity('validAddresses', false);
+					return value;
+				}
+				for (i = 0; i < lines.length; i++) {
+					var tokens = lines[i].split(/[\s,;]/);
+					if (tokens.length < 2) {
+						ctrl.$setValidity('validAddresses', false);
+						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+						return value;
+					}
+					var address = tokens[0];
+					var amount = +tokens.pop();
+
+		            var settings = configService.getSync().wallet.settings;
+					var unitValue = 1;
+					var decimals = 0;
+					if (asset === 'base'){
+						unitValue = settings.unitValue;
+						decimals = Number(settings.unitDecimals);
+					}
+					else if (profileService.assetMetadata[asset]){
+						decimals = profileService.assetMetadata[asset].decimals || 0;
+						unitValue = Math.pow(10, decimals);
+					}
+					  
+		            var vNum = Number((amount * unitValue).toFixed(0));
+
+		          	if (!isValidAddress(address) || typeof vNum !== "number" || vNum <= 0) {
+		          		ctrl.$setValidity('validAddresses', false);
+						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+						return value;
+		          	}
+		          	var sep_index = ('' + amount).indexOf('.');
+		            var str_value = ('' + amount).substring(sep_index + 1);
+		            if (sep_index > 0 && str_value.length > decimals) {
+		                ctrl.$setValidity('validAddresses', false);
+						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+						return value;
+		            }
+				}
+				ctrl.$setValidity('validAddresses', true);
+				return value;
+			};
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
