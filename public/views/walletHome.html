@@ -124,7 +124,11 @@ input.datafeed_input {
             <ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
                 <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
 					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
-						<strong class="size-36" ng-if="balance.totalStr">{{balance.totalStr}}</strong>
+						<strong class="size-36" ng-if="balance.totalStr && balance.totalStr.length <= 16">{{balance.totalStr}}</strong>
+						<div ng-if="balance.totalStr && balance.totalStr.length > 16">
+							<div><strong class="size-36">{{balance.totalStrWithoutUnit}}</strong></div>
+							<div class="of-asset-name">{{balance.name}}</div>
+						</div>
 						<div ng-if="!balance.totalStr">
 							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
 							<div class="of-asset">of {{balance.asset}}</div>

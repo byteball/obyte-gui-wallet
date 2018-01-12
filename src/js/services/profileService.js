@@ -36,6 +36,14 @@ angular.module('copayApp.services')
 		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
     };
 
+    root.formatAmountWithUnitIfShort = function(amount, asset, opts) {
+		var str = root.formatAmount(amount, asset, opts);
+		var unit = root.getUnitName(asset);
+		if (unit.length <= 8)
+			str += ' ' + unit;
+		return str;
+    };
+
     root.getUnitName = function(asset) {
 		var config = configService.getSync().wallet.settings;
 		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)

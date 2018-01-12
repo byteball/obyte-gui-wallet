@@ -992,10 +992,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
         if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
 			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+			balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
 			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-			balanceInfo.pendingStr = profileService.formatAmountWithUnit(balanceInfo.pending, asset);
+			balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
 			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmountWithUnit(balanceInfo.shared, asset);
+				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+			if (!balanceInfo.name){
+				if (asset === "base")
+					balanceInfo.name = self.unitName;
+				else if (asset === self.BLACKBYTES_ASSET)
+					balanceInfo.name = self.bbUnitName;
+			}
         }
         self.arrBalances.push(balanceInfo);
     }
