@@ -91,14 +91,14 @@ angular.module('copayApp.directives')
 					return value;
 				}
 				for (i = 0; i < lines.length; i++) {
-					var tokens = lines[i].split(/[\s,;]/);
-					if (tokens.length < 2) {
+					var tokens = lines[i].match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
+					if (!tokens) {
 						ctrl.$setValidity('validAddresses', false);
 						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
 						return value;
 					}
-					var address = tokens[0];
-					var amount = +tokens.pop();
+					var address = tokens[1];
+					var amount = +tokens[2];
 
 		            var settings = configService.getSync().wallet.settings;
 					var unitValue = 1;
