@@ -91,7 +91,7 @@ angular.module('copayApp.directives')
 					return value;
 				}
 				for (i = 0; i < lines.length; i++) {
-					var tokens = lines[i].match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
+					var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
 					if (!tokens) {
 						ctrl.$setValidity('validAddresses', false);
 						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text

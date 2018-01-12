@@ -841,7 +841,7 @@ angular.module('copayApp.controllers')
 					return self.setSendError("private assets can not be sent to multiple addresses");
 				var outputs = [];
 				form.addresses.$modelValue.split('\n').forEach(function(line){
-					var tokens = line.split(/[\s,;]/);
+					var tokens = line.trim().split(/[\s,;]/);
 					var address = tokens[0];
 					var amount = tokens.pop();
 					if (asset === "base")
