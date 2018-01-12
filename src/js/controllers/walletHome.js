@@ -844,7 +844,9 @@ angular.module('copayApp.controllers')
 					var tokens = line.split(/[\s,;]/);
 					var address = tokens[0];
 					var amount = tokens.pop();
-					if (assetInfo.decimals)
+					if (asset === "base")
+						amount *= unitValue;
+					else if (assetInfo.decimals)
 						amount *= Math.pow(10, assetInfo.decimals);
 					amount = Math.round(amount);
 					outputs.push({address: address, amount: +amount});

@@ -424,7 +424,7 @@ input.datafeed_input {
 	                <input ng-if="!home.send_multiple && !index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-email ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 
 	                <input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in bytes' : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U,100000&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ,5000&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses style="margin-bottom: 25px"></textarea>
+	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U,100000&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ,5000&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses style="margin-bottom: 25px" rows="4" msd-elastic="\n"></textarea>
 	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
 	                  {{index.addressbook[_address] || _address}}
 	                </div>-->
@@ -597,7 +597,6 @@ input.datafeed_input {
       <!--div class="row columns m20t" ng-hide="home.canSendPayment()">
 		  This is a private asset, please send it only by clicking links in the chat.
       </div-->
-      <div class="extra-margin-bottom"></div>
     </div> <!-- END Send -->
 
     <!--
