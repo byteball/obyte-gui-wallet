@@ -139,16 +139,24 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-ios-requires-fullscreen
 	checkOK
 
-	cordova plugin add cordova-sqlite-plugin
+	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
 
 	cordova plugin add cordova-plugin-device-name
 	checkOK
 
+	if [ $CURRENT_OS == "ANDROID" ]; then
 	cordova plugin add https://github.com/phonegap-build/PushPlugin.git
 	checkOK
+
+	cordova plugin add https://github.com/8zrealestate/android-referrer-plugin
+	checkOK
+	fi
 	
 	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
+	checkOK
+
+	cordova plugin add cordova-plugin-app-preferences
 	checkOK
 
 fi
@@ -168,6 +176,7 @@ fi
 
 echo "${OpenColor}${Green}* Copying files...${CloseColor}"
 cd $BUILDDIR/..
+mkdir $PROJECT/www
 cp -af public/** $PROJECT/www
 checkOK
 
@@ -210,6 +219,8 @@ if [ $CURRENT_OS == "IOS" ]; then
 
 	echo "IOS project!!!"
 
+	cp -R ios $PROJECT/../
+	checkOK
 #  mkdir -p $PROJECT/platforms/ios
 #  checkOK
 #

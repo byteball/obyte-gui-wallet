@@ -3,7 +3,7 @@ angular.module('copayApp.services')
 .factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, $timeout, storageService, configService, lodash, isCordova) {
 	var root = {};
 	var defaults = configService.getDefaults();
-	var usePushNotifications = isCordova && !isMobile.Windows();
+	var usePushNotifications = isCordova && !isMobile.Windows() && isMobile.Android();
 	var projectNumber;
 	var _ws;
 	

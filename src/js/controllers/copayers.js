@@ -19,6 +19,7 @@ angular.module('copayApp.controllers').controller('copayersController',
       self.loading = false;
       self.isCordova = isCordova;
 	  $rootScope.$emit('Local/BalanceUpdated', {});
+	  if(self.isCordova && !wallet.clientCompleteLoaded()) wallet.showCompleteClient();
     };
 
     var _modalDeleteWallet = function() {

@@ -1,6 +1,7 @@
 'use strict';
 
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var constants = require('byteballcore/constants.js');
 
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, pushNotificationsService, isCordova, gettext, gettextCatalog, nodeWebkit, uxLanguage) {
@@ -11,23 +12,73 @@ angular.module('copayApp.services')
     root.focusedClient = null;
     root.walletClients = {};
     
+	root.assetMetadata = {};
 
     root.Utils = bwcService.getUtils();
     root.formatAmount = function(amount, asset, opts) {
-      var config = configService.getSync().wallet.settings;
+		var config = configService.getSync().wallet.settings;
       //if (config.unitCode == 'byte') return amount;
 
       //TODO : now only works for english, specify opts to change thousand separator and decimal separator
-		if(asset == 'blackbytes') {
+		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)
 			return this.Utils.formatAmount(amount, config.bbUnitCode, opts);
-		}else if(asset == 'base'){
+		else if (asset === 'base' || asset === 'bytes')
 			return this.Utils.formatAmount(amount, config.unitCode, opts);
-		}else{
+		else if (root.assetMetadata[asset]){
+			var decimals = root.assetMetadata[asset].decimals || 0;
+			return (amount / Math.pow(10, decimals)).toLocaleString([], {maximumFractionDigits: decimals});
+		}
+		else
 		    return amount;
-        }
     };
 
-    root._setFocus = function(walletId, cb) {
+    root.formatAmountWithUnit = function(amount, asset, opts) {
+		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
+    };
+
+    root.formatAmountWithUnitIfShort = function(amount, asset, opts) {
+		var str = root.formatAmount(amount, asset, opts);
+		var unit = root.getUnitName(asset);
+		if (unit.length <= 8)
+			str += ' ' + unit;
+		return str;
+    };
+
+    root.getUnitName = function(asset) {
+		var config = configService.getSync().wallet.settings;
+		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)
+			return config.bbUnitName;
+		else if (asset === 'base' || asset === 'bytes')
+			return config.unitName;
+		else if (root.assetMetadata[asset])
+			return root.assetMetadata[asset].name;
+		else
+			return "of "+asset;
+    };
+
+ 	root.getAmountInSmallestUnits = function(amount, asset){
+		var config = configService.getSync().wallet.settings;
+		if (asset === 'base')
+			amount *= config.unitValue;
+		else if (asset === constants.BLACKBYTES_ASSET)
+			amount *= config.bbUnitValue;
+		else if (root.assetMetadata[asset])
+			amount *= Math.pow(10, root.assetMetadata[asset].decimals || 0);
+		return Math.round(amount);
+	};
+	
+	root.getAmountInDisplayUnits = function(amount, asset){
+		var config = configService.getSync().wallet.settings;
+		if (asset === 'base')
+			amount /= config.unitValue;
+		else if (asset === constants.BLACKBYTES_ASSET)
+			amount /= config.bbUnitValue;
+		else if (root.assetMetadata[asset])
+			amount /= Math.pow(10, root.assetMetadata[asset].decimals || 0);
+		return amount;
+	};
+
+	root._setFocus = function(walletId, cb) {
       $log.debug('Set focus:', walletId);
 
       // Set local object
@@ -89,12 +140,14 @@ angular.module('copayApp.services')
     
     
     function saveTempKeys(tempDeviceKey, prevTempDeviceKey, onDone){
-        console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
-        root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
-        if (prevTempDeviceKey)
-            root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
-        storageService.storeProfile(root.profile, function(err) {
-            onDone(err);
+		$timeout(function(){
+			console.log("will save temp device keys");//, tempDeviceKey, prevTempDeviceKey);
+			root.profile.tempDeviceKey = tempDeviceKey.toString('base64');
+			if (prevTempDeviceKey)
+				root.profile.prevTempDeviceKey = prevTempDeviceKey.toString('base64');
+			storageService.storeProfile(root.profile, function(err) {
+				onDone(err);
+			});
         });
     }
 
@@ -139,7 +192,7 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
-					require('byteballcore/wallet.js');
+					var Wallet = require('byteballcore/wallet.js');
 					var device = require('byteballcore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
@@ -159,6 +212,12 @@ angular.module('copayApp.services')
                     var prevTempDeviceKey = profile.prevTempDeviceKey ? Buffer.from(profile.prevTempDeviceKey, 'base64') : null;
                     device.setTempKeys(tempDeviceKey, prevTempDeviceKey, saveTempKeys);
                     $rootScope.$emit('Local/ProfileBound');
+					Wallet.readAssetMetadata(null, function(assocAssetMetadata){
+						for (var asset in assocAssetMetadata){
+							if (!root.assetMetadata[asset])
+								root.assetMetadata[asset] = assocAssetMetadata[asset];
+						}
+					});
                     return cb();
                 });
             });
@@ -265,20 +324,22 @@ angular.module('copayApp.services')
             if (err)
                 return cb(err);
             var config = configService.getSync();
+			require('byteballcore/wallet.js'); // load hub/ message handlers
 			var device = require('byteballcore/device.js');
             var tempDeviceKey = device.genPrivKey();
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Wallet');
             walletClient.createWallet(walletName, 1, 1, {
+			//	isSingleAddress: true,
                 network: 'livenet'
             }, function(err) {
                 if (err)
                     return cb(gettext('Error creating wallet')+": "+err);
-                console.log("created wallet, client:", walletClient);
+                console.log("created wallet, client: ", JSON.stringify(walletClient));
                 var xPrivKey = walletClient.credentials.xPrivKey;
                 var mnemonic = walletClient.credentials.mnemonic;
-                console.log("mnemonic: "+mnemonic);
+                console.log("mnemonic: "+mnemonic+', xPrivKey: '+xPrivKey);
                 var p = Profile.create({
                     credentials: [JSON.parse(walletClient.export())],
                     xPrivKey: xPrivKey,
@@ -321,11 +382,14 @@ angular.module('copayApp.services')
                 walletClient.createWallet(opts.name, opts.m, opts.n, {
                     network: opts.networkName,
                     account: opts.account,
-                    cosigners: opts.cosigners
+                    cosigners: opts.cosigners,
+                    isSingleAddress: opts.isSingleAddress
                 }, function(err) {
-                    if (err) 
-                        return cb(gettext('Error creating wallet')+": "+err);
-                    root._addWalletClient(walletClient, opts, cb);
+					$timeout(function(){
+						if (err) 
+							return cb(gettext('Error creating wallet')+": "+err);
+						root._addWalletClient(walletClient, opts, cb);
+					});
                 });
             });
         });
@@ -507,7 +571,8 @@ angular.module('copayApp.services')
 
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
-              return cb(err);
+				root.setSingleAddressFlag(true);
+				return cb(err);
             });
           });
         });
@@ -697,6 +762,27 @@ angular.module('copayApp.services')
 			return cb();
 		});
 	};
+
+	root.setSingleAddressFlag = function(newValue) {
+		var fc = root.focusedClient;
+		fc.isSingleAddress = newValue;
+		var walletId = fc.credentials.walletId;
+		var config = configService.getSync();
+		var oldValue = config.isSingleAddress || false;
+
+		var opts = {
+			isSingleAddress: {}
+		};
+		opts.isSingleAddress[walletId] = newValue;
+		configService.set(opts, function(err) {
+			if (err) {
+				fc.isSingleAddress = oldValue;
+				$rootScope.$emit('Local/DeviceError', err);
+				return;
+			}
+			$rootScope.$emit('Local/SingleAddressFlagUpdated');
+		});
+	}
 
 
     return root;

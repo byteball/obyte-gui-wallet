@@ -2,7 +2,7 @@
 
 var eventBus = require('byteballcore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -138,6 +138,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					authService.objRequest = objRequest;
 					root.path('authConfirmation');
 				}
+				else if (objRequest.type === 'textcoin') {
+					$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
+				}
 				else
 					throw Error('unknown url type: '+objRequest.type);
 			}
@@ -167,7 +170,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var child_process = require('child_process'+'');
 		var package = require('../package.json'+''); // relative to html root
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
-		fs.mkdir(applicationsDir, parseInt('700', 8), function(err){
+		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
 			fs.writeFile(applicationsDir + '/' +package.name+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\

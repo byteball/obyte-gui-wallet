@@ -6,13 +6,10 @@ angular.module('copayApp.services').factory('txFormatService', function(profileS
   var root = {};
 
   var formatAmountStr = function(amount, asset) {
-    if (!amount) return;
-      if (asset !== "base" && asset !==  constants.BLACKBYTES_ASSET)
-          return amount;
-    var config = configService.getSync().wallet.settings;
-    var assetName = asset !== "base" ? 'blackbytes' : 'base';
-	  var unitName = asset !== "base" ? config.bbUnitName : config.unitName;
-		return profileService.formatAmount(amount, assetName) + ' ' + unitName;
+	if (!amount) return;
+	if (asset !== "base" && asset !==  constants.BLACKBYTES_ASSET && !profileService.assetMetadata[asset])
+		return amount;
+	return profileService.formatAmountWithUnit(amount, asset);
   };
 	
 	var formatFeeStr = function(fee) {

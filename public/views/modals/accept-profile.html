@@ -1,0 +1,46 @@
+<nav class="tab-bar">
+	<section class="left-small">
+		<a ng-click="cancel()" class="p10">
+			<span class="text-close" translate>Close</span>
+		</a>
+	</section>
+	<section class="middle tab-bar-section">
+		<h1 class="title ellipsis" ng-style="{'color':color}" translate>
+			Private profile
+		</h1>
+	</section>
+</nav>
+
+<div class="modal-content fix-modals-touch">
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	<div class="row m20t">
+		<div class="large-12 large-centered columns">
+			<ul class="no-bullet size-14" style="margin-bottom: 0px;">
+				<li class="m10b">
+					<span class="text-gray" translate>Attested by:</span><br>
+					<span class="enable_text_select">{{attestor_address || '[Wait...]'}}</span>
+				</li>
+				<li class="m10b">
+					<span class="text-gray" translate>Attested address:</span><br>
+					<span class="enable_text_select">{{address || '[Wait...]'}}</span>
+				</li>
+				<li class="m10b">
+					<span class="text-gray" translate>The attested address belongs to:</span>
+				</li>
+			</ul>
+			<ul class="no-bullet size-14" style="max-width: 260px; margin: auto">
+				<li class="" ng-repeat="(field, value) in openProfile">
+					<span class="text-gray">{{getDisplayField(field)}}:</span>
+					<span class="right enable_text_select">{{value}}</span>
+				</li>
+			</ul>
+			<button class="button black round expand m20t" ng-if="bMyAddress" ng-click="store()" ng-disabled="bDisabled" ng-style="{'background-color':color}" translate>
+				{{buttonLabel}}
+			</button>
+		</div>
+	</div>
+</div>

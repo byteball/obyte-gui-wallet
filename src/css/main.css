@@ -155,7 +155,7 @@ h4.title a {
   background: white;
 }
 
-.preferences ul li, ul.whopays li {
+.preferences ul li, ul.whopays li, ul.profile-entries li {
   padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
 }
@@ -1345,6 +1345,14 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
     font-size: 10px;
     font-weight: 300;
     margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.of-asset-name{
+    font-size: 12px;
+    font-weight: 300;
+    margin-top: -10px;
+    margin-bottom: 5px;
 }
 
 @media (max-width: 360px) {
@@ -1569,4 +1577,18 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 .gray-13.label-aligned-with-select{
 	margin-top: 10px;
+}
+
+.preferences ul.warnings{
+	margin-left: 0px;
+	background-color: transparent;
+}
+.preferences ul.warnings li{
+	cursor: auto !important;
+	overflow: auto;
+	white-space: normal;
+}
+
+form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
+	margin-bottom: -2px;
 }

@@ -15,7 +15,7 @@
     </a>
     </section>
 
-    <section class="middle tab-bar-section">
+    <section class="middle tab-bar-section" style="overflow: hidden;">
 	    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
 	      {{correspondent.name}}
 	    </h1>
@@ -97,7 +97,7 @@
     }*/
     .bubble{
         padding: 10px 15px;
-        margin: 0px 15px;
+        margin: 0px 7px;
         border-radius: 18px;
         position: relative;
         max-width: 80%;
@@ -234,6 +234,12 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	color: #666;
 	font-size: 10px;
 	padding-top: 10px;
+	width: 12%;
+}
+@media (max-width: 350px) {
+	.msg-ts {
+		font-size: 8px;
+	}
 }
 .send-form .textinput::-webkit-input-placeholder {
 	white-space: nowrap;
@@ -241,7 +247,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 .dropup-item {
 	display: inline-block;
 	max-width: 100%;
-	padding: 0 10px;
+	padding: 0 15px 0 10px;
 }
 .dropup-item-link {
 	padding: 8px 0 !important;
@@ -259,7 +265,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
     
   <div class="onGoingProcess" ng-show="onGoingProcess">
-    <div class="onGoingProcess-content" ng-style="{'background-color':profileService.focusedClient.backgroundColor}">
+    <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
         <div class="rect1"></div>
         <div class="rect2"></div>
@@ -278,7 +284,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
       </div-->
 
-      <div id="recording-drop" class="f-dropdown" data-dropdown-content>
+      <div id="recording-drop" class="f-dropdown pos-at-cursor" data-dropdown-content>
       <div class="text" ng-if="correspondent.my_record_pref && correspondent.peer_record_pref" translate>
       	Both you and {{correspondent.name}} enabled local chat history recording.
       </div>
@@ -315,28 +321,34 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
           	class="chatbutton left"
                      dropdown-toggle="#drop" data-options="align:top"><i class="size-18 icon-dots-three-horizontal"></i></button>
 
-            <ul id="drop" class="f-dropdown drop-top" data-dropdown-content >
+            <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content >
 			  <li class="dropup-item">
-			    <a ng-click="insertMyAddress()" class="ellipsis dropup-item-link">
+			    <a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+				  	</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
 			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.shared_address ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+			  		<span translate>Request payment</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
+			  </li>
+			  <div class="clear"></div>
+			  <li class="dropup-item">
+			  	<a ng-click="choosePrivateProfile()" class="ellipsis dropup-item-link">
+			  		<span translate>Insert private profile</span>
+			  	</a>
 			  </li>
 			</ul>
           <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"
-                     ng-style="{'background-color':profileService.focusedClient.backgroundColor}" 
+                     ng-style="{'background-color':index.backgroundColor}" 
                      ng-click="send()"><i class="size-18 icon-paperplane"></i></button>
           <!--<div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">

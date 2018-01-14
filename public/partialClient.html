@@ -1,4 +1,4 @@
-<div class="page" style="display: none">
+<div class="page" style="display: none" id="pagePartialClient">
   <div class="onGoingProcess">
     <div class="onGoingProcess-content" id="spinnerBg">
       <div class="spinner">
@@ -8,7 +8,8 @@
         <div class="rect4"></div>
         <div class="rect5"></div>
       </div>
-      <span translate> Starting the engines... </span>
+      <span translate> Starting the engines...</span>
+	  <span style="display: none" id="textDbLock" translate>Looks like the database is locked, please kill the app or wait</span>
     </div>
   </div>
   <div class="off-canvas-wrap" id="off-canvas-wrap">
@@ -71,6 +72,11 @@
       <a class="close-menu" onclick="openOrCloseMenu()"></a>
     </div>
   </div>
+	<style>
+		#pagePartialClient .onGoingProcess-content {
+			max-height: 5rem;
+		}
+	</style>
 </div>
 <div id="splash">
   <div>

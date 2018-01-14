@@ -7,6 +7,7 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	
 	var wallet = require('byteballcore/wallet.js');
 	var bots = require('byteballcore/bots.js');
+	var mutex = require('byteballcore/mutex.js');
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
 	var fc = profileService.focusedClient;
@@ -86,7 +87,9 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 			bots.load(function(err, rows){
 				if (err) $scope.botsError = err.toString();
 				$scope.bots = rows;
-				$scope.$digest();
+				$timeout(function(){
+					$scope.$digest();
+				});
 			});
 		});
 	};
@@ -96,24 +99,28 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 	}
 
 	$scope.remove = function(device_address) {
+		mutex.lock(["remove_device"], function(unlock){
+			// check to be safe
+			wallet.determineIfDeviceCanBeRemoved(device_address, function(bRemovable) {
+				if (!bRemovable) {
+					unlock();
+					return console.log('device '+device_address+' is not removable');
+				}
+				var device = require('byteballcore/device.js');
 
-		// check to be safe
-		wallet.determineIfDeviceCanBeRemoved(device_address, function(bRemovable) {
-			if (!bRemovable)
-				return console.log('device '+device_address+' is not removable');
-			var device = require('byteballcore/device.js');
+				// send message to paired device
+				// this must be done before removing the device
+				device.sendMessageToDevice(device_address, "removed_paired_device", "removed");
 
-			// send message to paired device
-			// this must be done before removing the device
-			device.sendMessageToDevice(device_address, "removed_paired_device", "removed");
-
-			// remove device
-			device.removeCorrespondentDevice(device_address, function() {
-				$scope.hideRemove = true;
-				correspondentListService.currentCorrespondent = null;
-				$scope.readList();
-				$rootScope.$emit('Local/SetTab', 'chat', true);
-				setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+				// remove device
+				device.removeCorrespondentDevice(device_address, function() {
+					unlock();
+					$scope.hideRemove = true;
+					correspondentListService.currentCorrespondent = null;
+					$scope.readList();
+					$rootScope.$emit('Local/SetTab', 'chat', true);
+					setTimeout(function(){document.querySelector('[ui-view=chat]').scrollTop = listScrollTop;}, 5);
+				});
 			});
 		});
 	};
