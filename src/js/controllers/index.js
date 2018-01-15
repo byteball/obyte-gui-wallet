@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
-			description += "Program: "+conf.program+' '+conf.program_version+"\n";
+			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
@@ -273,7 +273,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var walletName = client.credentials.walletName;
 		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
+            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
         });
 		profileService.deleteWallet({client: client}, function(err) {
 			if (err)
@@ -992,10 +992,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
         if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
 			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+			balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
 			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-			balanceInfo.pendingStr = profileService.formatAmountWithUnit(balanceInfo.pending, asset);
+			balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
 			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmountWithUnit(balanceInfo.shared, asset);
+				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+			if (!balanceInfo.name){
+				if (asset === "base")
+					balanceInfo.name = self.unitName;
+				else if (asset === self.BLACKBYTES_ASSET)
+					balanceInfo.name = self.bbUnitName;
+			}
         }
         self.arrBalances.push(balanceInfo);
     }

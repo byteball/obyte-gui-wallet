@@ -831,32 +831,53 @@ angular.module('copayApp.controllers')
 			}
 
 			var wallet = require('byteballcore/wallet.js');
-			var address = form.address.$modelValue;
-			var amount = form.amount.$modelValue;
-			// address can be [bytreball_addr, email, empty => social sharing]
-			var isTextcoin = !ValidationUtils.isValidAddress(address);
-			var isEmail = ValidationUtils.isValidEmail(address);
-			if (isTextcoin)
-				address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
-			if (isTextcoin && assetInfo.is_private)
-				return self.setSendError("private assets can not be sent as textcoins yet");
-			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+
+			var isMultipleSend = !!form.addresses;
+			if (isMultipleSend) {
+				if (assetInfo.is_private)
+					return self.setSendError("private assets can not be sent to multiple addresses");
+				var outputs = [];
+				form.addresses.$modelValue.split('\n').forEach(function(line){
+					var tokens = line.trim().split(/[\s,;]/);
+					var address = tokens[0];
+					var amount = tokens.pop();
+					if (asset === "base")
+						amount *= unitValue;
+					else if (assetInfo.decimals)
+						amount *= Math.pow(10, assetInfo.decimals);
+					amount = Math.round(amount);
+					outputs.push({address: address, amount: +amount});
+				});
+				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
+			} else {
+				var address = form.address.$modelValue;
+				var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+				var amount = form.amount.$modelValue;
+				// address can be [bytreball_addr, email, empty => social sharing]
+				var isTextcoin = !ValidationUtils.isValidAddress(address);
+				var isEmail = ValidationUtils.isValidEmail(address);
+				if (isTextcoin)
+					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
+				if (isTextcoin && assetInfo.is_private)
+					return self.setSendError("private assets can not be sent as textcoins yet");
+				if (asset === "base")
+					amount *= unitValue;
+				else if (asset === constants.BLACKBYTES_ASSET)
+					amount *= bbUnitValue;
+				else if (assetInfo.decimals)
+					amount *= Math.pow(10, assetInfo.decimals);
+				amount = Math.round(amount);
+				if (isTextcoin && asset === "base") amount += constants.TEXTCOIN_CLAIM_FEE;
+
+				var current_payment_key = '' + asset + address + amount;
+			}
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
 				merkle_proof = form.merkle_proof.$modelValue.trim();
-			if (asset === "base")
-				amount *= unitValue;
-			else if (asset === constants.BLACKBYTES_ASSET)
-				amount *= bbUnitValue;
-			else if (assetInfo.decimals)
-				amount *= Math.pow(10, assetInfo.decimals);
-			amount = Math.round(amount);
-			if (isTextcoin && asset === "base") amount += constants.TEXTCOIN_CLAIM_FEE;
 
-			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
 				return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 			self.current_payment_key = current_payment_key;
@@ -1012,8 +1033,15 @@ angular.module('copayApp.controllers')
 							recipient_device_address: recipient_device_address
 						};
 						if (asset === "base" || !isTextcoin) {
-							opts.to_address = to_address;
-							opts.amount = amount;
+							if (!isMultipleSend) {
+								opts.to_address = to_address;
+								opts.amount = amount;
+							} else {
+								if (asset !== "base")
+									opts.asset_outputs = outputs;
+								else
+									opts.base_outputs = outputs;
+							}
 						} else {
 							opts.asset_outputs = [{address: to_address, amount: amount}];
 							opts.base_outputs = [{address: to_address, amount: constants.TEXTCOIN_ASSET_CLAIM_FEE}];
