@@ -548,7 +548,7 @@ angular.module('copayApp.controllers')
 					indexScope.updateAll();
 				} else {
 					indexScope.assetIndex = 0;
-					indexScope.updateTxHistory();
+					indexScope.updateAll({triggerTxUpdate: true});
 					$rootScope.$emit('Local/SetTab', 'history', null, true);
 				}
 			});
