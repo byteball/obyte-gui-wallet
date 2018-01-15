@@ -437,7 +437,7 @@ input.datafeed_input {
 	                  <i class="icon-wallet size-18" style="margin-right: -3px;vertical-align: baseline;"></i>
 	                </a>
 	              </div>
-				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem; float: left;">
+				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem;">
 					  <a ng-click="home.openBindModal()">
 						  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
 						  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
