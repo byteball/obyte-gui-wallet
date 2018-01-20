@@ -14,7 +14,7 @@ checkOK() {
 
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT="$BUILDDIR/../../byteballbuilds/project-$1"
+PROJECT="$BUILDDIR/../../byteballbuilds/project-$1-tn"
 
 CURRENT_OS=$1
 
@@ -56,7 +56,7 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
 	cd $BUILDDIR
 	echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet Byteball
+	cordova create ../../byteballbuilds/project-$1-tn org.byteball.wallet.test Byteball
 	checkOK
 
 	cd $PROJECT
@@ -97,7 +97,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
 
-	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
+	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball-tn
 	checkOK
 
 	cordova plugin add cordova-plugin-inappbrowser

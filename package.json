@@ -1,8 +1,8 @@
 {
-  "name": "byteball",
+  "name": "byteball-tn",
   "description": "Smart payments made simple",
   "author": "Byteball",
-  "version": "2.1.0",
+  "version": "2.1.0t",
   "keywords": [
     "wallet",
     "byteball",
@@ -47,7 +47,7 @@
     "bip38": "^1.4.0",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git",
+    "byteballcore": "git+https://github.com/byteball/byteballcore.git#testnet",
     "grunt": "^1.0.1",
     "grunt-angular-gettext": "^2.2.3",
     "grunt-browserify": "^5.0.0",
