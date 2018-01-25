@@ -735,7 +735,7 @@ angular.module('copayApp.controllers')
 				}
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
