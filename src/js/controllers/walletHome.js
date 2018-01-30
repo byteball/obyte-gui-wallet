@@ -735,7 +735,7 @@ angular.module('copayApp.controllers')
 				}
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
@@ -870,7 +870,6 @@ angular.module('copayApp.controllers')
 				else if (assetInfo.decimals)
 					amount *= Math.pow(10, assetInfo.decimals);
 				amount = Math.round(amount);
-				if (isTextcoin && asset === "base") amount += constants.TEXTCOIN_CLAIM_FEE;
 
 				var current_payment_key = '' + asset + address + amount;
 			}
@@ -1032,19 +1031,14 @@ angular.module('copayApp.controllers')
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
-						if (asset === "base" || !isTextcoin) {
-							if (!isMultipleSend) {
-								opts.to_address = to_address;
-								opts.amount = amount;
-							} else {
-								if (asset !== "base")
-									opts.asset_outputs = outputs;
-								else
-									opts.base_outputs = outputs;
-							}
+						if (!isMultipleSend) {
+							opts.to_address = to_address;
+							opts.amount = amount;
 						} else {
-							opts.asset_outputs = [{address: to_address, amount: amount}];
-							opts.base_outputs = [{address: to_address, amount: constants.TEXTCOIN_ASSET_CLAIM_FEE}];
+							if (asset !== "base")
+								opts.asset_outputs = outputs;
+							else
+								opts.base_outputs = outputs;
 						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
