@@ -720,7 +720,6 @@ angular.module('copayApp.controllers')
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
 			if (!asset || asset == "base") {
-				amount -= constants.TEXTCOIN_CLAIM_FEE;
 				if (network.exchangeRates['GBYTE_USD']) {
 					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
 				}
