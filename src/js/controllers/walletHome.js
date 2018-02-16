@@ -860,8 +860,6 @@ angular.module('copayApp.controllers')
 				var isEmail = ValidationUtils.isValidEmail(address);
 				if (isTextcoin)
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
-				if (isTextcoin && assetInfo.is_private)
-					return self.setSendError("private assets can not be sent as textcoins yet");
 				if (asset === "base")
 					amount *= unitValue;
 				else if (asset === constants.BLACKBYTES_ASSET)
@@ -1038,6 +1036,24 @@ angular.module('copayApp.controllers')
 								opts.asset_outputs = outputs;
 							else
 								opts.base_outputs = outputs;
+						}
+						var filePath;
+						if (assetInfo.is_private) {
+							opts.getPrivateAssetPayloadSavePath = function(cb) {
+								var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.bbpayment';
+								if (!isCordova) {
+									var inputFile = document.getElementById('nwPrivatePayloadSaveFile');
+									inputFile.setAttribute("nwsaveas", fileName);
+									inputFile.click();
+									inputFile.onchange = function() {
+										filePath = this.value;
+										cb(filePath);
+									};
+								}
+								else {
+									cb((isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory) + '/Byteball/' + fileName);
+								}
+							}
 						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
