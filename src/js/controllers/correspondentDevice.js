@@ -133,16 +133,25 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset){
+	$scope.sendPayment = function(address, amount, asset, device_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
-		backButton.dontDeletePath = true;
-		go.send(function(){
-			//$rootScope.$emit('Local/SetTab', 'send', true);
-			$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+		readMyPaymentAddress(function(my_address){
+			if (single_address){
+				var bSpecificSingleAddress = (single_address.length === 32);
+				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
+				var fc = profileService.focusedClient;
+				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
+					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  Please switch to a single-address wallet and you probably need to insert your address again.");
+			}
+			backButton.dontDeletePath = true;
+			go.send(function(){
+				//$rootScope.$emit('Local/SetTab', 'send', true);
+				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+			});
 		});
 	};
 
