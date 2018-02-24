@@ -145,7 +145,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
 				var fc = profileService.focusedClient;
 				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
-					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  Please switch to a single-address wallet and you probably need to insert your address again.");
+					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
 			}
 			backButton.dontDeletePath = true;
 			go.send(function(){
