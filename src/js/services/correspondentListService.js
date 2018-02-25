@@ -195,15 +195,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
-		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
-		console.log(privateProfileJson);
-		try{
-			var objPrivateProfile = JSON.parse(privateProfileJson);
-		}
-		catch(e){
-			return null;
-		}
-		if (!ValidationUtils.isStringOfLength(objPrivateProfile.unit, 44) || !ValidationUtils.isStringOfLength(objPrivateProfile.payload_hash, 44) || typeof objPrivateProfile.src_profile !== 'object')
+		var privateProfile = require('byteballcore/private_profile.js');
+		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+		if (!objPrivateProfile)
 			return null;
 		var arrFirstFields = [];
 		for (var field in objPrivateProfile.src_profile){
