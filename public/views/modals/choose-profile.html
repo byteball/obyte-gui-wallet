@@ -55,7 +55,7 @@
 					<li class="" ng-repeat="entry in vars.selected_profile.entries">
 						<span class="text-gray">{{getDisplayField(entry.field)}}:</span>
 						<div class="right switch-container"><switch ng-model="entry.provided" data-disabled="!entry.editable" class="green"></switch></div>
-						<span class="right">{{entry.value}}</span>
+						<span class="right enable_text_select">{{entry.value}}</span>
 					</li>
 				</ul>
 			</div>
