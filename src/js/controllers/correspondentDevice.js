@@ -141,7 +141,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			return;
 		}
 		readMyPaymentAddress(function(my_address){
-			if (single_address){
+			if (single_address && single_address !== '0'){
 				var bSpecificSingleAddress = (single_address.length === 32);
 				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
 				var fc = profileService.focusedClient;
