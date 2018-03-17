@@ -998,10 +998,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			if (typeof balanceInfo.shared === 'number')
 				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
 			if (!balanceInfo.name){
-				if (asset === "base")
+				if (asset === "base"){
 					balanceInfo.name = self.unitName;
-				else if (asset === self.BLACKBYTES_ASSET)
+					balanceInfo.decimals = Math.log10(config.unitValue);
+				}
+				else if (asset === self.BLACKBYTES_ASSET){
 					balanceInfo.name = self.bbUnitName;
+					balanceInfo.decimals = Math.log10(config.bbUnitValue);
+				}
 			}
         }
         self.arrBalances.push(balanceInfo);
