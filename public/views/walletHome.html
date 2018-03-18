@@ -689,8 +689,8 @@ input.datafeed_input {
             <div ng-show="!btx.message">
               <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}} 
             </div>
-            <span ng-show="btx.textAddress" class="small-10">
-              <span translate>To email</span>: {{btx.textAddress}} 
+            <span ng-show="btx.textAddress || btx.original_address" class="small-10">
+              <span translate>To email</span>: {{btx.textAddress || btx.original_address}} 
             </span>
             <span ng-show="btx.isTextcoin" class="small-2 right">
               <span class="label tu light-gray radius">textcoin</span>
