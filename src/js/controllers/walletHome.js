@@ -897,7 +897,7 @@ angular.module('copayApp.controllers')
 					}
 					
 					if (isEmail){ // try to replace email with attested BB address
-						var email = address.replace(/^textcoin:/, '');
+						var email = address.replace(/^textcoin:/, '').toLowerCase();
 						var bb_address = indexScope.assocAddressesByEmail[email];
 						console.log('email '+email+': bb_address='+bb_address);
 						if (!bb_address){
