@@ -1,7 +1,7 @@
 'use strict';
 'use strict';
 angular.module('copayApp.services')
-  .factory('addressService', function(profileService, $log, $timeout, lodash, gettextCatalog) {
+  .factory('addressService', function(profileService, $log, $timeout) {
     var root = {};
 
 
@@ -28,20 +28,24 @@ angular.module('copayApp.services')
     root.getAddress = function(walletId, forceNew, cb) {
         if (forceNew) {
             root._createAddress(walletId, function(err, addr) {
-                if (err)
-                    return cb(err);
-                cb(null, addr);
+				$timeout(function(){
+					if (err)
+						return cb(err);
+					cb(null, addr);
+				});
             });
         }
         else {
             var client = profileService.getClient(walletId);
             client.getAddresses({reverse: true, limit: 1, is_change: 0}, function(err, addr) {
-                if (err)
-                    return cb(err);
-                if (addr.length > 0)
-                    return cb(null, addr[0].address);
-                else // issue new address
-                    root.getAddress(walletId, true, cb);
+				$timeout(function(){
+					if (err)
+						return cb(err);
+					if (addr.length > 0)
+						return cb(null, addr[0].address);
+					else // issue new address
+						root.getAddress(walletId, true, cb);
+				});
             });
         }
     };

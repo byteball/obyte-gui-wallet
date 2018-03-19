@@ -36,6 +36,14 @@ angular.module('copayApp.services')
 		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
     };
 
+    root.formatAmountWithUnitIfShort = function(amount, asset, opts) {
+		var str = root.formatAmount(amount, asset, opts);
+		var unit = root.getUnitName(asset);
+		if (unit.length <= 8)
+			str += ' ' + unit;
+		return str;
+    };
+
     root.getUnitName = function(asset) {
 		var config = configService.getSync().wallet.settings;
 		if (asset === 'blackbytes' || asset === constants.BLACKBYTES_ASSET)
@@ -184,7 +192,7 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
-					require('byteballcore/wallet.js');
+					var Wallet = require('byteballcore/wallet.js');
 					var device = require('byteballcore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
@@ -204,6 +212,12 @@ angular.module('copayApp.services')
                     var prevTempDeviceKey = profile.prevTempDeviceKey ? Buffer.from(profile.prevTempDeviceKey, 'base64') : null;
                     device.setTempKeys(tempDeviceKey, prevTempDeviceKey, saveTempKeys);
                     $rootScope.$emit('Local/ProfileBound');
+					Wallet.readAssetMetadata(null, function(assocAssetMetadata){
+						for (var asset in assocAssetMetadata){
+							if (!root.assetMetadata[asset])
+								root.assetMetadata[asset] = assocAssetMetadata[asset];
+						}
+					});
                     return cb();
                 });
             });
@@ -317,6 +331,7 @@ angular.module('copayApp.services')
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Wallet');
             walletClient.createWallet(walletName, 1, 1, {
+			//	isSingleAddress: true,
                 network: 'livenet'
             }, function(err) {
                 if (err)
@@ -370,9 +385,11 @@ angular.module('copayApp.services')
                     cosigners: opts.cosigners,
                     isSingleAddress: opts.isSingleAddress
                 }, function(err) {
-                    if (err) 
-                        return cb(gettext('Error creating wallet')+": "+err);
-                    root._addWalletClient(walletClient, opts, cb);
+					$timeout(function(){
+						if (err) 
+							return cb(gettext('Error creating wallet')+": "+err);
+						root._addWalletClient(walletClient, opts, cb);
+					});
                 });
             });
         });
@@ -554,7 +571,8 @@ angular.module('copayApp.services')
 
           root.bindProfile(p, function(err) {
             storageService.storeNewProfile(p, function(err) {
-              return cb(err);
+				root.setSingleAddressFlag(true);
+				return cb(err);
             });
           });
         });

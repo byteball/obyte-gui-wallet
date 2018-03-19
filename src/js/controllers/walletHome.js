@@ -19,6 +19,7 @@ angular.module('copayApp.controllers')
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
 		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
+		var network = require('byteballcore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
@@ -37,6 +38,7 @@ angular.module('copayApp.controllers')
 		this.addr = {};
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
+		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
@@ -525,7 +527,7 @@ angular.module('copayApp.controllers')
 
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
-			wallet.receiveTextCoin(mnemonic, addr, function(err, unit) {
+			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$rootScope.$emit('closeModal');
 				if (err) {
 					if (err.indexOf("not confirmed") !== -1) {
@@ -533,10 +535,25 @@ angular.module('copayApp.controllers')
 					}
 					return $rootScope.$emit('Local/ShowErrorAlert', err);
 				}
-				indexScope.updateTxHistory();
-				$rootScope.$emit('Local/SetTab', 'history', null, true);
+				if (asset) {
+					var disableBalanceListener = $rootScope.$on('Local/BalanceUpdated', function(assocBalances) {
+						var assetIndex = lodash.findIndex(indexScope.arrBalances, {
+							asset: asset
+						});
+						indexScope.assetIndex = assetIndex;
+						indexScope.updateTxHistory();
+						$rootScope.$emit('Local/SetTab', 'history', null, true);
+						disableBalanceListener();
+					});
+					indexScope.updateAll();
+				} else {
+					indexScope.assetIndex = 0;
+					indexScope.updateAll({triggerTxUpdate: true});
+					$rootScope.$emit('Local/SetTab', 'history', null, true);
+				}
 			});
 		}
+	
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
@@ -700,15 +717,30 @@ angular.module('copayApp.controllers')
 			};
 		};
 
-		function getShareMessage(amount, mnemonic) {
+		function getShareMessage(amount, mnemonic, asset) {
+			var usd_amount_str = "";
+			if (!asset || asset == "base") {
+				if (network.exchangeRates['GBYTE_USD']) {
+					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+				}
+				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
+				asset = "GB";
+			} else {
+				//indexScope.arrBalances[$scope.index.assetIndex]
+				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
+				if (assetInfo && assetInfo.name) {
+					asset = assetInfo.name;
+					amount /= Math.pow(10, assetInfo.decimals);
+				}
+			}
 			return {
-				message: "Here is your link to receive "+(amount/1e9).toLocaleString([], {maximumFractionDigits: 9})+" GB: https://byteball.org/openapp.html#textcoin?" + mnemonic,
+				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/#textcoin?" + mnemonic,
 				subject: "Byteball user beamed you money"
 			}
 		}
 
-		this.openShareTextcoinModal = function(addr, mnemonic, amount, isResend) {
-			var msg = getShareMessage(amount, mnemonic);
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, asset, isResend) {
+			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
 			$rootScope.modalOpened = true;
@@ -798,32 +830,53 @@ angular.module('copayApp.controllers')
 			}
 
 			var wallet = require('byteballcore/wallet.js');
-			var address = form.address.$modelValue;
-			var amount = form.amount.$modelValue;
-			// address can be [bytreball_addr, email, empty => social sharing]
-			var isTextcoin = !ValidationUtils.isValidAddress(address);
-			var isEmail = ValidationUtils.isValidEmail(address);
-			if (isTextcoin)
-				address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
-			if (isTextcoin && asset !== 'base')
-				return self.setSendError("only bytes can be sent as textcoin now");
-			var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+
+			var isMultipleSend = !!form.addresses;
+			if (isMultipleSend) {
+				if (assetInfo.is_private)
+					return self.setSendError("private assets can not be sent to multiple addresses");
+				var outputs = [];
+				form.addresses.$modelValue.split('\n').forEach(function(line){
+					var tokens = line.trim().split(/[\s,;]/);
+					var address = tokens[0];
+					var amount = tokens.pop();
+					if (asset === "base")
+						amount *= unitValue;
+					else if (assetInfo.decimals)
+						amount *= Math.pow(10, assetInfo.decimals);
+					amount = Math.round(amount);
+					outputs.push({address: address, amount: +amount});
+				});
+				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
+			} else {
+				var address = form.address.$modelValue;
+				var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
+				var amount = form.amount.$modelValue;
+				// address can be [bytreball_addr, email, empty => social sharing]
+				var isTextcoin = !ValidationUtils.isValidAddress(address);
+				var isEmail = ValidationUtils.isValidEmail(address);
+				var original_address;  // might be sent to email if the email address is attested
+				if (isTextcoin)
+					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
+				if (isTextcoin && assetInfo.is_private)
+					return self.setSendError("private assets can not be sent as textcoins yet");
+				if (asset === "base")
+					amount *= unitValue;
+				else if (asset === constants.BLACKBYTES_ASSET)
+					amount *= bbUnitValue;
+				else if (assetInfo.decimals)
+					amount *= Math.pow(10, assetInfo.decimals);
+				amount = Math.round(amount);
+
+				var current_payment_key = '' + asset + address + amount;
+			}
 			var merkle_proof = '';
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
 				merkle_proof = form.merkle_proof.$modelValue.trim();
-			if (asset === "base")
-				amount *= unitValue;
-			else if (asset === constants.BLACKBYTES_ASSET)
-				amount *= bbUnitValue;
-			else if (assetInfo.decimals)
-				amount *= Math.pow(10, assetInfo.decimals);
-			amount = Math.round(amount);
-			if (isTextcoin) amount += constants.TEXTCOIN_CLAIM_FEE;
 
-			var current_payment_key = '' + asset + address + amount;
 			if (current_payment_key === self.current_payment_key)
 				return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 			self.current_payment_key = current_payment_key;
@@ -841,6 +894,33 @@ angular.module('copayApp.controllers')
 							$scope.$digest();
 						}, 1);
 						return;
+					}
+					
+					if (isEmail){ // try to replace email with attested BB address
+						var email = address.replace(/^textcoin:/, '');
+						var bb_address = indexScope.assocAddressesByEmail[email];
+						console.log('email '+email+': bb_address='+bb_address);
+						if (!bb_address){
+							indexScope.resolveEmailToAddress(email, function(){
+								// assocAddressesByEmail is now filled
+								delete self.current_payment_key;
+								self.submitPayment();
+							});
+							return;
+						}
+						if (bb_address === 'unknown')
+							delete indexScope.assocAddressesByEmail[email]; // send textcoin now but retry next time
+						else if (bb_address === 'none'){
+							// go on to send textcoin
+						}
+						else if (ValidationUtils.isValidAddress(bb_address)){
+							address = bb_address;
+							isEmail = false;
+							isTextcoin = false;
+							original_address = email;
+						}
+						else
+							throw Error("unrecognized bb_address: "+bb_address);
 					}
 
 					var device = require('byteballcore/device.js');
@@ -973,13 +1053,20 @@ angular.module('copayApp.controllers')
 							shared_address: indexScope.shared_address,
 							merkle_proof: merkle_proof,
 							asset: asset,
-							to_address: to_address,
 							do_not_email: true,
-							amount: amount,
 							send_all: self.bSendAll,
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
+						if (!isMultipleSend) {
+							opts.to_address = to_address;
+							opts.amount = amount;
+						} else {
+							if (asset !== "base")
+								opts.asset_outputs = outputs;
+							else
+								opts.base_outputs = outputs;
+						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1000,6 +1087,11 @@ angular.module('copayApp.controllers')
 							var binding = self.binding;
 							self.resetForm();
 							$rootScope.$emit("NewOutgoingTx");
+							if (original_address){
+								var db = require('byteballcore/db.js');
+								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
+									[unit, to_address, original_address]);
+							}
 							if (recipient_device_address) { // show payment in chat window
 								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
 								if (binding && binding.reverseAmount) { // create a request for reverse payment
@@ -1019,18 +1111,20 @@ angular.module('copayApp.controllers')
 								}
 							}
 							else if (Object.keys(mnemonics).length) {
-								var mnemonic = mnemonics[address];						
+								var mnemonic = mnemonics[to_address];
+								if (opts.send_all && asset === "base")
+									amount = assetInfo.stable;
 
 								if (isEmail) {
-									self.openShareTextcoinModal(address.slice("textcoin:".length), mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+									self.openShareTextcoinModal(to_address.slice("textcoin:".length), mnemonic, amount, asset, false);
 								} else {
 									if (isCordova) {
 										if (isMobile.Android() || isMobile.Windows()) {
 											window.ignoreMobilePause = true;
 										}
-										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount-constants.TEXTCOIN_CLAIM_FEE, mnemonic));
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
 									} else {
-										self.openShareTextcoinModal(null, mnemonic, amount-constants.TEXTCOIN_CLAIM_FEE);
+										self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
 									}
 								}
 
@@ -1497,15 +1591,17 @@ angular.module('copayApp.controllers')
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
+				$scope.exchangeRates = network.exchangeRates;
+				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
 				$scope.shareAgain = function() {
 					if (isCordova) {
 						if (isMobile.Android() || isMobile.Windows()) {
 							window.ignoreMobilePause = true;
 						}
-						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount-constants.TEXTCOIN_CLAIM_FEE, btx.mnemonic));
+						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount, btx.mnemonic, btx.asset));
 					} else {
-						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount-constants.TEXTCOIN_CLAIM_FEE, true);
+						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true);
 					}
 				}
 
@@ -1513,7 +1609,7 @@ angular.module('copayApp.controllers')
 					(function(){
 						var wallet = require('byteballcore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
-							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove an ability to claim it back or to resend'));
+							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend'));
 							$scope.cancel_button_class = 'light-gray outline';
 							$scope.loading = false;
 							$scope.confirm_label = gettextCatalog.getString('Confirm');
@@ -1717,11 +1813,13 @@ angular.module('copayApp.controllers')
 		if (isCordova){
 			window.plugins.appPreferences.fetch(function(referrer){
 				if (referrer) {
+					console.log('==== referrer: '+referrer);
 					window.plugins.appPreferences.remove(function(){}, function(){}, 'referrer');
 					store_mnemonic_back = function() {
 						window.plugins.appPreferences.store(function(){}, function(){}, 'referrer', referrer);
 					};
-					$rootScope.$emit("claimTextcoin", referrer);
+					if (referrer.split('-').length % 3 === 0)
+						$rootScope.$emit("claimTextcoin", referrer);
 				}
 			}, function(){}, "referrer");
 		}

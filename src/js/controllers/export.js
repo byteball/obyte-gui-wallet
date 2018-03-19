@@ -55,13 +55,14 @@ angular.module('copayApp.controllers').controller('exportController',
 		function checkValueFileAndChangeStatusExported() {
 			$timeout(function() {
 				var inputFile = document.getElementById('nwExportInputFile');
-				if(!inputFile.value && self.exporting){
+				var value = inputFile ? inputFile.value : null;
+				if(!value && self.exporting){
 					self.exporting = false;
 					$timeout(function() {
 						$rootScope.$apply();
 					});
 				}
-				if(!inputFile.value && self.connection){
+				if(!value && self.connection){
 					self.connection.release();
 					self.connection = false;
 				}

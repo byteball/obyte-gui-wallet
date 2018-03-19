@@ -24,6 +24,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
+  self.assocAddressesByEmail = {};
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -71,7 +72,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
-			description += "Program: "+conf.program+' '+conf.program_version+"\n";
+			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
@@ -141,15 +142,39 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		);
 	}
 	
-	function setSyncProgress(percent){
+	function readSyncPercent(cb){
+		var db = require('byteballcore/db.js');
+		db.query("SELECT COUNT(1) AS count_left FROM catchup_chain_balls", function(rows){
+			var count_left = rows[0].count_left;
+			if (count_left === 0)
+				return cb("0%");
+			if (catchup_balls_at_start === -1)
+				catchup_balls_at_start = count_left;
+			var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
+			cb(percent+'%');
+		});
+	}
+	
+	function readSyncProgress(cb){
 		readLastDateString(function(strProgress){
-			self.syncProgress = strProgress || (percent + "% of new units");
+			strProgress ? cb(strProgress) : readSyncPercent(cb);
+		});
+	}
+	
+	function setSyncProgress(){
+		readSyncProgress(function(strProgress){
+			self.syncProgress = strProgress;
 			$timeout(function() {
 				$rootScope.$apply();
 			});
 		});
 	}
 
+	eventBus.on('rates_updated', function(){
+		$timeout(function() {
+			$rootScope.$apply();
+		});
+	});
 	eventBus.on('started_db_upgrade', function(){
 		$timeout(function() {
 			if (self.bUpgradingDb === undefined)
@@ -167,14 +192,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var catchup_balls_at_start = -1;
     eventBus.on('catching_up_started', function(){
         self.setOngoingProcess('Syncing', true);
-		setSyncProgress(0);
+		setSyncProgress();
     });
-    eventBus.on('catchup_balls_left', function(count_left){
-    	if (catchup_balls_at_start === -1) {
-    		catchup_balls_at_start = count_left;
-    	}
-    	var percent = ((catchup_balls_at_start - count_left) / catchup_balls_at_start * 100).toFixed(3);
-		setSyncProgress(percent);
+    eventBus.on('catchup_next_hash_tree', function(){
+		setSyncProgress();
     });
     eventBus.on('catching_up_done', function(){
 		catchup_balls_at_start = -1;
@@ -253,7 +274,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var walletName = client.credentials.walletName;
 		var device = require('byteballcore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+correspondent.name);
+            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
         });
 		profileService.deleteWallet({client: client}, function(err) {
 			if (err)
@@ -596,6 +617,46 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
 	
+	
+	self.resolveEmailToAddress = function(email, onDone){
+		function setResult(result){
+			self.assocAddressesByEmail[email] = result;
+			$timeout(onDone);
+		}
+		var conf = require('byteballcore/conf.js');
+		var db = require('byteballcore/db.js');
+		var network = require('byteballcore/network.js');
+		var emailAttestor = configService.getSync().emailAttestor;
+		if (!emailAttestor)
+			return setResult('none');
+		db.query(
+			"SELECT address, is_stable FROM attested_fields CROSS JOIN units USING(unit) \n\
+			WHERE attestor_address=? AND field='email' AND value=? ORDER BY attested_fields.rowid DESC LIMIT 1", 
+			[emailAttestor, email], 
+			function(rows){
+				if (rows.length > 0)
+					return setResult( (!conf.bLight || rows[0].is_stable) ? rows[0].address : 'unknown' );
+				// not found
+				if (!conf.bLight)
+					return setResult('none');
+				// light
+				var params = {attestor_address: emailAttestor, field: 'email', value: email};
+				network.requestFromLightVendor('light/get_attestation', params, function(ws, request, response){
+					if (response.error)
+						return setResult('unknown');
+					var attestation_unit = response;
+					if (attestation_unit === "") // no attestation
+						return setResult('none');
+					network.requestHistoryFor([attestation_unit], [], function(err){
+						if (err)
+							return setResult('unknown');
+						// now attestation_unit is in the db (stable or unstable)
+						self.resolveEmailToAddress(email, onDone);
+					});
+				});
+			}
+		);
+	}
 
     
   self.goHome = function() {
@@ -972,10 +1033,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
         if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
 			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+			balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
 			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-			balanceInfo.pendingStr = profileService.formatAmountWithUnit(balanceInfo.pending, asset);
+			balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
 			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmountWithUnit(balanceInfo.shared, asset);
+				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+			if (!balanceInfo.name){
+				if (asset === "base"){
+					balanceInfo.name = self.unitName;
+					balanceInfo.decimals = Math.log10(config.unitValue);
+				}
+				else if (asset === self.BLACKBYTES_ASSET){
+					balanceInfo.name = self.bbUnitName;
+					balanceInfo.decimals = Math.log10(config.bbUnitValue);
+				}
+			}
         }
         self.arrBalances.push(balanceInfo);
     }
@@ -1120,7 +1192,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             link.setAttribute("download", filename);
             link.click();
           }
-          $rootScope.$apply();
+		  $timeout(function(){
+			  $rootScope.$apply();
+		  });
       });
     });
   };
