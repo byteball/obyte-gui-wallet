@@ -17,7 +17,7 @@ msgid "(current wallet)"
 msgstr ""
 
 #: public/views/modals/choose-profile.html:47
-msgid "(my another wallet)"
+msgid "(my other wallet)"
 msgstr ""
 
 #: public/views/walletHome.html:667
