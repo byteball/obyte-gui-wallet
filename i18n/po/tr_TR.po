@@ -11,59 +11,63 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Turkish\n"
 "Language: tr_TR\n"
-"PO-Revision-Date: 2017-10-18 03:41-0400\n"
+"PO-Revision-Date: 2018-03-01 16:00-0500\n"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
-msgstr "(site bakiyesi gorunmuyor ve para harcanamaz)"
+msgstr "(Site sizin hesap bakiyenizi görmeyecek ve para harcanmayacaktır)"
 
-#: public/views/walletHome.html:587
+#: public/views/walletHome.html:628
 msgid "(possible double spend)"
 msgstr "(olası çift harcama)"
 
 #: public/views/create.html:92
 msgid "-- Select co-signer --"
-msgstr ""
+msgstr "--Ortak imzacı seç--"
+
+#: public/views/modals/claim-textcoin.html:32
+msgid "12 words separated by dashes"
+msgstr "Tire ile ayrılmış 12 kelime"
 
 #: public/views/preferencesGlobal.html:135
 msgid "About Byteball"
-msgstr ""
+msgstr "Byteball hakkında"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:118
+#: src/js/controllers/walletHome.js:121
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
-msgstr "Onay"
+msgstr "Kabul et"
 
 #: public/views/acceptCorrespondentInvitation.html:23
 msgid "Accept invitation"
-msgstr ""
+msgstr "Daveti kabul et"
 
 #: public/views/addCorrespondentDevice.html:22
 msgid "Accept invitation from the other device"
-msgstr ""
+msgstr "Diğer cihazdan gelen davetiyeyi kabul et"
 
 #: public/views/preferencesInformation.html:65
 msgid "Account"
-msgstr ""
+msgstr "Hesap"
 
 #: public/views/bot.html:36
 msgid "Add Bot"
-msgstr ""
+msgstr "Bot ekle"
 
 #: public/views/correspondentDevices.html:69
 msgid "Add a new device"
-msgstr ""
+msgstr "Yeni bir cihaz ekle"
 
 #: public/views/modals/destination-address.html:106
 #: public/views/modals/destination-address.html:99
 msgid "Add a new entry"
-msgstr ""
+msgstr "Yeni bir girdi ekle"
 
-#: public/views/walletHome.html:491
+#: public/views/walletHome.html:532
 msgid "Add fields"
-msgstr ""
+msgstr "Alan ekle"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -71,7 +75,7 @@ msgstr "Cüzdan ekle"
 
 #: public/views/correspondentDevices.html:89
 msgid "Added"
-msgstr ""
+msgstr "Eklendi"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
@@ -79,14 +83,14 @@ msgstr ""
 msgid "Address"
 msgstr "Adres"
 
-#: public/views/walletHome.html:466
+#: public/views/walletHome.html:507
 msgid "Address to attest"
-msgstr ""
+msgstr "Doğrulanacak adres"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
-msgstr ""
+msgstr "Adres defteri"
 
 #: public/views/preferences.html:56
 msgid "Advanced"
@@ -94,7 +98,7 @@ msgstr "Gelişmiş"
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
-msgstr "Kabul"
+msgstr "Kabul et"
 
 #: public/views/preferencesAlias.html:12
 msgid "Alias for <i>{{index.walletName}}</i>"
@@ -102,44 +106,44 @@ msgstr "<i>{{index.walletName}}</i> için takma ad"
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
-msgstr ""
+msgstr "Tüm Cüzdan Adresleri"
 
 #: public/views/translators.html:52
 msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr ""
+msgstr "Byteball, çevirisine yapılacak tüm katkılara açıktır. Crowdin.com adresinden kaydolun ve şu adresteki Byteball projesine katılın"
 
 #: public/views/modals/multi-payment.html:56
 msgid "Already Paid"
-msgstr ""
+msgstr "Zaten Ödendi"
 
-#: public/views/walletHome.html:132
+#: public/views/walletHome.html:150
 msgid "Also"
-msgstr ""
+msgstr "Ayrıca"
 
 #: public/views/splash.html:91
 msgid "Also in the Settings menu, you will find security options such as setting a password."
-msgstr ""
+msgstr "Ayrıca Ayarlar menüsünde, bir şifre belirleme gibi güvenlik seçeneklerini bulacaksınız."
 
 #: public/views/includes/password.html:42
 msgid "Also, don't forget to delete your seed"
-msgstr ""
+msgstr "Ayrıca, kurtarma sözcüklerinizi silmeyi unutmayınız"
 
 #: public/views/includes/output.html:6
 #: public/views/modals/customized-amount.html:38
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:381
+#: public/views/walletHome.html:367
 msgid "Amount"
-msgstr "Tutar"
+msgstr "Miktar"
 
 #: public/views/modals/vote.html:22
 msgid "Answer:"
-msgstr ""
+msgstr "Cevap:"
 
 #: public/views/copayers.html:19
 msgid "Approve wallet creation on other devices"
-msgstr ""
+msgstr "Diğer cihazlarda cüzdan oluşturma işlemini onayla"
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -150,29 +154,29 @@ msgstr "Yedekleme kelimelerini silmek istediğinizden emin misiniz?"
 msgid "Are you sure you want to delete this wallet?"
 msgstr "Bu cüzdanı silmek istediğinizden emin misiniz?"
 
-#: public/views/modals/customized-amount.html:71
+#: public/views/modals/customized-amount.html:72
 msgid "Asset"
-msgstr ""
+msgstr "Varlık"
 
-#: public/views/walletHome.html:455
+#: public/views/walletHome.html:496
 msgid "Attest profile data linked to any Byteball address."
-msgstr ""
+msgstr "Herhangi bir Byteball adresine bağlı profil verisini doğrula."
 
-#: public/views/walletHome.html:308
+#: public/views/walletHome.html:333
 msgid "Attestation"
-msgstr ""
+msgstr "Doğrulama"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr ""
+msgstr "Tanık listesini hub'dan otomatik olarak güncelle"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr ""
+msgstr "Tanık listesini bu hub'dan otomatik olarak güncelle"
 
 #: public/views/includes/available-balance.html:7
 msgid "Available Balance"
-msgstr "Kullanılabilir Bakiye"
+msgstr "Mevcut Bakiye"
 
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/bot.html:13
@@ -186,13 +190,13 @@ msgstr "Kullanılabilir Bakiye"
 msgid "Back"
 msgstr "Geri"
 
-#: public/views/walletHome.html:214
+#: public/views/walletHome.html:232
 msgid "Backup now"
 msgstr "Şimdi yedekle"
 
 #: public/views/preferencesGlobal.html:100
 msgid "Backup wallet seed"
-msgstr ""
+msgstr "Cüzdan kurtarma kelimelerini yedekle"
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -202,36 +206,35 @@ msgstr "Yedekleme kelimeleri silindi"
 msgid "Balance By Address"
 msgstr "Adrese göre Bakiye"
 
-#: public/views/walletHome.html:208
+#: public/views/walletHome.html:226
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
-msgstr "Para almadan önce cüzdanınızı mutlaka yedeklemeniz önerilir."
+msgstr "Para almadan önce cüzdan anahtarlarınızı yedeklemeniz şiddetle tavsiye edilir."
 
 #: public/views/backup.html:26
 msgid "Better yet, use multisig wallets with redundancy,"
-msgstr ""
+msgstr "Daha da iyisi, ortaklık özelliğine sahip çoklu imza cüzdanlarını kullanın,"
 
 #: public/views/modals/bind.html:8
 #: public/views/modals/bind.html:86
 msgid "Bind payment"
-msgstr ""
+msgstr "Ödemeyi bağla"
 
-#: public/views/walletHome.html:356
-#: public/views/walletHome.html:363
+#: public/views/walletHome.html:416
+#: public/views/walletHome.html:423
 msgid "Bind the payment to a condition"
-msgstr ""
+msgstr "Ödemeyi bir koşula bağla"
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
-msgstr "Bitcoin URI geçerli değil!"
+msgstr "Bitcoin URI'sı geçerli değil!"
 
 #: public/views/bot.html:23
-#: public/views/correspondentDevices.html:38
 msgid "Bot Store"
-msgstr ""
+msgstr "Bot Mağazası"
 
 #: public/views/correspondentDevice.html:288
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
-msgstr ""
+msgstr "Hem siz hem de {{correspondent.name}} yerel sohbet geçmişi kaydetmeyi etkinleştirdi."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
@@ -239,7 +242,7 @@ msgstr "Desteklenmeyen tarayıcı"
 
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"
-msgstr ""
+msgstr "Byteball adresi"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -248,36 +251,56 @@ msgstr "İPTAL"
 #: public/views/splash.html:43
 #: public/views/splash.html:85
 msgid "CONTINUE"
-msgstr ""
+msgstr "DEVAM ET"
 
 #: public/views/modals/destination-address.html:127
-#: public/views/walletHome.html:429
+#: public/views/walletHome.html:464
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:119
+#: src/js/controllers/walletHome.js:122
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "İptal"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Change hub:"
-msgstr ""
+msgstr "Hub değiştir:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Cüzdan takma adı değişikliği sadece yerel cüzdan adını etkiler."
 
-#: src/js/controllers/index.js:609
+#: src/js/controllers/index.js:622
 msgid "Chat"
-msgstr ""
+msgstr "Sohbet"
 
 #: public/views/import.html:33
 msgid "Choose File"
-msgstr ""
+msgstr "Dosya seçin"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
-msgstr ""
+msgstr "Göndermek istediğiniz cihazı seçin"
+
+#: src/js/controllers/walletHome.js:488
+msgid "Claim funds"
+msgstr "Paraları al"
+
+#: public/views/modals/claim-textcoin.html:8
+msgid "Claim funds by textcoin"
+msgstr "Paraları textcoin ile al"
+
+#: public/views/walletHome.html:302
+msgid "Claim funds using textcoin"
+msgstr "Paraları textcoin kullanarak al"
+
+#: public/views/modals/share.html:18
+msgid "Click the button to <span ng-if=\"isResend\">re</span>send email"
+msgstr "E-posta'yı <span ng-if=\"isResend\">yeniden </span>göndermek için butona tıklayınız"
+
+#: public/views/walletHome.html:477
+msgid "Click this button to create payment and share it via private message in chat apps"
+msgstr "Ödeme oluşturmak ve sohbet uygulamalarında özel mesajlar aracılığıyla göndermek için bu butona tıklayınız"
 
 #: public/views/correspondentDevices.html:25
 #: public/views/includes/topbar.html:13
@@ -285,27 +308,29 @@ msgstr ""
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
 #: public/views/modals/bind.html:4
+#: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
 #: public/views/modals/offer-contract.html:29
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
+#: public/views/modals/share.html:4
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Kapat"
 
 #: public/views/create.html:90
 msgid "Co-signer {{$index+1}}:"
-msgstr ""
+msgstr "Ortak imzacı {{$index+1}}:"
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
-msgstr ""
+msgstr "Ortak imzacılar"
 
 #: public/views/includes/sidebar.html:36
 msgid "Co-signers for multisig"
-msgstr ""
+msgstr "Çoklu imza için ortak imzacılar"
 
 #: public/views/preferences.html:29
 msgid "Color"
@@ -313,115 +338,115 @@ msgstr "Renk"
 
 #: public/views/preferencesAbout.html:18
 msgid "Commit hash"
-msgstr ""
+msgstr "Commit hash"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr ""
+msgstr "Dosya sıkıştırılsın mı? (Daha yavaş)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:445
+#: src/js/controllers/index.js:459
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:120
+#: src/js/controllers/walletHome.js:123
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Onayla"
 
 #: public/views/modals/vote.html:46
 msgid "Confirm Vote"
-msgstr ""
+msgstr "Oyu Onayla"
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
-msgstr ""
+msgstr "Ödemeyi Onayla"
 
 #: public/views/modals/vote.html:8
 msgid "Confirm vote"
-msgstr ""
+msgstr "Oyu onayla"
 
-#: public/views/modals/tx-details.html:108
+#: public/views/modals/tx-details.html:115
 msgid "Confirmed"
-msgstr ""
+msgstr "Onaylandı"
 
 #: public/views/correspondentDevices.html:35
 msgid "Contacts"
-msgstr ""
+msgstr "Kişiler"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:391
+#: src/js/controllers/walletHome.js:389
 msgid "Copied to clipboard"
 msgstr "Panoya kopyalandı"
 
 #: public/views/recoveryFromSeed.html:42
 msgid "Correspondents are not restored."
-msgstr ""
+msgstr "Muhabirler geri yüklenmez."
 
-#: src/js/controllers/walletHome.js:601
+#: src/js/controllers/walletHome.js:668
 msgid "Could not create payment proposal"
 msgstr "Ödeme teklifi oluşturulamadı"
 
-#: src/js/services/profileService.js:222
+#: src/js/services/profileService.js:265
 msgid "Could not create using the specified extended private key"
 msgstr "Belirtilen genişletilmiş özel anahtar kullanılarak oluşturulamadı"
 
-#: src/js/services/profileService.js:232
+#: src/js/services/profileService.js:275
 msgid "Could not create using the specified extended public key"
 msgstr "Belirtilen genişletilmiş genel anahtar kullanılarak oluşturulamadı"
 
-#: src/js/services/profileService.js:215
+#: src/js/services/profileService.js:258
 msgid "Could not create: Invalid wallet seed"
-msgstr "Oluşturulamadı: geçersiz cüzdan kelimeleri"
+msgstr "Oluşturulamadı: geçersiz cüzdan kurtarma kelimeleri"
 
 #: src/js/controllers/backup.js:81
 msgid "Could not decrypt"
-msgstr ""
+msgstr "Şifre çözülemedi"
 
-#: public/views/walletHome.html:542
+#: public/views/walletHome.html:583
 msgid "Could not fetch transaction history"
 msgstr "İşlem geçmişi alınamadı"
 
-#: src/js/services/profileService.js:447
-#: src/js/services/profileService.js:474
-#: src/js/services/profileService.js:496
+#: src/js/services/profileService.js:490
+#: src/js/services/profileService.js:517
+#: src/js/services/profileService.js:539
 msgid "Could not import"
-msgstr "İçe alınamadı"
+msgstr "İçe aktarılamadı"
 
-#: src/js/services/profileService.js:424
+#: src/js/services/profileService.js:467
 msgid "Could not import. Check input file and password"
-msgstr "İçe alınamadı. Dosyayı ve parolanızı kontrol edin"
+msgstr "İçe alınamadı. Dosyayı ve parolayı kontrol ediniz"
 
-#: src/js/controllers/walletHome.js:49
+#: src/js/controllers/walletHome.js:51
 msgid "Could not recognize a valid Byteball QR Code"
-msgstr ""
+msgstr "Geçerli bir Byteball QR Kodu tanınamadı"
 
-#: src/js/controllers/walletHome.js:601
+#: src/js/controllers/walletHome.js:668
 msgid "Could not send payment"
-msgstr "Ödeme gönderemedi"
+msgstr "Ödeme gönderilemedi"
 
-#: public/views/walletHome.html:26
+#: public/views/walletHome.html:44
 msgid "Create"
 msgstr "Oluştur"
 
 #: public/views/includes/sidebar.html:26
 msgid "Create a new wallet"
-msgstr ""
+msgstr "Yeni bir cüzdan oluştur"
 
 #: public/views/add.html:15
 #: public/views/create.html:175
 msgid "Create new wallet"
 msgstr "Yeni cüzdan oluştur"
 
-#: src/js/controllers/index.js:272
+#: src/js/controllers/index.js:286
 msgid "Create new wallet  together with  ?"
-msgstr ""
+msgstr "Yeni cüzdan kimle birlikte oluşturulsun?"
 
 #: public/views/create.html:171
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr ""
+msgstr "{{totalCosigners}} kişinin {{requiredCosigners}}'i cüzdanı oluştur"
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
-msgstr ""
+msgstr "Oluşturuldu:"
 
 #: public/views/splash.html:75
 msgid "Creating Profile..."
@@ -435,37 +460,37 @@ msgstr "Cüzdan oluşturuluyor..."
 msgid "DELETE WORDS"
 msgstr "KELİMELERİ SİL"
 
-#: public/views/walletHome.html:310
+#: public/views/walletHome.html:335
 msgid "Data"
-msgstr ""
+msgstr "Veri"
 
-#: public/views/walletHome.html:307
+#: public/views/walletHome.html:332
 msgid "Data into datafeed"
-msgstr ""
+msgstr "Veritabanına veri"
 
-#: public/views/modals/tx-details.html:78
+#: public/views/modals/tx-details.html:85
 msgid "Date"
 msgstr "Tarih"
 
-#: src/js/controllers/index.js:242
+#: src/js/controllers/index.js:256
 msgid "Declined"
-msgstr ""
+msgstr "Reddedildi"
 
 #: public/views/paperWallet.html:40
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr ""
+msgstr "Bir kağıt cüzdanın şifresini çözmek bu cihazda yaklaşık 5 dakika sürebilir. lütfen sabırlı olun ve uygulamayı açık tutun."
 
-#: public/views/walletHome.html:161
+#: public/views/walletHome.html:179
 msgid "Definition"
-msgstr ""
+msgstr "Tanım"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
-msgstr ""
+msgstr "Akıllı adresin tanımı"
 
 #: public/views/modals/multi-payment.html:25
 msgid "Definitions of addresses"
-msgstr ""
+msgstr "Adreslerin tanımları"
 
 #: public/views/preferencesAdvanced.html:31
 msgid "Delete Wallet"
@@ -487,84 +512,84 @@ msgstr "Ayrıntılar"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Device address"
-msgstr ""
+msgstr "Cihaz adresi"
 
 #: public/views/preferencesDeviceName.html:12
 #: public/views/preferencesGlobal.html:17
 msgid "Device name"
-msgstr ""
+msgstr "Cihaz adı"
 
 #: public/views/preferencesDeviceName.html:16
 msgid "Device name is visible to other devices you communicate with."
-msgstr ""
+msgstr "Cihaz adı, iletişim kurduğunuz diğer cihazlar tarafından görülebilir."
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Do not clone wallets, stop using the original wallet with this seed."
-msgstr ""
+msgstr "Cüzdanların klonlamayın, bu kurtarma kelimeleriyle orijinal cüzdanı kullanmayı bırakın."
 
 #: public/views/backup.html:59
 msgid "Do not use it to clone the wallet."
-msgstr ""
+msgstr "Cüzdanı klonlamak için kullanmayın."
 
 #: public/views/translators.html:55
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
-msgstr "Kendi dilinizi görmüyor musunuz? Crowdin kurucusu ile irtibata geçin! Dilinizi desteklemekten mutluluk duyarız."
+msgstr "Crowdin'de kendi dilinizi görmüyor musunuz? Kurucu ile Crowdin'de iletişime geçin! Dilinizi desteklemekten mutluluk duyarız."
 
 #: public/views/inviteCorrespondentDevice.html:28
 #: public/views/modals/destination-address.html:41
 msgid "Done"
-msgstr ""
+msgstr "Tamam"
 
-#: public/views/walletHome.html:637
+#: public/views/walletHome.html:678
 msgid "Download CSV file"
 msgstr "CSV dosyasını indir"
 
 #: public/views/splash.html:26
 msgid "Download the entire Byteball database"
-msgstr ""
+msgstr "Tüm Byteball veritabanını indir"
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: public/views/correspondentDevice.html:291
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
-msgstr ""
+msgstr "Siz ya da {{correspondent.name}} sohbet geçmişini kaydetmeyi devre dışı bıraktı. Geçmiş artık kimse için kaydedilmiyor."
 
 #: public/views/preferencesEmail.html:33
 msgid "Email for wallet notifications"
-msgstr "E-posta ile cüzdan bildirimleri"
+msgstr "Cüzdan bildirimleri için E-mail"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
-msgstr ""
+msgstr "Anlık bildirimleri etkinleştir"
 
 #: public/views/acceptCorrespondentInvitation.html:47
 msgid "Enter the pairing code received from the other device, or use your camera (icon at the upper right corner) to scan the QR code displayed on the other device."
-msgstr ""
+msgstr "Diğer cihazdan alınan eşleştirme kodunu girin veya diğer cihazlarda gösterilen QR kodunu taramak için kamerayı (sağ üst köşedeki simge) kullanın."
 
 #: public/views/includes/password.html:13
 msgid "Enter your password"
 msgstr "Parolanızı girin"
 
-#: src/js/services/profileService.js:280
-#: src/js/services/profileService.js:331
+#: src/js/services/profileService.js:323
+#: src/js/services/profileService.js:374
 msgid "Error creating wallet"
 msgstr "Cüzdan oluşturma hatası"
 
 #: public/views/export.html:51
 msgid "Export"
-msgstr ""
+msgstr "Dışa Aktar"
 
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
 msgid "Export completed successfully"
-msgstr ""
+msgstr "Dışa aktarma başarıyla tamamlandı"
 
 #: public/views/export.html:19
 msgid "Exporting..."
-msgstr ""
+msgstr "Dışa aktarılıyor..."
 
 #: public/views/preferencesInformation.html:83
 msgid "Extended Public Keys"
@@ -574,61 +599,61 @@ msgstr "Genişletilmiş Genel Anahtarlar"
 msgid "Failed to export"
 msgstr "Dışa aktarma başarısız oldu"
 
-#: public/views/modals/tx-details.html:85
+#: public/views/modals/tx-details.html:92
 msgid "Fee"
 msgstr "Ücret"
 
-#: public/views/modals/tx-details.html:103
+#: public/views/modals/tx-details.html:110
 msgid "Finality"
-msgstr ""
+msgstr "Kesinlik"
 
-#: public/views/modals/tx-details.html:53
+#: public/views/modals/tx-details.html:60
 msgid "From"
-msgstr ""
+msgstr "Gönderen"
 
 #: public/views/editCorrespondentDevice.html:27
 msgid "Full address:"
-msgstr ""
+msgstr "Tam adres:"
 
 #: public/views/preferencesGlobal.html:118
 msgid "Full backup"
-msgstr ""
+msgstr "Tam yedekleme"
 
 #: public/views/paperWallet.html:58
 msgid "Funds found"
-msgstr ""
+msgstr "Bulunan paralar"
 
 #: public/views/paperWallet.html:74
 msgid "Funds will be transferred to"
-msgstr ""
+msgstr "Paralar şuraya gönderilecek"
 
 #: public/views/splash.html:92
 msgid "GET STARTED"
-msgstr "Başlarken"
+msgstr "BAŞLA"
 
-#: src/js/controllers/walletHome.js:419
+#: src/js/controllers/walletHome.js:418
 msgid "Generate QR Code"
-msgstr ""
+msgstr "QR kodu oluştur"
 
-#: public/views/walletHome.html:270
+#: public/views/walletHome.html:288
 msgid "Generate new address"
 msgstr "Yeni adres oluştur"
 
-#: public/views/walletHome.html:63
+#: public/views/walletHome.html:81
 msgid "Generating .csv file..."
-msgstr "Csv dosyası oluşturuluyor..."
+msgstr ".csv dosyası oluşturuluyor..."
 
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr "{{selectedWalletName}} için cüzdan adresi alınıyor..."
+msgstr "{{selectedWalletName}} cüzdanı için adres alınıyor..."
 
 #: public/views/includes/sidebar.html:46
 msgid "Global preferences"
-msgstr ""
+msgstr "Genel tercihler"
 
 #: public/views/disclaimer.html:41
 msgid "Go back"
-msgstr "Geri dön"
+msgstr "Geri git"
 
 #: public/views/preferences.html:48
 msgid "Hardware wallet"
@@ -636,27 +661,27 @@ msgstr "Donanım cüzdanı"
 
 #: public/views/backup.html:45
 msgid "Hide the Wallet Seed"
-msgstr ""
+msgstr "Cüzdan Kurtarma Kelimelerini Gizle"
 
-#: src/js/controllers/index.js:605
+#: src/js/controllers/index.js:618
 msgid "History"
 msgstr "Geçmiş"
 
-#: src/js/controllers/index.js:593
+#: src/js/controllers/index.js:606
 msgid "Home"
 msgstr "Ana sayfa"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
-msgstr ""
+msgstr "Sunucu"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr ""
+msgstr "Hub"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr ""
+msgstr "Hub URL'si"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -664,27 +689,27 @@ msgstr "Bu koşulları okuduğumu, anladığımı ve kabul ettiğimi onaylıyoru
 
 #: public/views/modals/offer-contract.html:43
 msgid "I pay"
-msgstr ""
+msgstr "Öderim"
 
 #: public/views/modals/bind.html:27
 msgid "I receive another payment of"
-msgstr ""
+msgstr "Şu miktarda başka bir ödeme daha alırsam"
 
 #: public/views/modals/bind.html:77
 msgid "If the condition is not met, I can take this money back after"
-msgstr ""
+msgstr "Koşul gerçekleşmezse, bu parayı şu kadar süre sonra geri alabilirim:"
 
 #: public/views/modals/offer-contract.html:67
 msgid "If the peer doesn't pay, I can take my money back after"
-msgstr ""
+msgstr "Eş ödeme yapmazsa, paramı şu kadar süre sonra geri alabilirim:"
 
 #: public/views/import.html:58
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
-msgstr ""
+msgstr "Bu yedeklemeyi başka bir aygıttan taşıdıysanız, yedeklemeyi oluşturduktan hemen sonra orijinal aygıtta kullanmayı bırakın. Asla cüzdanları klonlamayın. Birden fazla cihazdan erişime ihtiyacınız varsa, çoklu imza kullanın."
 
 #: public/views/export.html:58
 msgid "If you plan to restore the wallet on another device, stop using it on the current one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
-msgstr ""
+msgstr "Cüzdanı başka bir cihazda geri yüklemeyi planlıyorsanız, yedeklemeyi oluşturduktan hemen sonra mevcut aygıtta kullanmayı bırakın. Asla cüzdanları klonlamayın. Birden fazla cihazdan erişime ihtiyacınız varsa, çoklu imza kullanın."
 
 #: public/views/import.html:40
 msgid "Import"
@@ -698,42 +723,43 @@ msgstr "Cüzdanı içe aktar"
 msgid "Importing wallet..."
 msgstr "Cüzdan içe aktarılıyor..."
 
-#: public/views/walletHome.html:115
+#: public/views/walletHome.html:133
 msgid "Including pending confirmation"
-msgstr ""
+msgstr "Askıda olan onaylar dahil"
 
-#: public/views/walletHome.html:561
+#: public/views/walletHome.html:602
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
-msgstr ""
+msgstr "İlk işlem geçmişi senkronizasyonu birçok işlemi olan cüzdanlar için biraz zaman alabilir. <br>\n"
+"           Lütfen bekleyiniz."
 
 #: public/views/correspondentDevice.html:327
 msgid "Insert my address"
-msgstr ""
+msgstr "Adresimi ekle"
 
-#: public/views/walletHome.html:580
+#: public/views/walletHome.html:621
 msgid "Invalid"
 msgstr "Geçersiz"
 
-#: src/js/controllers/index.js:1520
+#: src/js/controllers/index.js:1533
 msgid "Invalid Touch ID"
-msgstr ""
+msgstr "Geçersiz Touch ID"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
-msgstr ""
+msgstr "Diğer cihazı davet et"
 
 #: public/views/backup.html:22
 msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets and private assets such as blackbytes."
-msgstr ""
+msgstr "Sadece cüzdan kurtarma kelimeleri yeterli değildir. Sadece kurtarma kelimeleri ile çoklu imzalı cüzdanları ve blackbytelar gibi özel varlıkları geri yükleyemezsiniz."
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
-msgstr ""
+msgstr "Yalnızca sizinle ilgili verileri saklayın"
 
 #: public/views/modals/destination-address.html:120
 msgid "Label"
-msgstr ""
+msgstr "Etiket"
 
 #: public/views/preferencesGlobal.html:39
 msgid "Language"
@@ -741,11 +767,11 @@ msgstr "Dil"
 
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
-msgstr ""
+msgstr "Sonra"
 
 #: src/js/controllers/disclaimer.js:13
 msgid "Loading..."
-msgstr "Yükleneniyor..."
+msgstr "Yükleniyor..."
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -753,45 +779,45 @@ msgstr "Ödeme yapılacak kişi"
 
 #: public/views/modals/approveNewWitnesses.html:29
 msgid "Maybe later"
-msgstr ""
+msgstr "Belki sonra"
 
 #: public/views/includes/copayers.html:4
 #: public/views/modals/offer-contract.html:116
 #: public/views/preferencesInformation.html:76
 msgid "Me"
-msgstr "Beni"
+msgstr "Ben"
 
-#: public/views/modals/tx-details.html:97
+#: public/views/modals/tx-details.html:104
 msgid "Merchant message"
 msgstr "Tüccar mesajı"
 
-#: public/views/walletHome.html:395
+#: public/views/walletHome.html:430
 msgid "Merkle proof"
-msgstr ""
+msgstr "Merkle kanıtı"
 
 #: public/views/paymentUri.html:17
 msgid "Message"
-msgstr "Mesajınız"
+msgstr "Mesaj"
 
-#: public/views/walletHome.html:579
+#: public/views/walletHome.html:620
 msgid "Moved"
 msgstr "Taşındı"
 
 #: public/views/create.html:32
 msgid "Multidevice Wallet"
-msgstr ""
+msgstr "Çoklu Aygıt Cüzdanı"
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:240
 msgid "My Byteball address"
-msgstr ""
+msgstr "Byteball adresim"
 
 #: public/views/correspondentDevice.html:297
 msgid "My recording preference"
-msgstr ""
+msgstr "Kayıt tercihim"
 
 #: public/views/modals/destination-address.html:121
 msgid "Name of the contact"
-msgstr ""
+msgstr "Kişinin adı"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -799,84 +825,89 @@ msgstr "Ağ"
 
 #: src/js/controllers/create.js:29
 msgid "New Random Seed"
-msgstr ""
+msgstr "Yeni Rastgele Kurtarma Kelimeleri"
 
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
-msgstr ""
+msgstr "Yeni sürüm mevcut!"
 
 #: public/views/modals/approveNewWitnesses.html:9
 msgid "New witnesses"
-msgstr ""
+msgstr "Yeni tanıklar"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:444
+#: src/js/controllers/index.js:458
 msgid "No"
-msgstr ""
+msgstr "Hayır"
 
 #: src/js/controllers/password.js:18
 msgid "No password given"
-msgstr ""
+msgstr "Hiçbir şifre girilmedi"
 
-#: public/views/walletHome.html:545
+#: public/views/walletHome.html:586
 msgid "No transactions yet"
-msgstr "Henüz hiç bir işlem yok"
+msgstr "Henüz hiçbir işlem yok"
 
+#: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:112
-#: public/views/walletHome.html:337
-#: public/views/walletHome.html:373
-#: public/views/walletHome.html:471
+#: public/views/walletHome.html:359
+#: public/views/walletHome.html:395
+#: public/views/walletHome.html:512
 msgid "Not valid"
 msgstr "Geçerli değil"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:68
-#: public/views/modals/tx-details.html:93
-#: public/views/walletHome.html:406
-#: public/views/walletHome.html:608
+#: public/views/modals/tx-details.html:100
+#: public/views/modals/tx-details.html:75
+#: public/views/walletHome.html:441
+#: public/views/walletHome.html:649
 msgid "Note"
 msgstr "Not"
 
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:108
+#: src/js/services/correspondentListService.js:110
 msgid "Offer a contract"
-msgstr ""
+msgstr "Bir sözleşme teklif et"
 
 #: public/views/backup.html:87
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
-msgstr ""
+msgstr "Cüzdan kurtarma kelimelerini not ettikten sonra, onu bu cihazdan silmeniz önerilir."
 
 #: public/views/recoveryFromSeed.html:41
 msgid "Only single-sig wallets can be recovered."
-msgstr ""
+msgstr "Yalnızca tek imzalı cüzdanlar kurtarılabilir."
 
 #: public/views/bot.html:35
 msgid "Open chat"
-msgstr ""
+msgstr "Sohbeti aç"
+
+#: public/views/modals/share.html:23
+msgid "Or"
+msgstr "Ya da"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
-msgstr ""
+msgstr "Eşleştir"
 
 #: public/views/includes/sidebar.html:34
 msgid "Paired devices"
-msgstr ""
+msgstr "Eşlenen cihazlar"
 
 #: public/views/acceptCorrespondentInvitation.html:49
 msgid "Pairing code"
-msgstr ""
+msgstr "Eşleşme kodu"
 
 #: public/views/paperWallet.html:30
 msgid "Paper Wallet Private Key"
-msgstr ""
+msgstr "Kağıt Cüzdan Özel Anahtarı"
 
 #: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
 msgstr "Parola"
 
-#: src/js/services/profileService.js:611
+#: src/js/services/profileService.js:654
 msgid "Password needed"
 msgstr "Parola gerekli"
 
@@ -886,15 +917,15 @@ msgstr "Parolalar eşleşmiyor"
 
 #: public/views/paperWallet.html:31
 msgid "Paste your paper wallet private key here"
-msgstr ""
+msgstr "Kağıt cüzdan özel anahtarınızı buraya yapıştırın"
 
 #: public/views/modals/offer-contract.html:137
 msgid "Pay and offer"
-msgstr ""
+msgstr "Öde ve teklif ver"
 
-#: src/js/services/correspondentListService.js:108
+#: src/js/services/correspondentListService.js:110
 msgid "Pay to this address"
-msgstr ""
+msgstr "Bu adrese ödeme yap"
 
 #: public/views/modals/tx-status.html:28
 msgid "Payment Accepted"
@@ -904,7 +935,7 @@ msgstr "Ödeme Kabul Edildi"
 msgid "Payment Proposal Created"
 msgstr "Ödeme Teklifi Oluşturuldu"
 
-#: public/views/walletHome.html:178
+#: public/views/walletHome.html:196
 msgid "Payment Proposals"
 msgstr "Ödeme Teklifleri"
 
@@ -918,7 +949,7 @@ msgstr "Ödeme Gönderildi"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
-msgstr ""
+msgstr "Eş:"
 
 #: public/views/preferencesDeleteWallet.html:22
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
@@ -926,11 +957,11 @@ msgstr "Bu cüzdanı kalıcı olarak sil. BU EYLEM GERİ ALINAMAZ"
 
 #: public/views/create.html:28
 msgid "Plain Wallet"
-msgstr ""
+msgstr "Sade Cüzdan"
 
 #: public/views/splash.html:20
 msgid "Please choose how much data to store in your wallet"
-msgstr ""
+msgstr "Lütfen cüzdanınıza ne kadar veri depolayacağınızı seçin"
 
 #: src/js/controllers/create.js:97
 msgid "Please enter the required fields"
@@ -938,45 +969,45 @@ msgstr "Lütfen gerekli alanları girin"
 
 #: public/views/splash.html:82
 msgid "Please name this device"
-msgstr ""
+msgstr "Lütfen bu cihazı adlandırın"
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
-#: public/views/walletHome.html:461
+#: public/views/walletHome.html:502
 msgid "Post arbitrary key-value pairs of data into Byteball network."
-msgstr ""
+msgstr "Byteball ağına isteğe bağlı anahtar-değer veri çiftleri gönder."
 
-#: public/views/walletHome.html:452
+#: public/views/walletHome.html:493
 msgid "Post values into datafeeds manually, be an oracle."
-msgstr ""
+msgstr "Değerleri manuel olarak veri akışlarına gönderin, kahin olun."
 
-#: public/views/walletHome.html:458
+#: public/views/walletHome.html:499
 msgid "Post your profile data, anything you want to say about yourself."
-msgstr ""
+msgstr "Profil verilerinizi gönderin, kendiniz hakkında söylemek istediğiniz herhangi bir şey olabilir."
 
-#: public/views/walletHome.html:157
-#: public/views/walletHome.html:29
+#: public/views/walletHome.html:175
+#: public/views/walletHome.html:47
 msgid "Preferences"
 msgstr "Tercihler"
 
 #: src/js/services/backButtonService.js:73
 msgid "Press again to exit"
-msgstr ""
+msgstr "Çıkmak için tekrar basın"
 
 #: public/views/recoveryFromSeed.html:40
 msgid "Private assets (such as blackbytes) are not recovered."
-msgstr ""
+msgstr "Özel varlıklar (blackbytes gibi) kurtarılmaz."
 
-#: src/js/controllers/walletHome.js:1367
-#: src/js/controllers/walletHome.js:1440
+#: src/js/controllers/walletHome.js:1547
+#: src/js/controllers/walletHome.js:1621
 msgid "Private payloads sent"
-msgstr ""
+msgstr "Gönderilen özel payload'lar"
 
-#: public/views/walletHome.html:309
+#: public/views/walletHome.html:334
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -988,40 +1019,40 @@ msgstr "QR-Tarayıcı"
 
 #: public/views/modals/vote.html:17
 msgid "Question:"
-msgstr ""
+msgstr "Soru:"
 
-#: src/js/controllers/index.js:597
+#: src/js/controllers/index.js:610
 msgid "Receive"
-msgstr "Alma"
+msgstr "Al"
 
-#: public/views/walletHome.html:576
+#: public/views/walletHome.html:617
 msgid "Received"
 msgstr "Alındı"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:45
+#: public/views/modals/tx-details.html:52
 msgid "Recipients"
 msgstr "Alıcılar"
 
-#: public/views/walletHome.html:42
+#: public/views/walletHome.html:60
 msgid "Reconnecting to Wallet Service..."
-msgstr "Cüzdan servisine bağlanıyor..."
+msgstr "Cüzdan servisine bağlanılıyor..."
 
 #: public/views/recoveryFromSeed.html:34
 msgid "Recover"
-msgstr ""
+msgstr "Kurtar"
 
 #: public/views/preferencesGlobal.html:109
 msgid "Recovery from seed"
-msgstr ""
+msgstr "Kurtarma kelimeleriyle kurtarma yap"
 
-#: public/views/walletHome.html:62
+#: public/views/walletHome.html:80
 msgid "Recreating Wallet..."
 msgstr "Cüzdan yeniden oluşturuluyor..."
 
-#: src/js/controllers/index.js:194
+#: src/js/controllers/index.js:208
 msgid "Refused"
-msgstr ""
+msgstr "Reddedildi"
 
 #: public/views/preferencesAbout.html:8
 msgid "Release Information"
@@ -1029,15 +1060,15 @@ msgstr "Sürüm Bilgileri"
 
 #: public/views/modals/destination-address.html:84
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 #: public/views/correspondentDevices.html:75
 msgid "Remove a device"
-msgstr ""
+msgstr "Bir aygıtı kaldır"
 
 #: public/views/editCorrespondentDevice.html:33
 msgid "Rename:"
-msgstr ""
+msgstr "Yeniden Adlandır:"
 
 #: public/views/export.html:40
 #: public/views/includes/password.html:10
@@ -1046,24 +1077,24 @@ msgstr "Şifreyi tekrarla"
 
 #: public/views/export.html:37
 msgid "Repeat the password"
-msgstr ""
+msgstr "Şifreyi tekrarla"
 
 #: public/views/modals/approveNewWitnesses.html:23
 msgid "Replace"
-msgstr ""
+msgstr "Değiştir"
 
 #: public/views/preferencesGlobal.html:86
 msgid "Request Password"
-msgstr ""
+msgstr "Şifre Sor"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:278
+#: public/views/walletHome.html:297
 msgid "Request a specific amount"
 msgstr "Belirli bir miktar iste"
 
 #: public/views/correspondentDevice.html:336
 msgid "Request payment"
-msgstr ""
+msgstr "Ödeme talep et"
 
 #: public/views/create.html:74
 msgid "Required number of signatures"
@@ -1071,7 +1102,7 @@ msgstr "Gerekli imza sayısı"
 
 #: public/views/preferencesGlobal.html:127
 msgid "Restore from full backup"
-msgstr ""
+msgstr "Tam yedeklemeden geri yükle"
 
 #: public/views/splash.html:64
 msgid "Retrying..."
@@ -1098,35 +1129,35 @@ msgstr "Tercihler kaydediliyor..."
 
 #: public/views/preferences.html:66
 msgid "Scan Fingerprint"
-msgstr ""
+msgstr "Parmak izi tara"
 
 #: public/views/paperWallet.html:44
 msgid "Scan Wallet Funds"
-msgstr ""
+msgstr "Cüzdan Bakiyesini Tara"
 
-#: public/views/walletHome.html:102
+#: public/views/walletHome.html:120
 msgid "Scan status finished with error"
 msgstr "Tarama işlemi hatalı bitti"
 
 #: public/views/inviteCorrespondentDevice.html:21
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
-msgstr ""
+msgstr "Yukarıdaki QR kodunu diğer cihazı kullanarak tarayın veya bu eşleştirme kodunu diğer cihaza gönderin:"
 
-#: src/js/controllers/index.js:1513
+#: src/js/controllers/index.js:1526
 msgid "Scan your fingerprint please"
-msgstr ""
+msgstr "Lütfen parmak izinizi taratın"
 
-#: public/views/walletHome.html:61
+#: public/views/walletHome.html:79
 msgid "Scanning Wallet funds..."
-msgstr "Cüzdan para miktarı taranıyor..."
+msgstr "Cüzdan Bakiyesi taranıyor..."
 
 #: public/views/recoveryFromSeed.html:19
 msgid "Scanning for addresses..."
-msgstr ""
+msgstr "Adresler taranıyor..."
 
 #: public/views/paperWallet.html:18
 msgid "Scanning wallet funds..."
-msgstr ""
+msgstr "Cüzdan bakiyesi taranıyor..."
 
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
@@ -1134,34 +1165,34 @@ msgstr "Bir cüzdan seçin"
 
 #: public/views/modals/select-subwallet.html:8
 msgid "Select subwallet"
-msgstr ""
+msgstr "Alt cüzdan seçin"
 
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
-msgstr ""
+msgstr "Kimliğinizi seçin"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:432
-#: public/views/walletHome.html:506
-#: src/js/controllers/index.js:601
+#: public/views/walletHome.html:467
+#: public/views/walletHome.html:547
+#: src/js/controllers/index.js:614
 msgid "Send"
 msgstr "Gönder"
 
-#: public/views/walletHome.html:294
+#: public/views/walletHome.html:319
 msgid "Send All"
 msgstr "Tümünü Gönder"
 
 #: public/views/modals/multi-payment.html:53
 msgid "Send Payment"
-msgstr ""
+msgstr "Ödemeyi Gönder"
 
 #: public/views/preferencesInformation.html:125
 msgid "Send addresses by email"
-msgstr ""
+msgstr "Adresleri E-Posta ile gönder"
 
-#: public/views/walletHome.html:382
+#: public/views/walletHome.html:368
 msgid "Send all"
-msgstr ""
+msgstr "Tümünü gönder"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
@@ -1169,13 +1200,13 @@ msgstr "E-posta ile gönder"
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
-msgstr ""
+msgstr "Para gönderiliyor..."
 
-#: public/views/walletHome.html:66
+#: public/views/walletHome.html:84
 msgid "Sending..."
-msgstr ""
+msgstr "Gönderiliyor..."
 
-#: public/views/walletHome.html:578
+#: public/views/walletHome.html:619
 msgid "Sent"
 msgstr "Gönderildi"
 
@@ -1185,63 +1216,71 @@ msgstr "Oturum günlüğü"
 
 #: public/views/export.html:30
 msgid "Set up a Password"
-msgstr ""
+msgstr "Bir Şifre belirle"
 
 #: public/views/includes/password.html:9
 msgid "Set up a password"
-msgstr "Parola ayarla"
+msgstr "Bir şifre belirle"
 
 #: public/views/preferencesEmail.html:38
 msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr "E-posta bildirimleri ayarlamak gizliliğinizi zayıflatabilir. Cüzdan sağlayıcısı ele geçirilirse, bazı bilgiler saldırganların eline geçebilir ancak bu bilgiler sadece cüzdan adresiniz ve bakiyeniz olacaktır."
+msgstr "E-posta bildirimleri ayarlamak cüzdan hizmet sağlayıcısı bu konuda ödün verirse gizliliğinizi zayıflatabilir. Saldırganların eline geçebilecek bilgiler sadece cüzdan adresiniz ve bakiyeniz olacaktır, daha fazlası değil."
 
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
+
+#: public/views/modals/share.html:8
+msgid "Share"
+msgstr "Paylaş"
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:257
+#: public/views/walletHome.html:275
 msgid "Share address"
 msgstr "Adresi paylaş"
 
-#: public/views/walletHome.html:262
+#: public/views/walletHome.html:280
 msgid "Share this wallet address to receive payments."
-msgstr ""
+msgstr "Ödeme almak için bu cüzdan adresini paylaşın."
 
-#: public/views/walletHome.html:629
+#: public/views/walletHome.html:478
+msgid "Share via message"
+msgstr "Mesaj ile paylaş"
+
+#: public/views/walletHome.html:670
 msgid "Show all"
-msgstr ""
+msgstr "Hepsini Göster"
 
 #: public/views/backup.html:44
 msgid "Show the Wallet Seed Anyway"
-msgstr ""
+msgstr "Yine de Cüzdan Kurtarma Kelimelerini göster"
 
-#: src/js/controllers/index.js:421
+#: src/js/controllers/index.js:435
 msgid "Sign transaction spending  from wallet ?"
-msgstr ""
+msgstr "İşlem harcamaları cüzdandan imzalansın mı?"
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
 msgid "Single address wallet"
-msgstr ""
+msgstr "Tek adresli cüzdan"
 
 #: public/views/create.html:59
 #: public/views/preferences.html:38
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr ""
+msgstr "Tek adres cüzdanları, her işlem için yeni adresler oluşturmaz, değişim her zaman cüzdanda bulunan tek adrese gider."
 
-#: src/js/services/profileService.js:275
+#: src/js/services/profileService.js:318
 msgid "Small Expenses Wallet"
-msgstr ""
+msgstr "Düşük Masraflar Cüzdanı"
 
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
-msgstr ""
+msgstr "Kurtarma kelimeleri belirle..."
 
 #: public/views/preferences.html:60
 #: public/views/preferencesGlobal.html:82
 msgid "Spending Restrictions"
-msgstr ""
+msgstr "Harcama Kısıtlamaları"
 
 #: public/views/preferencesGlobal.html:96
 msgid "Still not done"
@@ -1250,37 +1289,37 @@ msgstr "Halen tamamlanmadı"
 #: src/js/controllers/copayers.js:76
 #: src/js/controllers/export.js:135
 #: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:231
-#: src/js/controllers/index.js:259
+#: src/js/controllers/index.js:245
+#: src/js/controllers/index.js:273
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1367
-#: src/js/controllers/walletHome.js:1440
+#: src/js/controllers/walletHome.js:1547
+#: src/js/controllers/walletHome.js:1621
 msgid "Success"
 msgstr "Başarılı"
 
 #: public/views/paperWallet.html:64
 msgid "Sweep Wallet"
-msgstr ""
+msgstr "Cüzdanı Temizle"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
-msgstr ""
+msgstr "Kağıt cüzdanı temizle"
 
-#: public/views/walletHome.html:65
+#: public/views/walletHome.html:83
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
-msgstr ""
+msgstr "Senkronize ediliyor... {{index.count_unhandled_private_payments}} özel ödeme kaldı"
 
-#: public/views/walletHome.html:64
+#: public/views/walletHome.html:82
 msgid "Syncing... {{index.syncProgress}}"
-msgstr ""
+msgstr "Senkronize ediliyor...{{index.syncProgress}}"
 
 #: public/views/preferencesGlobal.html:32
 msgid "TOR"
-msgstr ""
+msgstr "TOR"
 
-#: public/views/walletHome.html:103
-#: public/views/walletHome.html:543
-#: public/views/walletHome.html:98
+#: public/views/walletHome.html:116
+#: public/views/walletHome.html:121
+#: public/views/walletHome.html:584
 msgid "Tap to retry"
 msgstr "Yeniden denemek için dokunun"
 
@@ -1291,23 +1330,27 @@ msgstr "Kullanım Şartları"
 
 #: public/views/correspondentDevice.html:341
 msgid "Text message to"
-msgstr ""
+msgstr "Şu adrese yazılı mesaj:"
+
+#: public/views/modals/claim-textcoin.html:29
+msgid "Textcoin"
+msgstr "Textcoin"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr ""
+msgstr "Başka cihazlardan mesaj almaya yarayan hub."
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr ""
+msgstr "Hub, aşağıdaki tanıkları değiştirmeyi tavsiye ediyor:"
 
 #: public/views/modals/bind.html:23
 msgid "The peer receives this payment if"
-msgstr ""
+msgstr "Eş, bu ödemeyi eğer şu koşullar sağlanırsa alacak:"
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
-msgstr ""
+msgstr "Oy, finanse edilen tüm adresleriniz tarafından imzalanacak"
 
 #: src/js/controllers/copayers.js:76
 #: src/js/controllers/preferencesDelete.js:56
@@ -1316,89 +1359,100 @@ msgstr "\"{{walletName}}\" cüzdanı silindi"
 
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
-msgstr ""
+msgstr "Cüzdan sağlayıcısı bakiyelerinizin bir kısmını bilebilecek ve hangi işlemlerin sizin olduğunu görebilecek, ama cüzdanı hemen kullanmaya başlayabilirsiniz ve cüzdan tamamen işlevseldir."
 
 #: public/views/correspondentDevice.html:302
 msgid "Their recording preference"
-msgstr ""
+msgstr "Onların kayıt tercihi"
 
 #: public/views/paymentUri.html:23
 msgid "There are no wallets to make this payment"
 msgstr "Bu ödemeyi yapmak için hiçbir cüzdan yok"
 
-#: public/views/walletHome.html:261
+#: public/views/walletHome.html:279
 msgid "This address is shared with {{index.shared_address_cosigners}}."
-msgstr ""
+msgstr "Bu adres, {{index.shared_address_cosigners}} ile paylaşılıyor."
 
 #: public/views/splash.html:21
 msgid "This choice cannot be changed later"
-msgstr ""
+msgstr "Bu seçim daha sonra değiştirilemez"
 
-#: public/views/walletHome.html:325
+#: public/views/walletHome.html:350
 msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr ""
+msgstr "Bu özel bir varlıktır, lütfen gönderme işlemini sadece konuşmadaki bağlantılara tıklayarak yapın ya da diğer cüzdanlarınıza gönderin."
 
 #: public/views/splash.html:28
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
-msgstr ""
+msgstr "Bu seçenek gizlilik açısından daha iyidir ama bir kaç gb depo alanını doldurur ve ilk senkronizasyon birkaç gün sürecektir. Senkronizasyon sırasında CPU yükü yüksek seviyede olacaktır."
 
-#: public/views/walletHome.html:357
+#: public/views/walletHome.html:417
 msgid "This payment is bound to a condition"
-msgstr ""
+msgstr "Bu ödeme bir şarta bağlı"
 
-#: public/views/modals/tx-details.html:73
+#: public/views/modals/tx-details.html:80
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
-msgstr "Bu işlem muhtemel bir çift harcama girişimi yüzünden geçersiz hale geldi."
+msgstr "Bu işlem geçersiz hale geldi; muhtemelen bir çift harcama girişimi yüzünden."
 
 #: public/views/preferences.html:39
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr ""
+msgstr "Bu cüzdan, zaten birden çok adresten oluştuğu veya çoklu cihaz cüzdanı olduğu için tek adresli cüzdana dönüştürülemez"
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
 msgid "This will permanently delete all your existing wallets!"
-msgstr ""
+msgstr "Bu, mevcut tüm cüzdanlarınızı kalıcı olarak silecektir!"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:30
-#: public/views/modals/tx-details.html:58
-#: public/views/walletHome.html:332
-#: public/views/walletHome.html:610
+#: public/views/modals/tx-details.html:65
+#: public/views/walletHome.html:651
 msgid "To"
 msgstr "Alıcı"
 
 #: public/views/backup.html:24
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
-msgstr ""
+msgstr "Herşeyi eski haline getirebilmek için, lütfen bir tam yedekleme (menüden seçeneği bulabilirsiniz) oluşturunuz"
 
-#: public/views/walletHome.html:517
+#: public/views/walletHome.html:558
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "Byteball ağına isteğe bağlı veri gönderebilmek için, lütfen öncelikle bir tek-adres cüzdana geçiş yapın veya yeni bir tane oluşturunuz."
 
-#: public/views/walletHome.html:360
+#: public/views/walletHome.html:420
 msgid "To bind the payment to a condition, please click the peer's address in chat"
-msgstr ""
+msgstr "Ödemeye bir koşula bağlamak isterseniz, lütfen sohbette karşı tarafın adresine tıklayınız"
 
-#: public/views/walletHome.html:263
+#: public/views/walletHome.html:390
+msgid "To byteball address"
+msgstr "Byteball adresine"
+
+#: public/views/walletHome.html:382
+msgid "To byteball address or email"
+msgstr "Byteball adresine veya e-postaya"
+
+#: public/views/modals/tx-details.html:44
+msgid "To email"
+msgstr "E-postaya"
+
+#: public/views/walletHome.html:281
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
-msgstr ""
+msgstr "Gizliliğinizi korumak için, yeni adresler onları kullandığınız anda otomatik olarak üretilir."
 
-#: public/views/walletHome.html:186
+#: public/views/walletHome.html:204
 msgid "Total Locked Balance"
 msgstr "Toplam Kilitli Bakiye"
 
 #: public/views/create.html:66
 msgid "Total number of co-signers"
-msgstr ""
+msgstr "Toplam ortak imzacı sayısı"
 
 #: public/views/modals/tx-details.html:9
 msgid "Transaction"
 msgstr "İşlem"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:608
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "İşlemler<br> İndirildi"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
@@ -1408,38 +1462,42 @@ msgstr "Çeviride Emeği Geneçler"
 msgid "Translators"
 msgstr "Çevirmenler"
 
-#: src/js/controllers/walletHome.js:649
+#: src/js/controllers/walletHome.js:774
 msgid "Unable to send transaction proposal"
 msgstr "İşlem teklifi gönderilemedi"
 
-#: public/views/modals/tx-details.html:105
-#: public/views/walletHome.html:598
+#: public/views/modals/tx-details.html:112
+#: public/views/walletHome.html:639
 msgid "Unconfirmed"
 msgstr "Onaylanmamış"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "Blackbyte birimi"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
-msgstr ""
+msgstr "Byte birimi"
 
-#: public/views/walletHome.html:179
+#: public/views/walletHome.html:197
 msgid "Unsent transactions"
 msgstr "Gönderilmemiş işlemler"
 
-#: public/views/walletHome.html:55
+#: public/views/walletHome.html:73
 msgid "Updating Wallet..."
 msgstr "Cüzdan güncelleniyor..."
 
 #: public/views/modals/newVersionIsAvailable.html:6
 msgid "Upgrade to {{version}}"
-msgstr ""
+msgstr "{{version}} sürümüne yükselt"
 
-#: public/views/walletHome.html:481
+#: public/views/includes/upgrading_db.html:8
+msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
+msgstr "Veritabanı yükseltiliyor, lütfen bekleyin. Bazen birkaç dakika alır."
+
+#: public/views/walletHome.html:522
 msgid "Values"
-msgstr ""
+msgstr "Değerler"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1447,32 +1505,32 @@ msgstr "Sürüm"
 
 #: public/views/export.html:56
 msgid "WARNING:"
-msgstr ""
+msgstr "UYARI:"
 
-#: public/views/walletHome.html:204
+#: public/views/walletHome.html:222
 msgid "WARNING: Backup needed"
-msgstr "Uyarı: Yedekleme gereklidir"
+msgstr "UYARI: Yedekleme gerekli"
 
 #: public/views/backup.html:77
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
-msgstr "Kurtarma sözcükleri bir parola ile desteklendi. Bu cüzdanı kurtarmak için, kurtarma sözcüklerine ve parolaya ihtiyaç olacaktır."
+msgstr "UYARI: Bu kurtarma sözcükleri şifre ile oluşturuldu. Bu cüzdanı kurtarmak için, hem kurtarma sözcükleri hem de parola gereklidir."
 
 #: public/views/import.html:55
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
-msgstr ""
+msgstr "UYARILAR:"
 
 #: public/views/splash.html:53
 msgid "WELCOME TO BYTEBALL"
-msgstr ""
+msgstr "BYTEBALL'A HOŞ GELDİNİZ"
 
 #: public/views/copayers.html:24
 msgid "Waiting for co-signers"
-msgstr ""
+msgstr "İmza ortakları bekleniyor"
 
 #: public/views/copayers.html:33
 msgid "Waiting..."
-msgstr "Bekliyor..."
+msgstr "Bekleniyor..."
 
 #: public/views/preferencesDeleteWallet.html:12
 msgid "Wallet"
@@ -1488,7 +1546,7 @@ msgstr "Cüzdan Yapılandırma (m-n)"
 
 #: public/views/preferencesInformation.html:20
 msgid "Wallet Id"
-msgstr "Cüzdan Id"
+msgstr "Cüzdan Id'si"
 
 #: public/views/preferencesAdvanced.html:14
 #: public/views/preferencesInformation.html:8
@@ -1497,11 +1555,11 @@ msgstr "Cüzdan Bilgisi"
 
 #: public/views/preferencesInformation.html:12
 msgid "Wallet Name (at creation)"
-msgstr "Cüzdan ismi (oluşturmadaki)"
+msgstr "Cüzdan ismi (oluşturulduğundaki)"
 
-#: src/js/services/profileService.js:393
+#: src/js/services/profileService.js:436
 msgid "Wallet already in Byteball:"
-msgstr ""
+msgstr "Cüzdan zaten Byteball'da:"
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1509,67 +1567,71 @@ msgstr "Cüzdan ismi"
 
 #: public/views/backup.html:34
 msgid "Wallet seed not available."
-msgstr ""
+msgstr "Cüzdan kurtarma kelimeleri mevcut değil."
 
 #: public/views/modals/destination-address.html:15
 #: public/views/modals/destination-address.html:29
 msgid "Wallets"
-msgstr ""
+msgstr "Cüzdanlar"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
 msgstr "Uyarı!"
 
-#: public/views/walletHome.html:303
+#: public/views/modals/tx-details.html:123
+msgid "Was claimed?"
+msgstr "Alındı mı?"
+
+#: public/views/walletHome.html:328
 msgid "What to send"
-msgstr ""
+msgstr "Ne gönderilecek"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:421
-#: public/views/walletHome.html:498
+#: public/views/walletHome.html:456
+#: public/views/walletHome.html:539
 msgid "Who signs:"
-msgstr ""
+msgstr "Kimler imzalar:"
 
 #: public/views/preferencesEditWitness.html:13
 msgid "Witness address"
-msgstr ""
+msgstr "Tanık adresi"
 
 #: public/views/preferencesGlobal.html:71
 msgid "Witnesses"
-msgstr ""
+msgstr "Tanıklar"
 
 #: public/views/backup.html:56
 msgid "Write it down and keep it somewhere safe."
-msgstr ""
+msgstr "Not edin ve güvenli bir yerde saklayın."
 
-#: src/js/services/profileService.js:621
+#: src/js/services/profileService.js:664
 msgid "Wrong password"
 msgstr "Hatalı şifre"
 
 #: public/views/authConfirmation.html:17
 #: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:443
+#: src/js/controllers/index.js:457
 msgid "Yes"
 msgstr "Evet"
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "Tek adres cüzdanda olduğunuz için işleminizi ters ödemeye bağlayamazsınız. Tek adres olmayan bir cüzdan kullandıktan sonra parayı bu cüzdana aktarınız."
 
-#: public/views/walletHome.html:24
+#: public/views/walletHome.html:42
 msgid "You do not have a wallet"
 msgstr "Cüzdanınız yok"
 
 #: public/views/backup.html:55
 #: public/views/recoveryFromSeed.html:31
 msgid "Your Wallet Seed:"
-msgstr ""
+msgstr "Cüzdan Kurtama Sözcükleriniz:"
 
 #: public/views/export.html:33
 msgid "Your export password"
-msgstr "Dışa alım parolanız"
+msgstr "Dışa aktarma parolanız"
 
 #: public/views/includes/password.html:18
 msgid "Your password"
@@ -1577,186 +1639,208 @@ msgstr "Parolanız"
 
 #: public/views/import.html:31
 msgid "Your wallet file:"
-msgstr ""
+msgstr "Cüzdan dosyanız:"
 
 #: public/views/includes/password.html:40
 msgid "Your wallet key will be encrypted. Password cannot be recovered. Be sure to write it down"
-msgstr "Cüzdan anahtarınız şifrelenecek ve parolanız için bir kurtarma seçeneği olmayacak. Parolanızı bir yere yazdığınızdan emin olun"
+msgstr "Cüzdan anahtarınız şifrelenecek. Parolanız kurtarılabilir olmayacak. Parolanızı not aldığınızdan emin olun"
 
 #: public/views/splash.html:90
 msgid "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu."
-msgstr ""
+msgstr "Cüzdanınız bu cihazda oluşturulacak, onu güvenli saklayınız. Yedekleme seçeneklerinizi Ayarlar menüsünde görebilirsiniz."
 
 #: public/views/create.html:94
 msgid "[ Add new co-signer device ]"
-msgstr ""
+msgstr "[ Yeni imza ortağı cihaz ekleyin ]"
 
 #: public/views/modals/bind.html:37
 #: public/views/modals/offer-contract.html:44
 #: public/views/modals/offer-contract.html:52
 msgid "amount"
-msgstr ""
+msgstr "miktar"
 
 #: public/views/modals/bind.html:31
 msgid "an event is posted by an oracle"
-msgstr ""
+msgstr "bir kahin tarafından bir etkinlik gönderildi"
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
-msgstr ""
+msgstr "sözleşmenin kilidini açabilir"
 
 #: public/views/modals/offer-contract.html:106
 msgid "can unlock the contract after it expires in"
-msgstr ""
+msgstr "kontratı şu kadar zaman sonra zaman aşımına uğradığında açabilir:"
 
 #: public/views/copayers.html:38
 msgid "cancel wallet creation"
-msgstr ""
+msgstr "cüzdan oluşturmaktan vazgeç"
+
+#: public/views/modals/tx-details.html:131
+msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
+msgstr "{{btx.claimedByMe?'ben':'alıcı'|translate}} tarafından alındı"
 
 #: public/views/editCorrespondentDevice.html:49
 msgid "clear chat history"
-msgstr ""
+msgstr "sohbet geçmişini temizle"
+
+#: public/views/modals/share.html:23
+msgid "copy the text below and send it to the recipient via any messaging app, or print it on paper"
+msgstr "aşağıdaki yazıyı kopyalayarak onu alıcıya herhangi bir mesajlaşma uygulaması yoluyla gönderin veya kağıda yazdırın"
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
-msgstr ""
+msgstr "oluşturuldu"
 
 #: public/views/modals/offer-contract.html:108
 msgid "days"
-msgstr ""
+msgstr "günler"
 
 #: public/views/backup.html:28
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
-msgstr ""
+msgstr "örn. 1/2 bir anahtarı bu cihazda, diğer bir anahtarı dizüstü bilgisayarınızda olan bir cüzdan."
 
 #: public/views/backup.html:27
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
-msgstr ""
+msgstr "örn. 1/2 bir anahtarı bu cihazda, diğer bir anahtarı akıllı telefonunuzda olan bir cüzdan."
 
 #: public/views/modals/bind.html:72
 msgid "either way"
-msgstr ""
+msgstr "her iki şekilde"
 
 #: public/views/modals/bind.html:64
 msgid "explicitly"
-msgstr ""
+msgstr "açıkça"
 
 #: public/views/modals/bind.html:79
 #: public/views/modals/offer-contract.html:69
 msgid "hours"
-msgstr ""
+msgstr "saatler"
 
 #: public/views/modals/offer-contract.html:78
 msgid "if an event is posted by an oracle"
-msgstr ""
+msgstr "bir etkinlik bir oracle tarafından gönderilirse"
 
 #: public/views/modals/bind.html:68
 msgid "in merkle tree"
-msgstr ""
+msgstr "merkle ağacında"
 
-#: public/views/walletHome.html:135
+#: public/views/walletHome.html:153
 msgid "in smart wallets"
-msgstr ""
+msgstr "akıllı cüzdanlarda"
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
 msgstr "bekleyen ödemeler yüzünden kilitlendi"
 
+#: public/views/modals/tx-details.html:125
+msgid "not claimed"
+msgstr "alınmadı"
+
 #: public/views/modals/bind.html:55
 #: public/views/modals/offer-contract.html:88
 msgid "on feed name"
-msgstr ""
+msgstr "şu akışta"
 
-#: public/views/walletHome.html:396
-#: public/views/walletHome.html:407
+#: public/views/walletHome.html:431
+#: public/views/walletHome.html:442
 msgid "optional"
 msgstr "isteğe bağlı"
 
 #: public/views/modals/offer-contract.html:99
 msgid "or"
-msgstr ""
+msgstr "veya"
 
 #: public/views/backup.html:24
 msgid "or backup all Byteball data at"
-msgstr ""
+msgstr "veya tüm Byteball verilerini şuraya yedekleyin:"
 
 #: public/views/modals/offer-contract.html:51
 msgid "peer pays"
-msgstr ""
+msgstr "eş öder"
 
 #: public/views/modals/bind.html:60
 msgid "posted"
-msgstr ""
+msgstr "gönderildi"
 
-#: public/views/modals/tx-details.html:115
+#: public/views/modals/tx-details.html:142
 msgid "re-send private payloads"
-msgstr ""
+msgstr "özel payloadları yeniden gönder"
 
-#: public/views/modals/tx-details.html:118
+#: public/views/modals/tx-details.html:145
 msgid "re-send private payloads to cosigners"
-msgstr ""
+msgstr "özel payloadları imza ortaklarına yeniden gönder"
 
-#: src/js/controllers/walletHome.js:690
-#: src/js/controllers/walletHome.js:696
-#: src/js/controllers/walletHome.js:792
-#: src/js/controllers/walletHome.js:829
-#: src/js/controllers/walletHome.js:946
-#: src/js/controllers/walletHome.js:975
-#: src/js/controllers/walletHome.js:985
+#: src/js/controllers/walletHome.js:714
+msgid "send email"
+msgstr "e-posta gönder"
+
+#: src/js/controllers/walletHome.js:1122
+#: src/js/controllers/walletHome.js:1153
+#: src/js/controllers/walletHome.js:1160
+#: src/js/controllers/walletHome.js:827
+#: src/js/controllers/walletHome.js:833
+#: src/js/controllers/walletHome.js:846
+#: src/js/controllers/walletHome.js:942
+#: src/js/controllers/walletHome.js:981
 msgid "sending"
-msgstr ""
+msgstr "gönderiliyor"
+
+#: public/views/modals/tx-details.html:139
+msgid "share again"
+msgstr "tekrar paylaş"
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
-msgstr ""
+msgstr "alıcı"
 
-#: public/views/walletHome.html:397
-#: public/views/walletHome.html:408
+#: public/views/walletHome.html:432
+#: public/views/walletHome.html:443
 msgid "too long!"
 msgstr "çok uzun!"
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
-msgstr ""
+msgstr "ile"
 
 #: public/views/modals/offer-contract.html:91
 msgid "with expected value"
-msgstr ""
+msgstr "beklenen değere sahip"
 
 #: public/views/modals/bind.html:58
 msgid "with expected value of"
-msgstr ""
+msgstr "şu beklenen değere sahip:"
 
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
-msgstr ""
+msgstr "{{address}} şu durumlarda harcanabilir:"
 
-#: public/views/modals/customized-amount.html:75
+#: public/views/modals/claim-textcoin.html:36
+#: public/views/modals/customized-amount.html:76
 msgid "{{buttonLabel}}"
-msgstr ""
+msgstr "{{buttonLabel}}"
 
 #: public/views/modals/confirmation.html:11
 msgid "{{cancel_label || 'Cancel'}}"
-msgstr ""
+msgstr "{cancel_label || 'İptal Et'}"
 
-#: src/js/controllers/walletHome.js:1482
+#: src/js/controllers/walletHome.js:1662
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "{{fee}} bitcoin ağ ücreti olarak düşülecektir"
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"
-msgstr ""
+msgstr "{{hrd.destinationAddress}} eğer şu koşullar sağlanıyorsa harcanabilir:"
 
 #: public/views/copayers.html:26
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr "{{index.m}} te {{index.n}}"
+msgstr "{{index.n}}--in--{{index.m}}'si"
 
 #: public/views/includes/sidebar.html:16
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr "{{item.n}} te {{item.m}}"
+msgstr "{{item.n}}--in--{{item.m}}'si"
 
 #: public/views/preferencesGlobal.html:29
 msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
-msgstr ""
+msgstr "{{prefGlobal.torEnabled?'Açık':'Kapalı'}}"
 
