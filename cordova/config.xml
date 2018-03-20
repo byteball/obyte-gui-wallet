@@ -63,6 +63,9 @@
       <!-- iPad Spotlight and Settings Icon -->
       <icon src="../ios/icons/icon-small-50.png" width="50" height="50" />
       <icon src="../ios/icons/icon-small-50@2x.png" width="100" height="100" /> 
+		
+      <icon src="../ios/icons/iTunesArtwork.png" width="512" height="512" />
+      <icon src="../ios/icons/iTunesArtwork@2x.png" width="1024" height="1024" />
 
       <!-- Splash -->
       <splash src="../ios/splash/Default~iphone.png" width="320" height="480"/>
