@@ -1039,13 +1039,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			if (typeof balanceInfo.shared === 'number')
 				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
 			if (!balanceInfo.name){
+				if (!Math.log10) // android 4.4
+					Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
 				if (asset === "base"){
 					balanceInfo.name = self.unitName;
-					balanceInfo.decimals = Math.log10(config.unitValue);
+					balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
 				}
 				else if (asset === self.BLACKBYTES_ASSET){
 					balanceInfo.name = self.bbUnitName;
-					balanceInfo.decimals = Math.log10(config.bbUnitValue);
+					balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
 				}
 			}
         }
