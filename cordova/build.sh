@@ -159,6 +159,11 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-app-preferences
 	checkOK
 
+	cordova plugin add cordova-custom-config --fetch
+	checkOK
+
+	cordova plugin add https://github.com/napolitano/cordova-plugin-intent
+	checkOK
 fi
 
 if $DBGJS

@@ -118,6 +118,16 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	function handleUri(uri){
 		console.log("handleUri "+uri);
+		if (uri.indexOf("content:") !== -1) {
+			window.plugins.intent.getRealPathFromContentUrl(uri, function (realPath) {
+				require('byteballcore/wallet.js').handlePrivatePaymentFile(realPath);
+			}, function () {});
+			return;
+		}
+		if (uri.indexOf(".bbpayment") != -1) {
+			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
+			return;
+		}
 		require('byteballcore/uri.js').parseUri(uri, {
 			ifError: function(err){
 				console.log(err);
@@ -307,4 +317,3 @@ process.on('uncaughtException', function(e){
 	console.log("uncaughtException");
 	eventBus.emit('uncaught_error', "Uncaught exception: "+e, e);
 });
-

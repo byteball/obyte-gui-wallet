@@ -147,7 +147,7 @@
     <li ng-if="btx.isTextcoin && !btx.claimed && btx.mnemonic" class="line-b p10 oh">
 		<span translate>You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):</span> <a class="blue-link" style="padding: 0" ng-click="eraseTextcoin()" translate>erase textcoin</a>
     </li>
-    <li ng-if="btx.action == 'sent' && isPrivate" class="line-b p10 oh">
+    <li ng-if="btx.action == 'sent' && isPrivate && !btx.isTextcoin" class="line-b p10 oh">
 		<span translate>If the recipient doesn't see your payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="showCorrespondentList()" translate>re-send private payloads</a>
     </li>
     <li ng-if="n > 1 && isPrivate" class="line-b p10 oh">

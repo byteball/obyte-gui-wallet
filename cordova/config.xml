@@ -2,7 +2,7 @@
 <widget id="org.byteball.wallet"
   version="2.1.0"
   android-versionCode="1062"
-  ios-CFBundleVersion="2.1.0">
+  ios-CFBundleVersion="2.1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Byteball</name>
     <description>
       Byteball wallet.
@@ -73,5 +73,20 @@
       <splash src="../ios/splash/Default-667h@2x~iphone6.png" width="750" height="1334"/>
       <splash src="../ios/splash/Default-960h@2x~iphone6plus.png" width="1080" height="1920"/>
       <splash src="../ios/splash/Default-736h@3x~iphone6plus.png" width="1242" height="2208"/>
+    </platform>
+
+    <platform name="android">
+    	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="add">
+	    	<intent-filter android:priority="1">
+				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
+				<action android:name="android.intent.action.PICK" />
+				<action android:name="android.intent.action.SEND" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:mimeType="*/*" />
+				<data android:pathPattern="*.bbpayment" />
+			</intent-filter>
+		</custom-config-file>
     </platform>
 </widget>
