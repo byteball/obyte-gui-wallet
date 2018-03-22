@@ -799,11 +799,12 @@ angular.module('copayApp.controllers')
 			}
 
 			var form = $scope.sendPaymentForm;
+			var isMultipleSend = !!form.addresses;
 			if (!form)
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
-			if ($scope.mtab == 2 && !form.address.$modelValue) { // clicked 'share via message' button
+			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
 				form.address.$setValidity('validAddressOrEmail', true);
 			}
 			if (form.$invalid) {
@@ -834,7 +835,6 @@ angular.module('copayApp.controllers')
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
 
-			var isMultipleSend = !!form.addresses;
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
