@@ -338,8 +338,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			amount /= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
 			return amount + ' ' + profileService.assetMetadata[asset].name;
 		}
-		else
+		else{
+			wallet.readAssetMetadata([asset], function(){});
 			return amount + ' of ' + asset;
+		}
 	}
 		
 	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){
