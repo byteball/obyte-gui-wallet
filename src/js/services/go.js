@@ -117,11 +117,15 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
+
+		window.plugins.intent.setNewIntentHandler(function (intent) {
+		    debugger;
+		});
 		console.log("handleUri "+uri);
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.getRealPathFromContentUrl(uri, function (realPath) {
 				require('byteballcore/wallet.js').handlePrivatePaymentFile(realPath);
-			}, function () {});
+			}, function (err) {throw err});
 			return;
 		}
 		if (uri.indexOf(".bbpayment") != -1) {

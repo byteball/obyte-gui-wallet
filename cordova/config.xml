@@ -78,15 +78,15 @@
     <platform name="android">
     	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="add">
 	    	<intent-filter android:priority="1">
-				<action android:name="android.intent.action.VIEW" />
-				<action android:name="android.intent.action.EDIT" />
-				<action android:name="android.intent.action.PICK" />
-				<action android:name="android.intent.action.SEND" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:mimeType="*/*" />
-				<data android:pathPattern="*.bbpayment" />
-			</intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.PICK" />
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="*.bbpayment" />
+            </intent-filter>
 		</custom-config-file>
     </platform>
 </widget>
