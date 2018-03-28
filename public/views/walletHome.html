@@ -566,7 +566,7 @@ input.datafeed_input {
 						<input type="text" ng-model="pair.value" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
 						<a ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
-					<i translate-attr="{dataA: 'Profile field', dataB: 'Field', dataC: 'Datafeed name', dataD: 'Profile field value', dataE: 'Value', dataF: 'Datafeed value'}"></i>
+					<i data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
 					<div class="clear"></div>
 					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
