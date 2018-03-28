@@ -522,6 +522,14 @@ msgstr ""
 msgid "Data into datafeed"
 msgstr ""
 
+#: public/views/walletHome.html:569
+msgid "Datafeed name"
+msgstr ""
+
+#: public/views/walletHome.html:569
+msgid "Datafeed value"
+msgstr ""
+
 #: public/views/modals/tx-details.html:91
 msgid "Date"
 msgstr ""
@@ -667,6 +675,10 @@ msgstr ""
 
 #: public/views/modals/tx-details.html:98
 msgid "Fee"
+msgstr ""
+
+#: public/views/walletHome.html:569
+msgid "Field"
 msgstr ""
 
 #: public/views/modals/tx-details.html:116
@@ -1125,6 +1137,14 @@ msgstr ""
 
 #: public/views/walletHome.html:348
 msgid "Profile"
+msgstr ""
+
+#: public/views/walletHome.html:569
+msgid "Profile field"
+msgstr ""
+
+#: public/views/walletHome.html:569
+msgid "Profile field value"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:16
@@ -1656,6 +1676,10 @@ msgstr ""
 msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
 msgstr ""
 
+#: public/views/walletHome.html:569
+msgid "Value"
+msgstr ""
+
 #: public/views/walletHome.html:562
 msgid "Values"
 msgstr ""
@@ -1844,6 +1868,10 @@ msgstr ""
 msgid "and erase the textcoin to keep it safe from attackers."
 msgstr ""
 
+#: public/views/walletHome.html:569
+msgid "available"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
 msgstr ""
@@ -1862,6 +1890,10 @@ msgstr ""
 
 #: public/views/editCorrespondentDevice.html:49
 msgid "clear chat history"
+msgstr ""
+
+#: public/views/walletHome.html:569
+msgid "confirmed"
 msgstr ""
 
 #: public/views/modals/select-subwallet.html:39
