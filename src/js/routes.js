@@ -341,6 +341,16 @@ angular
           },
         }
       })
+      .state('preferencesGlobal.preferencesEmailAttestor', {
+        url: '/emailAttestor',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEmailAttestor.html'
+          },
+        }
+      })
       .state('preferencesGlobal.preferencesUnit', {
         url: '/unit',
         templateUrl: 'views/preferencesUnit.html',

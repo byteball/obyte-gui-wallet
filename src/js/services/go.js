@@ -117,7 +117,6 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-
 		window.plugins.intent.setNewIntentHandler(function (intent) {
 		    debugger;
 		});

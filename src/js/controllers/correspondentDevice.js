@@ -1,3 +1,4 @@
+/*jslint node: true */
 'use strict';
 
 
@@ -10,7 +11,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var ValidationUtils = require('byteballcore/validation_utils.js');
+	var privateProfile = require('byteballcore/private_profile.js');
 	var objectHash = require('byteballcore/object_hash.js');
 	var db = require('byteballcore/db.js');
 	var network = require('byteballcore/network.js');
@@ -133,16 +134,25 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset){
+	$scope.sendPayment = function(address, amount, asset, device_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
-		backButton.dontDeletePath = true;
-		go.send(function(){
-			//$rootScope.$emit('Local/SetTab', 'send', true);
-			$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+		readMyPaymentAddress(function(my_address){
+			if (single_address && single_address !== '0'){
+				var bSpecificSingleAddress = (single_address.length === 32);
+				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
+				var fc = profileService.focusedClient;
+				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
+					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+			}
+			backButton.dontDeletePath = true;
+			go.send(function(){
+				//$rootScope.$emit('Local/SetTab', 'send', true);
+				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+			});
 		});
 	};
 
@@ -1061,56 +1071,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	
 
-	
-	function parsePrivateProfile(objPrivateProfile, onDone){
-		function handleJoint(objJoint){
-			var attestor_address = objJoint.unit.authors[0].address;
-			var payload;
-			objJoint.unit.messages.forEach(function(message){
-				if (message.app !== 'attestation' || message.payload_hash !== objPrivateProfile.payload_hash)
-					return;
-				payload = message.payload;
-			});
-			if (!payload)
-				return onDone("no such payload hash in this unit");
-			var hidden_profile = {};
-			var bHasHiddenFields = false;
-			for (var field in objPrivateProfile.src_profile){
-				var value = objPrivateProfile.src_profile[field];
-				if (ValidationUtils.isArrayOfLength(value, 2))
-					hidden_profile[field] = objectHash.getBase64Hash(value);
-				else if (ValidationUtils.isStringOfLength(value, constants.HASH_LENGTH)){
-					hidden_profile[field] = value;
-					bHasHiddenFields = true;
-				}
-				else
-					return onDone("invalid src profile");
-			}
-			if (objectHash.getBase64Hash(hidden_profile) !== payload.profile.profile_hash)
-				return onDone("wrong profile hash");
-			db.query(
-				"SELECT 1 FROM my_addresses WHERE address=? UNION SELECT 1 FROM shared_addresses WHERE shared_address=?", 
-				[payload.address, payload.address],
-				function(rows){
-					var bMyAddress = (rows.length > 0);
-					if (bMyAddress && bHasHiddenFields){
-						console.log("profile of my address but has hidden fields");
-						bMyAddress = false;
-					}
-					onDone(null, payload.address, attestor_address, bMyAddress);
-				}
-			);
-		}
-		storage.readJoint(db, objPrivateProfile.unit, {
-			ifNotFound: function(){
-				eventBus.once('saved_unit-'+objPrivateProfile.unit, handleJoint);
-				if (conf.bLight)
-					network.requestHistoryFor([objPrivateProfile.unit], []);
-			},
-			ifFound: handleJoint
-		});
-	}
-	
 	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
 		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
 			handleResult(rows.length > 0);
@@ -1133,8 +1093,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	$scope.acceptPrivateProfile = function(privateProfileJsonBase64){
 		$rootScope.modalOpened = true;
-		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
-		var objPrivateProfile = JSON.parse(privateProfileJson);
+		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+		if (!objPrivateProfile)
+			throw Error('failed to parse the already validated base64 private profile '+privateProfileJsonBase64);
 		var fc = profileService.focusedClient;
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
@@ -1145,7 +1106,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.openProfile = openProfile;
 			$scope.bDisabled = true;
 			$scope.buttonLabel = gettext('Verifying the profile...');
-			parsePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
+			privateProfile.parseAndValidatePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
 				if (!$scope)
 					return;
 				if (error){
@@ -1181,24 +1142,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.store = function() {
 				if (!$scope.bMyAddress)
 					throw Error("not my address");
-				db.query(
-					"INSERT "+db.getIgnore()+" INTO private_profiles (unit, payload_hash, attestor_address, address, src_profile) VALUES(?,?,?,?,?)", 
-					[objPrivateProfile.unit, objPrivateProfile.payload_hash, $scope.attestor_address, $scope.address, JSON.stringify(objPrivateProfile.src_profile)], 
-					function(res){
-						var private_profile_id = res.insertId;
-						var arrQueries = [];
-						for (var field in objPrivateProfile.src_profile){
-							var arrValueAndBlinding = objPrivateProfile.src_profile[field];
-							db.addQuery(arrQueries, "INSERT INTO private_profile_fields (private_profile_id, field, value, blinding) VALUES(?,?,?,?)", 
-								[private_profile_id, field, arrValueAndBlinding[0], arrValueAndBlinding[1] ]);
-						}
-						async.series(arrQueries, function(){
-							$timeout(function(){
-								$modalInstance.dismiss('cancel');
-							});
-						});
-					}
-				);
+				privateProfile.savePrivateProfile(objPrivateProfile, $scope.address, $scope.attestor_address, function(){
+					$timeout(function(){
+						$modalInstance.dismiss('cancel');
+					});
+				});
 			};
 
 			$scope.cancel = function() {
@@ -1297,7 +1245,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								return (p1.creation_date > p2.creation_date) ? -1 : 1; // newest first
 							});
 							$scope.arrProfiles = arrProfiles;
-							$scope.selected_profile = arrProfiles[0];
+							$scope.vars = {selected_profile: arrProfiles[0]};
 							$scope.bDisabled = false;
 							if (arrProfiles.length === 0){
 								if (!fields_list)
@@ -1323,7 +1271,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.getDisplayField = getDisplayField;
 			
 			$scope.noFieldsProvided = function(){
-				var entries = $scope.selected_profile.entries;
+				var entries = $scope.vars.selected_profile.entries;
 				for (var i=0; i<entries.length; i++)
 					if (entries[i].provided)
 						return false;
@@ -1331,9 +1279,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			};
 			
 			$scope.send = function() {
-				var profile = $scope.selected_profile;
+				var profile = $scope.vars.selected_profile;
 				if (!profile)
 					throw Error("no selected profile");
+				console.log('selected profile', profile);
 				var objPrivateProfile = {
 					unit: profile.unit,
 					payload_hash: profile.payload_hash,

@@ -809,11 +809,12 @@ angular.module('copayApp.controllers')
 			}
 
 			var form = $scope.sendPaymentForm;
+			var isMultipleSend = !!form.addresses;
 			if (!form)
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
-			if ($scope.mtab == 2 && !form.address.$modelValue) { // clicked 'share via message' button
+			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
 				form.address.$setValidity('validAddressOrEmail', true);
 			}
 			if (form.$invalid) {
@@ -844,7 +845,6 @@ angular.module('copayApp.controllers')
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
 
-			var isMultipleSend = !!form.addresses;
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
@@ -868,6 +868,7 @@ angular.module('copayApp.controllers')
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
+				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
 				if (asset === "base")
@@ -901,6 +902,33 @@ angular.module('copayApp.controllers')
 							$scope.$digest();
 						}, 1);
 						return;
+					}
+					
+					if (isEmail){ // try to replace email with attested BB address
+						var email = address.replace(/^textcoin:/, '').toLowerCase();
+						var bb_address = indexScope.assocAddressesByEmail[email];
+						console.log('email '+email+': bb_address='+bb_address);
+						if (!bb_address){
+							indexScope.resolveEmailToAddress(email, function(){
+								// assocAddressesByEmail is now filled
+								delete self.current_payment_key;
+								self.submitPayment();
+							});
+							return;
+						}
+						if (bb_address === 'unknown')
+							delete indexScope.assocAddressesByEmail[email]; // send textcoin now but retry next time
+						else if (bb_address === 'none'){
+							// go on to send textcoin
+						}
+						else if (ValidationUtils.isValidAddress(bb_address)){
+							address = bb_address;
+							isEmail = false;
+							isTextcoin = false;
+							original_address = email;
+						}
+						else
+							throw Error("unrecognized bb_address: "+bb_address);
 					}
 
 					var device = require('byteballcore/device.js');
@@ -1076,6 +1104,11 @@ angular.module('copayApp.controllers')
 							var binding = self.binding;
 							self.resetForm();
 							$rootScope.$emit("NewOutgoingTx");
+							if (original_address){
+								var db = require('byteballcore/db.js');
+								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
+									[unit, to_address, original_address]);
+							}
 							if (recipient_device_address) { // show payment in chat window
 								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
 								if (binding && binding.reverseAmount) { // create a request for reverse payment
@@ -1095,12 +1128,11 @@ angular.module('copayApp.controllers')
 								}
 							}
 							else if (Object.keys(mnemonics).length) {
-								var mnemonic = mnemonics[address];
+								var mnemonic = mnemonics[to_address];
 								if (opts.send_all && asset === "base")
 									amount = assetInfo.stable;
 
 								self.openShareTextcoinModal(isEmail ? address.slice("textcoin:".length) : null, mnemonic, amount, asset, false, filePath);
-
 								$rootScope.$emit('Local/SetTab', 'history');
 							}
 							else // redirect to history

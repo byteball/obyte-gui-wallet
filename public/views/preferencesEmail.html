@@ -30,12 +30,12 @@
       </span>
     </div>
 
-    <label translate>Email for wallet notifications</label>
+    <label donttranslate>Email for wallet notifications</label>
     <input type="email" id="email" name="email" ng-model="prefEmail.email" required>
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}" ng-disabled="emailForm.$invalid && !index.preferencesGlobal.preferencesEmail">
   </form>
-    <div class="text-gray size-12 text-center" translate>Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
+    <div class="text-gray size-12 text-center" donttranslate>Setting up email notifications could weaken your privacy, if the email service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
   </div>
 </div>
 <div class="extra-margin-bottom"></div>
