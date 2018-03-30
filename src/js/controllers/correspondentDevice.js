@@ -569,6 +569,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			
 			$scope.pay = function() {
 				console.log('pay');
+				$scope.bDisabled = true;
 				
 				if (fc.isPrivKeyEncrypted()) {
 					profileService.unlockFC(null, function(err) {
