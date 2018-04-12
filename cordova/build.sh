@@ -162,7 +162,10 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-custom-config --fetch
 	checkOK
 
-	cordova plugin add https://github.com/napolitano/cordova-plugin-intent
+	cordova plugin add https://github.com/kakysha/cordova-plugin-intent
+	checkOK
+
+	cordova plugin add cordova-plugin-android-permissions
 	checkOK
 fi
 

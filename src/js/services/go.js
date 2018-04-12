@@ -117,20 +117,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		window.plugins.intent.setNewIntentHandler(function (intent) {
-		    debugger;
-		});
 		console.log("handleUri "+uri);
-		if (uri.indexOf("content:") !== -1) {
-			window.plugins.intent.getRealPathFromContentUrl(uri, function (realPath) {
-				require('byteballcore/wallet.js').handlePrivatePaymentFile(realPath);
-			}, function (err) {throw err});
-			return;
-		}
-		if (uri.indexOf(".bbpayment") != -1) {
-			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
-			return;
-		}
+		if (uri.indexOf("byteball:") == -1) return;
+
 		require('byteballcore/uri.js').parseUri(uri, {
 			ifError: function(err){
 				console.log(err);
@@ -158,6 +147,19 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					throw Error('unknown url type: '+objRequest.type);
 			}
 		});
+	}
+
+	function handleFile(uri) {
+		if (uri.indexOf("content:") !== -1) {
+			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
+				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content);
+			}, function (err) {throw err});
+			return;
+		}
+		if (uri.indexOf(".bbpayment") != -1) {
+			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
+			return;
+		}
 	}
 	
 	function extractByteballArgFromCommandLine(commandLine){
@@ -270,6 +272,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				console.log("using cached open url "+window.open_url);
 				setTimeout(function(){
 					handleUri(window.open_url);
+					handleFile(window.open_url);
 				}, 100);
 			}
 			removeListener();
@@ -284,6 +287,12 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			console.log('resume');
 			$rootScope.$emit('Local/Resume');
 		}, false);
+
+		if (window.plugins.intent) {
+			window.plugins.intent.setNewIntentHandler(function(intent){
+				handleFile(intent.data);
+			});
+		}
 	}
    
 	
