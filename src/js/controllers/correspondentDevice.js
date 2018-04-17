@@ -1186,11 +1186,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bDisabled = true;
 			var sql = fields_list
 				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
-					WHERE field IN(?) GROUP BY private_profile_id HAVING c=?"
+					WHERE field IN(?) GROUP BY private_profile_id "
 				: "SELECT * FROM private_profiles";
-			var params = fields_list ? [arrFields, arrFields.length] : [];
+			var params = fields_list ? [arrFields] : [];
 			readMyPaymentAddress(function(current_address){
 				db.query(sql, params, function(rows){
+					if (fields_list)
+						rows = rows.filter(function(row){ return (row.c === arrFields.length); });
 					var arrProfiles = [];
 					async.eachSeries(
 						rows,
@@ -1262,7 +1264,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									});
 							}
 							$timeout(function() {
-								$rootScope.$apply();
+								$scope.$apply();
 							});
 						}
 					);

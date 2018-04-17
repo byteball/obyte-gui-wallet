@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.byteball.wallet"
   version="2.2.0"
-  android-versionCode="1064"
+  android-versionCode="1065"
   ios-CFBundleVersion="2.2.0">
     <name>Byteball</name>
     <description>
