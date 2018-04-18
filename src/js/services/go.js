@@ -168,7 +168,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
 		var arrParts = commandLine.split(' '); // on windows includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
-			var part = arrParts[i].trim();
+			var part = arrParts[i].trim().replace(/"/g, '');
 			if (part.match(url) || part.match(file))
 				return part;
 		}
