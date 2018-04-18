@@ -1584,7 +1584,7 @@ angular.module('copayApp.controllers')
 		};
 
 		this.getPrivatePayloadSavePath = function(cb) {
-			var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.bbpayment';
+			var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
 			if (!isCordova) {
 				var inputFile = document.getElementById('nwPrivatePayloadSaveFile');
 				inputFile.setAttribute("nwsaveas", fileName);

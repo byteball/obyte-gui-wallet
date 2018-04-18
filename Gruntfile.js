@@ -214,7 +214,23 @@ module.exports = function(grunt) {
           macIcns: './public/img/icons/icon-white-outline.icns',
           winIco: './public/img/icons/icon-white-outline.ico',
           exeIco: './public/img/icons/icon-white-outline.ico',
-          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
+          macPlist: {
+          	CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}],
+      		/*CFBundleIconFile: 'nw.icns',*/
+      		LSHasLocalizedDisplayName: 0,
+      		UTExportedTypeDeclarations: [{
+      			UTTypeIdentifier: 'org.byteball.coin',
+      			UTTypeDescription: 'Byteball Coin',
+      			UTTypeConformsTo: ["public.data"],
+      			UTTypeTagSpecification: {
+      				"public.filename-extension":["coin"]
+      			}
+      		}],
+      		CFBundleDocumentTypes: [{
+      			CFBundleTypeName: "Byteball Coin",
+      			LSItemContentTypes: ["org.byteball.coin"]
+      		}]
+          }
       },
       src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
     },

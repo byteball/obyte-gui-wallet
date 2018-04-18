@@ -2,7 +2,7 @@
 
 var eventBus = require('byteballcore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -156,7 +156,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			}, function (err) {throw err});
 			return;
 		}
-		if (uri.indexOf(".bbpayment") != -1) {
+		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
 			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
 			return;
 		}
@@ -164,11 +164,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	
 	function extractByteballArgFromCommandLine(commandLine){
 		var conf = require('byteballcore/conf.js');
-		var re = new RegExp('^'+conf.program+':', 'i');
+		var url = new RegExp('^'+conf.program+':', 'i');
+		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
 		var arrParts = commandLine.split(' '); // on windows includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim();
-			if (part.match(re))
+			if (part.match(url) || part.match(file))
 				return part;
 		}
 		return null;
@@ -199,7 +200,7 @@ Categories=Office;Finance;\n\
 MimeType=x-scheme-handler/"+package.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
-				if (err)
+				if (err)д
 					throw Error("failed to write desktop file: "+err);
 				child_process.exec('update-desktop-database ~/.local/share/applications', function(err){
 					if (err)
@@ -227,6 +228,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 					if (!file)
 						return console.log("no byteball: arg found");
 					handleUri(file);
+					handleFile(file);
 					gui.Window.get().focus();
 				}
 			});
@@ -237,6 +239,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 				setTimeout(function(){
 					handleUri(gui.App.argv[0]);
+					handleFile(gui.App.argv[0]);
 				}, 100);
 				removeListener();
 			});
