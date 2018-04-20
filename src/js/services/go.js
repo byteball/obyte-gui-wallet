@@ -194,7 +194,7 @@ Type=Application\n\
 Version=1.0\n\
 Name="+package.name+"\n\
 Comment="+package.description+"\n\
-Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
+Exec=NW_DESKTOP=%k "+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/icon-white-outline.iconset/icon_256x256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
