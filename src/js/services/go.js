@@ -197,15 +197,29 @@ Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/icon-white-outline.iconset/icon_256x256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package.name+";\n\
+MimeType=x-scheme-handler/"+package.name+";application/x-"+package.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
-				if (err)д
+				if (err)
 					throw Error("failed to write desktop file: "+err);
-				child_process.exec('update-desktop-database ~/.local/share/applications', function(err){
+				child_process.exec('update-desktop-database '+applicationsDir, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
-					console.log(".desktop done");
+					fs.writeFile('/usr/local/share/mime/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
+ <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
+   <mime-type type=\"application/x-"+package.name+"\">\n\
+   <comment>Byteball Private Textcoin</comment>\n\
+   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
+  </mime-type>\n\
+ </mime-info>\n", {mode: 0755}, function(err) {
+ 						if (err)
+							throw Error("failed to write MIME config file: "+err);
+						child_process.exec('update-mime-database', function(err){
+							if (err)
+								throw Error("failed to exec update-mime-database: "+err);
+						});
+ 						console.log(".desktop done");
+ 					});
 				});
 			});
 		});
