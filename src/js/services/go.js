@@ -186,6 +186,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var child_process = require('child_process'+'');
 		var package = require('../package.json'+''); // relative to html root
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
+		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
 			fs.writeFile(applicationsDir + '/' +package.name+'.desktop', "[Desktop Entry]\n\
@@ -205,7 +206,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				child_process.exec('update-desktop-database '+applicationsDir, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
-					fs.writeFile('/usr/local/share/mime/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
+					fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
  <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
    <mime-type type=\"application/x-"+package.name+"\">\n\
    <comment>Byteball Private Textcoin</comment>\n\
@@ -214,7 +215,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
  </mime-info>\n", {mode: 0755}, function(err) {
  						if (err)
 							throw Error("failed to write MIME config file: "+err);
-						child_process.exec('update-mime-database', function(err){
+						child_process.exec('update-mime-database '+mimeDir, function(err){
 							if (err)
 								throw Error("failed to exec update-mime-database: "+err);
 						});
