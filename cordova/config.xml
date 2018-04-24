@@ -76,10 +76,47 @@
       <splash src="../ios/splash/Default-667h@2x~iphone6.png" width="750" height="1334"/>
       <splash src="../ios/splash/Default-960h@2x~iphone6plus.png" width="1080" height="1920"/>
       <splash src="../ios/splash/Default-736h@3x~iphone6plus.png" width="1242" height="2208"/>
+
+      <config-file target="*-Info.plist" parent="UTExportedTypeDeclarations">
+	    	<array>
+				<dict>
+				    <key>UTTypeConformsTo</key>
+				    <array>
+				        <string>public.data</string>
+				        <string>public.text</string>
+				    </array>
+				    <key>UTTypeDescription</key>
+				    <string>Byteball Coin</string>
+				    <key>UTTypeIdentifier</key>
+				    <string>org.byteball.coin</string>
+				    <key>UTTypeTagSpecification</key>
+				    <dict>
+				        <key>public.filename-extension</key>
+				        <string>coin</string>
+				        <key>public.mime-type</key>
+				        <string>application/x-byteball</string>
+				    </dict>
+				</dict>
+				</array>
+		</config-file>
+		<config-file target="*-Info.plist" parent="CFBundleDocumentTypes">
+	    	<array>
+			    <dict>
+			        <key>CFBundleTypeName</key>
+			        <string>Byteball Coin</string>
+			        <key>LSHandlerRank</key>
+			        <string>Owner</string>
+			        <key>LSItemContentTypes</key>
+			        <array>
+			            <string>org.byteball.coin</string>
+			        </array>
+			    </dict>
+			</array>
+		</config-file>
     </platform>
 
     <platform name="android">
-    	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="add">
+    	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="merge">
 	    	<intent-filter android:priority="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

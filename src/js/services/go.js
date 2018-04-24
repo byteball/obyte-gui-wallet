@@ -117,6 +117,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
+		if (uri.indexOf("file:///") !== -1) return handleFile(uri);
 		console.log("handleUri "+uri);
 		if (uri.indexOf("byteball:") == -1) return;
 
@@ -150,6 +151,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	}
 
 	function handleFile(uri) {
+		console.log("handleFile "+uri);
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
 				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content);
@@ -157,6 +159,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			return;
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
+			debugger;
 			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
 			return;
 		}
