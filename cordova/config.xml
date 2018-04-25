@@ -83,7 +83,6 @@
 				    <key>UTTypeConformsTo</key>
 				    <array>
 				        <string>public.data</string>
-				        <string>public.text</string>
 				    </array>
 				    <key>UTTypeDescription</key>
 				    <string>Byteball Coin</string>

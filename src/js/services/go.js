@@ -152,15 +152,17 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	function handleFile(uri) {
 		console.log("handleFile "+uri);
+		var cb = function(data) {
+			$rootScope.$emit('claimTextcoin', data.mnemonic);
+		}
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
-				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content);
+				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content, cb);
 			}, function (err) {throw err});
 			return;
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
-			debugger;
-			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri);
+			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
 			return;
 		}
 	}
