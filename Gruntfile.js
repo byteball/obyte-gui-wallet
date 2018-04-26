@@ -228,7 +228,8 @@ module.exports = function(grunt) {
       		}],
       		CFBundleDocumentTypes: [{
       			CFBundleTypeName: "Byteball Coin",
-      			LSItemContentTypes: ["org.byteball.coin"]
+      			LSItemContentTypes: ["org.byteball.coin"],
+      			CFBundleTypeIconFile: "app.icns"
       		}]
           }
       },
