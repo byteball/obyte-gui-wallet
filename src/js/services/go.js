@@ -152,7 +152,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	function handleFile(uri) {
 		console.log("handleFile "+uri);
+		$rootScope.$emit('process_status_change', 'claiming', true);
 		var cb = function(data) {
+			$rootScope.$emit('process_status_change', 'claiming', false);
 			$rootScope.$emit('claimTextcoin', data.mnemonic);
 		}
 		if (uri.indexOf("content:") !== -1) {
