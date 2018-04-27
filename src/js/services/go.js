@@ -213,6 +213,9 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				child_process.exec('update-desktop-database '+applicationsDir, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
+					if (!fs.existsSync(mimeDir + '/packages')) {
+						fs.mkdirSync(mimeDir + '/packages');
+					}
 					fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
  <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
    <mime-type type=\"application/x-"+package.name+"\">\n\
