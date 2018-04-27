@@ -225,6 +225,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 						child_process.exec('update-mime-database '+mimeDir, function(err){
 							if (err)
 								throw Error("failed to exec update-mime-database: "+err);
+							child_process.exec('xdg-icon-resource install --context mimetypes --size 32 '+path.dirname(process.execPath)+'/public/img/icons/icon-white-outline.iconset/icon_32x32.png application-x-'+package.name, function(err){});
 						});
  						console.log(".desktop done");
  					});
