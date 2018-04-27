@@ -1,0 +1,45 @@
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Signed message
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	
+	<h4 class="title m0 row columns" translate>Message:</h4>
+	<div class="m10b m10t row columns size-14" >
+		{{signed_message}}
+	</div>
+	
+	<h4 class="title m0 row columns" translate>Signing address:</h4>
+	<div class="m10b m10t row columns size-14" >
+		{{address}}
+	</div>
+	
+	<div class="m10b m10t row columns size-14" >
+		<span translate>The signature is</span>
+		<span ng-if="bValid === false" class="has-error" translate>invalid</span>
+		<span ng-if="bValid === true" class="color-greeni" translate>valid</span>
+	</div>
+	
+  <div class="row m20t">
+    <div class="large-12 large-centered columns">
+        <div >
+        </div>
+        <div >
+        </div>
+        <button type="submit" class="button black round expand" ng-style="{'background-color':color}" ng-click="cancel()" translate>
+          Close
+        </button>
+    </div>
+  </div>
+
+</div>

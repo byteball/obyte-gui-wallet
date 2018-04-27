@@ -399,6 +399,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                     refuseSignature();
                 return unlock();
             }
+			
+			if (objUnit.signed_message){
+				var question = gettextCatalog.getString('Sign message "'+objUnit.signed_message+'" by address '+objAddress.address+'?');
+				requestApproval(question, {
+					ifYes: function(){
+						createAndSendSignature();
+						unlock();
+					},
+					ifNo: function(){
+						// do nothing
+						console.log("===== NO CLICKED");
+						refuseSignature();
+						unlock();
+					}
+				});
+				return;
+			}
             
             walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddressInfos){
                 var arrAuthorAddresses = objUnit.authors.map(function(author){ return author.address; });

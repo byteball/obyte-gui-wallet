@@ -518,19 +518,26 @@ API.prototype.sendPayment = function(asset, to_address, amount, arrSigningDevice
 	}, cb);
 }*/
 
+
+API.prototype.getSignerWithLocalPrivateKey = function(){
+    var self = this;
+	return function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
+		var coin = (self.credentials.network == 'livenet' ? "0" : "1");
+		var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
+		var xPrivKey = new Bitcore.HDPrivateKey.fromString(self.credentials.xPrivKey);
+		var privateKey = xPrivKey.derive(path).privateKey;
+		//var privKeyBuf = privateKey.toBuffer();
+		var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47
+		handleSig(ecdsaSig.sign(text_to_sign, privKeyBuf));
+	};
+};
+    
+
 API.prototype.sendMultiPayment = function(opts, cb) {
     var self = this;
-    var coin = (this.credentials.network == 'livenet' ? "0" : "1");
 	var Wallet = require('byteballcore/wallet.js');
-    
-    opts.signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
-        var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
-        var xPrivKey = new Bitcore.HDPrivateKey.fromString(self.credentials.xPrivKey);
-        var privateKey = xPrivKey.derive(path).privateKey;
-        //var privKeyBuf = privateKey.toBuffer();
-        var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47
-        handleSig(ecdsaSig.sign(text_to_sign, privKeyBuf));
-    };
+	
+	opts.signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
     
 	if (opts.shared_address){
 		opts.paying_addresses = [opts.shared_address];
@@ -557,6 +564,11 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 			});
 		}
 	}
+};
+
+API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, cb) {
+	var Wallet = require('byteballcore/wallet.js');
+	Wallet.signMessage(from_address, message, arrSigningDeviceAddresses, this.getSignerWithLocalPrivateKey(), cb);
 };
 
 API.prototype.getAddresses = function(opts, cb) {
