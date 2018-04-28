@@ -219,7 +219,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 					fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
  <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
    <mime-type type=\"application/x-"+package.name+"\">\n\
-   <comment>Byteball Private Textcoin</comment>\n\
+   <comment>Byteball Private Coin</comment>\n\
    <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
   </mime-type>\n\
  </mime-info>\n", {mode: 0755}, function(err) {

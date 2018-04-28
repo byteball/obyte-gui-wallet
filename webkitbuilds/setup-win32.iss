@@ -41,6 +41,10 @@ Root: HKLM; Subkey: "Software\Classes\byteball\DefaultIcon"; ValueType: string; 
 Root: HKLM; Subkey: "Software\Classes\byteball\shell"
 Root: HKLM; Subkey: "Software\Classes\byteball\shell\open"
 Root: HKLM; Subkey: "Software\Classes\byteball\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
+Root: HKCR; Subkey: ".coin";                             ValueData: "{#MyAppName}Coin";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin";                     ValueData: "{#MyAppName} Private Coin";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked

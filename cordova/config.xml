@@ -85,7 +85,7 @@
 				        <string>public.data</string>
 				    </array>
 				    <key>UTTypeDescription</key>
-				    <string>Byteball Coin</string>
+				    <string>Byteball Private Coin</string>
 				    <key>UTTypeIdentifier</key>
 				    <string>org.byteball.coin</string>
 				    <key>UTTypeTagSpecification</key>
@@ -102,7 +102,7 @@
 	    	<array>
 			    <dict>
 			        <key>CFBundleTypeName</key>
-			        <string>Byteball Coin</string>
+			        <string>Byteball Private Coin</string>
 			        <key>LSHandlerRank</key>
 			        <string>Owner</string>
 			        <key>LSItemContentTypes</key>
@@ -121,7 +121,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:mimeType="*/*" />
-                <data android:pathPattern="*.bbpayment" />
+                <data android:pathPattern="*.coin" />
             </intent-filter>
 		</custom-config-file>
     </platform>
