@@ -26,6 +26,7 @@ Compression=lzma
 SolidCompression=yes
 ; SetupIconFile=../public/img/icons/icon-white-outline.ico
 UninstallDisplayIcon={app}/icon.ico
+ChangesAssociations=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
