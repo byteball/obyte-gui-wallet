@@ -750,6 +750,8 @@ angular.module('copayApp.controllers')
 				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
 				return;
 			}
+			if (filePath)
+				return;
 			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
