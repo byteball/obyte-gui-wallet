@@ -220,14 +220,14 @@ module.exports = function(grunt) {
       		LSHasLocalizedDisplayName: 0,
       		UTExportedTypeDeclarations: [{
       			UTTypeIdentifier: 'org.byteball.coin',
-      			UTTypeDescription: 'Byteball Coin',
+      			UTTypeDescription: 'Byteball Private Coin',
       			UTTypeConformsTo: ["public.data"],
       			UTTypeTagSpecification: {
       				"public.filename-extension":["coin"]
       			}
       		}],
       		CFBundleDocumentTypes: [{
-      			CFBundleTypeName: "Byteball Coin",
+      			CFBundleTypeName: "Byteball Private Coin",
       			LSItemContentTypes: ["org.byteball.coin"],
       			CFBundleTypeIconFile: "app.icns"
       		}]
