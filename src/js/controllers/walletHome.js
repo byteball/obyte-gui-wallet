@@ -1424,6 +1424,7 @@ angular.module('copayApp.controllers')
 					form.address.$isValid = true;
 					form.address.$render();
 					this.lockAddress = true;
+					$scope.mtab = 1;
 					if (recipient_device_address) // must be already paired
 						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
 				}
