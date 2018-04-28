@@ -764,6 +764,7 @@ angular.module('copayApp.controllers')
 				$scope.text = text;
 				$scope.subject = subject;
 				$scope.isResend = isResend;
+				$scope.filePath = filePath;
 
 				$scope.shareToEmail = function() {
 					window.plugins.socialsharing.shareViaEmail(text, subject, [addr]);
@@ -1169,7 +1170,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			$scope.mtab = 1;
+			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private ? 2 : 1;
 		}
 
 		this.submitData = function() {
@@ -1287,7 +1288,7 @@ angular.module('copayApp.controllers')
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
-				return true;
+			 	return true;
 			var form = $scope.sendPaymentForm;
 			if (!form || !form.address) // disappeared
 				return true;
