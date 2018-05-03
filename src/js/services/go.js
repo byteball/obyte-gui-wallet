@@ -117,9 +117,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		if (uri.indexOf("file:///") !== -1) return handleFile(uri);
+		if (uri.indexOf("byteball:") == -1) return handleFile(uri);
+
 		console.log("handleUri "+uri);
-		if (uri.indexOf("byteball:") == -1) return;
 
 		require('byteballcore/uri.js').parseUri(uri, {
 			ifError: function(err){
@@ -254,7 +254,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 					if (!file)
 						return console.log("no byteball: arg found");
 					handleUri(file);
-					handleFile(file);
 					gui.Window.get().focus();
 				}
 			});
@@ -265,7 +264,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 				setTimeout(function(){
 					handleUri(gui.App.argv[0]);
-					handleFile(gui.App.argv[0]);
 				}, 100);
 				removeListener();
 			});
@@ -301,7 +299,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				console.log("using cached open url "+window.open_url);
 				setTimeout(function(){
 					handleUri(window.open_url);
-					handleFile(window.open_url);
 				}, 100);
 			}
 			removeListener();

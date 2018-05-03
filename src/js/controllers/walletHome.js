@@ -719,6 +719,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
+			var is_private = false;
 			if (!asset || asset == "base") {
 				if (network.exchangeRates['GBYTE_USD']) {
 					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
@@ -732,9 +733,11 @@ angular.module('copayApp.controllers')
 					asset = assetInfo.name;
 					amount /= Math.pow(10, assetInfo.decimals);
 				}
+				if (assetInfo)
+					is_private = assetInfo.is_private;
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/#textcoin?" + mnemonic,
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "" : (": https://byteball.org/#textcoin?" + mnemonic)),
 				subject: "Byteball user beamed you money"
 			}
 		}
