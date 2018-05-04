@@ -6,7 +6,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go) {
 
 		var self = this;
 		var home = this;
@@ -611,6 +611,20 @@ angular.module('copayApp.controllers')
 			});
 		}
 
+		this.bindOnDrop = function() {
+			document.addEventListener('dragover', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+			}, false);
+			document.addEventListener('drop', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+					go.handleUri(e.dataTransfer.files[i].path);
+				}
+			}, false);
+		}
+
 		this.hideMenuBar = lodash.debounce(function(hide) {
 			if (hide) {
 				$rootScope.hideMenuBar = true;
@@ -719,6 +733,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
+			var is_private = false;
 			if (!asset || asset == "base") {
 				if (network.exchangeRates['GBYTE_USD']) {
 					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
@@ -732,14 +747,28 @@ angular.module('copayApp.controllers')
 					asset = assetInfo.name;
 					amount /= Math.pow(10, assetInfo.decimals);
 				}
+				if (assetInfo)
+					is_private = assetInfo.is_private;
 			}
 			return {
-				message: "Here is your link to receive " + amount + " " + asset + usd_amount_str +": https://byteball.org/#textcoin?" + mnemonic,
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "" : (": https://byteball.org/#textcoin?" + mnemonic)),
 				subject: "Byteball user beamed you money"
 			}
 		}
 
-		this.openShareTextcoinModal = function(addr, mnemonic, amount, asset, isResend) {
+		this.openShareTextcoinModal = function(addr, mnemonic, amount, asset, isResend, filePath) {
+			if (!addr && isCordova) {
+				if (isMobile.Android() || isMobile.Windows()) {
+					window.ignoreMobilePause = true;
+				}
+				var removeFile = function() {
+
+				}
+				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
+				return;
+			}
+			if (filePath)
+				return;
 			var msg = getShareMessage(amount, mnemonic, asset);
 			var text = msg.message;
 			var subject = msg.subject;
@@ -754,6 +783,7 @@ angular.module('copayApp.controllers')
 				$scope.text = text;
 				$scope.subject = subject;
 				$scope.isResend = isResend;
+				$scope.filePath = filePath;
 
 				$scope.shareToEmail = function() {
 					window.plugins.socialsharing.shareViaEmail(text, subject, [addr]);
@@ -861,8 +891,6 @@ angular.module('copayApp.controllers')
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
-				if (isTextcoin && assetInfo.is_private)
-					return self.setSendError("private assets can not be sent as textcoins yet");
 				if (asset === "base")
 					amount *= unitValue;
 				else if (asset === constants.BLACKBYTES_ASSET)
@@ -1067,6 +1095,15 @@ angular.module('copayApp.controllers')
 							else
 								opts.base_outputs = outputs;
 						}
+						var filePath;
+						if (assetInfo.is_private) {
+							opts.getPrivateAssetPayloadSavePath = function(cb) {
+								self.getPrivatePayloadSavePath(function(fullPath, root, path, name){
+									filePath = fullPath ? fullPath : (root + path + '/' + name);
+									cb(fullPath, root, path, name);
+								});
+							};
+						}
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1115,19 +1152,7 @@ angular.module('copayApp.controllers')
 								if (opts.send_all && asset === "base")
 									amount = assetInfo.stable;
 
-								if (isEmail) {
-									self.openShareTextcoinModal(to_address.slice("textcoin:".length), mnemonic, amount, asset, false);
-								} else {
-									if (isCordova) {
-										if (isMobile.Android() || isMobile.Windows()) {
-											window.ignoreMobilePause = true;
-										}
-										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
-									} else {
-										self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
-									}
-								}
-
+								self.openShareTextcoinModal(isEmail ? address.slice("textcoin:".length) : null, mnemonic, amount, asset, false, filePath);
 								$rootScope.$emit('Local/SetTab', 'history');
 							}
 							else // redirect to history
@@ -1164,7 +1189,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			$scope.mtab = 1;
+			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private ? 2 : 1;
 		}
 
 		this.submitData = function() {
@@ -1282,7 +1307,7 @@ angular.module('copayApp.controllers')
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
-				return true;
+			 	return true;
 			var form = $scope.sendPaymentForm;
 			if (!form || !form.address) // disappeared
 				return true;
@@ -1418,6 +1443,7 @@ angular.module('copayApp.controllers')
 					form.address.$isValid = true;
 					form.address.$render();
 					this.lockAddress = true;
+					$scope.mtab = 1;
 					if (recipient_device_address) // must be already paired
 						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
 				}
@@ -1578,6 +1604,23 @@ angular.module('copayApp.controllers')
 			return this.unitName;
 		};
 
+		this.getPrivatePayloadSavePath = function(cb) {
+			var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
+			if (!isCordova) {
+				var inputFile = document.getElementById('nwPrivatePayloadSaveFile');
+				inputFile.setAttribute("nwsaveas", fileName);
+				inputFile.click();
+				inputFile.onchange = function() {
+					cb(this.value);
+				};
+			}
+			else {
+				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
+				var path = 'Byteball';
+				cb(null, root, path, fileName);
+			}
+		};
+
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			var self = this;
@@ -1595,14 +1638,21 @@ angular.module('copayApp.controllers')
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
 				$scope.shareAgain = function() {
-					if (isCordova) {
-						if (isMobile.Android() || isMobile.Windows()) {
-							window.ignoreMobilePause = true;
-						}
-						window.plugins.socialsharing.shareWithOptions(getShareMessage(btx.amount, btx.mnemonic, btx.asset));
-					} else {
+					if ($scope.isPrivate) {
+						var indivisible_asset = require('byteballcore/indivisible_asset');
+						var wallet = require('byteballcore/wallet.js');
+						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
+							self.getPrivatePayloadSavePath(function(fullPath, root, path, fileName){
+								var filePath = fullPath ? fullPath : (root + path + '/' + fileName);
+								wallet.storePrivateAssetPayload(fullPath, root, path, fileName, btx.mnemonic, arrRecipientChains, function(err) {
+									if (err)
+										throw Error(err);
+									self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true, filePath);
+								});
+							});
+						});
+					} else
 						self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true);
-					}
 				}
 
 				$scope.eraseTextcoin = function() {
@@ -1823,4 +1873,6 @@ angular.module('copayApp.controllers')
 				}
 			}, function(){}, "referrer");
 		}
+
+		this.bindOnDrop();
 	});
