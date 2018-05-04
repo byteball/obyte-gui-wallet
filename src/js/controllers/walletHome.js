@@ -6,7 +6,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go) {
 
 		var self = this;
 		var home = this;
@@ -609,6 +609,20 @@ angular.module('copayApp.controllers')
 						.triggerHandler('click');
 				}, true);
 			});
+		}
+
+		this.bindOnDrop = function() {
+			document.addEventListener('dragover', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+			}, false);
+			document.addEventListener('drop', function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+					go.handleUri(e.dataTransfer.files[i].path);
+				}
+			}, false);
 		}
 
 		this.hideMenuBar = lodash.debounce(function(hide) {
@@ -1859,4 +1873,6 @@ angular.module('copayApp.controllers')
 				}
 			}, function(){}, "referrer");
 		}
+
+		this.bindOnDrop();
 	});
