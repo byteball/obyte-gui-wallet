@@ -1617,7 +1617,7 @@ angular.module('copayApp.controllers')
 			else {
 				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
 				var path = 'Byteball';
-				cb(null, root, path, fileName);
+				cb(null, {root: root, path: path, fileName: fileName});
 			}
 		};
 
@@ -1642,9 +1642,9 @@ angular.module('copayApp.controllers')
 						var indivisible_asset = require('byteballcore/indivisible_asset');
 						var wallet = require('byteballcore/wallet.js');
 						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
-							self.getPrivatePayloadSavePath(function(fullPath, root, path, fileName){
-								var filePath = fullPath ? fullPath : (root + path + '/' + fileName);
-								wallet.storePrivateAssetPayload(fullPath, root, path, fileName, btx.mnemonic, arrRecipientChains, function(err) {
+							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
+								var filePath = fullPath ? fullPath : (cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.fileName);
+								wallet.storePrivateAssetPayload(fullPath, cordovaPathObj, btx.mnemonic, arrRecipientChains, function(err) {
 									if (err)
 										throw Error(err);
 									self.openShareTextcoinModal(btx.textAddress, btx.mnemonic, btx.amount, btx.asset, true, filePath);
