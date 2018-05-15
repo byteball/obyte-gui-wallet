@@ -1,3 +1,4 @@
+/*jslint node: true */
 'use strict';
 
 
@@ -10,7 +11,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var chatStorage = require('byteballcore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var ValidationUtils = require('byteballcore/validation_utils.js');
+	var privateProfile = require('byteballcore/private_profile.js');
 	var objectHash = require('byteballcore/object_hash.js');
 	var db = require('byteballcore/db.js');
 	var network = require('byteballcore/network.js');
@@ -133,16 +134,25 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset){
+	$scope.sendPayment = function(address, amount, asset, device_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
-		backButton.dontDeletePath = true;
-		go.send(function(){
-			//$rootScope.$emit('Local/SetTab', 'send', true);
-			$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+		readMyPaymentAddress(function(my_address){
+			if (single_address && single_address !== '0'){
+				var bSpecificSingleAddress = (single_address.length === 32);
+				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
+				var fc = profileService.focusedClient;
+				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
+					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+			}
+			backButton.dontDeletePath = true;
+			go.send(function(){
+				//$rootScope.$emit('Local/SetTab', 'send', true);
+				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+			});
 		});
 	};
 
@@ -162,6 +172,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 
+	function getSigningDeviceAddresses(fc){
+		var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+		if (fc.credentials.m < fc.credentials.n)
+			indexScope.copayers.forEach(function(copayer){
+				if (copayer.me || copayer.signs)
+					arrSigningDeviceAddresses.push(copayer.device_address);
+			});
+		else if (indexScope.shared_address)
+			arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
+		return arrSigningDeviceAddresses;
+	}
 	
 	
 	$scope.offerContract = function(address){
@@ -352,21 +373,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					
 					// compose and send
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
-						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-						if (fc.credentials.m < fc.credentials.n)
-							indexScope.copayers.forEach(function(copayer){
-								if (copayer.me || copayer.signs)
-									arrSigningDeviceAddresses.push(copayer.device_address);
-							});
-						else if (indexScope.shared_address)
-							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 						profileService.bKeepUnlocked = true;
 						var opts = {
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
 							to_address: shared_address,
 							amount: my_amount,
-							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
 						fc.sendMultiPayment(opts, function(err){
@@ -559,6 +572,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			
 			$scope.pay = function() {
 				console.log('pay');
+				$scope.bDisabled = true;
 				
 				if (fc.isPrivKeyEncrypted()) {
 					profileService.unlockFC(null, function(err) {
@@ -615,14 +629,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var asset = (arrNonBaseAssets.length > 0) ? arrNonBaseAssets[0] : null;
 						var arrBaseOutputs = assocOutputsByAsset['base'] || [];
 						var arrAssetOutputs = asset ? assocOutputsByAsset[asset] : null;
-						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-						if (fc.credentials.m < fc.credentials.n)
-							indexScope.copayers.forEach(function(copayer){
-								if (copayer.me || copayer.signs)
-									arrSigningDeviceAddresses.push(copayer.device_address);
-							});
-						else if (indexScope.shared_address)
-							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
@@ -633,7 +639,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
 							asset: asset,
-							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
 							base_outputs: arrBaseOutputs,
 							asset_outputs: arrAssetOutputs
@@ -809,14 +815,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							payload: payload
 						};
 
-						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-						if (fc.credentials.m < fc.credentials.n)
-							indexScope.copayers.forEach(function(copayer){
-								if (copayer.me || copayer.signs)
-									arrSigningDeviceAddresses.push(copayer.device_address);
-							});
-						else if (indexScope.shared_address)
-							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
 						var current_vote_key = require('crypto').createHash("sha256").update(voteJson).digest('base64');
 						if (current_vote_key === indexScope.current_vote_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This vote is already under way");
@@ -826,7 +824,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
-							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
 							shared_address: indexScope.shared_address,
@@ -880,6 +878,156 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 		
 	}; // sendVote
+	
+	
+	$scope.showSignMessageModal = function(message_to_sign){
+		$rootScope.modalOpened = true;
+		var self = this;
+		var fc = profileService.focusedClient;
+		$scope.error = '';
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.color = fc.backgroundColor;
+			$scope.bDisabled = true;
+			$scope.message_to_sign = message_to_sign;
+			readMyPaymentAddress(function(address){
+				$scope.address = address;
+				$scope.bDisabled = false;
+				scopeApply();
+			});
+			
+			function scopeApply(){
+				$timeout(function(){
+					$scope.$apply();
+				});
+			}
+
+			$scope.signMessage = function() {
+				console.log('signMessage');
+				
+				if (fc.isPrivKeyEncrypted()) {
+					profileService.unlockFC(null, function(err) {
+						if (err){
+							$scope.error = err.message;
+							return scopeApply();
+						}
+						$scope.signMessage();
+					});
+					return;
+				}
+				
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						return scopeApply();
+					}
+					
+					var current_message_signing_key = require('crypto').createHash("sha256").update($scope.address + message_to_sign).digest('base64');
+					if (current_message_signing_key === indexScope.current_message_signing_key){
+						$rootScope.$emit('Local/ShowErrorAlert', "This message signing is already under way");
+						$modalInstance.dismiss('cancel');
+						return;
+					}
+					indexScope.current_message_signing_key = current_message_signing_key;
+					var recipient_device_address = lodash.clone(correspondent.device_address);
+					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
+						delete indexScope.current_message_signing_key;
+						if (err){
+							if (chatScope){
+								setError(err);
+								$timeout(function() {
+									chatScope.$apply();
+								});
+							}
+							return;
+						}
+						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
+						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+					});
+					$modalInstance.dismiss('cancel');
+				});
+			}; // signMessage
+			
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/sign-message.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+		
+	}; // showSignMessageModal
+	
+	
+	
+	$scope.verifySignedMessage = function(signedMessageBase64){
+		$rootScope.modalOpened = true;
+		var self = this;
+		var fc = profileService.focusedClient;
+		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var objSignedMessage = JSON.parse(signedMessageJson);
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.color = fc.backgroundColor;
+			$scope.signed_message = objSignedMessage.signed_message;
+			$scope.address = objSignedMessage.authors[0].address;
+			var validation = require('byteballcore/validation.js');
+			validation.validateSignedMessage(objSignedMessage, function(err){
+				$scope.bValid = !err;
+				if (err)
+					console.log("validateSignedMessage: "+err);
+				scopeApply();
+			});
+			
+			function scopeApply(){
+				$timeout(function(){
+					$scope.$apply();
+				});
+			}
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/signed-message.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+		
+	}; // verifySignedMessage
 	
 	
 	
@@ -1061,56 +1209,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}
 	
 
-	
-	function parsePrivateProfile(objPrivateProfile, onDone){
-		function handleJoint(objJoint){
-			var attestor_address = objJoint.unit.authors[0].address;
-			var payload;
-			objJoint.unit.messages.forEach(function(message){
-				if (message.app !== 'attestation' || message.payload_hash !== objPrivateProfile.payload_hash)
-					return;
-				payload = message.payload;
-			});
-			if (!payload)
-				return onDone("no such payload hash in this unit");
-			var hidden_profile = {};
-			var bHasHiddenFields = false;
-			for (var field in objPrivateProfile.src_profile){
-				var value = objPrivateProfile.src_profile[field];
-				if (ValidationUtils.isArrayOfLength(value, 2))
-					hidden_profile[field] = objectHash.getBase64Hash(value);
-				else if (ValidationUtils.isStringOfLength(value, constants.HASH_LENGTH)){
-					hidden_profile[field] = value;
-					bHasHiddenFields = true;
-				}
-				else
-					return onDone("invalid src profile");
-			}
-			if (objectHash.getBase64Hash(hidden_profile) !== payload.profile.profile_hash)
-				return onDone("wrong profile hash");
-			db.query(
-				"SELECT 1 FROM my_addresses WHERE address=? UNION SELECT 1 FROM shared_addresses WHERE shared_address=?", 
-				[payload.address, payload.address],
-				function(rows){
-					var bMyAddress = (rows.length > 0);
-					if (bMyAddress && bHasHiddenFields){
-						console.log("profile of my address but has hidden fields");
-						bMyAddress = false;
-					}
-					onDone(null, payload.address, attestor_address, bMyAddress);
-				}
-			);
-		}
-		storage.readJoint(db, objPrivateProfile.unit, {
-			ifNotFound: function(){
-				eventBus.once('saved_unit-'+objPrivateProfile.unit, handleJoint);
-				if (conf.bLight)
-					network.requestHistoryFor([objPrivateProfile.unit], []);
-			},
-			ifFound: handleJoint
-		});
-	}
-	
 	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
 		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
 			handleResult(rows.length > 0);
@@ -1133,8 +1231,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	$scope.acceptPrivateProfile = function(privateProfileJsonBase64){
 		$rootScope.modalOpened = true;
-		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
-		var objPrivateProfile = JSON.parse(privateProfileJson);
+		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+		if (!objPrivateProfile)
+			throw Error('failed to parse the already validated base64 private profile '+privateProfileJsonBase64);
 		var fc = profileService.focusedClient;
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
@@ -1145,7 +1244,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.openProfile = openProfile;
 			$scope.bDisabled = true;
 			$scope.buttonLabel = gettext('Verifying the profile...');
-			parsePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
+			privateProfile.parseAndValidatePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
 				if (!$scope)
 					return;
 				if (error){
@@ -1181,24 +1280,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.store = function() {
 				if (!$scope.bMyAddress)
 					throw Error("not my address");
-				db.query(
-					"INSERT "+db.getIgnore()+" INTO private_profiles (unit, payload_hash, attestor_address, address, src_profile) VALUES(?,?,?,?,?)", 
-					[objPrivateProfile.unit, objPrivateProfile.payload_hash, $scope.attestor_address, $scope.address, JSON.stringify(objPrivateProfile.src_profile)], 
-					function(res){
-						var private_profile_id = res.insertId;
-						var arrQueries = [];
-						for (var field in objPrivateProfile.src_profile){
-							var arrValueAndBlinding = objPrivateProfile.src_profile[field];
-							db.addQuery(arrQueries, "INSERT INTO private_profile_fields (private_profile_id, field, value, blinding) VALUES(?,?,?,?)", 
-								[private_profile_id, field, arrValueAndBlinding[0], arrValueAndBlinding[1] ]);
-						}
-						async.series(arrQueries, function(){
-							$timeout(function(){
-								$modalInstance.dismiss('cancel');
-							});
-						});
-					}
-				);
+				privateProfile.savePrivateProfile(objPrivateProfile, $scope.address, $scope.attestor_address, function(){
+					$timeout(function(){
+						$modalInstance.dismiss('cancel');
+					});
+				});
 			};
 
 			$scope.cancel = function() {
@@ -1237,11 +1323,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bDisabled = true;
 			var sql = fields_list
 				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
-					WHERE field IN(?) GROUP BY private_profile_id HAVING c=?"
+					WHERE field IN(?) GROUP BY private_profile_id "
 				: "SELECT * FROM private_profiles";
-			var params = fields_list ? [arrFields, arrFields.length] : [];
+			var params = fields_list ? [arrFields] : [];
 			readMyPaymentAddress(function(current_address){
 				db.query(sql, params, function(rows){
+					if (fields_list)
+						rows = rows.filter(function(row){ return (row.c === arrFields.length); });
 					var arrProfiles = [];
 					async.eachSeries(
 						rows,
@@ -1297,7 +1385,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								return (p1.creation_date > p2.creation_date) ? -1 : 1; // newest first
 							});
 							$scope.arrProfiles = arrProfiles;
-							$scope.selected_profile = arrProfiles[0];
+							$scope.vars = {selected_profile: arrProfiles[0]};
 							$scope.bDisabled = false;
 							if (arrProfiles.length === 0){
 								if (!fields_list)
@@ -1313,7 +1401,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									});
 							}
 							$timeout(function() {
-								$rootScope.$apply();
+								$scope.$apply();
 							});
 						}
 					);
@@ -1323,7 +1411,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.getDisplayField = getDisplayField;
 			
 			$scope.noFieldsProvided = function(){
-				var entries = $scope.selected_profile.entries;
+				var entries = $scope.vars.selected_profile.entries;
 				for (var i=0; i<entries.length; i++)
 					if (entries[i].provided)
 						return false;
@@ -1331,9 +1419,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			};
 			
 			$scope.send = function() {
-				var profile = $scope.selected_profile;
+				var profile = $scope.vars.selected_profile;
 				if (!profile)
 					throw Error("no selected profile");
+				console.log('selected profile', profile);
 				var objPrivateProfile = {
 					unit: profile.unit,
 					payload_hash: profile.payload_hash,

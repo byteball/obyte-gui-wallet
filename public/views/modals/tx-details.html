@@ -46,10 +46,10 @@
     </span>
     </li>
 
-    <li ng-if="btx.textAddress" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress)">
+    <li ng-if="btx.textAddress || btx.original_address" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress || btx.original_address)">
 	    <span class="text-gray" translate>To email</span>:
 	    <span class="right">
-		    <contact class="enable_text_select" address="{{btx.textAddress}}"></contact>
+		    <contact class="enable_text_select" address="{{btx.textAddress || btx.original_address}}"></contact>
 	    </span>
     </li>
 

@@ -101,7 +101,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
 	function highlightActions(text, arrMyAddresses){
-		return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address)|"))/g, function(address){
+		return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
 			if (!ValidationUtils.isValidAddress(address))
 				return address;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
@@ -120,7 +120,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
 				return str;
-			return '<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\')">'+objPaymentRequest.amountStr+'</a>';
+			return '<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>';
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
 			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
@@ -142,6 +142,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			var arrFields = fields_list.split(',');
 			return '<a ng-click="choosePrivateProfile(\''+fields_list+'\')">[Request for profile]</a>';
+		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
+			return '<a ng-click="showSignMessageModal(\''+message_to_sign+'\')">[Request to sign message: '+message_to_sign+']</a>';
+		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
+			if (!info)
+				return '<i>[invalid signed message]</i>';
+			var objSignedMessage = info.objSignedMessage;
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			if (info.bValid)
+				text += " (valid)";
+			else if (info.bValid === false)
+				text += " (invalid)";
+			else
+				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
+			return '<i>['+text+']</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
@@ -195,15 +210,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
-		var privateProfileJson = Buffer(privateProfileJsonBase64, 'base64').toString('utf8');
-		console.log(privateProfileJson);
-		try{
-			var objPrivateProfile = JSON.parse(privateProfileJson);
-		}
-		catch(e){
-			return null;
-		}
-		if (!ValidationUtils.isStringOfLength(objPrivateProfile.unit, 44) || !ValidationUtils.isStringOfLength(objPrivateProfile.payload_hash, 44) || typeof objPrivateProfile.src_profile !== 'object')
+		var privateProfile = require('byteballcore/private_profile.js');
+		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
+		if (!objPrivateProfile)
 			return null;
 		var arrFirstFields = [];
 		for (var field in objPrivateProfile.src_profile){
@@ -216,6 +225,28 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		objPrivateProfile._label = arrFirstFields.join(' ');
 		return objPrivateProfile;
+	}
+	
+	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
+		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		console.log(signedMessageJson);
+		try{
+			var objSignedMessage = JSON.parse(signedMessageJson);
+		}
+		catch(e){
+			return null;
+		}
+		var info = {
+			objSignedMessage: objSignedMessage,
+			bValid: undefined
+		};
+		var validation = require('byteballcore/validation.js');
+		validation.validateSignedMessage(objSignedMessage, function(err){
+			info.bValid = !err;
+			if (err)
+				console.log("validateSignedMessage: "+err);
+		});
+		return info;
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
@@ -259,6 +290,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			var arrFields = fields_list.split(',');
 			return '[Request for profile fields '+fields_list+']';
+		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
+			return '<i>[Request to sign message: '+message_to_sign+']</i>';
+		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
+			if (!info)
+				return '<i>[invalid signed message]</i>';
+			var objSignedMessage = info.objSignedMessage;
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			if (info.bValid)
+				text += " (valid)";
+			else if (info.bValid === false)
+				text += " (invalid)";
+			else
+				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
+			return '<i>['+text+']</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		});
@@ -282,12 +328,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var device_address = assocParams['device_address'] || '';
 		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
 			return null;
+		var single_address = assocParams['single_address'] || 0;
+		if (single_address)
+			single_address = single_address.replace(/^single/, '');
+		if (single_address && !ValidationUtils.isValidAddress(single_address))
+			single_address = 1;
 		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
 			device_address: device_address,
-			amountStr: amountStr
+			amountStr: amountStr,
+			single_address: single_address
 		};
 	}
 	
@@ -338,8 +390,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			amount /= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
 			return amount + ' ' + profileService.assetMetadata[asset].name;
 		}
-		else
+		else{
+			wallet.readAssetMetadata([asset], function(){});
 			return amount + ' of ' + asset;
+		}
 	}
 		
 	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){

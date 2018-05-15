@@ -30,21 +30,21 @@
 	</div>
 	<div class="row m20t">
 		<div class="large-12 large-centered columns" ng-if="arrProfiles.length > 0">
-			<select class="m10t" ng-model="selected_profile" ng-options="profile as profile._label for profile in arrProfiles"></select>
-			<div ng-if="selected_profile">
+			<select class="m10t" ng-model="vars.selected_profile" ng-options="profile as profile._label for profile in arrProfiles"></select>
+			<div ng-if="vars.selected_profile">
 				<ul class="no-bullet size-14" style="margin-bottom: 0px;">
 					<li class="m10b">
 						<span class="text-gray" translate>Attested by:</span><br>
-						<span class="enable_text_select">{{selected_profile.attestor_address}}</span>
+						<span class="enable_text_select">{{vars.selected_profile.attestor_address}}</span>
 					</li>
 					<li class="m10b">
 						<span class="text-gray" translate>Attested address:</span><br>
-						<span class="enable_text_select">{{selected_profile.address}}</span>
-						<div ng-if="selected_profile.bCurrentAddress">
+						<span class="enable_text_select">{{vars.selected_profile.address}}</span>
+						<div ng-if="vars.selected_profile.bCurrentAddress">
 							<span class="text-gray" translate>(current wallet)</span>
 						</div>
-						<div ng-if="!selected_profile.bCurrentAddress">
-							<span class="text-gray" translate>(my another wallet)</span>
+						<div ng-if="!vars.selected_profile.bCurrentAddress">
+							<span class="text-gray" translate>(my other wallet)</span>
 						</div>
 					</li>
 					<li class="m10b">
@@ -52,10 +52,10 @@
 					</li>
 				</ul>
 				<ul class="no-bullet size-14 profile-entries" style="max-width: 320px; margin: auto">
-					<li class="" ng-repeat="entry in selected_profile.entries">
+					<li class="" ng-repeat="entry in vars.selected_profile.entries">
 						<span class="text-gray">{{getDisplayField(entry.field)}}:</span>
 						<div class="right switch-container"><switch ng-model="entry.provided" data-disabled="!entry.editable" class="green"></switch></div>
-						<span class="right">{{entry.value}}</span>
+						<span class="right enable_text_select">{{entry.value}}</span>
 					</li>
 				</ul>
 			</div>
