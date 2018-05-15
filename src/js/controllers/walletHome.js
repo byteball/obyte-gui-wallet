@@ -1098,9 +1098,9 @@ angular.module('copayApp.controllers')
 						var filePath;
 						if (assetInfo.is_private) {
 							opts.getPrivateAssetPayloadSavePath = function(cb) {
-								self.getPrivatePayloadSavePath(function(fullPath, root, path, name){
-									filePath = fullPath ? fullPath : (root + path + '/' + name);
-									cb(fullPath, root, path, name);
+								self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
+									filePath = fullPath ? fullPath : (cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.name);
+									cb(fullPath, cordovaPathObj);
 								});
 							};
 						}
