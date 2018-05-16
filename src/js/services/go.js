@@ -169,6 +169,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
 			return;
 		}
+		$rootScope.$emit('process_status_change', 'claiming', false);
 	}
 	
 	function extractByteballArgFromCommandLine(commandLine){
