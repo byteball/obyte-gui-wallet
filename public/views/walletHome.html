@@ -513,7 +513,7 @@ input.datafeed_input {
             		</div>
 	            </div>
 	            <p translate ng-show="!index.arrBalances[index.assetIndex].is_private">Click this button to create payment and share it via private message in chat apps or to create a paper wallet or via email.</p>
-	            <p translate ng-show="index.arrBalances[index.assetIndex].is_private">Click this button to create payment and share it via private message in chat apps or to create a paper wallet</p>
+	            <p translate ng-show="index.arrBalances[index.assetIndex].is_private">Click this button to create a payment file and send it to a recipient.</p>
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>
