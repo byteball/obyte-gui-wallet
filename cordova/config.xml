@@ -120,8 +120,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern="*.coin" />
+                <data android:mimeType="application/octet-stream" />
+                <!-- <data android:pathPattern="*.coin" /> -->
             </intent-filter>
 		</custom-config-file>
     </platform>
