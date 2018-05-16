@@ -1189,7 +1189,7 @@ angular.module('copayApp.controllers')
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
 			}
-			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private ? 2 : 1;
+			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private && !this.lockAddress ? 2 : 1;
 		}
 
 		this.submitData = function() {
@@ -1528,6 +1528,7 @@ angular.module('copayApp.controllers')
 					form.address.$render();
 				}
 			}
+			this.switchForms();
 			$timeout(function() {
 				$rootScope.$digest();
 			}, 1);
