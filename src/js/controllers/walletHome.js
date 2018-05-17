@@ -1099,7 +1099,7 @@ angular.module('copayApp.controllers')
 						if (assetInfo.is_private) {
 							opts.getPrivateAssetPayloadSavePath = function(cb) {
 								self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
-									filePath = fullPath ? fullPath : (cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.name);
+									filePath = fullPath ? fullPath : (cordovaPathObj ? cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.name : null);
 									cb(fullPath, cordovaPathObj);
 								});
 							};
@@ -1612,8 +1612,10 @@ angular.module('copayApp.controllers')
 				inputFile.setAttribute("nwsaveas", fileName);
 				inputFile.click();
 				inputFile.onchange = function() {
-					cb(this.value);
+					cb(this.value ? this.value : null);
+					window.removeEventListener('focus', inputFile.onchange, true);
 				};
+				window.addEventListener('focus', inputFile.onchange, true);
 			}
 			else {
 				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
