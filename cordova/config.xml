@@ -115,11 +115,16 @@
     </platform>
 
     <platform name="android">
-    	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="merge">
+    	<custom-config-file target="AndroidManifest.xml" parent="./application/activity" mode="add">
 	    	<intent-filter android:priority="1">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/octet-stream" />
+                <data android:mimeType="application/x-byteball" />
+                <data android:mimeType="application/byteball" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="*/coin" />
+                <!-- <data android:mimeType="*/*" /> -->
                 <!-- <data android:pathPattern="*.coin" /> -->
             </intent-filter>
 		</custom-config-file>
