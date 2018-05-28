@@ -295,6 +295,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $rootScope.$emit('Local/WalletCompleted');
         });
     });
+
+    $rootScope.$on('process_status_change', function(event, process_name, isEnabled){
+    	self.setOngoingProcess(process_name, isEnabled);
+    });
     
     // in arrOtherCosigners, 'other' is relative to the initiator
     eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){

@@ -49,6 +49,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			feedvalues_filter: ["^\\d{13,}$"]
 		}
 	};
+
+	root.privateTextcoinExt = 'coin';
 	
   var defaultConfig = {
 	// wallet limits
@@ -108,6 +110,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		windows: {},
 	  }
 	},
+
   autoUpdateWitnessesList: true
   };
 
