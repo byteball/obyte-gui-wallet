@@ -1499,6 +1499,7 @@ angular.module('copayApp.controllers')
 			this.lockAddress = false;
 			this.lockAmount = false;
 			this.hideAdvSend = true;
+			this.send_multiple = false;
 			$scope.currentSpendUnconfirmed = configService.getSync()
 				.wallet.spendUnconfirmed;
 
