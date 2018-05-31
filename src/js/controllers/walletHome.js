@@ -1168,7 +1168,9 @@ angular.module('copayApp.controllers')
 			self.switchForms();
 		});
 		this.switchForms = function() {
-			this.bSendAll = false;
+			 this.bSendAll = false;
+			 if (this.send_multiple)
+			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
 			}
@@ -1642,7 +1644,6 @@ angular.module('copayApp.controllers')
 							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
 								if (!fullPath && !cordovaPathObj)
 									return;
-								filePath = fullPath ? fullPath : (cordovaPathObj ? cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.fileName : null);
 								var filePath = fullPath ? fullPath : (cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.fileName);
 								wallet.storePrivateAssetPayload(fullPath, cordovaPathObj, btx.mnemonic, arrRecipientChains, function(err) {
 									if (err)
