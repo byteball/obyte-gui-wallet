@@ -1676,4 +1676,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
   });
+
+  (function() {
+		document.addEventListener('dragover', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+		}, false);
+		document.addEventListener('drop', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+				go.handleUri(e.dataTransfer.files[i].path);
+			}
+		}, false);
+	})();
 });
