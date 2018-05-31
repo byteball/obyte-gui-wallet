@@ -1681,6 +1681,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		document.addEventListener('dragover', function(e){
 			e.preventDefault();
 			e.stopPropagation();
+			e.dataTransfer.dropEffect = "copy";
 		}, false);
 		document.addEventListener('drop', function(e){
 			e.preventDefault();
