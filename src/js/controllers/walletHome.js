@@ -1169,7 +1169,7 @@ angular.module('copayApp.controllers')
 		});
 		this.switchForms = function() {
 			 this.bSendAll = false;
-			 if (this.send_multiple)
+			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
 			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
