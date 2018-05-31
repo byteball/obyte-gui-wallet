@@ -24,7 +24,7 @@ OutputBaseFilename={#MyAppPackageName}-win32
 OutputDir=../../byteballbuilds
 Compression=lzma
 SolidCompression=yes
-; SetupIconFile=../public/img/icons/icon-white-outline.ico
+; SetupIconFile=../public/img/icons/logo-circle.ico
 UninstallDisplayIcon={app}/icon.ico
 ChangesAssociations=yes
 
@@ -53,7 +53,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 ; Source: "..\byteballbuilds\byteball-test\win32\byteball.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\byteballbuilds\{#MyAppPackageName}\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../public/img/icons/icon-white-outline.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
+Source: "../public/img/icons/logo-circle.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

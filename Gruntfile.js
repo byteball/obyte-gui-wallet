@@ -179,8 +179,8 @@ module.exports = function(grunt) {
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
     },
@@ -211,9 +211,9 @@ module.exports = function(grunt) {
           buildDir: '../byteballbuilds',
           version: '0.14.7',
           zip: false,
-          macIcns: './public/img/icons/icon-white-outline.icns',
-          winIco: './public/img/icons/icon-white-outline.ico',
-          exeIco: './public/img/icons/icon-white-outline.ico',
+          macIcns: './public/img/icons/logo-circle.icns',
+          winIco: './public/img/icons/logo-circle.ico',
+          exeIco: './public/img/icons/logo-circle.ico',
           macPlist: {
           	CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}],
       		/*CFBundleIconFile: 'nw.icns',*/
