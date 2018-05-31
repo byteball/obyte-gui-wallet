@@ -612,20 +612,6 @@ angular.module('copayApp.controllers')
 			});
 		}
 
-		this.bindOnDrop = function() {
-			document.addEventListener('dragover', function(e){
-				e.preventDefault();
-				e.stopPropagation();
-			}, false);
-			document.addEventListener('drop', function(e){
-				e.preventDefault();
-				e.stopPropagation();
-				for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-					go.handleUri(e.dataTransfer.files[i].path);
-				}
-			}, false);
-		}
-
 		this.hideMenuBar = lodash.debounce(function(hide) {
 			if (hide) {
 				$rootScope.hideMenuBar = true;
@@ -1182,7 +1168,9 @@ angular.module('copayApp.controllers')
 			self.switchForms();
 		});
 		this.switchForms = function() {
-			this.bSendAll = false;
+			 this.bSendAll = false;
+			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
+			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
 			}
@@ -1654,6 +1642,8 @@ angular.module('copayApp.controllers')
 						var wallet = require('byteballcore/wallet.js');
 						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
 							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
+								if (!fullPath && !cordovaPathObj)
+									return;
 								var filePath = fullPath ? fullPath : (cordovaPathObj.root + cordovaPathObj.path + '/' + cordovaPathObj.fileName);
 								wallet.storePrivateAssetPayload(fullPath, cordovaPathObj, btx.mnemonic, arrRecipientChains, function(err) {
 									if (err)
@@ -1884,6 +1874,4 @@ angular.module('copayApp.controllers')
 				}
 			}, function(){}, "referrer");
 		}
-
-		this.bindOnDrop();
 	});
