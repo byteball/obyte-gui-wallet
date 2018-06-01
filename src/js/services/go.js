@@ -323,7 +323,8 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 
 		if (window.plugins.intent) {
 			window.plugins.intent.setNewIntentHandler(function(intent){
-				handleFile(intent.data);
+				if (typeof intent.data === "string")
+					handleFile(intent.data);
 			});
 		}
 	}
