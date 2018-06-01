@@ -142,7 +142,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
 
-	cordova plugin add cordova-plugin-device-name
+	cordova plugin add cordova-plugin-device-name@1.3.2
 	checkOK
 
 	if [ $CURRENT_OS == "ANDROID" ]; then
