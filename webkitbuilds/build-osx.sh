@@ -55,8 +55,8 @@ pushd "${STAGING_DIR}"
 
 popd
 
-# Fix size to 150MB
-SIZE=350
+# Fix size to 550MB
+SIZE=550
 
 if [ $? -ne 0 ]; then
    echo "Error: Cannot compute size of staging dir"
