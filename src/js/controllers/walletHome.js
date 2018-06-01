@@ -527,30 +527,35 @@ angular.module('copayApp.controllers')
 
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
+			$rootScope.$emit('process_status_change', 'claiming', true);
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
-				$rootScope.$emit('closeModal');
-				if (err) {
-					if (err.indexOf("not confirmed") !== -1) {
-						store_mnemonic_back();
+				$timeout(function() {
+					$rootScope.$emit('closeModal');
+					if (err) {
+						if (err.indexOf("not confirmed") !== -1) {
+							store_mnemonic_back();
+						}
+						return $rootScope.$emit('Local/ShowErrorAlert', err);
 					}
-					return $rootScope.$emit('Local/ShowErrorAlert', err);
-				}
-				if (asset) {
-					var disableBalanceListener = $rootScope.$on('Local/BalanceUpdated', function(assocBalances) {
-						var assetIndex = lodash.findIndex(indexScope.arrBalances, {
-							asset: asset
+					if (asset) {
+						var disableBalanceListener = $rootScope.$on('Local/BalanceUpdated', function(assocBalances) {
+							var assetIndex = lodash.findIndex(indexScope.arrBalances, {
+								asset: asset
+							});
+							indexScope.assetIndex = assetIndex;
+							indexScope.updateTxHistory();
+							$rootScope.$emit('Local/SetTab', 'history', null, true);
+							disableBalanceListener();
 						});
-						indexScope.assetIndex = assetIndex;
-						indexScope.updateTxHistory();
+						indexScope.updateAll();
+					} else {
+						indexScope.assetIndex = 0;
+						indexScope.updateAll({triggerTxUpdate: true});
 						$rootScope.$emit('Local/SetTab', 'history', null, true);
-						disableBalanceListener();
-					});
-					indexScope.updateAll();
-				} else {
-					indexScope.assetIndex = 0;
-					indexScope.updateAll({triggerTxUpdate: true});
-					$rootScope.$emit('Local/SetTab', 'history', null, true);
-				}
+					}
+					$scope.$digest();
+					$rootScope.$emit('process_status_change', 'claiming', false);
+				});
 			});
 		}
 	
