@@ -527,6 +527,7 @@ angular.module('copayApp.controllers')
 
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('byteballcore/wallet.js');
+			$rootScope.$emit('process_status_change', 'claiming', true);
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$timeout(function() {
 					$rootScope.$emit('closeModal');
@@ -553,6 +554,7 @@ angular.module('copayApp.controllers')
 						$rootScope.$emit('Local/SetTab', 'history', null, true);
 					}
 					$scope.$digest();
+					$rootScope.$emit('process_status_change', 'claiming', false);
 				});
 			});
 		}
