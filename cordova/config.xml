@@ -124,6 +124,7 @@
                 <data android:mimeType="application/byteball" />
                 <data android:mimeType="application/zip" />
                 <data android:mimeType="*/coin" />
+                <data android:mimeType="application/coin" />
                 <!-- <data android:mimeType="*/*" /> -->
                 <!-- <data android:pathPattern="*.coin" /> -->
             </intent-filter>
