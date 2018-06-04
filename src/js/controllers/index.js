@@ -1678,11 +1678,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   });
 
   (function() {
-		document.addEventListener('dragover', function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			e.dataTransfer.dropEffect = "copy";
-		}, false);
+		"drag dragover dragstart dragenter".split(" ").forEach(function(e){
+			window.addEventListener(e, function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				e.dataTransfer.dropEffect = "copy";
+			}, false);
+		});
 		document.addEventListener('drop', function(e){
 			e.preventDefault();
 			e.stopPropagation();
