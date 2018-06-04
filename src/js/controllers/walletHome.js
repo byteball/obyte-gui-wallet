@@ -727,12 +727,13 @@ angular.module('copayApp.controllers')
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
 			var is_private = false;
-			if (!asset || asset == "base") {
-				if (network.exchangeRates['GBYTE_USD']) {
-					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates['GBYTE_USD']).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+			if (!asset || asset == "base" || asset == constants.BLACKBYTES_ASSET) {
+				var pair = asset == constants.BLACKBYTES_ASSET ? "GBB_USD" : "GBYTE_USD";
+				if (network.exchangeRates[pair]) {
+					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates[pair]).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
 				}
 				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
-				asset = "GB";
+				asset = asset == constants.BLACKBYTES_ASSET ? "GBB" : "GB";
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
