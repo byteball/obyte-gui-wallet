@@ -535,6 +535,7 @@ angular.module('copayApp.controllers')
 						if (err.indexOf("not confirmed") !== -1) {
 							store_mnemonic_back();
 						}
+						$rootScope.$emit('process_status_change', 'claiming', false);
 						return $rootScope.$emit('Local/ShowErrorAlert', err);
 					}
 					if (asset) {
