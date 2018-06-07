@@ -156,8 +156,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		$rootScope.$emit('process_status_change', 'claiming', true);
 		var cb = function(err, data) {
 			breadcrumbs.add("callback from handlePrivatePaymentFile");
-			if (err)
+			if (err) {
+				$rootScope.$emit('process_status_change', 'claiming', false);
 				return notification.error(err);
+			}
 			$rootScope.$emit('claimTextcoin', data.mnemonic);
 		}
 		if (uri.indexOf("content:") !== -1) {
