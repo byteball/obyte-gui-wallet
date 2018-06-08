@@ -153,6 +153,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	function handleFile(uri) {
 		var breadcrumbs = require('byteballcore/breadcrumbs.js');
 		console.log("handleFile "+uri);
+		root.walletHome();
 		$rootScope.$emit('process_status_change', 'claiming', true);
 		var cb = function(err, data) {
 			breadcrumbs.add("callback from handlePrivatePaymentFile");
