@@ -745,7 +745,7 @@ angular.module('copayApp.controllers')
 					is_private = assetInfo.is_private;
 			}
 			return {
-				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "" : (": https://byteball.org/#textcoin?" + mnemonic)),
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "." : (": https://byteball.org/#textcoin?" + mnemonic)),
 				subject: "Byteball user beamed you money"
 			}
 		}
