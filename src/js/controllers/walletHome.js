@@ -726,7 +726,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
-			var is_private = false;
+			var is_private = asset == constants.BLACKBYTES_ASSET ? true : false;
 			if (!asset || asset == "base" || asset == constants.BLACKBYTES_ASSET) {
 				var pair = asset == constants.BLACKBYTES_ASSET ? "GBB_USD" : "GBYTE_USD";
 				if (network.exchangeRates[pair]) {
