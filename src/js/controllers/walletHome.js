@@ -726,7 +726,7 @@ angular.module('copayApp.controllers')
 
 		function getShareMessage(amount, mnemonic, asset) {
 			var usd_amount_str = "";
-			var is_private = false;
+			var is_private = (asset == constants.BLACKBYTES_ASSET);
 			if (!asset || asset == "base" || asset == constants.BLACKBYTES_ASSET) {
 				var pair = asset == constants.BLACKBYTES_ASSET ? "GBB_USD" : "GBYTE_USD";
 				if (network.exchangeRates[pair]) {
@@ -745,7 +745,7 @@ angular.module('copayApp.controllers')
 					is_private = assetInfo.is_private;
 			}
 			return {
-				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "" : (": https://byteball.org/#textcoin?" + mnemonic)),
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? "." : (": https://byteball.org/#textcoin?" + mnemonic)),
 				subject: "Byteball user beamed you money"
 			}
 		}
