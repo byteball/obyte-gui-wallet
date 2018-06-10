@@ -2,12 +2,11 @@
 
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
-angular.module('copayApp.services').factory('validationAccountsService', function($state, $rootScope, configService) {
+angular.module('copayApp.services').factory('validationAccountsService', function($state, $rootScope, configService, gettextCatalog) {
 
 	const data = {
 		reddit: {
 			dbKey: 'reddit',
-			title: 'Reddit account',
 			regexp: /^reddit\/[a-zA-Z0-9\-_]{3,20}$/,
 			transformToAccount: (value) => {
 				return value.replace('reddit/', '');
@@ -15,7 +14,6 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 		},
 		phoneRu: {
 			dbKey: 'phone-ru',
-			title: 'Russian phone number',
 			regexp: /^(\+7|7|8)([0-9]){10}$/,
 			transformToAccount: (value) => {
 				return value.replace('+', '');
@@ -61,7 +59,7 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 			[attestorAddress, obj.dbKey, value],
 			function(rows) {
 				if (!rows.length || !rows[0].is_stable) {
-					return callback(null, `${obj.title} "${value}" not found`);
+					return callback(null, `"${value}" ${gettextCatalog.getString('account does not found')}`);
 				}
 
 				const bbAddress = rows[0].address;
