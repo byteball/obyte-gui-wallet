@@ -17,25 +17,25 @@ function selectText(element) {
 }
 
 function isValidAddress(value) {
-	var ValidationUtils = require('byteballcore/validation_utils.js');
-	if (!value) {
-		return false;
-	}
+  var ValidationUtils = require('byteballcore/validation_utils.js');
+  if (!value) {
+    return false;
+  }
 
-	// byteball uri
-	var conf = require('byteballcore/conf.js');
-	var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
-	var arrMatches = value.match(re);
-	if (arrMatches) {
-		return ValidationUtils.isValidAddress(arrMatches[1]);
-	}
+  // byteball uri
+  var conf = require('byteballcore/conf.js');
+  var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
+  var arrMatches = value.match(re);
+  if (arrMatches) {
+    return ValidationUtils.isValidAddress(arrMatches[1]);
+  }
 
-	return ValidationUtils.isValidAddress(value);
+  return ValidationUtils.isValidAddress(value);
 }
 
 function isValidEmail(value) {
-	var ValidationUtils = require('byteballcore/validation_utils.js');
-	return ValidationUtils.isValidEmail(value);
+  var ValidationUtils = require('byteballcore/validation_utils.js');
+  return ValidationUtils.isValidEmail(value);
 }
 
 angular.module('copayApp.directives')
@@ -44,29 +44,32 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {          
-				var validator = function(value) {
-					if (!profileService.focusedClient)
-						return;
-					ctrl.$setValidity('validAddress', isValidAddress(value));
-					return value;
-				};
+        var validator = function(value) {
+          if (!profileService.focusedClient)
+            return;
+          ctrl.$setValidity('validAddress', isValidAddress(value));
+          return value;
+        };
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
       };
     }
   ])
-.directive('validAddressOrEmail', ['$rootScope', 'profileService',
-    function($rootScope, profileService) {
+.directive('validAddressOrEmail', ['$rootScope', 'profileService', 'validationAccountsService',
+    function($rootScope, profileService, validationAccountsService) {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          	var validator = function(value) {
-          		if (!profileService.focusedClient)
-						return;
-					ctrl.$setValidity('validAddressOrEmail', isValidAddress(value) || isValidEmail(value));
-					return value;
-				};
+          var validator = function(value) {
+            if (!profileService.focusedClient)
+          return;
+          ctrl.$setValidity(
+            'validAddressOrEmail', 
+            isValidAddress(value) || isValidEmail(value) || validationAccountsService.isValid(value)
+          );
+          return value;
+        };
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
@@ -78,58 +81,58 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-    		var asset = attrs.validAddresses;       
-			var validator = function(value) {
-				for (var key in ctrl.$error) {
-					if (key.indexOf('line-') > -1) ctrl.$setValidity(key, true);
-				}
-				if (!profileService.focusedClient || !value)
-					return value;
-				var lines = value.split(/\r?\n/);
-				if (lines.length > 120) {
-					ctrl.$setValidity('validAddresses', false);
-					return value;
-				}
-				for (i = 0; i < lines.length; i++) {
-					var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
-					if (!tokens) {
-						ctrl.$setValidity('validAddresses', false);
-						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
-						return value;
-					}
-					var address = tokens[1];
-					var amount = +tokens[2];
+        var asset = attrs.validAddresses;       
+      var validator = function(value) {
+        for (var key in ctrl.$error) {
+          if (key.indexOf('line-') > -1) ctrl.$setValidity(key, true);
+        }
+        if (!profileService.focusedClient || !value)
+          return value;
+        var lines = value.split(/\r?\n/);
+        if (lines.length > 120) {
+          ctrl.$setValidity('validAddresses', false);
+          return value;
+        }
+        for (i = 0; i < lines.length; i++) {
+          var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
+          if (!tokens) {
+            ctrl.$setValidity('validAddresses', false);
+            ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+            return value;
+          }
+          var address = tokens[1];
+          var amount = +tokens[2];
 
-		            var settings = configService.getSync().wallet.settings;
-					var unitValue = 1;
-					var decimals = 0;
-					if (asset === 'base'){
-						unitValue = settings.unitValue;
-						decimals = Number(settings.unitDecimals);
-					}
-					else if (profileService.assetMetadata[asset]){
-						decimals = profileService.assetMetadata[asset].decimals || 0;
-						unitValue = Math.pow(10, decimals);
-					}
-					  
-		            var vNum = Number((amount * unitValue).toFixed(0));
+                var settings = configService.getSync().wallet.settings;
+          var unitValue = 1;
+          var decimals = 0;
+          if (asset === 'base'){
+            unitValue = settings.unitValue;
+            decimals = Number(settings.unitDecimals);
+          }
+          else if (profileService.assetMetadata[asset]){
+            decimals = profileService.assetMetadata[asset].decimals || 0;
+            unitValue = Math.pow(10, decimals);
+          }
+            
+                var vNum = Number((amount * unitValue).toFixed(0));
 
-		          	if (!isValidAddress(address) || typeof vNum !== "number" || vNum <= 0) {
-		          		ctrl.$setValidity('validAddresses', false);
-						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
-						return value;
-		          	}
-		          	var sep_index = ('' + amount).indexOf('.');
-		            var str_value = ('' + amount).substring(sep_index + 1);
-		            if (sep_index > 0 && str_value.length > decimals) {
-		                ctrl.$setValidity('validAddresses', false);
-						ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
-						return value;
-		            }
-				}
-				ctrl.$setValidity('validAddresses', true);
-				return value;
-			};
+                if (!isValidAddress(address) || typeof vNum !== "number" || vNum <= 0) {
+                  ctrl.$setValidity('validAddresses', false);
+            ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+            return value;
+                }
+                var sep_index = ('' + amount).indexOf('.');
+                var str_value = ('' + amount).substring(sep_index + 1);
+                if (sep_index > 0 && str_value.length > decimals) {
+                    ctrl.$setValidity('validAddresses', false);
+            ctrl.$setValidity("line-" + lines[i], false); //hack to get wrong line text
+            return value;
+                }
+        }
+        ctrl.$setValidity('validAddresses', true);
+        return value;
+      };
           ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
         }
@@ -161,23 +164,23 @@ angular.module('copayApp.directives')
   ])
   .directive('validMnemonic', [function() {
       return {
-      	require: 'ngModel',
+        require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-        	var Mnemonic = require('bitcore-mnemonic');
+          var Mnemonic = require('bitcore-mnemonic');
          var validator = function(value) {
-         	try {
-         		value = value.split('-').join(' ');
-	            if (Mnemonic.isValid(value)) {
-	              ctrl.$setValidity('validMnemonic', true);
-	              return value;
-	            } else {
-	              ctrl.$setValidity('validMnemonic', false);
-	              return value;
-	            }
-	        } catch(ex) {
-	        		ctrl.$setValidity('validMnemonic', false);
-	           return value;
-	        }
+           try {
+             value = value.split('-').join(' ');
+              if (Mnemonic.isValid(value)) {
+                ctrl.$setValidity('validMnemonic', true);
+                return value;
+              } else {
+                ctrl.$setValidity('validMnemonic', false);
+                return value;
+              }
+          } catch(ex) {
+              ctrl.$setValidity('validMnemonic', false);
+             return value;
+          }
           };
          ctrl.$parsers.unshift(validator);
           ctrl.$formatters.unshift(validator);
@@ -192,31 +195,31 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
           var val = function(value) {
-			//console.log('-- scope', ctrl);
-			/*if (scope.home && scope.home.bSendAll){
-				console.log('-- send all');
-				ctrl.$setValidity('validAmount', true);
-				return value;
-			}*/
-			//console.log('-- amount');
-			var constants = require('byteballcore/constants.js');
-			var asset = attrs.validAmount;
+      //console.log('-- scope', ctrl);
+      /*if (scope.home && scope.home.bSendAll){
+        console.log('-- send all');
+        ctrl.$setValidity('validAmount', true);
+        return value;
+      }*/
+      //console.log('-- amount');
+      var constants = require('byteballcore/constants.js');
+      var asset = attrs.validAmount;
             var settings = configService.getSync().wallet.settings;
-			var unitValue = 1;
-			var decimals = 0;
-			if (asset === 'base'){
-				unitValue = settings.unitValue;
-				decimals = Number(settings.unitDecimals);
-			}
-			else if (asset === constants.BLACKBYTES_ASSET){
-				unitValue = settings.bbUnitValue;
-				decimals = Number(settings.bbUnitDecimals);
-			}
-			else if (profileService.assetMetadata[asset]){
-				decimals = profileService.assetMetadata[asset].decimals || 0;
-				unitValue = Math.pow(10, decimals);
-			}
-			  
+      var unitValue = 1;
+      var decimals = 0;
+      if (asset === 'base'){
+        unitValue = settings.unitValue;
+        decimals = Number(settings.unitDecimals);
+      }
+      else if (asset === constants.BLACKBYTES_ASSET){
+        unitValue = settings.bbUnitValue;
+        decimals = Number(settings.bbUnitDecimals);
+      }
+      else if (profileService.assetMetadata[asset]){
+        decimals = profileService.assetMetadata[asset].decimals || 0;
+        unitValue = Math.pow(10, decimals);
+      }
+        
             var vNum = Number((value * unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
@@ -224,14 +227,14 @@ angular.module('copayApp.directives')
               return value;
             }
 
-          	if (typeof vNum == "number" && vNum > 0) {
-	          	var sep_index = ('' + value).indexOf('.');
-	            var str_value = ('' + value).substring(sep_index + 1);
-	            if (sep_index > 0 && str_value.length > decimals) {
-	                ctrl.$setValidity('validAmount', false);
-	            } else {
-	                ctrl.$setValidity('validAmount', true);
-             	}
+            if (typeof vNum == "number" && vNum > 0) {
+              var sep_index = ('' + value).indexOf('.');
+              var str_value = ('' + value).substring(sep_index + 1);
+              if (sep_index > 0 && str_value.length > decimals) {
+                  ctrl.$setValidity('validAmount', false);
+              } else {
+                  ctrl.$setValidity('validAmount', true);
+               }
             } else {
               ctrl.$setValidity('validAmount', false);
             }
@@ -250,18 +253,18 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-          	var oracle = configService.oracles[attrs.validFeedName];
-          	if (!oracle || !oracle.feednames_filter) {
-          		ctrl.$setValidity('validFeedName', true);
-              	return value;
-          	}
-          	for (var i in oracle.feednames_filter) {
-          		var matcher = new RegExp(oracle.feednames_filter[i], "g");
-      			if (matcher.test(value)) {
-	              ctrl.$setValidity('validFeedName', true);
-	              return value;
-	            }
-          	}
+            var oracle = configService.oracles[attrs.validFeedName];
+            if (!oracle || !oracle.feednames_filter) {
+              ctrl.$setValidity('validFeedName', true);
+                return value;
+            }
+            for (var i in oracle.feednames_filter) {
+              var matcher = new RegExp(oracle.feednames_filter[i], "g");
+            if (matcher.test(value)) {
+                ctrl.$setValidity('validFeedName', true);
+                return value;
+              }
+            }
             ctrl.$setValidity('validFeedName', false);
             return value;
           };
@@ -279,18 +282,18 @@ angular.module('copayApp.directives')
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
           var validator = function(value) {
-          	var oracle = configService.oracles[attrs.validFeedValue];
-          	if (!oracle || !oracle.feedvalues_filter) {
-          		ctrl.$setValidity('validFeedValue', true);
-              	return value;
-          	}
-          	for (var i in oracle.feedvalues_filter) {
-          		var matcher = new RegExp(oracle.feedvalues_filter[i], "g");
-      			if (matcher.test(value)) {
-	              ctrl.$setValidity('validFeedValue', true);
-	              return value;
-	            }
-          	}
+            var oracle = configService.oracles[attrs.validFeedValue];
+            if (!oracle || !oracle.feedvalues_filter) {
+              ctrl.$setValidity('validFeedValue', true);
+                return value;
+            }
+            for (var i in oracle.feedvalues_filter) {
+              var matcher = new RegExp(oracle.feedvalues_filter[i], "g");
+            if (matcher.test(value)) {
+                ctrl.$setValidity('validFeedValue', true);
+                return value;
+              }
+            }
             ctrl.$setValidity('validFeedValue', false);
             return value;
           };
@@ -486,60 +489,60 @@ angular.module('copayApp.directives')
       templateUrl: 'views/includes/available-balance.html'
     }
   }).directive('selectable', function ($rootScope, $timeout) {
-	return {
-		restrict: 'A',
-		scope: {
-			bindObj: "=model",
-			bindProp: "@prop",
-			targetProp: "@exclusionBind"
-		},
-		link: function (scope, elem, attrs) {
-			$timeout(function(){
-				var dropdown = angular.element(document.querySelector(attrs.selectable));
-				
-				dropdown.find('li').on('click', function(e){
-					var li = angular.element(this);
-					elem.html(li.find('a').find('span').eq(0).html());
-					scope.bindObj[scope.bindProp] = li.attr('data-value');
-					if(!$rootScope.$$phase) $rootScope.$digest();
-				});
-				scope.$watch(function(scope){return scope.bindObj[scope.bindProp]}, function(newValue, oldValue) {
-					angular.forEach(dropdown.find('li'), function(element){
-						var li = angular.element(element);
-						if (li.attr('data-value') == newValue) {
-							elem.html(li.find('a').find('span').eq(0).html());
-							li.addClass('selected');
-						} else {
-							li.removeClass('selected');
-						}
-					});
-				});
-				var selected = false;
-				angular.forEach(dropdown.find('li'), function(el){
-					var li = angular.element(el);
-					var a = angular.element(li.find('a'));
-					a.append('<i class="fi-check check"></i>');
-					if (scope.bindObj[scope.bindProp] == li.attr('data-value')) {
-						a[0].click();
-						selected = true;
-					}
-				});
-				if (!selected && typeof attrs.notSelected == "undefined") dropdown.find('a').eq(0)[0].click();
+  return {
+    restrict: 'A',
+    scope: {
+      bindObj: "=model",
+      bindProp: "@prop",
+      targetProp: "@exclusionBind"
+    },
+    link: function (scope, elem, attrs) {
+      $timeout(function(){
+        var dropdown = angular.element(document.querySelector(attrs.selectable));
+        
+        dropdown.find('li').on('click', function(e){
+          var li = angular.element(this);
+          elem.html(li.find('a').find('span').eq(0).html());
+          scope.bindObj[scope.bindProp] = li.attr('data-value');
+          if(!$rootScope.$$phase) $rootScope.$digest();
+        });
+        scope.$watch(function(scope){return scope.bindObj[scope.bindProp]}, function(newValue, oldValue) {
+          angular.forEach(dropdown.find('li'), function(element){
+            var li = angular.element(element);
+            if (li.attr('data-value') == newValue) {
+              elem.html(li.find('a').find('span').eq(0).html());
+              li.addClass('selected');
+            } else {
+              li.removeClass('selected');
+            }
+          });
+        });
+        var selected = false;
+        angular.forEach(dropdown.find('li'), function(el){
+          var li = angular.element(el);
+          var a = angular.element(li.find('a'));
+          a.append('<i class="fi-check check"></i>');
+          if (scope.bindObj[scope.bindProp] == li.attr('data-value')) {
+            a[0].click();
+            selected = true;
+          }
+        });
+        if (!selected && typeof attrs.notSelected == "undefined") dropdown.find('a').eq(0)[0].click();
 
-				if (scope.targetProp) {
-					scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
-						angular.forEach(dropdown.find('li'), function(element){
-							var li = angular.element(element);
-							if (li.attr('data-value') != newValue) {
-								li[0].click();
-								scope.bindObj[scope.bindProp] = li.attr('data-value');
-							}
-						});
-					});
-				}
-			});
-		}
-	}}).directive('cosigners', function() {
+        if (scope.targetProp) {
+          scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
+            angular.forEach(dropdown.find('li'), function(element){
+              var li = angular.element(element);
+              if (li.attr('data-value') != newValue) {
+                li[0].click();
+                scope.bindObj[scope.bindProp] = li.attr('data-value');
+              }
+            });
+          });
+        }
+      });
+    }
+  }}).directive('cosigners', function() {
     return {
       restrict: 'E',
       template: '<ul class="no-bullet m20b whopays">\
@@ -566,7 +569,7 @@ angular.module('copayApp.directives')
     };
 }])
 .filter('sumNumbers', [function(){
-	return function(str) {
+  return function(str) {
         return str ? str.split(/[\n\s,;]/).reduce(function(acc, val){return isNaN(+val) ? acc : acc + (+val)}, 0) : 0;
     };
 }]);

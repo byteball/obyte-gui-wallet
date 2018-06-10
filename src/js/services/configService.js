@@ -58,6 +58,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
 	hub: (constants.alt === '2' && isTestnet) ? 'byteball.org/bb-test' : 'byteball.org/bb',
 	emailAttestor: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
+	attestorsAccounts: {},
 
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
@@ -200,7 +201,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		  if (!_config.hub)
 			  _config.hub = defaultConfig.hub;
 		  if (_config.emailAttestor === undefined)
-			  _config.emailAttestor = defaultConfig.emailAttestor;
+				_config.emailAttestor = defaultConfig.emailAttestor;
+			if (!_config.attestorsAccounts) {
+				_config.attestorsAccounts = defaultConfig.attestorsAccounts;
+			}
 		  if (!_config.deviceName)
 			  _config.deviceName = defaultConfig.getDeviceName();
 
