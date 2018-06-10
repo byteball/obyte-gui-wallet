@@ -59,7 +59,7 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 			[attestorAddress, obj.dbKey, value],
 			function(rows) {
 				if (!rows.length || !rows[0].is_stable) {
-					return callback(null, `"${value}" ${gettextCatalog.getString('account does not found')}`);
+					return callback(null, `"${value}" ${gettextCatalog.getString('account does not have attested address')}`);
 				}
 
 				const bbAddress = rows[0].address;
