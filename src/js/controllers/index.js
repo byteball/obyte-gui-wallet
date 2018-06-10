@@ -10,7 +10,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, validationAccountsService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -1437,6 +1437,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return profileService.getWallets('livenet');
     };
     
+  self.getHistoryAddressToInfo = function(value) {
+    const validateResult = validationAccountsService.validate(value);
+
+    if (validateResult.isValid) {
+      const obj = validationAccountsService.getDataObj(validateResult.key);
+      return `${gettextCatalog.getString('To')} ${gettextCatalog.getString(obj.title)}`;
+    }
+
+    return gettextCatalog.getString('To email');
+  };
+  self.getHistoryAddressValue = function(value) {
+    const validateResult = validationAccountsService.validate(value);
+
+    if (validateResult.isValid) {
+      return validateResult.account;
+    }
+
+    return value;
+  };
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');

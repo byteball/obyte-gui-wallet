@@ -7,6 +7,7 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 	const data = {
 		reddit: {
 			dbKey: 'reddit',
+			title: 'reddit account',
 			regexp: /^reddit\/[a-zA-Z0-9\-_]{3,20}$/,
 			transformToAccount: (value) => {
 				return value.replace('reddit/', '');
@@ -14,6 +15,7 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 		},
 		phoneRu: {
 			dbKey: 'phone-ru',
+			title: 'russian phone number',
 			regexp: /^(\+7|7|8)([0-9]){10}$/,
 			transformToAccount: (value) => {
 				return value.replace('+', '');
@@ -23,6 +25,13 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 
 	let root = {};
 	
+	root.getDataObj = function (key) {
+		if (!(key in data)) {
+			throw new Error('unknown account');
+		}
+		return data[key];
+	};
+
 	root.validate = function (value) {
 		for (const key in data) {
 			if (!data.hasOwnProperty(key)) continue;
@@ -59,7 +68,10 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 			[attestorAddress, obj.dbKey, value],
 			function(rows) {
 				if (!rows.length || !rows[0].is_stable) {
-					return callback(null, `"${value}" ${gettextCatalog.getString('account does not have attested address')}`);
+					const message = `"${value}" `;
+					message += `${gettextCatalog.getString(obj.title)} `;
+					message += gettextCatalog.getString('does not have attested address');
+					return callback(null, message);
 				}
 
 				const bbAddress = rows[0].address;

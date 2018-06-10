@@ -1693,6 +1693,13 @@ angular.module('copayApp.controllers')
 					self.copyAddress(addr);
 				};
 
+				$scope.getHistoryAddressToInfo = function(value) {
+					return indexScope.getHistoryAddressToInfo(value);
+				};
+				$scope.getHistoryAddressValue = function(value) {
+					return indexScope.getHistoryAddressValue(value);
+				};
+
 				$scope.showCorrespondentList = function() {
 					self.showCorrespondentListToReSendPrivPayloads(btx);
 				};
