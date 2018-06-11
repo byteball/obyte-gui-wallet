@@ -2,9 +2,9 @@
 
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
-angular.module('copayApp.services').factory('validationAccountsService', function($state, $rootScope, configService, gettextCatalog) {
+angular.module('copayApp.services').factory('aliasValidationService', function($state, $rootScope, configService, gettextCatalog) {
 
-	const data = {
+	const listOfAliases = {
 		reddit: {
 			dbKey: 'reddit',
 			title: 'reddit account',
@@ -13,10 +13,10 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 				return value.replace('reddit/', '');
 			}
 		},
-		phoneRu: {
-			dbKey: 'phone-ru',
-			title: 'russian phone number',
-			regexp: /^(\+7|7|8)([0-9]){10}$/,
+		phone: {
+			dbKey: 'phone',
+			title: 'phone number',
+			regexp: /^(\+)?(\d)+$/,
 			transformToAccount: (value) => {
 				return value.replace('+', '');
 			}
@@ -25,18 +25,18 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 
 	let root = {};
 	
-	root.getDataObj = function (key) {
-		if (!(key in data)) {
+	root.getAliasObj = function (key) {
+		if (!(key in listOfAliases)) {
 			throw new Error('unknown account');
 		}
-		return data[key];
+		return listOfAliases[key];
 	};
 
 	root.validate = function (value) {
-		for (const key in data) {
-			if (!data.hasOwnProperty(key)) continue;
-			if (data[key].regexp.test(value)) {
-				const account = data[key].transformToAccount(value);
+		for (const key in listOfAliases) {
+			if (!listOfAliases.hasOwnProperty(key)) continue;
+			if (listOfAliases[key].regexp.test(value)) {
+				const account = listOfAliases[key].transformToAccount(value);
 				return { isValid: true, key: key, account: account };
 			}
 		}
@@ -44,13 +44,12 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 	};
 
 	root.getBbAddressByKeyValue = function (key, value, callback) {
-		if (!data[key]) {
+		if (!listOfAliases[key]) {
 			return callback('Account type not found');
 		}
 
-		const obj = data[key];
-		console.log("configService.getSync().attestorsAccounts", configService.getSync(), configService);
-		const attestorAddress = configService.getSync().attestorsAccounts[key];
+		const obj = listOfAliases[key];
+		const attestorAddress = configService.getSync().attestorAddresses[key];
 		if (!attestorAddress) {
 			return callback('Attestor not found');
 		}
@@ -85,9 +84,9 @@ angular.module('copayApp.services').factory('validationAccountsService', functio
 	};
 
 	root.isValid = function (value) {
-		for (var key in data) {
-			if (!data.hasOwnProperty(key)) continue;
-			if (data[key].regexp.test(value)) {
+		for (var key in listOfAliases) {
+			if (!listOfAliases.hasOwnProperty(key)) continue;
+			if (listOfAliases[key].regexp.test(value)) {
 				return true;
 			}
 		}

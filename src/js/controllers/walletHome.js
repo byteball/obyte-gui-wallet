@@ -6,7 +6,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, validationAccountsService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, aliasValidationService) {
 
 		var self = this;
 		var home = this;
@@ -858,7 +858,7 @@ angular.module('copayApp.controllers')
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
-				var validationAccountsResult = validationAccountsService.validate(address);
+				var validationAccountsResult = aliasValidationService.validate(address);
 
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
@@ -925,7 +925,7 @@ angular.module('copayApp.controllers')
 							throw Error("unrecognized bb_address: "+bb_address);
 					}
 					else if (validationAccountsResult.isValid) {
-						return validationAccountsService.getBbAddressByKeyValue(
+						return aliasValidationService.getBbAddressByKeyValue(
 							validationAccountsResult.key,
 							validationAccountsResult.account,
 							(err, message, bb_address) => {
@@ -1693,11 +1693,11 @@ angular.module('copayApp.controllers')
 					self.copyAddress(addr);
 				};
 
-				$scope.getHistoryAddressToInfo = function(value) {
-					return indexScope.getHistoryAddressToInfo(value);
+				$scope.getToAddressLabel = function(value) {
+					return indexScope.getToAddressLabel(value);
 				};
-				$scope.getHistoryAddressValue = function(value) {
-					return indexScope.getHistoryAddressValue(value);
+				$scope.getAddressValue = function(value) {
+					return indexScope.getAddressValue(value);
 				};
 
 				$scope.showCorrespondentList = function() {

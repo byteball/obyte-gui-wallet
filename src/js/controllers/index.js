@@ -10,7 +10,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, validationAccountsService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -1437,18 +1437,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return profileService.getWallets('livenet');
     };
     
-  self.getHistoryAddressToInfo = function(value) {
-    const validateResult = validationAccountsService.validate(value);
+  self.getToAddressLabel = function(value) {
+    const validateResult = aliasValidationService.validate(value);
 
     if (validateResult.isValid) {
-      const obj = validationAccountsService.getDataObj(validateResult.key);
+      const obj = aliasValidationService.getAliasObj(validateResult.key);
       return `${gettextCatalog.getString('To')} ${gettextCatalog.getString(obj.title)}`;
     }
 
     return gettextCatalog.getString('To email');
   };
-  self.getHistoryAddressValue = function(value) {
-    const validateResult = validationAccountsService.validate(value);
+  self.getAddressValue = function(value) {
+    const validateResult = aliasValidationService.validate(value);
 
     if (validateResult.isValid) {
       return validateResult.account;

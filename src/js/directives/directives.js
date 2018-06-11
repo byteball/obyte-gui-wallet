@@ -56,8 +56,8 @@ angular.module('copayApp.directives')
       };
     }
   ])
-.directive('validAddressOrEmail', ['$rootScope', 'profileService', 'validationAccountsService',
-    function($rootScope, profileService, validationAccountsService) {
+.directive('validAddressOrEmail', ['$rootScope', 'profileService', 'aliasValidationService',
+    function($rootScope, profileService, aliasValidationService) {
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
@@ -66,7 +66,7 @@ angular.module('copayApp.directives')
           return;
           ctrl.$setValidity(
             'validAddressOrEmail', 
-            isValidAddress(value) || isValidEmail(value) || validationAccountsService.isValid(value)
+            isValidAddress(value) || isValidEmail(value) || aliasValidationService.isValid(value)
           );
           return value;
         };
