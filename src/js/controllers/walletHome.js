@@ -928,7 +928,7 @@ angular.module('copayApp.controllers')
 						return aliasValidationService.getBbAddressByKeyValue(
 							validationAccountsResult.key,
 							validationAccountsResult.account,
-							(err, message, bb_address) => {
+							function(err, message, bb_address) {
 								if (err) {
 									throw err;
 								}

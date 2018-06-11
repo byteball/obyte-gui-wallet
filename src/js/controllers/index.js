@@ -1438,17 +1438,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     };
     
   self.getToAddressLabel = function(value) {
-    const validateResult = aliasValidationService.validate(value);
+    var validateResult = aliasValidationService.validate(value);
 
     if (validateResult.isValid) {
-      const obj = aliasValidationService.getAliasObj(validateResult.key);
-      return `${gettextCatalog.getString('To')} ${gettextCatalog.getString(obj.title)}`;
+      var aliasObj = aliasValidationService.getAliasObj(validateResult.key);
+      return gettextCatalog.getString('To') + " " + gettextCatalog.getString(aliasObj.title);
     }
 
     return gettextCatalog.getString('To email');
   };
   self.getAddressValue = function(value) {
-    const validateResult = aliasValidationService.validate(value);
+    var validateResult = aliasValidationService.validate(value);
 
     if (validateResult.isValid) {
       return validateResult.account;
