@@ -351,6 +351,26 @@ angular
           },
         }
       })
+      .state('preferencesGlobal.preferencesAttestorAddresses', {
+        url: '/attestorAddresses',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesAttestorAddresses.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditAttestorAddress', {
+        url: '/edit',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditAttestorAddress.html'
+          },
+        }
+      })
       .state('preferencesGlobal.preferencesUnit', {
         url: '/unit',
         templateUrl: 'views/preferencesUnit.html',

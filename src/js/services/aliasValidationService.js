@@ -32,6 +32,10 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 		return listOfAliases[key];
 	};
 
+	root.getListOfAliases = function () {
+		return listOfAliases;
+	};
+
 	root.validate = function (value) {
 		for (var key in listOfAliases) {
 			if (!listOfAliases.hasOwnProperty(key)) continue;
@@ -51,7 +55,10 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 		var obj = listOfAliases[key];
 		var attestorAddress = configService.getSync().attestorAddresses[key];
 		if (!attestorAddress) {
-			return callback('Attestor not found');
+			var message = gettextCatalog.getString('Attestor') + " ";
+			message += '"' + gettextCatalog.getString(obj.title) + '" ';
+			message += gettextCatalog.getString('does not have address');
+			return callback(null, message);
 		}
 
 		var db = require('byteballcore/db.js');
@@ -67,9 +74,9 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			[attestorAddress, obj.dbKey, value],
 			function(rows) {
 				if (!rows.length || !rows[0].is_stable) {
-					var message = '"' + value + '" ';
-					message += gettextCatalog.getString(obj.title) + " ";
-					message += gettextCatalog.getString('does not have attested address');
+					var message = gettextCatalog.getString(obj.title) + " ";
+					message += '"' + value + '" ';
+					message += gettextCatalog.getString('does not have byteball address');
 					return callback(null, message);
 				}
 
