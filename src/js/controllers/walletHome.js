@@ -943,14 +943,14 @@ angular.module('copayApp.controllers')
 								isEmail = false;
 								isTextcoin = false;
 								
-								checkBindingWithComposeAndSend();
+								handleBindingAndComposeAndSend();
 							}
 						);
 					}
 
-					checkBindingWithComposeAndSend();
+					handleBindingAndComposeAndSend();
 
-					function checkBindingWithComposeAndSend() {
+					function handleBindingAndComposeAndSend() {
 						var device = require('byteballcore/device.js');
 						if (self.binding) {
 							if (isTextcoin) {
