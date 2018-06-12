@@ -10,7 +10,7 @@ function PreferencesEditAttestorAddressCtrl(
 	attestorAddressListService, aliasValidationService
 ) {
 	var ValidationUtils = require("byteballcore/validation_utils.js");
-	var currAttestorAddressKey = attestorAddressListService.currentKey;
+	var currAttestorAddressKey = attestorAddressListService.currentAttestorKey;
 	var objAttestorAddress = aliasValidationService.getAliasObj(currAttestorAddressKey);
 	var configAttestorAddresses = configService.getSync().attestorAddresses;
 	var self = this;

@@ -1,11 +1,10 @@
 <div
 	class="topbar-container"
 	ng-include="'views/includes/topbar.html'"
-	ng-init="titleSection='Email attestor'; goBackToState = true">
+	ng-init="titleSection='Attestor address'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesEmailAttestorController as eac">
-
 
 	<h4></h4>
 	<form name="editWitnessForm" ng-submit="eac.save()" class="columns">
@@ -14,5 +13,6 @@
 		<input type="text" id="emailAttestor" type="text" name="emailAttestor" ng-model="eac.emailAttestor">
 		<input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 	</form>
+
 </div>
 <div class="extra-margin-bottom"></div>

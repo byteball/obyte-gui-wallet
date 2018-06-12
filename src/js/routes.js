@@ -341,16 +341,6 @@ angular
           },
         }
       })
-      .state('preferencesGlobal.preferencesEmailAttestor', {
-        url: '/emailAttestor',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main@': {
-            templateUrl: 'views/preferencesEmailAttestor.html'
-          },
-        }
-      })
       .state('preferencesGlobal.preferencesAttestorAddresses', {
         url: '/attestorAddresses',
         walletShouldBeComplete: true,
@@ -358,6 +348,16 @@ angular
         views: {
           'main@': {
             templateUrl: 'views/preferencesAttestorAddresses.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEmailAttestor', {
+        url: '/emailAttestor',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEmailAttestor.html'
           },
         }
       })

@@ -18,7 +18,7 @@ angular.module('copayApp.controllers').controller('preferencesEmailAttestorContr
 				if (err) 
 					return $scope.$emit('Local/DeviceError', err);
 				$timeout(function(){
-					go.path('preferencesGlobal');
+					go.path('preferencesGlobal.preferencesAttestorAddresses');
 				}, 50);
 			});
 		};
