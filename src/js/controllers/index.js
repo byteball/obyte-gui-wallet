@@ -1232,16 +1232,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
     client.getTxHistory(self.arrBalances[self.assetIndex].asset, self.shared_address, function onGotTxHistory(txs) {
-        var newHistory = self.processNewTxs(txs);
-        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+        $timeout(function(){
+	        var newHistory = self.processNewTxs(txs);
+	        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        if (walletId ==  profileService.focusedClient.credentials.walletId) {
-            self.completeHistory = newHistory;
-            self.txHistory = newHistory.slice(0, self.historyShowLimit);
-            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
-        }
+	        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+	            self.completeHistory = newHistory;
+	            self.txHistory = newHistory.slice(0, self.historyShowLimit);
+	            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+	        }
 
-        return cb();
+	        return cb();
+	    });
     });
   }
   
