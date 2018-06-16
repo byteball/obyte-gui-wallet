@@ -19,7 +19,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			dbKey: 'reddit',
 			title: 'reddit account',
 			isValid: function (value) {
-				return /^reddit\/[a-zA-Z0-9\-_]{3,20}$/.test(value);
+				return /^[Rr]eddit\/[a-zA-Z0-9\-_]{3,20}$/.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.replace('reddit/', '');
@@ -66,19 +66,19 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 		return { isValid: false };
 	};
 
-	root.checkAliasExist = function (attestorKey) {
+	root.checkAliasExists = function (attestorKey) {
 		if (!listOfAliases.hasOwnProperty(attestorKey)) {
 			throw new Error('Alias not found');
 		}
 	};
 
-	root.getAssocBbAddress = function (attestorKey, value) {
-		root.checkAliasExist(attestorKey);
+	root.getBbAddress = function (attestorKey, value) {
+		root.checkAliasExists(attestorKey);
 		return assocBbAddresses[attestorKey][value];
 	};
 
 	root.deleteAssocBbAddress = function (attestorKey, value) {
-		root.checkAliasExist(attestorKey);
+		root.checkAliasExists(attestorKey);
 		delete assocBbAddresses[attestorKey][value];
 	};
 
@@ -88,7 +88,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			$timeout(callback);
 		}
 
-		root.checkAliasExist(attestorKey);
+		root.checkAliasExists(attestorKey);
 		
 		if (!listOfAliases[attestorKey]) {
 			throw new Error('Alias not found');

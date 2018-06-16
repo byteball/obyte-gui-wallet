@@ -858,7 +858,7 @@ angular.module('copayApp.controllers')
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
 				var validationAccountsResult = aliasValidationService.validate(address);
-				var isEmail = validationAccountsResult.isValid && validationAccountsResult.attestorKey === 'email';
+				var isEmail = ValidationUtils.isValidEmail(address);
 
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
@@ -900,17 +900,17 @@ angular.module('copayApp.controllers')
 					
 					if (validationAccountsResult.isValid) { // try to replace validation result with attested BB address
 						var attestorKey = validationAccountsResult.attestorKey;
-						var validateAccount = validationAccountsResult.account;
-						var bb_address = aliasValidationService.getAssocBbAddress(
+						var account = validationAccountsResult.account;
+						var bb_address = aliasValidationService.getBbAddress(
 							attestorKey,
-							validateAccount
+							account
 						);
-						console.log('attestorKey='+attestorKey+' : validateAccount='+validateAccount+' : bb_address='+bb_address);
+						console.log('attestorKey='+attestorKey+' : account='+account+' : bb_address='+bb_address);
 						
 						if (!bb_address) {
 							return aliasValidationService.resolveValueToBbAddress(
 								attestorKey,
-								validateAccount,
+								account,
 								function () {
 									// assocAddress is now filled
 									delete self.current_payment_key;
@@ -925,7 +925,7 @@ angular.module('copayApp.controllers')
 								if (bb_address === 'unknown') {
 									aliasValidationService.deleteAssocBbAddress(
 										attestorKey,
-										validateAccount
+										account
 									);
 								}
 
@@ -946,12 +946,12 @@ angular.module('copayApp.controllers')
 							if (bb_address === 'unknown') {
 								aliasValidationService.deleteAssocBbAddress(
 									attestorKey,
-									validateAccount
+									account
 								); // send textcoin now but retry next time
 							} else if (bb_address === 'none') {
 								// go on to send textcoin
 							} else if (ValidationUtils.isValidAddress(bb_address)) {
-								original_address = validateAccount;
+								original_address = account;
 								address = bb_address;
 								isEmail = false;
 								isTextcoin = false;
