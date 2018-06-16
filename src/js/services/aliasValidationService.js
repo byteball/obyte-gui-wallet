@@ -19,7 +19,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			dbKey: 'reddit',
 			title: 'reddit account',
 			isValid: function (value) {
-				return /^[Rr]eddit\/[a-zA-Z0-9\-_]{3,20}$/.test(value);
+				return /^[Rr][Ee][Dd]{2}[Ii][Tt]\/[a-zA-Z0-9\-_]{3,20}$/.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.replace('reddit/', '');
