@@ -71,7 +71,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
-			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+"\n";
+			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+" #"+window.commitHash+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
@@ -293,6 +293,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" is ready");
             $rootScope.$emit('Local/WalletCompleted');
         });
+    });
+
+    $rootScope.$on('process_status_change', function(event, process_name, isEnabled){
+    	self.setOngoingProcess(process_name, isEnabled);
     });
     
     // in arrOtherCosigners, 'other' is relative to the initiator
@@ -1185,16 +1189,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
     client.getTxHistory(self.arrBalances[self.assetIndex].asset, self.shared_address, function onGotTxHistory(txs) {
-        var newHistory = self.processNewTxs(txs);
-        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+        $timeout(function(){
+	        var newHistory = self.processNewTxs(txs);
+	        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        if (walletId ==  profileService.focusedClient.credentials.walletId) {
-            self.completeHistory = newHistory;
-            self.txHistory = newHistory.slice(0, self.historyShowLimit);
-            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
-        }
+	        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+	            self.completeHistory = newHistory;
+	            self.txHistory = newHistory.slice(0, self.historyShowLimit);
+	            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+	        }
 
-        return cb();
+	        return cb();
+	    });
     });
   }
   
@@ -1648,4 +1654,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
   });
+
+  (function() {
+		"drag dragover dragstart dragenter".split(" ").forEach(function(e){
+			window.addEventListener(e, function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				e.dataTransfer.dropEffect = "copy";
+			}, false);
+		});
+		document.addEventListener('drop', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+				go.handleUri(e.dataTransfer.files[i].path);
+			}
+		}, false);
+	})();
 });
