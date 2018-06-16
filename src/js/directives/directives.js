@@ -33,11 +33,6 @@ function isValidAddress(value) {
   return ValidationUtils.isValidAddress(value);
 }
 
-function isValidEmail(value) {
-  var ValidationUtils = require('byteballcore/validation_utils.js');
-  return ValidationUtils.isValidEmail(value);
-}
-
 angular.module('copayApp.directives')
 .directive('validAddress', ['$rootScope', 'profileService',
     function($rootScope, profileService) {
@@ -56,7 +51,7 @@ angular.module('copayApp.directives')
       };
     }
   ])
-.directive('validAddressOrEmail', ['$rootScope', 'profileService', 'aliasValidationService',
+.directive('validAddressOrAccount', ['$rootScope', 'profileService', 'aliasValidationService',
     function($rootScope, profileService, aliasValidationService) {
       return {
         require: 'ngModel',
@@ -65,8 +60,8 @@ angular.module('copayApp.directives')
             if (!profileService.focusedClient)
           return;
           ctrl.$setValidity(
-            'validAddressOrEmail', 
-            isValidAddress(value) || isValidEmail(value) || aliasValidationService.isValid(value)
+            'validAddressOrAccount', 
+            isValidAddress(value) || aliasValidationService.isValid(value)
           );
           return value;
         };

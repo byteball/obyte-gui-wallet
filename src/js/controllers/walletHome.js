@@ -805,7 +805,7 @@ angular.module('copayApp.controllers')
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
-				form.address.$setValidity('validAddressOrEmail', true);
+				form.address.$setValidity('validAddressOrAccount', true);
 			}
 			if (form.$invalid) {
 				this.error = gettext('Unable to send transaction proposal');
@@ -857,8 +857,8 @@ angular.module('copayApp.controllers')
 				var amount = form.amount.$modelValue;
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
-				var isEmail = ValidationUtils.isValidEmail(address);
 				var validationAccountsResult = aliasValidationService.validate(address);
+				var isEmail = validationAccountsResult.isValid && validationAccountsResult.attestorKey === 'email';
 
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
@@ -898,282 +898,292 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					if (isEmail){ // try to replace email with attested BB address
-						var email = address.replace(/^textcoin:/, '').toLowerCase();
-						var bb_address = indexScope.assocAddressesByEmail[email];
-						console.log('email '+email+': bb_address='+bb_address);
-						if (!bb_address){
-							indexScope.resolveEmailToAddress(email, function(){
-								// assocAddressesByEmail is now filled
-								delete self.current_payment_key;
-								self.submitPayment();
-							});
-							return;
-						}
-						if (bb_address === 'unknown')
-							delete indexScope.assocAddressesByEmail[email]; // send textcoin now but retry next time
-						else if (bb_address === 'none'){
-							// go on to send textcoin
-						}
-						else if (ValidationUtils.isValidAddress(bb_address)){
-							address = bb_address;
-							isEmail = false;
-							isTextcoin = false;
-							original_address = email;
-						}
-						else
-							throw Error("unrecognized bb_address: "+bb_address);
-					}
-					else if (validationAccountsResult.isValid) {
-						return aliasValidationService.getBbAddressByKeyValue(
-							validationAccountsResult.key,
-							validationAccountsResult.account,
-							function(err, message, bb_address) {
-								if (err) {
-									throw err;
-								}
-								if (message) {
+					if (validationAccountsResult.isValid) { // try to replace validation result with attested BB address
+						var attestorKey = validationAccountsResult.attestorKey;
+						var validateAccount = validationAccountsResult.account;
+						var bb_address = aliasValidationService.getAssocBbAddress(
+							attestorKey,
+							validateAccount
+						);
+						console.log('attestorKey='+attestorKey+' : validateAccount='+validateAccount+' : bb_address='+bb_address);
+						
+						if (!bb_address) {
+							return aliasValidationService.resolveValueToBbAddress(
+								attestorKey,
+								validateAccount,
+								function () {
+									// assocAddress is now filled
 									delete self.current_payment_key;
-									indexScope.setOngoingProcess(gettext('sending'), false);
-									return self.setSendError(message);
+									self.submitPayment();
+								}
+							);
+						}
+
+						if (!isEmail) {
+
+							if (bb_address === 'unknown' || bb_address === 'none') {
+								if (bb_address === 'unknown') {
+									aliasValidationService.deleteAssocBbAddress(
+										attestorKey,
+										validateAccount
+									);
 								}
 
+								delete self.current_payment_key;
+								indexScope.setOngoingProcess(gettext('sending'), false);
+								return self.setSendError('Attested account not found');
+							} else if (ValidationUtils.isValidAddress(bb_address)) {
 								original_address = address;
 								address = bb_address;
 								isEmail = false;
 								isTextcoin = false;
-								
-								handleBindingAndComposeAndSend();
+							} else {
+								throw Error("unrecognized bb_address: "+bb_address);
 							}
-						);
+
+						} else {
+
+							if (bb_address === 'unknown') {
+								aliasValidationService.deleteAssocBbAddress(
+									attestorKey,
+									validateAccount
+								); // send textcoin now but retry next time
+							} else if (bb_address === 'none') {
+								// go on to send textcoin
+							} else if (ValidationUtils.isValidAddress(bb_address)) {
+								original_address = validateAccount;
+								address = bb_address;
+								isEmail = false;
+								isTextcoin = false;
+							} else {
+								throw Error("unrecognized bb_address: "+bb_address);
+							}
+
+						}
 					}
 
-					handleBindingAndComposeAndSend();
-
-					function handleBindingAndComposeAndSend() {
-						var device = require('byteballcore/device.js');
-						if (self.binding) {
-							if (isTextcoin) {
-								delete self.current_payment_key;
-								indexScope.setOngoingProcess(gettext('sending'), false);
-								return self.setSendError("you can send bound payments to byteball adresses only");
-							}
-							if (!recipient_device_address)
-								throw Error('recipient device address not known');
-							var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-							var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-							var my_address;
-							// never reuse addresses as the required output could be already present
-							useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo) {
-								my_address = addressInfo.address;
-								if (self.binding.type === 'reverse_payment') {
-									var arrSeenCondition = ['seen', {
-										what: 'output',
-										address: my_address,
-										asset: self.binding.reverseAsset,
-										amount: self.binding.reverseAmount
-									}];
-									var arrDefinition = ['or', [
-										['and', [
-											['address', address],
-											arrSeenCondition
-										]],
-										['and', [
-											['address', my_address],
-											['not', arrSeenCondition],
-											['in data feed', [
-												[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
-											]]
-										]]
-									]];
-									var assocSignersByPath = {
-										'r.0.0': {
-											address: address,
-											member_signing_path: 'r',
-											device_address: recipient_device_address
-										},
-										'r.1.0': {
-											address: my_address,
-											member_signing_path: 'r',
-											device_address: device.getMyDeviceAddress()
-										}
-									};
-								}
-								else {
-									var arrExplicitEventCondition =
+					var device = require('byteballcore/device.js');
+					if (self.binding) {
+						if (isTextcoin) {
+							delete self.current_payment_key;
+							indexScope.setOngoingProcess(gettext('sending'), false);
+							return self.setSendError("you can send bound payments to byteball adresses only");
+						}
+						if (!recipient_device_address)
+							throw Error('recipient device address not known');
+						var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+						var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+						var my_address;
+						// never reuse addresses as the required output could be already present
+						useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo) {
+							my_address = addressInfo.address;
+							if (self.binding.type === 'reverse_payment') {
+								var arrSeenCondition = ['seen', {
+									what: 'output',
+									address: my_address,
+									asset: self.binding.reverseAsset,
+									amount: self.binding.reverseAmount
+								}];
+								var arrDefinition = ['or', [
+									['and', [
+										['address', address],
+										arrSeenCondition
+									]],
+									['and', [
+										['address', my_address],
+										['not', arrSeenCondition],
 										['in data feed', [
-											[self.binding.oracle_address], self.binding.feed_name, '=', self.binding.feed_value
-										]];
-									var arrMerkleEventCondition =
-										['in merkle', [
-											[self.binding.oracle_address], self.binding.feed_name, self.binding.feed_value
-										]];
-									var arrEventCondition;
-									if (self.binding.feed_type === 'explicit')
-										arrEventCondition = arrExplicitEventCondition;
-									else if (self.binding.feed_type === 'merkle')
-										arrEventCondition = arrMerkleEventCondition;
-									else if (self.binding.feed_type === 'either')
-										arrEventCondition = ['or', [arrMerkleEventCondition, arrExplicitEventCondition]];
-									else
-										throw Error("unknown feed type: " + self.binding.feed_type);
-									var arrDefinition = ['or', [
-										['and', [
-											['address', address],
-											arrEventCondition
-										]],
-										['and', [
-											['address', my_address],
-											['in data feed', [
-												[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
-											]]
+											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
 										]]
-									]];
-									var assocSignersByPath = {
-										'r.0.0': {
-											address: address,
-											member_signing_path: 'r',
-											device_address: recipient_device_address
-										},
-										'r.1.0': {
-											address: my_address,
-											member_signing_path: 'r',
-											device_address: device.getMyDeviceAddress()
-										}
-									};
-									if (self.binding.feed_type === 'merkle' || self.binding.feed_type === 'either')
-										assocSignersByPath[(self.binding.feed_type === 'merkle') ? 'r.0.1' : 'r.0.1.0'] = {
-											address: '',
-											member_signing_path: 'r',
-											device_address: recipient_device_address
-										};
-								}
-								walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
-									ifError: function(err) {
-										delete self.current_payment_key;
-										indexScope.setOngoingProcess(gettext('sending'), false);
-										self.setSendError(err);
+									]]
+								]];
+								var assocSignersByPath = {
+									'r.0.0': {
+										address: address,
+										member_signing_path: 'r',
+										device_address: recipient_device_address
 									},
-									ifOk: function(shared_address) {
-										composeAndSend(shared_address);
+									'r.1.0': {
+										address: my_address,
+										member_signing_path: 'r',
+										device_address: device.getMyDeviceAddress()
 									}
-								});
-							});
-						}
-						else
-							composeAndSend(address);
-
-						// compose and send
-						function composeAndSend(to_address) {
-							var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-							if (fc.credentials.m < fc.credentials.n)
-								$scope.index.copayers.forEach(function(copayer) {
-									if (copayer.me || copayer.signs)
-										arrSigningDeviceAddresses.push(copayer.device_address);
-								});
-							else if (indexScope.shared_address)
-								arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
-									return copayer.device_address;
-								});
-							breadcrumbs.add('sending payment in ' + asset);
-							profileService.bKeepUnlocked = true;
-							var opts = {
-								shared_address: indexScope.shared_address,
-								merkle_proof: merkle_proof,
-								asset: asset,
-								do_not_email: true,
-								send_all: self.bSendAll,
-								arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-								recipient_device_address: recipient_device_address
-							};
-							if (!isMultipleSend) {
-								opts.to_address = to_address;
-								opts.amount = amount;
-							} else {
-								if (asset !== "base")
-									opts.asset_outputs = outputs;
+								};
+							}
+							else {
+								var arrExplicitEventCondition =
+									['in data feed', [
+										[self.binding.oracle_address], self.binding.feed_name, '=', self.binding.feed_value
+									]];
+								var arrMerkleEventCondition =
+									['in merkle', [
+										[self.binding.oracle_address], self.binding.feed_name, self.binding.feed_value
+									]];
+								var arrEventCondition;
+								if (self.binding.feed_type === 'explicit')
+									arrEventCondition = arrExplicitEventCondition;
+								else if (self.binding.feed_type === 'merkle')
+									arrEventCondition = arrMerkleEventCondition;
+								else if (self.binding.feed_type === 'either')
+									arrEventCondition = ['or', [arrMerkleEventCondition, arrExplicitEventCondition]];
 								else
-									opts.base_outputs = outputs;
+									throw Error("unknown feed type: " + self.binding.feed_type);
+								var arrDefinition = ['or', [
+									['and', [
+										['address', address],
+										arrEventCondition
+									]],
+									['and', [
+										['address', my_address],
+										['in data feed', [
+											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
+										]]
+									]]
+								]];
+								var assocSignersByPath = {
+									'r.0.0': {
+										address: address,
+										member_signing_path: 'r',
+										device_address: recipient_device_address
+									},
+									'r.1.0': {
+										address: my_address,
+										member_signing_path: 'r',
+										device_address: device.getMyDeviceAddress()
+									}
+								};
+								if (self.binding.feed_type === 'merkle' || self.binding.feed_type === 'either')
+									assocSignersByPath[(self.binding.feed_type === 'merkle') ? 'r.0.1' : 'r.0.1.0'] = {
+										address: '',
+										member_signing_path: 'r',
+										device_address: recipient_device_address
+									};
 							}
-							fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
-								// if multisig, it might take very long before the callback is called
-								indexScope.setOngoingProcess(gettext('sending'), false);
-								breadcrumbs.add('done payment in ' + asset + ', err=' + err);
-								delete self.current_payment_key;
-								profileService.bKeepUnlocked = false;
-								if (err) {
-									if (typeof err === 'object') {
-										err = JSON.stringify(err);
-										eventBus.emit('nonfatal_error', "error object from sendMultiPayment: " + err, new Error());
-									}
-									else if (err.match(/device address/))
-										err = "This is a private asset, please send it only by clicking links from chat";
-									else if (err.match(/no funded/))
-										err = "Not enough spendable funds, make sure all your funds are confirmed";
-									return self.setSendError(err);
+							walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
+								ifError: function(err) {
+									delete self.current_payment_key;
+									indexScope.setOngoingProcess(gettext('sending'), false);
+									self.setSendError(err);
+								},
+								ifOk: function(shared_address) {
+									composeAndSend(shared_address);
 								}
-								var binding = self.binding;
-								self.resetForm();
-								$rootScope.$emit("NewOutgoingTx");
-								if (original_address){
-									var db = require('byteballcore/db.js');
-									db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
-										[unit, to_address, original_address]);
-								}
-								if (recipient_device_address) { // show payment in chat window
-									eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
-									if (binding && binding.reverseAmount) { // create a request for reverse payment
-										if (!my_address)
-											throw Error('my address not known');
-										var paymentRequestCode = 'byteball:' + my_address + '?amount=' + binding.reverseAmount + '&asset=' + encodeURIComponent(binding.reverseAsset);
-										var paymentRequestText = '[reverse payment](' + paymentRequestCode + ')';
-										device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
-										var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
-										correspondentListService.addMessageEvent(false, recipient_device_address, body);
-										device.readCorrespondent(recipient_device_address, function(correspondent) {
-											if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
-										});
-
-										// issue next address to avoid reusing the reverse payment address
-										if (!fc.isSingleAddress) walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function() {});
-									}
-								}
-								else if (Object.keys(mnemonics).length) {
-									var mnemonic = mnemonics[to_address];
-									if (opts.send_all && asset === "base")
-										amount = assetInfo.stable;
-
-									if (isEmail) {
-										self.openShareTextcoinModal(to_address.slice("textcoin:".length), mnemonic, amount, asset, false);
-									} else {
-										if (isCordova) {
-											if (isMobile.Android() || isMobile.Windows()) {
-												window.ignoreMobilePause = true;
-											}
-											window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
-										} else {
-											self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
-										}
-									}
-
-									$rootScope.$emit('Local/SetTab', 'history');
-								}
-								else // redirect to history
-									$rootScope.$emit('Local/SetTab', 'history');
 							});
+						});
+					}
+					else
+						composeAndSend(address);
 
+					// compose and send
+					function composeAndSend(to_address) {
+						var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+						if (fc.credentials.m < fc.credentials.n)
+							$scope.index.copayers.forEach(function(copayer) {
+								if (copayer.me || copayer.signs)
+									arrSigningDeviceAddresses.push(copayer.device_address);
+							});
+						else if (indexScope.shared_address)
+							arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
+								return copayer.device_address;
+							});
+						breadcrumbs.add('sending payment in ' + asset);
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							shared_address: indexScope.shared_address,
+							merkle_proof: merkle_proof,
+							asset: asset,
+							do_not_email: true,
+							send_all: self.bSendAll,
+							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+							recipient_device_address: recipient_device_address
+						};
+						if (!isMultipleSend) {
+							opts.to_address = to_address;
+							opts.amount = amount;
+						} else {
+							if (asset !== "base")
+								opts.asset_outputs = outputs;
+							else
+								opts.base_outputs = outputs;
 						}
-
-						function useOrIssueNextAddress(wallet, is_change, handleAddress) {
-							if (fc.isSingleAddress) {
-								addressService.getAddress(fc.credentials.walletId, false, function(err, addr) {
-									handleAddress({
-										address: addr
-									});
-								});
+						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
+							// if multisig, it might take very long before the callback is called
+							indexScope.setOngoingProcess(gettext('sending'), false);
+							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
+							delete self.current_payment_key;
+							profileService.bKeepUnlocked = false;
+							if (err) {
+								if (typeof err === 'object') {
+									err = JSON.stringify(err);
+									eventBus.emit('nonfatal_error', "error object from sendMultiPayment: " + err, new Error());
+								}
+								else if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								else if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								return self.setSendError(err);
 							}
-							else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
+							var binding = self.binding;
+							self.resetForm();
+							$rootScope.$emit("NewOutgoingTx");
+							if (original_address){
+								var db = require('byteballcore/db.js');
+								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
+									[unit, to_address, original_address]);
+							}
+							if (recipient_device_address) { // show payment in chat window
+								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
+								if (binding && binding.reverseAmount) { // create a request for reverse payment
+									if (!my_address)
+										throw Error('my address not known');
+									var paymentRequestCode = 'byteball:' + my_address + '?amount=' + binding.reverseAmount + '&asset=' + encodeURIComponent(binding.reverseAsset);
+									var paymentRequestText = '[reverse payment](' + paymentRequestCode + ')';
+									device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
+									var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
+									correspondentListService.addMessageEvent(false, recipient_device_address, body);
+									device.readCorrespondent(recipient_device_address, function(correspondent) {
+										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+									});
+
+									// issue next address to avoid reusing the reverse payment address
+									if (!fc.isSingleAddress) walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function() {});
+								}
+							}
+							else if (Object.keys(mnemonics).length) {
+								var mnemonic = mnemonics[to_address];
+								if (opts.send_all && asset === "base")
+									amount = assetInfo.stable;
+
+								if (isEmail) {
+									self.openShareTextcoinModal(to_address.slice("textcoin:".length), mnemonic, amount, asset, false);
+								} else {
+									if (isCordova) {
+										if (isMobile.Android() || isMobile.Windows()) {
+											window.ignoreMobilePause = true;
+										}
+										window.plugins.socialsharing.shareWithOptions(getShareMessage(amount, mnemonic, asset));
+									} else {
+										self.openShareTextcoinModal(null, mnemonic, amount, asset, false);
+									}
+								}
+
+								$rootScope.$emit('Local/SetTab', 'history');
+							}
+							else // redirect to history
+								$rootScope.$emit('Local/SetTab', 'history');
+						});
+
+					}
+
+					function useOrIssueNextAddress(wallet, is_change, handleAddress) {
+						if (fc.isSingleAddress) {
+							addressService.getAddress(fc.credentials.walletId, false, function(err, addr) {
+								handleAddress({
+									address: addr
+								});
+							});
 						}
+						else walletDefinedByKeys.issueNextAddress(wallet, is_change, handleAddress);
 					}
 
 				});

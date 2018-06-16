@@ -351,16 +351,6 @@ angular
           },
         }
       })
-      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEmailAttestor', {
-        url: '/emailAttestor',
-        walletShouldBeComplete: true,
-        needProfile: true,
-        views: {
-          'main@': {
-            templateUrl: 'views/preferencesEmailAttestor.html'
-          },
-        }
-      })
       .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditAttestorAddress', {
         url: '/edit',
         walletShouldBeComplete: true,

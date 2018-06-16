@@ -2,13 +2,25 @@
 
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
-angular.module('copayApp.services').factory('aliasValidationService', function($state, $rootScope, configService, gettextCatalog) {
+angular.module('copayApp.services').factory('aliasValidationService', function($timeout, configService, gettextCatalog) {
 
 	var listOfAliases = {
+		email: {
+			dbKey: 'email',
+			title: 'email',
+			isValid: function (value) {
+				return ValidationUtils.isValidEmail(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^textcoin:/, '').toLowerCase();
+			}
+		},
 		reddit: {
 			dbKey: 'reddit',
 			title: 'reddit account',
-			regexp: /^reddit\/[a-zA-Z0-9\-_]{3,20}$/,
+			isValid: function (value) {
+				return /^reddit\/[a-zA-Z0-9\-_]{3,20}$/.test(value);
+			},
 			transformToAccount: function (value) {
 				return value.replace('reddit/', '');
 			}
@@ -16,20 +28,27 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 		phone: {
 			dbKey: 'phone',
 			title: 'phone number',
-			regexp: /^(\+)?(\d)+$/,
+			isValid: function (value) {
+				return /^(\+)?(\d)+$/.test(value);
+			},
 			transformToAccount: function (value) {
 				return value.replace('+', '');
 			}
 		}
 	};
-
+	var assocBbAddresses = {};
 	var root = {};
 	
-	root.getAliasObj = function (key) {
-		if (!(key in listOfAliases)) {
-			throw new Error('unknown account');
+	for (var attestorKey in listOfAliases) {
+		if (!listOfAliases.hasOwnProperty(attestorKey)) continue;
+		assocBbAddresses[attestorKey] = {};
+	}
+
+	root.getAliasObj = function (attestorKey) {
+		if (!(attestorKey in listOfAliases)) {
+			throw new Error('unknown alias');
 		}
-		return listOfAliases[key];
+		return listOfAliases[attestorKey];
 	};
 
 	root.getListOfAliases = function () {
@@ -37,32 +56,54 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 	};
 
 	root.validate = function (value) {
-		for (var key in listOfAliases) {
-			if (!listOfAliases.hasOwnProperty(key)) continue;
-			if (listOfAliases[key].regexp.test(value)) {
-				var account = listOfAliases[key].transformToAccount(value);
-				return { isValid: true, key: key, account: account };
+		for (var attestorKey in listOfAliases) {
+			if (!listOfAliases.hasOwnProperty(attestorKey)) continue;
+			if (listOfAliases[attestorKey].isValid(value)) {
+				var account = listOfAliases[attestorKey].transformToAccount(value);
+				return { isValid: true, attestorKey: attestorKey, account: account };
 			}
 		}
 		return { isValid: false };
 	};
 
-	root.getBbAddressByKeyValue = function (key, value, callback) {
-		if (!listOfAliases[key]) {
-			return callback('Account type not found');
+	root.checkAliasExist = function (attestorKey) {
+		if (!listOfAliases.hasOwnProperty(attestorKey)) {
+			throw new Error('Alias not found');
+		}
+	};
+
+	root.getAssocBbAddress = function (attestorKey, value) {
+		root.checkAliasExist(attestorKey);
+		return assocBbAddresses[attestorKey][value];
+	};
+
+	root.deleteAssocBbAddress = function (attestorKey, value) {
+		root.checkAliasExist(attestorKey);
+		delete assocBbAddresses[attestorKey][value];
+	};
+
+	root.resolveValueToBbAddress = function (attestorKey, value, callback) {
+		function setResult(result) {
+			assocBbAddresses[attestorKey][value] = result;
+			$timeout(callback);
 		}
 
-		var obj = listOfAliases[key];
-		var attestorAddress = configService.getSync().attestorAddresses[key];
+		root.checkAliasExist(attestorKey);
+		
+		if (!listOfAliases[attestorKey]) {
+			throw new Error('Alias not found');
+		}
+
+		var obj = listOfAliases[attestorKey];
+		var attestorAddress = configService.getSync().attestorAddresses[attestorKey];
 		if (!attestorAddress) {
-			var message = gettextCatalog.getString('Attestor') + " ";
-			message += '"' + gettextCatalog.getString(obj.title) + '" ';
-			message += gettextCatalog.getString('does not have address');
-			return callback(null, message);
+			return setResult('none');
 		}
 
+		var conf = require('byteballcore/conf.js');
 		var db = require('byteballcore/db.js');
-		db.query("SELECT \n\
+		db.query(
+			"SELECT \n\
 				address, is_stable \n\
 			FROM attested_fields \n\
 			CROSS JOIN units USING(unit) \n\
@@ -72,28 +113,43 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			ORDER BY attested_fields.rowid DESC \n\
 			LIMIT 1",
 			[attestorAddress, obj.dbKey, value],
-			function(rows) {
-				if (!rows.length || !rows[0].is_stable) {
-					var message = gettextCatalog.getString(obj.title) + " ";
-					message += '"' + value + '" ';
-					message += gettextCatalog.getString('does not have byteball address');
-					return callback(null, message);
+			function (rows) {
+				if (rows.length > 0) {
+					return setResult( (!conf.bLight || rows[0].is_stable) ? rows[0].address : 'unknown' );
 				}
-
-				var bbAddress = rows[0].address;
-
-				if (!ValidationUtils.isValidAddress(bbAddress)) {
-					return callback("unrecognized bb_address: " + bbAddress);
+				// not found
+				if (!conf.bLight) {
+					return setResult('none');
 				}
-				
-				callback(null, null, bbAddress);
-		});
+				// light
+				var network = require('byteballcore/network.js');
+				var params = {attestor_address: attestorAddress, field: obj.dbKey, value: value};
+				network.requestFromLightVendor('light/get_attestation', params, function (ws, request, response) {
+					if (response.error) {
+						return setResult('unknown');
+					}
+
+					var attestation_unit = response;
+					if (attestation_unit === "") {// no attestation
+						return setResult('none');
+					}
+
+					network.requestHistoryFor([attestation_unit], [], function (err) {
+						if (err) {
+							return setResult('unknown');
+						}
+						// now attestation_unit is in the db (stable or unstable)
+						root.resolveValueToBbAddress(attestorKey, value, callback);
+					});
+				});
+			}
+		);
 	};
 
 	root.isValid = function (value) {
-		for (var key in listOfAliases) {
-			if (!listOfAliases.hasOwnProperty(key)) continue;
-			if (listOfAliases[key].regexp.test(value)) {
+		for (var attestorKey in listOfAliases) {
+			if (!listOfAliases.hasOwnProperty(attestorKey)) continue;
+			if (listOfAliases[attestorKey].isValid(value)) {
 				return true;
 			}
 		}

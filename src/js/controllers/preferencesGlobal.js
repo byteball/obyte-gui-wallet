@@ -14,7 +14,6 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.deviceName = config.deviceName;
       this.myDeviceAddress = require('byteballcore/device.js').getMyDeviceAddress();
       this.hub = config.hub;
-      this.emailAttestor = config.emailAttestor;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
       this.torEnabled = conf.socksHost && conf.socksPort;
       $scope.pushNotifications = config.pushNotifications.enabled;

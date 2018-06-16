@@ -11,6 +11,7 @@ function PreferencesAttestorAddressesCtrl(
 ) {
 	var config = configService.getSync();
 	var configAttestorAddresses = config.attestorAddresses;
+	console.log('!!!configAttestorAddresses', JSON.stringify(configAttestorAddresses, null, 4));
 	var listOfAliases = aliasValidationService.getListOfAliases();
 
 	this.arrAttestorAddresses = [];
@@ -35,12 +36,6 @@ function PreferencesAttestorAddressesCtrl(
 		this.arrAttestorAddresses.push({attestorKey: attestorKey, value: "", title: title});
 	}
 
-	this.arrAttestorAddresses.push({
-		attestorKey: "email",
-		value: config.emailAttestor,
-		title: "Email attestor"}
-	);
-
 	this.arrAttestorAddresses.sort(function (a, b) {
 		if (a.title > b.title) {
 			return 1;
@@ -52,13 +47,7 @@ function PreferencesAttestorAddressesCtrl(
 	});
 
 	this.edit = function (attestorKey) {
-		var newPath;
-		if (attestorKey === "email") {
-			newPath = 'preferencesGlobal.preferencesAttestorAddresses.preferencesEmailAttestor';
-		} else {
-			attestorAddressListService.currentAttestorKey = attestorKey;
-			newPath = 'preferencesGlobal.preferencesAttestorAddresses.preferencesEditAttestorAddress';
-		}
-		go.path(newPath);
+		attestorAddressListService.currentAttestorKey = attestorKey;
+		go.path('preferencesGlobal.preferencesAttestorAddresses.preferencesEditAttestorAddress');
 	};
 }
