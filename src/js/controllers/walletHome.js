@@ -881,7 +881,7 @@ angular.module('copayApp.controllers')
 				var amount = form.amount.$modelValue;
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
-				var validationAccountsResult = aliasValidationService.validate(address);
+				var accountValidationResult = aliasValidationService.validate(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
 
 				var original_address;  // might be sent to email if the email address is attested
@@ -920,9 +920,9 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					if (validationAccountsResult.isValid) { // try to replace validation result with attested BB address
-						var attestorKey = validationAccountsResult.attestorKey;
-						var account = validationAccountsResult.account;
+					if (accountValidationResult.isValid) { // try to replace validation result with attested BB address
+						var attestorKey = accountValidationResult.attestorKey;
+						var account = accountValidationResult.account;
 						var bb_address = aliasValidationService.getBbAddress(
 							attestorKey,
 							account

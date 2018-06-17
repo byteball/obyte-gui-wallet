@@ -1401,20 +1401,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     };
     
   self.getToAddressLabel = function(value) {
-    var validateResult = aliasValidationService.validate(value);
+    var validationResult = aliasValidationService.validate(value);
 
-    if (validateResult.isValid) {
-      var aliasObj = aliasValidationService.getAliasObj(validateResult.key);
+    if (validationResult.isValid) {
+      var aliasObj = aliasValidationService.getAliasObj(validationResult.attestorKey);
       return gettextCatalog.getString('To') + " " + gettextCatalog.getString(aliasObj.title);
     }
 
     return gettextCatalog.getString('To email');
   };
   self.getAddressValue = function(value) {
-    var validateResult = aliasValidationService.validate(value);
+    var validationResult = aliasValidationService.validate(value);
 
-    if (validateResult.isValid) {
-      return validateResult.account;
+    if (validationResult.isValid) {
+      return validationResult.account;
     }
 
     return value;
