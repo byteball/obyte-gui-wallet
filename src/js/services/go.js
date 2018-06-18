@@ -150,7 +150,18 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		});
 	}
 
+	var last_handle_file_ts = 0;
+
 	function handleFile(uri) {
+		var checkDoubleClaim = function() {
+			if (double_claim)
+				eventBus.emit('nonfatal_error', "double claim of private textcoin", new Error());
+		}
+		var double_claim = false;
+		if (Date.now() - last_handle_file_ts < 500) {
+			double_claim = true;
+		}
+		last_handle_file_ts = Date.now();
 		var breadcrumbs = require('byteballcore/breadcrumbs.js');
 		console.log("handleFile "+uri);
 		root.walletHome();
@@ -168,12 +179,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 				breadcrumbs.add("handleFile - content url");
 				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content, cb);
 			}, function (err) {throw err});
-			return;
+			return checkDoubleClaim();
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
 			breadcrumbs.add("handleFile - file path url");
 			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
-			return;
+			return checkDoubleClaim();
 		}
 		$rootScope.$emit('process_status_change', 'claiming', false);
 	}
