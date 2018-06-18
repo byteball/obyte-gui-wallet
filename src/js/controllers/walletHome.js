@@ -6,7 +6,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
 
 		var self = this;
 		var home = this;
@@ -829,7 +829,7 @@ angular.module('copayApp.controllers')
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
-				form.address.$setValidity('validAddressOrEmail', true);
+				form.address.$setValidity('validAddressOrAccount', true);
 			}
 			if (form.$invalid) {
 				this.error = gettext('Unable to send transaction proposal');
@@ -881,7 +881,9 @@ angular.module('copayApp.controllers')
 				var amount = form.amount.$modelValue;
 				// address can be [bytreball_addr, email, empty => social sharing]
 				var isTextcoin = !ValidationUtils.isValidAddress(address);
+				var accountValidationResult = aliasValidationService.validate(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
+
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
@@ -918,31 +920,68 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					if (isEmail){ // try to replace email with attested BB address
-						var email = address.replace(/^textcoin:/, '').toLowerCase();
-						var bb_address = indexScope.assocAddressesByEmail[email];
-						console.log('email '+email+': bb_address='+bb_address);
-						if (!bb_address){
-							indexScope.resolveEmailToAddress(email, function(){
-								// assocAddressesByEmail is now filled
+					if (accountValidationResult.isValid) { // try to replace validation result with attested BB address
+						var attestorKey = accountValidationResult.attestorKey;
+						var account = accountValidationResult.account;
+						var bb_address = aliasValidationService.getBbAddress(
+							attestorKey,
+							account
+						);
+						console.log('attestorKey='+attestorKey+' : account='+account+' : bb_address='+bb_address);
+						
+						if (!bb_address) {
+							return aliasValidationService.resolveValueToBbAddress(
+								attestorKey,
+								account,
+								function () {
+									// assocAddress is now filled
+									delete self.current_payment_key;
+									self.submitPayment();
+								}
+							);
+						}
+
+						if (!isEmail) {
+
+							if (bb_address === 'unknown' || bb_address === 'none') {
+								if (bb_address === 'unknown') {
+									aliasValidationService.deleteAssocBbAddress(
+										attestorKey,
+										account
+									);
+								}
+
 								delete self.current_payment_key;
-								self.submitPayment();
-							});
-							return;
+								indexScope.setOngoingProcess(gettext('sending'), false);
+								return self.setSendError('Attested account not found');
+							} else if (ValidationUtils.isValidAddress(bb_address)) {
+								original_address = address;
+								address = bb_address;
+								isEmail = false;
+								isTextcoin = false;
+							} else {
+								throw Error("unrecognized bb_address: "+bb_address);
+							}
+
+						} else {
+
+							if (bb_address === 'unknown') {
+								aliasValidationService.deleteAssocBbAddress(
+									attestorKey,
+									account
+								); // send textcoin now but retry next time
+							} else if (bb_address === 'none') {
+								// go on to send textcoin
+							} else if (ValidationUtils.isValidAddress(bb_address)) {
+								original_address = account;
+								address = bb_address;
+								isEmail = false;
+								isTextcoin = false;
+							} else {
+								throw Error("unrecognized bb_address: "+bb_address);
+							}
+
 						}
-						if (bb_address === 'unknown')
-							delete indexScope.assocAddressesByEmail[email]; // send textcoin now but retry next time
-						else if (bb_address === 'none'){
-							// go on to send textcoin
-						}
-						else if (ValidationUtils.isValidAddress(bb_address)){
-							address = bb_address;
-							isEmail = false;
-							isTextcoin = false;
-							original_address = email;
-						}
-						else
-							throw Error("unrecognized bb_address: "+bb_address);
 					}
 
 					var device = require('byteballcore/device.js');
@@ -1720,6 +1759,13 @@ angular.module('copayApp.controllers')
 				$scope.copyAddress = function(addr) {
 					if (!addr) return;
 					self.copyAddress(addr);
+				};
+
+				$scope.getToAddressLabel = function(value) {
+					return indexScope.getToAddressLabel(value);
+				};
+				$scope.getAddressValue = function(value) {
+					return indexScope.getAddressValue(value);
 				};
 
 				$scope.showCorrespondentList = function() {

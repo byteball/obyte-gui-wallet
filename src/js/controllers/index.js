@@ -10,7 +10,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -24,7 +24,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
-  self.assocAddressesByEmail = {};
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -637,48 +636,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
   };
-	
-	
-	self.resolveEmailToAddress = function(email, onDone){
-		function setResult(result){
-			self.assocAddressesByEmail[email] = result;
-			$timeout(onDone);
-		}
-		var conf = require('byteballcore/conf.js');
-		var db = require('byteballcore/db.js');
-		var network = require('byteballcore/network.js');
-		var emailAttestor = configService.getSync().emailAttestor;
-		if (!emailAttestor)
-			return setResult('none');
-		db.query(
-			"SELECT address, is_stable FROM attested_fields CROSS JOIN units USING(unit) \n\
-			WHERE attestor_address=? AND field='email' AND value=? ORDER BY attested_fields.rowid DESC LIMIT 1", 
-			[emailAttestor, email], 
-			function(rows){
-				if (rows.length > 0)
-					return setResult( (!conf.bLight || rows[0].is_stable) ? rows[0].address : 'unknown' );
-				// not found
-				if (!conf.bLight)
-					return setResult('none');
-				// light
-				var params = {attestor_address: emailAttestor, field: 'email', value: email};
-				network.requestFromLightVendor('light/get_attestation', params, function(ws, request, response){
-					if (response.error)
-						return setResult('unknown');
-					var attestation_unit = response;
-					if (attestation_unit === "") // no attestation
-						return setResult('none');
-					network.requestHistoryFor([attestation_unit], [], function(err){
-						if (err)
-							return setResult('unknown');
-						// now attestation_unit is in the db (stable or unstable)
-						self.resolveEmailToAddress(email, onDone);
-					});
-				});
-			}
-		);
-	}
-
     
   self.goHome = function() {
     go.walletHome();
@@ -1443,6 +1400,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return profileService.getWallets('livenet');
     };
     
+  self.getToAddressLabel = function(value) {
+    var validationResult = aliasValidationService.validate(value);
+
+    if (validationResult.isValid) {
+      var aliasObj = aliasValidationService.getAliasObj(validationResult.attestorKey);
+      return gettextCatalog.getString('To') + " " + gettextCatalog.getString(aliasObj.title);
+    }
+
+    return gettextCatalog.getString('To email');
+  };
+  self.getAddressValue = function(value) {
+    var validationResult = aliasValidationService.validate(value);
+
+    if (validationResult.isValid) {
+      return validationResult.account;
+    }
+
+    return value;
+  };
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');

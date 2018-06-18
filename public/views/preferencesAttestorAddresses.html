@@ -1,0 +1,17 @@
+<div
+	class="topbar-container"
+	ng-include="'views/includes/topbar.html'"
+	ng-init="titleSection='Attestor addresses'; goBackToState = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesAttestorAddressesCtrl as ctrl">
+
+	<ul class="no-bullet m0">
+		<li ng-repeat="objAttestorAddress in ctrl.arrAttestorAddresses" ng-click="ctrl.edit(objAttestorAddress.attestorKey)">
+			<div class="small-4 columns p0i">{{objAttestorAddress.title|translate}}</div>
+			<div class="right small-1 columns p0i text-gray text-right"><i class="icon-arrow-right3 size-24"></i></div>
+			<div class="right small-7 columns p0i ellipsis text-gray text-right">{{objAttestorAddress.value}}</div>
+		</li>
+	</ul>
+
+</div>
