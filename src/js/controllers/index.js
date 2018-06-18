@@ -1220,16 +1220,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
+    var locked_key = walletId + ":" + self.assetIndex;
 
-    if (!fc.isComplete() || self.arrBalances.length === 0 || self.updatingTxHistory[walletId + ":" + self.assetIndex]) return;
+    if (!fc.isComplete() || self.arrBalances.length === 0 || self.updatingTxHistory[locked_key]) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
-    self.updatingTxHistory[walletId + ":" + self.assetIndex] = true;
+    self.updatingTxHistory[locked_key] = true;
 
     $timeout(function onUpdateHistoryTimeout() {
       self.updateLocalTxHistory(fc, function(err) {
-        self.updatingTxHistory[walletId + ":" + self.assetIndex] = false;
+        self.updatingTxHistory[locked_key] = false;
         if (err)
 			self.txHistoryError = true;
 		$timeout(function() {
