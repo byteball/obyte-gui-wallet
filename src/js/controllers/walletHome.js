@@ -920,7 +920,7 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					if (accountValidationResult.isValid) { // try to replace validation result with attested BB address
+					if (!isMultipleSend && accountValidationResult.isValid) { // try to replace validation result with attested BB address
 						var attestorKey = accountValidationResult.attestorKey;
 						var account = accountValidationResult.account;
 						var bb_address = aliasValidationService.getBbAddress(
