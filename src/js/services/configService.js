@@ -164,58 +164,58 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   };
   
   if(window.config){
-	  configCache = migrateLocalConfig(window.config);
+	configCache = migrateLocalConfig(window.config);
   }else{
-  	root.get(function() {});
+	root.get(function() {});
   }
   
   function migrateLocalConfig(localConfig) {
-	  if (localConfig) {
-		  var _config = JSON.parse(localConfig);
+	if (localConfig) {
+		var _config = JSON.parse(localConfig);
 
-		  //these ifs are to avoid migration problems
-		  if (!_config.wallet) {
-			  _config.wallet = defaultConfig.wallet;
-		  }
-		  if (!_config.wallet.settings.unitCode) {
-			  _config.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
-		  }
-		  if (!_config.wallet.settings.unitValue){
-			  if(_config.wallet.settings.unitToBytes){
-				  _config.wallet.settings.unitValue = _config.wallet.settings.unitToBytes;
-			  }else{
-				  _config.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
-			  }
-		  }
-		  if (!_config.wallet.settings.bbUnitName) {
-			  _config.wallet.settings.bbUnitName = defaultConfig.wallet.settings.bbUnitName;
-		  }
-		  if (!_config.wallet.settings.bbUnitValue) {
-			  _config.wallet.settings.bbUnitValue = defaultConfig.wallet.settings.bbUnitValue;
-		  }
-		  if (!_config.wallet.settings.bbUnitDecimals) {
-			  _config.wallet.settings.bbUnitDecimals = defaultConfig.wallet.settings.bbUnitDecimals;
-		  }
-		  if (!_config.wallet.settings.bbUnitCode) {
-			  _config.wallet.settings.bbUnitCode = defaultConfig.wallet.settings.bbUnitCode;
-		  }
-		  if (!_config.pushNotifications) {
-			  _config.pushNotifications = defaultConfig.pushNotifications;
-		  }
-		  if (!_config.hub)
-			  _config.hub = defaultConfig.hub;
-			if (!_config.attestorAddresses) {
-				_config.attestorAddresses = defaultConfig.attestorAddresses;
+		//these ifs are to avoid migration problems
+		if (!_config.wallet) {
+			_config.wallet = defaultConfig.wallet;
+		}
+		if (!_config.wallet.settings.unitCode) {
+			_config.wallet.settings.unitCode = defaultConfig.wallet.settings.unitCode;
+		}
+		if (!_config.wallet.settings.unitValue){
+			if(_config.wallet.settings.unitToBytes){
+				_config.wallet.settings.unitValue = _config.wallet.settings.unitToBytes;
+			}else{
+				_config.wallet.settings.unitValue = defaultConfig.wallet.settings.unitValue;
 			}
-		  if (!_config.deviceName)
-			  _config.deviceName = defaultConfig.getDeviceName();
+		}
+		if (!_config.wallet.settings.bbUnitName) {
+			_config.wallet.settings.bbUnitName = defaultConfig.wallet.settings.bbUnitName;
+		}
+		if (!_config.wallet.settings.bbUnitValue) {
+			_config.wallet.settings.bbUnitValue = defaultConfig.wallet.settings.bbUnitValue;
+		}
+		if (!_config.wallet.settings.bbUnitDecimals) {
+			_config.wallet.settings.bbUnitDecimals = defaultConfig.wallet.settings.bbUnitDecimals;
+		}
+		if (!_config.wallet.settings.bbUnitCode) {
+			_config.wallet.settings.bbUnitCode = defaultConfig.wallet.settings.bbUnitCode;
+		}
+		if (!_config.pushNotifications) {
+			_config.pushNotifications = defaultConfig.pushNotifications;
+		}
+		if (!_config.hub)
+			_config.hub = defaultConfig.hub;
+		if (!_config.attestorAddresses) {
+			_config.attestorAddresses = defaultConfig.attestorAddresses;
+		}
+		if (!_config.deviceName)
+			_config.deviceName = defaultConfig.getDeviceName();
 
-		  checkAndReplaceOldUnitCode(_config.wallet.settings);
-	  } else {
-		  _config = lodash.clone(defaultConfig);
-		  _config.deviceName = defaultConfig.getDeviceName();
-	  }
-	  return _config;
+		checkAndReplaceOldUnitCode(_config.wallet.settings);
+	} else {
+		_config = lodash.clone(defaultConfig);
+		_config.deviceName = defaultConfig.getDeviceName();
+	}
+	return _config;
   }
   
   function checkAndReplaceOldUnitCode(setting) {
