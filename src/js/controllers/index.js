@@ -472,8 +472,27 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                                 arrDestinations.push(formatted_amount + " " + currency + " to " + address);
 							}
                         }
-                        var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
-                        var question = gettextCatalog.getString('Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?');
+						function getQuestion(){
+							if (arrDestinations.length === 0){
+								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "profile" || objMessage.app === "attestation" || objMessage.app === "data" || objMessage.app === 'data_feed'); });
+								if (arrDataMessages.length > 0){
+									var message = arrDataMessages[0]; // can be only one
+									var payload = message.payload;
+									var obj = (message.app === 'attestation') ? payload.profile : payload;
+									var arrPairs = [];
+									for (var field in obj)
+										arrPairs.push(field+": "+obj[field]);
+									var list = arrPairs.join('<br>')+'<br>';
+									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
+										return 'Sign '+message.app.replace('_', ' ')+' <br>'+list+'from wallet '+credentials.walletName+'?';
+									if (message.app === 'attestation')
+										return 'Sign transaction attesting '+payload.address+' as <br>'+list+'from wallet '+credentials.walletName+'?';
+								}
+							}
+							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
+							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
+						}
+						var question = getQuestion();
                         requestApproval(question, {
                             ifYes: function(){
                                 createAndSendSignature();
