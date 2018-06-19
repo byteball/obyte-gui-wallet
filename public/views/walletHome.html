@@ -493,7 +493,7 @@ input.datafeed_input {
 	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
 	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
-	                <button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+	                <button type="submit" ng-if="mtab == 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
 	                </button>
