@@ -482,11 +482,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									var arrPairs = [];
 									for (var field in obj)
 										arrPairs.push(field+": "+obj[field]);
-									var list = arrPairs.join('<br>')+'<br>';
+									var nl = isCordova ? "\n" : "<br>";
+									var list = arrPairs.join(nl)+nl;
 									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
-										return 'Sign '+message.app.replace('_', ' ')+' <br>'+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from wallet '+credentials.walletName+'?';
 									if (message.app === 'attestation')
-										return 'Sign transaction attesting '+payload.address+' as <br>'+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from wallet '+credentials.walletName+'?';
 								}
 							}
 							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
