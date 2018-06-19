@@ -1226,12 +1226,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
 
-    self.updatingTxHistory[walletId] = true;
     mutex.lock(['update-history-'+walletId], function(unlock){
+    	self.updatingTxHistory[walletId] = true;
     	$timeout(function onUpdateHistoryTimeout() {
 	      self.updateLocalTxHistory(fc, function(err) {
-	      	unlock();
 	      	self.updatingTxHistory[walletId] = false;
+	      	unlock();
 	        if (err)
 				self.txHistoryError = true;
 			$timeout(function() {
