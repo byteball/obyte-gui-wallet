@@ -934,7 +934,7 @@ angular.module('copayApp.controllers')
 								attestorKey,
 								account,
 								function () {
-									// assocAddress is now filled
+									// assocBbAddresses in aliasValidationService is now filled
 									delete self.current_payment_key;
 									self.submitPayment();
 								}
