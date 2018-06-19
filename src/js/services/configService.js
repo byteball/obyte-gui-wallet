@@ -207,6 +207,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		if (!_config.attestorAddresses) {
 			_config.attestorAddresses = defaultConfig.attestorAddresses;
 		}
+		for (var attestorKey in defaultConfig.attestorAddresses){
+			if (!(attestorKey in _config.attestorAddresses))
+				_config.attestorAddresses[attestorKey] = defaultConfig.attestorAddresses[attestorKey];
+		}
 		if (!_config.deviceName)
 			_config.deviceName = defaultConfig.getDeviceName();
 
