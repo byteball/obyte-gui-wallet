@@ -29,7 +29,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			dbKey: 'phone',
 			title: 'phone number',
 			isValid: function (value) {
-				return /^(\+)?(\d)+$/.test(value);
+				return /^\+?\d{9,14}$/.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.replace('+', '');
