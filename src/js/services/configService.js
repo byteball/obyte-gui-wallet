@@ -50,7 +50,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		}
 	};
 
-	root.privateTextcoinExt = 'coin';
+	root.privateTextcoinExt = 'coin-tn';
 	
   var defaultConfig = {
 	// wallet limits

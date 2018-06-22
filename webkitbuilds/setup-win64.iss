@@ -42,10 +42,10 @@ Root: HKLM; Subkey: "Software\Classes\byteball-tn\DefaultIcon"; ValueType: strin
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
-Root: HKCR; Subkey: ".coin";                             ValueData: "{#MyAppName}Coin";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}Coin";                     ValueData: "{#MyAppName} Private Coin";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}Coin\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: ".coin-tn";                             ValueData: "{#MyAppName}Coin-TN";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin-TN";                     ValueData: "{#MyAppName} Private Coin For Testnet";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin-TN\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin-TN\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
 
 
 [Tasks]

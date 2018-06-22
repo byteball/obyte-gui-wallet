@@ -219,16 +219,16 @@ module.exports = function(grunt) {
       		/*CFBundleIconFile: 'nw.icns',*/
       		LSHasLocalizedDisplayName: 0,
       		UTExportedTypeDeclarations: [{
-      			UTTypeIdentifier: 'org.byteball.coin',
-      			UTTypeDescription: 'Byteball Private Coin',
+      			UTTypeIdentifier: 'org.byteball.coin-tn',
+      			UTTypeDescription: 'Byteball Private Coin For Testnet',
       			UTTypeConformsTo: ["public.data"],
       			UTTypeTagSpecification: {
-      				"public.filename-extension":["coin"]
+      				"public.filename-extension":["coin-tn"]
       			}
       		}],
       		CFBundleDocumentTypes: [{
-      			CFBundleTypeName: "Byteball Private Coin",
-      			LSItemContentTypes: ["org.byteball.coin"],
+      			CFBundleTypeName: "Byteball Private Coin For Testnet",
+      			LSItemContentTypes: ["org.byteball.coin-tn"],
       			CFBundleTypeIconFile: "app.icns"
       		}]
           }
