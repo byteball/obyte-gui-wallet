@@ -11,31 +11,43 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2017-12-25 11:32-0500\n"
+"PO-Revision-Date: 2018-06-22T09:24:38+0000\n"
+
+#: public/views/modals/share.html:43
+msgid "'Receive' tab → 'Claim funds using textcoin' button."
+msgstr "'받기' 탭 → '텍스트코인 사용하여 펀드 요청하기' 버튼"
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
 msgstr "(사이트는 당신의 잔액을 표시하지 않고 어떠한 돈도 들어가지 않습니다.)"
 
-#: public/views/walletHome.html:628
+#: public/views/modals/choose-profile.html:44
+msgid "(current wallet)"
+msgstr "(현재 지갑)"
+
+#: public/views/modals/choose-profile.html:47
+msgid "(my other wallet)"
+msgstr ""
+
+#: public/views/walletHome.html:666
 msgid "(possible double spend)"
 msgstr "(이중 지불 가능성 있음)"
 
 #: public/views/create.html:92
 msgid "-- Select co-signer --"
-msgstr ""
+msgstr "-- 공동서명인 선택 --"
 
 #: public/views/modals/claim-textcoin.html:32
 msgid "12 words separated by dashes"
-msgstr ""
+msgstr "대시로 구분된 12단어"
 
-#: public/views/preferencesGlobal.html:135
+#: public/views/preferencesGlobal.html:139
 msgid "About Byteball"
 msgstr "바이트볼에 대해서"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:121
+#: src/js/controllers/walletHome.js:123
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "승인"
@@ -54,7 +66,7 @@ msgstr "계정"
 
 #: public/views/bot.html:36
 msgid "Add Bot"
-msgstr ""
+msgstr "봇을 추가하십시오."
 
 #: public/views/correspondentDevices.html:69
 msgid "Add a new device"
@@ -65,9 +77,9 @@ msgstr "새로운 장치 추가"
 msgid "Add a new entry"
 msgstr "새 항목 추가"
 
-#: public/views/walletHome.html:532
+#: public/views/walletHome.html:571
 msgid "Add fields"
-msgstr ""
+msgstr "필드를 추가하십시오"
 
 #: public/views/includes/sidebar.html:24
 msgid "Add wallet"
@@ -75,7 +87,7 @@ msgstr "지갑 추가"
 
 #: public/views/correspondentDevices.html:89
 msgid "Added"
-msgstr ""
+msgstr "추가됨"
 
 #: public/views/modals/customized-amount.html:32
 #: public/views/modals/destination-address.html:118
@@ -83,18 +95,22 @@ msgstr ""
 msgid "Address"
 msgstr "주소"
 
-#: public/views/walletHome.html:507
+#: public/views/walletHome.html:545
 msgid "Address to attest"
-msgstr ""
+msgstr "입증할 주소"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
 msgid "Addressbook"
 msgstr "주소록"
 
-#: public/views/preferences.html:56
+#: public/views/preferences.html:59
 msgid "Advanced"
 msgstr "고급"
+
+#: public/views/modals/share.html:43
+msgid "After writing it down, find this transaction in"
+msgstr "그것을 쓴다음, 이 트랜잭션을 찾으십시오."
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
@@ -116,30 +132,34 @@ msgstr "바이트볼 번역에 대한 모든 기여를 환영합니다. Crowndin
 msgid "Already Paid"
 msgstr "이미 지불됨."
 
-#: public/views/walletHome.html:150
+#: src/js/controllers/correspondentDevice.js:1267
+msgid "Already saved"
+msgstr "이미 저장됨"
+
+#: public/views/walletHome.html:165
 msgid "Also"
 msgstr "또한"
 
 #: public/views/splash.html:91
 msgid "Also in the Settings menu, you will find security options such as setting a password."
-msgstr ""
+msgstr "셋팅 메뉴에서 역시, 당신은 패스워드 셋팅과 같은 보안 옵션을 찾을 수 있습니다."
 
 #: public/views/includes/password.html:42
 msgid "Also, don't forget to delete your seed"
-msgstr ""
+msgstr "또한, 당신의 씨드를 삭제하는것을 잊지 마십시오."
 
 #: public/views/includes/output.html:6
 #: public/views/modals/customized-amount.html:38
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:367
+#: public/views/walletHome.html:378
 msgid "Amount"
 msgstr "금액"
 
 #: public/views/modals/vote.html:22
 msgid "Answer:"
-msgstr ""
+msgstr "답변:"
 
 #: public/views/copayers.html:19
 msgid "Approve wallet creation on other devices"
@@ -158,12 +178,26 @@ msgstr "정말로 지갑을 삭제하시겠습니까?"
 msgid "Asset"
 msgstr "자산"
 
-#: public/views/walletHome.html:496
+#: public/views/walletHome.html:534
 msgid "Attest profile data linked to any Byteball address."
-msgstr ""
+msgstr "모든 바이트볼 주소에 연결된 프로파일 데이타를 입증 하십시오."
 
-#: public/views/walletHome.html:333
+#: public/views/walletHome.html:348
 msgid "Attestation"
+msgstr "입증"
+
+#: public/views/modals/accept-profile.html:28
+#: public/views/modals/choose-profile.html:41
+msgid "Attested address:"
+msgstr "입증된 주소:"
+
+#: public/views/modals/accept-profile.html:24
+#: public/views/modals/choose-profile.html:37
+msgid "Attested by:"
+msgstr "입증되었습니다."
+
+#: public/views/preferencesGlobal.html:75
+msgid "Attestor addresses"
 msgstr ""
 
 #: public/views/preferencesWitnesses.html:11
@@ -190,11 +224,11 @@ msgstr "사용 가능한 잔액"
 msgid "Back"
 msgstr "뒤로"
 
-#: public/views/walletHome.html:232
+#: public/views/walletHome.html:247
 msgid "Backup now"
 msgstr "지금 백업하기"
 
-#: public/views/preferencesGlobal.html:100
+#: public/views/preferencesGlobal.html:104
 msgid "Backup wallet seed"
 msgstr "월렛 시드 백업하기"
 
@@ -202,25 +236,33 @@ msgstr "월렛 시드 백업하기"
 msgid "Backup words deleted"
 msgstr "백업 단어 삭제"
 
+#: public/views/preferencesGlobal.html:94
+msgid "Backups"
+msgstr "백업"
+
+#: src/js/controllers/correspondentDevice.js:1252
+msgid "Bad profile"
+msgstr "나쁜 프로필"
+
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
 msgstr "주소에 의한 잔고"
 
-#: public/views/walletHome.html:226
+#: public/views/walletHome.html:241
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "자금을 받기 전에 지갑의 키를 백업하길 강력히 권장합니다."
 
 #: public/views/backup.html:26
 msgid "Better yet, use multisig wallets with redundancy,"
-msgstr ""
+msgstr "더 좋은건, 여분의 다른 지급을 사용하십시오."
 
 #: public/views/modals/bind.html:8
 #: public/views/modals/bind.html:86
 msgid "Bind payment"
 msgstr "지불 묶어두기"
 
-#: public/views/walletHome.html:416
-#: public/views/walletHome.html:423
+#: public/views/walletHome.html:439
+#: public/views/walletHome.html:452
 msgid "Bind the payment to a condition"
 msgstr "조건부로 지불 묶어두기"
 
@@ -230,7 +272,7 @@ msgstr "비트코인 URI가 유효하지 않습니다!"
 
 #: public/views/bot.html:23
 msgid "Bot Store"
-msgstr ""
+msgstr "봇 스토어"
 
 #: public/views/correspondentDevice.html:288
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
@@ -240,9 +282,13 @@ msgstr "당신과 {{correspondent.name}} 둘 다 로컬 채팅 내역 기록을 
 msgid "Browser unsupported"
 msgstr "지원되지 않는 브라우저"
 
+#: public/index.html:12
+msgid "Byteball &mdash; smart payments"
+msgstr ""
+
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"
-msgstr ""
+msgstr "바이트볼 주소"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -254,10 +300,10 @@ msgid "CONTINUE"
 msgstr "계속하기"
 
 #: public/views/modals/destination-address.html:127
-#: public/views/walletHome.html:464
+#: public/views/walletHome.html:493
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:122
+#: src/js/controllers/walletHome.js:124
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "취소"
@@ -270,44 +316,63 @@ msgstr "허브 변경:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "지갑 별명을 바꾸는 것은 로컬 지갑 이름에만 영향을 줍니다."
 
-#: src/js/controllers/index.js:622
+#: src/js/controllers/index.js:681
 msgid "Chat"
 msgstr "채팅"
 
 #: public/views/import.html:33
 msgid "Choose File"
-msgstr ""
+msgstr "파일을 선택하십시오."
+
+#: public/views/modals/choose-profile.html:8
+msgid "Choose private profile"
+msgstr "개인 프로필을 선택 하십시오"
 
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
 msgstr "보낼 장치 선택하기."
 
-#: src/js/controllers/walletHome.js:488
+#: public/views/modals/choose-profile.html:51
+msgid "Choose which fields to send:"
+msgstr "보낼 필드를 선택하십시오."
+
+#: src/js/controllers/walletHome.js:490
 msgid "Claim funds"
-msgstr ""
+msgstr "펀드를 요청하십시오."
 
 #: public/views/modals/claim-textcoin.html:8
 msgid "Claim funds by textcoin"
-msgstr ""
+msgstr "텍스트코인으로 펀드를 요청하십시오."
 
-#: public/views/walletHome.html:302
+#: public/views/walletHome.html:317
 msgid "Claim funds using textcoin"
+msgstr "텍스트코인 사용하는 펀드 요청하십시오."
+
+#: public/views/walletHome.html:85
+msgid "Claiming..."
 msgstr ""
 
-#: public/views/modals/share.html:18
-msgid "Click the button to <span ng-if=\"isResend\">re</span>send email"
+#: public/views/modals/share.html:30
+msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
+msgstr "<span ng-if=\"isResend\">재</span> 전송 메일 버튼을 클릭하십시오."
+
+#: public/views/walletHome.html:515
+msgid "Click this button to create a payment file and send it to a recipient."
 msgstr ""
 
-#: public/views/walletHome.html:477
-msgid "Click this button to create payment and share it via private message in chat apps"
-msgstr ""
+#: public/views/walletHome.html:514
+msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
+msgstr "결재하기 위해 이 버튼을 클릭하고 챗 어플에서 개인 메세지를 통해 공유하시거나, 지류 지갑을 만들기 위해 이 버튼을 클릭하십시오."
 
 #: public/views/correspondentDevices.html:25
 #: public/views/includes/topbar.html:13
+#: public/views/modals/accept-profile.html:4
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
 #: public/views/modals/bind.html:4
+#: public/views/modals/choose-profile.html:4
+#: public/views/modals/choose-profile.html:70
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
@@ -315,7 +380,10 @@ msgstr ""
 #: public/views/modals/offer-contract.html:29
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
-#: public/views/modals/share.html:4
+#: public/views/modals/share.html:13
+#: public/views/modals/sign-message.html:4
+#: public/views/modals/signed-message.html:39
+#: public/views/modals/signed-message.html:4
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "닫기"
@@ -345,16 +413,18 @@ msgid "Compress the file? (Slower)"
 msgstr "파일을 압축하시겠습니까?(더 느립니다.)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:459
+#: src/js/controllers/index.js:520
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:123
+#: src/js/controllers/walletHome.js:125
+#: src/js/controllers/walletHome.js:1712
+#: src/js/controllers/walletHome.js:1716
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "확인하기"
 
 #: public/views/modals/vote.html:46
 msgid "Confirm Vote"
-msgstr ""
+msgstr "보트 확인해 주십시오."
 
 #: public/views/modals/multi-payment.html:8
 msgid "Confirm payment"
@@ -362,38 +432,42 @@ msgstr "결제 확인"
 
 #: public/views/modals/vote.html:8
 msgid "Confirm vote"
-msgstr ""
+msgstr "보트 확인해 주십시오."
 
-#: public/views/modals/tx-details.html:115
+#: public/views/modals/tx-details.html:121
 msgid "Confirmed"
 msgstr "확인됨."
 
 #: public/views/correspondentDevices.html:35
 msgid "Contacts"
-msgstr ""
+msgstr "연락처"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:389
+#: src/js/controllers/walletHome.js:391
 msgid "Copied to clipboard"
 msgstr "클립보드에 복사하기"
+
+#: public/views/modals/share.html:39
+msgid "Copy"
+msgstr "복사"
 
 #: public/views/recoveryFromSeed.html:42
 msgid "Correspondents are not restored."
 msgstr "이전 거래 상대자는 복구 되지 않습니다."
 
-#: src/js/controllers/walletHome.js:668
+#: src/js/controllers/walletHome.js:696
 msgid "Could not create payment proposal"
 msgstr "지불 계획안을 만들 수 없습니다."
 
-#: src/js/services/profileService.js:265
+#: src/js/services/profileService.js:279
 msgid "Could not create using the specified extended private key"
 msgstr "특정한 확장된 개인 키를 사용하여 만들 수 없습니다."
 
-#: src/js/services/profileService.js:275
+#: src/js/services/profileService.js:289
 msgid "Could not create using the specified extended public key"
 msgstr "특정한 확장된 개인 키를 사용하여 만들 수 없습니다."
 
-#: src/js/services/profileService.js:258
+#: src/js/services/profileService.js:272
 msgid "Could not create: Invalid wallet seed"
 msgstr "만들 수 없습니다: 유효하지 않은 지갑 시드"
 
@@ -401,27 +475,31 @@ msgstr "만들 수 없습니다: 유효하지 않은 지갑 시드"
 msgid "Could not decrypt"
 msgstr "암호를 해독할 수 없습니다"
 
-#: public/views/walletHome.html:583
+#: public/views/walletHome.html:621
 msgid "Could not fetch transaction history"
 msgstr "거래내역을 가져올 수 없습니다"
 
-#: src/js/services/profileService.js:490
-#: src/js/services/profileService.js:517
-#: src/js/services/profileService.js:539
+#: src/js/services/profileService.js:507
+#: src/js/services/profileService.js:534
+#: src/js/services/profileService.js:556
 msgid "Could not import"
 msgstr "가져올 수 없습니다"
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:484
 msgid "Could not import. Check input file and password"
 msgstr "가져올 수 없습니다. 파일과 패스워드를 확인해 주세요"
 
-#: src/js/controllers/walletHome.js:51
+#: src/js/controllers/walletHome.js:53
 msgid "Could not recognize a valid Byteball QR Code"
 msgstr "유효한 바이트볼 QR 코드를 인식할 수 없습니다."
 
-#: src/js/controllers/walletHome.js:668
+#: src/js/controllers/walletHome.js:696
 msgid "Could not send payment"
 msgstr "지불할 비용을 보낼 수 없습니다."
+
+#: src/js/controllers/correspondentDevice.js:1223
+msgid "Country"
+msgstr "국가"
 
 #: public/views/walletHome.html:44
 msgid "Create"
@@ -436,7 +514,7 @@ msgstr "새로운 지갑 추가"
 msgid "Create new wallet"
 msgstr "새로운 지갑 만들기"
 
-#: src/js/controllers/index.js:286
+#: src/js/controllers/index.js:310
 msgid "Create new wallet  together with  ?"
 msgstr "새로운 지갑을 함께 만드시겠습니까?"
 
@@ -460,19 +538,31 @@ msgstr "지갑 만드는 중..."
 msgid "DELETE WORDS"
 msgstr "단어 삭제"
 
-#: public/views/walletHome.html:335
+#: public/views/walletHome.html:350
 msgid "Data"
-msgstr ""
+msgstr "데이타"
 
-#: public/views/walletHome.html:332
+#: public/views/walletHome.html:347
 msgid "Data into datafeed"
+msgstr "데이터피드 데이터"
+
+#: public/views/walletHome.html:567
+msgid "Datafeed name"
 msgstr ""
 
-#: public/views/modals/tx-details.html:85
+#: public/views/walletHome.html:567
+msgid "Datafeed value"
+msgstr ""
+
+#: public/views/modals/tx-details.html:91
 msgid "Date"
 msgstr "날짜"
 
-#: src/js/controllers/index.js:256
+#: src/js/controllers/correspondentDevice.js:1222
+msgid "Date of birth"
+msgstr "생일"
+
+#: src/js/controllers/index.js:276
 msgid "Declined"
 msgstr "거절됨"
 
@@ -480,7 +570,7 @@ msgstr "거절됨"
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 msgstr "종이 지갑을 해독하는데 이 장치에서 5분정도 걸릴 수 있습니다. 앱을 종료하지 말아주십시오."
 
-#: public/views/walletHome.html:179
+#: public/views/walletHome.html:194
 msgid "Definition"
 msgstr "정의"
 
@@ -500,17 +590,21 @@ msgstr "지갑 삭제"
 msgid "Delete wallet"
 msgstr "지갑 삭제"
 
+#: src/js/controllers/walletHome.js:1709
+msgid "Deleting the textcoin will remove the ability to claim it back or resend"
+msgstr "텍스트코인을 삭제하는 것은 다시 요청하거나 재전송할 수 있는 능력을 제거할 것입니다."
+
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
 msgstr "파생 전략"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
-#: public/views/modals/tx-details.html:25
+#: public/views/modals/tx-details.html:31
 msgid "Details"
 msgstr "상세"
 
-#: public/views/preferencesGlobal.html:75
+#: public/views/preferencesGlobal.html:79
 msgid "Device address"
 msgstr "장치 주소"
 
@@ -525,11 +619,11 @@ msgstr "장치 이름은 당신과 통신하는 다른 장치에 표시됩니다
 
 #: public/views/recoveryFromSeed.html:43
 msgid "Do not clone wallets, stop using the original wallet with this seed."
-msgstr ""
+msgstr "복제 지갑을 만들지 마십시오, 이 씨드로 원본 지갑을 사용하는 것을 중지 하십시오."
 
 #: public/views/backup.html:59
 msgid "Do not use it to clone the wallet."
-msgstr ""
+msgstr "지갑을 복제하기 위해 이것을 사용하지 마십시오."
 
 #: public/views/translators.html:55
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
@@ -540,13 +634,13 @@ msgstr "Crowdin에서 당신의 모국어가 보이지 않습니까? Crowdin의 
 msgid "Done"
 msgstr "완료"
 
-#: public/views/walletHome.html:678
+#: public/views/walletHome.html:722
 msgid "Download CSV file"
 msgstr "CSV 파일 다운로드"
 
 #: public/views/splash.html:26
 msgid "Download the entire Byteball database"
-msgstr ""
+msgstr "온전히 바이트볼 데이터베이스를 다운로드 받으십시오."
 
 #: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
@@ -556,10 +650,6 @@ msgstr "편집"
 #: public/views/correspondentDevice.html:291
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "당신이나 {{correspondent.name}}은 채팅 내역 기록을 이용하지 못하게 되었습니다. 기록은 현재 누구에게도 저장되어있지 않습니다."
-
-#: public/views/preferencesEmail.html:33
-msgid "Email for wallet notifications"
-msgstr "지갑 알림을 위한 이메일"
 
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
@@ -573,8 +663,8 @@ msgstr "다른 장치로 부터 받은 페어링 코드를 입력하거나 카�
 msgid "Enter your password"
 msgstr "패스워드를 입력해주세요"
 
-#: src/js/services/profileService.js:323
-#: src/js/services/profileService.js:374
+#: src/js/services/profileService.js:338
+#: src/js/services/profileService.js:390
 msgid "Error creating wallet"
 msgstr "지갑 생성 중 오류"
 
@@ -582,8 +672,8 @@ msgstr "지갑 생성 중 오류"
 msgid "Export"
 msgstr "보내기"
 
-#: src/js/controllers/export.js:135
-#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:136
+#: src/js/controllers/export.js:161
 msgid "Export completed successfully"
 msgstr "보내기 완료"
 
@@ -599,15 +689,23 @@ msgstr "공개 키 확장"
 msgid "Failed to export"
 msgstr "내보내기 실패"
 
-#: public/views/modals/tx-details.html:92
+#: public/views/modals/tx-details.html:98
 msgid "Fee"
 msgstr "수수료"
 
-#: public/views/modals/tx-details.html:110
+#: public/views/walletHome.html:567
+msgid "Field"
+msgstr ""
+
+#: public/views/modals/tx-details.html:116
 msgid "Finality"
 msgstr "최종"
 
-#: public/views/modals/tx-details.html:60
+#: src/js/controllers/correspondentDevice.js:1220
+msgid "First name"
+msgstr "이름"
+
+#: public/views/modals/tx-details.html:66
 msgid "From"
 msgstr "전송자"
 
@@ -615,7 +713,7 @@ msgstr "전송자"
 msgid "Full address:"
 msgstr "전체 주소:"
 
-#: public/views/preferencesGlobal.html:118
+#: public/views/preferencesGlobal.html:122
 msgid "Full backup"
 msgstr "전체 백업"
 
@@ -631,11 +729,11 @@ msgstr "자금이 전송될 것입니다."
 msgid "GET STARTED"
 msgstr "시작하기"
 
-#: src/js/controllers/walletHome.js:418
+#: src/js/controllers/walletHome.js:420
 msgid "Generate QR Code"
-msgstr ""
+msgstr "QR 코드 생성하십시오"
 
-#: public/views/walletHome.html:288
+#: public/views/walletHome.html:303
 msgid "Generate new address"
 msgstr "새로운 주소 생성"
 
@@ -655,7 +753,7 @@ msgstr "전역 환경설정"
 msgid "Go back"
 msgstr "뒤로 가기"
 
-#: public/views/preferences.html:48
+#: public/views/preferences.html:51
 msgid "Hardware wallet"
 msgstr "하드웨어 지갑"
 
@@ -663,11 +761,12 @@ msgstr "하드웨어 지갑"
 msgid "Hide the Wallet Seed"
 msgstr "지갑 씨앗 숨김"
 
-#: src/js/controllers/index.js:618
+#: public/views/modals/share.html:43
+#: src/js/controllers/index.js:677
 msgid "History"
 msgstr "내역"
 
-#: src/js/controllers/index.js:606
+#: src/js/controllers/index.js:665
 msgid "Home"
 msgstr "홈"
 
@@ -689,10 +788,26 @@ msgstr "이 약관을 읽었으며, 이해하고 동의합니다."
 
 #: public/views/modals/offer-contract.html:43
 msgid "I pay"
-msgstr ""
+msgstr "내가 지불합니다."
 
 #: public/views/modals/bind.html:27
 msgid "I receive another payment of"
+msgstr "나는 다른 지불을 받습니다."
+
+#: src/js/controllers/correspondentDevice.js:1225
+msgid "ID number"
+msgstr "ID 번호"
+
+#: src/js/controllers/correspondentDevice.js:1227
+msgid "ID subtype"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1226
+msgid "ID type"
+msgstr ""
+
+#: public/views/modals/tx-details.html:154
+msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr ""
 
 #: public/views/modals/bind.html:77
@@ -701,6 +816,11 @@ msgstr ""
 
 #: public/views/modals/offer-contract.html:67
 msgid "If the peer doesn't pay, I can take my money back after"
+msgstr ""
+
+#: public/views/modals/tx-details.html:145
+#: public/views/modals/tx-details.html:151
+msgid "If the recipient doesn't see your payment, you can"
 msgstr ""
 
 #: public/views/import.html:58
@@ -723,11 +843,11 @@ msgstr "지갑 가져오기"
 msgid "Importing wallet..."
 msgstr "지갑 가져오는 중..."
 
-#: public/views/walletHome.html:133
+#: public/views/walletHome.html:138
 msgid "Including pending confirmation"
 msgstr "지연 중인 컨펌 포함하기"
 
-#: public/views/walletHome.html:602
+#: public/views/walletHome.html:640
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "초기 거래 내역을 동기화 하는데 지갑에 많은 트랜잭션이\n"
@@ -738,11 +858,15 @@ msgstr "초기 거래 내역을 동기화 하는데 지갑에 많은 트랜잭�
 msgid "Insert my address"
 msgstr "나의 주소 넣기"
 
-#: public/views/walletHome.html:621
+#: public/views/correspondentDevice.html:343
+msgid "Insert private profile"
+msgstr ""
+
+#: public/views/walletHome.html:659
 msgid "Invalid"
 msgstr "유효하지 않음"
 
-#: src/js/controllers/index.js:1533
+#: src/js/controllers/index.js:1631
 msgid "Invalid Touch ID"
 msgstr "유효하지 않은 터치 ID"
 
@@ -766,6 +890,10 @@ msgstr "레이블"
 msgid "Language"
 msgstr "언어"
 
+#: src/js/controllers/correspondentDevice.js:1221
+msgid "Last name"
+msgstr ""
+
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
 msgstr "나중에"
@@ -788,11 +916,11 @@ msgstr "나중에 하기"
 msgid "Me"
 msgstr "나"
 
-#: public/views/modals/tx-details.html:104
+#: public/views/modals/tx-details.html:110
 msgid "Merchant message"
 msgstr "상점의 메세지"
 
-#: public/views/walletHome.html:430
+#: public/views/walletHome.html:459
 msgid "Merkle proof"
 msgstr "Merkle 증명"
 
@@ -800,7 +928,12 @@ msgstr "Merkle 증명"
 msgid "Message"
 msgstr "메시지"
 
-#: public/views/walletHome.html:620
+#: public/views/modals/sign-message.html:17
+#: public/views/modals/signed-message.html:17
+msgid "Message:"
+msgstr ""
+
+#: public/views/walletHome.html:658
 msgid "Moved"
 msgstr "이동"
 
@@ -808,7 +941,7 @@ msgstr "이동"
 msgid "Multidevice Wallet"
 msgstr "멀티 디바이스 지갑"
 
-#: public/views/walletHome.html:240
+#: public/views/walletHome.html:255
 msgid "My Byteball address"
 msgstr "내 바이트볼 주소"
 
@@ -837,7 +970,8 @@ msgid "New witnesses"
 msgstr "새로운 증인"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:458
+#: src/js/controllers/index.js:519
+#: src/js/controllers/walletHome.js:1724
 msgid "No"
 msgstr "아니오"
 
@@ -845,24 +979,33 @@ msgstr "아니오"
 msgid "No password given"
 msgstr ""
 
-#: public/views/walletHome.html:586
+#: public/views/modals/choose-profile.html:67
+msgid "No profiles matching the requested criteria."
+msgstr ""
+
+#: public/views/modals/choose-profile.html:68
+msgid "No profiles yet."
+msgstr ""
+
+#: public/views/walletHome.html:624
 msgid "No transactions yet"
 msgstr "아직 아무 거래도 없습니다."
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:112
-#: public/views/walletHome.html:359
-#: public/views/walletHome.html:395
-#: public/views/walletHome.html:512
+#: public/views/walletHome.html:370
+#: public/views/walletHome.html:407
+#: public/views/walletHome.html:416
+#: public/views/walletHome.html:550
 msgid "Not valid"
 msgstr "유효하지 않음"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:100
-#: public/views/modals/tx-details.html:75
-#: public/views/walletHome.html:441
-#: public/views/walletHome.html:649
+#: public/views/modals/tx-details.html:106
+#: public/views/modals/tx-details.html:81
+#: public/views/walletHome.html:470
+#: public/views/walletHome.html:687
 msgid "Note"
 msgstr "메모"
 
@@ -881,10 +1024,10 @@ msgstr "오직 싱글시그 지갑만 복구될 수 있습니다."
 
 #: public/views/bot.html:35
 msgid "Open chat"
-msgstr ""
+msgstr "채팅창 열기"
 
-#: public/views/modals/share.html:23
-msgid "Or"
+#: public/views/modals/share.html:39
+msgid "Or copy"
 msgstr ""
 
 #: public/views/acceptCorrespondentInvitation.html:54
@@ -908,7 +1051,7 @@ msgstr "종이 지갑 개인 키"
 msgid "Passphrase"
 msgstr "암호"
 
-#: src/js/services/profileService.js:654
+#: src/js/services/profileService.js:672
 msgid "Password needed"
 msgstr "비밀번호가 필요합니다"
 
@@ -936,7 +1079,7 @@ msgstr "지불 승인"
 msgid "Payment Proposal Created"
 msgstr "지불 제안 생성"
 
-#: public/views/walletHome.html:196
+#: public/views/walletHome.html:211
 msgid "Payment Proposals"
 msgstr "지불제안"
 
@@ -972,23 +1115,27 @@ msgstr "필수 입력 사항을 입력해 주시기 바랍니다."
 msgid "Please name this device"
 msgstr "장치 이름을 입력 바랍니다."
 
+#: src/js/controllers/correspondentDevice.js:149
+msgid "Please switch to a single-address wallet and you probably need to insert your address again."
+msgstr ""
+
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "포트"
 
-#: public/views/walletHome.html:502
+#: public/views/walletHome.html:540
 msgid "Post arbitrary key-value pairs of data into Byteball network."
 msgstr ""
 
-#: public/views/walletHome.html:493
+#: public/views/walletHome.html:531
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr ""
 
-#: public/views/walletHome.html:499
+#: public/views/walletHome.html:537
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr ""
 
-#: public/views/walletHome.html:175
+#: public/views/walletHome.html:190
 #: public/views/walletHome.html:47
 msgid "Preferences"
 msgstr "환경설정"
@@ -1001,13 +1148,25 @@ msgstr "한번 더 누르면 종료됩니다."
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr "블랙바이트와 같은 개인 자산은 복구되지 않습니다."
 
-#: src/js/controllers/walletHome.js:1547
-#: src/js/controllers/walletHome.js:1621
+#: src/js/controllers/walletHome.js:1783
+#: src/js/controllers/walletHome.js:1857
 msgid "Private payloads sent"
 msgstr "개인 페이로드 전송"
 
-#: public/views/walletHome.html:334
+#: public/views/modals/accept-profile.html:8
+msgid "Private profile"
+msgstr ""
+
+#: public/views/walletHome.html:349
 msgid "Profile"
+msgstr ""
+
+#: public/views/walletHome.html:567
+msgid "Profile field"
+msgstr ""
+
+#: public/views/walletHome.html:567
+msgid "Profile field value"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:16
@@ -1022,16 +1181,16 @@ msgstr "QR스캐너"
 msgid "Question:"
 msgstr ""
 
-#: src/js/controllers/index.js:610
+#: src/js/controllers/index.js:669
 msgid "Receive"
 msgstr "수신"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:655
 msgid "Received"
 msgstr "수신됨"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:52
+#: public/views/modals/tx-details.html:58
 msgid "Recipients"
 msgstr "받는 사람"
 
@@ -1043,7 +1202,7 @@ msgstr "지갑 서비스에 다시 연결..."
 msgid "Recover"
 msgstr "복구"
 
-#: public/views/preferencesGlobal.html:109
+#: public/views/preferencesGlobal.html:113
 msgid "Recovery from seed"
 msgstr "시드로부터 복구"
 
@@ -1051,7 +1210,7 @@ msgstr "시드로부터 복구"
 msgid "Recreating Wallet..."
 msgstr "지갑 재생성중..."
 
-#: src/js/controllers/index.js:208
+#: src/js/controllers/index.js:228
 msgid "Refused"
 msgstr "거절됨"
 
@@ -1084,12 +1243,12 @@ msgstr "비밀번호를 한번 더 입력해주세요"
 msgid "Replace"
 msgstr "바꾸기"
 
-#: public/views/preferencesGlobal.html:86
+#: public/views/preferencesGlobal.html:90
 msgid "Request Password"
 msgstr "비밀번호 요청"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:297
+#: public/views/walletHome.html:312
 msgid "Request a specific amount"
 msgstr "특정한 양 요청"
 
@@ -1101,7 +1260,7 @@ msgstr "지불 요청"
 msgid "Required number of signatures"
 msgstr "필요한 서명의 수"
 
-#: public/views/preferencesGlobal.html:127
+#: public/views/preferencesGlobal.html:131
 msgid "Restore from full backup"
 msgstr "전체 백업 파일으로부터 복구하기"
 
@@ -1117,6 +1276,7 @@ msgstr "설정"
 #: public/views/modals/destination-address.html:132
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
+#: public/views/preferencesEditAttestorAddress.html:14
 #: public/views/preferencesEditWitness.html:15
 #: public/views/preferencesEmail.html:35
 #: public/views/preferencesHub.html:18
@@ -1128,7 +1288,7 @@ msgstr "저장"
 msgid "Saving preferences..."
 msgstr "환경 설정 저장..."
 
-#: public/views/preferences.html:66
+#: public/views/preferences.html:69
 msgid "Scan Fingerprint"
 msgstr "지문 스캔"
 
@@ -1136,7 +1296,7 @@ msgstr "지문 스캔"
 msgid "Scan Wallet Funds"
 msgstr "지갑 자금을 스캔하기"
 
-#: public/views/walletHome.html:120
+#: public/views/walletHome.html:121
 msgid "Scan status finished with error"
 msgstr "오류가 난 채로 완료된 상태 스캔"
 
@@ -1144,7 +1304,7 @@ msgstr "오류가 난 채로 완료된 상태 스캔"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "다른 장치를 이용하여 위의 QR코드를 스캔하거나 다른 장치로 페어링 코드를 보내기"
 
-#: src/js/controllers/index.js:1526
+#: src/js/controllers/index.js:1624
 msgid "Scan your fingerprint please"
 msgstr "당신의 지문을 스캔해주세요."
 
@@ -1173,13 +1333,13 @@ msgid "Select your identity"
 msgstr "본인 선택하기"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:467
-#: public/views/walletHome.html:547
-#: src/js/controllers/index.js:614
+#: public/views/walletHome.html:496
+#: public/views/walletHome.html:586
+#: src/js/controllers/index.js:673
 msgid "Send"
 msgstr "보내기"
 
-#: public/views/walletHome.html:319
+#: public/views/walletHome.html:334
 msgid "Send All"
 msgstr "모두 보내기"
 
@@ -1191,13 +1351,17 @@ msgstr "결제하기"
 msgid "Send addresses by email"
 msgstr "이메일로 주소 보내기"
 
-#: public/views/walletHome.html:368
+#: public/views/walletHome.html:380
 msgid "Send all"
 msgstr "모두 보내기"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
 msgstr "이메일로 보내기"
+
+#: public/views/modals/choose-profile.html:62
+msgid "Send this profile"
+msgstr ""
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
@@ -1207,7 +1371,7 @@ msgstr "자금 보내는 중..."
 msgid "Sending..."
 msgstr "보내는 중..."
 
-#: public/views/walletHome.html:619
+#: public/views/walletHome.html:657
 msgid "Sent"
 msgstr "보내짐"
 
@@ -1223,32 +1387,29 @@ msgstr "패스워드 설정하기"
 msgid "Set up a password"
 msgstr "패스워드 설정"
 
-#: public/views/preferencesEmail.html:38
-msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr "이메일 알람 설정은 지갑 서비스 제공자가 공격 당할 경우 개인 정보 보호를 약하게 할 수 있습니다. 공격자가 지갑 주소와 잔액을 볼 수 있지만 그 이상은 볼 수 없습니다."
-
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
 msgstr "설정"
 
-#: public/views/modals/share.html:8
+#: public/views/modals/share.html:17
 msgid "Share"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:275
+#: public/views/walletHome.html:290
 msgid "Share address"
 msgstr "주소 공유"
 
-#: public/views/walletHome.html:280
+#: public/views/walletHome.html:295
 msgid "Share this wallet address to receive payments."
 msgstr "지불받을 지갑 주소 공유"
 
-#: public/views/walletHome.html:478
+#: public/views/walletHome.html:395
+#: public/views/walletHome.html:516
 msgid "Share via message"
 msgstr ""
 
-#: public/views/walletHome.html:670
+#: public/views/walletHome.html:714
 msgid "Show all"
 msgstr "모두 보기"
 
@@ -1256,9 +1417,26 @@ msgstr "모두 보기"
 msgid "Show the Wallet Seed Anyway"
 msgstr "어쨌든 지갑 주소 보여주기"
 
-#: src/js/controllers/index.js:435
-msgid "Sign transaction spending  from wallet ?"
-msgstr "지갑으로부터의 거래에 서명하시겠습니까?"
+#: public/views/modals/sign-message.html:46
+msgid "Sign"
+msgstr ""
+
+#: public/views/modals/sign-message.html:8
+msgid "Sign message"
+msgstr ""
+
+#: src/js/controllers/index.js:407
+msgid "Sign message \"\" by address ?"
+msgstr ""
+
+#: public/views/modals/signed-message.html:8
+msgid "Signed message"
+msgstr ""
+
+#: public/views/modals/sign-message.html:22
+#: public/views/modals/signed-message.html:22
+msgid "Signing address:"
+msgstr ""
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
@@ -1270,7 +1448,7 @@ msgstr ""
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr ""
 
-#: src/js/services/profileService.js:318
+#: src/js/services/profileService.js:332
 msgid "Small Expenses Wallet"
 msgstr "소액 지출용 지갑"
 
@@ -1278,23 +1456,27 @@ msgstr "소액 지출용 지갑"
 msgid "Specify Seed..."
 msgstr "시드 구체화 중..."
 
-#: public/views/preferences.html:60
-#: public/views/preferencesGlobal.html:82
+#: public/views/preferences.html:63
+#: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "지출 제한"
 
-#: public/views/preferencesGlobal.html:96
+#: public/views/preferencesGlobal.html:100
 msgid "Still not done"
 msgstr "여전히 완료되지 않음"
 
+#: src/js/controllers/correspondentDevice.js:1269
+msgid "Store"
+msgstr ""
+
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:135
-#: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:245
-#: src/js/controllers/index.js:273
+#: src/js/controllers/export.js:136
+#: src/js/controllers/export.js:161
+#: src/js/controllers/index.js:265
+#: src/js/controllers/index.js:293
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1547
-#: src/js/controllers/walletHome.js:1621
+#: src/js/controllers/walletHome.js:1783
+#: src/js/controllers/walletHome.js:1857
 msgid "Success"
 msgstr "성공"
 
@@ -1318,9 +1500,9 @@ msgstr "동기화중... {{index.syncProgress}}"
 msgid "TOR"
 msgstr "TOR"
 
-#: public/views/walletHome.html:116
-#: public/views/walletHome.html:121
-#: public/views/walletHome.html:584
+#: public/views/walletHome.html:117
+#: public/views/walletHome.html:122
+#: public/views/walletHome.html:622
 msgid "Tap to retry"
 msgstr "탭 하여 재시도"
 
@@ -1329,12 +1511,16 @@ msgstr "탭 하여 재시도"
 msgid "Terms of Use"
 msgstr "이용약관"
 
-#: public/views/correspondentDevice.html:341
+#: public/views/correspondentDevice.html:347
 msgid "Text message to"
 msgstr ""
 
 #: public/views/modals/claim-textcoin.html:29
 msgid "Textcoin"
+msgstr ""
+
+#: public/views/modals/accept-profile.html:32
+msgid "The attested address belongs to:"
 msgstr ""
 
 #: public/views/preferencesHub.html:20
@@ -1345,8 +1531,16 @@ msgstr "다른 장치에서 메세지를 받기 위한 허브"
 msgid "The hub suggests replacing the following witnesses:"
 msgstr "허브가 다음의 증인을 교체할 것을 제안합니다:"
 
+#: public/views/modals/share.html:27
+msgid "The money is stored on this textcoin:"
+msgstr ""
+
 #: public/views/modals/bind.html:23
 msgid "The peer receives this payment if"
+msgstr ""
+
+#: public/views/modals/signed-message.html:28
+msgid "The signature is"
 msgstr ""
 
 #: public/views/modals/vote.html:52
@@ -1370,7 +1564,7 @@ msgstr "그들의 기록 설정"
 msgid "There are no wallets to make this payment"
 msgstr "이 지불을 위한 지갑이 없습니다."
 
-#: public/views/walletHome.html:279
+#: public/views/walletHome.html:294
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr ""
 
@@ -1378,24 +1572,36 @@ msgstr ""
 msgid "This choice cannot be changed later"
 msgstr "이 선택은 나중에 바꾸실 수 없습니다."
 
-#: public/views/walletHome.html:350
-msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr "이것은 개인 자산입니다, 채팅의 링크만을 클릭하여 보내거나 자신의 다른 지갑으로 보내시기를 바랍니다."
-
 #: public/views/splash.html:28
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr ""
 
-#: public/views/walletHome.html:417
+#: public/views/walletHome.html:440
 msgid "This payment is bound to a condition"
 msgstr "이 지불 은 조건이 만족되어야 지급됩니다."
 
-#: public/views/modals/tx-details.html:80
+#: src/js/controllers/correspondentDevice.js:149
+msgid "This payment must be paid only from single-address wallet"
+msgstr ""
+
+#: public/views/modals/tx-details.html:86
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "이 거래는 효력이 없어졌습니다; 아마도 이중 지불 시도 때문일 것입니다."
 
+#: public/views/preferences.html:42
+msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
+msgstr ""
+
+#: public/views/preferences.html:41
+msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
+msgstr ""
+
 #: public/views/preferences.html:39
-msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
+msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
+msgstr ""
+
+#: public/views/preferences.html:40
+msgid "This wallet cannot be converted to single address wallet as it is multidevice"
 msgstr ""
 
 #: public/views/import.html:57
@@ -1405,9 +1611,10 @@ msgstr "이것은 당신의 모든 기존 지갑을 영구히 삭제 할 것입�
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
-#: public/views/modals/tx-details.html:30
-#: public/views/modals/tx-details.html:65
-#: public/views/walletHome.html:651
+#: public/views/modals/tx-details.html:36
+#: public/views/modals/tx-details.html:71
+#: public/views/walletHome.html:689
+#: src/js/controllers/index.js:1431
 msgid "To"
 msgstr "받는 사람"
 
@@ -1415,33 +1622,37 @@ msgstr "받는 사람"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr ""
 
-#: public/views/walletHome.html:558
+#: public/views/walletHome.html:597
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr ""
+msgstr "바이트볼 네트워크로 임의의 데이터를 보내기 위해서는 싱글 지갑을 첫 순위로 변경하거나 지갑을 생성하십시오."
 
-#: public/views/walletHome.html:420
+#: public/views/walletHome.html:449
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "지불의 조건을 부여 하려면 채팅에 동료의 주소를 클릭 하십시오"
 
-#: public/views/walletHome.html:390
+#: public/views/walletHome.html:402
 msgid "To byteball address"
-msgstr ""
+msgstr "바이트볼 주소로"
 
-#: public/views/walletHome.html:382
+#: public/views/walletHome.html:394
 msgid "To byteball address or email"
-msgstr ""
+msgstr "바이트볼 주소 또는 이메일로"
 
-#: public/views/modals/tx-details.html:44
+#: src/js/controllers/index.js:1434
 msgid "To email"
-msgstr ""
+msgstr "이메일로"
 
-#: public/views/walletHome.html:281
+#: public/views/walletHome.html:296
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "개인 정보 보호를 위해, 한번 주소를 사용할 경우 새 주소가 자동으로 생성됩니다."
 
-#: public/views/walletHome.html:204
+#: public/views/walletHome.html:219
 msgid "Total Locked Balance"
 msgstr "총 고정 잔액"
+
+#: public/views/walletHome.html:379
+msgid "Total amount"
+msgstr "총 합계"
 
 #: public/views/create.html:66
 msgid "Total number of co-signers"
@@ -1451,9 +1662,9 @@ msgstr "전체 공동서명자 수"
 msgid "Transaction"
 msgstr "거래"
 
-#: public/views/walletHome.html:608
+#: public/views/walletHome.html:646
 msgid "Transactions<br> Downloaded"
-msgstr ""
+msgstr "다운로드된 트렌젝션<br>"
 
 #: public/views/translators.html:8
 msgid "Translation Credits"
@@ -1463,24 +1674,32 @@ msgstr "번역에 도움을 주신 분들"
 msgid "Translators"
 msgstr "번역자"
 
-#: src/js/controllers/walletHome.js:774
+#: public/views/preferencesGlobal.html:67
+msgid "Trusted nodes"
+msgstr "신뢰할 만한 노드"
+
+#: src/js/controllers/correspondentDevice.js:1224
+msgid "US state"
+msgstr "미국"
+
+#: src/js/controllers/walletHome.js:835
 msgid "Unable to send transaction proposal"
 msgstr "거래 제안서 발송 불가"
 
-#: public/views/modals/tx-details.html:112
-#: public/views/walletHome.html:639
+#: public/views/modals/tx-details.html:118
+#: public/views/walletHome.html:677
 msgid "Unconfirmed"
 msgstr "미확인"
 
 #: public/views/preferencesGlobal.html:53
 msgid "Unit for blackbytes"
-msgstr ""
+msgstr "블랙바이트 단위"
 
 #: public/views/preferencesGlobal.html:46
 msgid "Unit for bytes"
 msgstr "바이트 단위"
 
-#: public/views/walletHome.html:197
+#: public/views/walletHome.html:212
 msgid "Unsent transactions"
 msgstr "전송되지 않은 거래"
 
@@ -1494,11 +1713,19 @@ msgstr "{{version}}으로 업그레이드"
 
 #: public/views/includes/upgrading_db.html:8
 msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
+msgstr "데이터베이스를 업그레이드 중입니다. 잠시만 기다려 주십시오. 때때로 몇 분 정도 걸립니다."
+
+#: public/views/walletHome.html:567
+msgid "Value"
 msgstr ""
 
-#: public/views/walletHome.html:522
+#: public/views/walletHome.html:560
 msgid "Values"
-msgstr ""
+msgstr "값"
+
+#: src/js/controllers/correspondentDevice.js:1246
+msgid "Verifying the profile..."
+msgstr "프로필 확인중"
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1506,15 +1733,15 @@ msgstr "버전"
 
 #: public/views/export.html:56
 msgid "WARNING:"
-msgstr ""
+msgstr "경고:"
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:237
 msgid "WARNING: Backup needed"
 msgstr "경고: 백업이 필요합니다"
 
 #: public/views/backup.html:77
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
-msgstr ""
+msgstr "경고: 이 씨드는 패스프레이즈로 생성되었습니다. 이 지갑을 복구하기 위해서 연상기호와 패스프레이즈 둘다 필요합니다."
 
 #: public/views/import.html:55
 #: public/views/recoveryFromSeed.html:37
@@ -1558,7 +1785,7 @@ msgstr "지갑 정보"
 msgid "Wallet Name (at creation)"
 msgstr "지갑 이름"
 
-#: src/js/services/profileService.js:436
+#: src/js/services/profileService.js:453
 msgid "Wallet already in Byteball:"
 msgstr "바이트볼에 이미 있는 지갑:"
 
@@ -1579,19 +1806,21 @@ msgstr "지갑"
 msgid "Warning!"
 msgstr "경고!"
 
-#: public/views/modals/tx-details.html:123
+#: public/views/modals/tx-details.html:129
 msgid "Was claimed?"
-msgstr ""
+msgstr "요청 되었습니까?"
 
-#: public/views/walletHome.html:328
+#: public/views/walletHome.html:343
 msgid "What to send"
-msgstr ""
+msgstr "보낼 것"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
+#: public/views/modals/sign-message.html:28
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:456
-#: public/views/walletHome.html:539
+#: public/views/walletHome.html:485
+#: public/views/walletHome.html:509
+#: public/views/walletHome.html:578
 msgid "Who signs:"
 msgstr "누가 서명했는지:"
 
@@ -1603,27 +1832,38 @@ msgstr "증인 주소"
 msgid "Witnesses"
 msgstr "증인"
 
+#: public/views/modals/share.html:43
+msgid "Write down this textcoin on paper and store it securely. Claim it back anytime in the future using"
+msgstr "페이퍼 이 텍스트코인을 적고 잘 보관하십시오. 향후 사용에 언제든지 그것을 요구 하십시오."
+
 #: public/views/backup.html:56
 msgid "Write it down and keep it somewhere safe."
 msgstr "그것을 적어서 안전한 곳에 보관해주세요."
 
-#: src/js/services/profileService.js:664
+#: src/js/services/profileService.js:682
 msgid "Wrong password"
 msgstr "잘못된 비밀번호"
 
 #: public/views/authConfirmation.html:17
-#: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:457
+#: src/js/controllers/index.js:518
 msgid "Yes"
 msgstr "예"
 
+#: public/views/modals/tx-details.html:148
+msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
+msgstr "당신이 이미 그것을 다른곳에 저장했다면(즉, 종이 지갑 같은) 당신의 지갑에서 텍스트코인을 지울수 있습니다."
+
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr ""
+msgstr "싱글 주소 지갑으로 역지불 하기 위해 당신의 트랜젝션을 바인드 할 수 없습니다. 싱글 아닌 주소 지갑을 사용하십시오. 그리고 나서 이 지갑에 돈을 송금하십시오."
 
 #: public/views/walletHome.html:42
 msgid "You do not have a wallet"
 msgstr "지갑이 없습니다"
+
+#: public/views/modals/choose-profile.html:69
+msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
+msgstr "프로필을 얻기 위해 당신은 입증을 고려해야합니다. 봇 스토어에서 진짜 이름 증명 봇를 찾으십시오."
 
 #: public/views/backup.html:55
 #: public/views/recoveryFromSeed.html:31
@@ -1632,7 +1872,7 @@ msgstr "당신의 지갑 시드:"
 
 #: public/views/export.html:33
 msgid "Your export password"
-msgstr ""
+msgstr "당신의 내보내기 패스워드"
 
 #: public/views/includes/password.html:18
 msgid "Your password"
@@ -1648,69 +1888,81 @@ msgstr "지갑 키는 암호화 됩니다. 비밀번호는 복구 될수 없읍�
 
 #: public/views/splash.html:90
 msgid "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu."
-msgstr ""
+msgstr "당신의 지갑은 이 디바이스에서 생성되어질 것입니다. 안전하게 보관하십시오. 셋팅 메뉴에서 당신의 백업 옵션을 살펴 보십시오."
 
 #: public/views/create.html:94
 msgid "[ Add new co-signer device ]"
-msgstr ""
+msgstr "[ 신규 공동서명자 디바이스 추가]"
 
 #: public/views/modals/bind.html:37
 #: public/views/modals/offer-contract.html:44
 #: public/views/modals/offer-contract.html:52
 msgid "amount"
-msgstr ""
+msgstr "금액"
 
 #: public/views/modals/bind.html:31
 msgid "an event is posted by an oracle"
+msgstr "이벤트는 오라클에 의해 게시됩니다."
+
+#: public/views/modals/share.html:43
+msgid "and erase the textcoin to keep it safe from attackers."
+msgstr "그리고 공격자로부터 그것을 안전하게 지키기 위해 텍스트코인을 지우십시오."
+
+#: public/views/walletHome.html:567
+msgid "available"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
-msgstr ""
+msgstr "계약을 해지 할 수 있습니다."
 
 #: public/views/modals/offer-contract.html:106
 msgid "can unlock the contract after it expires in"
-msgstr ""
+msgstr "그것이 만료 후 계약을 해제 할 수 있습니다."
 
 #: public/views/copayers.html:38
 msgid "cancel wallet creation"
-msgstr ""
+msgstr "지갑 생성 취소하십시오."
 
-#: public/views/modals/tx-details.html:131
+#: public/views/modals/tx-details.html:137
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
-msgstr ""
+msgstr "{{btx.claimedByMe?'me':'수신자'|translate}}로 요청 되었습니다."
 
 #: public/views/editCorrespondentDevice.html:49
 msgid "clear chat history"
 msgstr "채팅 기록 삭제"
 
-#: public/views/modals/share.html:23
-msgid "copy the text below and send it to the recipient via any messaging app, or print it on paper"
+#: public/views/walletHome.html:567
+msgid "confirmed"
 msgstr ""
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
-msgstr ""
+msgstr "생성된"
 
 #: public/views/modals/offer-contract.html:108
 msgid "days"
-msgstr ""
+msgstr "일"
 
 #: public/views/backup.html:28
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
-msgstr ""
+msgstr "즉, 디바이스에 하나의 키를 가지고 있는 지갑과 당신의 랩탑 컴퓨터에 다른 키를 가진 둘 중 하나의 키"
 
 #: public/views/backup.html:27
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
-msgstr ""
+msgstr "즉, 둘 중 하나의 지갑 이 디바이스의 하나의 키를 가지고 있고 다른 스마트폰에 있는 다른 키"
 
 #: public/views/modals/bind.html:72
 msgid "either way"
 msgstr "어느 쪽이 든"
 
+#: public/views/modals/tx-details.html:148
+msgid "erase textcoin"
+msgstr "텍스트코인을 삭제하십시오"
+
 #: public/views/modals/bind.html:64
 msgid "explicitly"
-msgstr ""
+msgstr "명쾌하게"
 
 #: public/views/modals/bind.html:79
 #: public/views/modals/offer-contract.html:69
@@ -1719,21 +1971,29 @@ msgstr "시간"
 
 #: public/views/modals/offer-contract.html:78
 msgid "if an event is posted by an oracle"
-msgstr ""
+msgstr "오라클에 의해 이벤트가 게시되면,"
 
 #: public/views/modals/bind.html:68
 msgid "in merkle tree"
 msgstr ""
 
-#: public/views/walletHome.html:153
+#: public/views/walletHome.html:168
 msgid "in smart wallets"
 msgstr "스마트 지갑에"
+
+#: public/views/modals/signed-message.html:29
+msgid "invalid"
+msgstr ""
+
+#: public/views/modals/share.html:36
+msgid "keep for myself"
+msgstr ""
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
 msgstr ""
 
-#: public/views/modals/tx-details.html:125
+#: public/views/modals/tx-details.html:131
 msgid "not claimed"
 msgstr ""
 
@@ -1742,8 +2002,8 @@ msgstr ""
 msgid "on feed name"
 msgstr ""
 
-#: public/views/walletHome.html:431
-#: public/views/walletHome.html:442
+#: public/views/walletHome.html:460
+#: public/views/walletHome.html:471
 msgid "optional"
 msgstr "선택사항"
 
@@ -1763,41 +2023,62 @@ msgstr ""
 msgid "posted"
 msgstr ""
 
-#: public/views/modals/tx-details.html:142
+#: public/views/modals/tx-details.html:151
 msgid "re-send private payloads"
 msgstr ""
 
-#: public/views/modals/tx-details.html:145
+#: public/views/modals/tx-details.html:154
 msgid "re-send private payloads to cosigners"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:714
+#: public/views/modals/share.html:35
+msgid "send"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:773
 msgid "send email"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1122
-#: src/js/controllers/walletHome.js:1153
-#: src/js/controllers/walletHome.js:1160
-#: src/js/controllers/walletHome.js:827
-#: src/js/controllers/walletHome.js:833
-#: src/js/controllers/walletHome.js:846
-#: src/js/controllers/walletHome.js:942
-#: src/js/controllers/walletHome.js:981
+#: src/js/controllers/walletHome.js:1087
+#: src/js/controllers/walletHome.js:1142
+#: src/js/controllers/walletHome.js:1280
+#: src/js/controllers/walletHome.js:1311
+#: src/js/controllers/walletHome.js:1318
+#: src/js/controllers/walletHome.js:908
+#: src/js/controllers/walletHome.js:914
+#: src/js/controllers/walletHome.js:955
+#: src/js/controllers/walletHome.js:991
 msgid "sending"
 msgstr "보내기"
 
-#: public/views/modals/tx-details.html:139
+#: public/views/modals/tx-details.html:145
 msgid "share again"
+msgstr ""
+
+#: public/views/walletHome.html:446
+msgid "switch to multi-address"
+msgstr ""
+
+#: public/views/walletHome.html:445
+msgid "switch to single address"
+msgstr ""
+
+#: public/views/modals/share.html:39
+msgid "the text below and send it to the recipient via any messaging app"
 msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
 msgstr ""
 
-#: public/views/walletHome.html:432
-#: public/views/walletHome.html:443
+#: public/views/walletHome.html:461
+#: public/views/walletHome.html:472
 msgid "too long!"
 msgstr "너무 깁니다!"
+
+#: public/views/modals/signed-message.html:30
+msgid "valid"
+msgstr ""
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
@@ -1815,6 +2096,7 @@ msgstr ""
 msgid "{{address}} can be spent if:"
 msgstr ""
 
+#: public/views/modals/accept-profile.html:41
 #: public/views/modals/claim-textcoin.html:36
 #: public/views/modals/customized-amount.html:76
 msgid "{{buttonLabel}}"
@@ -1824,7 +2106,11 @@ msgstr ""
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1662
+#: public/views/modals/confirmation.html:6
+msgid "{{confirm_label || 'Yes'}}"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:1898
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
 
