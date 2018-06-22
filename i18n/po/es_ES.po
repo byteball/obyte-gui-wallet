@@ -11,13 +11,25 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2018-01-03 15:20-0500\n"
+"PO-Revision-Date: 2018-06-22T09:23:52+0000\n"
+
+#: public/views/modals/share.html:43
+msgid "'Receive' tab → 'Claim funds using textcoin' button."
+msgstr ""
 
 #: public/views/authConfirmation.html:10
 msgid "(The site won't see your balance and no money will be spent)"
 msgstr "(El sitio no verá su balance, no se gastará ningún dinero)"
 
-#: public/views/walletHome.html:628
+#: public/views/modals/choose-profile.html:44
+msgid "(current wallet)"
+msgstr ""
+
+#: public/views/modals/choose-profile.html:47
+msgid "(my other wallet)"
+msgstr ""
+
+#: public/views/walletHome.html:666
 msgid "(possible double spend)"
 msgstr "(Posible doble gasto)"
 
@@ -29,13 +41,13 @@ msgstr "-- Seleccione co-firmante --"
 msgid "12 words separated by dashes"
 msgstr "12 palabras separadas por guiones"
 
-#: public/views/preferencesGlobal.html:135
+#: public/views/preferencesGlobal.html:139
 msgid "About Byteball"
 msgstr "Sobre Byteball"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:121
+#: src/js/controllers/walletHome.js:123
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Aceptar"
@@ -65,7 +77,7 @@ msgstr "Añadir nuevo dispositivo"
 msgid "Add a new entry"
 msgstr "Añadir entrada nueva"
 
-#: public/views/walletHome.html:532
+#: public/views/walletHome.html:571
 msgid "Add fields"
 msgstr "Añadir campos"
 
@@ -83,7 +95,7 @@ msgstr "Añadido"
 msgid "Address"
 msgstr "Dirección"
 
-#: public/views/walletHome.html:507
+#: public/views/walletHome.html:545
 msgid "Address to attest"
 msgstr "Dirección a verificar"
 
@@ -92,9 +104,13 @@ msgstr "Dirección a verificar"
 msgid "Addressbook"
 msgstr "Libreta de direcciones"
 
-#: public/views/preferences.html:56
+#: public/views/preferences.html:59
 msgid "Advanced"
 msgstr "Avanzado"
+
+#: public/views/modals/share.html:43
+msgid "After writing it down, find this transaction in"
+msgstr ""
 
 #: public/views/disclaimer.html:37
 msgid "Agree"
@@ -116,7 +132,11 @@ msgstr "Todas las contribuciones a la traducción de Byteball son bienvenidas. R
 msgid "Already Paid"
 msgstr "Ya pagado"
 
-#: public/views/walletHome.html:150
+#: src/js/controllers/correspondentDevice.js:1267
+msgid "Already saved"
+msgstr ""
+
+#: public/views/walletHome.html:165
 msgid "Also"
 msgstr "Además"
 
@@ -133,7 +153,7 @@ msgstr "Y no olvide borrar su semilla"
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:367
+#: public/views/walletHome.html:378
 msgid "Amount"
 msgstr "Importe"
 
@@ -158,13 +178,27 @@ msgstr "¿Está seguro de borrar este monedero?"
 msgid "Asset"
 msgstr "Activo"
 
-#: public/views/walletHome.html:496
+#: public/views/walletHome.html:534
 msgid "Attest profile data linked to any Byteball address."
 msgstr "Verificar datos de perfil asociados a dirección Byteball."
 
-#: public/views/walletHome.html:333
+#: public/views/walletHome.html:348
 msgid "Attestation"
 msgstr "Verificación"
+
+#: public/views/modals/accept-profile.html:28
+#: public/views/modals/choose-profile.html:41
+msgid "Attested address:"
+msgstr ""
+
+#: public/views/modals/accept-profile.html:24
+#: public/views/modals/choose-profile.html:37
+msgid "Attested by:"
+msgstr ""
+
+#: public/views/preferencesGlobal.html:75
+msgid "Attestor addresses"
+msgstr ""
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -190,11 +224,11 @@ msgstr "Disponible"
 msgid "Back"
 msgstr "Volver"
 
-#: public/views/walletHome.html:232
+#: public/views/walletHome.html:247
 msgid "Backup now"
 msgstr "Realizar copia de seguridad ahora"
 
-#: public/views/preferencesGlobal.html:100
+#: public/views/preferencesGlobal.html:104
 msgid "Backup wallet seed"
 msgstr "Guardar semilla del monedero"
 
@@ -202,11 +236,19 @@ msgstr "Guardar semilla del monedero"
 msgid "Backup words deleted"
 msgstr "Borradas palabras de la copia de seguridad"
 
+#: public/views/preferencesGlobal.html:94
+msgid "Backups"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1252
+msgid "Bad profile"
+msgstr ""
+
 #: public/views/preferencesInformation.html:107
 msgid "Balance By Address"
 msgstr "Balance por Dirección"
 
-#: public/views/walletHome.html:226
+#: public/views/walletHome.html:241
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Antes de recibir fondos, es muy recomendable realizar una copia de seguridad."
 
@@ -219,8 +261,8 @@ msgstr "Mejor aún, use monederos multifirma con redundancia,"
 msgid "Bind payment"
 msgstr "Enlazar pago"
 
-#: public/views/walletHome.html:416
-#: public/views/walletHome.html:423
+#: public/views/walletHome.html:439
+#: public/views/walletHome.html:452
 msgid "Bind the payment to a condition"
 msgstr "Enlazar pago a condición"
 
@@ -240,6 +282,10 @@ msgstr "Tanto Vd. como {{correspondent.name}} habilitan la grabación del histor
 msgid "Browser unsupported"
 msgstr "Navegador no soportado"
 
+#: public/index.html:12
+msgid "Byteball &mdash; smart payments"
+msgstr ""
+
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"
 msgstr "Dirección Byteball"
@@ -254,10 +300,10 @@ msgid "CONTINUE"
 msgstr "CONTINUAR"
 
 #: public/views/modals/destination-address.html:127
-#: public/views/walletHome.html:464
+#: public/views/walletHome.html:493
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:122
+#: src/js/controllers/walletHome.js:124
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Cancelar"
@@ -270,7 +316,7 @@ msgstr "Cambiar hub:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Cambiar el alias sólo afecta al nombre del monedero local."
 
-#: src/js/controllers/index.js:622
+#: src/js/controllers/index.js:681
 msgid "Chat"
 msgstr "Chat"
 
@@ -278,11 +324,19 @@ msgstr "Chat"
 msgid "Choose File"
 msgstr "Elija archivo"
 
+#: public/views/modals/choose-profile.html:8
+msgid "Choose private profile"
+msgstr ""
+
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:10
 msgid "Choose the device to send to"
 msgstr "Elegir dispositivo al que enviar"
 
-#: src/js/controllers/walletHome.js:488
+#: public/views/modals/choose-profile.html:51
+msgid "Choose which fields to send:"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:490
 msgid "Claim funds"
 msgstr "Reclamar fondos"
 
@@ -290,24 +344,35 @@ msgstr "Reclamar fondos"
 msgid "Claim funds by textcoin"
 msgstr "Reclamar fondos mediante texto"
 
-#: public/views/walletHome.html:302
+#: public/views/walletHome.html:317
 msgid "Claim funds using textcoin"
 msgstr "Reclamar fondos mediante texto"
 
-#: public/views/modals/share.html:18
-msgid "Click the button to <span ng-if=\"isResend\">re</span>send email"
-msgstr "Pulse para <span ng-if=\"isResend\"> re</span>enviar correo electrónico"
+#: public/views/walletHome.html:85
+msgid "Claiming..."
+msgstr ""
 
-#: public/views/walletHome.html:477
-msgid "Click this button to create payment and share it via private message in chat apps"
-msgstr "Pulse para crear pago y compartirlo via mensaje privado en apps de chat"
+#: public/views/modals/share.html:30
+msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
+msgstr ""
+
+#: public/views/walletHome.html:515
+msgid "Click this button to create a payment file and send it to a recipient."
+msgstr ""
+
+#: public/views/walletHome.html:514
+msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
+msgstr ""
 
 #: public/views/correspondentDevices.html:25
 #: public/views/includes/topbar.html:13
+#: public/views/modals/accept-profile.html:4
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
 #: public/views/modals/bind.html:4
+#: public/views/modals/choose-profile.html:4
+#: public/views/modals/choose-profile.html:70
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
@@ -315,7 +380,10 @@ msgstr "Pulse para crear pago y compartirlo via mensaje privado en apps de chat"
 #: public/views/modals/offer-contract.html:29
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
-#: public/views/modals/share.html:4
+#: public/views/modals/share.html:13
+#: public/views/modals/sign-message.html:4
+#: public/views/modals/signed-message.html:39
+#: public/views/modals/signed-message.html:4
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Cerrar"
@@ -345,9 +413,11 @@ msgid "Compress the file? (Slower)"
 msgstr "¿Comprimir fichero? (más lento)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:459
+#: src/js/controllers/index.js:520
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:123
+#: src/js/controllers/walletHome.js:125
+#: src/js/controllers/walletHome.js:1712
+#: src/js/controllers/walletHome.js:1716
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Confirmar"
@@ -364,7 +434,7 @@ msgstr "Confirmar pago"
 msgid "Confirm vote"
 msgstr "Confirmar voto"
 
-#: public/views/modals/tx-details.html:115
+#: public/views/modals/tx-details.html:121
 msgid "Confirmed"
 msgstr "Confirmado"
 
@@ -373,27 +443,31 @@ msgid "Contacts"
 msgstr "Contactos"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:389
+#: src/js/controllers/walletHome.js:391
 msgid "Copied to clipboard"
 msgstr "Copiado al portapapeles"
+
+#: public/views/modals/share.html:39
+msgid "Copy"
+msgstr ""
 
 #: public/views/recoveryFromSeed.html:42
 msgid "Correspondents are not restored."
 msgstr "No se reestablecen corresponsales."
 
-#: src/js/controllers/walletHome.js:668
+#: src/js/controllers/walletHome.js:696
 msgid "Could not create payment proposal"
 msgstr "No se pudo crear propuesta de pago"
 
-#: src/js/services/profileService.js:265
+#: src/js/services/profileService.js:279
 msgid "Could not create using the specified extended private key"
 msgstr "No se pudo crear monedero usando clave privada ingresada"
 
-#: src/js/services/profileService.js:275
+#: src/js/services/profileService.js:289
 msgid "Could not create using the specified extended public key"
 msgstr "No se pudo crear con la clave pública extendida especificada"
 
-#: src/js/services/profileService.js:258
+#: src/js/services/profileService.js:272
 msgid "Could not create: Invalid wallet seed"
 msgstr "No se pudo crear: semilla de monedero no válida"
 
@@ -401,27 +475,31 @@ msgstr "No se pudo crear: semilla de monedero no válida"
 msgid "Could not decrypt"
 msgstr "No se pudo descifrar"
 
-#: public/views/walletHome.html:583
+#: public/views/walletHome.html:621
 msgid "Could not fetch transaction history"
 msgstr "No se pudo obtener historial de transacciones"
 
-#: src/js/services/profileService.js:490
-#: src/js/services/profileService.js:517
-#: src/js/services/profileService.js:539
+#: src/js/services/profileService.js:507
+#: src/js/services/profileService.js:534
+#: src/js/services/profileService.js:556
 msgid "Could not import"
 msgstr "No se pudo importar"
 
-#: src/js/services/profileService.js:467
+#: src/js/services/profileService.js:484
 msgid "Could not import. Check input file and password"
 msgstr "No se pudo importar. Verifique archivo y contraseña"
 
-#: src/js/controllers/walletHome.js:51
+#: src/js/controllers/walletHome.js:53
 msgid "Could not recognize a valid Byteball QR Code"
 msgstr "No se pudo leer un código QR válido"
 
-#: src/js/controllers/walletHome.js:668
+#: src/js/controllers/walletHome.js:696
 msgid "Could not send payment"
 msgstr "No se pudo enviar el pago"
+
+#: src/js/controllers/correspondentDevice.js:1223
+msgid "Country"
+msgstr ""
 
 #: public/views/walletHome.html:44
 msgid "Create"
@@ -436,7 +514,7 @@ msgstr "Crear nuevo monedero"
 msgid "Create new wallet"
 msgstr "Crear nuevo monedero"
 
-#: src/js/controllers/index.js:286
+#: src/js/controllers/index.js:310
 msgid "Create new wallet  together with  ?"
 msgstr "¿Crear nuevo monedero junto con  ?"
 
@@ -460,19 +538,31 @@ msgstr "Creando monedero..."
 msgid "DELETE WORDS"
 msgstr "ELIMINAR PALABRAS"
 
-#: public/views/walletHome.html:335
+#: public/views/walletHome.html:350
 msgid "Data"
 msgstr "Datos"
 
-#: public/views/walletHome.html:332
+#: public/views/walletHome.html:347
 msgid "Data into datafeed"
 msgstr "Datos en la cadena"
 
-#: public/views/modals/tx-details.html:85
+#: public/views/walletHome.html:567
+msgid "Datafeed name"
+msgstr ""
+
+#: public/views/walletHome.html:567
+msgid "Datafeed value"
+msgstr ""
+
+#: public/views/modals/tx-details.html:91
 msgid "Date"
 msgstr "Fecha"
 
-#: src/js/controllers/index.js:256
+#: src/js/controllers/correspondentDevice.js:1222
+msgid "Date of birth"
+msgstr ""
+
+#: src/js/controllers/index.js:276
 msgid "Declined"
 msgstr "No aceptado"
 
@@ -480,7 +570,7 @@ msgstr "No aceptado"
 msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
 msgstr "Descifrar un monedero de papel podría tomar unos 5 minutos. Por favor, sea paciente y no cierre la aplicación."
 
-#: public/views/walletHome.html:179
+#: public/views/walletHome.html:194
 msgid "Definition"
 msgstr "Definición"
 
@@ -500,17 +590,21 @@ msgstr "Eliminar Monedero"
 msgid "Delete wallet"
 msgstr "Eliminar monedero"
 
+#: src/js/controllers/walletHome.js:1709
+msgid "Deleting the textcoin will remove the ability to claim it back or resend"
+msgstr ""
+
 #: public/views/preferencesInformation.html:44
 msgid "Derivation Strategy"
 msgstr "Estrategia de derivación"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
-#: public/views/modals/tx-details.html:25
+#: public/views/modals/tx-details.html:31
 msgid "Details"
 msgstr "Detalles"
 
-#: public/views/preferencesGlobal.html:75
+#: public/views/preferencesGlobal.html:79
 msgid "Device address"
 msgstr "Direción del dispositivo"
 
@@ -540,7 +634,7 @@ msgstr "¿No ve su idioma en Crowdin? ¡Contacte con el encargado del proyecto! 
 msgid "Done"
 msgstr "Listo"
 
-#: public/views/walletHome.html:678
+#: public/views/walletHome.html:722
 msgid "Download CSV file"
 msgstr "Descargar archivo CSV"
 
@@ -557,10 +651,6 @@ msgstr "Editar"
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "O bien tú o {{correspondent.name}} tienen deshabilitada la grabación del historial de chat. El historial no se ha grabado para nadie."
 
-#: public/views/preferencesEmail.html:33
-msgid "Email for wallet notifications"
-msgstr "Correo electrónico para notificaciones del monedero"
-
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
 msgstr "Habilitar notificaciones push"
@@ -573,8 +663,8 @@ msgstr "Entre el dódigo de emparajamiento recibido desde el otro dispositivo, o
 msgid "Enter your password"
 msgstr "Ingrese su contraseña"
 
-#: src/js/services/profileService.js:323
-#: src/js/services/profileService.js:374
+#: src/js/services/profileService.js:338
+#: src/js/services/profileService.js:390
 msgid "Error creating wallet"
 msgstr "Error al crear monedero"
 
@@ -582,8 +672,8 @@ msgstr "Error al crear monedero"
 msgid "Export"
 msgstr "Exportar"
 
-#: src/js/controllers/export.js:135
-#: src/js/controllers/export.js:160
+#: src/js/controllers/export.js:136
+#: src/js/controllers/export.js:161
 msgid "Export completed successfully"
 msgstr "Exportación completada con éxito"
 
@@ -599,15 +689,23 @@ msgstr "Claves Públicas Extendidas"
 msgid "Failed to export"
 msgstr "Error al exportar"
 
-#: public/views/modals/tx-details.html:92
+#: public/views/modals/tx-details.html:98
 msgid "Fee"
 msgstr "Comisión"
 
-#: public/views/modals/tx-details.html:110
+#: public/views/walletHome.html:567
+msgid "Field"
+msgstr ""
+
+#: public/views/modals/tx-details.html:116
 msgid "Finality"
 msgstr "Concepto"
 
-#: public/views/modals/tx-details.html:60
+#: src/js/controllers/correspondentDevice.js:1220
+msgid "First name"
+msgstr ""
+
+#: public/views/modals/tx-details.html:66
 msgid "From"
 msgstr "Desde"
 
@@ -615,7 +713,7 @@ msgstr "Desde"
 msgid "Full address:"
 msgstr "Dirección completa:"
 
-#: public/views/preferencesGlobal.html:118
+#: public/views/preferencesGlobal.html:122
 msgid "Full backup"
 msgstr "Copia de Seg. completa"
 
@@ -631,11 +729,11 @@ msgstr "Se transferirán los fondos a"
 msgid "GET STARTED"
 msgstr "COMENZAR"
 
-#: src/js/controllers/walletHome.js:418
+#: src/js/controllers/walletHome.js:420
 msgid "Generate QR Code"
 msgstr "Generar código QR"
 
-#: public/views/walletHome.html:288
+#: public/views/walletHome.html:303
 msgid "Generate new address"
 msgstr "Generar nueva dirección"
 
@@ -655,7 +753,7 @@ msgstr "Preferencias generales"
 msgid "Go back"
 msgstr "Volver"
 
-#: public/views/preferences.html:48
+#: public/views/preferences.html:51
 msgid "Hardware wallet"
 msgstr "Monedero Hardware"
 
@@ -663,11 +761,12 @@ msgstr "Monedero Hardware"
 msgid "Hide the Wallet Seed"
 msgstr "Ocultar semilla del monedero"
 
-#: src/js/controllers/index.js:618
+#: public/views/modals/share.html:43
+#: src/js/controllers/index.js:677
 msgid "History"
 msgstr "Historial"
 
-#: src/js/controllers/index.js:606
+#: src/js/controllers/index.js:665
 msgid "Home"
 msgstr "Inicio"
 
@@ -695,6 +794,22 @@ msgstr "Pago"
 msgid "I receive another payment of"
 msgstr "Recibo otro pago de"
 
+#: src/js/controllers/correspondentDevice.js:1225
+msgid "ID number"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1227
+msgid "ID subtype"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1226
+msgid "ID type"
+msgstr ""
+
+#: public/views/modals/tx-details.html:154
+msgid "If any of your cosigner devices doesn't see this payment, you can"
+msgstr ""
+
 #: public/views/modals/bind.html:77
 msgid "If the condition is not met, I can take this money back after"
 msgstr "Si no se cumple la condición, los fondos retornarán tras"
@@ -702,6 +817,11 @@ msgstr "Si no se cumple la condición, los fondos retornarán tras"
 #: public/views/modals/offer-contract.html:67
 msgid "If the peer doesn't pay, I can take my money back after"
 msgstr "Si la otra parte no paga, los fondos retornarán tras"
+
+#: public/views/modals/tx-details.html:145
+#: public/views/modals/tx-details.html:151
+msgid "If the recipient doesn't see your payment, you can"
+msgstr ""
 
 #: public/views/import.html:58
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
@@ -723,11 +843,11 @@ msgstr "Importar monedero"
 msgid "Importing wallet..."
 msgstr "Importando monedero..."
 
-#: public/views/walletHome.html:133
+#: public/views/walletHome.html:138
 msgid "Including pending confirmation"
 msgstr "Incluyendo confirmación pendiente"
 
-#: public/views/walletHome.html:602
+#: public/views/walletHome.html:640
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "La sincronización del historial de transacción inicial puede tomar algunos minutos para monederos con muchas transacciones. <br>\n"
@@ -737,11 +857,15 @@ msgstr "La sincronización del historial de transacción inicial puede tomar alg
 msgid "Insert my address"
 msgstr "Introducir mi dirección"
 
-#: public/views/walletHome.html:621
+#: public/views/correspondentDevice.html:343
+msgid "Insert private profile"
+msgstr ""
+
+#: public/views/walletHome.html:659
 msgid "Invalid"
 msgstr "No válido"
 
-#: src/js/controllers/index.js:1533
+#: src/js/controllers/index.js:1631
 msgid "Invalid Touch ID"
 msgstr "Touch ID no válido"
 
@@ -765,6 +889,10 @@ msgstr "Etiqueta"
 msgid "Language"
 msgstr "Idioma"
 
+#: src/js/controllers/correspondentDevice.js:1221
+msgid "Last name"
+msgstr ""
+
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
 msgstr "Más tarde"
@@ -787,11 +915,11 @@ msgstr "Quizá después"
 msgid "Me"
 msgstr "Yo"
 
-#: public/views/modals/tx-details.html:104
+#: public/views/modals/tx-details.html:110
 msgid "Merchant message"
 msgstr "Mensaje de vendedor"
 
-#: public/views/walletHome.html:430
+#: public/views/walletHome.html:459
 msgid "Merkle proof"
 msgstr "Prueba \"Merkle\""
 
@@ -799,7 +927,12 @@ msgstr "Prueba \"Merkle\""
 msgid "Message"
 msgstr "Mensaje"
 
-#: public/views/walletHome.html:620
+#: public/views/modals/sign-message.html:17
+#: public/views/modals/signed-message.html:17
+msgid "Message:"
+msgstr ""
+
+#: public/views/walletHome.html:658
 msgid "Moved"
 msgstr "Movido"
 
@@ -807,7 +940,7 @@ msgstr "Movido"
 msgid "Multidevice Wallet"
 msgstr "Monedero multidispositivo"
 
-#: public/views/walletHome.html:240
+#: public/views/walletHome.html:255
 msgid "My Byteball address"
 msgstr "Mi dirección Byteball"
 
@@ -836,7 +969,8 @@ msgid "New witnesses"
 msgstr "Nuevos testigos (Witnesses)"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:458
+#: src/js/controllers/index.js:519
+#: src/js/controllers/walletHome.js:1724
 msgid "No"
 msgstr "No"
 
@@ -844,24 +978,33 @@ msgstr "No"
 msgid "No password given"
 msgstr "No se indicó contraseña"
 
-#: public/views/walletHome.html:586
+#: public/views/modals/choose-profile.html:67
+msgid "No profiles matching the requested criteria."
+msgstr ""
+
+#: public/views/modals/choose-profile.html:68
+msgid "No profiles yet."
+msgstr ""
+
+#: public/views/walletHome.html:624
 msgid "No transactions yet"
 msgstr "Sin transacciones aún"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:112
-#: public/views/walletHome.html:359
-#: public/views/walletHome.html:395
-#: public/views/walletHome.html:512
+#: public/views/walletHome.html:370
+#: public/views/walletHome.html:407
+#: public/views/walletHome.html:416
+#: public/views/walletHome.html:550
 msgid "Not valid"
 msgstr "No válido"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:100
-#: public/views/modals/tx-details.html:75
-#: public/views/walletHome.html:441
-#: public/views/walletHome.html:649
+#: public/views/modals/tx-details.html:106
+#: public/views/modals/tx-details.html:81
+#: public/views/walletHome.html:470
+#: public/views/walletHome.html:687
 msgid "Note"
 msgstr "Nota"
 
@@ -882,9 +1025,9 @@ msgstr "Sólo se pueden recuperar monederos de firma única."
 msgid "Open chat"
 msgstr "Abrir chat"
 
-#: public/views/modals/share.html:23
-msgid "Or"
-msgstr "O"
+#: public/views/modals/share.html:39
+msgid "Or copy"
+msgstr ""
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
@@ -907,7 +1050,7 @@ msgstr "Clave privada del monedero de papel"
 msgid "Passphrase"
 msgstr "Contraseña"
 
-#: src/js/services/profileService.js:654
+#: src/js/services/profileService.js:672
 msgid "Password needed"
 msgstr "Contraseña requerida"
 
@@ -935,7 +1078,7 @@ msgstr "Pago Aceptado"
 msgid "Payment Proposal Created"
 msgstr "Propuesta de Pago Creada"
 
-#: public/views/walletHome.html:196
+#: public/views/walletHome.html:211
 msgid "Payment Proposals"
 msgstr "Propuestas de Pago"
 
@@ -971,23 +1114,27 @@ msgstr "Por favor, introduzca campos requeridos"
 msgid "Please name this device"
 msgstr "Por favor, dé nombre a este dispositivo"
 
+#: src/js/controllers/correspondentDevice.js:149
+msgid "Please switch to a single-address wallet and you probably need to insert your address again."
+msgstr ""
+
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Puerto"
 
-#: public/views/walletHome.html:502
+#: public/views/walletHome.html:540
 msgid "Post arbitrary key-value pairs of data into Byteball network."
 msgstr "Publicar pares arbitrarios clave-valor en la red Byteball."
 
-#: public/views/walletHome.html:493
+#: public/views/walletHome.html:531
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "Publicar valores manualmente, convertirse en \"oráculo\"."
 
-#: public/views/walletHome.html:499
+#: public/views/walletHome.html:537
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "Publicar sus datos de perfil, cualquier información personal."
 
-#: public/views/walletHome.html:175
+#: public/views/walletHome.html:190
 #: public/views/walletHome.html:47
 msgid "Preferences"
 msgstr "Preferencias"
@@ -1000,14 +1147,26 @@ msgstr "Pulse de nuevo para salir"
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr "No se recuperarán activos privados (pej. blackbytes)."
 
-#: src/js/controllers/walletHome.js:1547
-#: src/js/controllers/walletHome.js:1621
+#: src/js/controllers/walletHome.js:1783
+#: src/js/controllers/walletHome.js:1857
 msgid "Private payloads sent"
 msgstr "Datos privados enviados"
 
-#: public/views/walletHome.html:334
+#: public/views/modals/accept-profile.html:8
+msgid "Private profile"
+msgstr ""
+
+#: public/views/walletHome.html:349
 msgid "Profile"
 msgstr "Perfil"
+
+#: public/views/walletHome.html:567
+msgid "Profile field"
+msgstr ""
+
+#: public/views/walletHome.html:567
+msgid "Profile field value"
+msgstr ""
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1021,16 +1180,16 @@ msgstr "Lector QR"
 msgid "Question:"
 msgstr "Pregunta:"
 
-#: src/js/controllers/index.js:610
+#: src/js/controllers/index.js:669
 msgid "Receive"
 msgstr "Recibir"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:655
 msgid "Received"
 msgstr "Recibido"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:52
+#: public/views/modals/tx-details.html:58
 msgid "Recipients"
 msgstr "Destinatarios"
 
@@ -1042,7 +1201,7 @@ msgstr "Reconectando servicio de monedero..."
 msgid "Recover"
 msgstr "Recuperar"
 
-#: public/views/preferencesGlobal.html:109
+#: public/views/preferencesGlobal.html:113
 msgid "Recovery from seed"
 msgstr "Recuperación desde semilla"
 
@@ -1050,7 +1209,7 @@ msgstr "Recuperación desde semilla"
 msgid "Recreating Wallet..."
 msgstr "Reconstruyendo monedero..."
 
-#: src/js/controllers/index.js:208
+#: src/js/controllers/index.js:228
 msgid "Refused"
 msgstr "Rechazado"
 
@@ -1083,12 +1242,12 @@ msgstr "Repita contraseña"
 msgid "Replace"
 msgstr "Reemplazar"
 
-#: public/views/preferencesGlobal.html:86
+#: public/views/preferencesGlobal.html:90
 msgid "Request Password"
 msgstr "Solicitar Contraseña"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:297
+#: public/views/walletHome.html:312
 msgid "Request a specific amount"
 msgstr "Solicitar importe específico"
 
@@ -1100,7 +1259,7 @@ msgstr "Solicitar pago"
 msgid "Required number of signatures"
 msgstr "Número requerido de firmas"
 
-#: public/views/preferencesGlobal.html:127
+#: public/views/preferencesGlobal.html:131
 msgid "Restore from full backup"
 msgstr "Restaurar desde respaldo completo"
 
@@ -1116,6 +1275,7 @@ msgstr "ESTABLECER"
 #: public/views/modals/destination-address.html:132
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
+#: public/views/preferencesEditAttestorAddress.html:14
 #: public/views/preferencesEditWitness.html:15
 #: public/views/preferencesEmail.html:35
 #: public/views/preferencesHub.html:18
@@ -1127,7 +1287,7 @@ msgstr "Guardar"
 msgid "Saving preferences..."
 msgstr "Guardando preferencias..."
 
-#: public/views/preferences.html:66
+#: public/views/preferences.html:69
 msgid "Scan Fingerprint"
 msgstr "Lector de huella digital"
 
@@ -1135,7 +1295,7 @@ msgstr "Lector de huella digital"
 msgid "Scan Wallet Funds"
 msgstr "Buscar fondos del monedero"
 
-#: public/views/walletHome.html:120
+#: public/views/walletHome.html:121
 msgid "Scan status finished with error"
 msgstr "La búsqueda finalizó con error"
 
@@ -1143,7 +1303,7 @@ msgstr "La búsqueda finalizó con error"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Escanear el código QR superior usando el otro dispositivo, o envíe código de emparejamiento al otro dispositivo:"
 
-#: src/js/controllers/index.js:1526
+#: src/js/controllers/index.js:1624
 msgid "Scan your fingerprint please"
 msgstr "Por favor ingrese su huella digital"
 
@@ -1172,13 +1332,13 @@ msgid "Select your identity"
 msgstr "Seleccione su identidad"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:467
-#: public/views/walletHome.html:547
-#: src/js/controllers/index.js:614
+#: public/views/walletHome.html:496
+#: public/views/walletHome.html:586
+#: src/js/controllers/index.js:673
 msgid "Send"
 msgstr "Enviar"
 
-#: public/views/walletHome.html:319
+#: public/views/walletHome.html:334
 msgid "Send All"
 msgstr "Enviar Todo"
 
@@ -1190,13 +1350,17 @@ msgstr "Enviar pago"
 msgid "Send addresses by email"
 msgstr "Enviar direcciones por email"
 
-#: public/views/walletHome.html:368
+#: public/views/walletHome.html:380
 msgid "Send all"
 msgstr "Enviar todo"
 
 #: public/views/preferencesLogs.html:15
 msgid "Send by email"
 msgstr "Enviar por correo electrónico"
+
+#: public/views/modals/choose-profile.html:62
+msgid "Send this profile"
+msgstr ""
 
 #: public/views/paperWallet.html:19
 msgid "Sending funds..."
@@ -1206,7 +1370,7 @@ msgstr "Enviando fondos..."
 msgid "Sending..."
 msgstr "Enviando..."
 
-#: public/views/walletHome.html:619
+#: public/views/walletHome.html:657
 msgid "Sent"
 msgstr "Enviado"
 
@@ -1222,32 +1386,29 @@ msgstr "Establecer contraseña"
 msgid "Set up a password"
 msgstr "Establecer contraseña"
 
-#: public/views/preferencesEmail.html:38
-msgid "Setting up email notifications could weaken your privacy, if the wallet service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more."
-msgstr "Configurar notificaciones por correo electrónico podría afectar a su privacidad. Sus direcciones de monedero y su balance podrían quedar disponibles para un hipotético atacante, pero nada más."
-
 #: public/views/includes/sidebar.html:44
 msgid "Settings"
 msgstr "Opciones"
 
-#: public/views/modals/share.html:8
+#: public/views/modals/share.html:17
 msgid "Share"
 msgstr "Compartir"
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:275
+#: public/views/walletHome.html:290
 msgid "Share address"
 msgstr "Compartir dirección"
 
-#: public/views/walletHome.html:280
+#: public/views/walletHome.html:295
 msgid "Share this wallet address to receive payments."
 msgstr "Compartir esta dirección de monedero para recibir pagos."
 
-#: public/views/walletHome.html:478
+#: public/views/walletHome.html:395
+#: public/views/walletHome.html:516
 msgid "Share via message"
 msgstr "Compartir vía mensaje"
 
-#: public/views/walletHome.html:670
+#: public/views/walletHome.html:714
 msgid "Show all"
 msgstr "Mostrar todo"
 
@@ -1255,9 +1416,26 @@ msgstr "Mostrar todo"
 msgid "Show the Wallet Seed Anyway"
 msgstr "Mostrar semilla de todos modos"
 
-#: src/js/controllers/index.js:435
-msgid "Sign transaction spending  from wallet ?"
-msgstr "¿Firmar transacción de gasto desde el monedero?"
+#: public/views/modals/sign-message.html:46
+msgid "Sign"
+msgstr ""
+
+#: public/views/modals/sign-message.html:8
+msgid "Sign message"
+msgstr ""
+
+#: src/js/controllers/index.js:407
+msgid "Sign message \"\" by address ?"
+msgstr ""
+
+#: public/views/modals/signed-message.html:8
+msgid "Signed message"
+msgstr ""
+
+#: public/views/modals/sign-message.html:22
+#: public/views/modals/signed-message.html:22
+msgid "Signing address:"
+msgstr ""
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
@@ -1269,7 +1447,7 @@ msgstr "Monedero de dirección única"
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr "Los monederos monodirección no generan direcciones nuevas con cada transacción, el cambio irá también a esa única dirección."
 
-#: src/js/services/profileService.js:318
+#: src/js/services/profileService.js:332
 msgid "Small Expenses Wallet"
 msgstr "Monedero de pequeños gastos"
 
@@ -1277,23 +1455,27 @@ msgstr "Monedero de pequeños gastos"
 msgid "Specify Seed..."
 msgstr "Especificar semilla..."
 
-#: public/views/preferences.html:60
-#: public/views/preferencesGlobal.html:82
+#: public/views/preferences.html:63
+#: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "Restricciones de gastos"
 
-#: public/views/preferencesGlobal.html:96
+#: public/views/preferencesGlobal.html:100
 msgid "Still not done"
 msgstr "Aún no está listo"
 
+#: src/js/controllers/correspondentDevice.js:1269
+msgid "Store"
+msgstr ""
+
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:135
-#: src/js/controllers/export.js:160
-#: src/js/controllers/index.js:245
-#: src/js/controllers/index.js:273
+#: src/js/controllers/export.js:136
+#: src/js/controllers/export.js:161
+#: src/js/controllers/index.js:265
+#: src/js/controllers/index.js:293
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1547
-#: src/js/controllers/walletHome.js:1621
+#: src/js/controllers/walletHome.js:1783
+#: src/js/controllers/walletHome.js:1857
 msgid "Success"
 msgstr "Listo"
 
@@ -1317,9 +1499,9 @@ msgstr "Sincronizando... {{index.syncProgress}}"
 msgid "TOR"
 msgstr "TOR"
 
-#: public/views/walletHome.html:116
-#: public/views/walletHome.html:121
-#: public/views/walletHome.html:584
+#: public/views/walletHome.html:117
+#: public/views/walletHome.html:122
+#: public/views/walletHome.html:622
 msgid "Tap to retry"
 msgstr "Toque para reintentar"
 
@@ -1328,13 +1510,17 @@ msgstr "Toque para reintentar"
 msgid "Terms of Use"
 msgstr "Términos de Uso"
 
-#: public/views/correspondentDevice.html:341
+#: public/views/correspondentDevice.html:347
 msgid "Text message to"
 msgstr "Mensaje para"
 
 #: public/views/modals/claim-textcoin.html:29
 msgid "Textcoin"
 msgstr "Textcoin"
+
+#: public/views/modals/accept-profile.html:32
+msgid "The attested address belongs to:"
+msgstr ""
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
@@ -1344,9 +1530,17 @@ msgstr "\"Hub\" para recibir mensajes de otros dispositivos."
 msgid "The hub suggests replacing the following witnesses:"
 msgstr "El \"hub\" sugiere reemplazar los siguientes testigos:"
 
+#: public/views/modals/share.html:27
+msgid "The money is stored on this textcoin:"
+msgstr ""
+
 #: public/views/modals/bind.html:23
 msgid "The peer receives this payment if"
 msgstr "El corresponsal recibe el pago si"
+
+#: public/views/modals/signed-message.html:28
+msgid "The signature is"
+msgstr ""
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1369,7 +1563,7 @@ msgstr "Su preferencia de grabación"
 msgid "There are no wallets to make this payment"
 msgstr "No dispone de monederos para realizar este pago"
 
-#: public/views/walletHome.html:279
+#: public/views/walletHome.html:294
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr "Dirección compartida con {{index.shared_address_cosigners}}."
 
@@ -1377,25 +1571,37 @@ msgstr "Dirección compartida con {{index.shared_address_cosigners}}."
 msgid "This choice cannot be changed later"
 msgstr "Esta elección no se puede cambiar después"
 
-#: public/views/walletHome.html:350
-msgid "This is a private asset, please send it only by clicking links in the chat or send it to your other wallets."
-msgstr "Este activo es privado, envíese sólo a través de enlaces de chat o a monederos propios."
-
 #: public/views/splash.html:28
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "Esta opción mejora la privacidad, pero emplea varios gigabytes de almacenamiento y la sincronización inicial requiere varios días.  Durante dicha sincronización el uso de CPU es intensivo."
 
-#: public/views/walletHome.html:417
+#: public/views/walletHome.html:440
 msgid "This payment is bound to a condition"
 msgstr "Este pago está asociado a una condición"
 
-#: public/views/modals/tx-details.html:80
+#: src/js/controllers/correspondentDevice.js:149
+msgid "This payment must be paid only from single-address wallet"
+msgstr ""
+
+#: public/views/modals/tx-details.html:86
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Esta transacción se ha invalidado; posiblemente debido a un intento de doble gasto."
 
+#: public/views/preferences.html:42
+msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
+msgstr ""
+
+#: public/views/preferences.html:41
+msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
+msgstr ""
+
 #: public/views/preferences.html:39
-msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses or is multidevice"
-msgstr "Este monedero no se puede convertir a monodirección, ya que es multidirección o multidispositivo"
+msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
+msgstr ""
+
+#: public/views/preferences.html:40
+msgid "This wallet cannot be converted to single address wallet as it is multidevice"
+msgstr ""
 
 #: public/views/import.html:57
 #: public/views/recoveryFromSeed.html:39
@@ -1404,9 +1610,10 @@ msgstr "¡Se borrarán permanentemente todos sus monederos!"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
-#: public/views/modals/tx-details.html:30
-#: public/views/modals/tx-details.html:65
-#: public/views/walletHome.html:651
+#: public/views/modals/tx-details.html:36
+#: public/views/modals/tx-details.html:71
+#: public/views/walletHome.html:689
+#: src/js/controllers/index.js:1431
 msgid "To"
 msgstr "A"
 
@@ -1414,33 +1621,37 @@ msgstr "A"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "Para poder restaurar todo es necesario crear una copia de seguridad completa (Seleccionar backup completo en el menú)"
 
-#: public/views/walletHome.html:558
+#: public/views/walletHome.html:597
 msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
 msgstr "Para poder enviar datos arbitrarios a la red Byteball se requiere un monedero de una sola dirección."
 
-#: public/views/walletHome.html:420
+#: public/views/walletHome.html:449
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Para asociar el pago a una condición, pulse en la dirección del par desde el chat"
 
-#: public/views/walletHome.html:390
+#: public/views/walletHome.html:402
 msgid "To byteball address"
 msgstr "A dirección Byteball"
 
-#: public/views/walletHome.html:382
+#: public/views/walletHome.html:394
 msgid "To byteball address or email"
 msgstr "A dirección Byteball o correo electrónico"
 
-#: public/views/modals/tx-details.html:44
+#: src/js/controllers/index.js:1434
 msgid "To email"
 msgstr "A correo electrónico"
 
-#: public/views/walletHome.html:281
+#: public/views/walletHome.html:296
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Para mayor privacidad, se generan nuevas direcciones según se van usando."
 
-#: public/views/walletHome.html:204
+#: public/views/walletHome.html:219
 msgid "Total Locked Balance"
 msgstr "Balance Total Bloqueado"
+
+#: public/views/walletHome.html:379
+msgid "Total amount"
+msgstr ""
 
 #: public/views/create.html:66
 msgid "Total number of co-signers"
@@ -1450,7 +1661,7 @@ msgstr "Número total de cosignatarios"
 msgid "Transaction"
 msgstr "Transacción"
 
-#: public/views/walletHome.html:608
+#: public/views/walletHome.html:646
 msgid "Transactions<br> Downloaded"
 msgstr "Transacciones<br> Descargadas"
 
@@ -1462,12 +1673,20 @@ msgstr "Créditos de traducción"
 msgid "Translators"
 msgstr "Traductores"
 
-#: src/js/controllers/walletHome.js:774
+#: public/views/preferencesGlobal.html:67
+msgid "Trusted nodes"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1224
+msgid "US state"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:835
 msgid "Unable to send transaction proposal"
 msgstr "No se puede enviar propuesta de transacción"
 
-#: public/views/modals/tx-details.html:112
-#: public/views/walletHome.html:639
+#: public/views/modals/tx-details.html:118
+#: public/views/walletHome.html:677
 msgid "Unconfirmed"
 msgstr "Sin confirmar"
 
@@ -1479,7 +1698,7 @@ msgstr "Unidad de blackbytes"
 msgid "Unit for bytes"
 msgstr "Unidad para bytes"
 
-#: public/views/walletHome.html:197
+#: public/views/walletHome.html:212
 msgid "Unsent transactions"
 msgstr "Transacciones no enviadas"
 
@@ -1495,9 +1714,17 @@ msgstr "Actualizar a {{version}}"
 msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
 msgstr "Por favor, espere, actualizando base de datos. Puede durar varios minutos."
 
-#: public/views/walletHome.html:522
+#: public/views/walletHome.html:567
+msgid "Value"
+msgstr ""
+
+#: public/views/walletHome.html:560
 msgid "Values"
 msgstr "Valores"
+
+#: src/js/controllers/correspondentDevice.js:1246
+msgid "Verifying the profile..."
+msgstr ""
 
 #: public/views/preferencesAbout.html:12
 msgid "Version"
@@ -1507,7 +1734,7 @@ msgstr "Versión"
 msgid "WARNING:"
 msgstr "AVISO:"
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:237
 msgid "WARNING: Backup needed"
 msgstr "ADVERTENCIA: Se requiere copia de seguridad"
 
@@ -1557,7 +1784,7 @@ msgstr "Información del Monedero"
 msgid "Wallet Name (at creation)"
 msgstr "Nombre del Monedero (al crear)"
 
-#: src/js/services/profileService.js:436
+#: src/js/services/profileService.js:453
 msgid "Wallet already in Byteball:"
 msgstr "Monedero ya en Byteball:"
 
@@ -1578,19 +1805,21 @@ msgstr "Monederos"
 msgid "Warning!"
 msgstr "¡Aviso!"
 
-#: public/views/modals/tx-details.html:123
+#: public/views/modals/tx-details.html:129
 msgid "Was claimed?"
 msgstr "¿Reclamado?"
 
-#: public/views/walletHome.html:328
+#: public/views/walletHome.html:343
 msgid "What to send"
 msgstr "Qué enviar"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:111
+#: public/views/modals/sign-message.html:28
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:456
-#: public/views/walletHome.html:539
+#: public/views/walletHome.html:485
+#: public/views/walletHome.html:509
+#: public/views/walletHome.html:578
 msgid "Who signs:"
 msgstr "Firmante:"
 
@@ -1602,19 +1831,26 @@ msgstr "Dirección del testigo"
 msgid "Witnesses"
 msgstr "Testigos"
 
+#: public/views/modals/share.html:43
+msgid "Write down this textcoin on paper and store it securely. Claim it back anytime in the future using"
+msgstr ""
+
 #: public/views/backup.html:56
 msgid "Write it down and keep it somewhere safe."
 msgstr "Anotar y guardar en lugar seguro."
 
-#: src/js/services/profileService.js:664
+#: src/js/services/profileService.js:682
 msgid "Wrong password"
 msgstr "Contraseña errónea"
 
 #: public/views/authConfirmation.html:17
-#: public/views/modals/confirmation.html:6
-#: src/js/controllers/index.js:457
+#: src/js/controllers/index.js:518
 msgid "Yes"
 msgstr "Sí"
+
+#: public/views/modals/tx-details.html:148
+msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
+msgstr ""
 
 #: public/views/modals/bind.html:91
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
@@ -1623,6 +1859,10 @@ msgstr "No puede enlazar su transacción a otro pago ya que su monedero es de di
 #: public/views/walletHome.html:42
 msgid "You do not have a wallet"
 msgstr "No tiene ningún monedero"
+
+#: public/views/modals/choose-profile.html:69
+msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
+msgstr ""
 
 #: public/views/backup.html:55
 #: public/views/recoveryFromSeed.html:31
@@ -1663,6 +1903,14 @@ msgstr "cantidad"
 msgid "an event is posted by an oracle"
 msgstr "un oráculo publica un evento"
 
+#: public/views/modals/share.html:43
+msgid "and erase the textcoin to keep it safe from attackers."
+msgstr ""
+
+#: public/views/walletHome.html:567
+msgid "available"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
 msgstr "puede desbloquear el contrato"
@@ -1675,7 +1923,7 @@ msgstr "puede desbloquear el contrato cuando expire tras"
 msgid "cancel wallet creation"
 msgstr "cancelar creación de cartera"
 
-#: public/views/modals/tx-details.html:131
+#: public/views/modals/tx-details.html:137
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr "reclamado por {{btx.claimedByMe?' me': 'receptor' | translate}}"
 
@@ -1683,9 +1931,9 @@ msgstr "reclamado por {{btx.claimedByMe?' me': 'receptor' | translate}}"
 msgid "clear chat history"
 msgstr "limpiar historial de chat"
 
-#: public/views/modals/share.html:23
-msgid "copy the text below and send it to the recipient via any messaging app, or print it on paper"
-msgstr "copie el siguiente texto y envíelo al destinatario mediante una aplicación de mensajería o imprímalo"
+#: public/views/walletHome.html:567
+msgid "confirmed"
+msgstr ""
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
@@ -1707,6 +1955,10 @@ msgstr "por ejemplo, monedero 1-2, con una de las claves en este dispositivo y l
 msgid "either way"
 msgstr "de todos modos"
 
+#: public/views/modals/tx-details.html:148
+msgid "erase textcoin"
+msgstr ""
+
 #: public/views/modals/bind.html:64
 msgid "explicitly"
 msgstr "explícitamente"
@@ -1724,15 +1976,23 @@ msgstr "si un oráculo publica un evento"
 msgid "in merkle tree"
 msgstr "en el árbol \"Merkle\""
 
-#: public/views/walletHome.html:153
+#: public/views/walletHome.html:168
 msgid "in smart wallets"
 msgstr "en monederos"
+
+#: public/views/modals/signed-message.html:29
+msgid "invalid"
+msgstr ""
+
+#: public/views/modals/share.html:36
+msgid "keep for myself"
+msgstr ""
 
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
 msgstr "bloqueado por pagos pendientes"
 
-#: public/views/modals/tx-details.html:125
+#: public/views/modals/tx-details.html:131
 msgid "not claimed"
 msgstr "no reclamado"
 
@@ -1741,8 +2001,8 @@ msgstr "no reclamado"
 msgid "on feed name"
 msgstr "en el nombre de la fuente"
 
-#: public/views/walletHome.html:431
-#: public/views/walletHome.html:442
+#: public/views/walletHome.html:460
+#: public/views/walletHome.html:471
 msgid "optional"
 msgstr "opcional"
 
@@ -1762,41 +2022,62 @@ msgstr "corresponsal paga"
 msgid "posted"
 msgstr "publicado"
 
-#: public/views/modals/tx-details.html:142
+#: public/views/modals/tx-details.html:151
 msgid "re-send private payloads"
 msgstr "reenviar datos privados"
 
-#: public/views/modals/tx-details.html:145
+#: public/views/modals/tx-details.html:154
 msgid "re-send private payloads to cosigners"
 msgstr "reenviar datos privados a co-firmantes"
 
-#: src/js/controllers/walletHome.js:714
+#: public/views/modals/share.html:35
+msgid "send"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:773
 msgid "send email"
 msgstr "enviar correo electrónico"
 
-#: src/js/controllers/walletHome.js:1122
-#: src/js/controllers/walletHome.js:1153
-#: src/js/controllers/walletHome.js:1160
-#: src/js/controllers/walletHome.js:827
-#: src/js/controllers/walletHome.js:833
-#: src/js/controllers/walletHome.js:846
-#: src/js/controllers/walletHome.js:942
-#: src/js/controllers/walletHome.js:981
+#: src/js/controllers/walletHome.js:1087
+#: src/js/controllers/walletHome.js:1142
+#: src/js/controllers/walletHome.js:1280
+#: src/js/controllers/walletHome.js:1311
+#: src/js/controllers/walletHome.js:1318
+#: src/js/controllers/walletHome.js:908
+#: src/js/controllers/walletHome.js:914
+#: src/js/controllers/walletHome.js:955
+#: src/js/controllers/walletHome.js:991
 msgid "sending"
 msgstr "enviando"
 
-#: public/views/modals/tx-details.html:139
+#: public/views/modals/tx-details.html:145
 msgid "share again"
 msgstr "compartir otra vez"
+
+#: public/views/walletHome.html:446
+msgid "switch to multi-address"
+msgstr ""
+
+#: public/views/walletHome.html:445
+msgid "switch to single address"
+msgstr ""
+
+#: public/views/modals/share.html:39
+msgid "the text below and send it to the recipient via any messaging app"
+msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:17
 msgid "to"
 msgstr "a"
 
-#: public/views/walletHome.html:432
-#: public/views/walletHome.html:443
+#: public/views/walletHome.html:461
+#: public/views/walletHome.html:472
 msgid "too long!"
 msgstr "¡demasiado largo!"
+
+#: public/views/modals/signed-message.html:30
+msgid "valid"
+msgstr ""
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
@@ -1814,6 +2095,7 @@ msgstr "con el valor esperado de"
 msgid "{{address}} can be spent if:"
 msgstr "Se puede gastar {{address}} si:"
 
+#: public/views/modals/accept-profile.html:41
 #: public/views/modals/claim-textcoin.html:36
 #: public/views/modals/customized-amount.html:76
 msgid "{{buttonLabel}}"
@@ -1823,7 +2105,11 @@ msgstr "{{buttonLabel}}"
 msgid "{{cancel_label || 'Cancel'}}"
 msgstr "{cancel_label || 'Cancelar'}"
 
-#: src/js/controllers/walletHome.js:1662
+#: public/views/modals/confirmation.html:6
+msgid "{{confirm_label || 'Yes'}}"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:1898
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr "se descontarán {{fee}} por comisión de la red bitcoin"
 
