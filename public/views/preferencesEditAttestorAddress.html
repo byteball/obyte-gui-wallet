@@ -1,0 +1,19 @@
+<div
+	class="topbar-container"
+	ng-include="'views/includes/topbar.html'"
+	ng-init="titleSection='Attestor address'; goBackToState = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesEditAttestorAddressCtrl as ctrl">
+
+	<h4></h4>
+	<form name="editAttestorAddressForm" ng-submit="ctrl.save()" class="columns">
+		<div class="text-warning size-12 m10b" ng-show="ctrl.error">{{ctrl.error|translate}}</div>
+		<label><span>{{ctrl.title|translate}}</span></label>
+		<input type="text" type="text" name="attestorAddress" ng-model="ctrl.attestorAddress">
+		<input type="submit" class="button expand black round" value="{{'Save'|translate}}"
+			ng-style="{'background-color':index.backgroundColor}">
+	</form>
+
+</div>
+<div class="extra-margin-bottom"></div>

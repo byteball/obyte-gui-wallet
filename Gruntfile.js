@@ -179,8 +179,8 @@ module.exports = function(grunt) {
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/icon-white-outline.ico', '../public/img/icons/icon-white-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
     },
@@ -211,10 +211,27 @@ module.exports = function(grunt) {
           buildDir: '../byteballbuilds',
           version: '0.14.7',
           zip: false,
-          macIcns: './public/img/icons/icon-white-outline.icns',
-          winIco: './public/img/icons/icon-white-outline.ico',
-          exeIco: './public/img/icons/icon-white-outline.ico',
-          macPlist: {CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}], /*CFBundleIconFile: 'nw.icns',*/ LSHasLocalizedDisplayName: 0}
+          macIcns: './public/img/icons/logo-circle.icns',
+          winIco: './public/img/icons/logo-circle.ico',
+          exeIco: './public/img/icons/logo-circle.ico',
+          macPlist: {
+          	CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}],
+      		/*CFBundleIconFile: 'nw.icns',*/
+      		LSHasLocalizedDisplayName: 0,
+      		UTExportedTypeDeclarations: [{
+      			UTTypeIdentifier: 'org.byteball.coin',
+      			UTTypeDescription: 'Byteball Private Coin',
+      			UTTypeConformsTo: ["public.data"],
+      			UTTypeTagSpecification: {
+      				"public.filename-extension":["coin"]
+      			}
+      		}],
+      		CFBundleDocumentTypes: [{
+      			CFBundleTypeName: "Byteball Private Coin",
+      			LSItemContentTypes: ["org.byteball.coin"],
+      			CFBundleTypeIconFile: "app.icns"
+      		}]
+          }
       },
       src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
     },
@@ -304,6 +321,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('innosetup-compiler');
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
+  grunt.registerTask('watch-dev', ['default', 'watch']);
   grunt.registerTask('cordova', ['default', 'browserify']);
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   //grunt.registerTask('prod', ['default', 'uglify']);

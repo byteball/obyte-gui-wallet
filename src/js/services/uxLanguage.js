@@ -25,20 +25,38 @@ angular.module('copayApp.services')
       name: 'Nederlands',
       isoCode: 'nl_NL',
     }, {
+      name: 'Dansk',
+      isoCode: 'da_DK',
+    }, {
       name: 'Svenska',
       isoCode: 'sv_SE',
     }, {
       name: 'Polski',
       isoCode: 'pl_PL',
     }, {
+      name: 'Bosanski',
+      isoCode: 'bs_BA',
+    }, {
+      name: 'Hrvatski',
+      isoCode: 'hr_HR',
+    }, {
       name: 'Magyar',
       isoCode: 'hu_HU',
+    }, {
+      name: 'Română',
+      isoCode: 'ro_RO',
     }, {
       name: 'Shqip',
       isoCode: 'sq_AL',
     }, {
+      name: 'Nigerian (Pidgin)',
+      isoCode: 'pcm_NG',
+    }, {
       name: 'Ελληνικά',
       isoCode: 'el_GR',
+    }, {
+      name: 'हिन्दी',
+      isoCode: 'hi_IN',
     }, {
       name: '日本語',
       isoCode: 'ja_jp',

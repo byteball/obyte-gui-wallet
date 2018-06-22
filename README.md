@@ -54,9 +54,14 @@ All app bundles will be placed at `../byteballbuilds` dir, so create it first: `
 
 
 ### Android
-
-- Install Android SDK
+- Install jdk1.8 (9 and higher won't work)
+- Install Android SDK (from Android Studio)
 - Run `make android-debug`
+  * In case of `could not find gradle wrapper within android sdk` error, download Android SDK tools package v25:
+    * http://dl-ssl.google.com/android/repository/tools_r25.2.5-macosx.zip
+    * http://dl-ssl.google.com/android/repository/tools_r25.2.5-windows.zip
+
+  and extract to android_sdk_folder/ (should replace ./tools folder).
 
 ### iOS
 
