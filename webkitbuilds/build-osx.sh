@@ -55,7 +55,7 @@ pushd "${STAGING_DIR}"
 
 popd
 
-# Fix size to 150MB
+# Fix size to 350MB
 SIZE=350
 
 if [ $? -ne 0 ]; then

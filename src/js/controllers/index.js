@@ -10,7 +10,7 @@ var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -24,7 +24,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
-  self.assocAddressesByEmail = {};
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -72,7 +71,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			description += "\n\nBreadcrumbs:\n"+breadcrumbs.get().join("\n")+"\n\n";
 			description += "UA: "+navigator.userAgent+"\n";
 			description += "Language: "+(navigator.userLanguage || navigator.language)+"\n";
-			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+"\n";
+			description += "Program: "+conf.program+' '+conf.program_version+' '+(conf.bLight ? 'light' : 'full')+" #"+window.commitHash+"\n";
             network.sendJustsaying(ws, 'bugreport', {message: error_message, exception: description});
         });
     }
@@ -295,6 +294,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             $rootScope.$emit('Local/WalletCompleted');
         });
     });
+
+    $rootScope.$on('process_status_change', function(event, process_name, isEnabled){
+    	self.setOngoingProcess(process_name, isEnabled);
+    });
     
     // in arrOtherCosigners, 'other' is relative to the initiator
     eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
@@ -469,8 +472,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                                 arrDestinations.push(formatted_amount + " " + currency + " to " + address);
 							}
                         }
-                        var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
-                        var question = gettextCatalog.getString('Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?');
+						function getQuestion(){
+							if (arrDestinations.length === 0){
+								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "profile" || objMessage.app === "attestation" || objMessage.app === "data" || objMessage.app === 'data_feed'); });
+								if (arrDataMessages.length > 0){
+									var message = arrDataMessages[0]; // can be only one
+									var payload = message.payload;
+									var obj = (message.app === 'attestation') ? payload.profile : payload;
+									var arrPairs = [];
+									for (var field in obj)
+										arrPairs.push(field+": "+obj[field]);
+									var nl = isCordova ? "\n" : "<br>";
+									var list = arrPairs.join(nl)+nl;
+									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
+										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from wallet '+credentials.walletName+'?';
+									if (message.app === 'attestation')
+										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from wallet '+credentials.walletName+'?';
+								}
+							}
+							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
+							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
+						}
+						var question = getQuestion();
                         requestApproval(question, {
                             ifYes: function(){
                                 createAndSendSignature();
@@ -633,48 +656,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
   };
-	
-	
-	self.resolveEmailToAddress = function(email, onDone){
-		function setResult(result){
-			self.assocAddressesByEmail[email] = result;
-			$timeout(onDone);
-		}
-		var conf = require('byteballcore/conf.js');
-		var db = require('byteballcore/db.js');
-		var network = require('byteballcore/network.js');
-		var emailAttestor = configService.getSync().emailAttestor;
-		if (!emailAttestor)
-			return setResult('none');
-		db.query(
-			"SELECT address, is_stable FROM attested_fields CROSS JOIN units USING(unit) \n\
-			WHERE attestor_address=? AND field='email' AND value=? ORDER BY attested_fields.rowid DESC LIMIT 1", 
-			[emailAttestor, email], 
-			function(rows){
-				if (rows.length > 0)
-					return setResult( (!conf.bLight || rows[0].is_stable) ? rows[0].address : 'unknown' );
-				// not found
-				if (!conf.bLight)
-					return setResult('none');
-				// light
-				var params = {attestor_address: emailAttestor, field: 'email', value: email};
-				network.requestFromLightVendor('light/get_attestation', params, function(ws, request, response){
-					if (response.error)
-						return setResult('unknown');
-					var attestation_unit = response;
-					if (attestation_unit === "") // no attestation
-						return setResult('none');
-					network.requestHistoryFor([attestation_unit], [], function(err){
-						if (err)
-							return setResult('unknown');
-						// now attestation_unit is in the db (stable or unstable)
-						self.resolveEmailToAddress(email, onDone);
-					});
-				});
-			}
-		);
-	}
-
     
   self.goHome = function() {
     go.walletHome();
@@ -1228,16 +1209,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (!client.isComplete())
 		return console.log('fc incomplete yet');
     client.getTxHistory(self.arrBalances[self.assetIndex].asset, self.shared_address, function onGotTxHistory(txs) {
-        var newHistory = self.processNewTxs(txs);
-        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
+        $timeout(function(){
+	        var newHistory = self.processNewTxs(txs);
+	        $log.debug('Tx History synced. Total Txs: ' + newHistory.length);
 
-        if (walletId ==  profileService.focusedClient.credentials.walletId) {
-            self.completeHistory = newHistory;
-            self.txHistory = newHistory.slice(0, self.historyShowLimit);
-            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
-        }
+	        if (walletId ==  profileService.focusedClient.credentials.walletId) {
+	            self.completeHistory = newHistory;
+	            self.txHistory = newHistory.slice(0, self.historyShowLimit);
+	            self.historyShowShowAll = newHistory.length >= self.historyShowLimit;
+	        }
 
-        return cb();
+	        return cb();
+	    });
     });
   }
   
@@ -1258,21 +1241,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
 
-    if (!fc.isComplete() || self.arrBalances.length === 0 || self.updatingTxHistory[walletId]) return;
+    if (!fc.isComplete() || self.arrBalances.length === 0) return;
 
     $log.debug('Updating Transaction History');
     self.txHistoryError = false;
-    self.updatingTxHistory[walletId] = true;
 
-    $timeout(function onUpdateHistoryTimeout() {
-      self.updateLocalTxHistory(fc, function(err) {
-        self.updatingTxHistory[walletId] = false;
-        if (err)
-			self.txHistoryError = true;
-		$timeout(function() {
-        	$rootScope.$apply();
-		});
-      });
+    mutex.lock(['update-history-'+walletId], function(unlock){
+    	self.updatingTxHistory[walletId] = true;
+    	$timeout(function onUpdateHistoryTimeout() {
+	      self.updateLocalTxHistory(fc, function(err) {
+	      	self.updatingTxHistory[walletId] = false;
+	      	unlock();
+	        if (err)
+				self.txHistoryError = true;
+			$timeout(function() {
+	        	$rootScope.$apply();
+			});
+	      });
+	    });
     });
   };
 
@@ -1437,6 +1423,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return profileService.getWallets('livenet');
     };
     
+  self.getToAddressLabel = function(value) {
+    var validationResult = aliasValidationService.validate(value);
+
+    if (validationResult.isValid) {
+      var aliasObj = aliasValidationService.getAliasObj(validationResult.attestorKey);
+      return gettextCatalog.getString('To') + " " + gettextCatalog.getString(aliasObj.title);
+    }
+
+    return gettextCatalog.getString('To email');
+  };
+  self.getAddressValue = function(value) {
+    var validationResult = aliasValidationService.validate(value);
+
+    if (validationResult.isValid) {
+      return validationResult.account;
+    }
+
+    return value;
+  };
 
   $rootScope.$on('Local/ClearHistory', function(event) {
     $log.debug('The wallet transaction history has been deleted');
@@ -1672,4 +1677,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       $rootScope.$apply();
     });
   });
+
+  (function() {
+		"drag dragover dragstart dragenter".split(" ").forEach(function(e){
+			window.addEventListener(e, function(e){
+				e.preventDefault();
+				e.stopPropagation();
+				e.dataTransfer.dropEffect = "copy";
+			}, false);
+		});
+		document.addEventListener('drop', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+				go.handleUri(e.dataTransfer.files[i].path);
+			}
+		}, false);
+	})();
 });

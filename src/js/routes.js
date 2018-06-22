@@ -341,13 +341,23 @@ angular
           },
         }
       })
-      .state('preferencesGlobal.preferencesEmailAttestor', {
-        url: '/emailAttestor',
+      .state('preferencesGlobal.preferencesAttestorAddresses', {
+        url: '/attestorAddresses',
         walletShouldBeComplete: true,
         needProfile: true,
         views: {
           'main@': {
-            templateUrl: 'views/preferencesEmailAttestor.html'
+            templateUrl: 'views/preferencesAttestorAddresses.html'
+          },
+        }
+      })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditAttestorAddress', {
+        url: '/edit',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditAttestorAddress.html'
           },
         }
       })

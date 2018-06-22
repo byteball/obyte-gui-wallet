@@ -3,7 +3,7 @@
 
 #define MyAppName "Byteball-TN"
 #define MyAppPackageName "Byteball-TN"
-#define MyAppVersion "2.2.0"
+#define MyAppVersion "2.3.0"
 #define MyAppPublisher "Byteball"
 #define MyAppURL "https://byteball.org"
 #define MyAppExeName "Byteball-TN.exe"
@@ -24,8 +24,9 @@ OutputBaseFilename={#MyAppPackageName}-win32
 OutputDir=../../byteballbuilds
 Compression=lzma
 SolidCompression=yes
-; SetupIconFile=../public/img/icons/icon-white-outline.ico
+; SetupIconFile=../public/img/icons/logo-circle.ico
 UninstallDisplayIcon={app}/icon.ico
+ChangesAssociations=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -34,6 +35,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ; Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Registry]
+<<<<<<< HEAD
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; ValueType: string; ValueName: ""; ValueData: "URL:Byteball Protocol"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
@@ -41,6 +43,19 @@ Root: HKLM; Subkey: "Software\Classes\byteball-tn\DefaultIcon"; ValueType: strin
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
+=======
+Root: HKLM; Subkey: "Software\Classes\byteball"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "Software\Classes\byteball"; ValueType: string; ValueName: ""; ValueData: "URL:Byteball Protocol"
+Root: HKLM; Subkey: "Software\Classes\byteball"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
+Root: HKLM; Subkey: "Software\Classes\byteball\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico"
+Root: HKLM; Subkey: "Software\Classes\byteball\shell"
+Root: HKLM; Subkey: "Software\Classes\byteball\shell\open"
+Root: HKLM; Subkey: "Software\Classes\byteball\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
+Root: HKCR; Subkey: ".coin";                             ValueData: "{#MyAppName}Coin";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin";                     ValueData: "{#MyAppName} Private Coin";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
+Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
+>>>>>>> master
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -48,7 +63,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 ; Source: "..\byteballbuilds\byteball-test\win32\byteball.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\byteballbuilds\{#MyAppPackageName}\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../public/img/icons/icon-white-outline.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
+Source: "../public/img/icons/logo-circle.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
