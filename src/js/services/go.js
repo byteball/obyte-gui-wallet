@@ -234,24 +234,28 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
 					if (!fs.existsSync(mimeDir + '/packages')) {
-						fs.mkdirSync(mimeDir + '/packages');
-					}
-					fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
- <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
-   <mime-type type=\"application/x-"+package.name+"\">\n\
-   <comment>Byteball Private Coin</comment>\n\
-   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
-  </mime-type>\n\
- </mime-info>\n", {mode: 0755}, function(err) {
- 						if (err)
-							throw Error("failed to write MIME config file: "+err);
-						child_process.exec('update-mime-database '+mimeDir, function(err){
-							if (err)
-								throw Error("failed to exec update-mime-database: "+err);
-							child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+package.name, function(err){});
+						fileSystemService.recursiveMkdir(mimeDir + '/packages', parseInt('755', 8), function(err){
+							writeXml();
 						});
- 						console.log(".desktop done");
- 					});
+					} else writeXml();
+					var writeXml = function() {
+						fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
+	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
+	   <mime-type type=\"application/x-"+package.name+"\">\n\
+	   <comment>Byteball Private Coin</comment>\n\
+	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
+	  </mime-type>\n\
+	 </mime-info>\n", {mode: 0755}, function(err) {
+	 						if (err)
+								throw Error("failed to write MIME config file: "+err);
+							child_process.exec('update-mime-database '+mimeDir, function(err){
+								if (err)
+									throw Error("failed to exec update-mime-database: "+err);
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+package.name, function(err){});
+							});
+	 						console.log(".desktop done");
+	 					});
+					};
 				});
 			});
 		});
