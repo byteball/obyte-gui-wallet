@@ -233,11 +233,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				child_process.exec('update-desktop-database '+applicationsDir, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
-					if (!fs.existsSync(mimeDir + '/packages')) {
-						fileSystemService.recursiveMkdir(mimeDir + '/packages', parseInt('755', 8), function(err){
-							writeXml();
-						});
-					} else writeXml();
 					var writeXml = function() {
 						fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
@@ -256,6 +251,13 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 	 						console.log(".desktop done");
 	 					});
 					};
+					if (!fs.existsSync(mimeDir + '/packages')) {
+						fileSystemService.recursiveMkdir(mimeDir + '/packages', parseInt('755', 8), function(err){
+							writeXml();
+						});
+					}
+					else
+						writeXml();
 				});
 			});
 		});
