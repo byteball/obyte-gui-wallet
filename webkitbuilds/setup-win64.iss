@@ -35,7 +35,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 ; Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Registry]
-<<<<<<< HEAD
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; ValueType: string; ValueName: ""; ValueData: "URL:Byteball Protocol"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
@@ -43,20 +42,11 @@ Root: HKLM; Subkey: "Software\Classes\byteball-tn\DefaultIcon"; ValueType: strin
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open"
 Root: HKLM; Subkey: "Software\Classes\byteball-tn\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
-=======
-Root: HKLM; Subkey: "Software\Classes\byteball"; Flags: uninsdeletekey
-Root: HKLM; Subkey: "Software\Classes\byteball"; ValueType: string; ValueName: ""; ValueData: "URL:Byteball Protocol"
-Root: HKLM; Subkey: "Software\Classes\byteball"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
-Root: HKLM; Subkey: "Software\Classes\byteball\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\icon.ico"
-Root: HKLM; Subkey: "Software\Classes\byteball\shell"
-Root: HKLM; Subkey: "Software\Classes\byteball\shell\open"
-Root: HKLM; Subkey: "Software\Classes\byteball\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName} ""%1"""
 Root: HKCR; Subkey: ".coin";                             ValueData: "{#MyAppName}Coin";          Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
 Root: HKCR; Subkey: "{#MyAppName}Coin";                     ValueData: "{#MyAppName} Private Coin";  Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
 Root: HKCR; Subkey: "{#MyAppName}Coin\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
 Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
 
->>>>>>> master
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
