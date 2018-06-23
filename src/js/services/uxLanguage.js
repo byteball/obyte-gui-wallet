@@ -34,6 +34,9 @@ angular.module('copayApp.services')
       name: 'Polski',
       isoCode: 'pl_PL',
     }, {
+      name: 'Eesti',
+      isoCode: 'et_EE',
+    }, {
       name: 'Bosanski',
       isoCode: 'bs_BA',
     }, {
