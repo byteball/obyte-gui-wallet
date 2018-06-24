@@ -1341,6 +1341,8 @@ angular.module('copayApp.controllers')
 		this.canSendExternalPayment = function() {
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
+			if (!$scope.index.arrBalances[$scope.index.assetIndex]) // no balances yet, assume can send
+			 	return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
 			 	return true;
 			var form = $scope.sendPaymentForm;
