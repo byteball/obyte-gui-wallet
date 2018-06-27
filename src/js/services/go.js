@@ -159,7 +159,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		}
 		var double_claim = false;
 		if (Date.now() - last_handle_file_ts < 500) {
-			double_claim = true;
+			//double_claim = true;
+			return;
 		}
 		last_handle_file_ts = Date.now();
 		var breadcrumbs = require('byteballcore/breadcrumbs.js');
