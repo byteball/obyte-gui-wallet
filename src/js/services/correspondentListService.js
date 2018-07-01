@@ -101,13 +101,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
 	function highlightActions(text, arrMyAddresses){
-		return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+		return text.replace(/(\s|^)([2-7A-Z]{32})([\s.,;!:]|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
-				return address;
+				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>';
+			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>'+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
