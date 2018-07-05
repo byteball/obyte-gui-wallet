@@ -1551,9 +1551,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
     return function(scope, element, attrs) {
         element.bind("keydown", function onNgEnterKeydown(e) {
             if(e.which === 13 && !e.shiftKey) {
-                scope.$apply(function(){
-                    scope.$eval(attrs.ngEnter, {'e': e});
-                });
+            	$timeout(function(){
+	                scope.$apply(function(){
+	                    scope.$eval(attrs.ngEnter, {'e': e});
+	                });
+	            });
                 e.preventDefault();
             }
         });
@@ -1596,7 +1598,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
                 scope.loadingHistory = true;
                 chatScrollPosition.prepareFor('up');
             	scope[attr.whenScrolled](function(){
-            		scope.$digest();
+            		$timeout(function(){
+	            		scope.$digest();
+	            	});
                 	chatScrollPosition.restore();
                 	scope.loadingHistory = false;
                 });
