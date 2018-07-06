@@ -38,6 +38,14 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
         $event.target.select();
     };
     
+	$scope.shareCode = function() {
+		if (isCordova) {
+			if (isMobile.Android() || isMobile.Windows())
+				window.ignoreMobilePause = true;
+			window.plugins.socialsharing.share(conf.program + ':' + $scope.code, null, null, null);
+		}
+	};
+	
     $scope.error = null;
     correspondentListService.startWaitingForPairing(function(pairingInfo){
         console.log("beginAddCorrespondent " + pairingInfo.pairing_secret);
