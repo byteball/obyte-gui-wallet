@@ -1547,7 +1547,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	};
-}).directive('ngEnter', function() {
+}).directive('ngEnter', ['$timeout', function($timeout) {
     return function(scope, element, attrs) {
         element.bind("keydown", function onNgEnterKeydown(e) {
             if(e.which === 13 && !e.shiftKey) {
@@ -1560,7 +1560,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-}).directive('whenScrolled', ['$timeout', function($timeout) {
+}]).directive('whenScrolled', ['$timeout', function($timeout) {
 	function ScrollPosition(node) {
 	    this.node = node;
 	    this.previousScrollHeightMinusTop = 0;
