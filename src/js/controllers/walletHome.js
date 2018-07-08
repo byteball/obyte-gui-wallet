@@ -882,10 +882,10 @@ angular.module('copayApp.controllers')
 				var address = form.address.$modelValue;
 				var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 				var amount = form.amount.$modelValue;
-				// address can be [bytreball_addr, email, empty => social sharing]
-				var isTextcoin = !ValidationUtils.isValidAddress(address);
+				// address can be [bytreball_addr, email, account, empty => social sharing]
 				var accountValidationResult = aliasValidationService.validate(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
+				var isTextcoin = (isEmail || !address);
 
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
