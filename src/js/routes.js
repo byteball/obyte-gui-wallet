@@ -589,7 +589,7 @@ angular
               $log.debug('Display disclaimer... redirecting');
               return $state.transitionTo('preferencesGlobal.preferencesAbout.disclaimer');
             } else {
-              throw new Error(err); // TODO
+              throw new Error(err.message || err); // TODO
             }
           } else {
             $log.debug('Profile loaded ... Starting UX.');

@@ -459,13 +459,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
                         for (var asset in assocAmountByAssetAndAddress){
 							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
 							var currency = "of asset "+formatted_asset;
-							var assetIndex = lodash.findIndex(self.arrBalances, {asset: asset});
-							var assetInfo = self.arrBalances[assetIndex];
+							var assetInfo = profileService.assetMetadata[asset];
 							if (asset === 'base')
 								currency = config.unitName;
 							else if(asset === constants.BLACKBYTES_ASSET)
 								currency = config.bbUnitName;
-							else if (assetInfo.name)
+							else if (assetInfo && assetInfo.name)
 								currency = assetInfo.name;
                             for (var address in assocAmountByAssetAndAddress[asset]){
 								var formatted_amount = profileService.formatAmount(assocAmountByAssetAndAddress[asset][address], asset);
