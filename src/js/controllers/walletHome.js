@@ -1546,33 +1546,36 @@ angular.module('copayApp.controllers')
 			this.bSendAll = false;
 
 			var form = $scope.sendPaymentForm;
+			var self = this;
 
-			if (form && form.amount) {
-				form.amount.$pristine = true;
-				form.amount.$setViewValue('');
-				if (form.amount)
-					form.amount.$render();
-
-				if (form.merkle_proof) {
-					form.merkle_proof.$setViewValue('');
-					form.merkle_proof.$render();
-				}
-				if (form.comment) {
-					form.comment.$setViewValue('');
-					form.comment.$render();
-				}
-				form.$setPristine();
-
-				if (form.address) {
-					form.address.$pristine = true;
-					form.address.$setViewValue('');
-					form.address.$render();
-				}
-			}
-			this.switchForms();
 			$timeout(function() {
-				$rootScope.$digest();
-			}, 1);
+				if (form && form.amount) {
+					form.amount.$pristine = true;
+					form.amount.$setViewValue('');
+					if (form.amount)
+						form.amount.$render();
+
+					if (form.merkle_proof) {
+						form.merkle_proof.$setViewValue('');
+						form.merkle_proof.$render();
+					}
+					if (form.comment) {
+						form.comment.$setViewValue('');
+						form.comment.$render();
+					}
+					form.$setPristine();
+
+					if (form.address) {
+						form.address.$pristine = true;
+						form.address.$setViewValue('');
+						form.address.$render();
+					}
+				}
+				self.switchForms();
+				$timeout(function() {
+					$rootScope.$digest();
+				}, 1);
+			});
 		};
 
 		this.setSendAll = function() {
