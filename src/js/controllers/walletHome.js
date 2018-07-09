@@ -1572,10 +1572,10 @@ angular.module('copayApp.controllers')
 					}
 				}
 				self.switchForms();
+				$timeout(function() {
+					$rootScope.$digest();
+				}, 1);
 			});
-			$timeout(function() {
-				$rootScope.$digest();
-			}, 1);
 		};
 
 		this.setSendAll = function() {
