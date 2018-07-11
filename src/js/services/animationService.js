@@ -135,7 +135,7 @@ angular.module('copayApp.services').factory('animationService', function(isCordo
       cachedBackPanel = e.cloneNode(true);
       cachedBackPanel.id = 'mainSectionDup';
       var c = document.getElementById('sectionContainer');
-      c.appendChild(cachedBackPanel);
+      //c.appendChild(cachedBackPanel);
 
       if (sc)
         cachedBackPanel.getElementsByClassName('content')[0].scrollTop = sc;
