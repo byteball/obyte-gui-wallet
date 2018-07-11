@@ -35,6 +35,16 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return value.replace(/^steem\//i, '');
 			}
 		},
+		username: {
+			dbKey: 'username',
+			title: 'username',
+			isValid: function (value) {
+				return /^@([a-z\d\-_])+$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.substr(1);
+			}
+		},
 		phone: {
 			dbKey: 'phone',
 			title: 'phone number',
