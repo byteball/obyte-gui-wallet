@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
-"PO-Revision-Date: 2018-06-22T09:24:11+0000\n"
+"PO-Revision-Date: 2018-07-04 07:20\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -695,7 +695,7 @@ msgstr "Frais"
 
 #: public/views/walletHome.html:567
 msgid "Field"
-msgstr ""
+msgstr "Champ"
 
 #: public/views/modals/tx-details.html:116
 msgid "Finality"
@@ -930,7 +930,7 @@ msgstr "Message"
 #: public/views/modals/sign-message.html:17
 #: public/views/modals/signed-message.html:17
 msgid "Message:"
-msgstr ""
+msgstr "Message :"
 
 #: public/views/walletHome.html:658
 msgid "Moved"
@@ -1162,11 +1162,11 @@ msgstr "Profil"
 
 #: public/views/walletHome.html:567
 msgid "Profile field"
-msgstr ""
+msgstr "Champ de profil"
 
 #: public/views/walletHome.html:567
 msgid "Profile field value"
-msgstr ""
+msgstr "Valeur du champ de profil"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1418,24 +1418,24 @@ msgstr "Montrer la graine de portefeuille quand même"
 
 #: public/views/modals/sign-message.html:46
 msgid "Sign"
-msgstr ""
+msgstr "Signer"
 
 #: public/views/modals/sign-message.html:8
 msgid "Sign message"
-msgstr ""
+msgstr "Signer le message"
 
 #: src/js/controllers/index.js:407
 msgid "Sign message \"\" by address ?"
-msgstr ""
+msgstr "Signer le message \"\" par adresse ?"
 
 #: public/views/modals/signed-message.html:8
 msgid "Signed message"
-msgstr ""
+msgstr "Message signé"
 
 #: public/views/modals/sign-message.html:22
 #: public/views/modals/signed-message.html:22
 msgid "Signing address:"
-msgstr ""
+msgstr "Adresse de signature :"
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
@@ -1540,7 +1540,7 @@ msgstr "Le pair reçoit ce paiement si"
 
 #: public/views/modals/signed-message.html:28
 msgid "The signature is"
-msgstr ""
+msgstr "La signature est"
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1716,7 +1716,7 @@ msgstr "Mise à jour de la base de données, veuillez patienter.  Cela peut pren
 
 #: public/views/walletHome.html:567
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #: public/views/walletHome.html:560
 msgid "Values"
@@ -1909,7 +1909,7 @@ msgstr "et effacer le textcoin pour le garder à l'abri des pirates."
 
 #: public/views/walletHome.html:567
 msgid "available"
-msgstr ""
+msgstr "disponible"
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
@@ -1933,7 +1933,7 @@ msgstr "effacer l’historique du chat"
 
 #: public/views/walletHome.html:567
 msgid "confirmed"
-msgstr ""
+msgstr "confirmé"
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
@@ -1982,7 +1982,7 @@ msgstr "dans le portefeuilles intelligents"
 
 #: public/views/modals/signed-message.html:29
 msgid "invalid"
-msgstr ""
+msgstr "non valide"
 
 #: public/views/modals/share.html:36
 msgid "keep for myself"
@@ -2077,7 +2077,7 @@ msgstr "trop long !"
 
 #: public/views/modals/signed-message.html:30
 msgid "valid"
-msgstr ""
+msgstr "valide"
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"

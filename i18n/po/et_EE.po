@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
-"PO-Revision-Date: 2018-06-22T09:24:42+0000\n"
+"PO-Revision-Date: 2018-06-24T11:30:30+0000\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -27,7 +27,7 @@ msgstr "(valitud rahakott)"
 
 #: public/views/modals/choose-profile.html:47
 msgid "(my other wallet)"
-msgstr ""
+msgstr "(minu teine rahakott)"
 
 #: public/views/walletHome.html:666
 msgid "(possible double spend)"
@@ -198,15 +198,15 @@ msgstr "Tõendaja:"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Attestor addresses"
-msgstr ""
+msgstr "Tõendaja aadress"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
-msgstr "Automaatne tunnistajate nimekirja uuendamine vahendajalt"
+msgstr "Automaatne tunnistajate nimekirja uuendamine jaotuspunktist"
 
 #: public/views/preferencesHub.html:16
 msgid "Auto-update the witness list from this hub"
-msgstr "Automaatne tunnistajate nimekirja uuendamine sellelt vahendajalt"
+msgstr "Automaatne tunnistajate nimekirja uuendamine sellest jaotuspunktist"
 
 #: public/views/includes/available-balance.html:7
 msgid "Available Balance"
@@ -284,7 +284,7 @@ msgstr "Seda brauserit ei toeta"
 
 #: public/index.html:12
 msgid "Byteball &mdash; smart payments"
-msgstr ""
+msgstr "Byteball &mdash; nutimaksed"
 
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"
@@ -310,7 +310,7 @@ msgstr "Katkesta"
 
 #: public/views/editCorrespondentDevice.html:35
 msgid "Change hub:"
-msgstr "Muuda vahendajat:"
+msgstr "Muuda jaotuspunkti:"
 
 #: public/views/preferencesAlias.html:16
 msgid "Changing wallet alias only affects the local wallet name."
@@ -342,7 +342,7 @@ msgstr "Võta vahendid omaks"
 
 #: public/views/modals/claim-textcoin.html:8
 msgid "Claim funds by textcoin"
-msgstr "Vahendite omaksvõtmine tekstiga"
+msgstr "Tekstiliste vahendite omaksvõtmine"
 
 #: public/views/walletHome.html:317
 msgid "Claim funds using textcoin"
@@ -350,7 +350,7 @@ msgstr "Tekstiliste vahendite omaksvõtmine"
 
 #: public/views/walletHome.html:85
 msgid "Claiming..."
-msgstr ""
+msgstr "Omaksvõtmine..."
 
 #: public/views/modals/share.html:30
 msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
@@ -358,7 +358,7 @@ msgstr "Klõpsa nuppu e-kirja <span ng-if=\"isResend\">uuesti</span> saatmiseks:
 
 #: public/views/walletHome.html:515
 msgid "Click this button to create a payment file and send it to a recipient."
-msgstr ""
+msgstr "Klõpsa seda nuppu, et luua maksefail, mida saab saata makse vastuvõtjale."
 
 #: public/views/walletHome.html:514
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
@@ -548,11 +548,11 @@ msgstr "Informatsiooni lisamine andmevoogu"
 
 #: public/views/walletHome.html:567
 msgid "Datafeed name"
-msgstr ""
+msgstr "Andmevoo nimi"
 
 #: public/views/walletHome.html:567
 msgid "Datafeed value"
-msgstr ""
+msgstr "Andmevoo väärtus"
 
 #: public/views/modals/tx-details.html:91
 msgid "Date"
@@ -695,7 +695,7 @@ msgstr "Teenustasu"
 
 #: public/views/walletHome.html:567
 msgid "Field"
-msgstr ""
+msgstr "Väli"
 
 #: public/views/modals/tx-details.html:116
 msgid "Finality"
@@ -776,11 +776,11 @@ msgstr "Host"
 
 #: public/views/preferencesGlobal.html:25
 msgid "Hub"
-msgstr "Vahendaja"
+msgstr "Teadete jaotuspunkt"
 
 #: public/views/preferencesHub.html:12
 msgid "Hub URL"
-msgstr "Vahendaja URL"
+msgstr "Jaotuspunkti URL"
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
@@ -930,7 +930,7 @@ msgstr "Sõnum"
 #: public/views/modals/sign-message.html:17
 #: public/views/modals/signed-message.html:17
 msgid "Message:"
-msgstr ""
+msgstr "Sõnum:"
 
 #: public/views/walletHome.html:658
 msgid "Moved"
@@ -1162,11 +1162,11 @@ msgstr "Konto"
 
 #: public/views/walletHome.html:567
 msgid "Profile field"
-msgstr ""
+msgstr "Konto väli"
 
 #: public/views/walletHome.html:567
 msgid "Profile field value"
-msgstr ""
+msgstr "Konto välja väärtus"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1418,24 +1418,24 @@ msgstr "Näita Rahakoti Lähtesõnu"
 
 #: public/views/modals/sign-message.html:46
 msgid "Sign"
-msgstr ""
+msgstr "Allkirjasta"
 
 #: public/views/modals/sign-message.html:8
 msgid "Sign message"
-msgstr ""
+msgstr "Allkirjasta sõnum"
 
 #: src/js/controllers/index.js:407
 msgid "Sign message \"\" by address ?"
-msgstr ""
+msgstr "Allkirjasta sõnum \"\" aadressilt ?"
 
 #: public/views/modals/signed-message.html:8
 msgid "Signed message"
-msgstr ""
+msgstr "Allkirjastatud sõnum"
 
 #: public/views/modals/sign-message.html:22
 #: public/views/modals/signed-message.html:22
 msgid "Signing address:"
-msgstr ""
+msgstr "Allkirjastatav aadress:"
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
@@ -1524,11 +1524,11 @@ msgstr "Tõendatud aadress kuulub:"
 
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
-msgstr "Vahendajat kasutatakse sõnumite saamiseks teistelt seadmetelt."
+msgstr "Teadete jaotuspunkti kasutatakse sõnumite saamiseks teistelt seadmetelt."
 
 #: public/views/modals/approveNewWitnesses.html:11
 msgid "The hub suggests replacing the following witnesses:"
-msgstr "Vahendaja soovitab vahetada järgmised tunnistajad:"
+msgstr "Jaotuspunkt soovitab vahetada järgmised tunnistajad:"
 
 #: public/views/modals/share.html:27
 msgid "The money is stored on this textcoin:"
@@ -1540,7 +1540,7 @@ msgstr "Teine osapool saab selle makse kui"
 
 #: public/views/modals/signed-message.html:28
 msgid "The signature is"
-msgstr ""
+msgstr "Allkiri on"
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1716,7 +1716,7 @@ msgstr "Andmebaasi uuendamine, palun oota. Mõnikord võtab see mõned minutid."
 
 #: public/views/walletHome.html:567
 msgid "Value"
-msgstr ""
+msgstr "Väärtus"
 
 #: public/views/walletHome.html:560
 msgid "Values"
@@ -1909,7 +1909,7 @@ msgstr "ja kustuta see tekst, et hoida seda turvaliselt ründajate eest."
 
 #: public/views/walletHome.html:567
 msgid "available"
-msgstr ""
+msgstr "saadaval"
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
@@ -1933,7 +1933,7 @@ msgstr "kustuta vestluse ajalugu"
 
 #: public/views/walletHome.html:567
 msgid "confirmed"
-msgstr ""
+msgstr "kinnitatud"
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
@@ -1982,7 +1982,7 @@ msgstr "nutilepingutes"
 
 #: public/views/modals/signed-message.html:29
 msgid "invalid"
-msgstr ""
+msgstr "sobimatu"
 
 #: public/views/modals/share.html:36
 msgid "keep for myself"
@@ -2077,7 +2077,7 @@ msgstr "liiga pikk!"
 
 #: public/views/modals/signed-message.html:30
 msgid "valid"
-msgstr ""
+msgstr "sobiv"
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"

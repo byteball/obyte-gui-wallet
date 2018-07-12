@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
-"PO-Revision-Date: 2018-06-22T09:24:30+0000\n"
+"PO-Revision-Date: 2018-06-22T16:21:04+0000\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -27,7 +27,7 @@ msgstr "(portafoglio attuale)"
 
 #: public/views/modals/choose-profile.html:47
 msgid "(my other wallet)"
-msgstr ""
+msgstr "(il mio altro portafoglio)"
 
 #: public/views/walletHome.html:666
 msgid "(possible double spend)"
@@ -198,7 +198,7 @@ msgstr "Attestato da:"
 
 #: public/views/preferencesGlobal.html:75
 msgid "Attestor addresses"
-msgstr ""
+msgstr "Indirizzi degli attestator"
 
 #: public/views/preferencesWitnesses.html:11
 msgid "Auto-update the witness list from the hub"
@@ -284,7 +284,7 @@ msgstr "Browser non supportato"
 
 #: public/index.html:12
 msgid "Byteball &mdash; smart payments"
-msgstr ""
+msgstr "Byteball &mdash; pagamenti smart"
 
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"
@@ -350,7 +350,7 @@ msgstr "Reclama fondi usando textcoin"
 
 #: public/views/walletHome.html:85
 msgid "Claiming..."
-msgstr ""
+msgstr "Reclamando..."
 
 #: public/views/modals/share.html:30
 msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
@@ -358,7 +358,7 @@ msgstr "Clicca il pulsante per <span ng-if=\"isResend\">re</span>inviare l'email
 
 #: public/views/walletHome.html:515
 msgid "Click this button to create a payment file and send it to a recipient."
-msgstr ""
+msgstr "Cliccare questo pulsante per creare un file di pagamento ed inviarlo ad un destinatario."
 
 #: public/views/walletHome.html:514
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
@@ -548,11 +548,11 @@ msgstr "Dati nel datafeed"
 
 #: public/views/walletHome.html:567
 msgid "Datafeed name"
-msgstr ""
+msgstr "Nome datafeed"
 
 #: public/views/walletHome.html:567
 msgid "Datafeed value"
-msgstr ""
+msgstr "Valore datafeed"
 
 #: public/views/modals/tx-details.html:91
 msgid "Date"
@@ -695,7 +695,7 @@ msgstr "Tassa"
 
 #: public/views/walletHome.html:567
 msgid "Field"
-msgstr ""
+msgstr "Campo"
 
 #: public/views/modals/tx-details.html:116
 msgid "Finality"
@@ -930,7 +930,7 @@ msgstr "Messaggio"
 #: public/views/modals/sign-message.html:17
 #: public/views/modals/signed-message.html:17
 msgid "Message:"
-msgstr ""
+msgstr "Messaggio:"
 
 #: public/views/walletHome.html:658
 msgid "Moved"
@@ -1162,11 +1162,11 @@ msgstr "Profilo"
 
 #: public/views/walletHome.html:567
 msgid "Profile field"
-msgstr ""
+msgstr "Campo del profilo"
 
 #: public/views/walletHome.html:567
 msgid "Profile field value"
-msgstr ""
+msgstr "Valore del campo profilo"
 
 #: public/views/modals/customized-amount.html:16
 msgid "QR Code"
@@ -1418,24 +1418,24 @@ msgstr "Mostra comunque il seed del wallet"
 
 #: public/views/modals/sign-message.html:46
 msgid "Sign"
-msgstr ""
+msgstr "Firma"
 
 #: public/views/modals/sign-message.html:8
 msgid "Sign message"
-msgstr ""
+msgstr "Firma messaggio"
 
 #: src/js/controllers/index.js:407
 msgid "Sign message \"\" by address ?"
-msgstr ""
+msgstr "Firmare il messaggio \"\" con l'indirizzo?"
 
 #: public/views/modals/signed-message.html:8
 msgid "Signed message"
-msgstr ""
+msgstr "Messaggio firmato"
 
 #: public/views/modals/sign-message.html:22
 #: public/views/modals/signed-message.html:22
 msgid "Signing address:"
-msgstr ""
+msgstr "Indirizzo della firma:"
 
 #: public/views/create.html:56
 #: public/views/preferences.html:36
@@ -1540,7 +1540,7 @@ msgstr "Il peer riceve questo pagamento se"
 
 #: public/views/modals/signed-message.html:28
 msgid "The signature is"
-msgstr ""
+msgstr "La firma è"
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1716,7 +1716,7 @@ msgstr "Aggiornamento del database in corso, si prega di attendere. Talvolta son
 
 #: public/views/walletHome.html:567
 msgid "Value"
-msgstr ""
+msgstr "Valore"
 
 #: public/views/walletHome.html:560
 msgid "Values"
@@ -1909,7 +1909,7 @@ msgstr "e cancella il textcoin per tenerlo al sicuro dagli aggressori."
 
 #: public/views/walletHome.html:567
 msgid "available"
-msgstr ""
+msgstr "disponibile"
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
@@ -1933,7 +1933,7 @@ msgstr "cancella lo storico della chat"
 
 #: public/views/walletHome.html:567
 msgid "confirmed"
-msgstr ""
+msgstr "confermato"
 
 #: public/views/modals/select-subwallet.html:39
 msgid "created"
@@ -1982,7 +1982,7 @@ msgstr "negli smart wallet"
 
 #: public/views/modals/signed-message.html:29
 msgid "invalid"
-msgstr ""
+msgstr "non valida"
 
 #: public/views/modals/share.html:36
 msgid "keep for myself"
@@ -2077,7 +2077,7 @@ msgstr "troppo lungo!"
 
 #: public/views/modals/signed-message.html:30
 msgid "valid"
-msgstr ""
+msgstr "valida"
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
