@@ -391,7 +391,7 @@ input.datafeed_input {
             </div>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>{{index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To byteball address or email'}}</div>
+		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>{{index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To byteball address or email or username'}}</div>
 		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab == 2, 'disabled': home.send_multiple}" translate>Share via message</div>
 		    </div>
 
