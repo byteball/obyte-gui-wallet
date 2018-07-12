@@ -835,7 +835,8 @@ angular.module('copayApp.controllers')
 			var resetAddressValidation = function(){};
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
 				resetAddressValidation = function() {
-					form.address.$setValidity('validAddressOrAccount', false);	
+					if (form && form.address)
+						form.address.$setValidity('validAddressOrAccount', false);
 				}
 				form.address.$setValidity('validAddressOrAccount', true);
 			}
