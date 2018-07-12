@@ -831,9 +831,15 @@ angular.module('copayApp.controllers')
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
+
+			var resetAddressValidation = function(){};
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
+				resetAddressValidation = function() {
+					form.address.$setValidity('validAddressOrAccount', false);	
+				}
 				form.address.$setValidity('validAddressOrAccount', true);
 			}
+
 			if (form.$invalid) {
 				this.error = gettext('Unable to send transaction proposal');
 				return;
@@ -1145,6 +1151,7 @@ angular.module('copayApp.controllers')
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
 							delete self.current_payment_key;
+							resetAddressValidation();
 							profileService.bKeepUnlocked = false;
 							if (err) {
 								if (typeof err === 'object') {
