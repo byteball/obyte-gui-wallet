@@ -1155,6 +1155,10 @@ angular.module('copayApp.controllers')
 									err = "This is a private asset, please send it only by clicking links from chat";
 								else if (err.match(/no funded/))
 									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								else if (err.match(/authentifier verification failed/))
+									err = "Check that smart contract conditions are satisfied and signatures are correct";
+								else if (err.match(/precommit/))
+									err = err.replace('precommit callback failed: ', '');
 								return self.setSendError(err);
 							}
 							var binding = self.binding;
