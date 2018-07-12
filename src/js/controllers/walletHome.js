@@ -1566,7 +1566,7 @@ angular.module('copayApp.controllers')
 					form.$setPristine();
 
 					if (form.address) {
-						form.address.$pristine = true;
+						form.address.$setPristine();
 						form.address.$setViewValue('');
 						form.address.$render();
 					}
