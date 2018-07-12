@@ -390,8 +390,8 @@ input.datafeed_input {
               </div>
             </div>
 
-            <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress && !index.arrBalances[index.assetIndex].is_private">
-		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>To byteball address or email</div>
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
+		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}" translate>{{index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To byteball address or email'}}</div>
 		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab == 2, 'disabled': home.send_multiple}" translate>Share via message</div>
 		    </div>
 
@@ -423,7 +423,7 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address or email' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
 	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join('')"></textarea>
 
