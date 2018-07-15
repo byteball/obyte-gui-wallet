@@ -29,6 +29,11 @@ ios-prod:
 	cd ../byteballbuilds/project-IOS && cordova build ios
 #	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
 
+ios-prod-fast:
+	cordova/build.sh IOS
+	cd ../byteballbuilds/project-IOS && cordova build ios
+	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
+
 ios-debug:
 	cordova/build.sh IOS --dbgjs --clear
 	cd ../byteballbuilds/project-IOS && cordova build ios
