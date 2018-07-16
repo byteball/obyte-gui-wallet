@@ -46,12 +46,12 @@ angular.module('copayApp.controllers')
 			$rootScope.$emit('Local/SetTab', 'send');
 			self.setForm(address, amount, null, asset, recipient_device_address);
 
-			var form = $scope.sendPaymentForm;
+			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
 				console.log("invalid address, resetting form");
 				self.resetForm();
 				self.error = gettext('Could not recognize a valid Byteball QR Code');
-			}
+			}*/
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
