@@ -307,7 +307,7 @@ msgstr ""
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
-#: src/js/controllers/index.js:681
+#: src/js/controllers/index.js:680
 msgid "Chat"
 msgstr ""
 
@@ -327,7 +327,7 @@ msgstr ""
 msgid "Choose which fields to send:"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:490
+#: src/js/controllers/walletHome.js:491
 msgid "Claim funds"
 msgstr ""
 
@@ -404,11 +404,11 @@ msgid "Compress the file? (Slower)"
 msgstr ""
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:520
+#: src/js/controllers/index.js:519
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:125
-#: src/js/controllers/walletHome.js:1712
-#: src/js/controllers/walletHome.js:1716
+#: src/js/controllers/walletHome.js:1732
+#: src/js/controllers/walletHome.js:1736
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr ""
@@ -434,7 +434,7 @@ msgid "Contacts"
 msgstr ""
 
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:391
+#: src/js/controllers/walletHome.js:392
 msgid "Copied to clipboard"
 msgstr ""
 
@@ -446,19 +446,19 @@ msgstr ""
 msgid "Correspondents are not restored."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:696
+#: src/js/controllers/walletHome.js:699
 msgid "Could not create payment proposal"
 msgstr ""
 
-#: src/js/services/profileService.js:279
+#: src/js/services/profileService.js:281
 msgid "Could not create using the specified extended private key"
 msgstr ""
 
-#: src/js/services/profileService.js:289
+#: src/js/services/profileService.js:291
 msgid "Could not create using the specified extended public key"
 msgstr ""
 
-#: src/js/services/profileService.js:272
+#: src/js/services/profileService.js:274
 msgid "Could not create: Invalid wallet seed"
 msgstr ""
 
@@ -470,13 +470,13 @@ msgstr ""
 msgid "Could not fetch transaction history"
 msgstr ""
 
-#: src/js/services/profileService.js:507
-#: src/js/services/profileService.js:534
-#: src/js/services/profileService.js:556
+#: src/js/services/profileService.js:510
+#: src/js/services/profileService.js:537
+#: src/js/services/profileService.js:559
 msgid "Could not import"
 msgstr ""
 
-#: src/js/services/profileService.js:484
+#: src/js/services/profileService.js:487
 msgid "Could not import. Check input file and password"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Could not recognize a valid Byteball QR Code"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:696
+#: src/js/controllers/walletHome.js:699
 msgid "Could not send payment"
 msgstr ""
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Delete wallet"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1709
+#: src/js/controllers/walletHome.js:1729
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr ""
 
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr ""
 
-#: public/views/inviteCorrespondentDevice.html:28
+#: public/views/inviteCorrespondentDevice.html:34
 #: public/views/modals/destination-address.html:41
 msgid "Done"
 msgstr ""
@@ -654,8 +654,8 @@ msgstr ""
 msgid "Enter your password"
 msgstr ""
 
-#: src/js/services/profileService.js:338
-#: src/js/services/profileService.js:390
+#: src/js/services/profileService.js:341
+#: src/js/services/profileService.js:393
 msgid "Error creating wallet"
 msgstr ""
 
@@ -720,7 +720,7 @@ msgstr ""
 msgid "GET STARTED"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:421
 msgid "Generate QR Code"
 msgstr ""
 
@@ -753,11 +753,11 @@ msgid "Hide the Wallet Seed"
 msgstr ""
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:677
+#: src/js/controllers/index.js:676
 msgid "History"
 msgstr ""
 
-#: src/js/controllers/index.js:665
+#: src/js/controllers/index.js:664
 msgid "Home"
 msgstr ""
 
@@ -856,7 +856,7 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/js/controllers/index.js:1631
+#: src/js/controllers/index.js:1630
 msgid "Invalid Touch ID"
 msgstr ""
 
@@ -960,8 +960,8 @@ msgid "New witnesses"
 msgstr ""
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:519
-#: src/js/controllers/walletHome.js:1724
+#: src/js/controllers/index.js:518
+#: src/js/controllers/walletHome.js:1744
 msgid "No"
 msgstr ""
 
@@ -1000,7 +1000,7 @@ msgid "Note"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:111
 msgid "Offer a contract"
 msgstr ""
 
@@ -1041,7 +1041,7 @@ msgstr ""
 msgid "Passphrase"
 msgstr ""
 
-#: src/js/services/profileService.js:672
+#: src/js/services/profileService.js:675
 msgid "Password needed"
 msgstr ""
 
@@ -1057,7 +1057,7 @@ msgstr ""
 msgid "Pay and offer"
 msgstr ""
 
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:111
 msgid "Pay to this address"
 msgstr ""
 
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Please choose how much data to store in your wallet"
 msgstr ""
 
-#: src/js/controllers/create.js:97
+#: src/js/controllers/create.js:99
 msgid "Please enter the required fields"
 msgstr ""
 
@@ -1138,8 +1138,8 @@ msgstr ""
 msgid "Private assets (such as blackbytes) are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1803
+#: src/js/controllers/walletHome.js:1879
 msgid "Private payloads sent"
 msgstr ""
 
@@ -1171,7 +1171,7 @@ msgstr ""
 msgid "Question:"
 msgstr ""
 
-#: src/js/controllers/index.js:669
+#: src/js/controllers/index.js:668
 msgid "Receive"
 msgstr ""
 
@@ -1294,7 +1294,7 @@ msgstr ""
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr ""
 
-#: src/js/controllers/index.js:1624
+#: src/js/controllers/index.js:1623
 msgid "Scan your fingerprint please"
 msgstr ""
 
@@ -1325,7 +1325,7 @@ msgstr ""
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:496
 #: public/views/walletHome.html:586
-#: src/js/controllers/index.js:673
+#: src/js/controllers/index.js:672
 msgid "Send"
 msgstr ""
 
@@ -1390,6 +1390,10 @@ msgstr ""
 msgid "Share address"
 msgstr ""
 
+#: public/views/inviteCorrespondentDevice.html:27
+msgid "Share the code"
+msgstr ""
+
 #: public/views/walletHome.html:295
 msgid "Share this wallet address to receive payments."
 msgstr ""
@@ -1438,7 +1442,7 @@ msgstr ""
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr ""
 
-#: src/js/services/profileService.js:332
+#: src/js/services/profileService.js:335
 msgid "Small Expenses Wallet"
 msgstr ""
 
@@ -1465,8 +1469,8 @@ msgstr ""
 #: src/js/controllers/index.js:265
 #: src/js/controllers/index.js:293
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1803
+#: src/js/controllers/walletHome.js:1879
 msgid "Success"
 msgstr ""
 
@@ -1604,7 +1608,7 @@ msgstr ""
 #: public/views/modals/tx-details.html:36
 #: public/views/modals/tx-details.html:71
 #: public/views/walletHome.html:689
-#: src/js/controllers/index.js:1431
+#: src/js/controllers/index.js:1430
 msgid "To"
 msgstr ""
 
@@ -1624,11 +1628,7 @@ msgstr ""
 msgid "To byteball address"
 msgstr ""
 
-#: public/views/walletHome.html:394
-msgid "To byteball address or email"
-msgstr ""
-
-#: src/js/controllers/index.js:1434
+#: src/js/controllers/index.js:1433
 msgid "To email"
 msgstr ""
 
@@ -1672,7 +1672,7 @@ msgstr ""
 msgid "US state"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:835
+#: src/js/controllers/walletHome.js:845
 msgid "Unable to send transaction proposal"
 msgstr ""
 
@@ -1775,7 +1775,7 @@ msgstr ""
 msgid "Wallet Name (at creation)"
 msgstr ""
 
-#: src/js/services/profileService.js:453
+#: src/js/services/profileService.js:456
 msgid "Wallet already in Byteball:"
 msgstr ""
 
@@ -1830,12 +1830,12 @@ msgstr ""
 msgid "Write it down and keep it somewhere safe."
 msgstr ""
 
-#: src/js/services/profileService.js:682
+#: src/js/services/profileService.js:685
 msgid "Wrong password"
 msgstr ""
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:518
+#: src/js/controllers/index.js:517
 msgid "Yes"
 msgstr ""
 
@@ -2025,19 +2025,19 @@ msgstr ""
 msgid "send"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:773
+#: src/js/controllers/walletHome.js:776
 msgid "send email"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1087
-#: src/js/controllers/walletHome.js:1142
-#: src/js/controllers/walletHome.js:1280
-#: src/js/controllers/walletHome.js:1311
-#: src/js/controllers/walletHome.js:1318
-#: src/js/controllers/walletHome.js:908
-#: src/js/controllers/walletHome.js:914
-#: src/js/controllers/walletHome.js:955
-#: src/js/controllers/walletHome.js:991
+#: src/js/controllers/walletHome.js:1001
+#: src/js/controllers/walletHome.js:1097
+#: src/js/controllers/walletHome.js:1152
+#: src/js/controllers/walletHome.js:1295
+#: src/js/controllers/walletHome.js:1326
+#: src/js/controllers/walletHome.js:1333
+#: src/js/controllers/walletHome.js:918
+#: src/js/controllers/walletHome.js:924
+#: src/js/controllers/walletHome.js:965
 msgid "sending"
 msgstr ""
 
@@ -2100,12 +2100,16 @@ msgstr ""
 msgid "{{confirm_label || 'Yes'}}"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1898
+#: src/js/controllers/walletHome.js:1920
 msgid "{{fee}} will be deducted for bitcoin networking fees"
 msgstr ""
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"
+msgstr ""
+
+#: public/views/walletHome.html:394
+msgid "{{index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To byteball address or email or username'}}"
 msgstr ""
 
 #: public/views/copayers.html:26

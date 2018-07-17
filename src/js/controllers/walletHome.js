@@ -46,12 +46,12 @@ angular.module('copayApp.controllers')
 			$rootScope.$emit('Local/SetTab', 'send');
 			self.setForm(address, amount, null, asset, recipient_device_address);
 
-			var form = $scope.sendPaymentForm;
+			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
 				console.log("invalid address, resetting form");
 				self.resetForm();
 				self.error = gettext('Could not recognize a valid Byteball QR Code');
-			}
+			}*/
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
@@ -1164,6 +1164,10 @@ angular.module('copayApp.controllers')
 									err = "This is a private asset, please send it only by clicking links from chat";
 								else if (err.match(/no funded/))
 									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								else if (err.match(/authentifier verification failed/))
+									err = "Check that smart contract conditions are satisfied and signatures are correct";
+								else if (err.match(/precommit/))
+									err = err.replace('precommit callback failed: ', '');
 								return self.setSendError(err);
 							}
 							var binding = self.binding;
