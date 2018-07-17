@@ -3,7 +3,7 @@ angular.module('copayApp.services')
 .factory('pushNotificationsService', function($http, $rootScope, $log, isMobile, $timeout, storageService, configService, lodash, isCordova) {
 	var root = {};
 	var defaults = configService.getDefaults();
-	var usePushNotifications = isCordova && !isMobile.Windows() && isMobile.Android();
+	var usePushNotifications = isCordova && !isMobile.Windows() && (isMobile.Android() || isMobile.iOS());
 	var projectNumber;
 	var _ws;
 	
@@ -51,14 +51,25 @@ angular.module('copayApp.services')
 	root.pushNotificationsInit = function() {
 		if (!usePushNotifications) return;
 		
-		window.plugins.pushNotification.register(function(data) {
-			},
-			function(e) {
-				alert('err= ' + e);
-			}, {
-				"senderID": projectNumber,
-				"ecb": "onNotification"
-			});
+		var errorHandler = function(e) {
+			alert('err= ' + e);
+		}
+		if (isMobile.Android()) {
+			window.plugins.pushNotification.register(function(data) {}, errorHandler,
+				{
+					"senderID": projectNumber,
+					"ecb": "onNotification"
+				}
+			);
+		} else if (isMobile.iOS()) {
+			window.plugins.pushNotification.register(function(token) {
+				storageService.setPushInfo(projectNumber, token, true, function() {
+					sendRequestEnableNotification(_ws, token);
+				});
+			}, errorHandler,
+				{"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"}
+			);
+		}
 		
 		configService.set({pushNotifications: {enabled: true}}, function(err) {
 			if (err) $log.debug(err);
