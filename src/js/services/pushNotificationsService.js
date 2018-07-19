@@ -7,11 +7,12 @@ angular.module('copayApp.services')
 	var projectNumber;
 	var _ws;
 	
-	var eventBus = require('byteballcore/event_bus.js');	
+	var eventBus = require('byteballcore/event_bus.js');
+	var device = require('byteballcore/device.js');
 	
 	function sendRequestEnableNotification(ws, registrationId) {
 		var network = require('byteballcore/network.js');
-		network.sendRequest(ws, 'hub/enable_notification', registrationId, false, function(ws, request, response) {
+		network.sendRequest(ws, 'hub/enable_notification', {registrationId: registrationId, platform: isMobile.iOS() ? 'ios' : 'android'}, false, function(ws, request, response) {
 			if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 		});
 	}
@@ -26,6 +27,13 @@ angular.module('copayApp.services')
 			return false;
 		}
 	};
+
+	window.onNotificationAPN = function(event) {
+		if (event.badge)
+		{
+			//window.plugins.pushNotification.setApplicationIconBadgeNumber(function(){}, function(){}, event.badge);
+		}
+	}
 	
 	eventBus.on('receivedPushProjectNumber', function(ws, data) {
 		if (!usePushNotifications) return;
@@ -51,28 +59,34 @@ angular.module('copayApp.services')
 	root.pushNotificationsInit = function() {
 		if (!usePushNotifications) return;
 		
-		var errorHandler = function(e) {
-			alert('err= ' + e);
-		}
-		if (isMobile.Android()) {
-			window.plugins.pushNotification.register(function(data) {}, errorHandler,
-				{
-					"senderID": projectNumber,
-					"ecb": "onNotification"
-				}
-			);
-		} else if (isMobile.iOS()) {
-			window.plugins.pushNotification.register(function(token) {
-				storageService.setPushInfo(projectNumber, token, true, function() {
-					sendRequestEnableNotification(_ws, token);
-				});
-			}, errorHandler,
-				{"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"}
-			);
-		}
-		
-		configService.set({pushNotifications: {enabled: true}}, function(err) {
-			if (err) $log.debug(err);
+		device.readCorrespondents(function(devices){
+			if (devices.length == 0)
+				return;
+
+			var errorHandler = function(e) {
+				console.warn("push notification register failed", e);
+				usePushNotifications = false;
+			}
+			if (isMobile.Android()) {
+				window.plugins.pushNotification.register(function(data) {}, errorHandler,
+					{
+						"senderID": projectNumber,
+						"ecb": "onNotification"
+					}
+				);
+			} else if (isMobile.iOS()) {
+				window.plugins.pushNotification.register(function(token) {
+					storageService.setPushInfo(projectNumber, token, true, function() {
+						sendRequestEnableNotification(_ws, token);
+					});
+				}, errorHandler,
+					{"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"}
+				);
+			}
+			
+			configService.set({pushNotifications: {enabled: true}}, function(err) {
+				if (err) $log.debug(err);
+			});
 		});
 	};
 	
