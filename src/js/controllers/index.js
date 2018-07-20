@@ -23,7 +23,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.arrBalances = [];
   self.assetIndex = 0;
   self.$state = $state;
-  self.usePushNotifications = isCordova && !isMobile.Windows() &&  isMobile.Android();
+  self.usePushNotifications = isCordova && !isMobile.Windows();
     /*
     console.log("process", process.env);
     var os = require('os');

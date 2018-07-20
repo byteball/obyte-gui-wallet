@@ -402,6 +402,7 @@ angular.module('copayApp.controllers')
 					window.ignoreMobilePause = true;
 				}
 				window.plugins.socialsharing.share(self.protocol + ':' + addr, null, null, null);
+				//window.plugins.socialsharing.shareWithOptions({message: "My byteball address " /*+ self.protocol +  ':' + addr*/, subject: "My byteball address", files:["null"]}, function(){}, function(){});
 			}
 		};
 
