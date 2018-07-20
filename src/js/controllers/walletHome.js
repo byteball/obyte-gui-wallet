@@ -401,8 +401,8 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				//window.plugins.socialsharing.share(self.protocol + ':' + addr, null, null, null);
-				window.plugins.socialsharing.shareWithOptions({message: "My byteball address " /*+ self.protocol +  ':' + addr*/, subject: "My byteball address", files:["null"]}, function(){}, function(){});
+				window.plugins.socialsharing.share(self.protocol + ':' + addr, null, null, null);
+				//window.plugins.socialsharing.shareWithOptions({message: "My byteball address " /*+ self.protocol +  ':' + addr*/, subject: "My byteball address", files:["null"]}, function(){}, function(){});
 			}
 		};
 

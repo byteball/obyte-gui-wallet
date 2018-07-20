@@ -43,12 +43,13 @@ angular.module('copayApp.services')
 				storageService.getPushInfo(function(err, pushInfo) {
 					var config = configService.getSync();
 					projectNumber = data.projectNumber + "";
-					if (pushInfo && projectNumber === "0") {
+					var is_hub_configured = !!((isMobile.Android() && projectNumber !== "0") || (isMobile.iOS() && data.hasKeyId));
+					if (pushInfo && !is_hub_configured) {
 						root.pushNotificationsUnregister(function() {
 
 						});
 					}
-					else if (projectNumber && config.pushNotifications.enabled) {
+					else if (is_hub_configured && config.pushNotifications.enabled) {
 						root.pushNotificationsInit();
 					}
 				});

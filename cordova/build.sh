@@ -145,13 +145,15 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-device-name@1.3.2
 	checkOK
 
-	cordova plugin add https://github.com/Telerik-Verified-Plugins/PushPlugin.git
-	checkOK
-	
-	if [ $CURRENT_OS == "ANDROID" ]; then
+	if [ $CURRENT_OS == "IOS" ]; then
+		cordova plugin add https://github.com/Telerik-Verified-Plugins/PushPlugin.git
+		checkOK
+	else
+		cordova plugin add https://github.com/phonegap-build/PushPlugin.git
+		checkOK
 
-	cordova plugin add https://github.com/8zrealestate/android-referrer-plugin
-	checkOK
+		cordova plugin add https://github.com/8zrealestate/android-referrer-plugin
+		checkOK
 	fi
 	
 	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
