@@ -83,7 +83,12 @@ angular.module('copayApp.controllers').controller('exportController',
 				};
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
+				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
+					if (isMobile.iOS()) {
+						navigator.notification.alert(gettextCatalog.getString('Now you have to send this file somewhere to restore from it later. It will be deleted from this phone.'), function(){
+							window.plugins.socialsharing.shareWithOptions({files: [window.cordova.file.cacheDirectory + 'Byteball/'+ backupFilename]}, function(){}, function(){});
+						}, 'Backup done');
+					}
 					cb(err);
 				});
 			}
