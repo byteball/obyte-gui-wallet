@@ -39,7 +39,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			dbKey: 'username',
 			title: 'username',
 			isValid: function (value) {
-				return /^@([a-z\d\-_])+$/i.test(value);
+				return /^@([a-z\d\-_]){1,32}$/i.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.substr(1);

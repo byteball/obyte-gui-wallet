@@ -5,7 +5,7 @@ var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 var objectHash = require('byteballcore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
 	var root = {};
 	var device = require('byteballcore/device.js');
 	var wallet = require('byteballcore/wallet.js');
@@ -609,6 +609,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 	
 	eventBus.on('paired', function(device_address){
+		pushNotificationsService.pushNotificationsInit();
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // refresh the list
 		if (!$state.is('correspondentDevices.correspondentDevice'))
