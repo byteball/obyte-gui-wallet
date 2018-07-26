@@ -8,7 +8,6 @@ angular.module('copayApp.services')
 	var _ws;
 	
 	var eventBus = require('byteballcore/event_bus.js');
-	var device = require('byteballcore/device.js');
 	
 	function sendRequestEnableNotification(ws, registrationId) {
 		var network = require('byteballcore/network.js');
@@ -60,6 +59,7 @@ angular.module('copayApp.services')
 	root.pushNotificationsInit = function() {
 		if (!usePushNotifications) return;
 		
+		var device = require('byteballcore/device.js');
 		device.readCorrespondents(function(devices){
 			if (devices.length == 0)
 				return;
