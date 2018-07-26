@@ -40,17 +40,6 @@
 				   value="{{'Import'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 		</form>
 	</div>
-	<div ng-show="import.iOs && import.arrBackupFiles.length > 0" style="background-color: #fff">
-		<div class="center">OR</div>
-		<div>
-			<ul class="no-bullet m0" ng-repeat="backupFile in import.arrBackupFiles | orderBy:backupFile.time:true">
-				<li ng-click="import.iosWalletImportFromFile(backupFile.originalName)">
-					<i class="icon-arrow-right3 size-24 right text-gray"></i>
-					<div>{{backupFile.name}}</div>
-				</li>
-			</ul>
-		</div>
-	</div>
 	<div class="text-alert size-12 columns">
 		<span translate>WARNINGS:</span>
 		<ul class="warnings">

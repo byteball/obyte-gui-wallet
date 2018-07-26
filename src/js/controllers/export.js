@@ -85,7 +85,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			else {
 				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
 					if (isMobile.iOS()) {
-						navigator.notification.alert(gettextCatalog.getString('Now you have to send this file somewhere to restore from it later. It will be deleted from this phone.'), function(){
+						navigator.notification.alert(gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.). It will be deleted from this phone.'), function(){
 							window.plugins.socialsharing.shareWithOptions({files: [window.cordova.file.cacheDirectory + 'Byteball/'+ backupFilename]}, function(){}, function(){});
 						}, 'Backup done');
 					}
