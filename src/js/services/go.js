@@ -362,8 +362,10 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 });
 
 function tempHandleUri(url){
-	console.log("saving open url "+url);
-	window.open_url = url;
+	setTimeout(function(){
+		console.log("saving open url "+url);
+		window.open_url = url;
+	},0);
 }
 
 
