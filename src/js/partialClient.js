@@ -10,6 +10,13 @@ window.onerror = function (message) {
 	wallet.loadCompleteClient(true);
 };
 
+window.handleOpenURL = function(url) {
+	setTimeout(function(){
+		console.log("saving open url "+url);
+		window.open_url = url;
+	},0);
+}
+
 function initWallet() {
 	var root = {};
 	root.profile = null;
