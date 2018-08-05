@@ -77,8 +77,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-				$stickyState.reset('correspondentDevices.correspondentDevice');
-				go.path('correspondentDevices.correspondentDevice');
+				$timeout(function(){
+					$stickyState.reset('correspondentDevices.correspondentDevice');
+					go.path('correspondentDevices.correspondentDevice');
+				});
 			});
 		}
 		else
@@ -595,7 +597,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			device.readCorrespondent(peer_address, function(correspondent){
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
 			});
-			go.path('correspondentDevices.correspondentDevice');
+			$timeout(function(){
+				go.path('correspondentDevices.correspondentDevice');
+			});
 		});
 	});
 	
