@@ -613,8 +613,9 @@ angular.module('copayApp.controllers')
 						event.preventDefault();
 					}
 					catch (e) {};
-					angular.element(e)
-						.triggerHandler('click');
+					$timeout(function(){
+						angular.element(e).triggerHandler('click');
+					});
 				}, true);
 			});
 		}
