@@ -919,6 +919,70 @@ angular.module('copayApp.controllers')
 			indexScope.setOngoingProcess(gettext('sending'), true);
 			$timeout(function() {
 
+				if (!isMultipleSend && accountValidationResult.isValid) { // try to replace validation result with attested BB address
+					var attestorKey = accountValidationResult.attestorKey;
+					var account = accountValidationResult.account;
+					var bb_address = aliasValidationService.getBbAddress(
+						attestorKey,
+						account
+					);
+					console.log('attestorKey='+attestorKey+' : account='+account+' : bb_address='+bb_address);
+
+					if (!bb_address) {
+						return aliasValidationService.resolveValueToBbAddress(
+							attestorKey,
+							account,
+							function () {
+								// assocBbAddresses in aliasValidationService is now filled
+								delete self.current_payment_key;
+								self.submitPayment();
+							}
+						);
+					}
+
+					if (!isEmail) {
+
+						if (bb_address === 'unknown' || bb_address === 'none') {
+							if (bb_address === 'unknown') {
+								aliasValidationService.deleteAssocBbAddress(
+									attestorKey,
+									account
+								);
+							}
+
+							delete self.current_payment_key;
+							indexScope.setOngoingProcess(gettext('sending'), false);
+							return self.setSendError('Attested account not found');
+						} else if (ValidationUtils.isValidAddress(bb_address)) {
+							original_address = address;
+							address = bb_address;
+							isEmail = false;
+							isTextcoin = false;
+						} else {
+							throw Error("unrecognized bb_address: "+bb_address);
+						}
+
+					} else {
+
+						if (bb_address === 'unknown') {
+							aliasValidationService.deleteAssocBbAddress(
+								attestorKey,
+								account
+							); // send textcoin now but retry next time
+						} else if (bb_address === 'none') {
+							// go on to send textcoin
+						} else if (ValidationUtils.isValidAddress(bb_address)) {
+							original_address = account;
+							address = bb_address;
+							isEmail = false;
+							isTextcoin = false;
+						} else {
+							throw Error("unrecognized bb_address: "+bb_address);
+						}
+
+					}
+				}
+
 				profileService.requestTouchid(function(err) {
 					if (err) {
 						profileService.lockFC();
@@ -931,70 +995,6 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					if (!isMultipleSend && accountValidationResult.isValid) { // try to replace validation result with attested BB address
-						var attestorKey = accountValidationResult.attestorKey;
-						var account = accountValidationResult.account;
-						var bb_address = aliasValidationService.getBbAddress(
-							attestorKey,
-							account
-						);
-						console.log('attestorKey='+attestorKey+' : account='+account+' : bb_address='+bb_address);
-						
-						if (!bb_address) {
-							return aliasValidationService.resolveValueToBbAddress(
-								attestorKey,
-								account,
-								function () {
-									// assocBbAddresses in aliasValidationService is now filled
-									delete self.current_payment_key;
-									self.submitPayment();
-								}
-							);
-						}
-
-						if (!isEmail) {
-
-							if (bb_address === 'unknown' || bb_address === 'none') {
-								if (bb_address === 'unknown') {
-									aliasValidationService.deleteAssocBbAddress(
-										attestorKey,
-										account
-									);
-								}
-
-								delete self.current_payment_key;
-								indexScope.setOngoingProcess(gettext('sending'), false);
-								return self.setSendError('Attested account not found');
-							} else if (ValidationUtils.isValidAddress(bb_address)) {
-								original_address = address;
-								address = bb_address;
-								isEmail = false;
-								isTextcoin = false;
-							} else {
-								throw Error("unrecognized bb_address: "+bb_address);
-							}
-
-						} else {
-
-							if (bb_address === 'unknown') {
-								aliasValidationService.deleteAssocBbAddress(
-									attestorKey,
-									account
-								); // send textcoin now but retry next time
-							} else if (bb_address === 'none') {
-								// go on to send textcoin
-							} else if (ValidationUtils.isValidAddress(bb_address)) {
-								original_address = account;
-								address = bb_address;
-								isEmail = false;
-								isTextcoin = false;
-							} else {
-								throw Error("unrecognized bb_address: "+bb_address);
-							}
-
-						}
-					}
-
 					var device = require('byteballcore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
