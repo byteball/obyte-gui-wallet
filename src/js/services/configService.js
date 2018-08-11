@@ -63,6 +63,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		email: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
 		reddit: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
+		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ',
 	},
 
 	// requires bluetooth permission on android
