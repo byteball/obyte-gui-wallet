@@ -212,21 +212,21 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var fs = require('fs'+'');
 		var path = require('path'+'');
 		var child_process = require('child_process'+'');
-		var package = require('../package.json'+''); // relative to html root
+		var package_json = require('../package_json.json'+''); // relative to html root
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
-			fs.writeFile(applicationsDir + '/' +package.name+'.desktop', "[Desktop Entry]\n\
+			fs.writeFile(applicationsDir + '/' +package_json.name+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+package.name+"\n\
-Comment="+package.description+"\n\
+Name="+package_json.name+"\n\
+Comment="+package_json.description+"\n\
 Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/logo-circle-256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package.name+";application/x-"+package.name+";\n\
+MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				if (err)
@@ -235,9 +235,9 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
 					var writeXml = function() {
-						fs.writeFile(mimeDir + '/packages/' + package.name+'.xml', "<?xml version=\"1.0\"?>\n\
+						fs.writeFile(mimeDir + '/packages/' + package_json.name+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
-	   <mime-type type=\"application/x-"+package.name+"\">\n\
+	   <mime-type type=\"application/x-"+package_json.name+"\">\n\
 	   <comment>Byteball Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
@@ -247,7 +247,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 							child_process.exec('update-mime-database '+mimeDir, function(err){
 								if (err)
 									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+package.name, function(err){});
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+package_json.name, function(err){});
 							});
 	 						console.log(".desktop done");
 	 					});
