@@ -212,7 +212,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var fs = require('fs'+'');
 		var path = require('path'+'');
 		var child_process = require('child_process'+'');
-		var package_json = require('../package_json.json'+''); // relative to html root
+		var package_json = require('../package.json'+''); // relative to html root
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
