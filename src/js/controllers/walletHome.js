@@ -1261,6 +1261,9 @@ angular.module('copayApp.controllers')
 				case -4:
 					app = "data";
 					break;
+				case -5:
+					app = "poll";
+					break;
 				default:
 					throw new Error("invalid asset selected");
 					break;
@@ -1305,6 +1308,12 @@ angular.module('copayApp.controllers')
 					value = {
 						address: $scope.home.attested_address,
 						profile: value
+					};
+				}
+				if (app == "poll") {
+					value = {
+						question: $scope.home.poll_question,
+						choices: Object.keys(value)
 					};
 				}
 				var objMessage = {
