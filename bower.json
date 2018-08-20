@@ -23,5 +23,8 @@
     "qrcode-decoder-js": "*",
     "angular-elastic": "2",
     "ui-router-extras": "0.1"
+  },
+  "resolutions": {
+    "angular": "1.6.10"
   }
 }
