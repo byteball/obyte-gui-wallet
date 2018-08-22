@@ -48,7 +48,7 @@ Then run Byteball desktop client:
 /path/to/your/nwjs/nwjs .
 ```
 
-If you have ran `grunt desktop` then there is 0.14.7 NW.js also installed in cache folder.
+If you have run `grunt desktop` then there is 0.14.7 NW.js also installed in cache folder.
 
 ## Build Byteball App Bundles
 
