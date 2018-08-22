@@ -561,24 +561,24 @@ input.datafeed_input {
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -5">
 					<label style="float: left;">
-						<span translate>Question you want to ask</span>
+						<span translate>Question to be voted on</span>
 					</label>
 					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question" ng-required="true">
 				</div>
 				<div class="row m20t">
 					<label>
-						<span>{{(assetIndexSelectorValue == -5 ? 'Options' : 'Values')|translate}}</span>
+						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? 'Field' : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
+						<input type="text" ng-model="pair.name" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
 						<input ng-show="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : ([-4, -5].includes(assetIndexSelectorValue) ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
 						<a ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
-					<i data-trans="{{'Add option' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
+					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
 					<div class="clear"></div>
 					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add option' : 'Add fields')|translate}}</span> 
+						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
 					</a>
 				</div>
 
