@@ -19,8 +19,14 @@
             </div>
             <div class="m10t">
 				<span translate>Scan the above QR code using the other device, or send this pairing code to the other device:</span>
-                <div class="secret m10t m20b enable_text_select">{{code}}</div>
+                <div class="secret m10t m20b enable_text_select" ng-click="copyCode()">{{code}}</div>
             </div>
+			<div class="m10t text-center" ng-show="index.isCordova">
+				<span class="button outline dark-gray tiny round" ng-click="shareCode()">
+					<i class="fi-share"></i>
+					<span translate>Share the code</span>
+				</span>
+			</div>
           <div class="row">
               <input type="button" 
                      class="button expand outline dark-gray round" 

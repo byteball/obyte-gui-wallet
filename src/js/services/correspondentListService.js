@@ -5,7 +5,7 @@ var eventBus = require('byteballcore/event_bus.js');
 var ValidationUtils = require('byteballcore/validation_utils.js');
 var objectHash = require('byteballcore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
 	var root = {};
 	var device = require('byteballcore/device.js');
 	var wallet = require('byteballcore/wallet.js');
@@ -77,8 +77,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-				$stickyState.reset('correspondentDevices.correspondentDevice');
-				go.path('correspondentDevices.correspondentDevice');
+				$timeout(function(){
+					$stickyState.reset('correspondentDevices.correspondentDevice');
+					go.path('correspondentDevices.correspondentDevice');
+				});
 			});
 		}
 		else
@@ -101,13 +103,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
 	function highlightActions(text, arrMyAddresses){
-		return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+		return text.replace(/(\s|^)([2-7A-Z]{32})([\s.,;!:]|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
-				return address;
+				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>';
+			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>'+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
@@ -594,7 +597,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			device.readCorrespondent(peer_address, function(correspondent){
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
 			});
-			go.path('correspondentDevices.correspondentDevice');
+			$timeout(function(){
+				go.path('correspondentDevices.correspondentDevice');
+			});
 		});
 	});
 	
@@ -608,6 +613,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 	
 	eventBus.on('paired', function(device_address){
+		pushNotificationsService.pushNotificationsInit();
 		if ($state.is('correspondentDevices'))
 			return $state.reload(); // refresh the list
 		if (!$state.is('correspondentDevices.correspondentDevice'))

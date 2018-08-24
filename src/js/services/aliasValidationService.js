@@ -16,13 +16,33 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			}
 		},
 		reddit: {
-			dbKey: 'reddit',
+			dbKey: 'reddit_username',
 			title: 'reddit account',
 			isValid: function (value) {
 				return /^reddit\/[a-z0-9\-_]{3,20}$/i.test(value);
 			},
 			transformToAccount: function (value) {
-				return value.replace(/^reddit\//i, '');
+				return value.replace(/^reddit\//i, '').toLowerCase();
+			}
+		},
+		steem: {
+			dbKey: 'steem_username',
+			title: 'steem account',
+			isValid: function (value) {
+				return /^steem\/[a-z0-9\-_]{3,20}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^steem\//i, '').toLowerCase();
+			}
+		},
+		username: {
+			dbKey: 'username',
+			title: 'username',
+			isValid: function (value) {
+				return /^@([a-z\d\-_]){1,32}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.substr(1).toLowerCase();
 			}
 		},
 		phone: {

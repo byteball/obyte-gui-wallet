@@ -8,7 +8,6 @@ if (process.browser){
 	conf.program_version = appPackageJson.version;
 }
 
-var walletDefinedByKeys;
 var ecdsaSig = require('byteballcore/signature.js');
 var breadcrumbs = require('byteballcore/breadcrumbs.js');
 var constants = require('byteballcore/constants.js');
@@ -39,7 +38,6 @@ function API(opts) {
 	opts = opts || {};
 	this.verbose = !!opts.verbose;
 	this.timeout = opts.timeout || 50000;
-	walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 
 	if (this.verbose)
 		log.setLevel('debug');
@@ -454,6 +452,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
         //self.credentials.account = account;
     }
     
+	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
     walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function(wallet){
         self.credentials.walletId = wallet;
         console.log("wallet created: " + JSON.stringify(self.credentials));
@@ -500,6 +499,7 @@ API.prototype.createAddress = function(is_change, cb) {
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
 	breadcrumbs.add('createAddress wallet='+this.credentials.walletId+', is_change='+is_change);
+	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
     walletDefinedByKeys.issueOrSelectNextAddress(this.credentials.walletId, is_change, function(addressInfo){
         var path = "m/44'/" + coin + "'/" + self.credentials.account + "'/0/"+addressInfo.address_index;
         cb(null, {address: addressInfo.address, path: path, createdOn: addressInfo.creation_ts});
@@ -536,6 +536,7 @@ API.prototype.getSignerWithLocalPrivateKey = function(){
 API.prototype.sendMultiPayment = function(opts, cb) {
     var self = this;
 	var Wallet = require('byteballcore/wallet.js');
+	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
 	
 	opts.signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
     
@@ -572,6 +573,7 @@ API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddr
 };
 
 API.prototype.getAddresses = function(opts, cb) {
+	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
     walletDefinedByKeys.readAddresses(this.credentials.walletId, opts, function(arrAddressInfos){
@@ -656,12 +658,10 @@ API.prototype.getTxHistory = function(asset, shared_address, cb) {
 API.prototype.initDeviceProperties = function(xPrivKey, device_address, hub, deviceName) {
     console.log("initDeviceProperties");
     var device = require('byteballcore/device.js');
-    var lightWallet = require('byteballcore/light_wallet.js');
     if (device_address)
         device.setDeviceAddress(device_address);
     device.setDeviceName(deviceName);
     device.setDeviceHub(hub);
-    lightWallet.setLightVendorHost(hub);
     //device.setDevicePrivateKey(Bitcore.HDPrivateKey.fromString(xPrivKey).derive("m/1'").privateKey.toBuffer());
     
     // since this is executed at app launch, give in to allow other startup tasks to complete

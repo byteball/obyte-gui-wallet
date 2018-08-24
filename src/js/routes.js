@@ -584,16 +584,16 @@ angular
           if (err) {
             if (err.message && err.message.match('NOPROFILE')) {
               $log.debug('No profile... redirecting');
-              $state.transitionTo('splash');
+              return $state.transitionTo('splash');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {
               $log.debug('Display disclaimer... redirecting');
-              $state.transitionTo('preferencesGlobal.preferencesAbout.disclaimer');
+              return $state.transitionTo('preferencesGlobal.preferencesAbout.disclaimer');
             } else {
-              throw new Error(err); // TODO
+              throw new Error(err.message || err); // TODO
             }
           } else {
             $log.debug('Profile loaded ... Starting UX.');
-            $state.transitionTo(toState.name || toState, toParams);
+            return $state.transitionTo(toState.name || toState, toParams);
           }
         });
       }
