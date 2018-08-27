@@ -81,7 +81,15 @@ angular.module('copayApp.controllers').controller('preferencesBbUnitController',
       configService.set(opts, function(err) {
         if (err) $log.warn(err);
         $scope.$emit('Local/UnitSettingUpdated');
-        go.preferencesGlobal();
+        if ($rootScope.tab === 'send') {
+          go.send();
+        }
+        else if ($rootScope.tab === 'history') {
+          go.history();
+        }
+        else {
+          go.preferencesGlobal();
+        }
       });
 
     };

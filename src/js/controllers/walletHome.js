@@ -1696,6 +1696,15 @@ angular.module('copayApp.controllers')
 			}
 		};
 
+		this.openInExplorer = function(unit) {
+			var testnet = home.isTestnet ? 'testnet' : '';
+			var url = 'https://' + testnet + 'explorer.byteball.org/#' + unit;
+			if (typeof nw !== 'undefined')
+				nw.Shell.openExternal(url);
+			else if (isCordova)
+				cordova.InAppBrowser.open(url, '_system');
+		};
+
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			var self = this;
@@ -1778,12 +1787,7 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.openInExplorer = function() {
-					var testnet = home.isTestnet ? 'testnet' : '';
-					var url = 'https://' + testnet + 'explorer.byteball.org/#' + btx.unit;
-					if (typeof nw !== 'undefined')
-						nw.Shell.openExternal(url);
-					else if (isCordova)
-						cordova.InAppBrowser.open(url, '_system');
+					return self.openInExplorer(btx.unit);
 				};
 
 				$scope.copyAddress = function(addr) {
