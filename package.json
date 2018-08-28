@@ -2,7 +2,7 @@
   "name": "byteball",
   "description": "Smart payments made simple",
   "author": "Byteball",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "keywords": [
     "wallet",
     "byteball",
@@ -73,6 +73,14 @@
     "test": "./node_modules/.bin/grunt test-coveralls"
   },
   "devDependencies": {
-    "grunt-nw-builder": "^2.0.0"
+    "angular-mocks": "^1.2.0",
+    "grunt-karma": "2",
+    "grunt-karma-coveralls": "2",
+    "grunt-nw-builder": "^2.0.0",
+    "jasmine-core": "^3.1.0",
+    "karma": "2",
+    "karma-jasmine": "^1.1.2",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "phantomjs-prebuilt": "^2.1.16"
   }
 }

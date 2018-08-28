@@ -22,7 +22,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return /^reddit\/[a-z0-9\-_]{3,20}$/i.test(value);
 			},
 			transformToAccount: function (value) {
-				return value.replace(/^reddit\//i, '');
+				return value.replace(/^reddit\//i, '').toLowerCase();
 			}
 		},
 		steem: {
@@ -32,7 +32,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return /^steem\/[a-z0-9\-_]{3,20}$/i.test(value);
 			},
 			transformToAccount: function (value) {
-				return value.replace(/^steem\//i, '');
+				return value.replace(/^steem\//i, '').toLowerCase();
 			}
 		},
 		username: {
@@ -42,7 +42,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return /^@([a-z\d\-_]){1,32}$/i.test(value);
 			},
 			transformToAccount: function (value) {
-				return value.substr(1);
+				return value.substr(1).toLowerCase();
 			}
 		},
 		phone: {
