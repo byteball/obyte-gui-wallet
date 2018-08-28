@@ -1038,6 +1038,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.message = command;
 		$scope.send();
 	};
+
+	$scope.suggestCommand = function(command){
+		$scope.message = command;
+	};
 	
 	$scope.openExternalLink = function(url){
 		if (typeof nw !== 'undefined')
