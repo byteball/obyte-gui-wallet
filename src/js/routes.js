@@ -362,6 +362,17 @@ angular
         }
       })
       .state('preferencesGlobal.preferencesUnit', {
+        url: '/preferencesGlobal/unit',
+        templateUrl: 'views/preferencesUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesUnit.html'
+          },
+        }
+      })
+      .state('walletHome.preferencesUnit', {
         url: '/unit',
         templateUrl: 'views/preferencesUnit.html',
         walletShouldBeComplete: true,
@@ -373,6 +384,17 @@ angular
         }
       })
       .state('preferencesGlobal.preferencesBbUnit', {
+        url: '/preferencesGlobal/bbUnit',
+        templateUrl: 'views/preferencesBbUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesBbUnit.html'
+          },
+        }
+      })
+      .state('walletHome.preferencesBbUnit', {
         url: '/bbUnit',
         templateUrl: 'views/preferencesBbUnit.html',
         walletShouldBeComplete: true,
