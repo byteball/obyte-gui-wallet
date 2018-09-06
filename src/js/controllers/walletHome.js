@@ -895,6 +895,9 @@ angular.module('copayApp.controllers')
 				var isEmail = ValidationUtils.isValidEmail(address);
 				var isTextcoin = (isEmail || !address);
 
+				if (conf.bLight && indexScope.copayers.length > 1 && indexScope.onGoingProcess['Syncing']) //wait for sync before sending
+					return self.setSendError("wait for sync to complete before sending payments");
+
 				var original_address;  // might be sent to email if the email address is attested
 				if (isTextcoin)
 					address = "textcoin:" + (address ? address : (Date.now() + "-" + amount));
