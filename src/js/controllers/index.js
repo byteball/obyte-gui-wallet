@@ -307,7 +307,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
             var name_list = arrNames.join(", ");
-            var question = gettextCatalog.getString('Create new wallet '+walletName+' together with '+name_list+' ?');
+            var question = gettextCatalog.getString('Create new wallet') + ' ' + walletName + ' ' + gettextCatalog.getString('together with') + ' ' + name_list + ' ?';
             requestApproval(question, {
                 ifYes: function(){
                     console.log("===== YES CLICKED")
@@ -404,7 +404,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             }
 			
 			if (objUnit.signed_message){
-				var question = gettextCatalog.getString('Sign message "'+objUnit.signed_message+'" by address '+objAddress.address+'?');
+				var question = gettextCatalog.getString('Sign message') + ' ' + objUnit.signed_message + ' ' + gettextCatalog.getString('by address') + ' ' + objAddress.address+'?';
 				requestApproval(question, {
 					ifYes: function(){
 						createAndSendSignature();
