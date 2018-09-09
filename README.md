@@ -40,13 +40,15 @@ grunt
 ```
 If you are on Windows or using NW.js and Node.js versions other than recommended, see [NW.js instructions about building native modules](http://docs.nwjs.io/en/latest/For%20Users/Advanced/Use%20Native%20Node%20Modules/).
 
-After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again. (e.g. from `byteball/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `byteball/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`)
+After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again (e.g. from `byteball/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `byteball/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`). If that didn't work, copy node_sqlite3.node from node_modules folder, which is got installed with installer file from Byteball.org website.
 
 Then run Byteball desktop client:
 
 ```sh
 /path/to/your/nwjs/nwjs .
 ```
+
+If you have run `grunt desktop` then there is 0.14.7 NW.js also installed in cache folder.
 
 ## Build Byteball App Bundles
 

@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz <testzcrypto@gmail.com>\n"
 "Language-Team: Korean\n"
 "Language: ko_KR\n"
-"PO-Revision-Date: 2018-06-22T09:24:38+0000\n"
+"PO-Revision-Date: 2018-06-25 23:11\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -284,7 +284,7 @@ msgstr "지원되지 않는 브라우저"
 
 #: public/index.html:12
 msgid "Byteball &mdash; smart payments"
-msgstr ""
+msgstr "바이트볼 &mdash; 스마트 결제"
 
 #: public/views/modals/destination-address.html:119
 msgid "Byteball address"

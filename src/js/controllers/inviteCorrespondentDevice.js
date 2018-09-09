@@ -38,6 +38,14 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
         $event.target.select();
     };
     
+	$scope.shareCode = function() {
+		if (isCordova) {
+			if (isMobile.Android() || isMobile.Windows())
+				window.ignoreMobilePause = true;
+			window.plugins.socialsharing.share(conf.program + ':' + $scope.code, null, null, null);
+		}
+	};
+	
     $scope.error = null;
     correspondentListService.startWaitingForPairing(function(pairingInfo){
         console.log("beginAddCorrespondent " + pairingInfo.pairing_secret);
@@ -62,8 +70,9 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
         var qrstring = $scope.protocol + ":" +$scope.code;  //as passed to the qr generator in inviteCorrespondentDevice.html
         $scope.qr_version = determineQRcodeVersionFromString( qrstring );
 
-        $scope.$digest();
-        //$timeout(function(){$scope.$digest();}, 100);
+        $timeout(function(){
+        	$scope.$digest();
+        });
         var eventName = 'paired_by_secret-'+pairingInfo.pairing_secret;
         eventBus.once(eventName, onPaired);
         $scope.$on('$destroy', function() {

@@ -76,8 +76,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
             var config = configService.getSync().wallet.settings;
             self.balance = profileService.formatAmount(balance) + ' ' + config.unitName;
           }
-
-          $scope.$apply();
+          $timeout(function() {
+          	$scope.$apply();
+          });
         });
       }, 100);
     }
@@ -118,8 +119,9 @@ angular.module('copayApp.controllers').controller('paperWalletController',
               go.walletHome();
             });
           }
-
-          $scope.$apply();
+          $timeout(function() {
+          	$scope.$apply();
+          });
         });
       }, 100);
     }

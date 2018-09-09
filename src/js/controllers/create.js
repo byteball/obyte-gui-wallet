@@ -41,7 +41,9 @@ angular.module('copayApp.controllers').controller('createController',
 		this.cosigners.push({});
 	correspondentListService.list(function(err, ab){
 		self.candidate_cosigners = ab;
-		$scope.$digest();
+		$timeout(function(){
+			$scope.$digest();
+		});
 	});
 	
 	/*

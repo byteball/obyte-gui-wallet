@@ -29,7 +29,7 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 		var conf = require('byteballcore/conf.js');
 		var re = new RegExp('^'+conf.program+':', 'i');
 		code = code.replace(re, '');
-		var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#([\w\/+-]+)$/);
+		var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#(.+)$/);
 		if (!matches)
 			return setError("Invalid pairing code");
 		var pubkey = matches[1];
