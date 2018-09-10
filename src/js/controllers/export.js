@@ -24,6 +24,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.isCordova = isCordova;
 		self.bCompression = false;
 		self.connection = null;
+		$scope.isWin = window.navigator.userAgent.indexOf('Windows') > -1;
 
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
