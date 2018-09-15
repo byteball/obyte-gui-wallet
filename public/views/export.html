@@ -44,7 +44,7 @@
 						<switch name="bCompression" ng-model="export.bCompression" class="green right"></switch>
 						<div translate>Compress the file? (Slower)</div>
 					</div>
-					<input type="file" id="nwExportInputFile" nwsaveas=""  style="display: none"/>
+					<input type="file" id="nwExportInputFile" nwsaveas="" nwworkingdir="{{downloadsDir}}" style="display: none"/>
 					<button class="black round expand m20t" ng-click="export.walletExport()"
 							ng-disabled="(export.exporting || !export.password || export.password != export.repeatpassword)"
 							ng-style="{'background-color':index.backgroundColor}"><i class="fi-download"></i>

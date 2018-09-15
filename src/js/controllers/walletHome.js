@@ -873,6 +873,9 @@ angular.module('copayApp.controllers')
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
 
+			if (conf.bLight && indexScope.copayers.length > 1 && indexScope.onGoingProcess['Syncing']) //wait for sync before sending
+					return self.setSendError(gettext("wait for sync to complete before sending payments"));
+
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
@@ -1523,11 +1526,13 @@ angular.module('copayApp.controllers')
 						form.amount.$render();
 					});
 				}
-				else {
+				else  {
 					this.lockAmount = false;
-					form.amount.$pristine = true;
-					form.amount.$setViewValue('');
-					form.amount.$render();
+					$timeout(function() {
+						form.amount.$setViewValue("");
+						form.amount.$pristine = true;
+						form.amount.$render();
+					});
 				}
 				//	form.amount.$render();
 
@@ -1575,10 +1580,12 @@ angular.module('copayApp.controllers')
 
 			$timeout(function() {
 				if (form && form.amount) {
+					$scope.$root = {};
 					form.amount.$pristine = true;
-					form.amount.$setViewValue('');
-					if (form.amount)
+					if (form.amount) {
+						form.amount.$setViewValue('');
 						form.amount.$render();
+					}
 
 					if (form.merkle_proof) {
 						form.merkle_proof.$setViewValue('');
