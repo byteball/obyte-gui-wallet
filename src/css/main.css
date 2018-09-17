@@ -1596,3 +1596,6 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
 	margin-bottom: -2px;
 }
+a.suggest-command {
+	border-bottom: 1px dotted #3498DB;
+}
