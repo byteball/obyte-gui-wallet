@@ -104,8 +104,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function highlightActions(text, arrMyAddresses){
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
-		return text.replace(/(\s|^)([2-7A-Z]{32})([\s.,;!:]|$)/g, function(str, pre, address, post){
+		return text.replace(/(.*?\b)([2-7A-Z]{32})(\b.*?)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
+				return str;
+			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
+				return str;
+			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
 				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
@@ -148,7 +152,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var arrFields = fields_list.split(',');
 			return '<a ng-click="choosePrivateProfile(\''+fields_list+'\')">[Request for profile]</a>';
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return '<a ng-click="showSignMessageModal(\''+message_to_sign+'\')">[Request to sign message: '+message_to_sign+']</a>';
+			return '<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>';
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
