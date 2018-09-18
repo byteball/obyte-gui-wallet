@@ -149,8 +149,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '[invalid profile]';
 			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			var arrFields = fields_list.split(',');
-			return '<a ng-click="choosePrivateProfile(\''+fields_list+'\')">[Request for profile]</a>';
+			return '<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>';
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
 			return '<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>';
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
@@ -297,7 +296,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '[invalid profile]';
 			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			var arrFields = fields_list.split(',');
 			return '[Request for profile fields '+fields_list+']';
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
 			return '<i>[Request to sign message: '+message_to_sign+']</i>';
