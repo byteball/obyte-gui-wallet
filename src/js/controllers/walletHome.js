@@ -1520,19 +1520,15 @@ angular.module('copayApp.controllers')
 					//	form.amount.$setViewValue("" + amount);
 					//	form.amount.$isValid = true;
 					this.lockAmount = true;
-					$timeout(function() {
-						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-						form.amount.$isValid = true;
-						form.amount.$render();
-					});
+					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+					form.amount.$isValid = true;
+					form.amount.$render();
 				}
 				else  {
 					this.lockAmount = false;
-					$timeout(function() {
-						form.amount.$setViewValue("");
-						form.amount.$pristine = true;
-						form.amount.$render();
-					});
+					form.amount.$setViewValue("");
+					form.amount.$pristine = true;
+					form.amount.$render();
 				}
 				//	form.amount.$render();
 
@@ -1580,7 +1576,7 @@ angular.module('copayApp.controllers')
 
 			$timeout(function() {
 				if (form && form.amount) {
-					$scope.$root = {};
+					if (!$scope.$root) $scope.$root = {};
 					form.amount.$pristine = true;
 					if (form.amount) {
 						form.amount.$setViewValue('');
