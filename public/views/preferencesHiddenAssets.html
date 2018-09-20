@@ -20,9 +20,6 @@
       width: 100%;
       word-break: break-all;
     }
-    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch {
-      cursor: pointer;
-    }
     .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch .switch {
       top: 0 !important;
       vertical-align: middle;
@@ -35,9 +32,10 @@
       <td class="list-switch__cell list-switch__cell_content">
         {{assetData.name}}
       </td>
-      <td class="list-switch__cell list-switch__cell_switch"
-        ng-click="ctrl.toggle(assetData.key)">
+      <td class="list-switch__cell list-switch__cell_switch">
         <switch class="green"
+          disabled="ctrl.isSwitchAssetDisabled(assetData)"
+          ng-change="ctrl.hanldeAssetChangeVisibility(assetData)"
           ng-model="assetData.value"></switch>
       </td>
     </tr>

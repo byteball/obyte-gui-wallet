@@ -28,12 +28,24 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
 
   ctrl.arrAssetsData = resAssetsData;
   ctrl.isChanged = false;
+  ctrl.isOneAssetLeft = false;
 
-  ctrl.toggle = function (asset) {
-    hiddenAssetsSet[asset] = !isAssetHidden(asset);
-    updateAssetData(asset);
+  checkOneAssetLeft();
+
+  ctrl.hanldeAssetChangeVisibility = function (assetData) {
+    var prevValue = hiddenAssetsSet[assetData.key];
+    if (prevValue === assetData.value) {
+      return;
+    }
+
+    hiddenAssetsSet[assetData.key] = assetData.value;
+    checkOneAssetLeft();
     saveConfig();
     ctrl.isChanged = true;
+  };
+
+  ctrl.isSwitchAssetDisabled = function (assetData) {
+    return !assetData.value && ctrl.isOneAssetLeft;
   };
 
   $scope.$on("$destroy", function() {
@@ -42,16 +54,14 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
     }
   });
 
-  function updateAssetData(asset) {
-    for (var i = 0, len = ctrl.arrAssetsData.length; i < len; i++) {
-      var assetData = ctrl.arrAssetsData[i];
-      if (assetData.key !== asset) {
-        continue;
+  function checkOneAssetLeft() {
+    var countAssetLeft = 0;
+    ctrl.arrAssetsData.forEach(function (assetData) {
+      if (!assetData.value) {
+        countAssetLeft++;
       }
-
-      assetData.value = isAssetHidden(asset);
-      break;
-    }
+    });
+    ctrl.isOneAssetLeft = countAssetLeft <= 1;
   }
 
   function isAssetHidden(asset) {
