@@ -1016,7 +1016,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
   };
 
-  self.isAssetHidden = function (assetsSet, asset) {
+  self.isAssetHidden = function (asset, assetsSet) {
+    if (!assetsSet) {
+      assetsSet = self.getCurrentWalletHiddenAssets();
+    }
     return assetsSet[asset];
   };
 	

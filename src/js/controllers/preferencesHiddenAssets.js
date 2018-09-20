@@ -55,7 +55,7 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
   }
 
   function isAssetHidden(asset) {
-    return indexScope.isAssetHidden(hiddenAssetsSet, asset);
+    return indexScope.isAssetHidden(asset, hiddenAssetsSet);
   }
 
   function saveConfig() {
