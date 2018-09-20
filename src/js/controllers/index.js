@@ -1073,7 +1073,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			}
         }
         self.assetsSet[asset] = balanceInfo;
-        if (self.isAssetHidden(hiddenAssets, asset)) {
+        if (self.isAssetHidden(asset, hiddenAssets)) {
           continue;
         }
         self.arrBalances.push(balanceInfo);
