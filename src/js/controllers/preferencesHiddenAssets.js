@@ -5,7 +5,7 @@ angular.module('copayApp.controllers')
 
 PreferencesHiddenAssetsCtrl.$inject = ['$scope','configService'];
 function PreferencesHiddenAssetsCtrl($scope, configService) {
-  var vm = this;
+  var ctrl = this;
   var configHiddenAssets = configService.getSync().hiddenAssets;
   var indexScope = $scope.index;
   var walletId = indexScope.walletId;
@@ -26,25 +26,25 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
     });
   });
 
-  vm.arrAssetsData = resAssetsData;
-  vm.isChanged = false;
+  ctrl.arrAssetsData = resAssetsData;
+  ctrl.isChanged = false;
 
-  vm.toggle = function (asset) {
+  ctrl.toggle = function (asset) {
     hiddenAssetsSet[asset] = !isAssetHidden(asset);
     updateAssetData(asset);
     saveConfig();
-    vm.isChanged = true;
+    ctrl.isChanged = true;
   };
 
   $scope.$on("$destroy", function() {
-    if (vm.isChanged) {
+    if (ctrl.isChanged) {
       indexScope.updateBalance();
     }
   });
 
   function updateAssetData(asset) {
-    for (var i = 0, len = vm.arrAssetsData.length; i < len; i++) {
-      var assetData = vm.arrAssetsData[i];
+    for (var i = 0, len = ctrl.arrAssetsData.length; i < len; i++) {
+      var assetData = ctrl.arrAssetsData[i];
       if (assetData.key !== asset) {
         continue;
       }

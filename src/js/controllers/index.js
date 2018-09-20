@@ -887,7 +887,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (!opts.quiet)
             self.setOngoingProcess('updatingStatus', true);
 
-        $log.debug('Updating Status:', fc.credentials.walletName, fc.credentials);
+        $log.debug('Updating Status:', fc.credentials.walletName);
         if (!opts.quiet)
             self.setOngoingProcess('updatingStatus', false);
 
@@ -1009,7 +1009,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var hiddenAssets = configService.getSync().hiddenAssets;
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
-    console.log('getCurrentWalletHiddenAssets', hiddenAssets, walletId);
     if (hiddenAssets.hasOwnProperty(walletId)) {
       return hiddenAssets[walletId];
     } else {
