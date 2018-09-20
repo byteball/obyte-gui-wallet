@@ -31,7 +31,9 @@
   <table class="no-bullet m0 list-switch">
     <tr class="list-switch__row"
       ng-repeat="assetData in ctrl.arrAssetsData">
-      <td class="list-switch__cell list-switch__cell_content">{{assetData.name}}</div>
+      <td class="list-switch__cell list-switch__cell_content">
+        {{assetData.name}}
+      </td>
       <td class="list-switch__cell list-switch__cell_switch"
         ng-click="ctrl.toggle(assetData.key)">
         <switch class="green"
