@@ -18,9 +18,7 @@
     .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_content {
       vertical-align: middle;
       width: 100%;
-    }
-    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch {
-      cursor: pointer;
+      word-break: break-all;
     }
     .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch .switch {
       top: 0 !important;
@@ -28,15 +26,18 @@
     }
   </style>
 
+  <h4 translate>Select the assets to hide in the wallet</h4>
+
   <table class="no-bullet m0 list-switch">
     <tr class="list-switch__row"
       ng-repeat="assetData in ctrl.arrAssetsData">
       <td class="list-switch__cell list-switch__cell_content">
         {{assetData.name}}
       </td>
-      <td class="list-switch__cell list-switch__cell_switch"
-        ng-click="ctrl.toggle(assetData.key)">
+      <td class="list-switch__cell list-switch__cell_switch">
         <switch class="green"
+          disabled="ctrl.isSwitchAssetDisabled(assetData)"
+          ng-change="ctrl.hanldeAssetChangeVisibility(assetData)"
           ng-model="assetData.value"></switch>
       </td>
     </tr>
