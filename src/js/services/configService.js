@@ -92,9 +92,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		bbUnitCode: 'one',
 		alternativeName: 'US Dollar',
 		alternativeIsoCode: 'USD',
-	  }
+		},
 	},
 
+	// hidden assets: key = wallet id, value = set of assets (string: boolean)
+	hiddenAssets: {},
 
 	rates: {
 	  url: 'https://insight.bitpay.com:443/api/rates',
@@ -213,6 +215,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		for (var attestorKey in defaultConfig.attestorAddresses){
 			if (!(attestorKey in _config.attestorAddresses))
 				_config.attestorAddresses[attestorKey] = defaultConfig.attestorAddresses[attestorKey];
+		}
+		if (!_config.hiddenAssets) {
+			_config.hiddenAssets = defaultConfig.hiddenAssets;
 		}
 		if (!_config.deviceName)
 			_config.deviceName = defaultConfig.getDeviceName();

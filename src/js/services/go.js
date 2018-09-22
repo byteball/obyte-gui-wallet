@@ -194,7 +194,26 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var conf = require('byteballcore/conf.js');
 		var url = new RegExp('^'+conf.program+':', 'i');
 		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
-		var arrParts = commandLine.split(' '); // on windows includes exe and all args, on mac just our arg
+		var tokenize = function(str) {
+			var tokens = [];
+			var start = -1; // opening quote index
+			var lastSpace = -1;
+			for (var i = 0; i < str.length; i++) {
+				if (str[i] == '"' || str[i] == '\'')
+					if (start != -1) {
+						tokens.push(str.substring(start+1, i));
+						start = -1;
+					} else
+						start = i;
+				if (str[i] == ' ' && start == -1) {
+					if (str.substring(lastSpace+1, i).length)
+						tokens.push(str.substring(lastSpace+1, i));
+					lastSpace = i;
+				}
+			}
+			return (tokens.length > 0) ? tokens : [str];
+		}
+		var arrParts = tokenize(commandLine); // on windows commandLine includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim().replace(/"/g, '');
 			if (part.match(url) || part.match(file))

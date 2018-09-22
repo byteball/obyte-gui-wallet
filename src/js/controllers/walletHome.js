@@ -193,6 +193,9 @@ angular.module('copayApp.controllers')
 							return;
 						}
 						$scope.list = ab;
+						$timeout(function() {
+							$scope.$digest();
+						});
 					});
 				};
 
@@ -614,7 +617,9 @@ angular.module('copayApp.controllers')
 					}
 					catch (e) {};
 					$timeout(function(){
-						angular.element(e).triggerHandler('click');
+						try {
+							angular.element(e).triggerHandler('click');
+						} catch (e) {};
 					});
 				}, true);
 			});
@@ -869,6 +874,9 @@ angular.module('copayApp.controllers')
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
+
+			if (conf.bLight && indexScope.copayers.length > 1 && indexScope.onGoingProcess['Syncing']) //wait for sync before sending
+					return self.setSendError(gettext("wait for sync to complete before sending payments"));
 
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
@@ -1172,7 +1180,7 @@ angular.module('copayApp.controllers')
 							}
 							var binding = self.binding;
 							self.resetForm();
-							$rootScope.$emit("NewOutgoingTx");
+						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
 								var db = require('byteballcore/db.js');
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
@@ -1514,16 +1522,14 @@ angular.module('copayApp.controllers')
 					//	form.amount.$setViewValue("" + amount);
 					//	form.amount.$isValid = true;
 					this.lockAmount = true;
-					$timeout(function() {
-						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-						form.amount.$isValid = true;
-						form.amount.$render();
-					});
+					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+					form.amount.$isValid = true;
+					form.amount.$render();
 				}
-				else {
+				else  {
 					this.lockAmount = false;
+					form.amount.$setViewValue("");
 					form.amount.$pristine = true;
-					form.amount.$setViewValue('');
 					form.amount.$render();
 				}
 				//	form.amount.$render();
@@ -1572,10 +1578,12 @@ angular.module('copayApp.controllers')
 
 			$timeout(function() {
 				if (form && form.amount) {
+					if (!$scope.$root) $scope.$root = {};
 					form.amount.$pristine = true;
-					form.amount.$setViewValue('');
-					if (form.amount)
+					if (form.amount) {
+						form.amount.$setViewValue('');
 						form.amount.$render();
+					}
 
 					if (form.merkle_proof) {
 						form.merkle_proof.$setViewValue('');
@@ -1696,6 +1704,15 @@ angular.module('copayApp.controllers')
 			}
 		};
 
+		this.openInExplorer = function(unit) {
+			var testnet = home.isTestnet ? 'testnet' : '';
+			var url = 'https://' + testnet + 'explorer.byteball.org/#' + unit;
+			if (typeof nw !== 'undefined')
+				nw.Shell.openExternal(url);
+			else if (isCordova)
+				cordova.InAppBrowser.open(url, '_system');
+		};
+
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			var self = this;
@@ -1778,12 +1795,7 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.openInExplorer = function() {
-					var testnet = home.isTestnet ? 'testnet' : '';
-					var url = 'https://' + testnet + 'explorer.byteball.org/#' + btx.unit;
-					if (typeof nw !== 'undefined')
-						nw.Shell.openExternal(url);
-					else if (isCordova)
-						cordova.InAppBrowser.open(url, '_system');
+					return self.openInExplorer(btx.unit);
 				};
 
 				$scope.copyAddress = function(addr) {

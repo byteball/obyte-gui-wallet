@@ -1,0 +1,47 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Hidden assets'; goBackToState = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesHiddenAssetsCtrl as ctrl">
+
+  <style>
+    .list-switch {}
+    .list-switch .list-switch__row {
+      display: table;
+      width: 100%;
+    }
+    .list-switch .list-switch__row > .list-switch__cell {
+      display: table-cell;
+    }
+    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_content {
+      vertical-align: middle;
+      width: 100%;
+      word-break: break-all;
+    }
+    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch .switch {
+      top: 0 !important;
+      vertical-align: middle;
+    }
+  </style>
+
+  <h4 translate>Select the assets to hide in the wallet</h4>
+
+  <table class="no-bullet m0 list-switch">
+    <tr class="list-switch__row"
+      ng-repeat="assetData in ctrl.arrAssetsData">
+      <td class="list-switch__cell list-switch__cell_content">
+        {{assetData.name}}
+      </td>
+      <td class="list-switch__cell list-switch__cell_switch">
+        <switch class="green"
+          disabled="ctrl.isSwitchAssetDisabled(assetData)"
+          ng-change="ctrl.hanldeAssetChangeVisibility(assetData)"
+          ng-model="assetData.value"></switch>
+      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="extra-margin-bottom"></div>
