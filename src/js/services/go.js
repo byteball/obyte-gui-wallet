@@ -199,7 +199,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			var start = -1; // opening quote index
 			var lastSpace = -1;
 			for (var i = 0; i < str.length; i++) {
-				if (str[i] == '\"' || str[i] == '\'')
+				if (str[i] == '"' || str[i] == '\'')
 					if (start != -1) {
 						tokens.push(str.substring(start+1, i));
 						start = -1;
@@ -211,9 +211,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					lastSpace = i;
 				}
 			}
-			return tokens;
+			return (tokens.length > 0) ? tokens : [str];
 		}
-		var arrParts = tokenize(commandLine); // on windows includes exe and all args, on mac just our arg
+		var arrParts = tokenize(commandLine); // on windows commandLine includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim().replace(/"/g, '');
 			if (part.match(url) || part.match(file))
