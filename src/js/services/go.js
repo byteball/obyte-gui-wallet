@@ -211,6 +211,9 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					lastSpace = i;
 				}
 			}
+			if (lastSpace != -1 && str.substring(lastSpace+1, i).length) {
+				tokens.push(str.substring(lastSpace+1, i));
+			}
 			return (tokens.length > 0) ? tokens : [str];
 		}
 		var arrParts = tokenize(commandLine); // on windows commandLine includes exe and all args, on mac just our arg
