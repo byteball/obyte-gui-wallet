@@ -247,6 +247,17 @@ angular
 
         }
       })
+      .state('preferences.preferencesHiddenAssets', {
+	      url: '/hiddenAssets',
+	      templateUrl: 'views/preferencesHiddenAssets.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesHiddenAssets.html'
+	        },
+	      }
+	    })
       .state('preferences.preferencesAdvanced', {
 	      url: '/advanced',
 	      templateUrl: 'views/preferencesAdvanced.html',
@@ -362,6 +373,17 @@ angular
         }
       })
       .state('preferencesGlobal.preferencesUnit', {
+        url: '/preferencesGlobal/unit',
+        templateUrl: 'views/preferencesUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesUnit.html'
+          },
+        }
+      })
+      .state('walletHome.preferencesUnit', {
         url: '/unit',
         templateUrl: 'views/preferencesUnit.html',
         walletShouldBeComplete: true,
@@ -373,6 +395,17 @@ angular
         }
       })
       .state('preferencesGlobal.preferencesBbUnit', {
+        url: '/preferencesGlobal/bbUnit',
+        templateUrl: 'views/preferencesBbUnit.html',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesBbUnit.html'
+          },
+        }
+      })
+      .state('walletHome.preferencesBbUnit', {
         url: '/bbUnit',
         templateUrl: 'views/preferencesBbUnit.html',
         walletShouldBeComplete: true,
