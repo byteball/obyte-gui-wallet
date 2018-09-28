@@ -112,6 +112,9 @@
 			    </dict>
 			</array>
 		</config-file>
+		<config-file target="*-Info.plist" parent="LSSupportsOpeningDocumentsInPlace">
+			<false/>
+		</config-file>
     </platform>
 
     <platform name="android">
