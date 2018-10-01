@@ -93,6 +93,8 @@ angular.module('copayApp.services')
 	
 	function disable_notification() {
 		storageService.getPushInfo(function(err, pushInfo) {
+			if (err)
+				return $log.error('Error getting push info');
 			storageService.removePushInfo(function() {
 				var network = require('byteballcore/network.js');
 				network.sendRequest(_ws, 'hub/disable_notification', pushInfo.registrationId, false, function(ws, request, response) {
