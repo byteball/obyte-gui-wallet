@@ -1,11 +1,11 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Sweep paper wallet (unimplemented)'; goBackToState = true;">
+  ng-init="titleSection='Sweep paper wallet'; goBackToState = true; showCamera = true;">
 </div>
 
 <div class="content preferences" ng-controller="paperWalletController as paperWallet">
-  <h4 ng-show="!paperWallet.error"></h4>
+  <!--h4 ng-show="!paperWallet.error"></h4>
   <div class="onGoingProcess" ng-show="paperWallet.scanning || paperWallet.sending">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
@@ -73,6 +73,10 @@
   <div class="text-center size-12 text-gray">
     <span translate>Funds will be transferred to</span>:
     <b>{{index.alias || index.walletName}}</b>
+  </div-->
+	
+  <div class="row columns size-16 m20t text-gray">
+    <span translate>Paper wallets are just textcoins. Scan the paper wallet's QR code using the camera icon in the upper right corner or input the 12 words of the textcoin manually on the "Receive" tab.</span>
   </div>
 
 </div>
