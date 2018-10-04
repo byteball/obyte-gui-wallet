@@ -1,0 +1,62 @@
+<style>
+.p10l {
+	padding-left: 10px;
+}
+.w30 {
+	width: 30px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+span.capitalize {
+	display: inline-block;
+}
+span.capitalize:first-letter {
+	text-transform: uppercase;
+}
+form[name="prosaicContractForm"] {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	line-height: 26px;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Offer prosaic contract
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	<form name="prosaicContractForm">
+
+	<input class="m0" type="text" id="address" name="address" disabled ng-model="_address" ng-required valid-address>
+	<input class="m0" type="text" id="address" name="deviceAddress" disabled ng-model="_deviceAddress" ng-required valid-address>
+	
+	<div ng-if="error" class="row columns">
+		<span class="has-error size-12">
+			{{error}}
+		</span>
+	</div>
+	
+	<div class="m20t large-12 large-centered row columns">
+		<div >
+		</div>
+		<div >
+		</div>
+		<button type="button" class="button black round expand" ng-disabled="bWorking" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+			Pay and offer
+		</button>
+	</div>
+	</form>
+</div>

@@ -453,8 +453,171 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 	};
 	
-	
-	
+	$scope.offerProsaicContract = function(address){
+		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		$rootScope.modalOpened = true;
+		var fc = profileService.focusedClient;
+		$scope.oracles = configService.oracles;
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope._address = address;
+			$scope._deviceAddress = correspondent.device_address;
+			var contract = {
+				timeout: 4,
+				myAsset: 'base',
+				peerAsset: 'base',
+				peer_pays_to: 'contract',
+				relation: '>',
+				expiry: 7,
+				data_party: 'me',
+				expiry_party: 'peer'
+			};
+			$scope.contract = contract;
+
+			
+			$scope.onDataPartyUpdated = function(){
+				console.log('onDataPartyUpdated');
+				contract.expiry_party = (contract.data_party === 'me') ? 'peer' : 'me';
+			};
+			
+			$scope.onExpiryPartyUpdated = function(){
+				console.log('onExpiryPartyUpdated');
+				contract.data_party = (contract.expiry_party === 'me') ? 'peer' : 'me';
+			};
+			
+			
+			$scope.payAndOffer = function() {
+				console.log('payAndOffer');
+				$scope.error = '';
+				
+				if (fc.isPrivKeyEncrypted()) {
+					profileService.unlockFC(null, function(err) {
+						if (err){
+							$scope.error = err.message;
+							$timeout(function(){
+								$scope.$apply();
+							});
+							return;
+						}
+						$scope.payAndOffer();
+					});
+					return;
+				}
+				
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						$timeout(function() {
+							$scope.$digest();
+						}, 1);
+						return;
+					}
+					
+					if ($scope.bWorking)
+						return console.log('already working');
+					
+					readMyPaymentAddress(function(my_address){
+						readLastMainChainIndex(function(err, last_mci){
+							if (err){
+								$scope.error = err;
+								$timeout(function() {
+									$scope.$digest();
+								}, 1);
+								return;
+							}
+							var arrDefinition = 
+								['and', [
+									['address', my_address],
+									['address', address]
+								]];
+							var assocSignersByPath = {
+								'r.0': {
+									address: my_address,
+									member_signing_path: 'r',
+									device_address: device.getMyDeviceAddress()
+								},
+								'r.1': {
+									address: address,
+									member_signing_path: 'r',
+									device_address: correspondent.device_address
+								}
+							};
+							walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
+								ifError: function(err){
+									$scope.bWorking = false;
+									$scope.error = err;
+									$timeout(function(){
+										$scope.$digest();
+									});
+								},
+								ifOk: function(shared_address){
+									composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address);
+								}
+							});
+						});
+					});
+					
+					// compose and send
+					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
+						var my_amount = 5000;
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							shared_address: indexScope.shared_address,
+							asset: contract.myAsset,
+							to_address: shared_address,
+							amount: my_amount,
+							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							recipient_device_address: correspondent.device_address
+						};
+						fc.sendMultiPayment(opts, function(err){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							$scope.bWorking = false;
+							profileService.bKeepUnlocked = false;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								if ($scope)
+									$scope.error = err;
+								return;
+							}
+							$rootScope.$emit("NewOutgoingTx");
+							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
+						});
+						$modalInstance.dismiss('cancel');
+					}
+					
+				});
+			}; // payAndOffer
+			
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/offer-prosaic-contract.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
 		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
