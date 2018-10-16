@@ -179,6 +179,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
+		if (!ValidationUtils.isNonemptyArray(objMultiPaymentRequest.payments))
+			return null;
+		if (!objMultiPaymentRequest.payments.every(function(objPayment){
+			return ( ValidationUtils.isValidAddress(objPayment.address) && ValidationUtils.isPositiveInteger(objPayment.amount) && (!objPayment.asset || ValidationUtils.isValidBase64(objPayment.asset, constants.HASH_LENGTH)) );
+		}))
+			return null;
 		if (objMultiPaymentRequest.definitions){
 			for (var destinationAddress in objMultiPaymentRequest.definitions){
 				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
