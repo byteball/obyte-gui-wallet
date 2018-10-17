@@ -29,41 +29,41 @@
 }
 </style>
 <div ng-controller="correspondentDevicesController">
-
-<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
-  <section class="left-small">
-    <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
-      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
-    </a>
-    <a ng-show="goBackToState"
-      ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back">{{'Back'|translate}}</span>
-    </a>
+	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
+		<section class="left-small">
+			<a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.openMenu()"><i
+				 class="fi-list size-24"></i>
+			</a>
+			<a ng-show="goBackToState" ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+				<span class="text-back">{{'Back'|translate}}</span>
+			</a>
 
 
-	<a ng-show="closeToHome" class="p10" ng-click="topbar.goHome(); closeToHome = null">
-		<span class="text-close">{{'Close'|translate}}</span>
-	</a>
-  </section>
+			<a ng-show="closeToHome" class="p10" ng-click="topbar.goHome(); closeToHome = null">
+				<span class="text-close">{{'Close'|translate}}</span>
+			</a>
+		</section>
 
-  <section class="right-small">
-    <qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
-  </section>
+		<section class="right-small">
+			<qr-scanner ng-show="index.isComplete" on-scan="topbar.onQrCodeScanned(data)" before-scan="topbar.onBeforeScan()"></qr-scanner>
+		</section>
 
-  <section class="middle tab-bar-section">
-   	<div class="mtabset">
-    	<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" translate>
-    		Contacts
-    	</div>
-    	<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}" donttranslate>
-    		Bot Store
-    	</div>
-    </div>
-  </section>
-</nav>
+		<section class="middle tab-bar-section">
+			<div class="mtabset">
+				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+				 translate>
+					Contacts
+				</div>
+				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+				 donttranslate>
+					Bot Store
+				</div>
+			</div>
+		</section>
+	</nav>
 
 	<div ui-view="dialog"></div>
-	
+
 	<div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')" id="chat">
 		<div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 			<form class="row filter">
@@ -71,50 +71,42 @@
 					<input type="text" class="filter-input">
 				</fieldset>
 				<fieldset class="small-5 columns filter-columns">
-					<button class="tiny button filter-button">asc</button>
+					<button class="tiny button filter-button" ng-click="test()">asc</button>
 					<button class="tiny button filter-button">new</button>
 				</fieldset>
 			</form>
-			<ul class="no-bullet m0 correspondentList" ng-init="readList()">
+			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
 				<li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
-					<a
-						class="removeCorrespondentList"
-						ng-show="selectedCorrespondentList[correspondent.device_address]"
-						ng-hide="hideRemoveButton(correspondent.removable)"
-						ng-click="remove(correspondent.device_address)"
-					>
+					<a class="removeCorrespondentList" ng-show="selectedCorrespondentList[correspondent.device_address]" ng-hide="hideRemoveButton(correspondent.removable)"
+					 ng-click="remove(correspondent.device_address)">
 						<i class="fi-trash size-24"></i>
 					</a>
 
-		          <a class="selectCorrespondentList" 
-		            ng-show="editCorrespondentList" 
-		            ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
-		            <i class="fi-trash"></i></a> 
-		          <div ng-click="showCorrespondent(correspondent)" class="pointer"> 
-		            {{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
-		            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-		            <div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
-		            <div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
-		          </div>
-		        </li>
-		        <li class="m10t" ng-show="!editCorrespondentList">
-		          <a ng-click="beginAddCorrespondent()" class="p10">
-		            <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-		            <span class="text-close size-12" translate>Add a new device</span> 
-		          </a>
-		        </li>
-		        <li class="m10t" ng-show="!editCorrespondentList">
-		          <a ng-click="hideRemove = !hideRemove" class="p10">
-		            <i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i> 
-		            <span class="text-close size-12" translate>Remove a device</span> 
-		          </a>
-		        </li>
-		      </ul>
+					<a class="selectCorrespondentList" ng-show="editCorrespondentList" ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
+						<i class="fi-trash"></i></a>
+					<div ng-click="showCorrespondent(correspondent)" class="pointer">
+						{{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
+						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
+						<div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
+						<div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
+					</div>
+				</li>
+				<li class="m10t" ng-show="!editCorrespondentList">
+					<a ng-click="beginAddCorrespondent()" class="p10">
+						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i>
+						<span class="text-close size-12" translate>Add a new device</span>
+					</a>
+				</li>
+				<li class="m10t" ng-show="!editCorrespondentList">
+					<a ng-click="hideRemove = !hideRemove" class="p10">
+						<i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i>
+						<span class="text-close size-12" translate>Remove a device</span>
+					</a>
+				</li>
+			</ul>
 
-
-		    
-	    </div>
-	    <div class="mtab" ng-class="{'active': mtab == 2}">
+		</div>
+		<div class="mtab" ng-class="{'active': mtab == 2}">
 			<form class="row filter">
 				<fieldset class="small-7 columns filter-columns">
 					<input type="text" class="filter-input">
@@ -124,17 +116,17 @@
 					<button class="tiny button filter-button">new</button>
 				</fieldset>
 			</form>
-	    	 <ul class="no-bullet m0 correspondentList">
-		        <li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">
-		          <div ng-click="showBot(bot)" class="pointer"> 
-		            <span class="bot_name">{{bot.name}}</span>
-		            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-		            <div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
-		          </div>
-		        </li>
-		      </ul>
-		      <div class="text-warning size-12 m10b" ng-show="botsError">{{botsError|translate}}</div>
-	    </div>
+			<ul class="no-bullet m0 correspondentList">
+				<li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">
+					<div ng-click="showBot(bot)" class="pointer">
+						<span class="bot_name">{{bot.name}}</span>
+						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
+						<div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
+					</div>
+				</li>
+			</ul>
+			<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError|translate}}</div>
+		</div>
 	</div>
 
 </div>
