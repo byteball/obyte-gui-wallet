@@ -1,32 +1,49 @@
 <style type="text/css">
-.bot_name {
-	text-overflow: ellipsis;
-	max-width: 75%;
-	display: inline-block;
-	white-space: nowrap;
-	overflow: hidden;
-}
+	.bot_name {
+		text-overflow: ellipsis;
+		max-width: 75%;
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+	}
 
-.filter {
-	padding: 0 10px;
-}
+	.filter {
+		padding: 0 10px;
+	}
 
-.filter-input {
-	margin: 0 !important;
-	padding-left: 10px !important;
-	border: 1px solid #A5B2BF !important;
-}
+	.filter-input {
+		margin: 0 !important;
+		padding-left: 10px !important;
+		border: 1px solid #A5B2BF !important;
+	}
 
-.filter-columns {
-	padding: 0;
-	text-align: center;
+	.filter-columns {
+		padding: 0;
+		text-align: center;
 
-	border: none;
-}
+		border: none;
+	}
 
-.filter-button {
-	margin: 0;
-}
+	.filter-button {
+		margin: 0;
+		background: #eee;
+		color: #333;
+	}
+
+	.filter-button-right {
+		padding: 0 0 0 10px;
+	}
+
+	.filter-button:focus,
+	.filter-button:hover {
+		background: #ddd;
+		color: #333;
+	}
+
+	.filter-button.dropdown.button.tiny::after,
+	button.filter-button.dropdown.tiny::after {
+		border-color: #777777 transparent transparent transparent;
+	}
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -67,12 +84,28 @@
 	<div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')" id="chat">
 		<div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 			<form class="row filter">
-				<fieldset class="small-7 columns filter-columns">
+				<fieldset class="small-8 columns filter-columns">
 					<input type="text" class="filter-input">
 				</fieldset>
-				<fieldset class="small-5 columns filter-columns">
-					<button class="tiny button filter-button" ng-click="test()">asc</button>
-					<button class="tiny button filter-button">new</button>
+				<fieldset class="small-4 columns filter-columns filter-button-right">
+					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop" data-options="align:left">
+						default
+					</button>
+
+					<ul id="drop" class="f-dropdown drop-bottom drop-down" data-dropdown-content>
+						<li class="dropup-item">
+							<a class="ellipsis dropup-item-link"  ng-click="requestPayment()">
+								<span translate>New</span>
+							</a>
+						</li>
+						<li class="dropup-item">
+							<a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
+								<span translate>Alphabetically</span>
+							</a>
+						</li>
+						<div class="clear"></div>
+						<div class="clear"></div>
+					</ul>
 				</fieldset>
 			</form>
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
