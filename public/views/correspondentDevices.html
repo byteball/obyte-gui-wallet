@@ -1,7 +1,5 @@
 <style type="text/css">
-	.bots-list {
-		padding: 10px 10px 5px 10px;
-	}
+	.bots-list { padding: 10px 10px 5px 10px }
 
 	.bot_name {
 		text-overflow: ellipsis;
@@ -15,9 +13,7 @@
 	* Filters
 	*/
 
-	.filter {
-		padding: 0 10px;
-	}
+	.filter { padding: 0 10px }
 
 	.filter-input {
 		margin: 0 !important;
@@ -38,28 +34,17 @@
 		color: #333;
 	}
 
-	.filter-button-right {
-		padding: 0 0 0 10px;
-	}
+	.filter-devider { margin: 0 0 10px }
+	.filter-button-right { padding: 0 0 0 10px }
 
 	.filter-button:focus,
-	.filter-button:hover {
-		background: #ddd;
-		color: #333;
-	}
+	.filter-button:hover { background: #ddd; color: #333 }
 
-	.contacts-filters-list .f-dropdown li {
-		font-size: 12px;
-	}
+	.bots-filters-list.f-dropdown li,
+	.contacts-filters-list.f-dropdown li { font-size: 12px }
 
 	.filter-button.dropdown.button.tiny::after,
-	button.filter-button.dropdown.tiny::after {
-		border-color: #777777 transparent transparent transparent;
-	}
-
-	.filter-devider {
-		margin: 0 0 10px;
-	}
+	button.filter-button.dropdown.tiny::after { border-color: #777777 transparent transparent transparent }
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -124,7 +109,10 @@
 			</form>
 			<hr class="filter-devider">
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
-				<li class="p10 line-b" ng-repeat="correspondent in list | filter:contactsSearchText | orderBy:newMsgByAddressComparator"">
+				<li
+					class="p10 line-b"
+					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:newMsgByAddressComparator"
+				>
 					<a class="removeCorrespondentList" ng-show="selectedCorrespondentList[correspondent.device_address]" ng-hide="hideRemoveButton(correspondent.removable)"
 					 ng-click="remove(correspondent.device_address)">
 						<i class="fi-trash size-24"></i>
@@ -180,7 +168,7 @@
 			</form>
 			<hr class="filter-devider">
 			<ul class="no-bullet m0 correspondentList">
-				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText">
+				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description">
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
