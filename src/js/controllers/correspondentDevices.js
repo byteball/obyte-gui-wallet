@@ -2,16 +2,27 @@
 
 angular.module('copayApp.controllers').controller('correspondentDevicesController',
   function($scope, $timeout, configService, profileService, go, correspondentListService, $state, $rootScope) {
-	
-	var self = this;
-	
 	var wallet = require('byteballcore/wallet.js');
 	var bots = require('byteballcore/bots.js');
 	var mutex = require('byteballcore/mutex.js');
+	var fc = profileService.focusedClient;
+
 	$scope.editCorrespondentList = false;
 	$scope.selectedCorrespondentList = {};
-	var fc = profileService.focusedClient;
 	$scope.backgroundColor = fc.backgroundColor;
+
+	// Contacts filter
+	$scope.contactsSearchText  = '';
+	$scope.contactsFilter      = 'default';
+	$scope.contactsFilterLabel = 'default';
+	$scope.contactsFiltersList = ['default', 'new', 'asc'];
+
+	// Bots filter
+	$scope.botsSearchText  = '';
+	$scope.botsFilter      = 'default';
+	$scope.botsFilterLabel = 'default';
+	$scope.botsFiltersList = ['default', 'new', 'asc'];
+
 
 	$scope.state = $state;
 
@@ -55,6 +66,11 @@ angular.module('copayApp.controllers').controller('correspondentDevicesControlle
 		listScrollTop = document.querySelector('[ui-view=chat]').scrollTop;
 		go.path('correspondentDevices.addCorrespondentDevice');
 	};
+
+	$scope.changeFilter = function(filter, label) {
+		$scope[filter + 'FilterLabel'] = label;
+		$scope[filter + 'Filter'] = label;
+	}
 
 
 	$scope.readList = function() {

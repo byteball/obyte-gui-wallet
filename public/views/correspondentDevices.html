@@ -1,4 +1,8 @@
 <style type="text/css">
+	.bots-list {
+		padding: 10px 10px 5px 10px;
+	}
+
 	.bot_name {
 		text-overflow: ellipsis;
 		max-width: 75%;
@@ -6,6 +10,10 @@
 		white-space: nowrap;
 		overflow: hidden;
 	}
+
+	/*
+	* Filters
+	*/
 
 	.filter {
 		padding: 0 10px;
@@ -40,9 +48,17 @@
 		color: #333;
 	}
 
+	.contacts-filters-list .f-dropdown li {
+		font-size: 12px;
+	}
+
 	.filter-button.dropdown.button.tiny::after,
 	button.filter-button.dropdown.tiny::after {
 		border-color: #777777 transparent transparent transparent;
+	}
+
+	.filter-devider {
+		margin: 0 0 10px;
 	}
 </style>
 <div ng-controller="correspondentDevicesController">
@@ -83,40 +99,40 @@
 
 	<div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')" id="chat">
 		<div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
-			<form class="row filter">
+			<form id="contacts-filter" class="row filter">
 				<fieldset class="small-8 columns filter-columns">
-					<input type="text" class="filter-input">
+					<input
+						type="text"
+						class="filter-input"
+						ng-model="contactsSearchText"
+						placeholder="контактные данные"
+					>
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
-					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop" data-options="align:left">
-						default
+					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-contacts" data-options="align:left">
+						{{contactsFilterLabel | translate}}
 					</button>
 
-					<ul id="drop" class="f-dropdown drop-bottom drop-down" data-dropdown-content>
-						<li class="dropup-item">
-							<a class="ellipsis dropup-item-link"  ng-click="requestPayment()">
-								<span translate>New</span>
+					<ul id="drop-contacts" class="contacts-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
+						<li class="dropup-item" ng-repeat="filter in contactsFiltersList">
+							<a class="ellipsis dropup-item-link" ng-click="changeFilter('contacts', filter)">
+								{{filter | translate | uppercase}}
 							</a>
 						</li>
-						<li class="dropup-item">
-							<a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
-								<span translate>Alphabetically</span>
-							</a>
-						</li>
-						<div class="clear"></div>
-						<div class="clear"></div>
 					</ul>
 				</fieldset>
 			</form>
+			<hr class="filter-devider">
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
-				<li class="p10 line-b" ng-repeat="correspondent in list | orderBy:newMsgByAddressComparator">
+				<li class="p10 line-b" ng-repeat="correspondent in list | filter:contactsSearchText | orderBy:newMsgByAddressComparator"">
 					<a class="removeCorrespondentList" ng-show="selectedCorrespondentList[correspondent.device_address]" ng-hide="hideRemoveButton(correspondent.removable)"
 					 ng-click="remove(correspondent.device_address)">
 						<i class="fi-trash size-24"></i>
 					</a>
 
 					<a class="selectCorrespondentList" ng-show="editCorrespondentList" ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
-						<i class="fi-trash"></i></a>
+						<i class="fi-trash"></i>
+					</a>
 					<div ng-click="showCorrespondent(correspondent)" class="pointer">
 						{{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
@@ -137,20 +153,34 @@
 					</a>
 				</li>
 			</ul>
-
 		</div>
 		<div class="mtab" ng-class="{'active': mtab == 2}">
-			<form class="row filter">
-				<fieldset class="small-7 columns filter-columns">
-					<input type="text" class="filter-input">
+			<form id="bots-filter" class="row filter">
+				<fieldset class="small-8 columns filter-columns">
+					<input
+						type="text"
+						class="filter-input"
+						ng-model="botsSearchText"
+						placeholder="название бота"
+					>
 				</fieldset>
-				<fieldset class="small-5 columns filter-columns">
-					<button class="tiny button filter-button">asc</button>
-					<button class="tiny button filter-button">new</button>
+				<fieldset class="small-4 columns filter-columns filter-button-right">
+					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-bots" data-options="align:left">
+						{{botsFilterLabel | translate}}
+					</button>
+
+					<ul id="drop-bots" class="bots-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
+						<li class="dropup-item" ng-repeat="filter in botsFiltersList">
+							<a class="ellipsis dropup-item-link" ng-click="changeFilter('bots', filter)">
+								{{filter | uppercase | translate}}
+							</a>
+						</li>
+					</ul>
 				</fieldset>
 			</form>
+			<hr class="filter-devider">
 			<ul class="no-bullet m0 correspondentList">
-				<li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">
+				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText">
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
