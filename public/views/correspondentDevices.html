@@ -101,7 +101,7 @@
 					<ul id="drop-contacts" class="contacts-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="filter in contactsFiltersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('contacts', filter)">
-								{{filter | translate | uppercase}}
+								{{filter.label | translate | uppercase}}
 							</a>
 						</li>
 					</ul>
@@ -111,7 +111,7 @@
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
 				<li
 					class="p10 line-b"
-					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:newMsgByAddressComparator"
+					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:contactsFilter"
 				>
 					<a class="removeCorrespondentList" ng-show="selectedCorrespondentList[correspondent.device_address]" ng-hide="hideRemoveButton(correspondent.removable)"
 					 ng-click="remove(correspondent.device_address)">
@@ -126,6 +126,7 @@
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
 						<div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
 						<div class="size-10 text-gray ellipsis">{{correspondent.device_address}}@{{correspondent.hub}}</div>
+						<div>{{correspondent.last_message_date}}</div>
 					</div>
 				</li>
 				<li class="m10t" ng-show="!editCorrespondentList">
@@ -160,7 +161,7 @@
 					<ul id="drop-bots" class="bots-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="filter in botsFiltersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('bots', filter)">
-								{{filter | uppercase | translate}}
+								{{filter.label | uppercase | translate}}
 							</a>
 						</li>
 					</ul>
@@ -168,7 +169,7 @@
 			</form>
 			<hr class="filter-devider">
 			<ul class="no-bullet m0 correspondentList">
-				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description">
+				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsFilter">
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>

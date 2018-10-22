@@ -2,6 +2,10 @@
 
 angular
 	.module('copayApp.controllers')
+	.filter('order', function(type) {
+		return {};
+		console.info(type);
+	})
 	.controller('correspondentDevicesController', function(
 		$scope,
 		$timeout,
@@ -15,7 +19,13 @@ angular
 		var wallet = require('byteballcore/wallet.js');
 		var bots = require('byteballcore/bots.js');
 		var mutex = require('byteballcore/mutex.js');
+		var db = require('byteballcore/db.js');
+		
 		var fc = profileService.focusedClient;
+
+		this.$onInit = function () {
+			$scope.readList();
+		};
 
 		$scope.editCorrespondentList = false;
 		$scope.selectedCorrespondentList = {};
@@ -23,25 +33,30 @@ angular
 
 		// Contacts filter
 		$scope.contactsSearchText = '';
-		$scope.contactsFilter = 'default';
+		$scope.contactsFilter = $scope.newMsgByAddressComparator;
 		$scope.contactsFilterLabel = 'default';
-		$scope.contactsFiltersList = ['default', 'asc', 'new'];
-		$scope.contactsFilterHash  = {
-			default: $scope.newMsgByAddressComparator,
-			asc: [],
-			new: ''
-		}
+		$scope.contactsFiltersList = [{
+			label: 'default',
+			type: $scope.newMsgByAddressComparator,
+		}, {
+			label: 'asc',
+			type: 'name',
+		}, {
+			label: 'new',
+			type: $scope.sortByDate,
+		}];
 
 		// Bots filter
 		$scope.botsSearchText = '';
 		$scope.botsFilter = 'default';
 		$scope.botsFilterLabel = 'default';
-		$scope.botsFiltersList = ['default', 'asc', 'new'];
-		$scope.botsFilterHash  = {
-			default: 'newMsgByAddressComparator',
-			asc: [],
-			new: ''
-		}
+		$scope.botsFiltersList = [{
+			label: 'default',
+			type: $scope.newMsgByAddressComparator,
+		}, {
+			label: 'asc',
+			type: 'name',
+		}];
 
 		$scope.state = $state;
 
@@ -89,6 +104,11 @@ angular
 				: true;
 		};
 
+		$scope.sortByDate = function(correspondent) {
+			console.info(new Date(correspondent.last_message_date));
+			return new Date(correspondent.last_message_date);
+		}
+
 		$scope.newMsgByAddressComparator = function(correspondent) {
 			return (
 				-$scope.newMessagesCount[correspondent.device_address] ||
@@ -102,9 +122,9 @@ angular
 			go.path('correspondentDevices.addCorrespondentDevice');
 		};
 
-		$scope.changeFilter = function(filter, label) {
-			$scope[filter + 'FilterLabel'] = label;
-			$scope[filter + 'Filter'] = label;
+		$scope.changeFilter = function(section, filter) {
+			$scope[section + 'FilterLabel'] = filter.label;
+			$scope[section + 'Filter'] = filter.type;
 		};
 
 		$scope.readList = function() {
@@ -114,8 +134,6 @@ angular
 					$scope.error = err;
 					return;
 				}
-
-				console.info(wallet);
 
 				wallet.readDeviceAddressesUsedInSigningPaths(function(
 					arrNotRemovableDeviceAddresses
@@ -137,7 +155,22 @@ angular
 					}
 				});
 
-				$scope.list = ab;
+				db.query("SELECT * FROM 'chat_messages'", function(data) {
+					var list = [];
+
+					list = ab.map(function(correspondent) {
+						var _messages = data.filter(function(message) {
+							return correspondent.device_address === message.correspondent_address;
+						});
+
+						return Object.assign({}, correspondent, {
+							last_message_date: _messages.pop().creation_date,
+							messages: _messages,
+						});
+					});
+
+					$scope.list = list;
+				});
 
 				bots.load(function(err, rows) {
 					if (err) $scope.botsError = err.toString();
