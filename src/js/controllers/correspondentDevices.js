@@ -36,11 +36,8 @@ angular
 		$scope.contactsFilter = $scope.newMsgByAddressComparator;
 		$scope.contactsFilterLabel = 'default';
 		$scope.contactsFiltersList = [{
-			label: 'default',
+			label: 'alpha',
 			type: $scope.newMsgByAddressComparator,
-		}, {
-			label: 'asc',
-			type: 'name',
 		}, {
 			label: 'new',
 			type: $scope.sortByDate,
@@ -54,7 +51,7 @@ angular
 			label: 'default',
 			type: $scope.newMsgByAddressComparator,
 		}, {
-			label: 'asc',
+			label: 'alpha',
 			type: 'name',
 		}];
 
@@ -105,7 +102,6 @@ angular
 		};
 
 		$scope.sortByDate = function(correspondent) {
-			console.info(new Date(correspondent.last_message_date));
 			return new Date(correspondent.last_message_date);
 		}
 
