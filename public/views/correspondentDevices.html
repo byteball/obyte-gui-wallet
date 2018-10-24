@@ -34,7 +34,7 @@
 		color: #333;
 	}
 
-	.filter-devider { margin: 0 0 10px }
+	.filter-divider { margin: 0 0 10px }
 	.filter-button-right { padding: 0 0 0 10px }
 
 	.filter-button:focus,
@@ -90,7 +90,7 @@
 						type="text"
 						class="filter-input"
 						ng-model="contactsSearchText"
-						placeholder="контактные данные"
+						placeholder="contact name"
 					>
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
@@ -107,7 +107,7 @@
 					</ul>
 				</fieldset>
 			</form>
-			<hr class="filter-devider">
+			<hr class="filter-divider">
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
 				<li
 					class="p10 line-b"
@@ -149,7 +149,7 @@
 						type="text"
 						class="filter-input"
 						ng-model="botsSearchText"
-						placeholder="название бота"
+						placeholder="bot name"
 					>
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
@@ -166,7 +166,7 @@
 					</ul>
 				</fieldset>
 			</form>
-			<hr class="filter-devider">
+			<hr class="filter-divider">
 			<ul class="no-bullet m0 correspondentList">
 				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsFilter">
 					<div ng-click="showBot(bot)" class="pointer">
