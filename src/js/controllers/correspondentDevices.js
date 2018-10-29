@@ -151,17 +151,17 @@ angular
 					}
 				});
 
-				db.query("SELECT * FROM 'chat_messages'", function(data) {
+				db.query("SELECT correspondent_address, MAX(creation_date) AS 'last_message_date' FROM chat_messages GROUP BY creation_date", function(data) {
 					var list = [];
+					var chatMessagesHash = {};
+
+					data.forEach(element => {
+						chatMessagesHash[element.correspondent_address] = element.last_message_date;
+					});
 
 					list = ab.map(function(correspondent) {
-						var _messages = data.filter(function(message) {
-							return correspondent.device_address === message.correspondent_address;
-						});
-
 						return Object.assign({}, correspondent, {
-							last_message_date: _messages.pop().creation_date,
-							messages: _messages,
+							last_message_date: chatMessagesHash[correspondent.device_address],
 						});
 					});
 
