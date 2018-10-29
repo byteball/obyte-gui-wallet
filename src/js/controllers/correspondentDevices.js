@@ -151,17 +151,17 @@ angular
 					}
 				});
 
-				db.query("SELECT correspondent_address, MAX(creation_date) AS 'last_message_date' FROM chat_messages GROUP BY creation_date", function(data) {
+				db.query("SELECT correspondent_address, MAX(creation_date) AS 'last_message_date' FROM chat_messages GROUP BY correspondent_address", function(data) {
 					var list = [];
-					var chatMessagesHash = {};
+					var assocLastMessageDateByCorrespondent = {};
 
 					data.forEach(element => {
-						chatMessagesHash[element.correspondent_address] = element.last_message_date;
+						assocLastMessageDateByCorrespondent[element.correspondent_address] = element.last_message_date;
 					});
 
 					list = ab.map(function(correspondent) {
 						return Object.assign({}, correspondent, {
-							last_message_date: chatMessagesHash[correspondent.device_address],
+							last_message_date: assocLastMessageDateByCorrespondent[correspondent.device_address],
 						});
 					});
 

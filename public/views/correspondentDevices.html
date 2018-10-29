@@ -95,13 +95,13 @@
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
 					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-contacts" data-options="align:left">
-						{{contactsFilterLabel | translate}}
+						{{contactsFilterLabel}}
 					</button>
 
 					<ul id="drop-contacts" class="contacts-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="filter in contactsFiltersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('contacts', filter)">
-								{{filter.label | translate | uppercase}}
+								{{filter.label|uppercase}}
 							</a>
 						</li>
 					</ul>
@@ -154,13 +154,13 @@
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
 					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-bots" data-options="align:left">
-						{{botsFilterLabel | translate}}
+						{{botsFilterLabel}}
 					</button>
 
 					<ul id="drop-bots" class="bots-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="filter in botsFiltersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('bots', filter)">
-								{{filter.label | uppercase | translate}}
+								{{filter.label|uppercase}}
 							</a>
 						</li>
 					</ul>
@@ -176,7 +176,7 @@
 					</div>
 				</li>
 			</ul>
-			<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError|translate}}</div>
+			<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError}}</div>
 		</div>
 	</div>
 
