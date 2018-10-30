@@ -27,7 +27,7 @@ angular
 		$scope.selectedCorrespondentList = {};
 		$scope.backgroundColor = fc.backgroundColor;
 
-		// Contacts filter
+		// Contacts order
 		$scope.contactsSearchText = '';
 		$scope.contactsOrder = $scope.newMsgByAddressComparator;
 		$scope.contactsOrderLabel = 'default';
@@ -39,7 +39,7 @@ angular
 			type: $scope.sortByDate,
 		}];
 
-		// Bots filter
+		// Bots order
 		$scope.botsSearchText = '';
 		$scope.botsOrder = 'default';
 		$scope.botsOrderLabel = 'default';
@@ -114,9 +114,9 @@ angular
 			go.path('correspondentDevices.addCorrespondentDevice');
 		};
 
-		$scope.changeFilter = function(section, filter) {
-			$scope[section + 'FilterLabel'] = filter.label;
-			$scope[section + 'Filter'] = filter.type;
+		$scope.changeOrder = function(section, order) {
+			$scope[section + 'FilterLabel'] = order.label;
+			$scope[section + 'Filter'] = order.type;
 		};
 
 		$scope.readList = function() {

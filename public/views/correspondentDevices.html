@@ -10,41 +10,41 @@
 	}
 
 	/*
-	* Filters
+	* Orders
 	*/
 
-	.filter { padding: 0 10px }
+	.order { padding: 0 10px }
 
-	.filter-input {
+	.order-input {
 		margin: 0 !important;
 		padding-left: 10px !important;
 		border: 1px solid #A5B2BF !important;
 	}
 
-	.filter-columns {
+	.order-columns {
 		padding: 0;
 		text-align: center;
 
 		border: none;
 	}
 
-	.filter-button {
+	.order-button {
 		margin: 0;
 		background: #eee;
 		color: #333;
 	}
 
-	.filter-divider { margin: 0 0 10px }
-	.filter-button-right { padding: 0 0 0 10px }
+	.order-divider { margin: 0 0 10px }
+	.order-button-right { padding: 0 0 0 10px }
 
-	.filter-button:focus,
-	.filter-button:hover { background: #ddd; color: #333 }
+	.order-button:focus,
+	.order-button:hover { background: #ddd; color: #333 }
 
-	.bots-filters-list.f-dropdown li,
-	.contacts-filters-list.f-dropdown li { font-size: 12px }
+	.bots-orders-list.f-dropdown li,
+	.contacts-orders-list.f-dropdown li { font-size: 12px }
 
-	.filter-button.dropdown.button.tiny::after,
-	button.filter-button.dropdown.tiny::after { border-color: #777777 transparent transparent transparent }
+	.order-button.dropdown.button.tiny::after,
+	button.order-button.dropdown.tiny::after { border-color: #777777 transparent transparent transparent }
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -84,30 +84,30 @@
 
 	<div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')" id="chat">
 		<div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
-			<form id="contacts-filter" class="row filter">
-				<fieldset class="small-8 columns filter-columns">
+			<form id="contacts-order" class="row order">
+				<fieldset class="small-8 columns order-columns">
 					<input
 						type="text"
-						class="filter-input"
+						class="order-input"
 						ng-model="contactsSearchText"
 						placeholder="contact name"
 					>
 				</fieldset>
-				<fieldset class="small-4 columns filter-columns filter-button-right">
-					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-contacts" data-options="align:left">
+				<fieldset class="small-4 columns order-columns order-button-right">
+					<button class="tiny round dropdown left order-button" dropdown-toggle="#drop-contacts" data-options="align:left">
 						{{contactsOrderLabel|translate}}
 					</button>
 
-					<ul id="drop-contacts" class="contacts-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
-						<li class="dropup-item" ng-repeat="filter in contactsOrdersList">
-							<a class="ellipsis dropup-item-link" ng-click="changeFilter('contacts', filter)">
-								{{filter.label|translate|uppercase}}
+					<ul id="drop-contacts" class="contacts-orders-list f-dropdown drop-bottom drop-down" data-dropdown-content>
+						<li class="dropup-item" ng-repeat="order in contactsOrdersList">
+							<a class="ellipsis dropup-item-link" ng-click="changeOrder('contacts', order)">
+								{{order.label|translate|uppercase}}
 							</a>
 						</li>
 					</ul>
 				</fieldset>
 			</form>
-			<hr class="filter-divider">
+			<hr class="order-divider">
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
 				<li
 					class="p10 line-b"
@@ -143,30 +143,30 @@
 			</ul>
 		</div>
 		<div class="mtab" ng-class="{'active': mtab == 2}">
-			<form id="bots-filter" class="row filter">
-				<fieldset class="small-8 columns filter-columns">
+			<form id="bots-order" class="row order">
+				<fieldset class="small-8 columns order-columns">
 					<input
 						type="text"
-						class="filter-input"
+						class="order-input"
 						ng-model="botsSearchText"
 						placeholder="bot name"
 					>
 				</fieldset>
-				<fieldset class="small-4 columns filter-columns filter-button-right">
-					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-bots" data-options="align:left">
+				<fieldset class="small-4 columns order-columns order-button-right">
+					<button class="tiny round dropdown left order-button" dropdown-toggle="#drop-bots" data-options="align:left">
 						{{botsOrderLabel|translate}}
 					</button>
 
-					<ul id="drop-bots" class="bots-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
-						<li class="dropup-item" ng-repeat="filter in botsOrdersList">
-							<a class="ellipsis dropup-item-link" ng-click="changeFilter('bots', filter)">
-								{{filter.label|translate|uppercase}}
+					<ul id="drop-bots" class="bots-orders-list f-dropdown drop-bottom drop-down" data-dropdown-content>
+						<li class="dropup-item" ng-repeat="order in botsOrdersList">
+							<a class="ellipsis dropup-item-link" ng-click="changeOrder('bots', order)">
+								{{order.label|translate|uppercase}}
 							</a>
 						</li>
 					</ul>
 				</fieldset>
 			</form>
-			<hr class="filter-divider">
+			<hr class="order-divider">
 			<ul class="no-bullet m0 correspondentList">
 				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsOrder">
 					<div ng-click="showBot(bot)" class="pointer">
