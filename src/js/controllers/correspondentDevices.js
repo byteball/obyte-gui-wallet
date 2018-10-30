@@ -115,8 +115,8 @@ angular
 		};
 
 		$scope.changeOrder = function(section, order) {
-			$scope[section + 'FilterLabel'] = order.label;
-			$scope[section + 'Filter'] = order.type;
+			$scope[section + 'OrderLabel'] = order.label;
+			$scope[section + 'Order'] = order.type;
 		};
 
 		$scope.readList = function() {
