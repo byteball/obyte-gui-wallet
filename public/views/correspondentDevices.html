@@ -10,16 +10,20 @@
 	}
 
 	/*
-	* Orders
+	* Search
 	*/
 
-	.order { padding: 0 10px }
-
-	.order-input {
+	.search-input {
 		margin: 0 !important;
 		padding-left: 10px !important;
 		border: 1px solid #A5B2BF !important;
 	}
+
+	/*
+	* Orders
+	*/
+
+	.order { padding: 0 10px }
 
 	.order-columns {
 		padding: 0;
@@ -108,7 +112,7 @@
 				</fieldset>
 			</form>
 			<hr class="order-divider">
-			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
+			<ul class="no-bullet m0 correspondentList" ng-init="readList()">
 				<li
 					class="p10 line-b"
 					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:contactsOrder"
@@ -147,7 +151,7 @@
 				<fieldset class="small-8 columns order-columns">
 					<input
 						type="text"
-						class="order-input"
+						class="search-input"
 						ng-model="botsSearchText"
 						placeholder="bot name"
 					>
@@ -168,7 +172,7 @@
 			</form>
 			<hr class="order-divider">
 			<ul class="no-bullet m0 correspondentList">
-				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsOrder">
+				<li class="bots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsOrder">
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
@@ -176,7 +180,7 @@
 					</div>
 				</li>
 			</ul>
-			<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError}}</div>
+			<div class="text-warning size-12 m10b" ng-show="botsError">{{botsError|translate}}</div>
 		</div>
 	</div>
 
