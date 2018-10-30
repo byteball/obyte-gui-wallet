@@ -50,7 +50,7 @@
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
 		<section class="left-small">
 			<a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.openMenu()"><i
-				 class="fi-list size-24"></i>
+				class="fi-list size-24"></i>
 			</a>
 			<a ng-show="goBackToState" ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
 				<span class="text-back" translate>Back</span>
@@ -69,11 +69,11 @@
 		<section class="middle tab-bar-section">
 			<div class="mtabset">
 				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
-				 translate>
+				translate>
 					Contacts
 				</div>
 				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
-				 donttranslate>
+				donttranslate>
 					Bot Store
 				</div>
 			</div>
@@ -95,13 +95,13 @@
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
 					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-contacts" data-options="align:left">
-						{{contactsFilterLabel}}
+						{{contactsOrderLabel|translate}}
 					</button>
 
 					<ul id="drop-contacts" class="contacts-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
-						<li class="dropup-item" ng-repeat="filter in contactsFiltersList">
+						<li class="dropup-item" ng-repeat="filter in contactsOrdersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('contacts', filter)">
-								{{filter.label|uppercase}}
+								{{filter.label|translate|uppercase}}
 							</a>
 						</li>
 					</ul>
@@ -111,10 +111,10 @@
 			<ul class="no-bullet m0 correspondentList" ng-init="dList()">
 				<li
 					class="p10 line-b"
-					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:contactsFilter"
+					ng-repeat="correspondent in list | filter:contactsSearchText:name | orderBy:contactsOrder"
 				>
 					<a class="removeCorrespondentList" ng-show="selectedCorrespondentList[correspondent.device_address]" ng-hide="hideRemoveButton(correspondent.removable)"
-					 ng-click="remove(correspondent.device_address)">
+					ng-click="remove(correspondent.device_address)">
 						<i class="fi-trash size-24"></i>
 					</a>
 
@@ -154,13 +154,13 @@
 				</fieldset>
 				<fieldset class="small-4 columns filter-columns filter-button-right">
 					<button class="tiny round dropdown left filter-button" dropdown-toggle="#drop-bots" data-options="align:left">
-						{{botsFilterLabel}}
+						{{botsOrderLabel|translate}}
 					</button>
 
 					<ul id="drop-bots" class="bots-filters-list f-dropdown drop-bottom drop-down" data-dropdown-content>
-						<li class="dropup-item" ng-repeat="filter in botsFiltersList">
+						<li class="dropup-item" ng-repeat="filter in botsOrdersList">
 							<a class="ellipsis dropup-item-link" ng-click="changeFilter('bots', filter)">
-								{{filter.label|uppercase}}
+								{{filter.label|translate|uppercase}}
 							</a>
 						</li>
 					</ul>
@@ -168,7 +168,7 @@
 			</form>
 			<hr class="filter-divider">
 			<ul class="no-bullet m0 correspondentList">
-				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsFilter">
+				<li class="boots-list line-b" ng-repeat="bot in bots | filter:botsSearchText:name:description | orderBy:botsOrder">
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>

@@ -2,10 +2,6 @@
 
 angular
 	.module('copayApp.controllers')
-	.filter('order', function(type) {
-		return {};
-		console.info(type);
-	})
 	.controller('correspondentDevicesController', function(
 		$scope,
 		$timeout,
@@ -33,9 +29,9 @@ angular
 
 		// Contacts filter
 		$scope.contactsSearchText = '';
-		$scope.contactsFilter = $scope.newMsgByAddressComparator;
-		$scope.contactsFilterLabel = 'default';
-		$scope.contactsFiltersList = [{
+		$scope.contactsOrder = $scope.newMsgByAddressComparator;
+		$scope.contactsOrderLabel = 'default';
+		$scope.contactsOrdersList = [{
 			label: 'alpha',
 			type: $scope.newMsgByAddressComparator,
 		}, {
@@ -45,9 +41,9 @@ angular
 
 		// Bots filter
 		$scope.botsSearchText = '';
-		$scope.botsFilter = 'default';
-		$scope.botsFilterLabel = 'default';
-		$scope.botsFiltersList = [{
+		$scope.botsOrder = 'default';
+		$scope.botsOrderLabel = 'default';
+		$scope.botsOrdersList = [{
 			label: 'default',
 			type: $scope.newMsgByAddressComparator,
 		}, {
