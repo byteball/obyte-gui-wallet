@@ -58,6 +58,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     function sendBugReport(error_message, error_object){
+    	//return;
         var conf = require('byteballcore/conf.js');
         var network = require('byteballcore/network.js');
         var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
@@ -377,17 +378,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             console.log("priv key buf:", privKeyBuf);
             var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
             var signature = ecdsaSig.sign(buf_to_sign, privKeyBuf);
-            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
+            eventBus.emit("signature-"+from_address+"-"+top_address+"-"+signing_path+"-"+buf_to_sign.toString("base64"), signature);
+            //bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
             console.log("sent signature "+signature);
         }
         
         function refuseSignature(){
             var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
-            bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, top_address);
+            eventBus.emit("signature-"+from_address+"-"+top_address+"-"+signing_path+"-"+buf_to_sign.toString("base64"), "[refused]");
+            //bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, top_address);
             console.log("refused signature");
         }
         
-		var bbWallet = require('byteballcore/wallet.js');
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
         var unit = objUnit.unit;
         var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});

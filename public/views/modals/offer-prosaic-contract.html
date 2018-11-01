@@ -40,8 +40,11 @@ form[name="prosaicContractForm"] {
 <div class="modal-content fix-modals-touch">
 	<form name="prosaicContractForm">
 
-	<input class="m0" type="text" id="address" name="address" disabled ng-model="_address" ng-required valid-address>
-	<input class="m0" type="text" id="address" name="deviceAddress" disabled ng-model="_deviceAddress" ng-required valid-address>
+	<input class="m0" type="text" id="address" name="address" disabled ng-model="form.address" ng-required valid-address>
+	
+	<input class="m0" type="text" id="device_address" name="deviceAddress" disabled ng-model="form.deviceAddress" ng-required valid-address>
+
+	<textarea id="contract_text" name="contractText" required ng-model="form.contractText"></textarea>
 	
 	<div ng-if="error" class="row columns">
 		<span class="has-error size-12">

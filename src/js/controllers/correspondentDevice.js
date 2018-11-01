@@ -460,8 +460,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.oracles = configService.oracles;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
-			$scope._address = address;
-			$scope._deviceAddress = correspondent.device_address;
+			$scope.form = {address: address, deviceAddress: correspondent.device_address};
+
 			var contract = {
 				timeout: 4,
 				myAsset: 'base',
@@ -558,7 +558,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						});
 					});
 					
-					// compose and send
+					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						var my_amount = 5000;
 						profileService.bKeepUnlocked = true;
@@ -586,6 +586,31 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							$rootScope.$emit("NewOutgoingTx");
 							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
+							
+							// post a unit with contract text hash and send it for signing to correspondent
+							var value = {"contract_text_hash": objectHash.getBase64Hash($scope.form.contractText)};
+							var objMessage = {
+								app: "data",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(value),
+								payload: value
+							};
+							var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+							//indexScope.setOngoingProcess(gettext('proposing a contract'), true);
+
+							fc.sendMultiPayment({
+								arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+								shared_address: shared_address,
+								messages: [objMessage]
+							}, function(err) { // can take long if multisig
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								if (err) {
+									self.setSendError(err);
+									return;
+								}
+								breadcrumbs.add('done prosaic contract ' + Object.keys(value)
+									.join(','));
+							});
 						});
 						$modalInstance.dismiss('cancel');
 					}
