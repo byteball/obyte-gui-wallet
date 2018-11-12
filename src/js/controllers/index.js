@@ -515,6 +515,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
     });
 
+	eventBus.on("prosaic-contract-request", function(text, from_address){
+		var text_hash = objectHash.getBase64Hash(text);
+        mutex.lock(["prosaic-contract-"+text_hash], function(unlock){
+        	var question = from_address + " wants you to sign the following contract: " + text;
+			requestApproval(question, {
+				ifYes: function(){
+					eventBus.emit("prosaic-contract-response" + text_hash, true);
+					unlock();
+				},
+				ifNo: function(){
+					eventBus.emit("prosaic-contract-response" + text_hash, false);
+					unlock();
+				}
+			});
+        });
+    });
+
     
     var accept_msg = gettextCatalog.getString('Yes');
     var cancel_msg = gettextCatalog.getString('No');

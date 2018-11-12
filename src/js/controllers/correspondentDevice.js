@@ -487,138 +487,147 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			
 			
 			$scope.payAndOffer = function() {
-				console.log('payAndOffer');
+				console.log('offerProsaicContract');
 				$scope.error = '';
-				
-				if (fc.isPrivKeyEncrypted()) {
-					profileService.unlockFC(null, function(err) {
-						if (err){
-							$scope.error = err.message;
-							$timeout(function(){
-								$scope.$apply();
-							});
-							return;
-						}
-						$scope.payAndOffer();
-					});
-					return;
-				}
-				
-				profileService.requestTouchid(function(err) {
-					if (err) {
-						profileService.lockFC();
-						$scope.error = err;
-						$timeout(function() {
-							$scope.$digest();
-						}, 1);
+				var contract_text = $scope.form.contractText;
+				var text_hash = objectHash.getBase64Hash(contract_text);
+				device.sendMessageToDevice(correspondent.device_address, 'offer_prosaic_contract', {text: contract_text, address:address, hmac: device.calculateHMAC(text_hash)});
+				eventBus.once("prosaic-contract-response-recieved" + text_hash + correspondent.device_address, function(accepted, authors){
+					if (!accepted) {
+						$scope.error = "peer didn't accept your contract offer";
+						return;
+					}
+
+					if (fc.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								$scope.error = err.message;
+								$timeout(function(){
+									$scope.$apply();
+								});
+								return;
+							}
+							$scope.payAndOffer();
+						});
 						return;
 					}
 					
-					if ($scope.bWorking)
-						return console.log('already working');
-					
-					readMyPaymentAddress(function(my_address){
-						readLastMainChainIndex(function(err, last_mci){
-							if (err){
-								$scope.error = err;
-								$timeout(function() {
-									$scope.$digest();
-								}, 1);
-								return;
-							}
-							var arrDefinition = 
-								['and', [
-									['address', my_address],
-									['address', address]
-								]];
-							var assocSignersByPath = {
-								'r.0': {
-									address: my_address,
-									member_signing_path: 'r',
-									device_address: device.getMyDeviceAddress()
-								},
-								'r.1': {
-									address: address,
-									member_signing_path: 'r',
-									device_address: correspondent.device_address
-								}
-							};
-							walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
-								ifError: function(err){
-									$scope.bWorking = false;
+					profileService.requestTouchid(function(err) {
+						if (err) {
+							profileService.lockFC();
+							$scope.error = err;
+							$timeout(function() {
+								$scope.$digest();
+							}, 1);
+							return;
+						}
+						
+						if ($scope.bWorking)
+							return console.log('already working');
+						
+						readMyPaymentAddress(function(my_address){
+							readLastMainChainIndex(function(err, last_mci){
+								if (err){
 									$scope.error = err;
-									$timeout(function(){
+									$timeout(function() {
 										$scope.$digest();
-									});
-								},
-								ifOk: function(shared_address){
-									composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address);
-								}
-							});
-						});
-					});
-					
-					// create shared address and deposit some bytes to cover fees
-					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
-						var my_amount = 5000;
-						profileService.bKeepUnlocked = true;
-						var opts = {
-							shared_address: indexScope.shared_address,
-							asset: contract.myAsset,
-							to_address: shared_address,
-							amount: my_amount,
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
-							recipient_device_address: correspondent.device_address
-						};
-						fc.sendMultiPayment(opts, function(err){
-							// if multisig, it might take very long before the callback is called
-							//self.setOngoingProcess();
-							$scope.bWorking = false;
-							profileService.bKeepUnlocked = false;
-							if (err){
-								if (err.match(/device address/))
-									err = "This is a private asset, please send it only by clicking links from chat";
-								if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
-								if ($scope)
-									$scope.error = err;
-								return;
-							}
-							$rootScope.$emit("NewOutgoingTx");
-							eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
-							
-							// post a unit with contract text hash and send it for signing to correspondent
-							var value = {"contract_text_hash": objectHash.getBase64Hash($scope.form.contractText)};
-							var objMessage = {
-								app: "data",
-								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(value),
-								payload: value
-							};
-							var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-							//indexScope.setOngoingProcess(gettext('proposing a contract'), true);
-
-							fc.sendMultiPayment({
-								arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-								shared_address: shared_address,
-								messages: [objMessage]
-							}, function(err) { // can take long if multisig
-								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
-								if (err) {
-									self.setSendError(err);
+									}, 1);
 									return;
 								}
-								breadcrumbs.add('done prosaic contract ' + Object.keys(value)
-									.join(','));
+								var arrDefinition = 
+									['and', [
+										['address', my_address],
+										['address', address]
+									]];
+								var assocSignersByPath = {
+									'r.0': {
+										address: my_address,
+										member_signing_path: 'r',
+										device_address: device.getMyDeviceAddress()
+									},
+									'r.1': {
+										address: address,
+										member_signing_path: 'r',
+										device_address: correspondent.device_address
+									}
+								};
+								walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
+									ifError: function(err){
+										$scope.bWorking = false;
+										$scope.error = err;
+										$timeout(function(){
+											$scope.$digest();
+										});
+									},
+									ifOk: function(shared_address){
+										composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address);
+									}
+								});
 							});
 						});
-						$modalInstance.dismiss('cancel');
-					}
-					
-				});
-			}; // payAndOffer
-			
+						
+						// create shared address and deposit some bytes to cover fees
+						function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
+							var my_amount = 5000;
+							profileService.bKeepUnlocked = true;
+							var opts = {
+								shared_address: indexScope.shared_address,
+								asset: contract.myAsset,
+								to_address: shared_address,
+								amount: my_amount,
+								arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+								recipient_device_address: correspondent.device_address
+							};
+							fc.sendMultiPayment(opts, function(err){
+								// if multisig, it might take very long before the callback is called
+								//self.setOngoingProcess();
+								$scope.bWorking = false;
+								profileService.bKeepUnlocked = false;
+								if (err){
+									if (err.match(/device address/))
+										err = "This is a private asset, please send it only by clicking links from chat";
+									if (err.match(/no funded/))
+										err = "Not enough spendable funds, make sure all your funds are confirmed";
+									if ($scope)
+										$scope.error = err;
+									return;
+								}
+								$rootScope.$emit("NewOutgoingTx");
+								eventBus.emit('sent_payment', correspondent.device_address, my_amount, contract.myAsset, true);
+								
+								// post a unit with contract text hash and send it for signing to correspondent
+								var value = {"contract_text_hash": objectHash.getBase64Hash($scope.form.contractText)};
+								var objMessage = {
+									app: "data",
+									payload_location: "inline",
+									payload_hash: objectHash.getBase64Hash(value),
+									payload: value
+								};
+								var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), true);
 
+								fc.sendMultiPayment({
+									arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+									shared_address: shared_address,
+									messages: [objMessage],
+									authors: authors
+								}, function(err) { // can take long if multisig
+									//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+									if (err) {
+										self.setSendError(err);
+										return;
+									}
+									breadcrumbs.add('done prosaic contract ' + Object.keys(value)
+										.join(','));
+								});
+							});
+							$modalInstance.dismiss('cancel');
+						}
+						
+					});
+				});
+			};
+			
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
 			};
