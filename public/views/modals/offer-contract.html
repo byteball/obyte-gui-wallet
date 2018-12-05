@@ -86,7 +86,7 @@ form[name="contractForm"] {
 	  </ul>
 	  <br>
 	<span translate class="p10l" style="display: inline-block;">on feed name</span>
-	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" placeholder="e.g. BTC_USD" ng-model="contract.feed_name" maxlength="64" required style="width: 177px;">
+	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" ng-attr-placeholder="{{oracles[contract.oracle_address].feedname_placeholder || 'e.g. BTC_USD'}}" ng-model="contract.feed_name" maxlength="64" required style="width: 177px;">
 	<br>
 	<span translate class="p10l">with expected value</span>
 	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 22px"></span>
@@ -95,7 +95,8 @@ form[name="contractForm"] {
 			<a><span >{{relation}}</span></a>
 		  </li>
 		</ul>
-	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" placeholder="1027.06" maxlength="64" required style="width:100px"><br>
+	<input class="m0 inline" type="text" id="feed_value" name="feed_value" valid-feed-value="{{contract.oracle_address}}" ng-model="contract.feed_value" ng-attr-placeholder="{{oracles[contract.oracle_address].feedvalue_placeholder || 'e.g. 1027.06'}}" maxlength="64" required style="width:100px"><br>
+	<div class="p10l" ng-if="oracles[contract.oracle_address].instructions_url">(<a ng-click="$root.openExternalLink(oracles[contract.oracle_address].instructions_url)"><span translate>detailed instructions about using</span> {{oracles[contract.oracle_address].name}}</a>)</div>
 	<span translate>or</span>
 	<span selectable="#expiry_party" dropdown-toggle="#expiry_party" data-model="contract" data-prop="expiry_party" data-exclusion-bind="data_party" style="padding:0 5px;"></span>
 		<ul id="expiry_party" class="f-dropdown pos-at-cursor" data-dropdown-content>

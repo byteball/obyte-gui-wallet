@@ -99,14 +99,30 @@ angular.module('copayApp.services')
 		}
 	};
 	
+	//on mobile, big files can crash the application, we write data by chunk to prevent this issue
+	function writeByChunks(writer, data, handle) {
+		var written = 0;
+		const BLOCK_SIZE = 1*1024*1024; // write 1M every time of write
+		function writeNext(cbFinish) {
+			var chunkSize = Math.min(BLOCK_SIZE, data.byteLength - written);
+			var dataChunk = data.slice(written, written + chunkSize);
+			written += chunkSize;
+			writer.onwrite = function(evt) {
+				if (written < data.byteLength)
+					writeNext(cbFinish);
+				else
+					cbFinish(null);
+			};
+			writer.write(dataChunk);
+		}
+		writeNext(handle);
+	}
+
 	function _cordovaWriteFile(dirEntry, name, data, cb) {
 		if(typeof data != 'string') data = data.buffer;
 		dirEntry.getFile(name, {create: true, exclusive: false}, function(file) {
 			file.createWriter(function(writer) {
-				writer.onwriteend = function() {
-					cb(null); 
-				};
-				writer.write(data);
+        		writeByChunks(writer, data, cb);
 			}, cb);
 		}, cb);
 	}

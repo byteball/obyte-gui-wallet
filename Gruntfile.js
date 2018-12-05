@@ -39,6 +39,7 @@ module.exports = function(grunt) {
       },
       main: {
         files: [
+          'src/js/polyfills.js',
           'src/js/init.js',
           'src/js/app.js',
           'src/js/directives/*.js',
@@ -79,6 +80,7 @@ module.exports = function(grunt) {
       },
       js: {
         src: [
+          'src/js/polyfills.js',
           'angular-bitcore-wallet-client/index.js',
           'src/js/app.js',
           'src/js/routes.js',
