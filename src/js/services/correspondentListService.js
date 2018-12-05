@@ -104,7 +104,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function highlightActions(text, arrMyAddresses){
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
-		return text.replace(/(.*?\b)([2-7A-Z]{32})(\b.*?)/g, function(str, pre, address, post){
+		return text.replace(/(.*?\s|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
