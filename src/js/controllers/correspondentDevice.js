@@ -936,17 +936,18 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var recipient_device_address = lodash.clone(correspondent.device_address);
 					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
 						delete indexScope.current_message_signing_key;
+						if (!chatScope)
+							return;
 						if (err){
-							if (chatScope){
-								setError(err);
-								$timeout(function() {
-									chatScope.$apply();
-								});
-							}
+							setError(err);
+							$timeout(function() {
+								chatScope.$apply();
+							});
 							return;
 						}
 						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
-						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+						chatScope.message = '[Signed message](signed-message:' + signedMessageBase64 + ')';
+						chatScope.send();
 					});
 					$modalInstance.dismiss('cancel');
 				});
@@ -1443,7 +1444,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				});
 				console.log('will send '+JSON.stringify(objPrivateProfile));
 				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');
-				appendText('[Private profile](profile:'+privateProfileJsonBase64+')');
+				chatScope.message = '[Private profile](profile:'+privateProfileJsonBase64+')';
+				chatScope.send();
 				$modalInstance.dismiss('cancel');
 			};
 
