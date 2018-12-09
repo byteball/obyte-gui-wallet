@@ -81,8 +81,9 @@
 		    
 	    </div>
 	    <div class="mtab" ng-class="{'active': mtab == 2}">
+			<input ng-model="searchText" placeholder="Enter bot name...">
 	    	 <ul class="no-bullet m0 correspondentList">
-		        <li class="line-b" ng-repeat="bot in bots" style="padding: 10px 10px 5px 10px">
+		        <li class="line-b" ng-repeat="bot in bots | filter: searchText" style="padding: 10px 10px 5px 10px">
 		          <div ng-click="showBot(bot)" class="pointer"> 
 		            <span class="bot_name">{{bot.name}}</span>
 		            <div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
