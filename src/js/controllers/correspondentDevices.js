@@ -19,39 +19,13 @@ angular
 		
 		var fc = profileService.focusedClient;
 
-		this.$onInit = function () {
-			$scope.readList();
-		};
-
 		$scope.editCorrespondentList = false;
 		$scope.selectedCorrespondentList = {};
 		$scope.backgroundColor = fc.backgroundColor;
 
-		// Contacts order
-		$scope.contactsSearchText = '';
-		$scope.contactsOrder = $scope.newMsgByAddressComparator;
-		$scope.contactsOrderLabel = 'default';
-		$scope.contactsOrdersList = [{
-			label: 'alpha',
-			type: $scope.newMsgByAddressComparator,
-		}, {
-			label: 'new',
-			type: $scope.sortByDate,
-		}];
-
-		// Bots order
-		$scope.botsSearchText = '';
-		$scope.botsOrder = 'default';
-		$scope.botsOrderLabel = 'default';
-		$scope.botsOrdersList = [{
-			label: 'default',
-			type: $scope.newMsgByAddressComparator,
-		}, {
-			label: 'alpha',
-			type: 'name',
-		}];
-
 		$scope.state = $state;
+	
+		$scope.self = $scope;
 
 		$scope.hideRemove = true;
 
@@ -98,7 +72,9 @@ angular
 		};
 
 		$scope.sortByDate = function(correspondent) {
-			return new Date(correspondent.last_message_date);
+			if ($scope.newMessagesCount[correspondent.device_address])
+				return 'z'+$scope.newMessagesCount[correspondent.device_address];
+			return correspondent.last_message_date;
 		}
 
 		$scope.newMsgByAddressComparator = function(correspondent) {
@@ -115,8 +91,9 @@ angular
 		};
 
 		$scope.changeOrder = function(section, order) {
-			$scope[section + 'OrderLabel'] = order.label;
-			$scope[section + 'Order'] = order.type;
+			$scope[section + 'SortOrderLabel'] = order.label;
+			$scope[section + 'SortOrder'] = order.type;
+			$scope[section + 'SortReverse'] = order.sortReverse;
 		};
 
 		$scope.readList = function() {
@@ -126,6 +103,7 @@ angular
 					$scope.error = err;
 					return;
 				}
+				$scope.list = ab;
 
 				wallet.readDeviceAddressesUsedInSigningPaths(function(
 					arrNotRemovableDeviceAddresses
@@ -147,28 +125,30 @@ angular
 					}
 				});
 
-				db.query("SELECT correspondent_address, MAX(creation_date) AS 'last_message_date' FROM chat_messages GROUP BY correspondent_address", function(data) {
-					var list = [];
-					var assocLastMessageDateByCorrespondent = {};
-
-					data.forEach(element => {
-						assocLastMessageDateByCorrespondent[element.correspondent_address] = element.last_message_date;
-					});
-
-					list = ab.map(function(correspondent) {
-						return Object.assign({}, correspondent, {
-							last_message_date: assocLastMessageDateByCorrespondent[correspondent.device_address],
-						});
-					});
-
-					$scope.list = list;
-				});
-
 				bots.load(function(err, rows) {
 					if (err) $scope.botsError = err.toString();
+					rows.forEach(function(row){
+						row.name_and_desc = row.name + ' ' + row.description;
+					});
 					$scope.bots = rows;
 					$timeout(function() {
 						$scope.$digest();
+					});
+					
+					db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
+						var assocLastMessageDateByCorrespondent = {};
+
+						rows.forEach(function(row) {
+							assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
+						});
+
+						ab = ab.forEach(function(correspondent) {
+							correspondent.last_message_date = assocLastMessageDateByCorrespondent[correspondent.device_address] || '2016-12-25 00:00:00';
+						});
+
+						$timeout(function() {
+							$scope.$digest();
+						});
 					});
 				});
 			});
@@ -224,4 +204,31 @@ angular
 			console.log('cancel clicked');
 			go.walletHome();
 		};
+	
+	
+		// Contacts order
+		$scope.contactsSearchText = '';
+		$scope.contactsSortOrder = $scope.newMsgByAddressComparator;
+		$scope.contactsSortOrderLabel = 'alphabetic';
+		$scope.contactsSortOrderList = [{
+			label: 'alphabetic',
+			type: $scope.newMsgByAddressComparator,
+		}, {
+			label: 'recent',
+			type: $scope.sortByDate,
+			sortReverse: true
+		}];
+
+		// Bots order
+		$scope.botsSearchText = '';
+		$scope.botsSortOrder = undefined;
+		$scope.botsSortOrderLabel = 'suggested';
+		$scope.botsSortOrderList = [{
+			label: 'suggested',
+			type: undefined,
+		}, {
+			label: 'alphabetic',
+			type: 'name',
+		}];
+
 	});
