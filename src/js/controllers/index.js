@@ -58,7 +58,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     function sendBugReport(error_message, error_object){
-    	//return;
+    	return;
         var conf = require('byteballcore/conf.js');
         var network = require('byteballcore/network.js');
         var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
@@ -514,12 +514,54 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         });
     });
 
-	eventBus.on("prosaic-contract-request", function(text, from_address){
-		var text_hash = objectHash.getBase64Hash(text);
-        mutex.lock(["prosaic-contract-"+text_hash], function(unlock){
-        	var question = from_address + " wants you to sign the following contract: " + text;
-			requestApproval(question, {
+	eventBus.on("prosaic-contract-request", function(offerObj){
+        mutex.lock(["prosaic-contract-"+offerObj.hash], function(unlock){
+
+        	var _modalRequestApproval = function(question, cosigners, callbacks) {
+		      var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
+		        $scope.title = $sce.trustAsHtml(question);
+		        $scope.yes_icon = 'fi-check';
+		        $scope.yes_button_class = 'primary';
+		        $scope.cancel_button_class = 'warning';
+		        $scope.cancel_label = 'No';
+		        $scope.loading = false;
+		        $scope.index.copayers = cosigners;
+
+		        $scope.ok = function() {
+		          $scope.loading = true;
+		          $modalInstance.close(accept_msg);
+		        };
+		        $scope.cancel = function() {
+		          $modalInstance.dismiss(cancel_msg);
+		        };
+		      };
+
+		      var modalInstance = $modal.open({
+		        templateUrl: 'views/modals/accept-prosaic-contract.html',
+		        windowClass: animationService.modalAnimated.slideUp,
+		        controller: ModalInstanceCtrl
+		      });
+
+		      modalInstance.result.finally(function() {
+		        var m = angular.element(document.getElementsByClassName('reveal-modal'));
+		        m.addClass(animationService.modalAnimated.slideOutDown);
+		      });
+
+		      modalInstance.result.then(callbacks.ifYes, callbacks.ifNo);
+		    };
+
+        	var question = offerObj.peer_device_address + " wants you to sign the following contract: " + offerObj.text;
+			_modalRequestApproval(question, offerObj.cosigners, {
 				ifYes: function(){
+					debugger;
+					correspondentListService.signMessageFromAddress(message_to_sign, $scope.address, getSigningDeviceAddresses(fc), function(err, signedMessageBase64){
+						if (err) {
+							$scope.error = err;
+							return scopeApply();
+						}
+						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+						$modalInstance.dismiss('cancel');
+					});
 					eventBus.emit("prosaic-contract-response" + text_hash, true);
 					unlock();
 				},

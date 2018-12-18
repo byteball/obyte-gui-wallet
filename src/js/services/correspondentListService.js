@@ -167,6 +167,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return '<i>['+text+']</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer for '+objContract.address+']</a>';
 		});
 	}
 	
@@ -233,6 +238,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		objPrivateProfile._label = arrFirstFields.join(' ');
 		return objPrivateProfile;
+	}
+
+	function getProsaicContractFromJsonBase64(strJsonBase64){
+		var strJSON = Buffer(strJsonBase64, 'base64').toString('utf8');
+		try{
+			var objProsaicContract = JSON.parse(strJSON);
+		}
+		catch(e){
+			return null;
+		}
+		if (!ValidationUtils.isValidAddress(objProsaicContract.address) || !objProsaicContract.text.length)
+			return null;
+		return objProsaicContract;
 	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
@@ -314,6 +332,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return '<i>['+text+']</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer for '+objContract.address+']</a>';
 		});
 	}
 	
@@ -557,6 +580,48 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		return message;
 	}
+
+	var message_signing_key_in_progress;
+	function signMessageFromAddress(message, address, signingDeviceAddresses, cb) {
+		var fc = profileService.focusedClient;
+		if (fc.isPrivKeyEncrypted()) {
+			profileService.unlockFC(null, function(err) {
+				if (err){
+					return cb(err.message);
+				}
+				signMessageFromAddress(message, address, signingDeviceAddresses, cb);
+			});
+			return;
+		}
+		
+		profileService.requestTouchid(function(err) {
+			if (err) {
+				profileService.lockFC();
+				return cb(err);
+			}
+			
+			var current_message_signing_key = require('crypto').createHash("sha256").update(address + message).digest('base64');
+			if (current_message_signing_key === message_signing_key_in_progress){
+				return cb("This message signing is already under way");
+			}
+			message_signing_key_in_progress = current_message_signing_key;
+			fc.signMessage(address, message, signingDeviceAddresses, function(err, objSignedMessage){
+				message_signing_key_in_progress = null;
+				if (err){
+					return cb(err);
+				}
+				var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
+				cb(null, signedMessageBase64);
+			});
+		});
+	}
+
+	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
+		signMessageFromAddress(message, address, signingDeviceAddresses, function(err, signedMessageBase64){
+			if (signedMessageBase64)
+				eventBus.emit("message_signed_from_address", message, address, signedMessageBase64);
+		});
+	});*/
 	
 	eventBus.on("text", function(from_address, body, message_counter){
 		device.readCorrespondent(from_address, function(correspondent){
@@ -673,6 +738,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.parseMessage = parseMessage;
 	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	root.addMessageEvent = addMessageEvent;
+	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
+	root.signMessageFromAddress = signMessageFromAddress;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){

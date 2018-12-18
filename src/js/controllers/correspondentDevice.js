@@ -460,7 +460,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.oracles = configService.oracles;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
-			$scope.form = {address: address, deviceAddress: correspondent.device_address};
+			$scope.form = {address: address, deviceAddress: correspondent.device_address, ttl: 24*7};
 
 			var contract = {
 				timeout: 4,
@@ -490,7 +490,37 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				console.log('offerProsaicContract');
 				$scope.error = '';
 				var contract_text = $scope.form.contractText;
-				var text_hash = objectHash.getBase64Hash(contract_text);
+				var ttl = $scope.form.ttl;
+				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+				var hash = objectHash.getBase64Hash(contract_text + creation_date);
+				var prosaicContract = require('byteballcore/prosaic_contract.js');
+				readMyPaymentAddress(function(my_address) {
+					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_text);
+				});
+				return;
+				var message = "(prosaic-contract:(" + Buffer(JSON.stringify({text: contract_text, address:address, hmac: device.calculateHMAC(text_hash)}), 'utf8').toString('base64') + "))";
+				device.sendMessageToDevice(correspondent.device_address, "text", message, {
+					ifOk: function(){
+						//setOngoingProcess();
+						var msg_obj = {
+							bIncoming: false, 
+							message: correspondentListService.formatOutgoingMessage(message), 
+							timestamp: Math.floor(Date.now() / 1000)
+						};
+						correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
+						$scope.messageEvents.push(msg_obj);
+						$scope.message = "";
+						$timeout(function(){
+							$scope.$apply();
+						});
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
+					},
+					ifError: function(error){
+						//setOngoingProcess();
+						setError(error);
+					}
+				});
+
 				device.sendMessageToDevice(correspondent.device_address, 'offer_prosaic_contract', {text: contract_text, address:address, hmac: device.calculateHMAC(text_hash)});
 				eventBus.once("prosaic-contract-response-recieved" + text_hash + correspondent.device_address, function(accepted, authors){
 					if (!accepted) {
@@ -568,7 +598,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						
 						// create shared address and deposit some bytes to cover fees
 						function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
-							var my_amount = 5000;
+							var my_amount = 2000;
 							profileService.bKeepUnlocked = true;
 							var opts = {
 								shared_address: indexScope.shared_address,
@@ -603,14 +633,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									payload_hash: objectHash.getBase64Hash(value),
 									payload: value
 								};
-								var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-								//indexScope.setOngoingProcess(gettext('proposing a contract'), true);
 
 								fc.sendMultiPayment({
-									arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+									arrSigningDeviceAddresses: [],
 									shared_address: shared_address,
-									messages: [objMessage],
-									authors: authors
+									messages: [objMessage]
 								}, function(err) { // can take long if multisig
 									//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
 									if (err) {
@@ -1102,46 +1129,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				if (fc.isPrivKeyEncrypted()) {
-					profileService.unlockFC(null, function(err) {
-						if (err){
-							$scope.error = err.message;
-							return scopeApply();
-						}
-						$scope.signMessage();
-					});
-					return;
-				}
-				
-				profileService.requestTouchid(function(err) {
+				correspondentListService.signMessageFromAddress(message_to_sign, $scope.address, getSigningDeviceAddresses(fc), function(err, signedMessageBase64){
 					if (err) {
-						profileService.lockFC();
 						$scope.error = err;
 						return scopeApply();
 					}
-					
-					var current_message_signing_key = require('crypto').createHash("sha256").update($scope.address + message_to_sign).digest('base64');
-					if (current_message_signing_key === indexScope.current_message_signing_key){
-						$rootScope.$emit('Local/ShowErrorAlert', "This message signing is already under way");
-						$modalInstance.dismiss('cancel');
-						return;
-					}
-					indexScope.current_message_signing_key = current_message_signing_key;
-					var recipient_device_address = lodash.clone(correspondent.device_address);
-					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
-						delete indexScope.current_message_signing_key;
-						if (err){
-							if (chatScope){
-								setError(err);
-								$timeout(function() {
-									chatScope.$apply();
-								});
-							}
-							return;
-						}
-						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
-						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
-					});
+					appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
 					$modalInstance.dismiss('cancel');
 				});
 			}; // signMessage
@@ -1172,7 +1165,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 		
 	}; // showSignMessageModal
-	
 	
 	
 	$scope.verifySignedMessage = function(signedMessageBase64){
@@ -1663,6 +1655,83 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 	};
 	
+	$scope.showProsaicContractOffer = function(contractJsonBase64, isIncoming){
+		$rootScope.modalOpened = true;
+		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
+		if (!objContract)
+			throw Error('failed to parse the already validated base64 prosaic contract '+contractJsonBase64);
+		var fc = profileService.focusedClient;
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.color = fc.backgroundColor;
+			$scope.openProfile = openProfile;
+			$scope.isIncoming = !!isIncoming;
+			$scope.buttonLabel = gettext('Verifying the profile...');
+			privateProfile.parseAndValidatePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
+				if (!$scope)
+					return;
+				if (error){
+					$scope.error = error;
+					$scope.buttonLabel = gettext('Bad profile');
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+					return;
+				}
+				$scope.address = address;
+				$scope.attestor_address = attestor_address;
+				$scope.bMyAddress = bMyAddress;
+				if (!bMyAddress)
+					return $timeout(function() {
+						$rootScope.$apply();
+					});
+				checkIfPrivateProfileExists(objPrivateProfile, function(bExists){
+					if (bExists)
+						$scope.buttonLabel = gettext('Already saved');
+					else{
+						$scope.buttonLabel = gettext('Store');
+						$scope.bDisabled = false;
+					}
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+			});
+			
+			$scope.getDisplayField = getDisplayField;
+
+			$scope.store = function() {
+				if (!$scope.bMyAddress)
+					throw Error("not my address");
+				privateProfile.savePrivateProfile(objPrivateProfile, $scope.address, $scope.attestor_address, function(){
+					$timeout(function(){
+						$modalInstance.dismiss('cancel');
+					});
+				});
+			};
+
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+		};
+
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/accept-prosaic-contract.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
 	
 
 	function setOngoingProcess(name) {
