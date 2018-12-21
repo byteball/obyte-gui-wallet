@@ -209,7 +209,7 @@ angular
 		// Contacts order
 		$scope.contactsSearchText = '';
 		$scope.contactsSortOrder = $scope.newMsgByAddressComparator;
-		$scope.contactsSortOrderLabel = 'alphabetic';
+		$scope.contactsSortOrderLabel = 'recent';
 		$scope.contactsSortOrderList = [{
 			label: 'alphabetic',
 			type: $scope.newMsgByAddressComparator,
