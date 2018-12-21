@@ -123,14 +123,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.insertMyAddress = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		readMyPaymentAddress(appendMyPaymentAddress);
+		readMyPaymentAddress(profileService.focusedClient, appendMyPaymentAddress);
 	//	issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		readMyPaymentAddress(showRequestPaymentModal);
+		readMyPaymentAddress(profileService.focusedClient, showRequestPaymentModal);
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
@@ -140,7 +140,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
-		readMyPaymentAddress(function(my_address){
+		readMyPaymentAddress(profileService.focusedClient, function(my_address){
 			if (single_address && single_address !== '0'){
 				var bSpecificSingleAddress = (single_address.length === 32);
 				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
@@ -201,7 +201,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
-			$scope.arrPeerPaysTos = [{value: 'me', display_value: "to me"}, {value: 'contract', display_value: "to this contract"}];
+			$scope.arrPeerPaysTos = [];
+			if (!fc.isSingleAddress)
+				$scope.arrPeerPaysTos.push({value: 'me', display_value: "to me"});
+			$scope.arrPeerPaysTos.push({value: 'contract', display_value: "to this contract"});
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -297,7 +300,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					}
 					
 					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
-					fnReadMyAddress(function(my_address){
+					fnReadMyAddress(fc, function(my_address){
 						var arrSeenCondition = ['seen', {
 							what: 'output', 
 							address: (contract.peer_pays_to === 'contract') ? 'this address' : my_address, 
@@ -419,7 +422,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 							if (contract.peer_pays_to === 'me')
-								issueNextAddress(); // make sure the address is not reused
+								issueNextAddress(fc); // make sure the address is not reused
 						});
 						$modalInstance.dismiss('cancel');
 					}
@@ -890,7 +893,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bDisabled = true;
 			$scope.message_to_sign = message_to_sign;
-			readMyPaymentAddress(function(address){
+			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
 				$scope.bDisabled = false;
 				scopeApply();
@@ -933,17 +936,18 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var recipient_device_address = lodash.clone(correspondent.device_address);
 					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
 						delete indexScope.current_message_signing_key;
+						if (!chatScope)
+							return;
 						if (err){
-							if (chatScope){
-								setError(err);
-								$timeout(function() {
-									chatScope.$apply();
-								});
-							}
+							setError(err);
+							$timeout(function() {
+								chatScope.$apply();
+							});
 							return;
 						}
 						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
-						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+						chatScope.message = '[Signed message](signed-message:' + signedMessageBase64 + ')';
+						chatScope.send();
 					});
 					$modalInstance.dismiss('cancel');
 				});
@@ -1095,17 +1099,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			})
 	}
 	
-	function readMyPaymentAddress(cb){
+	function readMyPaymentAddress(fc, cb){
 	//	if (indexScope.shared_address)
 	//		return cb(indexScope.shared_address);
-		addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, address) {
+		addressService.getAddress(fc.credentials.walletId, false, function(err, address) {
 			cb(address);
 		});
 	}
 	
-	function issueNextAddress(cb){
+	function issueNextAddress(fc, cb){
+		if (fc.isSingleAddress)
+			throw Error("trying to issue a new address on a single-address wallet");
 		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-		walletDefinedByKeys.issueNextAddress(profileService.focusedClient.credentials.walletId, 0, function(addressInfo){
+		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
 				cb(addressInfo.address);
 		});
@@ -1330,7 +1336,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE field IN(?) GROUP BY private_profile_id "
 				: "SELECT * FROM private_profiles";
 			var params = fields_list ? [arrFields] : [];
-			readMyPaymentAddress(function(current_address){
+			readMyPaymentAddress(fc, function(current_address){
 				db.query(sql, params, function(rows){
 					if (fields_list)
 						rows = rows.filter(function(row){ return (row.c === arrFields.length); });
@@ -1438,7 +1444,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				});
 				console.log('will send '+JSON.stringify(objPrivateProfile));
 				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');
-				appendText('[Private profile](profile:'+privateProfileJsonBase64+')');
+				chatScope.message = '[Private profile](profile:'+privateProfileJsonBase64+')';
+				chatScope.send();
 				$modalInstance.dismiss('cancel');
 			};
 
