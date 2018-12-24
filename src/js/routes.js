@@ -247,6 +247,17 @@ angular
 
         }
       })
+      .state('preferences.preferencesHiddenAssets', {
+	      url: '/hiddenAssets',
+	      templateUrl: 'views/preferencesHiddenAssets.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesHiddenAssets.html'
+	        },
+	      }
+	    })
       .state('preferences.preferencesAdvanced', {
 	      url: '/advanced',
 	      templateUrl: 'views/preferencesAdvanced.html',

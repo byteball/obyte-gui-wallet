@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
   self.bSwipeSuspended = false;
+  self.assetsSet = {};
   self.arrBalances = [];
   self.assetIndex = 0;
   self.$state = $state;
@@ -786,6 +787,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.availableBalanceStr = null;
     self.lockedBalanceStr = null;
 
+    self.assetsSet = {};
     self.arrBalances = [];
     self.assetIndex = 0;
 	self.shared_address = null;
@@ -1062,16 +1064,38 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
     fc.isSingleAddress = self.isSingleAddress;
   };
+
+  self.getCurrentWalletHiddenAssets = function () {
+    var hiddenAssets = configService.getSync().hiddenAssets;
+    var fc = profileService.focusedClient;
+    var walletId = fc.credentials.walletId;
+    if (hiddenAssets.hasOwnProperty(walletId)) {
+      return hiddenAssets[walletId];
+    } else {
+      return {};
+    }
+  };
+
+  self.isAssetHidden = function (asset, assetsSet) {
+    if (!assetsSet) {
+      assetsSet = self.getCurrentWalletHiddenAssets();
+    }
+    return assetsSet[asset];
+  };
 	
   self.setBalance = function(assocBalances, assocSharedBalances) {
     if (!assocBalances) return;
     var config = configService.getSync().wallet.settings;
+    var fc = profileService.focusedClient;
+    var hiddenAssets = self.getCurrentWalletHiddenAssets();
+    console.log('setBalance hiddenAssets:', hiddenAssets);
 
     // Selected unit
     self.unitValue = config.unitValue;
     self.unitName = config.unitName;
     self.bbUnitName = config.bbUnitName;
-	
+  
+    self.assetsSet = {};
     self.arrBalances = [];
     for (var asset in assocBalances){
         var balanceInfo = assocBalances[asset];
@@ -1107,6 +1131,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
 				}
 			}
+        }
+        self.assetsSet[asset] = balanceInfo;
+        if (self.isAssetHidden(asset, hiddenAssets)) {
+          continue;
         }
         self.arrBalances.push(balanceInfo);
     }

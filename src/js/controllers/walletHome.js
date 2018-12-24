@@ -1180,7 +1180,7 @@ angular.module('copayApp.controllers')
 							}
 							var binding = self.binding;
 							self.resetForm();
-							$rootScope.$emit("NewOutgoingTx");
+						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
 								var db = require('byteballcore/db.js');
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
