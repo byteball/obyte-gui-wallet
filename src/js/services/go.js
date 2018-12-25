@@ -117,7 +117,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		if (uri.indexOf("byteball:") == -1) return handleFile(uri);
+		if (uri.indexOf("byteball-tn:") == -1) return handleFile(uri);
 
 		console.log("handleUri "+uri);
 
@@ -301,7 +301,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 				if (commandLine){
 					var file = extractByteballArgFromCommandLine(commandLine);
 					if (!file)
-						return console.log("no byteball: arg found");
+						return console.log("no byteball-tn: arg found");
 					handleUri(file);
 					gui.Window.get().focus();
 				}
