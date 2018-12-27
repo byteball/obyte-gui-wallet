@@ -791,6 +791,145 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.currentCorrespondent = null;
 	root.messageEventsByCorrespondent = {};
 
+	root.listenForProsaicContractResponse = function(contracts) {
+		var prosaic_contract = require('byteballcore/prosaic_contract.js');
+		var fc = profileService.focusedClient;
+
+		var showError = function(msg) {
+			$rootScope.$emit('Local/ShowErrorAlert', msg);
+		}
+
+		var start_listening = function(contracts) {
+			contracts.forEach(function(contract){
+				eventBus.once("prosaic-contract-response-recieved" + contract.hash, function(accepted, authors){
+					if (!accepted) {
+						showError("contract " + contract.hash + " was declined");
+						return;
+					}
+
+					if (fc.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								showError(err);
+								return;
+							}
+							$scope.payAndOffer();
+						});
+						return;
+					}
+					
+					profileService.requestTouchid(function(err) {
+						if (err) {
+							profileService.lockFC();
+							showError(err);
+							return;
+						}
+						
+						root.readLastMainChainIndex(function(err, last_mci){
+							if (err){
+								showError(err);
+								return;
+							}
+							var arrDefinition = 
+								['and', [
+									['address', contract.my_address],
+									['address', contract.peer_address]
+								]];
+							var assocSignersByPath = {
+								'r.0': {
+									address: contract.my_address,
+									member_signing_path: 'r',
+									device_address: device.getMyDeviceAddress()
+								},
+								'r.1': {
+									address: contract.peer_address,
+									member_signing_path: 'r',
+									device_address: contract.peer_device_address
+								}
+							};
+							require('byteballcore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+								ifError: function(err){
+									showError(err);
+								},
+								ifOk: function(shared_address){
+									composeAndSend(shared_address, arrDefinition, assocSignersByPath, contract.my_address);
+								}
+							});
+						});
+						
+						// create shared address and deposit some bytes to cover fees
+						function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
+							var my_amount = 2000;
+							profileService.bKeepUnlocked = true;
+							var opts = {
+								asset: "base",
+								to_address: shared_address,
+								amount: my_amount,
+								arrSigningDeviceAddresses: contract.cosigners,
+								recipient_device_address: contract.peer_device_address
+							};
+							fc.sendMultiPayment(opts, function(err){
+								// if multisig, it might take very long before the callback is called
+								//self.setOngoingProcess();
+								profileService.bKeepUnlocked = false;
+								if (err){
+									if (err.match(/device address/))
+										err = "This is a private asset, please send it only by clicking links from chat";
+									if (err.match(/no funded/))
+										err = "Not enough spendable funds, make sure all your funds are confirmed";
+									showError(err);
+									return;
+								}
+								$rootScope.$emit("NewOutgoingTx");
+								eventBus.emit('sent_payment', contract.peer_device_address, my_amount, "base", true);
+								
+								// post a unit with contract text hash and send it for signing to correspondent
+								var value = {"contract_text_hash": contract.hash};
+								var objMessage = {
+									app: "data",
+									payload_location: "inline",
+									payload_hash: objectHash.getBase64Hash(value),
+									payload: value
+								};
+
+								fc.sendMultiPayment({
+									arrSigningDeviceAddresses: [],
+									shared_address: shared_address,
+									messages: [objMessage]
+								}, function(err) { // can take long if multisig
+									//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+									if (err) {
+										showError(err);
+										return;
+									}
+								});
+							});
+						}
+						
+					});
+				});
+			});
+		}
+
+		if (contracts)
+			return start_listening(contracts);
+		prosaic_contract.getAllActive(function(contracts){
+			start_listening(contracts);
+		});
+	}
+	root.listenForProsaicContractResponse();
+
+	root.readLastMainChainIndex = function(cb){
+		if (require('byteballcore/conf.js').bLight){
+			require('byteballcore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
+				response.error ? cb(response.error) : cb(null, response);
+			});
+		}
+		else
+			require('byteballcore/storage.js').readLastMainChainIndex(function(last_mci){
+				cb(null, last_mci);
+			})
+	}
   /*
   root.remove = function(addr, cb) {
 	var fc = profileService.focusedClient;
