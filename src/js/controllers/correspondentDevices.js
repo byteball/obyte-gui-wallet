@@ -16,6 +16,8 @@ angular
 		var bots = require('byteballcore/bots.js');
 		var mutex = require('byteballcore/mutex.js');
 		var db = require('byteballcore/db.js');
+	
+		var bFirstLoad = true;
 		
 		var fc = profileService.focusedClient;
 
@@ -127,28 +129,35 @@ angular
 
 				bots.load(function(err, rows) {
 					if (err) $scope.botsError = err.toString();
-					rows.forEach(function(row){
-						row.name_and_desc = row.name + ' ' + row.description;
-					});
+					if (rows){ // skip if network error
+						rows.forEach(function(row){
+							row.name_and_desc = row.name + ' ' + row.description;
+						});
+					}
 					$scope.bots = rows;
 					$timeout(function() {
 						$scope.$digest();
 					});
+				});
+				
+				db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
+					var assocLastMessageDateByCorrespondent = {};
+
+					rows.forEach(function(row) {
+						assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
+					});
+
+					ab = ab.forEach(function(correspondent) {
+						correspondent.last_message_date = assocLastMessageDateByCorrespondent[correspondent.device_address] || '2016-12-25 00:00:00';
+					});
 					
-					db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
-						var assocLastMessageDateByCorrespondent = {};
+					if (bFirstLoad){
+						$scope.changeOrder('contacts', $scope.contactsSortOrderList[1]); // sort by recent
+						bFirstLoad = false;
+					}
 
-						rows.forEach(function(row) {
-							assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
-						});
-
-						ab = ab.forEach(function(correspondent) {
-							correspondent.last_message_date = assocLastMessageDateByCorrespondent[correspondent.device_address] || '2016-12-25 00:00:00';
-						});
-
-						$timeout(function() {
-							$scope.$digest();
-						});
+					$timeout(function() {
+						$scope.$digest();
 					});
 				});
 			});
@@ -209,7 +218,7 @@ angular
 		// Contacts order
 		$scope.contactsSearchText = '';
 		$scope.contactsSortOrder = $scope.newMsgByAddressComparator;
-		$scope.contactsSortOrderLabel = 'recent';
+		$scope.contactsSortOrderLabel = 'alphabetic';
 		$scope.contactsSortOrderList = [{
 			label: 'alphabetic',
 			type: $scope.newMsgByAddressComparator,
