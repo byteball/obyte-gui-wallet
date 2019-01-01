@@ -29,6 +29,7 @@
     "plugin": false
   },
   "chromium-args": "--proxy-server=http://127.1.2.7 --password-store=basic --disable-password-generation",
+  "js-flags": "--max-old-space-size=2048",
   "homepage": "https://github.com/byteball/byteball",
   "license": "MIT",
   "repository": {
