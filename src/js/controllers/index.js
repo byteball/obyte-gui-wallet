@@ -129,9 +129,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			return cb();
 		var db = require('byteballcore/db.js');
 		db.query(
-			"SELECT int_value FROM unit_authors JOIN data_feeds USING(unit) \n\
-			WHERE address=? AND feed_name='timestamp' \n\
-			ORDER BY unit_authors.rowid DESC LIMIT 1",
+			"SELECT int_value FROM data_feeds CROSS JOIN unit_authors USING(unit) \n\
+			WHERE +address=? AND +feed_name='timestamp' \n\
+			ORDER BY data_feeds.rowid DESC LIMIT 1",
 			[configService.TIMESTAMPER_ADDRESS],
 			function(rows){
 				if (rows.length === 0)
