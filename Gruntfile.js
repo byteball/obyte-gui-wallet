@@ -186,7 +186,7 @@ module.exports = function(grunt) {
         ],
       }
     },
-    karma: {
+    /*karma: {
       unit: {
         configFile: 'test/karma.conf.js'
       },
@@ -203,7 +203,7 @@ module.exports = function(grunt) {
         force: true,
         recursive: false
       }
-    },
+    },*/
     nwjs: {
       options: {
           //platforms: ['win','osx64','linux'],
@@ -315,8 +315,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-exec');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-karma-coveralls');
+  //grunt.loadNpmTasks('grunt-karma');
+  //grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-nw-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
   //grunt.loadNpmTasks('grunt-debian-package');
@@ -328,8 +328,8 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   //grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-  grunt.registerTask('test', ['karma:unit']);
-  grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
+  //grunt.registerTask('test', ['karma:unit']);
+  //grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
   //grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux32', 'compress:linux64', 'copy:osx', 'exec:osx32', 'exec:osx64']);
   grunt.registerTask('desktop', ['default', 'nwjs']);
   grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
