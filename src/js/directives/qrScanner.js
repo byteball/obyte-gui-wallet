@@ -90,7 +90,10 @@ angular.module('copayApp.directives')
               };
 
               var _successCallback = function(stream) {
-                video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
+				if (process.versions['node-webkit'] === '0.14.7')
+                	video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
+				else // newer versions of chrome
+					video.srcObject = stream;
                 localMediaStream = stream;
                 video.play();
                 $timeout(_scan, 1000);
