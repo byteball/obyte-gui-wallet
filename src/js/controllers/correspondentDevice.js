@@ -465,6 +465,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 			$scope.form = {address: address, deviceAddress: correspondent.device_address, ttl: 24*7};
 			$scope.index = indexScope;
+			privateProfile.getFieldsForAddress(address, function(profile) {
+				$scope.first_name = profile.first_name;
+				$scope.last_name = profile.last_name;
+				$timeout(function() {
+					$rootScope.$apply();
+				});
+			});
 			
 			$scope.payAndOffer = function() {
 				console.log('offerProsaicContract');
@@ -479,13 +486,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				readMyPaymentAddress(fc, function(my_address) {
 					var cosigners = getSigningDeviceAddresses(fc);
-					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_text, cosigners, function(chat_message) {
+					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_text, cosigners, function(objContract) {
 						correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+						var chat_message = "(prosaic-contract:" + Buffer(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						device.readCorrespondent(correspondent.device_address, function(correspondent) {
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 						});
+						$modalInstance.dismiss('sent');
 					});
 				});
 
@@ -1529,6 +1538,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					if (!objContract)
 						return;
 					$scope.status = objContract.status;
+					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
+					if (created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
+						$scope.status = 'expired';
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+				privateProfile.getFieldsForAddress(objContract.peer_address, function(profile) {
+					$scope.first_name = profile.first_name;
+					$scope.last_name = profile.last_name;
 					$timeout(function() {
 						$rootScope.$apply();
 					});
@@ -1536,12 +1555,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				var respond = function(status) {
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
-							prosaic_contract.storeAndRespond(objContract, status, signedMessageBase64);
+							prosaic_contract.setField("status", objContract.hash, status);
+							prosaic_contract.respond(objContract, status, signedMessageBase64);
 					});
 				};
 				$scope.accept = function() {
 					respond('accepted');
 					$modalInstance.dismiss('accept');
+				};
+
+				$scope.revoke = function() {
+					device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
+					prosaic_contract.setField("status", objContract.hash, "revoked", function(){});
+					$modalInstance.dismiss('revoke');
 				};
 
 				$scope.decline = function() {

@@ -495,20 +495,35 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
-                        requestApproval(question, {
-                            ifYes: function(){
-                                createAndSendSignature();
+						var ask = function() {
+							requestApproval(question, {
+	                            ifYes: function(){
+	                                createAndSendSignature();
+	                                assocChoicesByUnit[unit] = "approve";
+	                                unlock();
+	                            },
+	                            ifNo: function(){
+	                                // do nothing
+	                                console.log("===== NO CLICKED");
+	                                refuseSignature();
+	                                assocChoicesByUnit[unit] = "refuse";
+	                                unlock();
+	                            }
+	                        });
+						}
+						// prosaic contract auto-approve
+						var matches = question.match(/^contract_text_hash: (.{44})$/m);
+						if (matches.length) {
+							var contract_hash = matches[1];
+							require('byteballcore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
+								if (!objContract)
+									return ask();
+								createAndSendSignature();
                                 assocChoicesByUnit[unit] = "approve";
                                 unlock();
-                            },
-                            ifNo: function(){
-                                // do nothing
-                                console.log("===== NO CLICKED");
-                                refuseSignature();
-                                assocChoicesByUnit[unit] = "refuse";
-                                unlock();
-                            }
-                        });
+							});
+						} else
+							ask();
                     }
                 ); // eachSeries
             });

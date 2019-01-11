@@ -28,15 +28,20 @@
 
 <div class="row">
 	<div class="large-6 medium-6 small-6 columns">
-		<button class="button expand round" ng-disabled="status !== 'active' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="yes_button_class" ng-click="accept()">
+		<button class="button expand round" ng-disabled="status !== 'pending' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="yes_button_class" ng-click="accept()">
 			<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
 		</button>
 	</div>
 
 	<div class="large-6 medium-6 small-6 columns">
-		<button class="button expand round" ng-disabled="status !== 'active' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="cancel_button_class" ng-click="decline()">
+		<button class="button expand round" ng-disabled="status !== 'pending' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="cancel_button_class" ng-click="decline()">
 			<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
 		</button>
 	</div> 
 </div>
+
+<div class="row columns">
+	<a ng-click="revoke()" translate ng-show="status === 'pending' && !isIncoming">Revoke</a>
+</div>
+
 </div>

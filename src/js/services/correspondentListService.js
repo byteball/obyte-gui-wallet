@@ -868,7 +868,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								arrSigningDeviceAddresses: contract.cosigners,
 								recipient_device_address: contract.peer_device_address
 							};
-							fc.sendMultiPayment(opts, function(err){
+							fc.sendMultiPayment(opts, function(err, unit){
 								// if multisig, it might take very long before the callback is called
 								//self.setOngoingProcess();
 								profileService.bKeepUnlocked = false;
@@ -902,6 +902,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 										showError(err);
 										return;
 									}
+									prosaic_contract.setField("unit", contract.hash, unit);
+									prosaic_contract.setField("shared_address", contract.hash, shared_address);
+									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
+									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
 								});
 							});
 						}
