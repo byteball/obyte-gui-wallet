@@ -1548,8 +1548,10 @@ angular.module('copayApp.controllers')
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
 						asset: asset
 					});
-					if (assetIndex < 0)
-						throw Error("failed to find asset index of asset " + asset);
+					if (assetIndex < 0) {
+						notification.error("failed to find asset index of asset " + asset);
+						return self.resetForm();
+					}
 					$scope.index.assetIndex = assetIndex;
 					this.lockAsset = true;
 				}
