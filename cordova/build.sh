@@ -192,8 +192,8 @@ cp -af public/** $PROJECT/www
 checkOK
 
 echo "${OpenColor}${Green}* Copying initial database...${CloseColor}"
-cp node_modules/byteballcore/initial.byteball.sqlite $PROJECT/www
-cp node_modules/byteballcore/initial.byteball-light.sqlite $PROJECT/www
+cp node_modules/byteballcore/initial-db/initial.byteball.sqlite $PROJECT/www
+cp node_modules/byteballcore/initial-db/initial.byteball-light.sqlite $PROJECT/www
 checkOK
 
 node $BUILDDIR/replaceForPartialClient.js $PROJECT
