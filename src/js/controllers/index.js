@@ -669,6 +669,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.arrSharedWallets = arrSharedWallets;
 
 		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var prosaicContract = require('byteballcore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -676,6 +677,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
+				});
+				prosaicContract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
+					if (row)
+						objSharedWallet.has_prosaic_contract = true;
 				});
 			},
 			function(){

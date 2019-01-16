@@ -463,13 +463,28 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 
-			$scope.form = {address: address, deviceAddress: correspondent.device_address, ttl: 24*7};
+			$scope.form = {
+				ttl: 24*7
+			};
+			$scope.my_first_name = "FIRST NAME UNKNOWN";
+			$scope.my_last_name = "LAST NAME UNKNOWN";
+			$scope.peer_first_name = "FIRST NAME UNKNOWN";
+			$scope.peer_last_name = "LAST NAME UNKNOWN";
 			$scope.index = indexScope;
 			privateProfile.getFieldsForAddress(address, function(profile) {
-				$scope.first_name = profile.first_name;
-				$scope.last_name = profile.last_name;
+				$scope.peer_first_name = profile.first_name || $scope.peer_first_name;
+				$scope.peer_last_name = profile.last_name || $scope.peer_last_name;
 				$timeout(function() {
 					$rootScope.$apply();
+				});
+			});
+			readMyPaymentAddress(fc, function(my_address) {
+				privateProfile.getFieldsForAddress(my_address, function(profile) {
+					$scope.my_first_name = profile.first_name || $scope.my_first_name;
+					$scope.my_last_name = profile.last_name || $scope.my_last_name;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
 				});
 			});
 			
@@ -497,34 +512,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						$modalInstance.dismiss('sent');
 					});
 				});
-
-
-				/*
-				var message = "(prosaic-contract:(" + Buffer(JSON.stringify({text: contract_text, address:address, hmac: device.calculateHMAC(text_hash)}), 'utf8').toString('base64') + "))";
-				device.sendMessageToDevice(correspondent.device_address, "text", message, {
-					ifOk: function(){
-						//setOngoingProcess();
-						var msg_obj = {
-							bIncoming: false, 
-							message: correspondentListService.formatOutgoingMessage(message), 
-							timestamp: Math.floor(Date.now() / 1000)
-						};
-						correspondentListService.checkAndInsertDate($scope.messageEvents, msg_obj);
-						$scope.messageEvents.push(msg_obj);
-						$scope.message = "";
-						$timeout(function(){
-							$scope.$apply();
-						});
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
-					},
-					ifError: function(error){
-						//setOngoingProcess();
-						setError(error);
-					}
-				});
-
-				device.sendMessageToDevice(correspondent.device_address, 'offer_prosaic_contract', {text: contract_text, address:address, hmac: device.calculateHMAC(text_hash)});
-				*/
 			};
 			
 			$scope.cancel = function() {
@@ -1314,10 +1301,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.address = address;
 				$scope.attestor_address = attestor_address;
 				$scope.bMyAddress = bMyAddress;
-				if (!bMyAddress)
+				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();
-					});
+					});*/
 				checkIfPrivateProfileExists(objPrivateProfile, function(bExists){
 					if (bExists)
 						$scope.buttonLabel = gettext('Already saved');
@@ -1334,8 +1321,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.getDisplayField = getDisplayField;
 
 			$scope.store = function() {
-				if (!$scope.bMyAddress)
-					throw Error("not my address");
+				/*if (!$scope.bMyAddress)
+					throw Error("not my address");*/
 				privateProfile.savePrivateProfile(objPrivateProfile, $scope.address, $scope.attestor_address, function(){
 					$timeout(function(){
 						$modalInstance.dismiss('cancel');
@@ -1379,8 +1366,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bDisabled = true;
 			var sql = fields_list
 				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
-					WHERE field IN(?) GROUP BY private_profile_id "
-				: "SELECT * FROM private_profiles";
+					LEFT JOIN my_addresses USING (address) \n\
+					LEFT JOIN shared_adresses USING (address) \n\
+					WHERE field IN(?) AND my_addresses.address IS NULL AND shared_adresses.address IS NULL GROUP BY private_profile_id"
+				: "SELECT * FROM private_profiles \n\
+					LEFT JOIN my_addresses USING (address) \n\
+					LEFT JOIN shared_adresses USING (address) \n\
+					WHERE my_addresses.address IS NULL AND shared_adresses.address IS NULL";
 			var params = fields_list ? [arrFields] : [];
 			readMyPaymentAddress(fc, function(current_address){
 				db.query(sql, params, function(rows){
@@ -1532,22 +1524,33 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				$scope.isIncoming = !!isIncoming;
 				$scope.text = objContract.text;
-				$scope.peer_address = objContract.peer_address;
-				$scope.status = objContract.status;
 				prosaic_contract.getByHash(objContract.hash, function(objContract){
 					if (!objContract)
 						return;
+					$scope.unit = objContract.unit;
 					$scope.status = objContract.status;
 					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
 					if (created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 						$scope.status = 'expired';
+					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString();
 					$timeout(function() {
 						$rootScope.$apply();
 					});
 				});
+				$scope.my_first_name = "FIRST NAME UNKNOWN";
+				$scope.my_last_name = "LAST NAME UNKNOWN";
+				$scope.peer_first_name = "FIRST NAME UNKNOWN";
+				$scope.peer_last_name = "LAST NAME UNKNOWN";
 				privateProfile.getFieldsForAddress(objContract.peer_address, function(profile) {
-					$scope.first_name = profile.first_name;
-					$scope.last_name = profile.last_name;
+					$scope.peer_first_name = profile.first_name || $scope.peer_first_name;
+					$scope.peer_last_name = profile.last_name || $scope.peer_last_name;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+				privateProfile.getFieldsForAddress(objContract.address, function(profile) {
+					$scope.my_first_name = profile.first_name || $scope.my_first_name;
+					$scope.my_last_name = profile.last_name || $scope.my_last_name;
 					$timeout(function() {
 						$rootScope.$apply();
 					});

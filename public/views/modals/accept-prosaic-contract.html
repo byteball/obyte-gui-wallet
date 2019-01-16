@@ -1,47 +1,86 @@
-<div class="m20tp p20h text-center">
+<style>
+.p10l {
+	padding-left: 10px;
+}
+.w40 {
+	width: 40px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+.unit {
+	font-size: 14px;
+}
+span.capitalize {
+	display: inline-block;
+}
+span.capitalize:first-letter {
+	text-transform: uppercase;
+}
+form[name="prosaicContractForm"] {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	line-height: 26px;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="close()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Prosaic contract
+    </h1>
+  </section>
+</nav>
 
-<div class="row columns">
-	<a ng-click="close()" translate>Close</a>
-</div>
 
-<div class="row columns">
-  	<span class="text">{{text | translate}}</span>
-</div>
+<div class="modal-content fix-modals-touch p10">
+	<h3 class="">Status: <b>{{status}}</b></h3>
 
-<div class="row columns">
-	<div class="small-6 columns">
-  		TTL: <span class="text">{{ttl}}</span>
-  	</div>
-  	<div class="small-6 columns">
-  		Peer address: <span class="text">{{peer_address}}</span>
-  	</div>
-</div>
+	<h3 ng-if="status == 'pending'">Valid till: {{valid_till}}</h3>
+	<h3 ng-if="status == 'expired'">Expired on: {{valid_till}}</h3>
 
-<div class="row columns">
-  	<span class="text">{{status | translate}}</span>
-</div>
+	<h3 class="person title">Me</h3>
+		<span class="first_name p10l">{{my_first_name}}</span>
+		<span class="last_name p10l">{{my_last_name}}</span>
+	<h3 class="person title">Peer</h3>
+		<span class="first_name p10l">{{peer_first_name}}</span>
+		<span class="last_name p10l">{{peer_last_name}}</span>
+	
+	<h3 class="title">Text</h3>
+	<span>{{text}}</span>
 
+	<h3 ng-if="unit" class="unit">Unit: <a href="https://explorer.byteball.org/#{{unit}}" class="">{{unit}}</a></h3>
 
-<div class="row columns large-12 medium-12" ng-if="isIncoming && index.m < index.n && index.m > 1">
-	<cosigners></cosigners>
-</div>
+	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1">
+		<cosigners></cosigners>
+	</div>
+	
+	<div class="row m20t" ng-if="status == 'pending' && isIncoming && index.isEnoughSignersSelected()">
+		<div class="large-6 medium-6 small-6 columns">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
+				<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
+			</button>
+		</div>
 
-<div class="row">
-	<div class="large-6 medium-6 small-6 columns">
-		<button class="button expand round" ng-disabled="status !== 'pending' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="yes_button_class" ng-click="accept()">
-			<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
-		</button>
+		<div class="large-6 medium-6 small-6 columns">
+			<button class="button expand round" ng-class="cancel_button_class" ng-click="decline()">
+				<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
+			</button>
+		</div> 
 	</div>
 
-	<div class="large-6 medium-6 small-6 columns">
-		<button class="button expand round" ng-disabled="status !== 'pending' || !isIncoming || !index.isEnoughSignersSelected()" ng-class="cancel_button_class" ng-click="decline()">
-			<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
-		</button>
-	</div> 
-</div>
-
-<div class="row columns">
-	<a ng-click="revoke()" translate ng-show="status === 'pending' && !isIncoming">Revoke</a>
-</div>
-
+	<div class="row columns m20t">
+		<div class="large-12 medium-12 small-12 columns">
+			<button class="button expand round" ng-show="status === 'pending' && !isIncoming" ng-class="cancel_button_class" ng-click="revoke()">
+				<i class="fi-x"></i> <span class="tu" translate>Revoke</span>
+			</button>
+		</div>
+	</div>
 </div>
