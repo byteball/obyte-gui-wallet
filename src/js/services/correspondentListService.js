@@ -792,7 +792,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.messageEventsByCorrespondent = {};
 
 	root.listenForProsaicContractResponse = function(contracts) {
-		var prosaic_contract = require('byteballcore/prosaic_contract.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
 		var fc = profileService.focusedClient;
 
 		var showError = function(msg) {
@@ -849,7 +849,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									device_address: contract.peer_device_address
 								}
 							};
-							require('byteballcore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+							require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
 								ifError: function(err){
 									showError(err);
 								},
@@ -927,13 +927,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.listenForProsaicContractResponse();
 
 	root.readLastMainChainIndex = function(cb){
-		if (require('byteballcore/conf.js').bLight){
-			require('byteballcore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
+		if (require('ocore/conf.js').bLight){
+			require('ocore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
 				response.error ? cb(response.error) : cb(null, response);
 			});
 		}
 		else
-			require('byteballcore/storage.js').readLastMainChainIndex(function(last_mci){
+			require('ocore/storage.js').readLastMainChainIndex(function(last_mci){
 				cb(null, last_mci);
 			})
 	}

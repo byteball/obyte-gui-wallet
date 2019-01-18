@@ -457,7 +457,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.offerProsaicContract = function(address){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
@@ -497,7 +497,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 				var hash = objectHash.getBase64Hash(contract_text + creation_date);
 
-				var prosaicContract = require('byteballcore/prosaic_contract.js');
+				var prosaicContract = require('ocore/prosaic_contract.js');
 
 				readMyPaymentAddress(fc, function(my_address) {
 					var cosigners = getSigningDeviceAddresses(fc);
@@ -1528,7 +1528,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 		var showModal = function() {
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
-				var prosaic_contract = require('byteballcore/prosaic_contract.js');
+				var prosaic_contract = require('ocore/prosaic_contract.js');
 
 				$scope.isIncoming = !!isIncoming;
 				$scope.text = objContract.text;

@@ -514,7 +514,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						var matches = question.match(/^contract_text_hash: (.{44})$/m);
 						if (matches && matches.length) {
 							var contract_hash = matches[1];
-							require('byteballcore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
+							require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
 								if (!objContract)
 									return ask();
 								createAndSendSignature();
