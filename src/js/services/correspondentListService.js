@@ -801,7 +801,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 		var start_listening = function(contracts) {
 			contracts.forEach(function(contract){
-				eventBus.once("prosaic-contract-response-recieved" + contract.hash, function(accepted, authors){
+				console.log('listening for prosaic contract response ' + contract.hash);
+
+				var sendUnit = function(accepted, authors){
 					if (!accepted) {
 						showError("contract " + contract.hash + " was declined");
 						return;
@@ -813,7 +815,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								showError(err);
 								return;
 							}
-							$scope.payAndOffer();
+							sendUnit(accepted, authors);
 						});
 						return;
 					}
@@ -911,7 +913,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						}
 						
 					});
-				});
+				};
+				eventBus.once("prosaic-contract-response-recieved" + contract.hash, sendUnit);
 			});
 		}
 

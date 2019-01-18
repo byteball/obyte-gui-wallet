@@ -107,7 +107,7 @@ angular
 				}
 				$scope.list = ab;
 
-				wallet.readDeviceAddressesUsedInSigningPaths(function(
+				wallet.readNonRemovableDevices(function(
 					arrNotRemovableDeviceAddresses
 				) {
 					// add a new property indicating whether the device can be removed or not

@@ -1533,24 +1533,26 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					if (created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 						$scope.status = 'expired';
 					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString();
-					$timeout(function() {
-						$rootScope.$apply();
+
+					$scope.my_first_name = "FIRST NAME UNKNOWN";
+					$scope.my_last_name = "LAST NAME UNKNOWN";
+					$scope.peer_first_name = "FIRST NAME UNKNOWN";
+					$scope.peer_last_name = "LAST NAME UNKNOWN";
+					privateProfile.getFieldsForAddress(objContract.peer_address, function(profile) {
+						$scope.peer_first_name = profile.first_name || $scope.peer_first_name;
+						$scope.peer_last_name = profile.last_name || $scope.peer_last_name;
+						$timeout(function() {
+							$rootScope.$apply();
+						});
 					});
-				});
-				$scope.my_first_name = "FIRST NAME UNKNOWN";
-				$scope.my_last_name = "LAST NAME UNKNOWN";
-				$scope.peer_first_name = "FIRST NAME UNKNOWN";
-				$scope.peer_last_name = "LAST NAME UNKNOWN";
-				privateProfile.getFieldsForAddress(objContract.peer_address, function(profile) {
-					$scope.peer_first_name = profile.first_name || $scope.peer_first_name;
-					$scope.peer_last_name = profile.last_name || $scope.peer_last_name;
-					$timeout(function() {
-						$rootScope.$apply();
+					privateProfile.getFieldsForAddress(objContract.my_address, function(profile) {
+						$scope.my_first_name = profile.first_name || $scope.my_first_name;
+						$scope.my_last_name = profile.last_name || $scope.my_last_name;
+						$timeout(function() {
+							$rootScope.$apply();
+						});
 					});
-				});
-				privateProfile.getFieldsForAddress(objContract.address, function(profile) {
-					$scope.my_first_name = profile.first_name || $scope.my_first_name;
-					$scope.my_last_name = profile.last_name || $scope.my_last_name;
+
 					$timeout(function() {
 						$rootScope.$apply();
 					});
@@ -1570,6 +1572,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.revoke = function() {
 					device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
 					prosaic_contract.setField("status", objContract.hash, "revoked", function(){});
+					device.sendMessageToDevice(objContract.peer_device_address, "text", "contract revoked");
 					$modalInstance.dismiss('revoke');
 				};
 
