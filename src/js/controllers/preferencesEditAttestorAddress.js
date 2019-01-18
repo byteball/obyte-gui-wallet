@@ -9,7 +9,7 @@ function PreferencesEditAttestorAddressCtrl(
 	go, configService,
 	attestorAddressListService, aliasValidationService
 ) {
-	var ValidationUtils = require("byteballcore/validation_utils.js");
+	var ValidationUtils = require("ocore/validation_utils.js");
 	var currAttestorAddressKey = attestorAddressListService.currentAttestorKey;
 	var objAttestorAddress = aliasValidationService.getAliasObj(currAttestorAddressKey);
 	var configAttestorAddresses = configService.getSync().attestorAddresses;

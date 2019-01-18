@@ -2,24 +2,24 @@
 'use strict';
 
 
-var constants = require('byteballcore/constants.js');
+var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
 	
 	var async = require('async');
-	var chatStorage = require('byteballcore/chat_storage.js');
+	var chatStorage = require('ocore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var privateProfile = require('byteballcore/private_profile.js');
-	var objectHash = require('byteballcore/object_hash.js');
-	var db = require('byteballcore/db.js');
-	var network = require('byteballcore/network.js');
-	var device = require('byteballcore/device.js');
-	var eventBus = require('byteballcore/event_bus.js');
-	var conf = require('byteballcore/conf.js');
-	var storage = require('byteballcore/storage.js');
-	var breadcrumbs = require('byteballcore/breadcrumbs.js');
+	var privateProfile = require('ocore/private_profile.js');
+	var objectHash = require('ocore/object_hash.js');
+	var db = require('ocore/db.js');
+	var network = require('ocore/network.js');
+	var device = require('ocore/device.js');
+	var eventBus = require('ocore/event_bus.js');
+	var conf = require('ocore/conf.js');
+	var storage = require('ocore/storage.js');
+	var breadcrumbs = require('ocore/breadcrumbs.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
 			ifOk: function(){
 				device.updateCorrespondentProps(correspondent);
@@ -186,7 +186,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	
 	$scope.offerContract = function(address){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		$scope.oracles = configService.oracles;
@@ -540,7 +540,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -1038,7 +1038,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.signed_message = objSignedMessage.signed_message;
 			$scope.address = objSignedMessage.authors[0].address;
-			var validation = require('byteballcore/validation.js');
+			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
 				if (err)
@@ -1143,7 +1143,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddress(fc, cb){
 		if (fc.isSingleAddress)
 			throw Error("trying to issue a new address on a single-address wallet");
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
 				cb(addressInfo.address);
@@ -1154,7 +1154,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			myPaymentAddress = addressInfo.address; // cache it in case we need to insert again
 			onDone();

@@ -18,7 +18,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  '#7A8C9E',
 	];
 
-  var constants = require('byteballcore/constants.js');
+  var constants = require('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
 

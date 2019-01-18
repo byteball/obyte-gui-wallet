@@ -1,6 +1,6 @@
 'use strict';
 
-var eventBus = require('byteballcore/event_bus.js');
+var eventBus = require('ocore/event_bus.js');
 
 angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceController',
   function($scope, $timeout, profileService, go, isCordova, correspondentListService, gettextCatalog) {
@@ -13,7 +13,7 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
         });
     }
     
-    var conf = require('byteballcore/conf.js');
+    var conf = require('ocore/conf.js');
     $scope.protocol = conf.program;
     $scope.isCordova = isCordova;
     var fc = profileService.focusedClient;

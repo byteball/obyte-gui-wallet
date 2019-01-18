@@ -3,12 +3,12 @@
   version="2.6.0"
   android-versionCode="1073"
   ios-CFBundleVersion="2.6.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>Byteball</name>
+    <name>Obyte</name>
     <description>
-      Byteball wallet.
+      Obyte wallet.
     </description>
-    <author email="byteball@byteball.org" href="https://byteball.org">
-        Byteball
+    <author email="byteball@byteball.org" href="https://obyte.org">
+        Obyte
     </author>
     <content src="index.html" />
     <access origin="*" />

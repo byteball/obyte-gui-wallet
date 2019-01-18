@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
         var new_address = this.witness.trim();
         if (new_address === witnessListService.currentWitness)
             return goBack();
-		var myWitnesses = require('byteballcore/my_witnesses.js');
+		var myWitnesses = require('ocore/my_witnesses.js');
         myWitnesses.replaceWitness(witnessListService.currentWitness, new_address, function(err){
             console.log(err);
             if (err)

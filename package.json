@@ -1,18 +1,20 @@
 {
   "name": "byteball",
   "description": "Smart payments made simple",
-  "author": "Byteball",
+  "author": "Obyte",
   "version": "2.6.0",
   "keywords": [
     "wallet",
+    "obyte",
     "byteball",
+    "DAG",
     "decentralized",
     "multisignature",
     "bitcoin"
   ],
   "main": "public/index.html",
   "window": {
-    "title": "Byteball wallet",
+    "title": "Obyte wallet",
     "icon": "./public/img/icons/logo-circle-256.png",
     "show": true,
     "visible": true,
@@ -30,14 +32,14 @@
   },
   "chromium-args": "--proxy-server=http://127.1.2.7 --password-store=basic --disable-password-generation",
   "js-flags": "--max-old-space-size=2048",
-  "homepage": "https://github.com/byteball/byteball",
+  "homepage": "https://github.com/byteball/obyte-gui-wallet",
   "license": "MIT",
   "repository": {
-    "url": "git://github.com/byteball/byteball.git",
+    "url": "git://github.com/byteball/obyte-gui-wallet.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/byteball/byteball/issues"
+    "url": "https://github.com/byteball/obyte-gui-wallet/issues"
   },
   "browser": {
     "request": "browser-request",
@@ -48,7 +50,7 @@
     "bip38": "^1.4.0",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
-    "byteballcore": "git+https://github.com/byteball/byteballcore.git",
+    "ocore": "git+https://github.com/byteball/ocore.git",
     "grunt": "^1.0.1",
     "grunt-angular-gettext": "^2.2.3",
     "grunt-browserify": "^5.0.0",

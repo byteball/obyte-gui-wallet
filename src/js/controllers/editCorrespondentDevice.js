@@ -16,7 +16,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		$scope.error = null;
 		correspondent.name = $scope.name;
 		correspondent.hub = $scope.hub;
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.updateCorrespondentProps(correspondent, function(){
 			go.path('correspondentDevices.correspondentDevice');
 		});
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          	var chatStorage = require('byteballcore/chat_storage.js');
+          	var chatStorage = require('ocore/chat_storage.js');
 			chatStorage.purge(correspondent.device_address);
 			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
         }

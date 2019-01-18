@@ -1,5 +1,5 @@
-var BLACKBYTES_ASSET = require('byteballcore/constants').BLACKBYTES_ASSET;
-var balances = require('byteballcore/balances');
+var BLACKBYTES_ASSET = require('ocore/constants').BLACKBYTES_ASSET;
+var balances = require('ocore/balances');
 var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
 var fileSystem = require('./fileStorage');
 var completeClientLoaded = false;
@@ -144,7 +144,7 @@ function initWallet() {
 	}
 
 	function loadCompleteClient(showClient) {
-		self._bByteballCoreLoaded = false; //"fix" : Looks like you are loading multiple copies of byteball core, which is not supported. Running 'npm dedupe' might help.
+		self._bByteballCoreLoaded = false; //"fix" : Looks like you are loading multiple copies of ocore, which is not supported. Running 'npm dedupe' might help.
 		var body = document.body;
 		var page = document.createElement('div');
 

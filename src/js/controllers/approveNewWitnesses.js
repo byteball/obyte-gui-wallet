@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
     var n = 0, l = newWitnesses.length;
 
     function replaceWitness(n, oldWitnesses, newWitnesses){
-	  var myWitnesses = require('byteballcore/my_witnesses.js');
+	  var myWitnesses = require('ocore/my_witnesses.js');
       myWitnesses.replaceWitness(oldWitnesses[n], newWitnesses[n], function(err){
 
         if (l < n) {

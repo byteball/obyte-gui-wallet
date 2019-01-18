@@ -17,13 +17,13 @@ function selectText(element) {
 }
 
 function isValidAddress(value) {
-  var ValidationUtils = require('byteballcore/validation_utils.js');
+  var ValidationUtils = require('ocore/validation_utils.js');
   if (!value) {
     return false;
   }
 
   // byteball uri
-  var conf = require('byteballcore/conf.js');
+  var conf = require('ocore/conf.js');
   var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
   var arrMatches = value.match(re);
   if (arrMatches) {
@@ -197,7 +197,7 @@ angular.module('copayApp.directives')
         return value;
       }*/
       //console.log('-- amount');
-      var constants = require('byteballcore/constants.js');
+      var constants = require('ocore/constants.js');
       var asset = attrs.validAmount;
             var settings = configService.getSync().wallet.settings;
       var unitValue = 1;
