@@ -1231,10 +1231,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'last_name': return gettext('Last name');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
+			case 'personal_code': return gettext('Personal code');
 			case 'us_state': return gettext('US state');
 			case 'id_number': return gettext('ID number');
 			case 'id_type': return gettext('ID type');
 			case 'id_subtype': return gettext('ID subtype');
+			case 'id_expiry': return gettext('ID expires at');
+			case 'id_issued_at': return gettext('ID issued at');
 			default: return field;
 		}
 	}
