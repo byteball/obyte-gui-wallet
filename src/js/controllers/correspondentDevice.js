@@ -1510,6 +1510,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
 	};
+
+	function openInExplorer(unit) {
+		var url = 'https://explorer.obyte.org/#' + unit;
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
+	};
 	
 	$scope.showProsaicContractOffer = function(contractJsonBase64, isIncoming){
 		$rootScope.modalOpened = true;
@@ -1584,6 +1592,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.close = function() {
 					$modalInstance.dismiss('cancel');
 				};
+
+				$scope.openInExplorer = openInExplorer;
 			};
 
 			var modalInstance = $modal.open({

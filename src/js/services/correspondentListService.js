@@ -870,7 +870,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								arrSigningDeviceAddresses: contract.cosigners,
 								recipient_device_address: contract.peer_device_address
 							};
-							fc.sendMultiPayment(opts, function(err, unit){
+							fc.sendMultiPayment(opts, function(err){
 								// if multisig, it might take very long before the callback is called
 								//self.setOngoingProcess();
 								profileService.bKeepUnlocked = false;
@@ -898,7 +898,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									arrSigningDeviceAddresses: [],
 									shared_address: shared_address,
 									messages: [objMessage]
-								}, function(err) { // can take long if multisig
+								}, function(err, unit) { // can take long if multisig
 									//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
 									if (err) {
 										showError(err);

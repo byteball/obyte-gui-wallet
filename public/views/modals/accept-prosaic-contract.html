@@ -56,7 +56,7 @@ form[name="prosaicContractForm"] {
 	<h3 class="title">Text</h3>
 	<span>{{text}}</span>
 
-	<h3 ng-if="unit" class="unit">Unit: <a href="https://explorer.byteball.org/#{{unit}}" class="">{{unit}}</a></h3>
+	<h3 ng-if="unit" class="unit">ID: <a ng-click="openInExplorer(unit)" class="">{{unit}}</a></h3>
 
 	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1">
 		<cosigners></cosigners>
