@@ -252,7 +252,7 @@ input.datafeed_input {
         <div class="row">
           <!-- Address-->
           <div class="large-12 columns">
-            <h2 class="text-center m10t" translate>My Byteball address</h2>
+            <h2 class="text-center m10t" translate>My Obyte address</h2>
             <div>
               <div class="box-notification" ng-show="home.addrError">
                 <span class="text-warning">
@@ -392,7 +392,7 @@ input.datafeed_input {
             </div>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To byteball address or email or username')|translate}}</div>
+		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
 		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab == 2, 'disabled': home.send_multiple}" translate>Share via message</div>
 		    </div>
 
@@ -400,7 +400,7 @@ input.datafeed_input {
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
-	                  <span translate>To byteball address</span>
+	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
 	                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
@@ -424,9 +424,9 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Byteball address or email or username' : 'Byteball address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
-	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Byteball address' : 'Byteball address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
-	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Byteball address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join('')"></textarea>
+	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Obyte address' : 'Obyte address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
+	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join('')"></textarea>
 
 	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
 	                  {{index.addressbook[_address] || _address}}
@@ -533,16 +533,16 @@ input.datafeed_input {
 					Post values into datafeeds manually, be an oracle.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -2" translate>
-					Attest profile data linked to any Byteball address.
+					Attest profile data linked to any Obyte address.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -3" translate>
 					Post your profile data, anything you want to say about yourself.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -4" translate>
-					Post arbitrary key-value pairs of data into Byteball network.
+					Post arbitrary key-value pairs of data into Obyte network.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -5" translate>
-					Post a poll into Byteball network that users can vote on with Poll bot.
+					Post a poll into Obyte network that users can vote on with Poll bot.
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -2">
 					<label style="float: left;">
@@ -557,7 +557,7 @@ input.datafeed_input {
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
-					<input type="text" name="address" ng-model="home.attested_address" placeholder="Byteball address" valid-address ng-required="true">
+					<input type="text" name="address" ng-model="home.attested_address" placeholder="Obyte address" valid-address ng-required="true">
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -5">
 					<label style="float: left;">

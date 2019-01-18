@@ -181,8 +181,8 @@ module.exports = function(grunt) {
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Byteball/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Obyte/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Obyte/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
     },
@@ -209,7 +209,7 @@ module.exports = function(grunt) {
           //platforms: ['win','osx64','linux'],
           //platforms: ['osx64'],
           platforms: [getPlatform()],
-          appName: 'Byteball',
+          appName: 'Obyte',
           buildDir: '../byteballbuilds',
           version: '0.14.7',
           zip: false,
@@ -217,19 +217,19 @@ module.exports = function(grunt) {
           winIco: './public/img/icons/logo-circle.ico',
           exeIco: './public/img/icons/logo-circle.ico',
           macPlist: {
-          	CFBundleURLTypes: [{CFBundleURLName: 'Byteball action', CFBundleURLSchemes: ['byteball']}],
+          	CFBundleURLTypes: [{CFBundleURLName: 'Obyte action', CFBundleURLSchemes: ['byteball', 'obyte']}],
       		/*CFBundleIconFile: 'nw.icns',*/
       		LSHasLocalizedDisplayName: 0,
       		UTExportedTypeDeclarations: [{
       			UTTypeIdentifier: 'org.byteball.coin',
-      			UTTypeDescription: 'Byteball Private Coin',
+      			UTTypeDescription: 'Obyte Private Coin',
       			UTTypeConformsTo: ["public.data"],
       			UTTypeTagSpecification: {
       				"public.filename-extension":["coin"]
       			}
       		}],
       		CFBundleDocumentTypes: [{
-      			CFBundleTypeName: "Byteball Private Coin",
+      			CFBundleTypeName: "Obyte Private Coin",
       			LSItemContentTypes: ["org.byteball.coin"],
       			CFBundleTypeIconFile: "app.icns"
       		}]
@@ -240,21 +240,21 @@ module.exports = function(grunt) {
     compress: {
       linux32: {
         options: {
-          archive: '../byteballbuilds/byteball-linux32.zip'
+          archive: '../byteballbuilds/obyte-linux32.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Byteball/linux32/',
+        cwd: '../byteballbuilds/Obyte/linux32/',
         src: ['**/*'],
-        dest: 'byteball-linux32/'
+        dest: 'obyte-linux32/'
       },
       linux64: {
         options: {
-          archive: '../byteballbuilds/byteball-linux64.zip'
+          archive: '../byteballbuilds/obyte-linux64.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Byteball/linux64/',
+        cwd: '../byteballbuilds/Obyte/linux64/',
         src: ['**/*'],
-        dest: 'byteball-linux64/'
+        dest: 'obyte-linux64/'
       }
     },
     browserify: {
@@ -277,12 +277,12 @@ module.exports = function(grunt) {
     debian_package: {
         linux64: {
             files: [
-                {expand: true, cwd: '../byteballbuilds/byteball-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
+                {expand: true, cwd: '../byteballbuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
                 //{expand: true, cwd: '../byteballbuilds/byteball-test/linux64', src: ['byteball.desktop'], dest: '/usr/share/applications/byteball-test.desktop'}
             ],
             options: {
                 maintainer: {
-                    name: 'Byteball',
+                    name: 'Obyte',
                     email: 'byteball@byteball.org'
                 },
                 long_description: 'Smart payments made simple',

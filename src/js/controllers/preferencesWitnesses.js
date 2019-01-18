@@ -8,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
 
     $scope.autoUpdWitnessesList = autoUpdatingWitnessesList.autoUpdate;
 
-    var myWitnesses = require('byteballcore/my_witnesses.js');
+    var myWitnesses = require('ocore/my_witnesses.js');
     myWitnesses.readMyWitnesses(function(arrWitnesses){
         self.witnesses = arrWitnesses;
 	    $timeout(function(){

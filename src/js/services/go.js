@@ -1,6 +1,6 @@
 'use strict';
 
-var eventBus = require('byteballcore/event_bus.js');
+var eventBus = require('ocore/event_bus.js');
 
 angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
 	var root = {};
@@ -121,7 +121,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 		console.log("handleUri "+uri);
 
-		require('byteballcore/uri.js').parseUri(uri, {
+		require('ocore/uri.js').parseUri(uri, {
 			ifError: function(err){
 				console.log(err);
 				notification.error(err);
@@ -163,7 +163,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			return;
 		}
 		last_handle_file_ts = Date.now();
-		var breadcrumbs = require('byteballcore/breadcrumbs.js');
+		var breadcrumbs = require('ocore/breadcrumbs.js');
 		console.log("handleFile "+uri);
 		root.walletHome();
 		$rootScope.$emit('process_status_change', 'claiming', true);
@@ -178,20 +178,20 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
 				breadcrumbs.add("handleFile - content url");
-				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content, cb);
+				require('ocore/wallet.js').handlePrivatePaymentFile(null, content, cb);
 			}, function (err) {throw err});
 			return checkDoubleClaim();
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
 			breadcrumbs.add("handleFile - file path url");
-			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
+			require('ocore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
 			return checkDoubleClaim();
 		}
 		$rootScope.$emit('process_status_change', 'claiming', false);
 	}
 	
 	function extractByteballArgFromCommandLine(commandLine){
-		var conf = require('byteballcore/conf.js');
+		var conf = require('ocore/conf.js');
 		var url = new RegExp('^'+conf.program+':', 'i');
 		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
 		var tokenize = function(str) {
@@ -260,7 +260,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 						fs.writeFile(mimeDir + '/packages/' + package_json.name+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
 	   <mime-type type=\"application/x-"+package_json.name+"\">\n\
-	   <comment>Byteball Private Coin</comment>\n\
+	   <comment>Obyte Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
 	 </mime-info>\n", {mode: 0755}, function(err) {
@@ -330,7 +330,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 		/*var win = gui.Window.get();
 		win.on('close', function(){
 			console.log('close event');
-			var db = require('byteballcore/db.js');
+			var db = require('ocore/db.js');
 			db.close(function(err){
 				console.log('close err: '+err);
 			});

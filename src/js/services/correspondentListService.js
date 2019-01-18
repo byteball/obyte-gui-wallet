@@ -1,16 +1,16 @@
 'use strict';
 
-var constants = require('byteballcore/constants.js');
-var eventBus = require('byteballcore/event_bus.js');
-var ValidationUtils = require('byteballcore/validation_utils.js');
-var objectHash = require('byteballcore/object_hash.js');
+var constants = require('ocore/constants.js');
+var eventBus = require('ocore/event_bus.js');
+var ValidationUtils = require('ocore/validation_utils.js');
+var objectHash = require('ocore/object_hash.js');
 
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
 	var root = {};
-	var device = require('byteballcore/device.js');
-	var wallet = require('byteballcore/wallet.js');
+	var device = require('ocore/device.js');
+	var wallet = require('ocore/wallet.js');
 
-	var chatStorage = require('byteballcore/chat_storage.js');
+	var chatStorage = require('ocore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 
@@ -36,7 +36,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}, true);
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
-		var walletGeneral = require('byteballcore/wallet_general.js');
+		var walletGeneral = require('ocore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
@@ -224,7 +224,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
-		var privateProfile = require('byteballcore/private_profile.js');
+		var privateProfile = require('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
 			return null;
@@ -254,7 +254,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			objSignedMessage: objSignedMessage,
 			bValid: undefined
 		};
-		var validation = require('byteballcore/validation.js');
+		var validation = require('ocore/validation.js');
 		validation.validateSignedMessage(objSignedMessage, function(err){
 			info.bValid = !err;
 			if (err)
@@ -324,7 +324,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
-		var URI = require('byteballcore/uri.js');
+		var URI = require('ocore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
 		if (!strAmount)
@@ -511,7 +511,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			for (var i in messages) {
 				messages[i] = parseMessage(messages[i]);
 			}
-			var walletGeneral = require('byteballcore/wallet_general.js');
+			var walletGeneral = require('ocore/wallet_general.js');
 			walletGeneral.readMyAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;

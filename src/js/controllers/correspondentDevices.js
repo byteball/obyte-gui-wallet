@@ -12,10 +12,10 @@ angular
 		$state,
 		$rootScope
 	) {
-		var wallet = require('byteballcore/wallet.js');
-		var bots = require('byteballcore/bots.js');
-		var mutex = require('byteballcore/mutex.js');
-		var db = require('byteballcore/db.js');
+		var wallet = require('ocore/wallet.js');
+		var bots = require('ocore/bots.js');
+		var mutex = require('ocore/mutex.js');
+		var db = require('ocore/db.js');
 	
 		var bFirstLoad = true;
 		
@@ -179,7 +179,7 @@ angular
 							'device ' + device_address + ' is not removable'
 						);
 					}
-					var device = require('byteballcore/device.js');
+					var device = require('ocore/device.js');
 
 					// send message to paired device
 					// this must be done before removing the device
