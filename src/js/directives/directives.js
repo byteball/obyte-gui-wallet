@@ -30,6 +30,12 @@ function isValidAddress(value) {
     return ValidationUtils.isValidAddress(arrMatches[1]);
   }
 
+  re = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':([A-Z2-7]{32})\b', 'i');
+  arrMatches = value.match(re);
+  if (arrMatches) {
+    return ValidationUtils.isValidAddress(arrMatches[1]);
+  }
+
   return ValidationUtils.isValidAddress(value);
 }
 

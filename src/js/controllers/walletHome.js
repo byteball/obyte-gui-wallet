@@ -12,7 +12,8 @@ angular.module('copayApp.controllers')
 		var home = this;
 		var conf = require('ocore/conf.js');
 		var chatStorage = require('ocore/chat_storage.js');
-		this.protocol = conf.program;
+		this.bb_protocol = conf.program;
+		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
 		var config = configService.getSync();
@@ -153,6 +154,7 @@ angular.module('copayApp.controllers')
 						var form = addressbookForm;
 						if (data && form) {
 							data = data.replace(self.protocol + ':', '');
+							data = data.replace(self.bb_protocol + ':', '');
 							form.address.$setViewValue(data);
 							form.address.$isValid = true;
 							form.address.$render();
@@ -422,7 +424,7 @@ angular.module('copayApp.controllers')
 				$scope.bbUnitName = walletSettings.bbUnitName;
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
-				$scope.protocol = conf.program;
+				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
@@ -1665,7 +1667,7 @@ angular.module('copayApp.controllers')
 			this.resetError();
 			if (!value) return '';
 
-			if (value.indexOf(self.protocol + ':') === 0)
+			if (value.indexOf(self.protocol + ':') === 0 || value.indexOf(self.bb_protocol + ':') === 0)
 				return this.setFromUri(value);
 			else
 				return value;
