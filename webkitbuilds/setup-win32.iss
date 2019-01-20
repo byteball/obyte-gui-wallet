@@ -20,8 +20,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputBaseFilename={#MyAppPackageName}-win32
-; SourceDir=../../byteballbuilds
-OutputDir=../../byteballbuilds
+; SourceDir=../../obytebuilds
+OutputDir=../../obytebuilds
 Compression=lzma
 SolidCompression=yes
 ; SetupIconFile=../public/img/icons/logo-circle.ico
@@ -51,8 +51,8 @@ Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; Source: "..\byteballbuilds\byteball-test\win32\byteball.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\..\byteballbuilds\{#MyAppPackageName}\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; Source: "..\obytebuilds\byteball-test\win32\byteball.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\obytebuilds\{#MyAppPackageName}\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../public/img/icons/logo-circle.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

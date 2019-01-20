@@ -20,10 +20,10 @@ module.exports = function(grunt) {
         command: 'rm -Rf bower_components node_modules'
       },
       osx64: {
-        command: '../byteballbuilds/build-osx.sh osx64'
+        command: '../obytebuilds/build-osx.sh osx64'
       },
       osx32: {
-        command: '../byteballbuilds/build-osx.sh osx32'
+        command: '../obytebuilds/build-osx.sh osx32'
       }
     },
     watch: {
@@ -176,13 +176,13 @@ module.exports = function(grunt) {
         flatten: true,
         options: {timestamp: true, mode: true},
         src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/Background.png'],
-        dest: '../byteballbuilds/'
+        dest: '../obytebuilds/'
       },
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Obyte/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../byteballbuilds/Obyte/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['byteball.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
     },
@@ -210,7 +210,7 @@ module.exports = function(grunt) {
           //platforms: ['osx64'],
           platforms: [getPlatform()],
           appName: 'Obyte',
-          buildDir: '../byteballbuilds',
+          buildDir: '../obytebuilds',
           version: '0.14.7',
           zip: false,
           macIcns: './public/img/icons/logo-circle.icns',
@@ -240,19 +240,19 @@ module.exports = function(grunt) {
     compress: {
       linux32: {
         options: {
-          archive: '../byteballbuilds/obyte-linux32.zip'
+          archive: '../obytebuilds/obyte-linux32.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Obyte/linux32/',
+        cwd: '../obytebuilds/Obyte/linux32/',
         src: ['**/*'],
         dest: 'obyte-linux32/'
       },
       linux64: {
         options: {
-          archive: '../byteballbuilds/obyte-linux64.zip'
+          archive: '../obytebuilds/obyte-linux64.zip'
         },
         expand: true,
-        cwd: '../byteballbuilds/Obyte/linux64/',
+        cwd: '../obytebuilds/Obyte/linux64/',
         src: ['**/*'],
         dest: 'obyte-linux64/'
       }
@@ -277,8 +277,8 @@ module.exports = function(grunt) {
     debian_package: {
         linux64: {
             files: [
-                {expand: true, cwd: '../byteballbuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
-                //{expand: true, cwd: '../byteballbuilds/byteball-test/linux64', src: ['byteball.desktop'], dest: '/usr/share/applications/byteball-test.desktop'}
+                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
+                //{expand: true, cwd: '../obytebuilds/byteball-test/linux64', src: ['byteball.desktop'], dest: '/usr/share/applications/byteball-test.desktop'}
             ],
             options: {
                 maintainer: {
