@@ -1367,12 +1367,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			var sql = fields_list
 				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
 					LEFT JOIN my_addresses USING (address) \n\
-					LEFT JOIN shared_adresses USING (address) \n\
-					WHERE field IN(?) AND my_addresses.address IS NULL AND shared_adresses.address IS NULL GROUP BY private_profile_id"
+					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
+					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
 				: "SELECT * FROM private_profiles \n\
 					LEFT JOIN my_addresses USING (address) \n\
-					LEFT JOIN shared_adresses USING (address) \n\
-					WHERE my_addresses.address IS NULL AND shared_adresses.address IS NULL";
+					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
+					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
 			var params = fields_list ? [arrFields] : [];
 			readMyPaymentAddress(fc, function(current_address){
 				db.query(sql, params, function(rows){
