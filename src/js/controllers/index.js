@@ -552,7 +552,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		      };
 
 		      var modalInstance = $modal.open({
-		        templateUrl: 'views/modals/accept-prosaic-contract.html',
+		        templateUrl: 'views/modals/view-prosaic-contract.html',
 		        windowClass: animationService.modalAnimated.slideUp,
 		        controller: ModalInstanceCtrl
 		      });
