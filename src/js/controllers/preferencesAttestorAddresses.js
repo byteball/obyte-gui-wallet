@@ -9,6 +9,7 @@ function PreferencesAttestorAddressesCtrl(
 	configService, go,
 	attestorAddressListService, aliasValidationService
 ) {
+	this.go = go;
 	var config = configService.getSync();
 	var configAttestorAddresses = config.attestorAddresses;
 	console.log('!!!configAttestorAddresses', JSON.stringify(configAttestorAddresses, null, 4));
@@ -35,6 +36,14 @@ function PreferencesAttestorAddressesCtrl(
 		title = title[0].toUpperCase() + title.substr(1);
 		this.arrAttestorAddresses.push({attestorKey: attestorKey, value: "", title: title});
 	}
+
+	// config.realNameAttestorAddresses.forEach(function(attestor){
+	// 	var value = configAttestorAddresses[attestorKey];
+	// 	var obj = aliasValidationService.getAliasObj(attestorKey);
+	// 	var title = obj.title;
+	// 	title = title[0].toUpperCase() + title.substr(1);
+	// 	this.arrAttestorAddresses.push({attestorKey: attestorKey, value: value, title: title});
+	// });
 
 	this.arrAttestorAddresses.sort(function (a, b) {
 		if (a.title > b.title) {

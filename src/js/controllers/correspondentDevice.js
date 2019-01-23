@@ -1551,7 +1551,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					privateProfile.getFieldsForAddress(objContract.peer_address, function(profile) {
 						$scope.peer_first_name = profile.first_name || $scope.peer_first_name;
 						$scope.peer_last_name = profile.last_name || $scope.peer_last_name;
-						$scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusty: lodash.includes(configService.getSync().attestorAddresses, profile.attestor_address)}
+						$scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusty: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
 						$timeout(function() {
 							$rootScope.$apply();
 						});
@@ -1559,7 +1559,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					privateProfile.getFieldsForAddress(objContract.my_address, function(profile) {
 						$scope.my_first_name = profile.first_name || $scope.my_first_name;
 						$scope.my_last_name = profile.last_name || $scope.my_last_name;
-						$scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusty: lodash.includes(configService.getSync().attestorAddresses, profile.attestor_address)}
+						$scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusty: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
 						$timeout(function() {
 							$rootScope.$apply();
 						});
