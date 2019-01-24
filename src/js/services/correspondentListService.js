@@ -904,8 +904,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 										showError(err);
 										return;
 									}
-									prosaic_contract.setField("unit", contract.hash, unit);
-									prosaic_contract.setField("shared_address", contract.hash, shared_address);
+									prosaic_contract.setField(contract.hash, "unit", unit);
+									prosaic_contract.setField(contract.hash, "shared_address", shared_address);
 									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
 									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
 								});
