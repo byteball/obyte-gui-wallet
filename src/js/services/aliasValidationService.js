@@ -54,16 +54,6 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			transformToAccount: function (value) {
 				return value.replace('+', '');
 			}
-		},
-		realname: {
-			dbKey: 'real_name',
-			title: 'real name',
-			isValid: function (value) {
-				return /^[A-Za-z\- ]+$/.test(value);
-			},
-			transformToAccount: function (value) {
-				return value;
-			}
 		}
 	};
 	var assocBbAddresses = {};

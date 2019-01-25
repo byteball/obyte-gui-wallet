@@ -914,13 +914,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						
 					});
 				};
-				eventBus.once("prosaic-contract-response-recieved" + contract.hash, sendUnit);
+				eventBus.once("prosaic_contract_response_received" + contract.hash, sendUnit);
 			});
 		}
 
 		if (contracts)
 			return start_listening(contracts);
-		prosaic_contract.getAllActive(function(contracts){
+		prosaic_contract.getAllPending(function(contracts){
 			start_listening(contracts);
 		});
 	}
