@@ -516,8 +516,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							var contract_hash = matches[1];
 							require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
 								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
+								var shared_author = lodash.find(objUnit.authors, function(author){
+									try {
+										return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
+									} catch (e) {
+										return false;
+									}
+								});
 								if (!objContract || objContract.status !== "accepted" || objContract.unit
-									|| arrDataMessages.length !== 1 || arrPaymentMessages !== 1 || assocAmountByAssetAndAddress["base"][Object.keys(assocAmountByAssetAndAddress["base"])[0]] > 2000)
+									|| arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || !shared_author || shared_author.address !== arrPaymentMessages[0].payload.outputs[0].address)
 									return ask();
 								createAndSendSignature();
                                 assocChoicesByUnit[unit] = "approve";
