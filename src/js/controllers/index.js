@@ -511,11 +511,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract auto-approve
-						var matches = question.match(/^contract_text_hash: (.{44})$/m);
+						var matches = question.match(/contract_text_hash: (.{44})/m);
 						if (matches && matches.length) {
 							var contract_hash = matches[1];
 							require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
-								if (!objContract)
+								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
+								if (!objContract || objContract.status !== "accepted" || objContract.unit
+									|| arrDataMessages.length !== 1 || arrPaymentMessages !== 1 || assocAmountByAssetAndAddress["base"][Object.keys(assocAmountByAssetAndAddress["base"])[0]] > 2000)
 									return ask();
 								createAndSendSignature();
                                 assocChoicesByUnit[unit] = "approve";

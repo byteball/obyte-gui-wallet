@@ -469,7 +469,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.index = indexScope;
 
 			readMyPaymentAddress(fc, function(my_address) {
-				populateScopeWithAttestedFields($scope, my_address, address, function() {
+				correspondentListService.populateScopeWithAttestedFields($scope, my_address, address, function() {
 					$timeout(function() {
 						$rootScope.$apply();
 					});
@@ -481,6 +481,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.error = '';
 
 				var contract_text = $scope.form.contractText;
+				var contract_title = $scope.form.contractTitle;
 				var ttl = $scope.form.ttl;
 				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 				var hash = objectHash.getBase64Hash(contract_text + creation_date);
@@ -489,7 +490,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				readMyPaymentAddress(fc, function(my_address) {
 					var cosigners = getSigningDeviceAddresses(fc);
-					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_text, cosigners, function(objContract) {
+					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
 						correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 						var chat_message = "(prosaic-contract:" + Buffer(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
@@ -1499,40 +1500,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 	};
 
-	function openInExplorer(unit) {
-		var url = 'https://explorer.obyte.org/#' + unit;
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
-		else if (isCordova)
-			cordova.InAppBrowser.open(url, '_system');
-	};
-	
-	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
-		scope.my_first_name = "FIRST NAME UNKNOWN";
-		scope.my_last_name = "LAST NAME UNKNOWN";
-		scope.my_attestor = {};
-		scope.peer_first_name = "FIRST NAME UNKNOWN";
-		scope.peer_last_name = "LAST NAME UNKNOWN";
-		scope.peer_attestor = {};
-		async.series([function(cb2) {
-			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				scope.peer_first_name = profile.first_name || scope.peer_first_name;
-				scope.peer_last_name = profile.last_name || scope.peer_last_name;
-				scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				cb2();
-			});
-		}, function(cb2) {
-			privateProfile.getFieldsForAddress(my_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				scope.my_first_name = profile.first_name || scope.my_first_name;
-				scope.my_last_name = profile.last_name || scope.my_last_name;
-				scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				cb2();
-			});
-		}], function(){
-			cb();
-		});
-	}
-
 	$scope.showProsaicContractOffer = function(contractJsonBase64, isIncoming){
 		$rootScope.modalOpened = true;
 		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
@@ -1546,17 +1513,18 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				$scope.isIncoming = !!isIncoming;
 				$scope.text = objContract.text;
+				$scope.title = objContract.title;
 				prosaic_contract.getByHash(objContract.hash, function(objContract){
 					if (!objContract)
 						throw Error("no contract found in database for already received offer message");
 					$scope.unit = objContract.unit;
 					$scope.status = objContract.status;
 					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
-					if (created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
+					if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 						$scope.status = 'expired';
 					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString();
 
-					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
+					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						$timeout(function() {
 							$rootScope.$apply();
 						});
@@ -1594,7 +1562,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$modalInstance.dismiss('cancel');
 				};
 
-				$scope.openInExplorer = openInExplorer;
+				$scope.openInExplorer = correspondentListService.openInExplorer;
 			};
 
 			var modalInstance = $modal.open({

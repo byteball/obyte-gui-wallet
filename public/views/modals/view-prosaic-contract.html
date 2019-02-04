@@ -56,13 +56,17 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Me</h3>
 		<span class="first_name p10l">{{my_first_name}}</span>
 		<span class="last_name p10l">{{my_last_name}}</span>
-		<div class="attestor p20l" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="icon-checkmark-circle size-14" ng-show="my_attestor.trusted"></i></div>
+		<div class="attestor p20l" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted"></i></div>
 	<h3 class="person title" translate>Peer</h3>
 		<span class="first_name p10l">{{peer_first_name}}</span>
 		<span class="last_name p10l">{{peer_last_name}}</span>
-		<div class="attestor p20l" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14" ng-show="peer_attestor.trusted"></i></div>
+		<div class="attestor p20l" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted"></i></div>
+
+	<h3 class="title" translate>Title</h3>
+	<span style="width: 100%; word-wrap: break-word;">{{title}}</span>
+
 	<h3 class="title" translate>Text</h3>
-	<span>{{text}}</span>
+	<span style="width: 100%; word-wrap: break-word;">{{text}}</span>
 
 	<h3 ng-if="unit" class="unit">ID: <a ng-click="openInExplorer(unit)" class="">{{unit}}</a></h3>
 
