@@ -92,7 +92,7 @@ module.exports = function(grunt) {
           'src/js/version.js',
           'src/js/init.js'
         ],
-        dest: 'public/byteball.js'
+        dest: 'public/obyte.js'
       },
       css: {
         src: ['src/css/*.css'],
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
       },
       prod: {
         files: {
-          'public/byteball.js': ['public/byteball.js'],
+          'public/obyte.js': ['public/obyte.js'],
           'public/angular.js': ['public/angular.js']
         }
       },
@@ -262,8 +262,8 @@ module.exports = function(grunt) {
             options:{
                 exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit']
             },
-            src: 'public/byteball.js',
-            dest: 'public/byteball.js'
+            src: 'public/obyte.js',
+            dest: 'public/obyte.js'
         },
 	    partialClient:{
 		    options:{
