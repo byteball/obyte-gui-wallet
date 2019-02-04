@@ -378,6 +378,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						profileService.bKeepUnlocked = true;
 						var opts = {
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
 							to_address: shared_address,
@@ -641,6 +642,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_multi_payment_key = current_multi_payment_key;
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							asset: asset,
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
@@ -827,6 +829,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
+							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
