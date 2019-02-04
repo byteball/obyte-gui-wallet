@@ -111,6 +111,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$timeout(function(){
 					$scope.$apply();
 				});
+				correspondentListService.assocLastMessageDateByCorrespondent[correspondent.device_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){

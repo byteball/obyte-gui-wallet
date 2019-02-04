@@ -75,6 +75,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
+		root.assocLastMessageDateByCorrespondent[peer_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$timeout(function(){
@@ -723,6 +724,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	root.currentCorrespondent = null;
 	root.messageEventsByCorrespondent = {};
+	root.assocLastMessageDateByCorrespondent = {};
 
   /*
   root.remove = function(addr, cb) {

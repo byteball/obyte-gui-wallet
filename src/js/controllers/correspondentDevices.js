@@ -141,10 +141,11 @@ angular
 				});
 				
 				db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
-					var assocLastMessageDateByCorrespondent = {};
+					var assocLastMessageDateByCorrespondent = correspondentListService.assocLastMessageDateByCorrespondent;
 
 					rows.forEach(function(row) {
-						assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
+						if (!assocLastMessageDateByCorrespondent[row.correspondent_address] || row.last_message_date > assocLastMessageDateByCorrespondent[row.correspondent_address])
+							assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
 					});
 
 					ab = ab.forEach(function(correspondent) {
