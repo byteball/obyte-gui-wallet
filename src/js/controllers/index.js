@@ -749,7 +749,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBytes = null;
     self.availableBalanceBytes = null;
     self.pendingAmount = null;
-    self.spendUnconfirmed = null;
 
     self.totalBalanceStr = null;
     self.availableBalanceStr = null;
@@ -767,7 +766,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.historyShowShowAll = false;
     self.balanceByAddress = null;
     self.pendingTxProposalsCountForUs = null;
-    self.setSpendUnconfirmed();
 
     $timeout(function() {
         //$rootScope.$apply();
@@ -947,10 +945,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   };
 
-  self.setSpendUnconfirmed = function() {
-    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
-  };
-
 
   self.updateBalance = function() {
     var fc = profileService.focusedClient;
@@ -1117,7 +1111,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       /*
     // SAT
-    if (self.spendUnconfirmed) {
+    if (configService.getSync().wallet.spendUnconfirmed) {
       self.totalBalanceBytes = balance.totalAmount;
       self.lockedBalanceBytes = balance.lockedAmount || 0;
       self.availableBalanceBytes = balance.availableAmount || 0;
@@ -1528,11 +1522,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     $timeout(function() {
       $rootScope.$apply();
     });
-  });
-
-  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
-    self.setSpendUnconfirmed();
-    self.updateAll();
   });
 
   $rootScope.$on('Local/ProfileBound', function() {

@@ -152,10 +152,10 @@ function initWallet() {
 		var angularJs = document.createElement('script');
 		angularJs.src = 'angular.js';
 		angularJs.onload = function() {
-			var byteballJS = document.createElement('script');
-			byteballJS.src = 'byteball.js';
-			body.appendChild(byteballJS);
-			byteballJS.onload = function() {
+			var obyteJS = document.createElement('script');
+			obyteJS.src = 'obyte.js';
+			body.appendChild(obyteJS);
+			obyteJS.onload = function() {
 				if(showClient) showCompleteClient();
 			}
 		};

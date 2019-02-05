@@ -1,13 +1,13 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Byteball
+Name=Obyte
 Comment=Smart payments made simple
-Exec=bash -c 'cd $(dirname %k) && ./Byteball %u'
+Exec=bash -c 'cd $(dirname %k) && ./Obyte %u'
 Icon=logo-circle-256.png
 Terminal=false
 Categories=Office;Finance;
-MimeType=x-scheme-handler/byteball;
+MimeType=x-scheme-handler/byteball;x-scheme-handler/obyte
 X-Ubuntu-Touch=true
 X-Ubuntu-StageHint=SideStage
 

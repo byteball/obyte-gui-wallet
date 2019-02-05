@@ -111,6 +111,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$timeout(function(){
 					$scope.$apply();
 				});
+				correspondentListService.assocLastMessageDateByCorrespondent[correspondent.device_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
@@ -378,6 +379,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						profileService.bKeepUnlocked = true;
 						var opts = {
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
 							to_address: shared_address,
@@ -710,6 +712,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_multi_payment_key = current_multi_payment_key;
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							asset: asset,
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
@@ -896,6 +899,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
+							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
@@ -1253,10 +1257,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'last_name': return gettext('Last name');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
+			case 'personal_code': return gettext('Personal code');
 			case 'us_state': return gettext('US state');
 			case 'id_number': return gettext('ID number');
 			case 'id_type': return gettext('ID type');
 			case 'id_subtype': return gettext('ID subtype');
+			case 'id_expiry': return gettext('ID expires at');
+			case 'id_issued_at': return gettext('ID issued at');
 			default: return field;
 		}
 	}

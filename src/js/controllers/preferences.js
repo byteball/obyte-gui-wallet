@@ -8,7 +8,6 @@ angular.module('copayApp.controllers')
 				var config = configService.getSync();
 				this.unitName = config.wallet.settings.unitName;
 				this.currentLanguageName = uxLanguage.getCurrentLanguageName();
-				$scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
 				var fc = profileService.focusedClient;
 				if (!fc)
 					return;
@@ -44,19 +43,6 @@ angular.module('copayApp.controllers')
 				//this.externalIndex = fc.getExternalIndex();
 			};
 	
-			var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
-				if (newVal == oldVal) return;
-				var opts = {
-					wallet: {
-						spendUnconfirmed: newVal
-					}
-				};
-				configService.set(opts, function(err) {
-					$rootScope.$emit('Local/SpendUnconfirmedUpdated');
-					if (err) $log.debug(err);
-				});
-			});
-
 			var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {
 				if (newVal == oldVal || $scope.touchidError) {
 					$scope.touchidError = false;
@@ -90,7 +76,6 @@ angular.module('copayApp.controllers')
 			});
 
 			$scope.$on('$destroy', function() {
-				unwatchSpendUnconfirmed();
 				unwatchRequestTouchid();
 			});
 

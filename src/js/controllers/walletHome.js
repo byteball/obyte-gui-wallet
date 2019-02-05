@@ -12,13 +12,13 @@ angular.module('copayApp.controllers')
 		var home = this;
 		var conf = require('ocore/conf.js');
 		var chatStorage = require('ocore/chat_storage.js');
-		this.protocol = conf.program;
+		this.bb_protocol = conf.program;
+		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
-		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
 		var network = require('ocore/network.js');
 
 		// INIT
@@ -153,6 +153,7 @@ angular.module('copayApp.controllers')
 						var form = addressbookForm;
 						if (data && form) {
 							data = data.replace(self.protocol + ':', '');
+							data = data.replace(self.bb_protocol + ':', '');
 							form.address.$setViewValue(data);
 							form.address.$isValid = true;
 							form.address.$render();
@@ -422,7 +423,7 @@ angular.module('copayApp.controllers')
 				$scope.bbUnitName = walletSettings.bbUnitName;
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
-				$scope.protocol = conf.program;
+				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
@@ -585,13 +586,8 @@ angular.module('copayApp.controllers')
 
 		// Send 
 
-		var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
-			if (newVal == oldVal) return;
-			$scope.currentSpendUnconfirmed = newVal;
-		});
-
 		$scope.$on('$destroy', function() {
-			unwatchSpendUnconfirmed();
+		//	unwatchSpendUnconfirmed();
 		});
 
 		this.resetError = function() {
@@ -1135,6 +1131,7 @@ angular.module('copayApp.controllers')
 							asset: asset,
 							do_not_email: true,
 							send_all: self.bSendAll,
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
@@ -1344,6 +1341,7 @@ angular.module('copayApp.controllers')
 				indexScope.setOngoingProcess(gettext('sending'), true);
 
 				fc.sendMultiPayment({
+					spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					shared_address: indexScope.shared_address,
 					messages: [objMessage]
@@ -1569,8 +1567,6 @@ angular.module('copayApp.controllers')
 			this.lockAmount = false;
 			this.hideAdvSend = true;
 			this.send_multiple = false;
-			$scope.currentSpendUnconfirmed = configService.getSync()
-				.wallet.spendUnconfirmed;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -1665,7 +1661,7 @@ angular.module('copayApp.controllers')
 			this.resetError();
 			if (!value) return '';
 
-			if (value.indexOf(self.protocol + ':') === 0)
+			if (value.indexOf(self.protocol + ':') === 0 || value.indexOf(self.bb_protocol + ':') === 0)
 				return this.setFromUri(value);
 			else
 				return value;

@@ -85,7 +85,7 @@
 				        <string>public.data</string>
 				    </array>
 				    <key>UTTypeDescription</key>
-				    <string>Byteball Private Coin</string>
+				    <string>Obyte Private Coin</string>
 				    <key>UTTypeIdentifier</key>
 				    <string>org.byteball.coin</string>
 				    <key>UTTypeTagSpecification</key>
@@ -102,7 +102,7 @@
 	    	<array>
 			    <dict>
 			        <key>CFBundleTypeName</key>
-			        <string>Byteball Private Coin</string>
+			        <string>Obyte Private Coin</string>
 			        <key>LSHandlerRank</key>
 			        <string>Owner</string>
 			        <key>LSItemContentTypes</key>
@@ -125,6 +125,8 @@
                 <data android:mimeType="application/octet-stream" />
                 <data android:mimeType="application/x-byteball" />
                 <data android:mimeType="application/byteball" />
+                <data android:mimeType="application/x-obyte" />
+                <data android:mimeType="application/obyte" />
                 <data android:mimeType="application/zip" />
                 <data android:mimeType="*/coin" />
                 <data android:mimeType="application/coin" />
