@@ -283,7 +283,7 @@ module.exports = function(grunt) {
             options: {
                 maintainer: {
                     name: 'Obyte',
-                    email: 'byteball@byteball.org'
+                    email: 'obyte@obyte.org'
                 },
                 long_description: 'Smart payments made simple',
                 target_architecture: 'amd64'
