@@ -221,7 +221,7 @@ module.exports = function(grunt) {
       		/*CFBundleIconFile: 'nw.icns',*/
       		LSHasLocalizedDisplayName: 0,
       		UTExportedTypeDeclarations: [{
-      			UTTypeIdentifier: 'org.byteball.coin',
+      			UTTypeIdentifier: 'org.obyte.coin',
       			UTTypeDescription: 'Obyte Private Coin',
       			UTTypeConformsTo: ["public.data"],
       			UTTypeTagSpecification: {
@@ -230,7 +230,7 @@ module.exports = function(grunt) {
       		}],
       		CFBundleDocumentTypes: [{
       			CFBundleTypeName: "Obyte Private Coin",
-      			LSItemContentTypes: ["org.byteball.coin"],
+      			LSItemContentTypes: ["org.obyte.coin"],
       			CFBundleTypeIconFile: "app.icns"
       		}]
           }
