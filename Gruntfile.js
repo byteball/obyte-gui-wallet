@@ -96,7 +96,7 @@ module.exports = function(grunt) {
       },
       css: {
         src: ['src/css/*.css'],
-        dest: 'public/css/byteball.css'
+        dest: 'public/css/obyte.css'
       },
       foundation: {
         src: [

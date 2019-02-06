@@ -208,7 +208,7 @@ checkOK
 if [ $CURRENT_OS == "ANDROID" ]; then
 	echo "Android project!!!"
 	
-	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/byteball.css
+	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/obyte.css
 
 	mkdir -p $PROJECT/platforms/android/res/xml/
 	checkOK
