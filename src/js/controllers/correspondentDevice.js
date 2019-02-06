@@ -316,8 +316,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								}, 1);
 								return;
 							}
+							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
+								contract.feed_value = parseInt(contract.feed_value);
+							else
+								contract.feed_value = contract.feed_value + '';
 							var arrExplicitEventCondition = 
-								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value+'', last_mci]];
+								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value, last_mci]];
 							var arrEventCondition = arrExplicitEventCondition;
 							var data_address = (contract.data_party === 'me') ? my_address : address;
 							var expiry_address = (contract.expiry_party === 'me') ? my_address : address;
