@@ -511,14 +511,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract auto-approve
-						function checkIfContractWasAccepted(cb3) {
+						function shouldAskForContractSign(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
 								var contract_hash = matches[1];
 								require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
 									var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
 									if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
-										return ask();
+										return cb3(true);
 									var shared_address;
 									async.series([function(cb2){
 										var shared_author = lodash.find(objUnit.authors, function(author){
@@ -548,14 +548,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											}
 										});
 									}], function() {
-										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address)
+										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
 											return cb3(true);
 										return cb3(false);
 									});
 								});
 							}
 						}
-					 	checkIfContractWasAccepted(function(should_ask){
+					 	shouldAskForContractSign(function(should_ask){
 						 	if (should_ask)
 						 		return ask();
 						 	createAndSendSignature();
