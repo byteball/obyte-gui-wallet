@@ -277,8 +277,8 @@ module.exports = function(grunt) {
     debian_package: {
         linux64: {
             files: [
-                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
-                //{expand: true, cwd: '../obytebuilds/byteball-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/byteball-test.desktop'}
+                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/obyte-test/'},
+                //{expand: true, cwd: '../obytebuilds/obyte-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/obyte-test.desktop'}
             ],
             options: {
                 maintainer: {
