@@ -511,7 +511,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract auto-approve
-						function shouldAskForContractSign(cb3) {
+						function shouldAsk(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
 								var contract_hash = matches[1];
@@ -555,7 +555,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								});
 							}
 						}
-					 	shouldAskForContractSign(function(should_ask){
+					 	shouldAsk(function(should_ask){
 						 	if (should_ask)
 						 		return ask();
 						 	createAndSendSignature();
