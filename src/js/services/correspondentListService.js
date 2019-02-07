@@ -5,7 +5,7 @@ var eventBus = require('ocore/event_bus.js');
 var ValidationUtils = require('ocore/validation_utils.js');
 var objectHash = require('ocore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService) {
 	var root = {};
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');

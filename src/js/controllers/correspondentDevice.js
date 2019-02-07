@@ -469,6 +469,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				ttl: 24*7
 			};
 			$scope.index = indexScope;
+			$scope.isMobile = isMobile.any();
 
 			readMyPaymentAddress(fc, function(my_address) {
 				correspondentListService.populateScopeWithAttestedFields($scope, my_address, address, function() {
@@ -1283,6 +1284,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.openProfile = openProfile;
 			$scope.bDisabled = true;
 			$scope.buttonLabel = gettext('Verifying the profile...');
+			$scope.isMobile = isMobile.any();
+			$scope.openInExplorer = correspondentListService.openInExplorer;
 			privateProfile.parseAndValidatePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
 				if (!$scope)
 					return;
@@ -1297,6 +1300,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.address = address;
 				$scope.attestor_address = attestor_address;
 				$scope.bMyAddress = bMyAddress;
+				$scope.unit = objPrivateProfile.unit;
+				$scope.trusted = !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == attestor_address});
 				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();
@@ -1521,6 +1526,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.isIncoming = !!isIncoming;
 				$scope.text = objContract.text;
 				$scope.title = objContract.title;
+				$scope.isMobile = isMobile.any();
 				prosaic_contract.getByHash(objContract.hash, function(objContract){
 					if (!objContract)
 						throw Error("no contract found in database for already received offer message");

@@ -511,51 +511,57 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract auto-approve
-						var matches = question.match(/contract_text_hash: (.{44})/m);
-						if (matches && matches.length) {
-							var contract_hash = matches[1];
-							require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
-								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
-								if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
-									return ask();
-								var shared_address;
-								async.series([function(cb2){
-									var shared_author = lodash.find(objUnit.authors, function(author){
-										try {
-											return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
-										} catch (e) {
-											return false;
-										}
-									});
-									if (shared_author)
-										shared_address = shared_author.address;
-									cb2();
-								}, function(cb2){
-									if (shared_address)
-										return cb2();
-									var db = require('ocore/db.js');
-									db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
-										if (!rows || !rows.length)
-											return cb2();
-										var definition = JSON.parse(rows[0].definition);
-										try {
-											if (definition[0] === "and" && definition[1][0][0] === "address" && definition[1][1][0] === "address")
-												shared_address = arrPaymentMessages[0].payload.outputs[0].address;
-											cb2();
-										} catch (e) {
-											cb2();
-										}
-									});
-								}], function() {
-									if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address)
+						function checkIfContractWasAccepted(cb3) {
+							var matches = question.match(/contract_text_hash: (.{44})/m);
+							if (matches && matches.length) {
+								var contract_hash = matches[1];
+								require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
+									var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
+									if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
 										return ask();
-									createAndSendSignature();
-	                                assocChoicesByUnit[unit] = "approve";
-	                                unlock();
+									var shared_address;
+									async.series([function(cb2){
+										var shared_author = lodash.find(objUnit.authors, function(author){
+											try {
+												return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
+											} catch (e) {
+												return false;
+											}
+										});
+										if (shared_author)
+											shared_address = shared_author.address;
+										cb2();
+									}, function(cb2){
+										if (shared_address)
+											return cb2();
+										var db = require('ocore/db.js');
+										db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
+											if (!rows || !rows.length)
+												return cb2();
+											var definition = JSON.parse(rows[0].definition);
+											try {
+												if (definition[0] === "and" && definition[1][0][0] === "address" && definition[1][1][0] === "address")
+													shared_address = arrPaymentMessages[0].payload.outputs[0].address;
+												cb2();
+											} catch (e) {
+												cb2();
+											}
+										});
+									}], function() {
+										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address)
+											return cb3(true);
+										return cb3(false);
+									});
 								});
-							});
-						} else
-							ask();
+							}
+						}
+					 	checkIfContractWasAccepted(function(should_ask){
+						 	if (should_ask)
+						 		return ask();
+						 	createAndSendSignature();
+                            assocChoicesByUnit[unit] = "approve";
+                            unlock();
+						 });
                     }
                 ); // eachSeries
             });

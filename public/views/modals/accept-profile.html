@@ -19,10 +19,10 @@
 	</div>
 	<div class="row m20t">
 		<div class="large-12 large-centered columns">
-			<ul class="no-bullet size-14" style="margin-bottom: 0px;">
+			<ul class="no-bullet size-14 private-profile" style="margin-bottom: 0px;">
 				<li class="m10b">
 					<span class="text-gray" translate>Attested by:</span><br>
-					<span class="enable_text_select">{{attestor_address || '[Wait...]'}}</span>
+					<a class="enable_text_select" ng-click="openInExplorer(unit)">{{attestor_address || '[Wait...]'}}</a><i class="icon-checkmark-circle size-14 text-primary" ng-show="trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!trusted && isMobile" translate>not trusted</span>
 				</li>
 				<li class="m10b">
 					<span class="text-gray" translate>Attested address:</span><br>
