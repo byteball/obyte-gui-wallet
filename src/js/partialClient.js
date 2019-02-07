@@ -144,7 +144,7 @@ function initWallet() {
 	}
 
 	function loadCompleteClient(showClient) {
-		self._bByteballCoreLoaded = false; //"fix" : Looks like you are loading multiple copies of ocore, which is not supported. Running 'npm dedupe' might help.
+		self._bOcoreLoaded = false; //"fix" : Looks like you are loading multiple copies of ocore, which is not supported. Running 'npm dedupe' might help.
 		var body = document.body;
 		var page = document.createElement('div');
 
