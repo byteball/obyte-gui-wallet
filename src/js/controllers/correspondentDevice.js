@@ -506,6 +506,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
 					throw Error("no member addresses in "+paymentJson);
+				var assocPeerNamesByDeviceAddress = {};
+				var loadCorrespondentNames = function(cb){
+					device.readCorrespondents(function(arrCorrespondents){
+						arrCorrespondents.forEach(function(corr){
+							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
+						});
+						cb();
+					});
+				};
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
@@ -527,9 +536,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
+								var assocPeerNamesByAddress = {};
+								for (var path in assocSignersByPath){
+									var signerInfo = assocSignersByPath[path];
+									if (signerInfo.device_address !== device.getMyDeviceAddress())
+										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
+								}
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses)
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress)
 								});
 							}
 							cb();
@@ -548,6 +563,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){

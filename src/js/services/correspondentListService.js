@@ -410,12 +410,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, assocPeerNamesByAddress, bWithLinks){
 		function getDisplayAddress(address){
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
-			if (arrPeerAddresses.indexOf(address) >= 0)
-				return '<span title="peer address: '+address+'">peer</span>';
+			if (assocPeerNamesByAddress[address])
+				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){

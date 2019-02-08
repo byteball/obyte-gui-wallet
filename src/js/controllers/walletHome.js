@@ -296,8 +296,8 @@ angular.module('copayApp.controllers')
 				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 				walletGeneral.readMyAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
-						walletDefinedByAddresses.readSharedAddressPeerAddresses(address, function(arrPeerAddresses) {
-							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses, true);
+						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
+							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress, true);
 							$scope.creation_ts = creation_ts;
 							$timeout(function() {
 								$scope.$apply();
