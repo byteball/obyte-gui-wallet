@@ -172,7 +172,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer for '+objContract.address+']</a>';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
 		});
 	}
 	
@@ -343,7 +343,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer for '+objContract.address+']</a>';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
 		});
 	}
 	
@@ -900,14 +900,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						
 						// create shared address and deposit some bytes to cover fees
 						function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
-							var my_amount = 2000;
 							profileService.bKeepUnlocked = true;
 							var opts = {
 								asset: "base",
 								to_address: shared_address,
-								amount: my_amount,
-								arrSigningDeviceAddresses: contract.cosigners,
-								recipient_device_address: contract.peer_device_address
+								amount: prosaic_contract.CHARGE_AMOUNT,
+								arrSigningDeviceAddresses: contract.cosigners
 							};
 							fc.sendMultiPayment(opts, function(err){
 								// if multisig, it might take very long before the callback is called
@@ -922,8 +920,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									return;
 								}
 								$rootScope.$emit("NewOutgoingTx");
-								eventBus.emit('sent_payment', contract.peer_device_address, my_amount, "base", true);
 								
+								prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+
 								// post a unit with contract text hash and send it for signing to correspondent
 								var value = {"contract_text_hash": contract.hash};
 								var objMessage = {
@@ -944,9 +944,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 										return;
 									}
 									prosaic_contract.setField(contract.hash, "unit", unit);
-									prosaic_contract.setField(contract.hash, "shared_address", shared_address);
 									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
-									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
 								});
 							});
 						}

@@ -38,7 +38,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
 				if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 					$scope.status = 'expired';
-				$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString();
+				$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString().slice(0, -3);
 
 				correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 					$timeout(function() {

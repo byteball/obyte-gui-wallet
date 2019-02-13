@@ -640,6 +640,7 @@ to prevent collapsing during animation*/
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
   background: #fff;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.modal-open {
@@ -955,4 +956,7 @@ touch-action: manipulation; /* IE11+ */
 	font-size: 12px;
 	color: gray;
 	white-space: normal;
+}
+i.validation-icon {
+	padding: 3px;
 }

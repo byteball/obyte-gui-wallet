@@ -558,7 +558,17 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  }).filter('encodeURIComponent', function() {
+  }).directive('showdown', function ($rootScope, $timeout) {
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+    	$timeout(function () {
+	    	var html = elem.html();
+	    	elem.html(new showdown.Converter().makeHtml(html));
+	    });
+  	}
+ }})
+  .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
 })
  .filter('objectKeys', [function() {

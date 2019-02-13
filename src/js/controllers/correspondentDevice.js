@@ -460,6 +460,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.offerProsaicContract = function(address){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var prosaicContract = require('ocore/prosaic_contract.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
@@ -478,6 +479,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				});
 			});
+
+			$scope.CHARGE_AMOUNT = prosaicContract.CHARGE_AMOUNT;
 			
 			$scope.payAndOffer = function() {
 				console.log('offerProsaicContract');
@@ -488,8 +491,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var ttl = $scope.form.ttl;
 				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 				var hash = objectHash.getBase64Hash(contract_text + creation_date);
-
-				var prosaicContract = require('ocore/prosaic_contract.js');
 
 				readMyPaymentAddress(fc, function(my_address) {
 					var cosigners = getSigningDeviceAddresses(fc);
@@ -1535,7 +1536,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
 					if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 						$scope.status = 'expired';
-					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString();
+					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString().slice(0, -3);
 
 					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						$timeout(function() {
@@ -1552,6 +1553,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
 							prosaic_contract.setField(objContract.hash, "status", status);
 							prosaic_contract.respond(objContract, status, signedMessageBase64);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
 					});
 				};
 				$scope.accept = function() {
@@ -1594,12 +1596,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				disableCloseModal();
 				var m = angular.element(document.getElementsByClassName('reveal-modal'));
 				m.addClass(animationService.modalAnimated.slideOutDown);
-				if (oldWalletId)
+				if (oldWalletId) {
 					profileService._setFocus(oldWalletId, function(){});
+					correspondentListService.currentCorrespondent = oldCorrespondent;
+					correspondentListService.currentCorrespondent = correspondent;
+					go.path('correspondentDevices.correspondentDevice');
+				}
 			});
 		};
 
 		var oldWalletId;
+		var oldCorrespondent;
 		if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
 			db.query(
 				"SELECT wallet FROM my_addresses \n\
@@ -1609,6 +1616,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				[device.getMyDeviceAddress(), objContract.address, objContract.address],
 				function(rows) {
 					oldWalletId = profileService.focusedClient.credentials.walletId;
+					oldCorrespondent = correspondentListService.currentCorrespondent;
 					profileService._setFocus(rows[0].wallet, function(){
 						showModal();
 					});
