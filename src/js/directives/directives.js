@@ -558,13 +558,14 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  }).directive('showdown', function ($rootScope, $timeout) {
+  }).directive('markdown', function ($rootScope, $timeout) {
+  	var md = window.markdownit({linkify: true}).disable(['image', 'link']);
   return {
     restrict: 'A',
     link: function (scope, elem, attrs) {
     	$timeout(function () {
 	    	var html = elem.html();
-	    	elem.html(new showdown.Converter().makeHtml(html));
+	    	elem.html(md.render(html));
 	    });
   	}
  }})
