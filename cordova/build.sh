@@ -14,7 +14,7 @@ checkOK() {
 
 # Configs
 BUILDDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT="$BUILDDIR/../../byteballbuilds/project-$1"
+PROJECT="$BUILDDIR/../../obytebuilds/project-$1"
 
 CURRENT_OS=$1
 
@@ -56,7 +56,7 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
 	cd $BUILDDIR
 	echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-	cordova create ../../byteballbuilds/project-$1 org.byteball.wallet Byteball
+	cordova create ../../obytebuilds/project-$1 org.byteball.wallet Obyte
 	checkOK
 
 	cd $PROJECT
@@ -174,12 +174,12 @@ fi
 
 if $DBGJS
 then
-	echo "${OpenColor}${Green}* Generating byteball bundle (debug js)...${CloseColor}"
+	echo "${OpenColor}${Green}* Generating obyte bundle (debug js)...${CloseColor}"
 	cd $BUILDDIR/..
 	grunt cordova
 	checkOK
 else
-	echo "${OpenColor}${Green}* Generating byteball bundle...${CloseColor}"
+	echo "${OpenColor}${Green}* Generating obyte bundle...${CloseColor}"
 	cd $BUILDDIR/..
 	grunt cordova-prod
 	checkOK
@@ -192,8 +192,8 @@ cp -af public/** $PROJECT/www
 checkOK
 
 echo "${OpenColor}${Green}* Copying initial database...${CloseColor}"
-cp node_modules/byteballcore/initial.byteball.sqlite $PROJECT/www
-cp node_modules/byteballcore/initial.byteball-light.sqlite $PROJECT/www
+cp node_modules/ocore/initial-db/initial.byteball.sqlite $PROJECT/www
+cp node_modules/ocore/initial-db/initial.byteball-light.sqlite $PROJECT/www
 checkOK
 
 node $BUILDDIR/replaceForPartialClient.js $PROJECT
@@ -208,7 +208,7 @@ checkOK
 if [ $CURRENT_OS == "ANDROID" ]; then
 	echo "Android project!!!"
 	
-	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/byteball.css
+	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/obyte.css
 
 	mkdir -p $PROJECT/platforms/android/res/xml/
 	checkOK

@@ -1,25 +1,25 @@
 'use strict';
 
-var constants = require('byteballcore/constants.js');
-var eventBus = require('byteballcore/event_bus.js');
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
-var ValidationUtils = require('byteballcore/validation_utils.js');
+var constants = require('ocore/constants.js');
+var eventBus = require('ocore/event_bus.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
+var ValidationUtils = require('ocore/validation_utils.js');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
 
 		var self = this;
 		var home = this;
-		var conf = require('byteballcore/conf.js');
-		var chatStorage = require('byteballcore/chat_storage.js');
-		this.protocol = conf.program;
+		var conf = require('ocore/conf.js');
+		var chatStorage = require('ocore/chat_storage.js');
+		this.bb_protocol = conf.program;
+		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
-		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
-		var network = require('byteballcore/network.js');
+		var network = require('ocore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
@@ -50,7 +50,7 @@ angular.module('copayApp.controllers')
 			if (form.address && form.address.$invalid && !self.blockUx) {
 				console.log("invalid address, resetting form");
 				self.resetForm();
-				self.error = gettext('Could not recognize a valid Byteball QR Code');
+				self.error = gettext('Could not recognize a valid Obyte QR Code');
 			}*/
 		});
 
@@ -153,6 +153,7 @@ angular.module('copayApp.controllers')
 						var form = addressbookForm;
 						if (data && form) {
 							data = data.replace(self.protocol + ':', '');
+							data = data.replace(self.bb_protocol + ':', '');
 							form.address.$setViewValue(data);
 							form.address.$isValid = true;
 							form.address.$render();
@@ -291,12 +292,12 @@ angular.module('copayApp.controllers')
 				$scope.address = address;
 				$scope.shared_address_cosigners = indexScope.shared_address_cosigners;
 
-				var walletGeneral = require('byteballcore/wallet_general.js');
-				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+				var walletGeneral = require('ocore/wallet_general.js');
+				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 				walletGeneral.readMyAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
-						walletDefinedByAddresses.readSharedAddressPeerAddresses(address, function(arrPeerAddresses) {
-							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses, true);
+						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
+							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress, true);
 							$scope.creation_ts = creation_ts;
 							$timeout(function() {
 								$scope.$apply();
@@ -404,7 +405,7 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				window.plugins.socialsharing.shareWithOptions({message: "My byteball address " + self.protocol +  ':' + addr, subject: "My byteball address"/*, url: self.protocol +  ':' + addr*/}, function(){}, function(){});
+				window.plugins.socialsharing.shareWithOptions({message: "My Obyte address " + self.protocol +  ':' + addr, subject: "My Obyte address"/*, url: self.protocol +  ':' + addr*/}, function(){}, function(){});
 			}
 		};
 
@@ -422,7 +423,7 @@ angular.module('copayApp.controllers')
 				$scope.bbUnitName = walletSettings.bbUnitName;
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
-				$scope.protocol = conf.program;
+				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
@@ -530,7 +531,7 @@ angular.module('copayApp.controllers')
 		};
 
 		function claimTextCoin(mnemonic, addr) {
-			var wallet = require('byteballcore/wallet.js');
+			var wallet = require('ocore/wallet.js');
 			$rootScope.$emit('process_status_change', 'claiming', true);
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$timeout(function() {
@@ -585,13 +586,8 @@ angular.module('copayApp.controllers')
 
 		// Send 
 
-		var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
-			if (newVal == oldVal) return;
-			$scope.currentSpendUnconfirmed = newVal;
-		});
-
 		$scope.$on('$destroy', function() {
-			unwatchSpendUnconfirmed();
+		//	unwatchSpendUnconfirmed();
 		});
 
 		this.resetError = function() {
@@ -754,8 +750,8 @@ angular.module('copayApp.controllers')
 					is_private = assetInfo.is_private;
 			}
 			return {
-				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Byteball wallet yet, install it from https://byteball.org." : (": https://byteball.org/#textcoin?" + mnemonic)),
-				subject: "Byteball user beamed you money"
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Obyte wallet yet, install it from https://obyte.org." : (": https://obyte.org/#textcoin?" + mnemonic)),
+				subject: "Obyte user beamed you money"
 			}
 		}
 
@@ -870,7 +866,7 @@ angular.module('copayApp.controllers')
 				return self.setSendError(gettext(msg));
 			}
 
-			var wallet = require('byteballcore/wallet.js');
+			var wallet = require('ocore/wallet.js');
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
@@ -1003,17 +999,17 @@ angular.module('copayApp.controllers')
 						return;
 					}
 					
-					var device = require('byteballcore/device.js');
+					var device = require('ocore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
 							delete self.current_payment_key;
 							indexScope.setOngoingProcess(gettext('sending'), false);
-							return self.setSendError("you can send bound payments to byteball adresses only");
+							return self.setSendError("you can send bound payments to Obyte adresses only");
 						}
 						if (!recipient_device_address)
 							throw Error('recipient device address not known');
-						var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-						var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+						var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+						var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 						var my_address;
 						// never reuse addresses as the required output could be already present
 						useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo) {
@@ -1052,9 +1048,13 @@ angular.module('copayApp.controllers')
 								};
 							}
 							else {
+								if (self.binding.relation !== '=')
+									self.binding.feed_type = 'explicit';
+								if (self.binding.oracle_address === configService.TIMESTAMPER_ADDRESS)
+									self.binding.feed_value = parseInt(self.binding.feed_value);
 								var arrExplicitEventCondition =
 									['in data feed', [
-										[self.binding.oracle_address], self.binding.feed_name, '=', self.binding.feed_value
+										[self.binding.oracle_address], self.binding.feed_name, self.binding.relation, self.binding.feed_value
 									]];
 								var arrMerkleEventCondition =
 									['in merkle', [
@@ -1135,6 +1135,7 @@ angular.module('copayApp.controllers')
 							asset: asset,
 							do_not_email: true,
 							send_all: self.bSendAll,
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
@@ -1182,7 +1183,7 @@ angular.module('copayApp.controllers')
 							self.resetForm();
 						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
-								var db = require('byteballcore/db.js');
+								var db = require('ocore/db.js');
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
 									[unit, to_address, original_address]);
 							}
@@ -1252,7 +1253,7 @@ angular.module('copayApp.controllers')
 		}
 
 		this.submitData = function() {
-			var objectHash = require('byteballcore/object_hash.js');
+			var objectHash = require('ocore/object_hash.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -1344,6 +1345,7 @@ angular.module('copayApp.controllers')
 				indexScope.setOngoingProcess(gettext('sending'), true);
 
 				fc.sendMultiPayment({
+					spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					shared_address: indexScope.shared_address,
 					messages: [objMessage]
@@ -1408,6 +1410,7 @@ angular.module('copayApp.controllers')
 
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.color = fc.backgroundColor;
+				$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 				$scope.arrPublicAssetInfos = indexScope.arrBalances.filter(function(b) {
 						return !b.is_private;
 					})
@@ -1428,6 +1431,7 @@ angular.module('copayApp.controllers')
 				$scope.binding = { // defaults
 					type: fc.isSingleAddress ? 'data' : 'reverse_payment',
 					timeout: 4,
+					relation: '=',
 					reverseAsset: 'base',
 					feed_type: 'either'
 				};
@@ -1441,6 +1445,7 @@ angular.module('copayApp.controllers')
 					else {
 						$scope.binding.oracle_address = self.binding.oracle_address;
 						$scope.binding.feed_name = self.binding.feed_name;
+						$scope.binding.relation = self.binding.relation;
 						$scope.binding.feed_value = self.binding.feed_value;
 						$scope.binding.feed_type = self.binding.feed_type;
 					}
@@ -1463,6 +1468,7 @@ angular.module('copayApp.controllers')
 					else {
 						binding.oracle_address = $scope.binding.oracle_address;
 						binding.feed_name = $scope.binding.feed_name;
+						binding.relation = $scope.binding.relation;
 						binding.feed_value = $scope.binding.feed_value;
 						binding.feed_type = $scope.binding.feed_type;
 					}
@@ -1548,8 +1554,10 @@ angular.module('copayApp.controllers')
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
 						asset: asset
 					});
-					if (assetIndex < 0)
-						throw Error("failed to find asset index of asset " + asset);
+					if (assetIndex < 0) {
+						notification.error("failed to find asset index of asset " + asset);
+						return self.resetForm();
+					}
 					$scope.index.assetIndex = assetIndex;
 					this.lockAsset = true;
 				}
@@ -1567,8 +1575,6 @@ angular.module('copayApp.controllers')
 			this.lockAmount = false;
 			this.hideAdvSend = true;
 			this.send_multiple = false;
-			$scope.currentSpendUnconfirmed = configService.getSync()
-				.wallet.spendUnconfirmed;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -1641,7 +1647,7 @@ angular.module('copayApp.controllers')
 
 		this.setFromUri = function(uri) {
 			var objRequest;
-			require('byteballcore/uri.js')
+			require('ocore/uri.js')
 				.parseUri(uri, {
 					ifError: function(err) {},
 					ifOk: function(_objRequest) {
@@ -1663,7 +1669,7 @@ angular.module('copayApp.controllers')
 			this.resetError();
 			if (!value) return '';
 
-			if (value.indexOf(self.protocol + ':') === 0)
+			if (value.indexOf(self.protocol + ':') === 0 || value.indexOf(self.bb_protocol + ':') === 0)
 				return this.setFromUri(value);
 			else
 				return value;
@@ -1680,7 +1686,7 @@ angular.module('copayApp.controllers')
 		};
 
 		this.getPrivatePayloadSavePath = function(cb) {
-			var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
+			var fileName = 'ObytePayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
 			if (!isCordova) {
 				var inputFile = document.createElement("input"); 
 				inputFile.type = "file";
@@ -1699,14 +1705,14 @@ angular.module('copayApp.controllers')
 			}
 			else {
 				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
-				var path = 'Byteball';
+				var path = 'Obyte';
 				cb(null, {root: root, path: path, fileName: fileName});
 			}
 		};
 
 		this.openInExplorer = function(unit) {
 			var testnet = home.isTestnet ? 'testnet' : '';
-			var url = 'https://' + testnet + 'explorer.byteball.org/#' + unit;
+			var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 			if (typeof nw !== 'undefined')
 				nw.Shell.openExternal(url);
 			else if (isCordova)
@@ -1731,8 +1737,8 @@ angular.module('copayApp.controllers')
 
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
-						var indivisible_asset = require('byteballcore/indivisible_asset');
-						var wallet = require('byteballcore/wallet.js');
+						var indivisible_asset = require('ocore/indivisible_asset');
+						var wallet = require('ocore/wallet.js');
 						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
 							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
 								if (!fullPath && !cordovaPathObj)
@@ -1751,7 +1757,7 @@ angular.module('copayApp.controllers')
 
 				$scope.eraseTextcoin = function() {
 					(function(){
-						var wallet = require('byteballcore/wallet.js');
+						var wallet = require('ocore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
 							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend'));
 							$scope.cancel_button_class = 'light-gray outline';
@@ -1815,9 +1821,9 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.reSendPrivateMultiSigPayment = function() {
-					var indivisible_asset = require('byteballcore/indivisible_asset');
-					var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys');
-					var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses');
+					var indivisible_asset = require('ocore/indivisible_asset');
+					var wallet_defined_by_keys = require('ocore/wallet_defined_by_keys');
+					var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses');
 					var fc = profileService.focusedClient;
 
 					function success() {
@@ -1891,8 +1897,8 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.sendPrivatePayments = function(correspondent) {
-					var indivisible_asset = require('byteballcore/indivisible_asset');
-					var wallet_general = require('byteballcore/wallet_general');
+					var indivisible_asset = require('ocore/indivisible_asset');
+					var wallet_general = require('ocore/wallet_general');
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						wallet_general.sendPrivatePayments(correspondent.device_address, arrRecipientChains, true, null, function() {
 							modalInstance.dismiss('cancel');

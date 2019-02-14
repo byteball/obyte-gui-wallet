@@ -3,8 +3,8 @@
 angular.module('copayApp.controllers').controller('preferencesTorController',
 	function($scope, $log, $timeout, go, configService) {
 		
-		var conf = require('byteballcore/conf.js');
-		var network = require('byteballcore/network.js');
+		var conf = require('ocore/conf.js');
+		var network = require('ocore/network.js');
 		
 		var bInitialized = false;
 		
@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		
 		function saveConfToFile(cb) {
 			var fs = require('fs' + '');
-			var desktopApp = require('byteballcore/desktop_app.js');
+			var desktopApp = require('ocore/desktop_app.js');
 			var appDataDir = desktopApp.getAppDataDir();
 			var confJson;
 			try {

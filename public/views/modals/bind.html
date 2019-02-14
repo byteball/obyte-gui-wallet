@@ -44,7 +44,7 @@
 			</ul>
 
 		<span ng-if="binding.type == 'data'" class="combobox-container">
-			<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Byteball address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address" autocomplete="off" not-selected>
+			<input class="m0 inline" type="text" id="oracle_address" name="oracle_address" placeholder="Obyte address of the oracle" ng-model="binding.oracle_address" valid-address required style="width: 280px;" selectable="#oracle_list" dropdown-toggle="#oracle_list" data-model="binding" data-prop="oracle_address" autocomplete="off" not-selected>
 		</span>
 		  <ul id="oracle_list" class="f-dropdown small" data-dropdown-content style="max-width: 280px;">
 			<li ng-repeat="(address, oracle) in oracles" class="dropup-item" data-value="{{address}}">
@@ -53,12 +53,19 @@
 		  </ul>
 		<br ng-if="binding.type == 'data'">
 		<span ng-if="binding.type == 'data'" translate>on feed name</span>
-		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="e.g. bitcoin_merkle" ng-model="binding.feed_name" maxlength="64" required >
+		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="{{oracles[binding.oracle_address].feedname_placeholder || 'e.g. BTC_USD'}}" ng-model="binding.feed_name" maxlength="64" required >
 		<br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" translate>with expected value of</span>
-		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" translate>posted</span>
-		<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span><span ng-if="binding.type == 'data'">.</span>
+		<span ng-if="binding.type == 'data'" translate>with expected value</span>
+		<br ng-if="binding.type == 'data'">
+		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 22px"></span>
+		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
+		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
+			<a><span >{{relation}}</span></a>
+		  </li>
+		</ul>
+		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="{{oracles[binding.oracle_address].feedvalue_placeholder || 'e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1'}}" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data' && binding.relation === '='">
+		<span ng-if="binding.type == 'data' && binding.relation === '='" translate>posted</span>
+		<span ng-if="binding.type == 'data' && binding.relation === '='" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span><span ng-if="binding.type == 'data' && binding.relation === '='">.</span>
 			<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 			  <li class="dropup-item" data-value="explicit">
 				<a><span translate>explicitly</span></a>
@@ -72,6 +79,7 @@
 			  	<a><span translate>either way</span></a>
 			  </li>
 			</ul>
+		<div class="p10l" ng-if="binding.type == 'data' && oracles[binding.oracle_address].instructions_url">(<a ng-click="$root.openExternalLink(oracles[binding.oracle_address].instructions_url)"><span translate>detailed instructions about using</span> {{oracles[binding.oracle_address].name}}</a>)</div>
 			
 		<div class="clear"></div><br>
 		<span translate>If the condition is not met, I can take this money back after</span>

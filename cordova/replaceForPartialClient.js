@@ -7,7 +7,7 @@ file = file
 	.replace('<!-- PLACEHOLDER: PARTIAL CLIENT HTML -->', fs.readFileSync(PROJECT + '/www/partialClient.html'))
 	.replace('<!-- PLACEHOLDER: CORDOVA SRIPT -->', '<script type="text/javascript" charset="utf-8" src="cordova.js"></script>')
 	.replace('<script src="angular.js"></script>', '')
-	.replace('<script src="byteball.js"></script>', '<script src="partialClient.js" id="partialClientScript"></script>')
+	.replace('<script src="obyte.js"></script>', '<script src="partialClient.js" id="partialClientScript"></script>')
 	.replace('<body ng-cloak class="ng-cloak">', '<body>');
 
 fs.writeFileSync(PROJECT + '/www/index.html', file);

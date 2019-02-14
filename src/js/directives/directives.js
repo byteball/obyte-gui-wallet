@@ -17,15 +17,21 @@ function selectText(element) {
 }
 
 function isValidAddress(value) {
-  var ValidationUtils = require('byteballcore/validation_utils.js');
+  var ValidationUtils = require('ocore/validation_utils.js');
   if (!value) {
     return false;
   }
 
   // byteball uri
-  var conf = require('byteballcore/conf.js');
+  var conf = require('ocore/conf.js');
   var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
   var arrMatches = value.match(re);
+  if (arrMatches) {
+    return ValidationUtils.isValidAddress(arrMatches[1]);
+  }
+
+  re = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':([A-Z2-7]{32})\b', 'i');
+  arrMatches = value.match(re);
   if (arrMatches) {
     return ValidationUtils.isValidAddress(arrMatches[1]);
   }
@@ -197,7 +203,7 @@ angular.module('copayApp.directives')
         return value;
       }*/
       //console.log('-- amount');
-      var constants = require('byteballcore/constants.js');
+      var constants = require('ocore/constants.js');
       var asset = attrs.validAmount;
             var settings = configService.getSync().wallet.settings;
       var unitValue = 1;
@@ -470,11 +476,11 @@ angular.module('copayApp.directives')
       },
       controller: function($scope) {
         //$scope.logo_url = $scope.negative ? 'img/logo-negative.svg' : 'img/logo.svg';
-        $scope.logo_url = $scope.negative ? 'img/icons/icon-white-32.png' : 'img/icons/icon-black-32.png';
+        $scope.logo_url = $scope.negative ? 'img/icons/obyte-white-transparent-h80.png' : 'img/icons/icon-black-32.png';
       },
       replace: true,
       //template: '<img ng-src="{{ logo_url }}" alt="Byteball">'
-      template: '<div><img ng-src="{{ logo_url }}" alt="Byteball"><br>Byteball</div>'
+      template: '<div><img ng-src="{{ logo_url }}" ></div>'
     }
   })
   .directive('availableBalance', function() {

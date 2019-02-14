@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
 		var async = require('async');
 		var crypto = require('crypto');
-		var conf = require('byteballcore/conf');
+		var conf = require('ocore/conf');
 		var zip;
 		if (isCordova) {
 			var JSZip = require("jszip");
@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
 
 		function saveFile(file, cb) {
-			var backupFilename = 'ByteballBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
+			var backupFilename = 'ObyteBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
 				var inputFile = document.getElementById('nwExportInputFile');
 				inputFile.setAttribute("nwsaveas", backupFilename);
@@ -84,10 +84,10 @@ angular.module('copayApp.controllers').controller('exportController',
 				};
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
+				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Obyte', backupFilename, file, function(err) {
 					if (isMobile.iOS()) {
 						navigator.notification.alert(gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)'), function(){
-							window.plugins.socialsharing.shareWithOptions({files: [window.cordova.file.cacheDirectory + 'Byteball/'+ backupFilename]}, function(){}, function(){});
+							window.plugins.socialsharing.shareWithOptions({files: [window.cordova.file.cacheDirectory + 'Obyte/'+ backupFilename]}, function(){}, function(){});
 						}, 'Backup done');
 					}
 					cb(err);
@@ -178,7 +178,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			var db = require('byteballcore/db');
+			var db = require('ocore/db');
 			db.takeConnectionFromPool(function(connection) {
 				if (isCordova) {
 					self.walletExportCordova(connection);

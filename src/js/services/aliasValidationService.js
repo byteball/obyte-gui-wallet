@@ -1,6 +1,6 @@
 'use strict';
 
-var ValidationUtils = require('byteballcore/validation_utils.js');
+var ValidationUtils = require('ocore/validation_utils.js');
 
 angular.module('copayApp.services').factory('aliasValidationService', function($timeout, configService, gettextCatalog) {
 
@@ -120,8 +120,8 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			return setResult('none');
 		}
 
-		var conf = require('byteballcore/conf.js');
-		var db = require('byteballcore/db.js');
+		var conf = require('ocore/conf.js');
+		var db = require('ocore/db.js');
 		db.query(
 			"SELECT \n\
 				address, is_stable \n\
@@ -142,7 +142,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 					return setResult('none');
 				}
 				// light
-				var network = require('byteballcore/network.js');
+				var network = require('ocore/network.js');
 				var params = {attestor_address: attestorAddress, field: obj.dbKey, value: value};
 				network.requestFromLightVendor('light/get_attestation', params, function (ws, request, response) {
 					if (response.error) {

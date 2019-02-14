@@ -2,24 +2,24 @@
 'use strict';
 
 
-var constants = require('byteballcore/constants.js');
+var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
 	
 	var async = require('async');
-	var chatStorage = require('byteballcore/chat_storage.js');
+	var chatStorage = require('ocore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var privateProfile = require('byteballcore/private_profile.js');
-	var objectHash = require('byteballcore/object_hash.js');
-	var db = require('byteballcore/db.js');
-	var network = require('byteballcore/network.js');
-	var device = require('byteballcore/device.js');
-	var eventBus = require('byteballcore/event_bus.js');
-	var conf = require('byteballcore/conf.js');
-	var storage = require('byteballcore/storage.js');
-	var breadcrumbs = require('byteballcore/breadcrumbs.js');
+	var privateProfile = require('ocore/private_profile.js');
+	var objectHash = require('ocore/object_hash.js');
+	var db = require('ocore/db.js');
+	var network = require('ocore/network.js');
+	var device = require('ocore/device.js');
+	var eventBus = require('ocore/event_bus.js');
+	var conf = require('ocore/conf.js');
+	var storage = require('ocore/storage.js');
+	var breadcrumbs = require('ocore/breadcrumbs.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
 			ifOk: function(){
 				device.updateCorrespondentProps(correspondent);
@@ -111,6 +111,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$timeout(function(){
 					$scope.$apply();
 				});
+				correspondentListService.assocLastMessageDateByCorrespondent[correspondent.device_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
@@ -123,14 +124,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.insertMyAddress = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		readMyPaymentAddress(appendMyPaymentAddress);
+		readMyPaymentAddress(profileService.focusedClient, appendMyPaymentAddress);
 	//	issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
 			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
-		readMyPaymentAddress(showRequestPaymentModal);
+		readMyPaymentAddress(profileService.focusedClient, showRequestPaymentModal);
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
@@ -140,7 +141,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
-		readMyPaymentAddress(function(my_address){
+		readMyPaymentAddress(profileService.focusedClient, function(my_address){
 			if (single_address && single_address !== '0'){
 				var bSpecificSingleAddress = (single_address.length === 32);
 				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
@@ -186,7 +187,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	
 	$scope.offerContract = function(address){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		$scope.oracles = configService.oracles;
@@ -201,7 +202,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
-			$scope.arrPeerPaysTos = [{value: 'me', display_value: "to me"}, {value: 'contract', display_value: "to this contract"}];
+			$scope.arrPeerPaysTos = [];
+			if (!fc.isSingleAddress)
+				$scope.arrPeerPaysTos.push({value: 'me', display_value: "to me"});
+			$scope.arrPeerPaysTos.push({value: 'contract', display_value: "to this contract"});
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -297,7 +301,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					}
 					
 					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
-					fnReadMyAddress(function(my_address){
+					fnReadMyAddress(fc, function(my_address){
 						var arrSeenCondition = ['seen', {
 							what: 'output', 
 							address: (contract.peer_pays_to === 'contract') ? 'this address' : my_address, 
@@ -312,8 +316,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								}, 1);
 								return;
 							}
+							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
+								contract.feed_value = parseInt(contract.feed_value);
+							else
+								contract.feed_value = contract.feed_value + '';
 							var arrExplicitEventCondition = 
-								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value+'', last_mci]];
+								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value, last_mci]];
 							var arrEventCondition = arrExplicitEventCondition;
 							var data_address = (contract.data_party === 'me') ? my_address : address;
 							var expiry_address = (contract.expiry_party === 'me') ? my_address : address;
@@ -375,6 +383,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						profileService.bKeepUnlocked = true;
 						var opts = {
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
 							to_address: shared_address,
@@ -419,7 +428,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 							if (contract.peer_pays_to === 'me')
-								issueNextAddress(); // make sure the address is not reused
+								issueNextAddress(fc); // make sure the address is not reused
 						});
 						$modalInstance.dismiss('cancel');
 					}
@@ -457,7 +466,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -497,6 +506,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
 					throw Error("no member addresses in "+paymentJson);
+				var assocPeerNamesByDeviceAddress = {};
+				var loadCorrespondentNames = function(cb){
+					device.readCorrespondents(function(arrCorrespondents){
+						arrCorrespondents.forEach(function(corr){
+							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
+						});
+						cb();
+					});
+				};
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
@@ -518,9 +536,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
+								var assocPeerNamesByAddress = {};
+								for (var path in assocSignersByPath){
+									var signerInfo = assocSignersByPath[path];
+									if (signerInfo.device_address !== device.getMyDeviceAddress())
+										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
+								}
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses)
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress)
 								});
 							}
 							cb();
@@ -539,6 +563,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){
@@ -638,6 +663,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_multi_payment_key = current_multi_payment_key;
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							asset: asset,
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
@@ -824,6 +850,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
+							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
@@ -890,7 +917,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bDisabled = true;
 			$scope.message_to_sign = message_to_sign;
-			readMyPaymentAddress(function(address){
+			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
 				$scope.bDisabled = false;
 				scopeApply();
@@ -933,17 +960,18 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var recipient_device_address = lodash.clone(correspondent.device_address);
 					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
 						delete indexScope.current_message_signing_key;
+						if (!chatScope)
+							return;
 						if (err){
-							if (chatScope){
-								setError(err);
-								$timeout(function() {
-									chatScope.$apply();
-								});
-							}
+							setError(err);
+							$timeout(function() {
+								chatScope.$apply();
+							});
 							return;
 						}
 						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
-						appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+						chatScope.message = '[Signed message](signed-message:' + signedMessageBase64 + ')';
+						chatScope.send();
 					});
 					$modalInstance.dismiss('cancel');
 				});
@@ -989,7 +1017,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.signed_message = objSignedMessage.signed_message;
 			$scope.address = objSignedMessage.authors[0].address;
-			var validation = require('byteballcore/validation.js');
+			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
 				if (err)
@@ -1095,17 +1123,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			})
 	}
 	
-	function readMyPaymentAddress(cb){
+	function readMyPaymentAddress(fc, cb){
 	//	if (indexScope.shared_address)
 	//		return cb(indexScope.shared_address);
-		addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, address) {
+		addressService.getAddress(fc.credentials.walletId, false, function(err, address) {
 			cb(address);
 		});
 	}
 	
-	function issueNextAddress(cb){
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
-		walletDefinedByKeys.issueNextAddress(profileService.focusedClient.credentials.walletId, 0, function(addressInfo){
+	function issueNextAddress(fc, cb){
+		if (fc.isSingleAddress)
+			throw Error("trying to issue a new address on a single-address wallet");
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
 				cb(addressInfo.address);
 		});
@@ -1115,7 +1145,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			myPaymentAddress = addressInfo.address; // cache it in case we need to insert again
 			onDone();
@@ -1225,10 +1255,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'last_name': return gettext('Last name');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
+			case 'personal_code': return gettext('Personal code');
 			case 'us_state': return gettext('US state');
 			case 'id_number': return gettext('ID number');
 			case 'id_type': return gettext('ID type');
 			case 'id_subtype': return gettext('ID subtype');
+			case 'id_expiry': return gettext('ID expires at');
+			case 'id_issued_at': return gettext('ID issued at');
 			default: return field;
 		}
 	}
@@ -1330,7 +1363,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE field IN(?) GROUP BY private_profile_id "
 				: "SELECT * FROM private_profiles";
 			var params = fields_list ? [arrFields] : [];
-			readMyPaymentAddress(function(current_address){
+			readMyPaymentAddress(fc, function(current_address){
 				db.query(sql, params, function(rows){
 					if (fields_list)
 						rows = rows.filter(function(row){ return (row.c === arrFields.length); });
@@ -1438,7 +1471,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				});
 				console.log('will send '+JSON.stringify(objPrivateProfile));
 				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');
-				appendText('[Private profile](profile:'+privateProfileJsonBase64+')');
+				chatScope.message = '[Private profile](profile:'+privateProfileJsonBase64+')';
+				chatScope.send();
 				$modalInstance.dismiss('cancel');
 			};
 
