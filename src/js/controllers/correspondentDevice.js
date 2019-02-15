@@ -490,13 +490,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var contract_title = $scope.form.contractTitle;
 				var ttl = $scope.form.ttl;
 				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-				var hash = objectHash.getBase64Hash(contract_text + creation_date);
+				var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 				readMyPaymentAddress(fc, function(my_address) {
 					var cosigners = getSigningDeviceAddresses(fc);
 					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
 						correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
-						var chat_message = "(prosaic-contract:" + Buffer(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						device.readCorrespondent(correspondent.device_address, function(correspondent) {
@@ -1552,7 +1552,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var respond = function(status) {
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
 							prosaic_contract.setField(objContract.hash, "status", status);
-							prosaic_contract.respond(objContract, status, signedMessageBase64);
+							prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
 							correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
 					});
 				};

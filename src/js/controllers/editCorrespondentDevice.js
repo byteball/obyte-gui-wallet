@@ -27,10 +27,10 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
 	$scope.showContract = function(hash){
 		$rootScope.modalOpened = true;
-		var ModalInstanceCtrl = function($scope, $modalInstance) {
-			prosaic_contract.getByHash(hash, function(objContract){
-				if (!objContract)
-					throw Error("no contract found in database for hash " + hash);
+		prosaic_contract.getByHash(hash, function(objContract){
+			if (!objContract)
+				throw Error("no contract found in database for hash " + hash);
+			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.unit = objContract.unit;
 				$scope.status = objContract.status;
 				$scope.title = objContract.title;
@@ -49,33 +49,33 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				$timeout(function() {
 					$rootScope.$apply();
 				});
-			});
 
-			$scope.close = function() {
-				$modalInstance.dismiss('cancel');
+				$scope.close = function() {
+					$modalInstance.dismiss('cancel');
+				};
+
+				$scope.openInExplorer = correspondentListService.openInExplorer;
 			};
 
-			$scope.openInExplorer = correspondentListService.openInExplorer;
-		};
+			var modalInstance = $modal.open({
+				templateUrl: 'views/modals/view-prosaic-contract.html',
+				windowClass: animationService.modalAnimated.slideUp,
+				controller: ModalInstanceCtrl,
+				scope: $scope
+			});
 
-		var modalInstance = $modal.open({
-			templateUrl: 'views/modals/view-prosaic-contract.html',
-			windowClass: animationService.modalAnimated.slideUp,
-			controller: ModalInstanceCtrl,
-			scope: $scope
-		});
+			var disableCloseModal = $rootScope.$on('closeModal', function() {
+				modalInstance.dismiss('cancel');
+			});
 
-		var disableCloseModal = $rootScope.$on('closeModal', function() {
-			modalInstance.dismiss('cancel');
-		});
-
-		modalInstance.result.finally(function() {
-			$rootScope.modalOpened = false;
-			disableCloseModal();
-			var m = angular.element(document.getElementsByClassName('reveal-modal'));
-			m.addClass(animationService.modalAnimated.slideOutDown);
-			if (oldWalletId)
-				profileService._setFocus(oldWalletId, function(){});
+			modalInstance.result.finally(function() {
+				$rootScope.modalOpened = false;
+				disableCloseModal();
+				var m = angular.element(document.getElementsByClassName('reveal-modal'));
+				m.addClass(animationService.modalAnimated.slideOutDown);
+				if (oldWalletId)
+					profileService._setFocus(oldWalletId, function(){});
+			});
 		});
 	};
 

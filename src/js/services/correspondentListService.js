@@ -248,7 +248,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function getProsaicContractFromJsonBase64(strJsonBase64){
-		var strJSON = Buffer(strJsonBase64, 'base64').toString('utf8');
+		var strJSON = Buffer.from(strJsonBase64, 'base64').toString('utf8');
 		try{
 			var objProsaicContract = JSON.parse(strJSON);
 		}
@@ -261,7 +261,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
-		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		console.log(signedMessageJson);
 		try{
 			var objSignedMessage = JSON.parse(signedMessageJson);
@@ -893,13 +893,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									showError(err);
 								},
 								ifOk: function(shared_address){
-									composeAndSend(shared_address, arrDefinition, assocSignersByPath, contract.my_address);
+									composeAndSend(shared_address);
 								}
 							});
 						});
 						
 						// create shared address and deposit some bytes to cover fees
-						function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
+						function composeAndSend(shared_address){
 							profileService.bKeepUnlocked = true;
 							var opts = {
 								asset: "base",

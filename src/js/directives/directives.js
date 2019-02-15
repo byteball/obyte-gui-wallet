@@ -564,8 +564,9 @@ angular.module('copayApp.directives')
     restrict: 'A',
     link: function (scope, elem, attrs) {
     	$timeout(function () {
-	    	var html = elem.html();
-	    	elem.html(md.render(html));
+	    	var text = elem.html();
+	    	var html = md.render(text);
+	    	elem.html(html);
 	    });
   	}
  }})

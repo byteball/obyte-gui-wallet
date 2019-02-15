@@ -553,6 +553,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										return cb3(false);
 									});
 								});
+							} else {
+								return cb3(true);
 							}
 						}
 					 	shouldAsk(function(should_ask){
