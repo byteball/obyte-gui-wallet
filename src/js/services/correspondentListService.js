@@ -859,97 +859,88 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						return;
 					}
 					
-					profileService.requestTouchid(function(err) {
-						if (err) {
-							profileService.lockFC();
+					root.readLastMainChainIndex(function(err, last_mci){
+						if (err){
 							showError(err);
 							return;
 						}
-						
-						root.readLastMainChainIndex(function(err, last_mci){
+						var arrDefinition = 
+							['and', [
+								['address', contract.my_address],
+								['address', contract.peer_address]
+							]];
+						var assocSignersByPath = {
+							'r.0': {
+								address: contract.my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							},
+							'r.1': {
+								address: contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.peer_device_address
+							}
+						};
+						require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+							ifError: function(err){
+								showError(err);
+							},
+							ifOk: function(shared_address){
+								composeAndSend(shared_address);
+							}
+						});
+					});
+					
+					// create shared address and deposit some bytes to cover fees
+					function composeAndSend(shared_address){
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							asset: "base",
+							to_address: shared_address,
+							amount: prosaic_contract.CHARGE_AMOUNT,
+							arrSigningDeviceAddresses: contract.cosigners
+						};
+						fc.sendMultiPayment(opts, function(err){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
 							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								showError(err);
 								return;
 							}
-							var arrDefinition = 
-								['and', [
-									['address', contract.my_address],
-									['address', contract.peer_address]
-								]];
-							var assocSignersByPath = {
-								'r.0': {
-									address: contract.my_address,
-									member_signing_path: 'r',
-									device_address: device.getMyDeviceAddress()
-								},
-								'r.1': {
-									address: contract.peer_address,
-									member_signing_path: 'r',
-									device_address: contract.peer_device_address
-								}
+							$rootScope.$emit("NewOutgoingTx");
+							
+							prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+							device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+
+							// post a unit with contract text hash and send it for signing to correspondent
+							var value = {"contract_text_hash": contract.hash};
+							var objMessage = {
+								app: "data",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(value),
+								payload: value
 							};
-							require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
-								ifError: function(err){
-									showError(err);
-								},
-								ifOk: function(shared_address){
-									composeAndSend(shared_address);
-								}
-							});
-						});
-						
-						// create shared address and deposit some bytes to cover fees
-						function composeAndSend(shared_address){
-							profileService.bKeepUnlocked = true;
-							var opts = {
-								asset: "base",
-								to_address: shared_address,
-								amount: prosaic_contract.CHARGE_AMOUNT,
-								arrSigningDeviceAddresses: contract.cosigners
-							};
-							fc.sendMultiPayment(opts, function(err){
-								// if multisig, it might take very long before the callback is called
-								//self.setOngoingProcess();
-								profileService.bKeepUnlocked = false;
-								if (err){
-									if (err.match(/device address/))
-										err = "This is a private asset, please send it only by clicking links from chat";
-									if (err.match(/no funded/))
-										err = "Not enough spendable funds, make sure all your funds are confirmed";
+
+							fc.sendMultiPayment({
+								arrSigningDeviceAddresses: contract.cosigners.concat([contract.peer_device_address]),
+								shared_address: shared_address,
+								messages: [objMessage]
+							}, function(err, unit) { // can take long if multisig
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								if (err) {
 									showError(err);
 									return;
 								}
-								$rootScope.$emit("NewOutgoingTx");
-								
-								prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
-
-								// post a unit with contract text hash and send it for signing to correspondent
-								var value = {"contract_text_hash": contract.hash};
-								var objMessage = {
-									app: "data",
-									payload_location: "inline",
-									payload_hash: objectHash.getBase64Hash(value),
-									payload: value
-								};
-
-								fc.sendMultiPayment({
-									arrSigningDeviceAddresses: [],
-									shared_address: shared_address,
-									messages: [objMessage]
-								}, function(err, unit) { // can take long if multisig
-									//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
-									if (err) {
-										showError(err);
-										return;
-									}
-									prosaic_contract.setField(contract.hash, "unit", unit);
-									device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
-								});
+								prosaic_contract.setField(contract.hash, "unit", unit);
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
 							});
-						}
-						
-					});
+						});
+					}
 				};
 				eventBus.once("prosaic_contract_response_received" + contract.hash, sendUnit);
 			});

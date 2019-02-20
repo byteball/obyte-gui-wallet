@@ -32,6 +32,17 @@ form[name="prosaicContractForm"] {
 	bottom: 15px;
 	line-height: 26px;
 }
+.validation_check {
+	color: #3498DB;
+	border-bottom: 1px dashed #3498DB;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.copy_button {
+	position: absolute;
+	right: 10px;
+	margin-top: -20px;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -72,9 +83,24 @@ form[name="prosaicContractForm"] {
 	<h3 class="title" translate>Text</h3>
 	<span style="width: 100%; word-wrap: break-word;" markdown>{{text}}</span>
 
-	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <a ng-if="unit" ng-click="openInExplorer(unit)" class="">{{unit}}</a><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	<div ng-show="proofBlockExpanded" class="description">
+		<span class="description">To verify contract integrity, we use SHA256 hash from three concatenated components: sha256(title+text+creation_date) and encode it in BASE64 format. After contract was accepted, we post a <a ng-click="openInExplorer(unit)">unit</a> into DAG which contains this hash. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span>
+		<h4 translate>creation date:</h4> {{creation_date}}
+		<h4 translate>hash source string:</h4> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
+		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
+		
+		<span ng-click="validity_checked=true" translate class="validation_check">validate contract integrity</span>
+		<span ng-show="validity_checked">
+			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="hash === calculated_hash && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="hash === calculated_hash && hash === hash_inside_unit" translate>valid</span>
+			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" translate>not valid</span>
+		</span>
 
-	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1">
+		<span ng-show="validity_checked"><h4 translate>calculated hash:</h4> {{calculated_hash}}</span>
+		<span ng-show="validity_checked"><h4 translate>hash published in DAG:</h4> {{hash_inside_unit}}</span>
+	</div>
+
+	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1" ng-if="status == 'pending' && isIncoming">
 		<cosigners></cosigners>
 	</div>
 	

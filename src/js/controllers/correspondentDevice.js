@@ -483,26 +483,33 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.CHARGE_AMOUNT = prosaicContract.CHARGE_AMOUNT;
 			
 			$scope.payAndOffer = function() {
-				console.log('offerProsaicContract');
-				$scope.error = '';
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						return;
+					}
+					console.log('offerProsaicContract');
+					$scope.error = '';
 
-				var contract_text = $scope.form.contractText;
-				var contract_title = $scope.form.contractTitle;
-				var ttl = $scope.form.ttl;
-				var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-				var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
+					var contract_text = $scope.form.contractText;
+					var contract_title = $scope.form.contractTitle;
+					var ttl = $scope.form.ttl;
+					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+					var hash = prosaicContract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
-				readMyPaymentAddress(fc, function(my_address) {
-					var cosigners = getSigningDeviceAddresses(fc);
-					prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
-						correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
-						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
-						var body = correspondentListService.formatOutgoingMessage(chat_message);
-						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						device.readCorrespondent(correspondent.device_address, function(correspondent) {
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+					readMyPaymentAddress(fc, function(my_address) {
+						var cosigners = getSigningDeviceAddresses(fc);
+						prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
+							correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+							var body = correspondentListService.formatOutgoingMessage(chat_message);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+							device.readCorrespondent(correspondent.device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							});
+							$modalInstance.dismiss('sent');
 						});
-						$modalInstance.dismiss('sent');
 					});
 				});
 			};
@@ -1533,6 +1540,22 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						throw Error("no contract found in database for already received offer message");
 					$scope.unit = objContract.unit;
 					$scope.status = objContract.status;
+					$scope.creation_date = objContract.creation_date;
+					$scope.hash = objContract.hash;
+					$scope.calculated_hash = prosaic_contract.getHash(objContract);
+					if (objContract.unit) {
+						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
+							if (!rows.length)
+								return;
+							var payload = rows[0].payload;
+							try {
+								$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+								$timeout(function() {
+									$rootScope.$apply();
+								});
+							} catch (e) {}
+						})
+					}
 					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
 					if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
 						$scope.status = 'expired';
@@ -1549,15 +1572,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				});
 
-				var respond = function(status) {
-					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
-							prosaic_contract.setField(objContract.hash, "status", status);
-							prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
-							correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
-					});
+				var respond = function(status, signedMessageBase64) {
+					prosaic_contract.setField(objContract.hash, "status", status);
+					prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
+					correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
 				};
 				$scope.accept = function() {
-					respond('accepted');
+					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
+							respond('accepted', signedMessageBase64);
+						});
 					$modalInstance.dismiss('accept');
 				};
 
@@ -1578,6 +1601,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 
 				$scope.openInExplorer = correspondentListService.openInExplorer;
+				$scope.expandProofBlock = function() {
+					$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
+				};
 			};
 
 			var modalInstance = $modal.open({
