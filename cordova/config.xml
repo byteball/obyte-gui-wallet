@@ -7,7 +7,7 @@
     <description>
       Obyte wallet.
     </description>
-    <author email="byteball@byteball.org" href="https://obyte.org">
+    <author email="o@obyte.org" href="https://obyte.org">
         Obyte
     </author>
     <content src="index.html" />
@@ -87,13 +87,13 @@
 				    <key>UTTypeDescription</key>
 				    <string>Obyte Private Coin</string>
 				    <key>UTTypeIdentifier</key>
-				    <string>org.byteball.coin</string>
+				    <string>org.obyte.coin</string>
 				    <key>UTTypeTagSpecification</key>
 				    <dict>
 				        <key>public.filename-extension</key>
 				        <string>coin</string>
 				        <key>public.mime-type</key>
-				        <string>application/x-byteball</string>
+				        <string>application/x-obyte</string>
 				    </dict>
 				</dict>
 				</array>
@@ -107,7 +107,7 @@
 			        <string>Owner</string>
 			        <key>LSItemContentTypes</key>
 			        <array>
-			            <string>org.byteball.coin</string>
+			            <string>org.obyte.coin</string>
 			        </array>
 			    </dict>
 			</array>

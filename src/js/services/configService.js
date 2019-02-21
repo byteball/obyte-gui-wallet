@@ -27,7 +27,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			name: "Bitcoin oracle",
 			feedname_placeholder: "bitcoin_merkle or randomXXXXXX",
 			feedvalue_placeholder: "e.g. 1LR5xew1X13okNYKRu7qA3uN4hpRH1Tfnn:0.5",
-			instructions_url: "https://medium.com/byteball/making-p2p-great-again-episode-ii-bitcoin-exchange-d98adfbde2a5",
+			instructions_url: "https://medium.com/obyte/making-p2p-great-again-episode-ii-bitcoin-exchange-d98adfbde2a5",
 			feednames_filter: ["^bitcoin_merkle$", "^random[\\d]+$"],
 			feedvalues_filter: ["^[13][a-km-zA-HJ-NP-Z1-9]{25,34}\\:[0-9\\.]+$", "^\\d{1,6}$"]
 		},
@@ -35,7 +35,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			name: "Crypto exchange rates oracle",
 			feedname_placeholder: "e.g. BTC_USD",
 			feedvalue_placeholder: "e.g. 1234.56",
-			instructions_url: "https://wiki.byteball.org/Oracle#Using_the_crypto-exchange-rates_oracle_in_a_smart_contract",
+			instructions_url: "https://wiki.obyte.org/Oracle#Using_the_crypto-exchange-rates_oracle_in_a_smart_contract",
 			feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
 			feedvalues_filter: ["^[\\d\\.]+$"]
 		},
@@ -43,7 +43,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			name: "Flight delay oracle",
 			feedname_placeholder: "e.g. BA950-2018-12-25",
 			feedvalue_placeholder: "e.g. 30",
-			instructions_url: "https://wiki.byteball.org/Oracle#Flight_delays_tracker",
+			instructions_url: "https://wiki.obyte.org/Oracle#Flight_delays_tracker",
 			feednames_filter: ["^[\\w\\d]+-\\d{4}-\\d{2}-\\d{2}$"],
 			feedvalues_filter: ["^[\\d]+$"]
 		},
@@ -51,7 +51,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			name: "Sports betting oracle",
 			feedname_placeholder: "e.g. BROOKLYNNETS_CHARLOTTEHORNETS_2018-03-21",
 			feedvalue_placeholder: "e.g. BROOKLYNNETS",
-			instructions_url: "https://wiki.byteball.org/Sports_betting",
+			instructions_url: "https://wiki.obyte.org/Sports_betting",
 			feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"],
 			feedvalues_filter: ["^[\\w\\d]+$"]
 		},
@@ -59,7 +59,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			name: "Timestamp oracle",
 			feedname_placeholder: "timestamp",
 			feedvalue_placeholder: "e.g. 1541341626704",
-			instructions_url: "https://wiki.byteball.org/Oracle",
+			instructions_url: "https://wiki.obyte.org/Oracle",
 			feednames_filter: ["^timestamp$"],
 			feedvalues_filter: ["^\\d{13,}$"]
 		}

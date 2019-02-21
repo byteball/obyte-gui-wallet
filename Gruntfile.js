@@ -97,7 +97,7 @@ module.exports = function(grunt) {
       },
       css: {
         src: ['src/css/*.css'],
-        dest: 'public/css/byteball.css'
+        dest: 'public/css/obyte.css'
       },
       foundation: {
         src: [
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
       		/*CFBundleIconFile: 'nw.icns',*/
       		LSHasLocalizedDisplayName: 0,
       		UTExportedTypeDeclarations: [{
-      			UTTypeIdentifier: 'org.byteball.coin',
+      			UTTypeIdentifier: 'org.obyte.coin',
       			UTTypeDescription: 'Obyte Private Coin',
       			UTTypeConformsTo: ["public.data"],
       			UTTypeTagSpecification: {
@@ -231,7 +231,7 @@ module.exports = function(grunt) {
       		}],
       		CFBundleDocumentTypes: [{
       			CFBundleTypeName: "Obyte Private Coin",
-      			LSItemContentTypes: ["org.byteball.coin"],
+      			LSItemContentTypes: ["org.obyte.coin"],
       			CFBundleTypeIconFile: "app.icns"
       		}]
           }
@@ -278,13 +278,13 @@ module.exports = function(grunt) {
     debian_package: {
         linux64: {
             files: [
-                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/byteball-test/'},
-                //{expand: true, cwd: '../obytebuilds/byteball-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/byteball-test.desktop'}
+                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/obyte-test/'},
+                //{expand: true, cwd: '../obytebuilds/obyte-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/obyte-test.desktop'}
             ],
             options: {
                 maintainer: {
                     name: 'Obyte',
-                    email: 'byteball@byteball.org'
+                    email: 'o@obyte.org'
                 },
                 long_description: 'Smart payments made simple',
                 target_architecture: 'amd64'

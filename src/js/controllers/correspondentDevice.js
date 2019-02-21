@@ -316,8 +316,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								}, 1);
 								return;
 							}
+							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
+								contract.feed_value = parseInt(contract.feed_value);
+							else
+								contract.feed_value = contract.feed_value + '';
 							var arrExplicitEventCondition = 
-								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value+'', last_mci]];
+								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value, last_mci]];
 							var arrEventCondition = arrExplicitEventCondition;
 							var data_address = (contract.data_party === 'me') ? my_address : address;
 							var expiry_address = (contract.expiry_party === 'me') ? my_address : address;
@@ -580,6 +584,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
 					throw Error("no member addresses in "+paymentJson);
+				var assocPeerNamesByDeviceAddress = {};
+				var loadCorrespondentNames = function(cb){
+					device.readCorrespondents(function(arrCorrespondents){
+						arrCorrespondents.forEach(function(corr){
+							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
+						});
+						cb();
+					});
+				};
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
@@ -601,9 +614,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
+								var assocPeerNamesByAddress = {};
+								for (var path in assocSignersByPath){
+									var signerInfo = assocSignersByPath[path];
+									if (signerInfo.device_address !== device.getMyDeviceAddress())
+										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
+								}
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses)
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress)
 								});
 							}
 							cb();
@@ -622,6 +641,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){

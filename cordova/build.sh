@@ -56,7 +56,7 @@ echo "Project directory is $PROJECT"
 if [ ! -d $PROJECT ]; then
 	cd $BUILDDIR
 	echo "${OpenColor}${Green}* Creating project... ${CloseColor}"
-	cordova create ../../obytebuilds/project-$1 org.byteball.wallet Byteball
+	cordova create ../../obytebuilds/project-$1 org.byteball.wallet Obyte
 	checkOK
 
 	cd $PROJECT
@@ -174,12 +174,12 @@ fi
 
 if $DBGJS
 then
-	echo "${OpenColor}${Green}* Generating byteball bundle (debug js)...${CloseColor}"
+	echo "${OpenColor}${Green}* Generating obyte bundle (debug js)...${CloseColor}"
 	cd $BUILDDIR/..
 	grunt cordova
 	checkOK
 else
-	echo "${OpenColor}${Green}* Generating byteball bundle...${CloseColor}"
+	echo "${OpenColor}${Green}* Generating obyte bundle...${CloseColor}"
 	cd $BUILDDIR/..
 	grunt cordova-prod
 	checkOK
@@ -208,7 +208,7 @@ checkOK
 if [ $CURRENT_OS == "ANDROID" ]; then
 	echo "Android project!!!"
 	
-	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/byteball.css
+	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/obyte.css
 
 	mkdir -p $PROJECT/platforms/android/res/xml/
 	checkOK

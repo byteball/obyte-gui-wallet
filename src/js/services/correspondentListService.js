@@ -433,12 +433,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, assocPeerNamesByAddress, bWithLinks){
 		function getDisplayAddress(address){
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
-			if (arrPeerAddresses.indexOf(address) >= 0)
-				return '<span title="peer address: '+address+'">peer</span>';
+			if (assocPeerNamesByAddress[address])
+				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){
@@ -471,8 +471,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var relation = args[2];
 					var value = args[3];
 					var min_mci = args[4];
-					if (feed_name === 'timestamp' && relation === '>')
-						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
+					if (feed_name === 'timestamp' && relation === '>' && (typeof value === 'number' || parseInt(value).toString() === value))
+						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : new Date(parseInt(value)).toString());
 					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
 					if (min_mci)
 						str += ' after MCI '+min_mci;

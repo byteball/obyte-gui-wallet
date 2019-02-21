@@ -55,10 +55,17 @@
 		<span ng-if="binding.type == 'data'" translate>on feed name</span>
 		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" valid-feed-name="{{binding.oracle_address}}" id="feed_name" name="feed_name" placeholder="{{oracles[binding.oracle_address].feedname_placeholder || 'e.g. BTC_USD'}}" ng-model="binding.feed_name" maxlength="64" required >
 		<br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" translate>with expected value of</span>
-		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="{{oracles[binding.oracle_address].feedvalue_placeholder || 'e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1'}}" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" translate>posted</span>
-		<span ng-if="binding.type == 'data'" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span><span ng-if="binding.type == 'data'">.</span>
+		<span ng-if="binding.type == 'data'" translate>with expected value</span>
+		<br ng-if="binding.type == 'data'">
+		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 22px"></span>
+		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
+		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
+			<a><span >{{relation}}</span></a>
+		  </li>
+		</ul>
+		<input ng-if="binding.type == 'data'" class="m0 inline" type="text" id="feed_value" name="feed_value" placeholder="{{oracles[binding.oracle_address].feedvalue_placeholder || 'e.g. 1PC9aZC4hNX2rmmrt7uHTfYAS3hRbph4UN:0.1'}}" valid-feed-value="{{binding.oracle_address}}" ng-model="binding.feed_value" maxlength="64" required style="width: 280px;"><br ng-if="binding.type == 'data' && binding.relation === '='">
+		<span ng-if="binding.type == 'data' && binding.relation === '='" translate>posted</span>
+		<span ng-if="binding.type == 'data' && binding.relation === '='" selectable="#feed_type" dropdown-toggle="#feed_type" data-model="binding" data-prop="feed_type"></span><span ng-if="binding.type == 'data' && binding.relation === '='">.</span>
 			<ul id="feed_type" class="f-dropdown pos-at-cursor" data-dropdown-content>
 			  <li class="dropup-item" data-value="explicit">
 				<a><span translate>explicitly</span></a>
