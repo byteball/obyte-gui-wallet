@@ -1595,7 +1595,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var respond = function(status, signedMessageBase64) {
 					prosaic_contract.setField(objContract.hash, "status", status);
 					prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
-					correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
+					correspondentListService.addMessageEvent(false, correspondent.device_address, "contract \""+objContract.title+"\" " + status);
 				};
 				$scope.accept = function() {
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){

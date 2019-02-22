@@ -844,7 +844,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 				var sendUnit = function(accepted, authors){
 					if (!accepted) {
-						showError("contract " + contract.hash + " was declined");
 						return;
 					}
 
