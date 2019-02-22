@@ -84,8 +84,10 @@ form[name="prosaicContractForm"] {
 	<span style="width: 100%; word-wrap: break-word;" markdown>{{text}}</span>
 
 	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	
 	<div ng-show="proofBlockExpanded" class="description">
-		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encode it in BASE64 format. After contract was accepted, <a ng-click="openInExplorer(unit)">unit</a>was posted into DAG which contains this hash. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span>
+		<h4 translate>unit in DAG:</h4> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
+		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date), encoded in BASE64 format. After contract was accepted, unit with hash was posted into DAG. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span>
 		<h4 translate>creation date:</h4> {{creation_date}}
 		<h4 translate>hash source string:</h4> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
 		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
