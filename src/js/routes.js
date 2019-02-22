@@ -372,6 +372,16 @@ angular
           },
         }
       })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditRealNameAttestors', {
+        url: '/editrna',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditRealNameAttestors.html'
+          },
+        }
+      })
       .state('preferencesGlobal.preferencesUnit', {
         url: '/preferencesGlobal/unit',
         templateUrl: 'views/preferencesUnit.html',

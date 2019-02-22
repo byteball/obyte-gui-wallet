@@ -1,0 +1,130 @@
+<style>
+.p10l {
+	padding-left: 10px;
+}
+.p20l {
+	padding-left: 20px;	
+}
+.attestor {
+	clear: both;
+	font-size: 11px;
+}
+.w40 {
+	width: 40px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+.unit {
+	font-size: 14px;
+}
+span.capitalize {
+	display: inline-block;
+}
+span.capitalize:first-letter {
+	text-transform: uppercase;
+}
+form[name="prosaicContractForm"] {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	line-height: 26px;
+}
+.validation_check {
+	color: #3498DB;
+	border-bottom: 1px dashed #3498DB;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.copy_button {
+	position: absolute;
+	right: 10px;
+	margin-top: -20px;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="close()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+      Prosaic contract
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch p10">
+	<h3 translate><span translate>Status</span>: <b translate>{{status}}</b></h3>
+
+	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till}}</h3>
+	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till}}</h3>
+
+	<h3 class="person title" translate>Me</h3>
+		<div class="name p10l">
+			<span class="first_name">{{my_first_name}}</span>
+			<span class="last_name">{{my_last_name}}</span>
+			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+		</div>
+	<h3 class="person title" translate>Peer</h3>
+		<div class="name p10l">
+			<span class="first_name">{{peer_first_name}}</span>
+			<span class="last_name">{{peer_last_name}}</span>
+			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+		</div>
+
+	<h3 class="title" translate>Title</h3>
+	<span style="width: 100%; word-wrap: break-word;">{{title}}</span>
+
+	<h3 class="title" translate>Text</h3>
+	<span style="width: 100%; word-wrap: break-word;" markdown>{{text}}</span>
+
+	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	
+	<div ng-show="proofBlockExpanded" class="description">
+		<h4 translate>unit in DAG:</h4> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
+		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date), encoded in BASE64 format. After contract was accepted, unit with hash was posted into DAG. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span>
+		<h4 translate>creation date:</h4> {{creation_date}}
+		<h4 translate>hash source string:</h4> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
+		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
+		
+		<span ng-click="validity_checked=true" translate class="validation_check">validate contract integrity</span>
+		<span ng-show="validity_checked">
+			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="hash === calculated_hash && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="hash === calculated_hash && hash === hash_inside_unit" translate>valid</span>
+			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" translate>not valid</span>
+		</span>
+
+		<span ng-show="validity_checked"><h4 translate>calculated hash:</h4> {{calculated_hash}}</span>
+		<span ng-show="validity_checked"><h4 translate>hash published in DAG:</h4> {{hash_inside_unit}}</span>
+	</div>
+
+	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1 && status == 'pending' && isIncoming">
+		<cosigners></cosigners>
+	</div>
+	
+	<div class="row m20t" ng-if="status == 'pending' && isIncoming && index.isEnoughSignersSelected()">
+		<div class="large-6 medium-6 small-6 columns">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
+				<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
+			</button>
+		</div>
+
+		<div class="large-6 medium-6 small-6 columns">
+			<button class="button expand round" ng-class="cancel_button_class" ng-click="decline()">
+				<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
+			</button>
+		</div> 
+	</div>
+
+	<div class="row columns m20t">
+		<div class="large-12 medium-12 small-12 columns">
+			<button class="button expand round" ng-show="status === 'pending' && !isIncoming" ng-class="cancel_button_class" ng-click="revoke()">
+				<i class="fi-x"></i> <span class="tu" translate>Revoke</span>
+			</button>
+		</div>
+	</div>
+</div>

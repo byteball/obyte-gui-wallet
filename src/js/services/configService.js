@@ -78,8 +78,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		email: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
 		reddit: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
-		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ',
+		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
+	realNameAttestorAddresses: [{address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot'}],
 
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
@@ -167,7 +168,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		newOpts = JSON.parse(newOpts);
 	  }
 	  lodash.merge(config, oldOpts, newOpts);
-		checkAndReplaceOldUnitCode(config.wallet.settings);
+	  if (newOpts.realNameAttestorAddresses)
+	  	config.realNameAttestorAddresses = newOpts.realNameAttestorAddresses;
+	  checkAndReplaceOldUnitCode(config.wallet.settings);
 	  configCache = config;
 
 	  storageService.storeConfig(JSON.stringify(config), cb);
@@ -226,6 +229,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			_config.hub = defaultConfig.hub;
 		if (!_config.attestorAddresses) {
 			_config.attestorAddresses = defaultConfig.attestorAddresses;
+		}
+		if (!_config.realNameAttestorAddresses) {
+			_config.realNameAttestorAddresses = defaultConfig.realNameAttestorAddresses;
 		}
 		for (var attestorKey in defaultConfig.attestorAddresses){
 			if (!(attestorKey in _config.attestorAddresses))
