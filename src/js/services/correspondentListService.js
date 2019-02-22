@@ -927,7 +927,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							};
 
 							fc.sendMultiPayment({
-								arrSigningDeviceAddresses: contract.cosigners.concat([contract.peer_device_address]),
+								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
 								shared_address: shared_address,
 								messages: [objMessage]
 							}, function(err, unit) { // can take long if multisig

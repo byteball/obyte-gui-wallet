@@ -464,7 +464,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.offerProsaicContract = function(address){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaicContract = require('ocore/prosaic_contract.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
@@ -484,7 +484,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				});
 			});
 
-			$scope.CHARGE_AMOUNT = prosaicContract.CHARGE_AMOUNT;
+			$scope.CHARGE_AMOUNT = prosaic_contract.CHARGE_AMOUNT;
 			
 			$scope.payAndOffer = function() {
 				profileService.requestTouchid(function(err) {
@@ -500,11 +500,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var contract_title = $scope.form.contractTitle;
 					var ttl = $scope.form.ttl;
 					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-					var hash = prosaicContract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
+					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 					readMyPaymentAddress(fc, function(my_address) {
 						var cosigners = getSigningDeviceAddresses(fc);
-						prosaicContract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
+						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
 							correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);

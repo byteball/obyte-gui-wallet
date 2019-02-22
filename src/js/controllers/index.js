@@ -649,7 +649,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.arrSharedWallets = arrSharedWallets;
 
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaicContract = require('ocore/prosaic_contract.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -658,7 +658,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
 				});
-				prosaicContract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
+				prosaic_contract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
 					if (row)
 						objSharedWallet.has_prosaic_contract = true;
 				});
