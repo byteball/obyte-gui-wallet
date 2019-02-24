@@ -28,6 +28,15 @@
         <div class="size-10 text-gray ellipsis enable_text_select">{{correspondent.device_address}}@{{hub}}</div>
       </div>
 
+	  <div ng-show="index.usePushNotifications">
+		<ul class="no-bullet m20t m30b">
+		  <li>
+			<switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" ng-change="updatePush()" class="green right"></switch>
+			<div translate>Enable push notifications</div>
+		  </li>
+		</ul>
+	  </div>
+		
         <form name="editForm" class="m20t" no-validate>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
 		  <span translate>Rename:</span>
