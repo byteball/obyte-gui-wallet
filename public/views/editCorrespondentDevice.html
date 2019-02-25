@@ -34,11 +34,6 @@
           <input type="text" id="name" name="name" ng-model="name" required>
 		  <span translate>Change hub:</span>
           <input type="text" id="hub" name="hub" ng-model="hub" required>
-          <span translate>Signed contracts:</span>
-          <div class="row" ng-repeat="contract in contracts">
-          	<a class="contract" ng-click="showContract(contract.hash)" style="font-weight: bold;">{{contract.title}} <span translate>on</span> {{contract.creation_date}}</a>
-          	<hr style="margin-top: 10px">
-          </div>
           <div class="row">
             <div>
               <input type="submit" 
@@ -48,6 +43,12 @@
                      ng-style="{'background-color':backgroundColor}" 
                      ng-click="save()">
             </div>
+          </div>
+
+          <span translate>Signed contracts:</span>
+          <div class="row" ng-repeat="contract in contracts">
+          	<a class="contract" ng-click="showContract(contract.hash)" style="font-weight: bold;">{{contract.title}} <span translate>on</span> {{contract.creation_date}}</a>
+          	<hr style="margin-top: 10px">
           </div>
         </form>
     </div>

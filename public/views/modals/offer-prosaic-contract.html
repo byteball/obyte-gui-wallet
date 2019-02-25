@@ -64,22 +64,25 @@ form[name="prosaicContractForm"] {
 
 		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
 
-	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1">
-		<cosigners></cosigners>
-	</div>
-	
-	<div ng-if="error" class="row columns">
-		<span class="has-error size-12">
-			{{error}}
-		</span>
-	</div>
-	
-	<div class="m20t large-12 large-centered row columns">
-		<button type="button" class="button black round expand" ng-disabled="prosaicContractForm.$invalid || bWorking || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
-			Offer Contract
-		</button>
+		<div ng-if="index.m < index.n && index.m > 1">
+			<h3 class="title" translate>Cosigners</h3>
+			<div class="row columns large-12 medium-12">
+				<cosigners></cosigners>
+			</div>
+		</div>
+		
+		<div ng-if="error" class="row columns">
+			<span class="has-error size-12">
+				{{error}}
+			</span>
+		</div>
+		
+		<div class="m20t large-12 large-centered row columns">
+			<button type="button" class="button black round expand" ng-disabled="prosaicContractForm.$invalid || bWorking || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+				Offer Contract
+			</button>
 
-		<div translate class="attestor">You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</div>
-	</div>
+			<div translate class="attestor">You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</div>
+		</div>
 	</form>
 </div>

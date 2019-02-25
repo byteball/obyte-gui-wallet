@@ -102,8 +102,11 @@ form[name="prosaicContractForm"] {
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 
-	<div class="row columns large-12 medium-12" ng-if="index.m < index.n && index.m > 1 && status == 'pending' && isIncoming">
-		<cosigners></cosigners>
+	<div ng-if="index.m < index.n && index.m > 1 && status == 'pending' && isIncoming">
+		<span class="title" translate>Cosigners</span>
+		<div class="row columns large-12 medium-12">
+			<cosigners></cosigners>
+		</div>
 	</div>
 	
 	<div class="row m20t" ng-if="status == 'pending' && isIncoming && index.isEnoughSignersSelected()">

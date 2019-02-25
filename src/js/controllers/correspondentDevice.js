@@ -499,7 +499,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var contract_text = $scope.form.contractText;
 					var contract_title = $scope.form.contractTitle;
 					var ttl = $scope.form.ttl;
-					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+					var creation_date = moment().format('YYYY-MM-DD HH:mm:ss');
 					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 					readMyPaymentAddress(fc, function(my_address) {
@@ -521,6 +521,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
 			};
+
+			$scope.openInExplorer = correspondentListService.openInExplorer;
 		};
 		
 		
@@ -1398,7 +1400,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
-				: "SELECT * FROM private_profiles \n\
+				: "SELECT private_profiles.* FROM private_profiles \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
@@ -1588,6 +1590,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 
 					$timeout(function() {
+						$rootScope.tab = $scope.index.tab = 'chat';
 						$rootScope.$apply();
 					});
 				});
@@ -1661,6 +1664,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
 				[device.getMyDeviceAddress(), objContract.address, objContract.address],
 				function(rows) {
+					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
+						return showModal();
 					oldWalletId = profileService.focusedClient.credentials.walletId;
 					oldCorrespondent = correspondentListService.currentCorrespondent;
 					profileService._setFocus(rows[0].wallet, function(){
