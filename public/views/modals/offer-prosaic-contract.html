@@ -56,7 +56,7 @@ form[name="prosaicContractForm"] {
 			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" tooltip="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 		</div>
 
-		<span class="title" translate>Title</span>
+		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>
 		
 		<span class="title" translate>Text</span>
