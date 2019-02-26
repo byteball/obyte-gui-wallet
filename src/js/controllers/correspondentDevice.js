@@ -499,13 +499,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var contract_text = $scope.form.contractText;
 					var contract_title = $scope.form.contractTitle;
 					var ttl = $scope.form.ttl;
-					var creation_date = moment().format('YYYY-MM-DD HH:mm:ss');
+					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 					readMyPaymentAddress(fc, function(my_address) {
 						var cosigners = getSigningDeviceAddresses(fc);
 						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
-							correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
@@ -1578,10 +1578,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							} catch (e) {}
 						})
 					}
-					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
-					if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
+					var creation_date = new Date(objContract.creation_date);
+					$scope.valid_till = creation_date.setHours(creation_date.getHours() + objContract.ttl);
+					if ($scope.status === "pending" && $scope.valid_till < Date.now())
 						$scope.status = 'expired';
-					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString().slice(0, -3);
 
 					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						$timeout(function() {

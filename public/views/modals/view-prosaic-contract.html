@@ -61,8 +61,8 @@ form[name="prosaicContractForm"] {
 <div class="modal-content fix-modals-touch p10">
 	<h3 translate><span translate>Status</span>: <b translate>{{status}}</b></h3>
 
-	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till}}</h3>
-	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till}}</h3>
+	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
+	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
 
 	<h3 class="person title" translate>Me</h3>
 		<div class="name p10l">
@@ -88,9 +88,9 @@ form[name="prosaicContractForm"] {
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
 		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date), encoded in BASE64 format. After contract was accepted, unit with hash was posted into DAG. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span><br><br>
-		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
+		<span class="text-bold" translate>creation date:</span> {{creation_date | date:'yyyy-MM-dd HH:mm:ss'}}<br><br>
 		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
-		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
+		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date | date:'yyyy-MM-dd HH:mm:ss'}}</textarea>
 		
 		<span ng-click="validity_checked=true" translate class="validation_check">validate contract integrity</span>
 		<span ng-show="validity_checked">
