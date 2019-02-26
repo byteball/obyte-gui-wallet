@@ -844,7 +844,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 				var sendUnit = function(accepted, authors){
 					if (!accepted) {
-						showError("contract " + contract.hash + " was declined");
 						return;
 					}
 
@@ -938,6 +937,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								}
 								prosaic_contract.setField(contract.hash, "unit", unit);
 								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG https://explorer.obyte.org/#" + unit;
+								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});
 						});
 					}

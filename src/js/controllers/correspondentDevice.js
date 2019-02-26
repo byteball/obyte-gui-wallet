@@ -505,7 +505,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					readMyPaymentAddress(fc, function(my_address) {
 						var cosigners = getSigningDeviceAddresses(fc);
 						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
-							correspondentListService.listenForProsaicContractResponse([{hash: hash, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
@@ -521,6 +521,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.cancel = function() {
 				$modalInstance.dismiss('cancel');
 			};
+
+			$scope.openInExplorer = correspondentListService.openInExplorer;
 		};
 		
 		
@@ -1398,7 +1400,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
-				: "SELECT * FROM private_profiles \n\
+				: "SELECT private_profiles.* FROM private_profiles \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
@@ -1576,10 +1578,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							} catch (e) {}
 						})
 					}
-					var created_dt = Date.parse(objContract.creation_date.replace(' ', 'T'));
-					if ($scope.status === "pending" && created_dt + objContract.ttl * 60 * 60 * 1000 < Date.now())
+					var objDateCopy = new Date(objContract.creation_date_obj);
+					$scope.valid_till = objDateCopy.setHours(objDateCopy.getHours() + objContract.ttl);
+					if ($scope.status === "pending" && $scope.valid_till < Date.now())
 						$scope.status = 'expired';
-					$scope.valid_till = new Date(created_dt + objContract.ttl * 60 * 60 * 1000).toLocaleString().slice(0, -3);
 
 					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						$timeout(function() {
@@ -1588,6 +1590,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 
 					$timeout(function() {
+						$rootScope.tab = $scope.index.tab = 'chat';
 						$rootScope.$apply();
 					});
 				});
@@ -1595,7 +1598,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var respond = function(status, signedMessageBase64) {
 					prosaic_contract.setField(objContract.hash, "status", status);
 					prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
-					correspondentListService.addMessageEvent(false, correspondent.device_address, "contract " + status);
+					var body = "contract \""+objContract.title+"\" " + status;
+					correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
 				};
 				$scope.accept = function() {
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
@@ -1661,6 +1666,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
 				[device.getMyDeviceAddress(), objContract.address, objContract.address],
 				function(rows) {
+					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
+						return showModal();
 					oldWalletId = profileService.focusedClient.credentials.walletId;
 					oldCorrespondent = correspondentListService.currentCorrespondent;
 					profileService._setFocus(rows[0].wallet, function(){
