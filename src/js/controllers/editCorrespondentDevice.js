@@ -13,6 +13,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	$scope.hub = correspondent.hub;
 
 	var prosaic_contract = require('ocore/prosaic_contract.js');
+	var db = require('ocore/db.js');
 	prosaic_contract.getAllByStatus("accepted", function(contracts){
 		$scope.contracts = [];
 		contracts.forEach(function(contract){
@@ -35,7 +36,22 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				$scope.status = objContract.status;
 				$scope.title = objContract.title;
 				$scope.text = objContract.text;
-				$scope.creation_date = objContract.creation_date;
+				$scope.creation_date = objContract.creation_date
+				$scope.hash = objContract.hash;
+				$scope.calculated_hash = prosaic_contract.getHash(objContract);
+				if (objContract.unit) {
+					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
+						if (!rows.length)
+							return;
+						var payload = rows[0].payload;
+						try {
+							$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+							$timeout(function() {
+								$rootScope.$apply();
+							});
+						} catch (e) {}
+					})
+				};
 
 				correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 					$timeout(function() {

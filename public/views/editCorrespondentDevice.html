@@ -47,7 +47,7 @@
 
           <span translate>Signed contracts:</span>
           <div class="row" ng-repeat="contract in contracts">
-          	<a class="contract" ng-click="showContract(contract.hash)" style="font-weight: bold;">{{contract.title}} <span translate>on</span> {{contract.creation_date | date:'yyyy-MM-dd HH:mm'}}</a>
+          	<a class="contract" ng-click="showContract(contract.hash)" style="font-weight: bold;">{{contract.title}} <span translate>on</span> {{contract.creation_date_obj | date:'yyyy-MM-dd HH:mm'}}</a>
           	<hr style="margin-top: 10px">
           </div>
         </form>

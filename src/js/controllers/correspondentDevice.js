@@ -1578,8 +1578,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							} catch (e) {}
 						})
 					}
-					var creation_date = new Date(objContract.creation_date);
-					$scope.valid_till = creation_date.setHours(creation_date.getHours() + objContract.ttl);
+					var objDateCopy = new Date(objContract.creation_date_obj);
+					$scope.valid_till = objDateCopy.setHours(objDateCopy.getHours() + objContract.ttl);
 					if ($scope.status === "pending" && $scope.valid_till < Date.now())
 						$scope.status = 'expired';
 
