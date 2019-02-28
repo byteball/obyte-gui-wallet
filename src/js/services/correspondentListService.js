@@ -120,6 +120,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
+		}).replace(/(.*?\s|^)\b(https?:\/\/\S+)([\s.,;!:].*?|$)/g, function(str, pre, link, post){
+			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
+				return str;
+			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
+				return str;
+			return pre+'<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>'+post;
 		}).replace(payment_request_regexp, function(str, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
@@ -166,8 +172,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
 			return '<i>['+text+']</i>';
-		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
 		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)

@@ -76,7 +76,7 @@ form[name="prosaicContractForm"] {
 			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 		</div>
 
-	<h3 class="title" translate>Title</h3>
+	<h3 class="title" translate>Title of contract</h3>
 	<span style="width: 100%; word-wrap: break-word;">{{title}}</span>
 
 	<h3 class="title" translate>Text</h3>
@@ -86,7 +86,7 @@ form[name="prosaicContractForm"] {
 	
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
-		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date), encoded in BASE64 format. After contract was accepted, unit with hash was posted into DAG. You can check if contract text was not modified by comparing hashes in DAG and calculated from this contract.</span><br><br>
+		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
 		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
 		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>

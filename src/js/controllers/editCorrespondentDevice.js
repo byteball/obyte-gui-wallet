@@ -12,6 +12,36 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	$scope.name = correspondent.name;
 	$scope.hub = correspondent.hub;
 
+	var indexScope = $scope.index;
+	var db = require('ocore/db.js');
+	
+	function readAndSetPushNotificationsSetting(delay){
+		db.query("SELECT push_enabled FROM correspondent_devices WHERE device_address=?", [correspondent.device_address], function(rows){
+			if (rows.length === 0)
+				return console.log("correspondent "+correspondent.device_address+" not found, probably already removed");
+			$scope.pushNotifications = !!rows[0].push_enabled;
+			
+			$timeout(function(){
+				$scope.$digest();
+			}, delay || 0);
+		});
+	}
+	
+	$scope.updatePush = function(){
+		console.log("push "+$scope.pushNotifications);
+		var push_enabled = $scope.pushNotifications ? 1 : 0;
+		var device = require('ocore/device.js');
+		device.updateCorrespondentSettings(correspondent.device_address, {push_enabled: push_enabled}, function(err){
+			setError(err);
+			if (err)
+				return readAndSetPushNotificationsSetting(100);
+			db.query("UPDATE correspondent_devices SET push_enabled=? WHERE device_address=?", [push_enabled, correspondent.device_address]);
+		});
+	}
+	
+	if (indexScope.usePushNotifications)
+		readAndSetPushNotificationsSetting();
+	
 	var prosaic_contract = require('ocore/prosaic_contract.js');
 	var db = require('ocore/db.js');
 	prosaic_contract.getAllByStatus("accepted", function(contracts){
