@@ -567,6 +567,14 @@ angular.module('copayApp.directives')
 	    	var text = elem.html();
 	    	var html = md.render(text);
 	    	elem.html(html);
+	    	elem.find('a').on('click', function(e) {
+	    		e.preventDefault();
+	    		var url = angular.element(this).attr('href');
+	    		if (typeof nw !== 'undefined')
+					nw.Shell.openExternal(url);
+				else if (isCordova)
+					cordova.InAppBrowser.open(url, '_system');
+	    	})
 	    });
   	}
  }})
