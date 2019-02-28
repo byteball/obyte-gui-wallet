@@ -50,7 +50,6 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 			if (contract.peer_device_address === correspondent.device_address)
 				$scope.contracts.push(contract);
 		});
-		$scope.contracts = contracts;
 		$timeout(function(){
 			$rootScope.$digest();
 		});
@@ -102,6 +101,12 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				};
 
 				$scope.openInExplorer = correspondentListService.openInExplorer;
+
+				$scope.checkValidity = function() {
+					$timeout(function() {
+						$scope.validity_checked = true;
+					}, 500);
+				}
 			};
 
 			var modalInstance = $modal.open({

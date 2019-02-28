@@ -1595,18 +1595,27 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				});
 
+				var setError = function(err) {
+					$scope.error = err;
+				}
+
 				var respond = function(status, signedMessageBase64) {
-					prosaic_contract.setField(objContract.hash, "status", status);
-					prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
-					var body = "contract \""+objContract.title+"\" " + status;
-					correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-					if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+					// read again, as we might already updated contract status by network in background
+					prosaic_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						prosaic_contract.setField(objContract.hash, "status", status);
+						prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
+						var body = "contract \""+objContract.title+"\" " + status;
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						$modalInstance.dismiss(status);
+					});
 				};
 				$scope.accept = function() {
 					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
 							respond('accepted', signedMessageBase64);
 						});
-					$modalInstance.dismiss('accept');
 				};
 
 				$scope.revoke = function() {
@@ -1618,7 +1627,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				$scope.decline = function() {
 					respond('declined');
-					$modalInstance.dismiss('decline');
 				};
 
 				$scope.close = function() {
@@ -1626,9 +1634,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 
 				$scope.openInExplorer = correspondentListService.openInExplorer;
+
 				$scope.expandProofBlock = function() {
 					$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
 				};
+
+				$scope.checkValidity = function() {
+					$timeout(function() {
+						$scope.validity_checked = true;
+					}, 500);
+				}
 			};
 
 			var modalInstance = $modal.open({
@@ -1652,6 +1667,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					correspondentListService.currentCorrespondent = oldCorrespondent;
 					correspondentListService.currentCorrespondent = correspondent;
 					go.path('correspondentDevices.correspondentDevice');
+					$timeout(function(){
+						$rootScope.tab = $scope.index.tab = 'chat';
+					});
 				}
 			});
 		};
