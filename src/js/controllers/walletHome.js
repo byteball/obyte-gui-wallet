@@ -54,6 +54,12 @@ angular.module('copayApp.controllers')
 			}*/
 		});
 
+		var disableDataPromptListener = $rootScope.$on('dataPrompt', function(event, dataPrompt) {
+			console.log('dataPrompt event ', dataPrompt);
+			$rootScope.$emit('Local/SetTab', 'send');
+			self.setDataForm(dataPrompt);
+		});
+
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
@@ -108,6 +114,7 @@ angular.module('copayApp.controllers')
 			console.log("walletHome $destroy");
 			disableAddrListener();
 			disablePaymentRequestListener();
+			disableDataPromptListener();
 			disablePaymentUriListener();
 			disableTabListener();
 			disableFocusListener();
@@ -1563,6 +1570,44 @@ angular.module('copayApp.controllers')
 				}
 				else
 					this.lockAsset = false;
+			}).bind(this), 1);
+		};
+
+		this.setDataForm = function (dataPrompt) {
+			var app = dataPrompt.app;
+			delete dataPrompt.app;
+			this.resetError();
+			$timeout((function() {
+				switch (app) {
+					case 'data_feed':
+						$scope.assetIndexSelectorValue = -1;
+						break;
+					case 'attestation':
+						$scope.assetIndexSelectorValue = -2;
+						$scope.home.attested_address = dataPrompt.address;
+						delete dataPrompt.address;
+						break;
+					case 'profile':
+						$scope.assetIndexSelectorValue = -3;
+						break;
+					case 'data':
+						$scope.assetIndexSelectorValue = -4;
+						break;
+					case 'poll':
+						$scope.assetIndexSelectorValue = -5;
+						$scope.home.poll_question = dataPrompt.question;
+						delete dataPrompt.question;
+						break;
+				}
+				$scope.home.feedvaluespairs = [];
+				for (var key in dataPrompt) {
+					var value = dataPrompt[key];
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything'} : {name: key, value: value});
+				}
+				this.switchForms();
+			//	$timeout(function () {
+			//		$rootScope.$digest();
+			//	})
 			}).bind(this), 1);
 		};
 
