@@ -18,6 +18,10 @@
 .unit {
 	font-size: 14px;
 }
+.title {
+	margin-top: 10px;
+	margin-bottom: 0;
+}
 span.capitalize {
 	display: inline-block;
 }
@@ -92,7 +96,7 @@ form[name="prosaicContractForm"] {
 		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
-		<span ng-show="validity_checked">
+		<span ng-show="validity_checked">integrity check: 
 			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="hash === calculated_hash && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="hash === calculated_hash && hash === hash_inside_unit" translate>valid</span>
 			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" translate>not valid</span>
 		</span><br><br>

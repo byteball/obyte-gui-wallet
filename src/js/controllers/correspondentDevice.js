@@ -1597,6 +1597,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				var setError = function(err) {
 					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
 				}
 
 				var respond = function(status, signedMessageBase64) {
