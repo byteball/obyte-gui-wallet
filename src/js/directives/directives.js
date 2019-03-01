@@ -558,7 +558,7 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  }).directive('markdown', function ($rootScope, $timeout) {
+  }).directive('markdown', function ($rootScope, $timeout, isCordova) {
   	var md = window.markdownit({linkify: true}).disable(['image', 'link']);
   return {
     restrict: 'A',
