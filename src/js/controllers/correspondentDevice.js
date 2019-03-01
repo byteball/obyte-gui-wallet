@@ -1622,10 +1622,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 
 				$scope.revoke = function() {
-					device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
-					prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
-					device.sendMessageToDevice(objContract.peer_device_address, "text", "contract revoked");
-					$modalInstance.dismiss('revoke');
+					prosaic_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
+						prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
+						var body = "contract \""+objContract.title+"\" revoked";
+						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						$modalInstance.dismiss('revoke');
+					});
 				};
 
 				$scope.decline = function() {
