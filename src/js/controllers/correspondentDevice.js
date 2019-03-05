@@ -1277,8 +1277,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 
 	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
-		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
-			handleResult(rows.length > 0);
+		var disclosed_fields = [];
+		for (var field in objPrivateProfile.src_profile){
+			var arrValueAndBlinding = objPrivateProfile.src_profile[field];
+			if (ValidationUtils.isArrayOfLength(arrValueAndBlinding, 2)) {
+				disclosed_fields.push(field);
+			}
+		}
+		db.query("SELECT COUNT(1) AS count FROM private_profiles \n\
+			JOIN private_profile_fields USING(private_profile_id) \n\
+			WHERE unit=? AND payload_hash=? AND field IN (?)", [objPrivateProfile.unit, objPrivateProfile.payload_hash, disclosed_fields], function(rows){
+			handleResult(rows[0].count === disclosed_fields.length);
 		});
 	}
 	
