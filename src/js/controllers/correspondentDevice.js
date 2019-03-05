@@ -1277,8 +1277,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 
 	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
-		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
-			handleResult(rows.length > 0);
+		var disclosed_fields = [];
+		for (var field in objPrivateProfile.src_profile){
+			var arrValueAndBlinding = objPrivateProfile.src_profile[field];
+			if (ValidationUtils.isArrayOfLength(arrValueAndBlinding, 2)) {
+				disclosed_fields.push(field);
+			}
+		}
+		db.query("SELECT COUNT(1) AS count FROM private_profiles \n\
+			JOIN private_profile_fields USING(private_profile_id) \n\
+			WHERE unit=? AND payload_hash=? AND field IN (?)", [objPrivateProfile.unit, objPrivateProfile.payload_hash, disclosed_fields], function(rows){
+			handleResult(rows[0].count === disclosed_fields.length);
 		});
 	}
 	
@@ -1597,6 +1606,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 				var setError = function(err) {
 					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
 				}
 
 				var respond = function(status, signedMessageBase64) {
@@ -1619,10 +1631,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 
 				$scope.revoke = function() {
-					device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
-					prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
-					device.sendMessageToDevice(objContract.peer_device_address, "text", "contract revoked");
-					$modalInstance.dismiss('revoke');
+					prosaic_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
+						prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
+						var body = "contract \""+objContract.title+"\" revoked";
+						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						$modalInstance.dismiss('revoke');
+					});
 				};
 
 				$scope.decline = function() {
