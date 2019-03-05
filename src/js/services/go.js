@@ -122,30 +122,38 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		console.log("handleUri "+uri);
 
 		require('ocore/uri.js').parseUri(uri, {
-			ifError: function(err){
+			ifError: function (err) {
 				console.log(err);
 				notification.error(err);
 				//notification.success(gettextCatalog.getString('Success'), err);
 			},
-			ifOk: function(objRequest){
-				console.log("request: "+JSON.stringify(objRequest));
-				if (objRequest.type === 'address'){
-					root.send(function(){
-						$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
-					});
-				}
-				else if (objRequest.type === 'pairing'){
-					$rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
-				}
-				else if (objRequest.type === 'auth'){
-					authService.objRequest = objRequest;
-					root.path('authConfirmation');
-				}
-				else if (objRequest.type === 'textcoin') {
-					$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
-				}
-				else
-					throw Error('unknown url type: '+objRequest.type);
+			ifOk: function (objRequest) {
+				console.log("request: " + JSON.stringify(objRequest));
+				setTimeout(function () {
+					if (objRequest.type === 'address') {
+						root.send(function () {
+							$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
+						});
+					}
+					else if (objRequest.type === 'data') {
+						delete objRequest.type;
+						root.send(function () {
+							$rootScope.$emit('dataPrompt', objRequest);
+						});
+					}
+					else if (objRequest.type === 'pairing') {
+						$rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
+					}
+					else if (objRequest.type === 'auth') {
+						authService.objRequest = objRequest;
+						root.path('authConfirmation');
+					}
+					else if (objRequest.type === 'textcoin') {
+						$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
+					}
+					else
+						throw Error('unknown url type: ' + objRequest.type);
+				});
 			}
 		});
 	}
