@@ -80,7 +80,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
-	realNameAttestorAddresses: [{address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot'}],
+	realNameAttestorAddresses: [
+		{ address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot (Jumio)' },
+		{ address: 'OHVQ2R5B6TUR5U7WJNYLP3FIOSR7VCED', name: 'Real name attestation bot (Smart card, Mobile ID, Smart ID)' }
+	],
 
 	// requires bluetooth permission on android
 	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
