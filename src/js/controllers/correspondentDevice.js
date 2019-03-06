@@ -20,6 +20,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var conf = require('ocore/conf.js');
 	var storage = require('ocore/storage.js');
 	var breadcrumbs = require('ocore/breadcrumbs.js');
+	var ValidationUtils = require('ocore/validation_utils.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -999,8 +1000,23 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.message_to_sign = message_to_sign;
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				$scope.bDisabled = false;
-				scopeApply();
+				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g);
+				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
+				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
+					$scope.bDisabled = false;
+					return scopeApply();
+				}
+				db.query(
+					"SELECT address FROM my_addresses \n\
+					WHERE wallet = ? AND address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
+					fc.credentials.walletId,
+					function (rows) {
+						if (rows.length > 0)
+							$scope.address = rows[0].address;
+						$scope.bDisabled = false;
+						scopeApply();
+					}
+				);
 			});
 			
 			function scopeApply(){
