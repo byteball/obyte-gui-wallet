@@ -668,6 +668,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	eventBus.on("text", function(from_address, body, message_counter){
 		device.readCorrespondent(from_address, function(correspondent){
+			if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
 			addIncomingMessageEvent(correspondent.device_address, body, message_counter);
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
 		});
