@@ -1568,7 +1568,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var prosaic_contract = require('ocore/prosaic_contract.js');
 
 				$scope.isIncoming = !!isIncoming;
-				$scope.index = indexScope;
 				$scope.text = objContract.text;
 				$scope.title = objContract.title;
 				$scope.isMobile = isMobile.any();
@@ -1626,12 +1625,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
 						var body = "contract \""+objContract.title+"\" " + status;
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
-						$modalInstance.dismiss(status);
+						if (status !== 'accepted')
+							$modalInstance.dismiss(status);
 					});
 				};
 				$scope.accept = function() {
-					correspondentListService.signMessageFromAddress(objContract.hash, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
+					$modalInstance.dismiss();
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
 							respond('accepted', signedMessageBase64);
 						});
 				};
