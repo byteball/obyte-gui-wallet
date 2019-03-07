@@ -1144,11 +1144,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.loadMoreHistory = function(cb) {
-		correspondentListService.loadMoreHistory(correspondent, cb);
+		correspondentListService.loadMoreHistory(correspondent, function() {
+			cb();
+		});
 	}
 
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
+		$timeout(function(){
+			$scope.$digest();
+		});
 		for (var i in $scope.messageEvents) {
 			var message = $scope.messageEvents[i];
 			if (message.chat_recording_status) {
@@ -1579,6 +1584,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var prosaic_contract = require('ocore/prosaic_contract.js');
 
 				$scope.isIncoming = !!isIncoming;
+				$scope.index = indexScope;
 				$scope.text = objContract.text;
 				$scope.title = objContract.title;
 				$scope.isMobile = isMobile.any();
@@ -1864,15 +1870,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         		scope.autoScrollEnabled = false;
         	else 
         		scope.autoScrollEnabled = true;
-            if (raw.scrollTop <= 20 && !scope.loadingHistory) { // load more items before you hit the top
+            if (raw.scrollTop <= 0 && !scope.loadingHistory) { // load more items before you hit the top
                 scope.loadingHistory = true;
-                chatScrollPosition.prepareFor('up');
             	scope[attr.whenScrolled](function(){
+            		chatScrollPosition.prepareFor('up');
             		$timeout(function(){
 	            		scope.$digest();
+	            		chatScrollPosition.restore();
+                		//$timeout(function(){scope.loadingHistory = false; console.log('SCROLLED')}, 250);
+                		scope.loadingHistory = false;
 	            	});
-                	chatScrollPosition.restore();
-                	scope.loadingHistory = false;
                 });
             }
         });

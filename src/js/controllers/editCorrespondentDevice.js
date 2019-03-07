@@ -61,6 +61,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 			if (!objContract)
 				throw Error("no contract found in database for hash " + hash);
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
+				$scope.index = indexScope;
 				$scope.unit = objContract.unit;
 				$scope.status = objContract.status;
 				$scope.title = objContract.title;
