@@ -563,9 +563,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
 					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
-				$timeout(function(){
-					$rootScope.$digest();
-				});
 				if (cb) cb();
 			});
 		});
