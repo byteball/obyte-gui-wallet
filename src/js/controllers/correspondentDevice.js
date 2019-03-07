@@ -1825,7 +1825,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	    this.node = node;
 	    this.previousScrollHeightMinusTop = 0;
 	    this.readyFor = 'up';
-	    this.scrollWasForced = false;
 	}
 
 	ScrollPosition.prototype.restore = function () {
@@ -1833,20 +1832,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	        this.node.scrollTop = this.node.scrollHeight
 	            - this.previousScrollHeightMinusTop;
 	    }
-	    this.scrollWasForced = true;
 	}
 
 	ScrollPosition.prototype.prepareFor = function (direction) {
 	    this.readyFor = direction || 'up';
 	    this.previousScrollHeightMinusTop = this.node.scrollHeight
 	        - this.node.scrollTop;
-	}
-
-	ScrollPosition.prototype.wasScrollForced = function() {
-		if (!this.scrollWasForced)
-			return false;
-		this.scrollWasForced = false;
-		return true;
 	}
 
     return function(scope, elm, attr) {
@@ -1859,8 +1850,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         });
         
         elm.bind('scroll', function() {
-        	if (chatScrollPosition.wasScrollForced())
-        		return;
         	if (raw.scrollTop + raw.offsetHeight != raw.scrollHeight) 
         		scope.autoScrollEnabled = false;
         	else 
