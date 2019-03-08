@@ -1648,9 +1648,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 				$scope.accept = function() {
 					$modalInstance.dismiss();
-					correspondentListService.signMessageFromAddress(objContract.title, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function(err, signedMessageBase64){
-							respond('accepted', signedMessageBase64);
-						});
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+						if (err)
+							return setError(err);
+						respond('accepted', signedMessageBase64);
+					});
 				};
 
 				$scope.revoke = function() {
