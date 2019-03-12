@@ -3,12 +3,12 @@
   version="2.6.0"
   android-versionCode="1073"
   ios-CFBundleVersion="2.6.0" xmlns:android="http://schemas.android.com/apk/res/android">
-    <name>Byteball TN</name>
+    <name>Obyte TN</name>
     <description>
-      Byteball wallet for testnet.
+      Obyte wallet for testnet.
     </description>
-    <author email="byteball@byteball.org" href="https://byteball.org">
-        Byteball
+    <author email="o@obyte.org" href="https://obyte.org">
+        Obyte
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -85,15 +85,15 @@
 				        <string>public.data</string>
 				    </array>
 				    <key>UTTypeDescription</key>
-				    <string>Byteball Private Coin For Testnet</string>
+				    <string>Obyte Private Coin For Testnet</string>
 				    <key>UTTypeIdentifier</key>
-				    <string>org.byteball.coin-tn</string>
+				    <string>org.obyte.coin-tn</string>
 				    <key>UTTypeTagSpecification</key>
 				    <dict>
 				        <key>public.filename-extension</key>
 				        <string>coin-tn</string>
 				        <key>public.mime-type</key>
-				        <string>application/x-byteball</string>
+				        <string>application/x-obyte</string>
 				    </dict>
 				</dict>
 				</array>
@@ -102,15 +102,18 @@
 	    	<array>
 			    <dict>
 			        <key>CFBundleTypeName</key>
-			        <string>Byteball Private Coin For Testnet</string>
+			        <string>Obyte Private Coin</string>
 			        <key>LSHandlerRank</key>
 			        <string>Owner</string>
 			        <key>LSItemContentTypes</key>
 			        <array>
-			            <string>org.byteball.coin-tn</string>
+			            <string>org.obyte.coin-tn</string>
 			        </array>
 			    </dict>
 			</array>
+		</config-file>
+		<config-file target="*-Info.plist" parent="LSSupportsOpeningDocumentsInPlace">
+			<false/>
 		</config-file>
     </platform>
 
@@ -122,6 +125,8 @@
                 <data android:mimeType="application/octet-stream" />
                 <data android:mimeType="application/x-byteball" />
                 <data android:mimeType="application/byteball" />
+                <data android:mimeType="application/x-obyte" />
+                <data android:mimeType="application/obyte" />
                 <data android:mimeType="application/zip" />
                 <data android:mimeType="*/coin-tn" />
                 <data android:mimeType="application/coin-tn" />

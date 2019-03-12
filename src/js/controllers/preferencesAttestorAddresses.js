@@ -9,6 +9,7 @@ function PreferencesAttestorAddressesCtrl(
 	configService, go,
 	attestorAddressListService, aliasValidationService
 ) {
+	this.go = go;
 	var config = configService.getSync();
 	var configAttestorAddresses = config.attestorAddresses;
 	console.log('!!!configAttestorAddresses', JSON.stringify(configAttestorAddresses, null, 4));
@@ -45,6 +46,8 @@ function PreferencesAttestorAddressesCtrl(
 		}
 		return 0;
 	});
+
+	this.realNameAttestorAddresses = config.realNameAttestorAddresses;
 
 	this.edit = function (attestorKey) {
 		attestorAddressListService.currentAttestorKey = attestorKey;

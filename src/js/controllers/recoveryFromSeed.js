@@ -4,20 +4,20 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 	function ($rootScope, $scope, $log, $timeout, profileService) {
 
 		var async = require('async');
-		var conf = require('byteballcore/conf.js');
-		var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys.js');
-		var objectHash = require('byteballcore/object_hash.js');
+		var conf = require('ocore/conf.js');
+		var wallet_defined_by_keys = require('ocore/wallet_defined_by_keys.js');
+		var objectHash = require('ocore/object_hash.js');
 		try{
 			var ecdsa = require('secp256k1');
 		}
 		catch(e){
-			var ecdsa = require('byteballcore/node_modules/secp256k1' + '');
+			var ecdsa = require('ocore/node_modules/secp256k1' + '');
 		}
 		var Mnemonic = require('bitcore-mnemonic');
 		var Bitcore = require('bitcore-lib');
-		var db = require('byteballcore/db.js');
-		var network = require('byteballcore/network');
-		var myWitnesses = require('byteballcore/my_witnesses');
+		var db = require('ocore/db.js');
+		var network = require('ocore/network');
+		var myWitnesses = require('ocore/my_witnesses');
 
 		var self = this;
 
@@ -200,7 +200,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 						witnesses: arrWitnesses
 					}, function (ws, request, response) {
 						if(response && response.error){
-							var breadcrumbs = require('byteballcore/breadcrumbs.js');
+							var breadcrumbs = require('ocore/breadcrumbs.js');
 							breadcrumbs.add('Error scanForAddressesAndWalletsInLightClient: ' + response.error);
 							self.error = 'When scanning an error occurred, please try again later.';
 							self.scanning = false;
@@ -240,7 +240,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		}
 
 		function cleanAndAddWalletsAndAddresses(assocMaxAddressIndexes) {
-			var device = require('byteballcore/device');
+			var device = require('ocore/device');
 			var arrWalletIndexes = Object.keys(assocMaxAddressIndexes);
 			if (arrWalletIndexes.length) {
 				removeAddressesAndWallets(function () {

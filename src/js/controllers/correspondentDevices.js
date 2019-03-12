@@ -12,10 +12,12 @@ angular
 		$state,
 		$rootScope
 	) {
-		var wallet = require('byteballcore/wallet.js');
-		var bots = require('byteballcore/bots.js');
-		var mutex = require('byteballcore/mutex.js');
-		var db = require('byteballcore/db.js');
+		var wallet = require('ocore/wallet.js');
+		var bots = require('ocore/bots.js');
+		var mutex = require('ocore/mutex.js');
+		var db = require('ocore/db.js');
+	
+		var bFirstLoad = true;
 		
 		var fc = profileService.focusedClient;
 
@@ -105,7 +107,7 @@ angular
 				}
 				$scope.list = ab;
 
-				wallet.readDeviceAddressesUsedInSigningPaths(function(
+				wallet.readNonRemovableDevices(function(
 					arrNotRemovableDeviceAddresses
 				) {
 					// add a new property indicating whether the device can be removed or not
@@ -127,28 +129,36 @@ angular
 
 				bots.load(function(err, rows) {
 					if (err) $scope.botsError = err.toString();
-					rows.forEach(function(row){
-						row.name_and_desc = row.name + ' ' + row.description;
-					});
+					if (rows){ // skip if network error
+						rows.forEach(function(row){
+							row.name_and_desc = row.name + ' ' + row.description;
+						});
+					}
 					$scope.bots = rows;
 					$timeout(function() {
 						$scope.$digest();
 					});
-					
-					db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
-						var assocLastMessageDateByCorrespondent = {};
+				});
+				
+				db.query("SELECT correspondent_address, MAX(creation_date) AS last_message_date FROM chat_messages WHERE type='text' GROUP BY correspondent_address", function(rows) {
+					var assocLastMessageDateByCorrespondent = correspondentListService.assocLastMessageDateByCorrespondent;
 
-						rows.forEach(function(row) {
+					rows.forEach(function(row) {
+						if (!assocLastMessageDateByCorrespondent[row.correspondent_address] || row.last_message_date > assocLastMessageDateByCorrespondent[row.correspondent_address])
 							assocLastMessageDateByCorrespondent[row.correspondent_address] = row.last_message_date;
-						});
+					});
 
-						ab = ab.forEach(function(correspondent) {
-							correspondent.last_message_date = assocLastMessageDateByCorrespondent[correspondent.device_address] || '2016-12-25 00:00:00';
-						});
+					ab = ab.forEach(function(correspondent) {
+						correspondent.last_message_date = assocLastMessageDateByCorrespondent[correspondent.device_address] || '2016-12-25 00:00:00';
+					});
+					
+					if (bFirstLoad){
+						$scope.changeOrder('contacts', $scope.contactsSortOrderList[1]); // sort by recent
+						bFirstLoad = false;
+					}
 
-						$timeout(function() {
-							$scope.$digest();
-						});
+					$timeout(function() {
+						$scope.$digest();
 					});
 				});
 			});
@@ -170,7 +180,7 @@ angular
 							'device ' + device_address + ' is not removable'
 						);
 					}
-					var device = require('byteballcore/device.js');
+					var device = require('ocore/device.js');
 
 					// send message to paired device
 					// this must be done before removing the device
@@ -209,7 +219,7 @@ angular
 		// Contacts order
 		$scope.contactsSearchText = '';
 		$scope.contactsSortOrder = $scope.newMsgByAddressComparator;
-		$scope.contactsSortOrderLabel = 'recent';
+		$scope.contactsSortOrderLabel = 'alphabetic';
 		$scope.contactsSortOrderList = [{
 			label: 'alphabetic',
 			type: $scope.newMsgByAddressComparator,

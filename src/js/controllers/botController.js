@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('botController',
   function($stateParams, $scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService) {
 	
 	var self = this;
-	var bots = require('byteballcore/bots.js');
+	var bots = require('ocore/bots.js');
 	var fc = profileService.focusedClient;
 	$scope.backgroundColor = fc.backgroundColor;
 	$scope.$root = $rootScope;

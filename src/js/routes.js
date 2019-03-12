@@ -1,7 +1,7 @@
 'use strict';
 
 var unsupported, isaosp;
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
@@ -372,6 +372,16 @@ angular
           },
         }
       })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditRealNameAttestors', {
+        url: '/editrna',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditRealNameAttestors.html'
+          },
+        }
+      })
       .state('preferencesGlobal.preferencesUnit', {
         url: '/preferencesGlobal/unit',
         templateUrl: 'views/preferencesUnit.html',
@@ -590,7 +600,7 @@ angular
         type: "menubar"
       });
       try {
-        nativeMenuBar.createMacBuiltin("Byteball");
+        nativeMenuBar.createMacBuiltin("Obyte");
       } catch (e) {
         $log.debug('This is not OSX');
       }

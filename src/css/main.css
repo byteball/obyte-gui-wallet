@@ -1,6 +1,6 @@
 /*
  *
- * Byteball main CSS
+ * Obyte main CSS
  *
  */
 
@@ -680,6 +680,8 @@ input[type=number]::-webkit-outer-spin-button {
   width: 57px;
   text-align: center;
   font-size: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bg-alert {

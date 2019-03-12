@@ -1,12 +1,12 @@
 'use strict';
 
 var async = require('async');
-var constants = require('byteballcore/constants.js');
-var mutex = require('byteballcore/mutex.js');
-var eventBus = require('byteballcore/event_bus.js');
-var objectHash = require('byteballcore/object_hash.js');
-var ecdsaSig = require('byteballcore/signature.js');
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var constants = require('ocore/constants.js');
+var mutex = require('ocore/mutex.js');
+var eventBus = require('ocore/event_bus.js');
+var objectHash = require('ocore/object_hash.js');
+var ecdsaSig = require('ocore/signature.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     
     function updatePublicKeyRing(walletClient, onDone){
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(walletClient.credentials.walletId, function(arrCosigners){
             var arrApprovedDevices = arrCosigners.
                 filter(function(cosigner){ return cosigner.approval_date; }).
@@ -59,8 +59,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     }
     
     function sendBugReport(error_message, error_object){
-        var conf = require('byteballcore/conf.js');
-        var network = require('byteballcore/network.js');
+        var conf = require('ocore/conf.js');
+        var network = require('ocore/network.js');
         var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
         network.findOutboundPeerOrConnect(bug_sink_url, function(err, ws){
             if (err)
@@ -80,7 +80,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	self.sendBugReport = sendBugReport;
 	
 	if (isCordova && constants.version === '1.0'){
-        var db = require('byteballcore/db.js');
+        var db = require('ocore/db.js');
 		db.query("SELECT 1 FROM units WHERE version!=? LIMIT 1", [constants.version], function(rows){
 			if (rows.length > 0){
 				self.showErrorPopup("Looks like you have testnet data.  Please remove the app and reinstall.", function() {
@@ -112,7 +112,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (error_object && error_object.bIgnore)
 			return;
         self.showErrorPopup(error_message, function() {
-			var db = require('byteballcore/db.js');
+			var db = require('ocore/db.js');
 			db.close();
             if (self.isCordova && navigator && navigator.app) // android
                 navigator.app.exitApp();
@@ -124,14 +124,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 	
 	function readLastDateString(cb){
-		var conf = require('byteballcore/conf.js');
+		var conf = require('ocore/conf.js');
 		if (conf.storage !== 'sqlite')
 			return cb();
-		var db = require('byteballcore/db.js');
+		var db = require('ocore/db.js');
 		db.query(
-			"SELECT int_value FROM unit_authors JOIN data_feeds USING(unit) \n\
-			WHERE address=? AND feed_name='timestamp' \n\
-			ORDER BY unit_authors.rowid DESC LIMIT 1",
+			"SELECT int_value FROM data_feeds CROSS JOIN unit_authors USING(unit) \n\
+			WHERE +address=? AND +feed_name='timestamp' \n\
+			ORDER BY data_feeds.rowid DESC LIMIT 1",
 			[configService.TIMESTAMPER_ADDRESS],
 			function(rows){
 				if (rows.length === 0)
@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 	
 	function readSyncPercent(cb){
-		var db = require('byteballcore/db.js');
+		var db = require('ocore/db.js');
 		db.query("SELECT COUNT(1) AS count_left FROM catchup_chain_balls", function(rows){
 			var count_left = rows[0].count_left;
 			if (count_left === 0)
@@ -224,7 +224,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
 
     eventBus.on("refused_to_sign", function(device_address){
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Refused'), correspondent.name + " refused to sign the transaction");
         });
@@ -261,7 +261,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             return;
         var walletName = client.credentials.walletName;
         updatePublicKeyRing(client);
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" approved by "+correspondent.name);
         });
@@ -272,7 +272,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         if (!client) // already deleted (maybe declined by another device)
             return;
         var walletName = client.credentials.walletName;
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
             notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
         });
@@ -302,8 +302,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
     // in arrOtherCosigners, 'other' is relative to the initiator
     eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
-		var device = require('byteballcore/device.js');
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var device = require('ocore/device.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
         device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -388,8 +388,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             console.log("refused signature");
         }
         
-		var bbWallet = require('byteballcore/wallet.js');
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var bbWallet = require('ocore/wallet.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
         var unit = objUnit.unit;
         var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
         mutex.lock(["signing_request-"+unit], function(unlock){
@@ -494,26 +494,81 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
-                        requestApproval(question, {
-                            ifYes: function(){
-                                createAndSendSignature();
-                                assocChoicesByUnit[unit] = "approve";
-                                unlock();
-                            },
-                            ifNo: function(){
-                                // do nothing
-                                console.log("===== NO CLICKED");
-                                refuseSignature();
-                                assocChoicesByUnit[unit] = "refuse";
-                                unlock();
-                            }
-                        });
+						var ask = function() {
+							requestApproval(question, {
+	                            ifYes: function(){
+	                                createAndSendSignature();
+	                                assocChoicesByUnit[unit] = "approve";
+	                                unlock();
+	                            },
+	                            ifNo: function(){
+	                                // do nothing
+	                                console.log("===== NO CLICKED");
+	                                refuseSignature();
+	                                assocChoicesByUnit[unit] = "refuse";
+	                                unlock();
+	                            }
+	                        });
+						}
+						// prosaic contract auto-approve
+						function shouldAsk(cb3) {
+							var matches = question.match(/contract_text_hash: (.{44})/m);
+							if (matches && matches.length) {
+								var contract_hash = matches[1];
+								require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
+									var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
+									if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
+										return cb3(true);
+									var shared_address;
+									async.series([function(cb2){
+										var shared_author = lodash.find(objUnit.authors, function(author){
+											try {
+												return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
+											} catch (e) {
+												return false;
+											}
+										});
+										if (shared_author)
+											shared_address = shared_author.address;
+										cb2();
+									}, function(cb2){
+										if (shared_address)
+											return cb2();
+										var db = require('ocore/db.js');
+										db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
+											if (!rows || !rows.length)
+												return cb2();
+											var definition = JSON.parse(rows[0].definition);
+											try {
+												if (definition[0] === "and" && definition[1][0][0] === "address" && definition[1][1][0] === "address")
+													shared_address = arrPaymentMessages[0].payload.outputs[0].address;
+												cb2();
+											} catch (e) {
+												cb2();
+											}
+										});
+									}], function() {
+										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
+											return cb3(true);
+										return cb3(false);
+									});
+								});
+							} else {
+								return cb3(true);
+							}
+						}
+					 	shouldAsk(function(should_ask){
+						 	if (should_ask)
+						 		return ask();
+						 	createAndSendSignature();
+                            assocChoicesByUnit[unit] = "approve";
+                            unlock();
+						 });
                     }
                 ); // eachSeries
             });
         });
     });
-
     
     var accept_msg = gettextCatalog.getString('Yes');
     var cancel_msg = gettextCatalog.getString('No');
@@ -593,7 +648,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
 
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -601,6 +657,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
+				});
+				prosaic_contract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
+					if (row)
+						objSharedWallet.has_prosaic_contract = true;
 				});
 			},
 			function(){
@@ -721,7 +781,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.lockedBalanceBytes = null;
     self.availableBalanceBytes = null;
     self.pendingAmount = null;
-    self.spendUnconfirmed = null;
 
     self.totalBalanceStr = null;
     self.availableBalanceStr = null;
@@ -739,7 +798,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.historyShowShowAll = false;
     self.balanceByAddress = null;
     self.pendingTxProposalsCountForUs = null;
-    self.setSpendUnconfirmed();
 
     $timeout(function() {
         //$rootScope.$apply();
@@ -770,7 +828,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         self.setAddressbook();
 
         console.log("reading cosigners");
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
             self.copayers = arrCosignerInfos;
 			$timeout(function(){
@@ -879,7 +937,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         return breadcrumbs.add('updateAll not complete yet');
       
     // reconnect if lost connection
-	var device = require('byteballcore/device.js');
+	var device = require('ocore/device.js');
     device.loginToHub();
 
     $timeout(function() {
@@ -917,10 +975,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             }, 1);
         }
     });
-  };
-
-  self.setSpendUnconfirmed = function() {
-    self.spendUnconfirmed = configService.getSync().wallet.spendUnconfirmed;
   };
 
 
@@ -1089,7 +1143,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
       /*
     // SAT
-    if (self.spendUnconfirmed) {
+    if (configService.getSync().wallet.spendUnconfirmed) {
       self.totalBalanceBytes = balance.totalAmount;
       self.lockedBalanceBytes = balance.lockedAmount || 0;
       self.availableBalanceBytes = balance.availableAmount || 0;
@@ -1185,7 +1239,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $log.debug('Wallet Transaction History:', txs);
 
           var data = txs;
-          var filename = 'Byteball-' + (self.alias || self.walletName) + '.csv';
+          var filename = 'Obyte-' + (self.alias || self.walletName) + '.csv';
           var csvContent = '';
 
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
@@ -1313,7 +1367,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (self.assetIndex !== self.oldAssetIndex) // it was a swipe
                 return console.log("== swipe");
             console.log('== updateHistoryFromNetwork');
-			var lightWallet = require('byteballcore/light_wallet.js');
+			var lightWallet = require('ocore/light_wallet.js');
             lightWallet.refreshLightClientHistory();
         }, 500);
     }, 5000);
@@ -1502,11 +1556,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
   });
 
-  $rootScope.$on('Local/SpendUnconfirmedUpdated', function(event) {
-    self.setSpendUnconfirmed();
-    self.updateAll();
-  });
-
   $rootScope.$on('Local/ProfileBound', function() {
   });
 
@@ -1547,7 +1596,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
 	$log.debug('### Resume event');
-	var lightWallet = require('byteballcore/light_wallet.js');
+	var lightWallet = require('ocore/light_wallet.js');
 	lightWallet.refreshLightClientHistory();
 	//self.debouncedUpdate();
   });

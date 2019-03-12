@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
   function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
 	
-		var conf = require('byteballcore/conf.js');
+		var conf = require('ocore/conf.js');
   
     $scope.encrypt = !!profileService.profile.xPrivKeyEncrypted;
     
@@ -12,14 +12,28 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.unitName = config.wallet.settings.unitName;
       this.bbUnitName = config.wallet.settings.bbUnitName;
       this.deviceName = config.deviceName;
-      this.myDeviceAddress = require('byteballcore/device.js').getMyDeviceAddress();
+      this.myDeviceAddress = require('ocore/device.js').getMyDeviceAddress();
       this.hub = config.hub;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
       this.torEnabled = conf.socksHost && conf.socksPort;
       $scope.pushNotifications = config.pushNotifications.enabled;
+	  $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
     };
 
 
+	var unwatchSpendUnconfirmed = $scope.$watch('spendUnconfirmed', function(newVal, oldVal) {
+		if (newVal == oldVal) return;
+		var opts = {
+			wallet: {
+				spendUnconfirmed: newVal
+			}
+		};
+		configService.set(opts, function(err) {
+		//	$rootScope.$emit('Local/SpendUnconfirmedUpdated');
+			if (err) $log.debug(err);
+		});
+	});
+	
     var unwatchPushNotifications = $scope.$watch('pushNotifications', function(newVal, oldVal) {
       if (newVal == oldVal) return;
       var opts = {
@@ -74,6 +88,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
 
 
     $scope.$on('$destroy', function() {
+        unwatchSpendUnconfirmed();
         unwatchPushNotifications();
         unwatchEncrypt();
     });

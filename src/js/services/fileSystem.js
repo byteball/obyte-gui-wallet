@@ -7,7 +7,7 @@ angular.module('copayApp.services')
 	
 	var fs = require('fs' + '');
 	try {
-		var desktopApp = require('byteballcore/desktop_app.js' + '');
+		var desktopApp = require('ocore/desktop_app.js' + '');
 	} catch (e) {
 		
 	}

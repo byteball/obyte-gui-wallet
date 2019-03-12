@@ -26,40 +26,40 @@ wp8-debug:
 
 ios-prod:
 	cordova/build.sh IOS --clear
-	cd ../byteballbuilds/project-IOS-tn && cordova build ios
-#	open ../byteballbuilds/project-IOS-tn/platforms/ios/Byteball.xcodeproj
+	cd ../obytebuilds/project-IOS-tn && cordova build ios
+#	open ../obytebuilds/project-IOS-tn/platforms/ios/Obyte.xcodeproj
 
 ios-prod-fast:
 	cordova/build.sh IOS
-	cd ../byteballbuilds/project-IOS && cordova build ios
-	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
+	cd ../obytebuilds/project-IOS && cordova build ios
+	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
 
 ios-debug:
 	cordova/build.sh IOS --dbgjs --clear
-	cd ../byteballbuilds/project-IOS && cordova build ios
-	open ../byteballbuilds/project-IOS/platforms/ios/Byteball.xcodeproj
+	cd ../obytebuilds/project-IOS && cordova build ios
+	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
 
 ios-debug-fast:
 	cordova/build.sh IOS --dbgjs
-	cd ../byteballbuilds/project-IOS-tn && cordova build ios
-	open ../byteballbuilds/project-IOS-tn/platforms/ios/Byteball.xcodeproj
+	cd ../obytebuilds/project-IOS-tn && cordova build ios
+	open ../obytebuilds/project-IOS-tn/platforms/ios/Obyte.xcodeproj
 
 android-prod:
 	cordova/build.sh ANDROID --clear
 #	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
-	cd ../byteballbuilds/project-ANDROID-tn && cordova run android --device
+	cd ../obytebuilds/project-ANDROID-tn && cordova run android --device
 	
 android-prod-fast:
 	cordova/build.sh ANDROID
-	cd ../byteballbuilds/project-ANDROID-tn && cordova run android --device
+	cd ../obytebuilds/project-ANDROID-tn && cordova run android --device
 
 android-debug:
 	cordova/build.sh ANDROID --dbgjs --clear
 #	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
-	cd ../byteballbuilds/project-ANDROID-tn && cordova run android --device
+	cd ../obytebuilds/project-ANDROID-tn && cordova run android --device
 
 android-debug-fast:
 	cordova/build.sh ANDROID --dbgjs
 #	cp ./etc/beep.ogg ./cordova/project/plugins/phonegap-plugin-barcodescanner/src/android/LibraryProject/res/raw/beep.ogg
-	cd ../byteballbuilds/project-ANDROID-tn && cordova run android --device
-#	cd ../byteballbuilds/project-ANDROID-tn && cordova build android
+	cd ../obytebuilds/project-ANDROID-tn && cordova run android --device
+#	cd ../obytebuilds/project-ANDROID-tn && cordova build android

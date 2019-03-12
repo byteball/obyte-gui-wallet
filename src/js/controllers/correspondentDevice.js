@@ -2,24 +2,25 @@
 'use strict';
 
 
-var constants = require('byteballcore/constants.js');
+var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
 	
 	var async = require('async');
-	var chatStorage = require('byteballcore/chat_storage.js');
+	var chatStorage = require('ocore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var privateProfile = require('byteballcore/private_profile.js');
-	var objectHash = require('byteballcore/object_hash.js');
-	var db = require('byteballcore/db.js');
-	var network = require('byteballcore/network.js');
-	var device = require('byteballcore/device.js');
-	var eventBus = require('byteballcore/event_bus.js');
-	var conf = require('byteballcore/conf.js');
-	var storage = require('byteballcore/storage.js');
-	var breadcrumbs = require('byteballcore/breadcrumbs.js');
+	var privateProfile = require('ocore/private_profile.js');
+	var objectHash = require('ocore/object_hash.js');
+	var db = require('ocore/db.js');
+	var network = require('ocore/network.js');
+	var device = require('ocore/device.js');
+	var eventBus = require('ocore/event_bus.js');
+	var conf = require('ocore/conf.js');
+	var storage = require('ocore/storage.js');
+	var breadcrumbs = require('ocore/breadcrumbs.js');
+	var ValidationUtils = require('ocore/validation_utils.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -37,7 +38,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
 			ifOk: function(){
 				device.updateCorrespondentProps(correspondent);
@@ -111,6 +112,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$timeout(function(){
 					$scope.$apply();
 				});
+				correspondentListService.assocLastMessageDateByCorrespondent[correspondent.device_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, message, 0);
 			},
 			ifError: function(error){
@@ -186,7 +188,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	
 	$scope.offerContract = function(address){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		$scope.oracles = configService.oracles;
@@ -307,7 +309,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							asset: contract.peerAsset, 
 							amount: peer_amount
 						}];
-						readLastMainChainIndex(function(err, last_mci){
+						correspondentListService.readLastMainChainIndex(function(err, last_mci){
 							if (err){
 								$scope.error = err;
 								$timeout(function() {
@@ -315,8 +317,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								}, 1);
 								return;
 							}
+							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
+								contract.feed_value = parseInt(contract.feed_value);
+							else
+								contract.feed_value = contract.feed_value + '';
 							var arrExplicitEventCondition = 
-								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value+'', last_mci]];
+								['in data feed', [[contract.oracle_address], contract.feed_name, contract.relation, contract.feed_value, last_mci]];
 							var arrEventCondition = arrExplicitEventCondition;
 							var data_address = (contract.data_party === 'me') ? my_address : address;
 							var expiry_address = (contract.expiry_party === 'me') ? my_address : address;
@@ -378,6 +384,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					function composeAndSend(shared_address, arrDefinition, assocSignersByPath, my_address){
 						profileService.bKeepUnlocked = true;
 						var opts = {
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							shared_address: indexScope.shared_address,
 							asset: contract.myAsset,
 							to_address: shared_address,
@@ -455,12 +462,92 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
 	};
-	
-	
-	
+
+	$scope.offerProsaicContract = function(address){
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
+		$rootScope.modalOpened = true;
+		var fc = profileService.focusedClient;
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+
+			$scope.form = {
+				ttl: 24*7
+			};
+			$scope.index = indexScope;
+			$scope.isMobile = isMobile.any();
+
+			readMyPaymentAddress(fc, function(my_address) {
+				correspondentListService.populateScopeWithAttestedFields($scope, my_address, address, function() {
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+			});
+
+			$scope.CHARGE_AMOUNT = prosaic_contract.CHARGE_AMOUNT;
+			
+			$scope.payAndOffer = function() {
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						return;
+					}
+					console.log('offerProsaicContract');
+					$scope.error = '';
+
+					var contract_text = $scope.form.contractText;
+					var contract_title = $scope.form.contractTitle;
+					var ttl = $scope.form.ttl;
+					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
+
+					readMyPaymentAddress(fc, function(my_address) {
+						var cosigners = getSigningDeviceAddresses(fc);
+						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
+							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+							var body = correspondentListService.formatOutgoingMessage(chat_message);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+							device.readCorrespondent(correspondent.device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							});
+							$modalInstance.dismiss('sent');
+						});
+					});
+				});
+			};
+			
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+
+			$scope.openInExplorer = correspondentListService.openInExplorer;
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/offer-prosaic-contract.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
-		var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -500,6 +587,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
 					throw Error("no member addresses in "+paymentJson);
+				var assocPeerNamesByDeviceAddress = {};
+				var loadCorrespondentNames = function(cb){
+					device.readCorrespondents(function(arrCorrespondents){
+						arrCorrespondents.forEach(function(corr){
+							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
+						});
+						cb();
+					});
+				};
 				var findMyAddresses = function(cb){
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
@@ -521,9 +617,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
+								var assocPeerNamesByAddress = {};
+								for (var path in assocSignersByPath){
+									var signerInfo = assocSignersByPath[path];
+									if (signerInfo.device_address !== device.getMyDeviceAddress())
+										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
+								}
 								$scope.arrHumanReadableDefinitions.push({
 									destinationAddress: destinationAddress,
-									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses)
+									humanReadableDefinition: correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress)
 								});
 							}
 							cb();
@@ -542,6 +644,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
+				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
 				async.series(arrFuncs, function(err){
@@ -641,6 +744,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_multi_payment_key = current_multi_payment_key;
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							asset: asset,
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
@@ -827,6 +931,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
+							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
@@ -895,8 +1000,23 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.message_to_sign = message_to_sign;
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				$scope.bDisabled = false;
-				scopeApply();
+				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g);
+				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
+				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
+					$scope.bDisabled = false;
+					return scopeApply();
+				}
+				db.query(
+					"SELECT address FROM my_addresses \n\
+					WHERE wallet = ? AND address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
+					fc.credentials.walletId,
+					function (rows) {
+						if (rows.length > 0)
+							$scope.address = rows[0].address;
+						$scope.bDisabled = false;
+						scopeApply();
+					}
+				);
 			});
 			
 			function scopeApply(){
@@ -908,47 +1028,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				if (fc.isPrivKeyEncrypted()) {
-					profileService.unlockFC(null, function(err) {
-						if (err){
-							$scope.error = err.message;
-							return scopeApply();
-						}
-						$scope.signMessage();
-					});
-					return;
-				}
-				
-				profileService.requestTouchid(function(err) {
+				correspondentListService.signMessageFromAddress(message_to_sign, $scope.address, getSigningDeviceAddresses(fc), function(err, signedMessageBase64){
 					if (err) {
-						profileService.lockFC();
 						$scope.error = err;
 						return scopeApply();
 					}
-					
-					var current_message_signing_key = require('crypto').createHash("sha256").update($scope.address + message_to_sign).digest('base64');
-					if (current_message_signing_key === indexScope.current_message_signing_key){
-						$rootScope.$emit('Local/ShowErrorAlert', "This message signing is already under way");
-						$modalInstance.dismiss('cancel');
-						return;
-					}
-					indexScope.current_message_signing_key = current_message_signing_key;
-					var recipient_device_address = lodash.clone(correspondent.device_address);
-					fc.signMessage($scope.address, message_to_sign, getSigningDeviceAddresses(fc), function(err, objSignedMessage){
-						delete indexScope.current_message_signing_key;
-						if (!chatScope)
-							return;
-						if (err){
-							setError(err);
-							$timeout(function() {
-								chatScope.$apply();
-							});
-							return;
-						}
-						var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
-						chatScope.message = '[Signed message](signed-message:' + signedMessageBase64 + ')';
-						chatScope.send();
-					});
+					appendText('[Signed message](signed-message:' + signedMessageBase64 + ')');
+					chatScope.send();
 					$modalInstance.dismiss('cancel');
 				});
 			}; // signMessage
@@ -981,7 +1067,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}; // showSignMessageModal
 	
 	
-	
 	$scope.verifySignedMessage = function(signedMessageBase64){
 		$rootScope.modalOpened = true;
 		var self = this;
@@ -993,7 +1078,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.signed_message = objSignedMessage.signed_message;
 			$scope.address = objSignedMessage.authors[0].address;
-			var validation = require('byteballcore/validation.js');
+			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
 				if (err)
@@ -1059,11 +1144,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.loadMoreHistory = function(cb) {
-		correspondentListService.loadMoreHistory(correspondent, cb);
+		correspondentListService.loadMoreHistory(correspondent, function() {
+			cb();
+		});
 	}
 
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
+		$timeout(function(){
+			$scope.$digest();
+		});
 		for (var i in $scope.messageEvents) {
 			var message = $scope.messageEvents[i];
 			if (message.chat_recording_status) {
@@ -1087,18 +1177,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.error = error;
 	}
 	
-	function readLastMainChainIndex(cb){
-		if (conf.bLight){
-			network.requestFromLightVendor('get_last_mci', null, function(ws, request, response){
-				response.error ? cb(response.error) : cb(null, response);
-			});
-		}
-		else
-			storage.readLastMainChainIndex(function(last_mci){
-				cb(null, last_mci);
-			})
-	}
-	
 	function readMyPaymentAddress(fc, cb){
 	//	if (indexScope.shared_address)
 	//		return cb(indexScope.shared_address);
@@ -1110,7 +1188,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddress(fc, cb){
 		if (fc.isSingleAddress)
 			throw Error("trying to issue a new address on a single-address wallet");
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
 				cb(addressInfo.address);
@@ -1121,7 +1199,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
-		var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			myPaymentAddress = addressInfo.address; // cache it in case we need to insert again
 			onDone();
@@ -1220,8 +1298,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 
 	function checkIfPrivateProfileExists(objPrivateProfile, handleResult){
-		db.query("SELECT 1 FROM private_profiles WHERE unit=? AND payload_hash=?", [objPrivateProfile.unit, objPrivateProfile.payload_hash], function(rows){
-			handleResult(rows.length > 0);
+		var disclosed_fields = [];
+		for (var field in objPrivateProfile.src_profile){
+			var arrValueAndBlinding = objPrivateProfile.src_profile[field];
+			if (ValidationUtils.isArrayOfLength(arrValueAndBlinding, 2)) {
+				disclosed_fields.push(field);
+			}
+		}
+		db.query("SELECT COUNT(1) AS count FROM private_profiles \n\
+			JOIN private_profile_fields USING(private_profile_id) \n\
+			WHERE unit=? AND payload_hash=? AND field IN (?)", [objPrivateProfile.unit, objPrivateProfile.payload_hash, disclosed_fields], function(rows){
+			handleResult(rows[0].count === disclosed_fields.length);
 		});
 	}
 	
@@ -1231,10 +1318,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'last_name': return gettext('Last name');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
+			case 'personal_code': return gettext('Personal code');
 			case 'us_state': return gettext('US state');
 			case 'id_number': return gettext('ID number');
 			case 'id_type': return gettext('ID type');
 			case 'id_subtype': return gettext('ID subtype');
+			case 'id_expiry': return gettext('ID expires at');
+			case 'id_issued_at': return gettext('ID issued at');
 			default: return field;
 		}
 	}
@@ -1254,6 +1344,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.openProfile = openProfile;
 			$scope.bDisabled = true;
 			$scope.buttonLabel = gettext('Verifying the profile...');
+			$scope.isMobile = isMobile.any();
+			$scope.openInExplorer = correspondentListService.openInExplorer;
 			privateProfile.parseAndValidatePrivateProfile(objPrivateProfile, function(error, address, attestor_address, bMyAddress){
 				if (!$scope)
 					return;
@@ -1268,10 +1360,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.address = address;
 				$scope.attestor_address = attestor_address;
 				$scope.bMyAddress = bMyAddress;
-				if (!bMyAddress)
+				$scope.unit = objPrivateProfile.unit;
+				$scope.trusted = !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == attestor_address});
+				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();
-					});
+					});*/
 				checkIfPrivateProfileExists(objPrivateProfile, function(bExists){
 					if (bExists)
 						$scope.buttonLabel = gettext('Already saved');
@@ -1288,8 +1382,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.getDisplayField = getDisplayField;
 
 			$scope.store = function() {
-				if (!$scope.bMyAddress)
-					throw Error("not my address");
+				/*if (!$scope.bMyAddress)
+					throw Error("not my address");*/
 				privateProfile.savePrivateProfile(objPrivateProfile, $scope.address, $scope.attestor_address, function(){
 					$timeout(function(){
 						$modalInstance.dismiss('cancel');
@@ -1333,8 +1427,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.bDisabled = true;
 			var sql = fields_list
 				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
-					WHERE field IN(?) GROUP BY private_profile_id "
-				: "SELECT * FROM private_profiles";
+					LEFT JOIN my_addresses USING (address) \n\
+					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
+					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
+				: "SELECT private_profiles.* FROM private_profiles \n\
+					LEFT JOIN my_addresses USING (address) \n\
+					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
+					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
 			var params = fields_list ? [arrFields] : [];
 			readMyPaymentAddress(fc, function(current_address){
 				db.query(sql, params, function(rows){
@@ -1472,7 +1571,176 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
 	};
-	
+
+	$scope.showProsaicContractOffer = function(contractJsonBase64, isIncoming){
+		$rootScope.modalOpened = true;
+		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
+		if (!objContract)
+			throw Error('failed to parse the already validated base64 prosaic contract '+contractJsonBase64);
+		objContract.peer_device_address = correspondent.device_address;
+
+		var showModal = function() {
+			var ModalInstanceCtrl = function($scope, $modalInstance) {
+				var prosaic_contract = require('ocore/prosaic_contract.js');
+
+				$scope.isIncoming = !!isIncoming;
+				$scope.text = objContract.text;
+				$scope.title = objContract.title;
+				$scope.isMobile = isMobile.any();
+				prosaic_contract.getByHash(objContract.hash, function(objContract){
+					if (!objContract)
+						throw Error("no contract found in database for already received offer message");
+					$scope.unit = objContract.unit;
+					$scope.status = objContract.status;
+					$scope.creation_date = objContract.creation_date;
+					$scope.hash = objContract.hash;
+					$scope.calculated_hash = prosaic_contract.getHash(objContract);
+					if (objContract.unit) {
+						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
+							if (!rows.length)
+								return;
+							var payload = rows[0].payload;
+							try {
+								$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+								$timeout(function() {
+									$rootScope.$apply();
+								});
+							} catch (e) {}
+						})
+					}
+					var objDateCopy = new Date(objContract.creation_date_obj);
+					$scope.valid_till = objDateCopy.setHours(objDateCopy.getHours() + objContract.ttl);
+					if ($scope.status === "pending" && $scope.valid_till < Date.now())
+						$scope.status = 'expired';
+
+					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
+
+					$timeout(function() {
+						$rootScope.tab = $scope.index.tab = 'chat';
+						$rootScope.$apply();
+					});
+				});
+
+				var setError = function(err) {
+					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}
+
+				var respond = function(status, signedMessageBase64) {
+					// read again, as we might already updated contract status by network in background
+					prosaic_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						prosaic_contract.setField(objContract.hash, "status", status);
+						prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
+						var body = "contract \""+objContract.title+"\" " + status;
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						if (status !== 'accepted')
+							$modalInstance.dismiss(status);
+					});
+				};
+				$scope.accept = function() {
+					$modalInstance.dismiss();
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+						if (err)
+							return setError(err);
+						respond('accepted', signedMessageBase64);
+					});
+				};
+
+				$scope.revoke = function() {
+					prosaic_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
+						prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
+						var body = "contract \""+objContract.title+"\" revoked";
+						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						$modalInstance.dismiss('revoke');
+					});
+				};
+
+				$scope.decline = function() {
+					respond('declined');
+				};
+
+				$scope.close = function() {
+					$modalInstance.dismiss('cancel');
+				};
+
+				$scope.openInExplorer = correspondentListService.openInExplorer;
+
+				$scope.expandProofBlock = function() {
+					$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
+				};
+
+				$scope.checkValidity = function() {
+					$timeout(function() {
+						$scope.validity_checked = true;
+					}, 500);
+				}
+			};
+
+			var modalInstance = $modal.open({
+				templateUrl: 'views/modals/view-prosaic-contract.html',
+				windowClass: animationService.modalAnimated.slideUp,
+				controller: ModalInstanceCtrl,
+				scope: $scope
+			});
+
+			var disableCloseModal = $rootScope.$on('closeModal', function() {
+				modalInstance.dismiss('cancel');
+			});
+
+			modalInstance.result.finally(function() {
+				$rootScope.modalOpened = false;
+				disableCloseModal();
+				var m = angular.element(document.getElementsByClassName('reveal-modal'));
+				m.addClass(animationService.modalAnimated.slideOutDown);
+				if (oldWalletId) {
+					profileService._setFocus(oldWalletId, function(){});
+					correspondentListService.currentCorrespondent = oldCorrespondent;
+					correspondentListService.currentCorrespondent = correspondent;
+					go.path('correspondentDevices.correspondentDevice');
+					$timeout(function(){
+						$rootScope.tab = $scope.index.tab = 'chat';
+					});
+				}
+			});
+		};
+
+		var oldWalletId;
+		var oldCorrespondent;
+		if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
+			db.query(
+				"SELECT wallet FROM my_addresses \n\
+				LEFT JOIN shared_address_signing_paths ON \n\
+						shared_address_signing_paths.address=my_addresses.address AND shared_address_signing_paths.device_address=? \n\
+					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
+				[device.getMyDeviceAddress(), objContract.address, objContract.address],
+				function(rows) {
+					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
+						return showModal();
+					oldWalletId = profileService.focusedClient.credentials.walletId;
+					oldCorrespondent = correspondentListService.currentCorrespondent;
+					profileService._setFocus(rows[0].wallet, function(){
+						showModal();
+					});
+				}	
+			);
+		} else {
+			showModal();
+		}
+	};
 	
 
 	function setOngoingProcess(name) {
@@ -1605,15 +1873,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         		scope.autoScrollEnabled = false;
         	else 
         		scope.autoScrollEnabled = true;
-            if (raw.scrollTop <= 20 && !scope.loadingHistory) { // load more items before you hit the top
+            if (raw.scrollTop <= 0 && !scope.loadingHistory) { // load more items before you hit the top
                 scope.loadingHistory = true;
-                chatScrollPosition.prepareFor('up');
             	scope[attr.whenScrolled](function(){
+            		chatScrollPosition.prepareFor('up');
             		$timeout(function(){
 	            		scope.$digest();
+	            		chatScrollPosition.restore();
+                		//$timeout(function(){scope.loadingHistory = false; console.log('SCROLLED')}, 250);
+                		scope.loadingHistory = false;
 	            	});
-                	chatScrollPosition.restore();
-                	scope.loadingHistory = false;
                 });
             }
         });

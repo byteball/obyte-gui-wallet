@@ -1,16 +1,16 @@
 'use strict';
 
-var constants = require('byteballcore/constants.js');
-var eventBus = require('byteballcore/event_bus.js');
-var ValidationUtils = require('byteballcore/validation_utils.js');
-var objectHash = require('byteballcore/object_hash.js');
+var constants = require('ocore/constants.js');
+var eventBus = require('ocore/event_bus.js');
+var ValidationUtils = require('ocore/validation_utils.js');
+var objectHash = require('ocore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService) {
 	var root = {};
-	var device = require('byteballcore/device.js');
-	var wallet = require('byteballcore/wallet.js');
+	var device = require('ocore/device.js');
+	var wallet = require('ocore/wallet.js');
 
-	var chatStorage = require('byteballcore/chat_storage.js');
+	var chatStorage = require('ocore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 
@@ -36,7 +36,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}, true);
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
-		var walletGeneral = require('byteballcore/wallet_general.js');
+		var walletGeneral = require('ocore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
@@ -75,6 +75,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
+		root.assocLastMessageDateByCorrespondent[peer_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$timeout(function(){
@@ -100,7 +101,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		messages.push(msg_obj);
 	}
 	
-	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
+	var payment_request_regexp = /\[.*?\]\((?:byteball|obyte):([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
 	function highlightActions(text, arrMyAddresses){
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
@@ -114,11 +115,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>'+post;
+			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>'+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
+		}).replace(/(.*?\s|^)\b(https?:\/\/\S+)([\s.,;!:].*?|$)/g, function(str, pre, link, post){
+			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
+				return str;
+			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
+				return str;
+			return pre+'<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>'+post;
 		}).replace(payment_request_regexp, function(str, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
@@ -165,8 +172,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
 			return '<i>['+text+']</i>';
-		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
 		});
 	}
 	
@@ -224,7 +234,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
-		var privateProfile = require('byteballcore/private_profile.js');
+		var privateProfile = require('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
 			return null;
@@ -240,9 +250,22 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		objPrivateProfile._label = arrFirstFields.join(' ');
 		return objPrivateProfile;
 	}
+
+	function getProsaicContractFromJsonBase64(strJsonBase64){
+		var strJSON = Buffer.from(strJsonBase64, 'base64').toString('utf8');
+		try{
+			var objProsaicContract = JSON.parse(strJSON);
+		}
+		catch(e){
+			return null;
+		}
+		if (!ValidationUtils.isValidAddress(objProsaicContract.address) || !objProsaicContract.text.length)
+			return null;
+		return objProsaicContract;
+	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
-		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		console.log(signedMessageJson);
 		try{
 			var objSignedMessage = JSON.parse(signedMessageJson);
@@ -254,7 +277,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			objSignedMessage: objSignedMessage,
 			bValid: undefined
 		};
-		var validation = require('byteballcore/validation.js');
+		var validation = require('ocore/validation.js');
 		validation.validateSignedMessage(objSignedMessage, function(err){
 			info.bValid = !err;
 			if (err)
@@ -320,11 +343,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return '<i>['+text+']</i>';
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
 			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
 		});
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
-		var URI = require('byteballcore/uri.js');
+		var URI = require('ocore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
 		if (!strAmount)
@@ -409,12 +437,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, assocPeerNamesByAddress, bWithLinks){
 		function getDisplayAddress(address){
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
-			if (arrPeerAddresses.indexOf(address) >= 0)
-				return '<span title="peer address: '+address+'">peer</span>';
+			if (assocPeerNamesByAddress[address])
+				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){
@@ -447,8 +475,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var relation = args[2];
 					var value = args[3];
 					var min_mci = args[4];
-					if (feed_name === 'timestamp' && relation === '>')
-						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
+					if (feed_name === 'timestamp' && relation === '>' && (typeof value === 'number' || parseInt(value).toString() === value))
+						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : new Date(parseInt(value)).toString());
 					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
 					if (min_mci)
 						str += ' after MCI '+min_mci;
@@ -511,7 +539,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			for (var i in messages) {
 				messages[i] = parseMessage(messages[i]);
 			}
-			var walletGeneral = require('byteballcore/wallet_general.js');
+			var walletGeneral = require('ocore/wallet_general.js');
 			walletGeneral.readMyAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;
@@ -535,9 +563,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
 					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
-				$timeout(function(){
-					$rootScope.$digest();
-				});
 				if (cb) cb();
 			});
 		});
@@ -563,6 +588,83 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		return message;
 	}
+
+	var message_signing_key_in_progress;
+	function signMessageFromAddress(message, address, signingDeviceAddresses, cb) {
+		var fc = profileService.focusedClient;
+		if (fc.isPrivKeyEncrypted()) {
+			profileService.unlockFC(null, function(err) {
+				if (err){
+					return cb(err.message);
+				}
+				signMessageFromAddress(message, address, signingDeviceAddresses, cb);
+			});
+			return;
+		}
+		
+		profileService.requestTouchid(function(err) {
+			if (err) {
+				profileService.lockFC();
+				return cb(err);
+			}
+			
+			var current_message_signing_key = require('crypto').createHash("sha256").update(address + message).digest('base64');
+			if (current_message_signing_key === message_signing_key_in_progress){
+				return cb("This message signing is already under way");
+			}
+			message_signing_key_in_progress = current_message_signing_key;
+			fc.signMessage(address, message, signingDeviceAddresses, function(err, objSignedMessage){
+				message_signing_key_in_progress = null;
+				if (err){
+					return cb(err);
+				}
+				var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
+				cb(null, signedMessageBase64);
+			});
+		});
+	}
+
+	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
+		var privateProfile = require('ocore/private_profile.js');
+		scope.my_first_name = "FIRST NAME UNKNOWN";
+		scope.my_last_name = "LAST NAME UNKNOWN";
+		scope.my_attestor = {};
+		scope.peer_first_name = "FIRST NAME UNKNOWN";
+		scope.peer_last_name = "LAST NAME UNKNOWN";
+		scope.peer_attestor = {};
+		async.series([function(cb2) {
+			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				scope.peer_first_name = profile.first_name || scope.peer_first_name;
+				scope.peer_last_name = profile.last_name || scope.peer_last_name;
+				scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				cb2();
+			});
+		}, function(cb2) {
+			privateProfile.getFieldsForAddress(my_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				scope.my_first_name = profile.first_name || scope.my_first_name;
+				scope.my_last_name = profile.last_name || scope.my_last_name;
+				scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				cb2();
+			});
+		}], function(){
+			cb();
+		});
+	}
+
+	function openInExplorer(unit) {
+		var url = 'https://explorer.obyte.org/#' + unit;
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
+	};
+
+	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
+		signMessageFromAddress(message, address, signingDeviceAddresses, function(err, signedMessageBase64){
+			if (signedMessageBase64)
+				eventBus.emit("message_signed_from_address", message, address, signedMessageBase64);
+		});
+	});*/
 	
 	eventBus.on("text", function(from_address, body, message_counter){
 		device.readCorrespondent(from_address, function(correspondent){
@@ -679,6 +781,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.parseMessage = parseMessage;
 	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	root.addMessageEvent = addMessageEvent;
+	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
+	root.signMessageFromAddress = signMessageFromAddress;
+	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
+	root.openInExplorer = openInExplorer;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
@@ -723,7 +829,145 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	root.currentCorrespondent = null;
 	root.messageEventsByCorrespondent = {};
+	root.assocLastMessageDateByCorrespondent = {};
 
+	root.listenForProsaicContractResponse = function(contracts) {
+		var prosaic_contract = require('ocore/prosaic_contract.js');
+		var fc = profileService.focusedClient;
+
+		var showError = function(msg) {
+			$rootScope.$emit('Local/ShowErrorAlert', msg);
+		}
+
+		var start_listening = function(contracts) {
+			contracts.forEach(function(contract){
+				console.log('listening for prosaic contract response ' + contract.hash);
+
+				var sendUnit = function(accepted, authors){
+					if (!accepted) {
+						return;
+					}
+
+					if (fc.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								showError(err);
+								return;
+							}
+							sendUnit(accepted, authors);
+						});
+						return;
+					}
+					
+					root.readLastMainChainIndex(function(err, last_mci){
+						if (err){
+							showError(err);
+							return;
+						}
+						var arrDefinition = 
+							['and', [
+								['address', contract.my_address],
+								['address', contract.peer_address]
+							]];
+						var assocSignersByPath = {
+							'r.0': {
+								address: contract.my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							},
+							'r.1': {
+								address: contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.peer_device_address
+							}
+						};
+						require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+							ifError: function(err){
+								showError(err);
+							},
+							ifOk: function(shared_address){
+								composeAndSend(shared_address);
+							}
+						});
+					});
+					
+					// create shared address and deposit some bytes to cover fees
+					function composeAndSend(shared_address){
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							asset: "base",
+							to_address: shared_address,
+							amount: prosaic_contract.CHARGE_AMOUNT,
+							arrSigningDeviceAddresses: contract.cosigners
+						};
+						fc.sendMultiPayment(opts, function(err){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								showError(err);
+								return;
+							}
+							$rootScope.$emit("NewOutgoingTx");
+							
+							prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+							device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+
+							// post a unit with contract text hash and send it for signing to correspondent
+							var value = {"contract_text_hash": contract.hash};
+							var objMessage = {
+								app: "data",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(value),
+								payload: value
+							};
+
+							fc.sendMultiPayment({
+								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
+								shared_address: shared_address,
+								messages: [objMessage]
+							}, function(err, unit) { // can take long if multisig
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								if (err) {
+									showError(err);
+									return;
+								}
+								prosaic_contract.setField(contract.hash, "unit", unit);
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG https://explorer.obyte.org/#" + unit;
+								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								device.sendMessageToDevice(contract.peer_device_address, "text", text);
+							});
+						});
+					}
+				};
+				eventBus.once("prosaic_contract_response_received" + contract.hash, sendUnit);
+			});
+		}
+
+		if (contracts)
+			return start_listening(contracts);
+		prosaic_contract.getAllByStatus("pending", function(contracts){
+			start_listening(contracts);
+		});
+	}
+	root.listenForProsaicContractResponse();
+
+	root.readLastMainChainIndex = function(cb){
+		if (require('ocore/conf.js').bLight){
+			require('ocore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
+				response.error ? cb(response.error) : cb(null, response);
+			});
+		}
+		else
+			require('ocore/storage.js').readLastMainChainIndex(function(last_mci){
+				cb(null, last_mci);
+			})
+	}
   /*
   root.remove = function(addr, cb) {
 	var fc = profileService.focusedClient;

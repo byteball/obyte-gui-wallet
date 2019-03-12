@@ -1,7 +1,7 @@
 
 /*
  *
- * Byteball mobile CSS
+ * Obyte mobile CSS
  *
  */
 
@@ -362,7 +362,7 @@ a.missing-copayers {
   margin-bottom: 30px;
 }
 
-.sidebar ul.off-canvas-list li a,  .modal-content ul:not(.f-dropdown) li a {
+.sidebar ul.off-canvas-list li a,  .modal-content ul:not(.f-dropdown):not(.private-profile):not(.tx-details) li a {
   font-size: 12px;
   font-weight: 300;
   border-bottom: transparent;
@@ -640,6 +640,7 @@ to prevent collapsing during animation*/
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
   background: #fff;
+  -webkit-overflow-scrolling: touch;
 }
 
 body.modal-open {
@@ -955,4 +956,7 @@ touch-action: manipulation; /* IE11+ */
 	font-size: 12px;
 	color: gray;
 	white-space: normal;
+}
+i.validation-icon {
+	padding: 3px;
 }
