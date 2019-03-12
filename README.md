@@ -19,9 +19,10 @@ git clone https://github.com/byteball/obyte-gui-wallet.git
 cd obyte-gui-wallet
 ```
 
-If you are building for testnet, switch to testnet branch:
+If you are building for testnet, switch to testnet branch and use testnet=1 environment variable:
 ```sh
 git checkout testnet
+cp .env.testnet .env
 ```
 
 Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
