@@ -259,7 +259,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
-		if (!ValidationUtils.isValidAddress(objProsaicContract.address) || !objProsaicContract.text.length)
+		if (!ValidationUtils.isValidAddress(objProsaicContract.my_address) || !objProsaicContract.text.length)
 			return null;
 		return objProsaicContract;
 	}
@@ -847,6 +847,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					if (!accepted) {
 						return;
 					}
+
+					contract.cosigners.forEach(function(cosigner){
+						if (cosigner != device.getMyDeviceAddress())
+							prosaic_contract.share(contract.hash, cosigner);
+					});
 
 					if (fc.isPrivKeyEncrypted()) {
 						profileService.unlockFC(null, function(err) {
