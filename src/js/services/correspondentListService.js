@@ -848,11 +848,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						return;
 					}
 
-					contract.cosigners.forEach(function(cosigner){
-						if (cosigner != device.getMyDeviceAddress())
-							prosaic_contract.share(contract.hash, cosigner);
-					});
-
 					if (fc.isPrivKeyEncrypted()) {
 						profileService.unlockFC(null, function(err) {
 							if (err){
@@ -900,7 +895,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					function composeAndSend(shared_address){
 						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
 						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
-						
+						contract.cosigners.forEach(function(cosigner){
+							if (cosigner != device.getMyDeviceAddress())
+								prosaic_contract.share(contract.hash, cosigner);
+						});
+
 						profileService.bKeepUnlocked = true;
 						var opts = {
 							asset: "base",
