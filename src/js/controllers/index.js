@@ -218,7 +218,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     
     eventBus.on("confirm_on_other_devices", function(){
-        $rootScope.$emit('Local/ShowAlert', "Transaction created.\nPlease approve it on the other devices.", 'fi-key', function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Transaction created.\nPlease approve it on the other devices."), 'fi-key', function(){
+            go.walletHome();
+        });
+    });
+    eventBus.on("confirm_prosaic_contract_deposit", function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Please approve contract fees deposit on the other devices."), 'fi-key', function(){
+            go.walletHome();
+        });
+    });
+    eventBus.on("confirm_prosaic_contract_post", function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Please approve posting prosaic contract hash on the other devices."), 'fi-key', function(){
             go.walletHome();
         });
     });
@@ -510,15 +520,19 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                            }
 	                        });
 						}
-						// prosaic contract auto-approve
-						function shouldAsk(cb3) {
+						// prosaic contract related requests
+						var prosaic_contract = require('ocore/prosaic_contract.js');
+						var db = require('ocore/db.js');
+						function isProsaicContractSignRequest(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
 								var contract_hash = matches[1];
-								require('ocore/prosaic_contract.js').getByHash(contract_hash, function(objContract) {
+								var contract;
+								prosaic_contract.getByHash(contract_hash, function(objContract) {
+									contract = objContract;
 									var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
 									if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
-										return cb3(true);
+										return cb3(false);
 									var shared_address;
 									async.series([function(cb2){
 										var shared_author = lodash.find(objUnit.authors, function(author){
@@ -534,7 +548,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									}, function(cb2){
 										if (shared_address)
 											return cb2();
-										var db = require('ocore/db.js');
 										db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
 											if (!rows || !rows.length)
 												return cb2();
@@ -549,21 +562,44 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										});
 									}], function() {
 										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
-											return cb3(true);
-										return cb3(false);
+											return cb3(false);
+										return cb3(true, contract);
 									});
 								});
 							} else {
-								return cb3(true);
+								return cb3(false);
 							}
 						}
-					 	shouldAsk(function(should_ask){
-						 	if (should_ask)
+						function isProsaicContractDepositRequest(cb) {
+							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
+							if (!payment_msg)
+								return cb(false);
+							var possible_contract_output = lodash.find(payment_msg.payload.outputs, function(o){return o.amount==prosaic_contract.CHARGE_AMOUNT});
+							if (!possible_contract_output) 
+								return cb(false);
+							db.query("SELECT hash FROM prosaic_contracts \n\
+								WHERE prosaic_contracts.shared_address=? AND prosaic_contracts.status='accepted'", [possible_contract_output.address], function(rows) {
+								if (!rows.length)
+									return cb(false);
+								if (rows.length === 1) {
+									prosaic_contract.getByHash(rows[0].hash, function(objContract) {
+										cb(true, objContract);
+									});
+								} else
+									cb(true);
+							});
+						}
+					 	isProsaicContractSignRequest(function(isContract, objContract){
+						 	if (isContract) {
+						 		question = 'Sign '+objContract.title+' from wallet '+credentials.walletName+'?';
 						 		return ask();
-						 	createAndSendSignature();
-                            assocChoicesByUnit[unit] = "approve";
-                            unlock();
-						 });
+						 	}
+						 	isProsaicContractDepositRequest(function(isContract, objContract){
+								if (isContract)
+							 		question = 'Approve prosaic contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
+							 	ask();
+							});
+						});
                     }
                 ); // eachSeries
             });

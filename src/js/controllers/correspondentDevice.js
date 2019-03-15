@@ -174,11 +174,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 
-	function getSigningDeviceAddresses(fc){
+	function getSigningDeviceAddresses(fc, exclude_self){
 		var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
 		if (fc.credentials.m < fc.credentials.n)
 			indexScope.copayers.forEach(function(copayer){
-				if (copayer.me || copayer.signs)
+				if ((copayer.me && !exclude_self) || copayer.signs)
 					arrSigningDeviceAddresses.push(copayer.device_address);
 			});
 		else if (indexScope.shared_address)
@@ -505,6 +505,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 					readMyPaymentAddress(fc, function(my_address) {
 						var cosigners = getSigningDeviceAddresses(fc);
+						if (!cosigners.length && fc.credentials.m > 1) {
+							indexScope.copayers.forEach(function(copayer) {
+								cosigners.push(copayer.device_address);
+							});
+						}
 						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
 							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
@@ -1642,13 +1647,28 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var body = "contract \""+objContract.title+"\" " + status;
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
-						if (status !== 'accepted')
-							$modalInstance.dismiss(status);
+						if (status == "accepted") {
+							// share contract to selected cosigners
+							var cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
+							if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
+								indexScope.copayers.forEach(function(copayer) {
+									if (!copayer.me)
+										cosigners.push(copayer.device_address);
+								});
+							}
+							cosigners.forEach(function(cosigner){
+								prosaic_contract.share(objContract.hash, cosigner);
+							});
+						} else {
+							$timeout(function() {
+								$modalInstance.dismiss(status);
+							});
+						}
 					});
 				};
 				$scope.accept = function() {
 					$modalInstance.dismiss();
-					correspondentListService.signMessageFromAddress(objContract.title, objContract.address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
 						if (err)
 							return setError(err);
 						respond('accepted', signedMessageBase64);
@@ -1665,7 +1685,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
-						$modalInstance.dismiss('revoke');
+						$timeout(function() {
+							$modalInstance.dismiss('revoke');
+						});
 					});
 				};
 
@@ -1726,7 +1748,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				LEFT JOIN shared_address_signing_paths ON \n\
 						shared_address_signing_paths.address=my_addresses.address AND shared_address_signing_paths.device_address=? \n\
 					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
-				[device.getMyDeviceAddress(), objContract.address, objContract.address],
+				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
 				function(rows) {
 					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
 						return showModal();
