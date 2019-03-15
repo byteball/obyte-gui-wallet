@@ -505,6 +505,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 					readMyPaymentAddress(fc, function(my_address) {
 						var cosigners = getSigningDeviceAddresses(fc);
+						if (!cosigners.length && fc.credentials.m > 1) {
+							indexScope.copayers.forEach(function(copayer) {
+								cosigners.push(copayer.device_address);
+							});
+						}
 						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
 							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
@@ -1655,7 +1660,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								prosaic_contract.share(objContract.hash, cosigner);
 							});
 						} else {
-							$modalInstance.dismiss(status);
+							$timeout(function() {
+								$modalInstance.dismiss(status);
+							});
 						}
 					});
 				};
@@ -1678,7 +1685,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
-						$modalInstance.dismiss('revoke');
+						$timeout(function() {
+							$modalInstance.dismiss('revoke');
+						});
 					});
 				};
 

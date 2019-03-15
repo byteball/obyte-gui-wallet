@@ -898,6 +898,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					
 					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address){
+						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+						
 						profileService.bKeepUnlocked = true;
 						var opts = {
 							asset: "base",
@@ -918,9 +921,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
-							
-							prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-							device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
 
 							// post a unit with contract text hash and send it for signing to correspondent
 							var value = {"contract_text_hash": contract.hash};
