@@ -69,6 +69,8 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				$scope.creation_date = objContract.creation_date
 				$scope.hash = objContract.hash;
 				$scope.calculated_hash = prosaic_contract.getHash(objContract);
+				$scope.my_address = objContract.my_address;
+				$scope.peer_address = objContract.peer_address;
 				if (objContract.unit) {
 					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
 						if (!rows.length)
