@@ -478,6 +478,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.isMobile = isMobile.any();
 
 			readMyPaymentAddress(fc, function(my_address) {
+				$scope.my_address = my_address;
+				$scope.peer_address = address;
 				correspondentListService.populateScopeWithAttestedFields($scope, my_address, address, function() {
 					$timeout(function() {
 						$rootScope.$apply();
@@ -1600,6 +1602,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$scope.creation_date = objContract.creation_date;
 					$scope.hash = objContract.hash;
 					$scope.calculated_hash = prosaic_contract.getHash(objContract);
+					$scope.my_address = objContract.my_address;
+					$scope.peer_address = objContract.peer_address;
 					if (objContract.unit) {
 						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
 							if (!rows.length)
@@ -1680,7 +1684,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						if (objContract.status !== "pending")
 							return setError("contract status was changed, reopen it");
 						device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
-						prosaic_contract.setField(objContract.hash, "status", "revoked", function(){});
+						prosaic_contract.setField(objContract.hash, "status", "revoked");
 						var body = "contract \""+objContract.title+"\" revoked";
 						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
