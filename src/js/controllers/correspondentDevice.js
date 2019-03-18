@@ -1651,19 +1651,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var body = "contract \""+objContract.title+"\" " + status;
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
-							// share contract to selected cosigners
-							var cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
-							if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
-								indexScope.copayers.forEach(function(copayer) {
-									if (!copayer.me)
-										cosigners.push(copayer.device_address);
-								});
-							}
 							cosigners.forEach(function(cosigner){
 								prosaic_contract.share(objContract.hash, cosigner);
 							});
-						} else {
+						}
+						if (status != "accepted") {
 							$timeout(function() {
 								$modalInstance.dismiss(status);
 							});
@@ -1671,7 +1665,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					});
 				};
 				$scope.accept = function() {
+					// save cosigners here as respond() can be called
+					cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
+					if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
+						indexScope.copayers.forEach(function(copayer) {
+							if (!copayer.me)
+								cosigners.push(copayer.device_address);
+						});
+					}
+
 					$modalInstance.dismiss();
+
 					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
 						if (err)
 							return setError(err);
@@ -1735,7 +1739,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (oldWalletId) {
 					profileService._setFocus(oldWalletId, function(){});
 					correspondentListService.currentCorrespondent = oldCorrespondent;
-					correspondentListService.currentCorrespondent = correspondent;
 					go.path('correspondentDevices.correspondentDevice');
 					$timeout(function(){
 						$rootScope.tab = $scope.index.tab = 'chat';
@@ -1746,6 +1749,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 		var oldWalletId;
 		var oldCorrespondent;
+		var cosigners;
 		if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
 			db.query(
 				"SELECT wallet FROM my_addresses \n\
