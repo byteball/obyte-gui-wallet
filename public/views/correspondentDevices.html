@@ -52,6 +52,11 @@
 
 	.order-button.dropdown.button.tiny::after,
 	button.order-button.dropdown.tiny::after { border-color: #777777 transparent transparent transparent }
+
+	#contacts-order {
+		display: flex;
+		justify-content: flex-end;
+	}
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -92,7 +97,7 @@
 	<div class="m20b tab-view tab-in" ng-show="state.is('correspondentDevices')" id="chat">
 		<div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1">
 			<form id="contacts-order" class="row order">
-				<fieldset class="small-8 columns order-columns">
+				<fieldset class="order-columns" style="flex-grow: 1">
 					<input
 						type="text"
 						class="search-input"
@@ -100,12 +105,12 @@
 						placeholder="{{'search by contact name'|translate}}"
 					>
 				</fieldset>
-				<fieldset class="small-4 columns order-columns order-button-right">
+				<fieldset class="order-columns order-button-right">
 					<span selectable="#drop-contacts" dropdown-toggle="#drop-contacts" data-options="align:left" data-model="self" data-prop="contactsSortOrderLabel">
 						{{contactsSortOrderLabel|translate}}
 					</span>
 
-					<ul id="drop-contacts" class="contacts-orders-list f-dropdown drop-bottom drop-down" data-dropdown-content>
+					<ul id="drop-contacts" class="contacts-orders-list f-dropdown drop-bottom drop-down pos-at-cursor right" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="order in contactsSortOrderList" data-value="{{order.label}}">
 							<a class="ellipsis dropup-item-link" ng-click="changeOrder('contacts', order)">
 								{{order.label|translate}}
