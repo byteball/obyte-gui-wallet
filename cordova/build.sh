@@ -106,7 +106,7 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-x-toast && cordova prepare
 	checkOK
 
-	cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
+	cordova plugin add cordova-clipboard
 	checkOK
 
 	cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
@@ -149,10 +149,10 @@ if [ ! -d $PROJECT ]; then
 		cordova plugin add https://github.com/Telerik-Verified-Plugins/PushPlugin.git
 		checkOK
 	else
-		cordova plugin add https://github.com/phonegap-build/PushPlugin.git
+		cordova plugin add phonegap-plugin-push
 		checkOK
 
-		cordova plugin add https://github.com/8zrealestate/android-referrer-plugin
+		cordova plugin add cordova-android-referrer
 		checkOK
 	fi
 	
@@ -223,6 +223,9 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 	checkOK
 
 	cp -R android/res/* $PROJECT/platforms/android/res
+	checkOK
+
+	cp android/google-services.json $PROJECT/google-services.json
 	checkOK
 fi
 

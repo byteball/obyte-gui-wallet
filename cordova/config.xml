@@ -31,6 +31,7 @@
     <preference name="Orientation" value="portrait" />
 	<preference name="KeepRunning" value="false"/>
 	<preference name="android-minSdkVersion" value="19" />
+	<preference name="android-targetSdkVersion" value="28" />
 	<preference name="deployment-target" value="9.0" />
 	<preference name="AndroidLaunchMode" value="singleTask" />
     
@@ -134,5 +135,7 @@
                 <!-- <data android:pathPattern="*.coin" /> -->
             </intent-filter>
 		</custom-config-file>
+
+		<resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
 </widget>

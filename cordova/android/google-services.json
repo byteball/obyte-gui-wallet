@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "113318639598",
+    "firebase_url": "https://obyte-82bff.firebaseio.com",
+    "project_id": "obyte-82bff",
+    "storage_bucket": "obyte-82bff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113318639598:android:792866cb05e26fbf",
+        "android_client_info": {
+          "package_name": "org.byteball.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113318639598-qm5pbolhaeetauvgt8g95m3anq3tk6tf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqc8zgsFQdRtdfKtUTmi4Sa0CMlPr4lUM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
