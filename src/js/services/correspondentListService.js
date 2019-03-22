@@ -652,7 +652,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function openInExplorer(unit) {
-		var url = 'https://explorer.obyte.org/#' + unit;
+		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 		if (typeof nw !== 'undefined')
 			nw.Shell.openExternal(url);
 		else if (isCordova)
@@ -942,7 +943,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								}
 								prosaic_contract.setField(contract.hash, "unit", unit);
 								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
-								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG https://explorer.obyte.org/#" + unit;
+								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});
