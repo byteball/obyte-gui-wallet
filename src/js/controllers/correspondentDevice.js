@@ -1133,6 +1133,22 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		console.log("will send command "+command);
 		$scope.message = command;
 		$scope.send();
+		//set focus back to input
+		if (document.chatForm && document.chatForm.message)
+		{
+			document.chatForm.message.focus();
+		}
+	};
+	
+	// offer a command by pasting the command to send in the chatbox
+	$scope.offerCommand = function(command, description){
+		console.log("will offer command "+command);
+		appendText(command);
+		//set focus back to input
+		if (document.chatForm && document.chatForm.message)
+		{
+			document.chatForm.message.focus();
+		}
 	};
 
 	$scope.suggestCommand = function(command){
