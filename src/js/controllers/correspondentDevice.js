@@ -1869,6 +1869,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
+}).directive('ngCtrlEnter', ['$timeout', function($timeout) {
+    return function(scope, element, attrs) {
+        element.bind("keydown", function onNgCtrlEnterKeydown(e) {
+            if(e.ctrlKey && e.which === 13 && !e.shiftKey) {
+            	$timeout(function(){
+	                scope.$apply(function(){
+	                    scope.$eval(attrs.ngCtrlEnter, {'e': e});
+	                });
+	            });
+                e.preventDefault();
+            }
+        });
+    };
 }]).directive('whenScrolled', ['$timeout', function($timeout) {
 	function ScrollPosition(node) {
 	    this.node = node;
