@@ -1566,7 +1566,7 @@ angular.module('copayApp.controllers')
 						return self.resetForm();
 					}
 					$scope.index.assetIndex = assetIndex;
-				$scope.assetIndexSelectorValue = assetIndex;
+					$scope.assetIndexSelectorValue = assetIndex;
 					this.lockAsset = true;
 				}
 				else
