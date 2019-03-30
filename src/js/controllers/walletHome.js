@@ -1566,10 +1566,12 @@ angular.module('copayApp.controllers')
 						return self.resetForm();
 					}
 					$scope.index.assetIndex = assetIndex;
+				$scope.assetIndexSelectorValue = assetIndex;
 					this.lockAsset = true;
 				}
 				else
 					this.lockAsset = false;
+				this.switchForms();
 			}).bind(this), 1);
 		};
 
@@ -1598,6 +1600,9 @@ angular.module('copayApp.controllers')
 						$scope.home.poll_question = dataPrompt.question;
 						delete dataPrompt.question;
 						break;
+					case 'vote':
+						notification.error('voting not yet supported via uri');
+						return self.resetForm();
 				}
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
