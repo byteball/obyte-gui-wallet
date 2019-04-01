@@ -81,95 +81,28 @@ if [ ! -d $PROJECT ]; then
 
 	echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
 
-#  cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
-#  checkOK
-
-	if [ $CURRENT_OS == "IOS" ]; then
-		cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner#v7.0.4
-	else
-		cordova plugin add cordova-plugin-android-support-v4-jar
-		checkOK
-
-		cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner.git
-	fi
-	checkOK
-
+	cordova plugin add phonegap-plugin-barcodescanner --variable ANDROID_SUPPORT_V4_VERSION="27.1.1"
 	cordova plugin add cordova-plugin-statusbar
-	checkOK
-
 	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
-	checkOK
-
 	cordova plugin add cordova-plugin-inappbrowser
-	checkOK
-
 	cordova plugin add cordova-plugin-x-toast && cordova prepare
-	checkOK
-
 	cordova plugin add cordova-clipboard
-	checkOK
-
 	cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
-	checkOK
-
 	cordova plugin add cordova-plugin-spinner-dialog
-	checkOK
-
 	cordova plugin add cordova-plugin-dialogs
-	checkOK
-
-#	cordova plugin add cordova-plugin-network-information
-#	checkOK
-
-	cordova plugin add cordova-plugin-console
-	checkOK
-
-# 	cordova plugin add cordova-plugin-uniquedeviceid
-# 	checkOK
-
 	cordova plugin add cordova-plugin-file
-	checkOK
-
 	cordova plugin add cordova-plugin-touch-id && cordova prepare
-	checkOK
-
-#	cordova plugin add cordova-plugin-transport-security
-#	checkOK
-
 	cordova plugin add cordova-ios-requires-fullscreen
-	checkOK
-
 	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
-	checkOK
-
 	cordova plugin add cordova-plugin-device-name@1.3.2
-	checkOK
-
-	if [ $CURRENT_OS == "IOS" ]; then
-		cordova plugin add https://github.com/Telerik-Verified-Plugins/PushPlugin.git
-		checkOK
-	else
-		cordova plugin add phonegap-plugin-push
-		checkOK
-
-		cordova plugin add cordova-android-referrer
-		checkOK
-	fi
-	
-	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
-	checkOK
-
-	cordova plugin add cordova-plugin-app-preferences
-	checkOK
-
+	cordova plugin add phonegap-plugin-push
+	cordova plugin add cordova-android-referrer
+	cordova plugin add cordova-plugin-mfilechooser
+	cordova plugin add https://github.com/brodybits/me.apla.cordova.app-preferences#test1 #for cordova-android 8
+	#cordova plugin add cordova-plugin-app-preferences #for cordova-android < 8
 	cordova plugin add cordova-custom-config --fetch
-	checkOK
-
-	cordova plugin add https://github.com/kakysha/cordova-plugin-intent
-	checkOK
-
+	cordova plugin add https://github.com/kakysha/cordova-plugin-intent.git
 	cordova plugin add cordova-plugin-android-permissions
-	checkOK
 fi
 
 if $DBGJS
@@ -219,8 +152,8 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 	cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
 	checkOK
 
-	cp android/project.properties $PROJECT/platforms/android/project.properties
-	checkOK
+	#cp android/project.properties $PROJECT/platforms/android/project.properties
+	#checkOK
 
 	cp -R android/res/* $PROJECT/platforms/android/res
 	checkOK

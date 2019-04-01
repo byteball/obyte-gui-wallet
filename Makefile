@@ -27,22 +27,22 @@ wp8-debug:
 ios-prod:
 	cordova/build.sh IOS --clear
 	cd ../obytebuilds/project-IOS && cordova build ios
-#	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
+	open -a xcode ../obytebuilds/project-IOS/platforms/ios
 
 ios-prod-fast:
 	cordova/build.sh IOS
 	cd ../obytebuilds/project-IOS && cordova build ios
-	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
+	open -a xcode ../obytebuilds/project-IOS/platforms/ios
 
 ios-debug:
 	cordova/build.sh IOS --dbgjs --clear
 	cd ../obytebuilds/project-IOS && cordova build ios
-	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
+	open -a xcode ../obytebuilds/project-IOS/platforms/ios
 
 ios-debug-fast:
 	cordova/build.sh IOS --dbgjs
 	cd ../obytebuilds/project-IOS && cordova build ios
-	open ../obytebuilds/project-IOS/platforms/ios/Obyte.xcodeproj
+	open -a xcode ../obytebuilds/project-IOS/platforms/ios
 
 android-prod:
 	cordova/build.sh ANDROID --clear
