@@ -1521,32 +1521,6 @@ angular.module('copayApp.controllers')
 				var form = $scope.sendPaymentForm;
 				if (!form || !form.address) // disappeared?
 					return console.log('form.address has disappeared');
-				if (to) {
-					form.address.$setViewValue(to);
-					form.address.$isValid = true;
-					form.address.$render();
-					this.lockAddress = true;
-					$scope.mtab = 1;
-					if (recipient_device_address) // must be already paired
-						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-				}
-
-				if (amount) {
-					//	form.amount.$setViewValue("" + amount);
-					//	form.amount.$isValid = true;
-					this.lockAmount = true;
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
-					form.amount.$render();
-				}
-				else  {
-					this.lockAmount = false;
-					form.amount.$setViewValue("");
-					form.amount.$pristine = true;
-					form.amount.$render();
-				}
-				//	form.amount.$render();
-
 				if (form.merkle_proof) {
 					form.merkle_proof.$setViewValue('');
 					form.merkle_proof.$render();
@@ -1571,7 +1545,38 @@ angular.module('copayApp.controllers')
 				}
 				else
 					this.lockAsset = false;
+
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					$scope.mtab = 1;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
+						$scope.assetIndexSelectorValue = 0;
+				}
+				
 				this.switchForms();
+
+				$timeout((function () {
+					if (amount) {
+						//	form.amount.$setViewValue("" + amount);
+						//	form.amount.$isValid = true;
+						this.lockAmount = true;
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					}
+					else  {
+						this.lockAmount = false;
+						form.amount.$setViewValue("");
+						form.amount.$pristine = true;
+						form.amount.$render();
+					}
+				}).bind(this));
+				
 			}).bind(this), 1);
 		};
 
