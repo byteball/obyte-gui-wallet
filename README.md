@@ -71,7 +71,7 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 - Run `make ios-debug`
   * In case of `DeviceSupport` missing error, run `cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/ && sudo ln -s 10.3.1\ \(14E8301\)/ 10.3`
   * If you encounter 'bitcore' not found after app launch, install it `npm install bitcore-lib`, then rerun make again.
-  * On code signing error, open Xcode project `../obytebuilds/project-IOS/platforms/ios` in Xcode, open project properties, select Byteball target and set your AppleID account as a team. Xcode may also ask you to change bundle identifier to be unique, just append any random string to 'org.byteball.wallet' bundle identifier.
+  * On code signing error, open Xcode project `../obytebuilds/project-IOS/platforms/ios` in Xcode, open project properties, select Obyte target and set your AppleID account as a team. Xcode may also ask you to change bundle identifier to be unique, just append any random string to 'org.byteball.wallet' bundle identifier.
   * *Never open Xcode project using .xcodeproj file*, just open the directory `../obytebuilds/project-IOS/platforms/ios` in Xcode instead
 
 ### macOS
