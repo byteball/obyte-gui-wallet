@@ -58,7 +58,11 @@ angular.module('copayApp.services')
 				return;
 			
 			if (isMobile.Android()) {
-				push = PushNotification.init({android:{clearBadge: true}});
+				push = PushNotification.init({android:{
+					clearBadge: true,
+					icon: 'notification',
+					iconColor: '#2c3e50'
+				}});
 			} else if (isMobile.iOS()) {
 				push = PushNotification.init({ios: {
 					alert: true,

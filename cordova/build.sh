@@ -85,7 +85,7 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
-	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
+	cordova plugin add https://github.com/bytelabsco/Custom-URL-scheme --variable URL_SCHEME=byteball
 	checkOK
 	cordova plugin add cordova-plugin-inappbrowser
 	checkOK
@@ -117,8 +117,6 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add https://github.com/brodybits/me.apla.cordova.app-preferences#test1 #for cordova-android 8
 	#cordova plugin add cordova-plugin-app-preferences #for cordova-android < 8
-	checkOK
-	cordova plugin add cordova-custom-config --fetch
 	checkOK
 	cordova plugin add https://github.com/kakysha/cordova-plugin-intent.git
 	checkOK
@@ -161,25 +159,19 @@ cd $BUILDDIR
 cp config.xml $PROJECT/config.xml
 checkOK
 
+cp "splashscreen@2x~universal~anyany.png" "$PROJECT/splashscreen@2x~universal~anyany.png"
+checkOK
+
 if [ $CURRENT_OS == "ANDROID" ]; then
 	echo "Android project!!!"
 	
 	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/obyte.css
-
-	mkdir -p $PROJECT/platforms/android/res/xml/
-	checkOK
-
-#  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
-#  checkOK
 	
 	cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
 	checkOK
 
-	#cp android/project.properties $PROJECT/platforms/android/project.properties
-	#checkOK
-
-	cp -R android/res/* $PROJECT/platforms/android/res
-	checkOK
+	cp -R android/icons $PROJECT/
+	checkOK	
 
 	cp android/google-services.json $PROJECT/google-services.json
 	checkOK
@@ -189,25 +181,8 @@ if [ $CURRENT_OS == "IOS" ]; then
 
 	echo "IOS project!!!"
 
-	cp -R ios $PROJECT/../
+	cp -R ios/icons $PROJECT/
 	checkOK
-#  mkdir -p $PROJECT/platforms/ios
-#  checkOK
-#
-#  cp ios/Byteball-Info.plist $PROJECT/platforms/ios/Byteball-Info.plist
-#  checkOK
-#
-#  mkdir -p $PROJECT/platforms/ios/Byteball/Resources/icons
-#  checkOK
-#
-#  mkdir -p $PROJECT/platforms/ios/Byteball/Resources/splash
-#  checkOK
-#
-#  cp -R ios/icons/* $PROJECT/platforms/ios/Byteball/Resources/icons
-#  checkOK
-#
-#  cp -R ios/splash/* $PROJECT/platforms/ios/Byteball/Resources/splash
-#  checkOK
 fi
 
 if [ $CURRENT_OS == "WP8" ]; then
