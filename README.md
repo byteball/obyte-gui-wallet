@@ -59,7 +59,7 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 - Install jdk1.8 (9 and higher won't work)
 - Install Android SDK (from Android Studio)
 - Install Cordova `npm install cordova -g`
-- Install Gradle `npm install gradle -g`
+- Install [Gradle](https://gradle.org/install/) (macOS: `brew install gradle`)
 - Run `make android-debug`
 
 ### iOS
@@ -67,7 +67,7 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 - Install Xcode
 - Install Cordova `npm install cordova -g`
 - Install ios-deploy `npm install -g ios-deploy`
-- Install [CocoaPods](https://cocoapods.org)
+- Install [CocoaPods](https://cocoapods.org) `brew install cocoapods`, then `pod setup`
 - Run `make ios-debug`
   * In case of `DeviceSupport` missing error, run `cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/ && sudo ln -s 10.3.1\ \(14E8301\)/ 10.3`
   * If you encounter 'bitcore' not found after app launch, install it `npm install bitcore-lib`, then rerun make again.
