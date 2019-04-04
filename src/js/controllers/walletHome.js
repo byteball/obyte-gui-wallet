@@ -1994,21 +1994,6 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		this._doSendAll = function(amount) {
-			this.setForm(null, amount, null);
-		};
-
-		this.sendAll = function(amount, feeStr) {
-			var self = this;
-			var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-				fee: feeStr
-			});
-
-			confirmDialog.show(msg, function(confirmed) {
-				if (confirmed)
-					self._doSendAll(amount);
-			});
-		};
 
 		/* Start setup */
 
