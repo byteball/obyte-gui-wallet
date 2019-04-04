@@ -150,6 +150,8 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   z-index: 5;
   background: #2C3E50;
+  padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
+  padding-bottom: env(safe-area-inset-bottom); /* iOS 11.2 */
 }
 
 .second-bottom-bar {

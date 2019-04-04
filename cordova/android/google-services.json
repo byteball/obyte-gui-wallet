@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "268286271507",
+    "firebase_url": "https://byteball-164522.firebaseio.com",
+    "project_id": "byteball-164522",
+    "storage_bucket": "byteball-164522.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268286271507:android:792866cb05e26fbf",
+        "android_client_info": {
+          "package_name": "org.byteball.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268286271507-spm8hmo7rrved2c518ap7trgeut4r7t9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
