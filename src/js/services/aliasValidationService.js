@@ -29,7 +29,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			dbKey: 'steem_username',
 			title: 'steem account',
 			isValid: function (value) {
-				return /^steem\/[a-z0-9\-_]{3,20}$/i.test(value);
+				return /^steem\/[a-z0-9\-_.]{3,20}$/i.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.replace(/^steem\//i, '').toLowerCase();
