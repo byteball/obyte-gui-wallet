@@ -42,6 +42,7 @@ ios-debug:
 ios-debug-fast:
 	cordova/build.sh IOS --dbgjs
 	cd ../obytebuilds/project-IOS && cordova build ios
+	#cd ../obytebuilds/project-IOS && cordova run ios --device --developmentTeam="96S944NY84"
 	open -a xcode ../obytebuilds/project-IOS/platforms/ios
 
 android-prod:
