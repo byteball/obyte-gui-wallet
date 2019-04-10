@@ -1835,6 +1835,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							element[0].scrollTop = element[0].scrollHeight;
 					}, 100);
 			});
+			['keyboardDidShow', 'keyboardDidHide'].forEach(function(event) {
+				window.addEventListener(event, function() {
+					$timeout(function(){
+						if (scope.autoScrollEnabled)
+							element[0].scrollTop = element[0].scrollHeight;
+					}, 1);
+				});
+			});
 		}
 	}
 }).directive('bindToHeight', function ($window) {
