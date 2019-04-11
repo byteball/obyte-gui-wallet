@@ -27,10 +27,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var indexScope = $scope.index;
 	$rootScope.tab = $scope.index.tab = 'chat';
 	var correspondent = correspondentListService.currentCorrespondent;
-	$scope.correspondent = correspondent;
-//	var myPaymentAddress = indexScope.shared_address;
-	if (document.chatForm && document.chatForm.message)
-		document.chatForm.message.focus();
+	$scope.correspondent = correspondent;	
 	
 	if (!correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
