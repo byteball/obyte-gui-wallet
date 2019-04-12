@@ -124,6 +124,12 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-splashscreen
 	checkOK
+	if [ $CURRENT_OS == "IOS" ]; then # fixes weird keyboard webview resizing bug https://github.com/apache/cordova-ios/issues/417
+		cordova plugin add cordova-plugin-ionic-webview
+		checkOK
+		cordova plugin add cordova-plugin-ionic-keyboard
+		checkOK
+	fi
 fi
 
 if $DBGJS

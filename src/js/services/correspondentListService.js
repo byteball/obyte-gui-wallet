@@ -528,7 +528,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[correspondent.device_address])
 			root.messageEventsByCorrespondent[correspondent.device_address] = [];
 		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
-		var limit = 10;
+		var limit = 40;
 		var last_msg_ts = null;
 		var last_msg_id = 90071992547411;
 		if (messageEvents.length && messageEvents[0].id) {

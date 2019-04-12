@@ -28,8 +28,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$rootScope.tab = $scope.index.tab = 'chat';
 	var correspondent = correspondentListService.currentCorrespondent;
 	$scope.correspondent = correspondent;
-//	var myPaymentAddress = indexScope.shared_address;
-	if (document.chatForm && document.chatForm.message)
+	if (document.chatForm && document.chatForm.message && !isCordova)
 		document.chatForm.message.focus();
 	
 	if (!correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
@@ -1155,6 +1154,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			cb();
 		});
 	}
+	$scope.isCordova = isCordova;
 
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
@@ -1835,6 +1835,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							element[0].scrollTop = element[0].scrollHeight;
 					}, 100);
 			});
+			['keyboardDidShow', 'keyboardDidHide'].forEach(function(event) {
+				window.addEventListener(event, function() {
+					$timeout(function(){
+						if (scope.autoScrollEnabled)
+							element[0].scrollTop = element[0].scrollHeight;
+					}, 1);
+				});
+			});
 		}
 	}
 }).directive('bindToHeight', function ($window) {
@@ -1856,10 +1864,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	};
-}).directive('ngEnter', ['$timeout', function($timeout) {
+}).directive('ngEnter', function($timeout, isCordova) {
     return function(scope, element, attrs) {
         element.bind("keydown", function onNgEnterKeydown(e) {
-            if(e.which === 13 && !e.shiftKey) {
+            if(!isCordova && e.which === 13 && !e.shiftKey) {
             	$timeout(function(){
 	                scope.$apply(function(){
 	                    scope.$eval(attrs.ngEnter, {'e': e});
@@ -1869,7 +1877,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-}]).directive('whenScrolled', ['$timeout', function($timeout) {
+}).directive('whenScrolled', ['$timeout', function($timeout) {
 	function ScrollPosition(node) {
 	    this.node = node;
 	    this.previousScrollHeightMinusTop = 0;
