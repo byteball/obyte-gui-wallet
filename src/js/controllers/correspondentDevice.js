@@ -27,7 +27,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	var indexScope = $scope.index;
 	$rootScope.tab = $scope.index.tab = 'chat';
 	var correspondent = correspondentListService.currentCorrespondent;
-	$scope.correspondent = correspondent;	
+	$scope.correspondent = correspondent;
+	if (document.chatForm && document.chatForm.message && !isCordova)
+		document.chatForm.message.focus();
 	
 	if (!correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
@@ -1152,6 +1154,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			cb();
 		});
 	}
+	$scope.isCordova = isCordova;
 
 	$scope.autoScrollEnabled = true;
 	$scope.loadMoreHistory(function(){
@@ -1861,10 +1864,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			});
 		}
 	};
-}).directive('ngEnter', ['$timeout', function($timeout) {
+}).directive('ngEnter', function($timeout, isCordova) {
     return function(scope, element, attrs) {
         element.bind("keydown", function onNgEnterKeydown(e) {
-            if(e.which === 13 && !e.shiftKey) {
+            if(!isCordova && e.which === 13 && !e.shiftKey) {
             	$timeout(function(){
 	                scope.$apply(function(){
 	                    scope.$eval(attrs.ngEnter, {'e': e});
@@ -1874,7 +1877,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
             }
         });
     };
-}]).directive('whenScrolled', ['$timeout', function($timeout) {
+}).directive('whenScrolled', ['$timeout', function($timeout) {
 	function ScrollPosition(node) {
 	    this.node = node;
 	    this.previousScrollHeightMinusTop = 0;

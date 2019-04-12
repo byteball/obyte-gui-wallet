@@ -346,7 +346,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			  	</a>
 			  </li>
 			</ul>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" ng-attr-autofocus="{{!isCordova && true || undefined}}" required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"
