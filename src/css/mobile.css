@@ -962,3 +962,10 @@ touch-action: manipulation; /* IE11+ */
 i.validation-icon {
 	padding: 3px;
 }
+
+.keyboard-open .bottom-bar {
+	display: none;
+}
+.keyboard-open .send-form {
+	padding-bottom: 0;
+}
