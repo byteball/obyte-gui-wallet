@@ -32,10 +32,6 @@ msgstr ""
 msgid "12 words separated by dashes"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:65
-msgid "<span translate=\"\">Status</span>: <b translate=\"\">{{status}}</b>"
-msgstr ""
-
 #: public/views/preferencesGlobal.html:143
 msgid "About Obyte"
 msgstr ""
