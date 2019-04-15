@@ -7,46 +7,61 @@
   ng-init="titleSection='{{name}}'; goBackToState = true; showCamera = true">
 </div-->
 
-<nav class="tab-bar">
-  <section class="left-small">
-    <a
-      ng-click="$root.go('correspondentDevices.correspondentDevice')"><i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back">{{'Back'|translate}}</span>
-    </a>
-  </section>
+	<nav class="tab-bar" style="position: fixed; width: 100%">
+	  <section class="left-small">
+	    <a
+	      ng-click="$root.go('correspondentDevices.correspondentDevice')"><i class="icon-arrow-left3 icon-back"></i>
+	      <span class="text-back">{{'Back'|translate}}</span>
+	    </a>
+	  </section>
 
-  <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-      {{name}}
-    </h1>
-  </section>
-</nav>
+	  <section class="middle tab-bar-section">
+	    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+	      {{name}}
+	    </h1>
+	  </section>
+	</nav>
 
-    <div class="columns m20t m20b" >
-      <div> 
+	<div class="columns m20b" style="margin-top: 50px;">
+	  <div class="m20t"> 
 		<span translate>Full address:</span>
-        <div class="size-10 text-gray ellipsis enable_text_select">{{correspondent.device_address}}@{{hub}}</div>
-      </div>
+	    <div class="size-10 text-gray ellipsis enable_text_select">{{correspondent.device_address}}@{{hub}}</div>
+	  </div>
 
+	  <div ng-show="index.usePushNotifications">
+		<ul class="no-bullet m20t m30b">
+		  <li>
+			<switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" ng-change="updatePush()" class="green right"></switch>
+			<div translate>Enable push notifications</div>
+		  </li>
+		</ul>
+	  </div>
+		
         <form name="editForm" class="m20t" no-validate>
           <div class="text-warning size-12 m10b" ng-show="error">{{error|translate}}</div>
 		  <span translate>Rename:</span>
-          <input type="text" id="name" name="name" ng-model="name" required>
+	      <input type="text" id="name" name="name" ng-model="name" required>
 		  <span translate>Change hub:</span>
-          <input type="text" id="hub" name="hub" ng-model="hub" required>
-          <div class="row">
-            <div>
-              <input type="submit" 
-                     class="button expand round" 
-                     value="{{'Save'|translate}}"
-                     ng-disabled="!editForm.$valid"
-                     ng-style="{'background-color':backgroundColor}" 
-                     ng-click="save()">
-            </div>
-          </div>
-        </form>
-    </div>
-    <div class="purge_chat columns"><a href="#" ng-click="purge_chat()" translate>clear chat history</a></div>
-    <div class="extra-margin-bottom"></div>
+	      <input type="text" id="hub" name="hub" ng-model="hub" required>
+	      <div class="row">
+	        <div>
+	          <input type="submit" 
+	                 class="button expand round" 
+	                 value="{{'Save'|translate}}"
+	                 ng-disabled="!editForm.$valid"
+	                 ng-style="{'background-color':backgroundColor}" 
+	                 ng-click="save()">
+	        </div>
+	      </div>
+
+	      <span translate style="display: inline-block; margin-bottom: 10px;" ng-if="contracts.length">Signed contracts:</span>
+	      <div class="row" ng-repeat="contract in contracts">
+	      	<a class="contract" ng-click="showContract(contract.hash)" style="font-weight: bold;">{{contract.title}} <span translate>on</span> {{contract.creation_date_obj | date:'yyyy-MM-dd HH:mm'}}</a>
+	      	<hr style="margin-top: 10px">
+	      </div>
+	    </form>
+	</div>
+	<div class="purge_chat columns"><a href="#" ng-click="purge_chat()" translate>clear chat history</a></div>
+	<div class="extra-margin-bottom"></div>
 </div>
 <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

@@ -23,7 +23,7 @@
       
     <section class="right-small" ng-click="editCorrespondent()">
       <a href class="p10">
-        <span class="text-close" translate>Edit</span>
+        <span class="text-close" translate>More</span>
       </a>
     </section>
   </nav>
@@ -41,7 +41,9 @@
         position: absolute;
         width: 100%;
         padding-bottom: 58px;
-        bottom: 0px;
+        padding-bottom: calc(58px + constant(safe-area-inset-bottom));
+        padding-bottom: calc(58px + env(safe-area-inset-bottom));
+        bottom: 0;
         border-top: 1px solid #E9E9EC;
         background-color: white;
         z-index: 5;
@@ -344,7 +346,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			  	</a>
 			  </li>
 			</ul>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" ng-attr-autofocus="{{!isCordova && true || undefined}}" required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"

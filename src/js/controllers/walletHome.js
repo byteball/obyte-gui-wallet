@@ -54,6 +54,12 @@ angular.module('copayApp.controllers')
 			}*/
 		});
 
+		var disableDataPromptListener = $rootScope.$on('dataPrompt', function(event, dataPrompt) {
+			console.log('dataPrompt event ', dataPrompt);
+			$rootScope.$emit('Local/SetTab', 'send');
+			self.setDataForm(dataPrompt);
+		});
+
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
@@ -108,6 +114,7 @@ angular.module('copayApp.controllers')
 			console.log("walletHome $destroy");
 			disableAddrListener();
 			disablePaymentRequestListener();
+			disableDataPromptListener();
 			disablePaymentUriListener();
 			disableTabListener();
 			disableFocusListener();
@@ -1514,32 +1521,6 @@ angular.module('copayApp.controllers')
 				var form = $scope.sendPaymentForm;
 				if (!form || !form.address) // disappeared?
 					return console.log('form.address has disappeared');
-				if (to) {
-					form.address.$setViewValue(to);
-					form.address.$isValid = true;
-					form.address.$render();
-					this.lockAddress = true;
-					$scope.mtab = 1;
-					if (recipient_device_address) // must be already paired
-						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-				}
-
-				if (amount) {
-					//	form.amount.$setViewValue("" + amount);
-					//	form.amount.$isValid = true;
-					this.lockAmount = true;
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
-					form.amount.$render();
-				}
-				else  {
-					this.lockAmount = false;
-					form.amount.$setViewValue("");
-					form.amount.$pristine = true;
-					form.amount.$render();
-				}
-				//	form.amount.$render();
-
 				if (form.merkle_proof) {
 					form.merkle_proof.$setViewValue('');
 					form.merkle_proof.$render();
@@ -1559,10 +1540,84 @@ angular.module('copayApp.controllers')
 						return self.resetForm();
 					}
 					$scope.index.assetIndex = assetIndex;
+					$scope.assetIndexSelectorValue = assetIndex;
 					this.lockAsset = true;
 				}
 				else
 					this.lockAsset = false;
+
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					$scope.mtab = 1;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
+						$scope.assetIndexSelectorValue = 0;
+				}
+				
+				this.switchForms();
+
+				$timeout((function () {
+					if (amount) {
+						//	form.amount.$setViewValue("" + amount);
+						//	form.amount.$isValid = true;
+						this.lockAmount = true;
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					}
+					else  {
+						this.lockAmount = false;
+						form.amount.$setViewValue("");
+						form.amount.$pristine = true;
+						form.amount.$render();
+					}
+				}).bind(this));
+				
+			}).bind(this), 1);
+		};
+
+		this.setDataForm = function (dataPrompt) {
+			var app = dataPrompt.app;
+			delete dataPrompt.app;
+			this.resetError();
+			$timeout((function() {
+				switch (app) {
+					case 'data_feed':
+						$scope.assetIndexSelectorValue = -1;
+						break;
+					case 'attestation':
+						$scope.assetIndexSelectorValue = -2;
+						$scope.home.attested_address = dataPrompt.address;
+						delete dataPrompt.address;
+						break;
+					case 'profile':
+						$scope.assetIndexSelectorValue = -3;
+						break;
+					case 'data':
+						$scope.assetIndexSelectorValue = -4;
+						break;
+					case 'poll':
+						$scope.assetIndexSelectorValue = -5;
+						$scope.home.poll_question = dataPrompt.question;
+						delete dataPrompt.question;
+						break;
+					case 'vote':
+						notification.error('voting not yet supported via uri');
+						return self.resetForm();
+				}
+				$scope.home.feedvaluespairs = [];
+				for (var key in dataPrompt) {
+					var value = dataPrompt[key];
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything'} : {name: key, value: value});
+				}
+				this.switchForms();
+			//	$timeout(function () {
+			//		$rootScope.$digest();
+			//	})
 			}).bind(this), 1);
 		};
 
@@ -1939,21 +1994,6 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		this._doSendAll = function(amount) {
-			this.setForm(null, amount, null);
-		};
-
-		this.sendAll = function(amount, feeStr) {
-			var self = this;
-			var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-				fee: feeStr
-			});
-
-			confirmDialog.show(msg, function(confirmed) {
-				if (confirmed)
-					self._doSendAll(amount);
-			});
-		};
 
 		/* Start setup */
 

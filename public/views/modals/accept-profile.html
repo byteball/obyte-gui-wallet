@@ -1,3 +1,9 @@
+<style>
+.trusted-mark {
+	padding-left: 5px;
+}
+</style>
+
 <nav class="tab-bar">
 	<section class="left-small">
 		<a ng-click="cancel()" class="p10">
@@ -19,10 +25,10 @@
 	</div>
 	<div class="row m20t">
 		<div class="large-12 large-centered columns">
-			<ul class="no-bullet size-14" style="margin-bottom: 0px;">
+			<ul class="no-bullet size-14 private-profile" style="margin-bottom: 0px;">
 				<li class="m10b">
 					<span class="text-gray" translate>Attested by:</span><br>
-					<span class="enable_text_select">{{attestor_address || '[Wait...]'}}</span>
+					<a class="enable_text_select" ng-click="openInExplorer(unit)">{{attestor_address || '[Wait...]'}}</a><i class="icon-checkmark-circle size-14 text-primary trusted-mark" ng-show="trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="trusted && isMobile" translate>attested by trusted attestor</span><i class="icon-close-circle size-14 has-error trusted-mark" ng-show="!trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!trusted && isMobile" translate>attestor is not trusted by you</span>
 				</li>
 				<li class="m10b">
 					<span class="text-gray" translate>Attested address:</span><br>
@@ -38,7 +44,7 @@
 					<span class="right enable_text_select">{{value}}</span>
 				</li>
 			</ul>
-			<button class="button black round expand m20t" ng-if="bMyAddress" ng-click="store()" ng-disabled="bDisabled" ng-style="{'background-color':color}" translate>
+			<button class="button black round expand m20t" ng-click="store()" ng-disabled="bDisabled" ng-style="{'background-color':color}" translate>
 				{{buttonLabel}}
 			</button>
 		</div>

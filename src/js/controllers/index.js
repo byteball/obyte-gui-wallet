@@ -10,7 +10,7 @@ var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -218,7 +218,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     });
     
     eventBus.on("confirm_on_other_devices", function(){
-        $rootScope.$emit('Local/ShowAlert', "Transaction created.\nPlease approve it on the other devices.", 'fi-key', function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Transaction created.\nPlease approve it on the other devices."), 'fi-key', function(){
+            go.walletHome();
+        });
+    });
+    eventBus.on("confirm_prosaic_contract_deposit", function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Please approve contract fees deposit on the other devices."), 'fi-key', function(){
+            go.walletHome();
+        });
+    });
+    eventBus.on("confirm_prosaic_contract_post", function(){
+        $rootScope.$emit('Local/ShowAlert', gettextCatalog.getString("Please approve posting prosaic contract hash on the other devices."), 'fi-key', function(){
             go.walletHome();
         });
     });
@@ -494,26 +504,107 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
-                        requestApproval(question, {
-                            ifYes: function(){
-                                createAndSendSignature();
-                                assocChoicesByUnit[unit] = "approve";
-                                unlock();
-                            },
-                            ifNo: function(){
-                                // do nothing
-                                console.log("===== NO CLICKED");
-                                refuseSignature();
-                                assocChoicesByUnit[unit] = "refuse";
-                                unlock();
-                            }
-                        });
+						var ask = function() {
+							requestApproval(question, {
+	                            ifYes: function(){
+	                                createAndSendSignature();
+	                                assocChoicesByUnit[unit] = "approve";
+	                                unlock();
+	                            },
+	                            ifNo: function(){
+	                                // do nothing
+	                                console.log("===== NO CLICKED");
+	                                refuseSignature();
+	                                assocChoicesByUnit[unit] = "refuse";
+	                                unlock();
+	                            }
+	                        });
+						}
+						// prosaic contract related requests
+						var prosaic_contract = require('ocore/prosaic_contract.js');
+						var db = require('ocore/db.js');
+						function isProsaicContractSignRequest(cb3) {
+							var matches = question.match(/contract_text_hash: (.{44})/m);
+							if (matches && matches.length) {
+								var contract_hash = matches[1];
+								var contract;
+								prosaic_contract.getByHash(contract_hash, function(objContract) {
+									contract = objContract;
+									var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
+									if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
+										return cb3(false);
+									var shared_address;
+									async.series([function(cb2){
+										var shared_author = lodash.find(objUnit.authors, function(author){
+											try {
+												return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
+											} catch (e) {
+												return false;
+											}
+										});
+										if (shared_author)
+											shared_address = shared_author.address;
+										cb2();
+									}, function(cb2){
+										if (shared_address)
+											return cb2();
+										db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
+											if (!rows || !rows.length)
+												return cb2();
+											var definition = JSON.parse(rows[0].definition);
+											try {
+												if (definition[0] === "and" && definition[1][0][0] === "address" && definition[1][1][0] === "address")
+													shared_address = arrPaymentMessages[0].payload.outputs[0].address;
+												cb2();
+											} catch (e) {
+												cb2();
+											}
+										});
+									}], function() {
+										if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
+											return cb3(false);
+										return cb3(true, contract);
+									});
+								});
+							} else {
+								return cb3(false);
+							}
+						}
+						function isProsaicContractDepositRequest(cb) {
+							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
+							if (!payment_msg)
+								return cb(false);
+							var possible_contract_output = lodash.find(payment_msg.payload.outputs, function(o){return o.amount==prosaic_contract.CHARGE_AMOUNT});
+							if (!possible_contract_output) 
+								return cb(false);
+							db.query("SELECT hash FROM prosaic_contracts \n\
+								WHERE prosaic_contracts.shared_address=? AND prosaic_contracts.status='accepted'", [possible_contract_output.address], function(rows) {
+								if (!rows.length)
+									return cb(false);
+								if (rows.length === 1) {
+									prosaic_contract.getByHash(rows[0].hash, function(objContract) {
+										cb(true, objContract);
+									});
+								} else
+									cb(true);
+							});
+						}
+					 	isProsaicContractSignRequest(function(isContract, objContract){
+						 	if (isContract) {
+						 		question = 'Sign '+objContract.title+' from wallet '+credentials.walletName+'?';
+						 		return ask();
+						 	}
+						 	isProsaicContractDepositRequest(function(isContract, objContract){
+								if (isContract)
+							 		question = 'Approve prosaic contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
+							 	ask();
+							});
+						});
                     }
                 ); // eachSeries
             });
         });
     });
-
     
     var accept_msg = gettextCatalog.getString('Yes');
     var cancel_msg = gettextCatalog.getString('No');
@@ -594,6 +685,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.arrSharedWallets = arrSharedWallets;
 
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var prosaic_contract = require('ocore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -601,6 +693,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
+				});
+				prosaic_contract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
+					if (row)
+						objSharedWallet.has_prosaic_contract = true;
 				});
 			},
 			function(){

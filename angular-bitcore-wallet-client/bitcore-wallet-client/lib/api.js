@@ -686,6 +686,10 @@ API.prototype.initDeviceProperties = function(xPrivKey, device_address, hub, dev
             throw e;
         }
     //}, 1);
+    setTimeout(function () {
+      var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+      walletDefinedByKeys.scanForGaps();
+    }, 1000);
 };
 
 

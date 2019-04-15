@@ -472,15 +472,15 @@ angular.module('copayApp.directives')
       restrict: 'E',
       scope: {
         width: "@",
+        height: "@",
         negative: "="
       },
       controller: function($scope) {
-        //$scope.logo_url = $scope.negative ? 'img/logo-negative.svg' : 'img/logo.svg';
-        $scope.logo_url = $scope.negative ? 'img/icons/obyte-white-transparent-h80.png' : 'img/icons/icon-black-32.png';
+        $scope.styles = { width: $scope.width ? $scope.width +'px' : 'auto', height: $scope.height ? $scope.height +'px' : 'auto' };
+        $scope.logo_url = $scope.negative ? 'img/icons/obyte-logo-negative.svg' : 'img/icons/obyte-logo.svg';
       },
       replace: true,
-      //template: '<img ng-src="{{ logo_url }}" alt="Byteball">'
-      template: '<div><img ng-src="{{ logo_url }}" ></div>'
+      template: '<img ng-style="styles" ng-src="{{ logo_url }}" alt="Obyte">'
     }
   })
   .directive('availableBalance', function() {
@@ -558,7 +558,27 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  }).filter('encodeURIComponent', function() {
+  }).directive('markdown', function ($rootScope, $timeout, isCordova) {
+  	var md = window.markdownit({linkify: true}).disable(['image', 'link']);
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+    	$timeout(function () {
+	    	var text = elem.html();
+	    	var html = md.render(text);
+	    	elem.html(html);
+	    	elem.find('a').on('click', function(e) {
+	    		e.preventDefault();
+	    		var url = angular.element(this).attr('href');
+	    		if (typeof nw !== 'undefined')
+					nw.Shell.openExternal(url);
+				else if (isCordova)
+					cordova.InAppBrowser.open(url, '_system');
+	    	})
+	    });
+  	}
+ }})
+  .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
 })
  .filter('objectKeys', [function() {

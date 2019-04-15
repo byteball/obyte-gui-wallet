@@ -1,0 +1,95 @@
+<style>
+.p10l {
+	padding-left: 10px;
+}
+.w40 {
+	width: 40px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+.attestor {
+	clear: both;
+	font-size: 11px;
+}
+span.capitalize {
+	display: inline-block;
+}
+span.capitalize:first-letter {
+	text-transform: uppercase;
+}
+form[name="prosaicContractForm"] {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	line-height: 26px;
+}
+.title {
+	margin-top: 10px;
+	margin-bottom: 0;
+	display: inline-block;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+    <a ng-click="cancel()" class="p10">
+      <span class="text-close" translate>Close</span>
+    </a>
+  </section>
+  <section class="middle tab-bar-section">
+    <h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
+      Offer prosaic contract
+    </h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	<form name="prosaicContractForm">
+		<span class="person title" translate>Me</span>
+		<div class="name p10l">
+			<span class="first_name">{{my_first_name}}</span>
+			<span class="last_name">{{my_last_name}}</span>
+			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
+		</div>
+		<span class="person title" translate>Peer</span>
+		<div class="name p10l">
+			<span class="first_name">{{peer_first_name}}</span>
+			<span class="last_name">{{peer_last_name}}</span>
+			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+		</div>
+
+		<span class="title" translate>Title of contract</span>
+		<input type="text" name="title" required ng-model="form.contractTitle"/>
+		
+		<span class="title" translate>Text</span>
+		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n"></textarea>
+
+		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
+
+		<div ng-if="index.m < index.n && index.m > 1">
+			<h3 class="title" translate>Cosigners</h3>
+			<div class="row columns large-12 medium-12">
+				<cosigners></cosigners>
+			</div>
+		</div>
+		
+		<div ng-if="error" class="row columns">
+			<span class="has-error size-12">
+				{{error}}
+			</span>
+		</div>
+		
+		<div class="m20t large-12 large-centered row columns">
+			<button type="button" class="button black round expand" ng-disabled="prosaicContractForm.$invalid || bWorking || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+				Offer Contract
+			</button>
+
+			<div translate class="attestor">You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</div>
+		</div>
+	</form>
+</div>

@@ -81,95 +81,55 @@ if [ ! -d $PROJECT ]; then
 
 	echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
 
-#  cordova plugin add https://github.com/florentvaldelievre/virtualartifacts-webIntent.git
-#  checkOK
-
-	if [ $CURRENT_OS == "IOS" ]; then
-		cordova plugin add https://github.com/phonegap/phonegap-plugin-barcodescanner#v7.0.4
-	else
-		cordova plugin add cordova-plugin-android-support-v4-jar
-		checkOK
-
-		cordova plugin add https://github.com/jrontend/phonegap-plugin-barcodescanner.git
-	fi
+	cordova plugin add phonegap-plugin-barcodescanner --variable ANDROID_SUPPORT_V4_VERSION="27.1.1"
 	checkOK
-
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
-
-	cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=byteball
+	cordova plugin add https://github.com/bytelabsco/Custom-URL-scheme --variable URL_SCHEME=byteball
 	checkOK
-
 	cordova plugin add cordova-plugin-inappbrowser
 	checkOK
-
 	cordova plugin add cordova-plugin-x-toast && cordova prepare
 	checkOK
-
-	cordova plugin add https://github.com/VersoSolutions/CordovaClipboard
+	cordova plugin add cordova-clipboard
 	checkOK
-
 	cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin.git && cordova prepare
 	checkOK
-
 	cordova plugin add cordova-plugin-spinner-dialog
 	checkOK
-
 	cordova plugin add cordova-plugin-dialogs
 	checkOK
-
-#	cordova plugin add cordova-plugin-network-information
-#	checkOK
-
-	cordova plugin add cordova-plugin-console
-	checkOK
-
-# 	cordova plugin add cordova-plugin-uniquedeviceid
-# 	checkOK
-
 	cordova plugin add cordova-plugin-file
 	checkOK
-
 	cordova plugin add cordova-plugin-touch-id && cordova prepare
 	checkOK
-
-#	cordova plugin add cordova-plugin-transport-security
-#	checkOK
-
 	cordova plugin add cordova-ios-requires-fullscreen
 	checkOK
-
 	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
-
 	cordova plugin add cordova-plugin-device-name@1.3.2
 	checkOK
-
-	if [ $CURRENT_OS == "IOS" ]; then
-		cordova plugin add https://github.com/Telerik-Verified-Plugins/PushPlugin.git
-		checkOK
-	else
-		cordova plugin add https://github.com/phonegap-build/PushPlugin.git
-		checkOK
-
-		cordova plugin add https://github.com/8zrealestate/android-referrer-plugin
-		checkOK
-	fi
-	
-	cordova plugin add https://github.com/xJeneKx/MFileChooser.git
+	cordova plugin add phonegap-plugin-push
 	checkOK
-
-	cordova plugin add cordova-plugin-app-preferences
+	cordova plugin add cordova-android-referrer
 	checkOK
-
-	cordova plugin add cordova-custom-config --fetch
+	cordova plugin add cordova-plugin-mfilechooser
 	checkOK
-
-	cordova plugin add https://github.com/kakysha/cordova-plugin-intent
+	cordova plugin add https://github.com/brodybits/me.apla.cordova.app-preferences#test1 #for cordova-android 8
+	#cordova plugin add cordova-plugin-app-preferences #for cordova-android < 8
 	checkOK
-
+	cordova plugin add https://github.com/kakysha/cordova-plugin-intent.git
+	checkOK
 	cordova plugin add cordova-plugin-android-permissions
 	checkOK
+	cordova plugin add cordova-plugin-splashscreen
+	checkOK
+	if [ $CURRENT_OS == "IOS" ]; then # fixes weird keyboard webview resizing bug https://github.com/apache/cordova-ios/issues/417
+		cordova plugin add cordova-plugin-ionic-webview
+		checkOK
+		cordova plugin add cordova-plugin-ionic-keyboard
+		checkOK
+	fi
 fi
 
 if $DBGJS
@@ -205,24 +165,21 @@ cd $BUILDDIR
 cp config.xml $PROJECT/config.xml
 checkOK
 
+cp "splashscreen@2x~universal~anyany.png" "$PROJECT/splashscreen@2x~universal~anyany.png"
+checkOK
+
 if [ $CURRENT_OS == "ANDROID" ]; then
 	echo "Android project!!!"
 	
 	cat $BUILDDIR/android/android.css >> $PROJECT/www/css/obyte.css
-
-	mkdir -p $PROJECT/platforms/android/res/xml/
-	checkOK
-
-#  cp android/AndroidManifest.xml $PROJECT/platforms/android/AndroidManifest.xml
-#  checkOK
 	
 	cp android/build-extras.gradle $PROJECT/platforms/android/build-extras.gradle
 	checkOK
 
-	cp android/project.properties $PROJECT/platforms/android/project.properties
-	checkOK
+	cp -R android/icons $PROJECT/
+	checkOK	
 
-	cp -R android/res/* $PROJECT/platforms/android/res
+	cp android/google-services.json $PROJECT/google-services.json
 	checkOK
 fi
 
@@ -230,25 +187,8 @@ if [ $CURRENT_OS == "IOS" ]; then
 
 	echo "IOS project!!!"
 
-	cp -R ios $PROJECT/../
+	cp -R ios/icons $PROJECT/
 	checkOK
-#  mkdir -p $PROJECT/platforms/ios
-#  checkOK
-#
-#  cp ios/Byteball-Info.plist $PROJECT/platforms/ios/Byteball-Info.plist
-#  checkOK
-#
-#  mkdir -p $PROJECT/platforms/ios/Byteball/Resources/icons
-#  checkOK
-#
-#  mkdir -p $PROJECT/platforms/ios/Byteball/Resources/splash
-#  checkOK
-#
-#  cp -R ios/icons/* $PROJECT/platforms/ios/Byteball/Resources/icons
-#  checkOK
-#
-#  cp -R ios/splash/* $PROJECT/platforms/ios/Byteball/Resources/splash
-#  checkOK
 fi
 
 if [ $CURRENT_OS == "WP8" ]; then
