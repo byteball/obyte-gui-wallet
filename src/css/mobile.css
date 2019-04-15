@@ -798,7 +798,7 @@ textarea:focus
   width:100%;
   position: absolute;
   top: 45px;
-  bottom: 37px;
+  bottom: 0px;
   overflow: auto;
   padding-bottom: 40px;
 }
@@ -967,5 +967,5 @@ i.validation-icon {
 	display: none;
 }
 .keyboard-open .send-form {
-	padding-bottom: 0;
+	padding-bottom: 0px;
 }

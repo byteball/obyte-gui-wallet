@@ -91,6 +91,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			}
 		});
 	}
+
+	if (isCordova) {
+		Keyboard.hideFormAccessoryBar(false);
+	}
     
     eventBus.on('nonfatal_error', function(error_message, error_object) {
 		console.log('nonfatal error stack', error_object.stack);
