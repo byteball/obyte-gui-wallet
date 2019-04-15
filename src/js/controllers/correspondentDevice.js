@@ -1718,6 +1718,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						$scope.validity_checked = true;
 					}, 500);
 				}
+
+				$scope.copyToClipboard = function(str) {
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(str);
+					} else {
+						document.getElementById('sourcetext').select();
+						document.execCommand('copy');
+					}
+				}
 			};
 
 			var modalInstance = $modal.open({

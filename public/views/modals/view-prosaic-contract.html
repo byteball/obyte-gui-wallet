@@ -94,7 +94,7 @@ form[name="prosaicContractForm"] {
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
 		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
-		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
+		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard(title+text+creation_date)">copy text</a>
 		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
