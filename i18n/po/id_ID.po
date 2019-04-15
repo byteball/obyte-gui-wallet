@@ -8,10 +8,10 @@ msgstr ""
 "X-Crowdin-Project: byteball\n"
 "X-Crowdin-Language: id\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
-"Last-Translator: testz <testzcrypto@gmail.com>\n"
+"Last-Translator: testz\n"
 "Language-Team: Indonesian\n"
 "Language: id_ID\n"
-"PO-Revision-Date: 2018-06-22T09:24:04+0000\n"
+"PO-Revision-Date: 2019-04-15 19:31\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -29,7 +29,7 @@ msgstr "(dompet saat ini)"
 msgid "(my other wallet)"
 msgstr ""
 
-#: public/views/walletHome.html:666
+#: public/views/walletHome.html:669
 msgid "(possible double spend)"
 msgstr "(kemungkinan pembayaran ganda)"
 
@@ -41,13 +41,17 @@ msgstr "-- Pilih co-signer --"
 msgid "12 words separated by dashes"
 msgstr "12 kata-kata yang dipisahkan oleh tanda hubung"
 
-#: public/views/preferencesGlobal.html:139
-msgid "About Byteball"
-msgstr "Tentang Byteball"
+#: public/views/modals/view-prosaic-contract.html:65
+msgid "<span translate=\"\">Status</span>: <b translate=\"\">{{status}}</b>"
+msgstr ""
+
+#: public/views/preferencesGlobal.html:143
+msgid "About Obyte"
+msgstr ""
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:123
+#: src/js/controllers/walletHome.js:130
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Menerima"
@@ -68,34 +72,42 @@ msgstr "Akun"
 msgid "Add Bot"
 msgstr "Tambahkan Bot"
 
-#: public/views/correspondentDevices.html:69
+#: public/views/correspondentDevices.html:149
 msgid "Add a new device"
 msgstr "Tambahkan perangkat baru"
 
-#: public/views/modals/destination-address.html:106
-#: public/views/modals/destination-address.html:99
+#: public/views/modals/destination-address.html:100
+#: public/views/modals/destination-address.html:107
 msgid "Add a new entry"
 msgstr "Tambahkan catatan baru"
 
-#: public/views/walletHome.html:571
+#: public/views/preferencesEditRealNameAttestors.html:25
+msgid "Add address"
+msgstr ""
+
+#: public/views/walletHome.html:570
+msgid "Add answer"
+msgstr ""
+
+#: public/views/walletHome.html:570
 msgid "Add fields"
 msgstr "Tambah isian-isian"
 
-#: public/views/includes/sidebar.html:24
+#: public/views/includes/sidebar.html:23
 msgid "Add wallet"
 msgstr "Tambahkan dompet"
 
-#: public/views/correspondentDevices.html:89
+#: public/views/correspondentDevices.html:190
 msgid "Added"
 msgstr "Ditambahkan"
 
 #: public/views/modals/customized-amount.html:32
-#: public/views/modals/destination-address.html:118
+#: public/views/modals/destination-address.html:119
 #: public/views/paymentUri.html:15
 msgid "Address"
 msgstr "Alamat"
 
-#: public/views/walletHome.html:545
+#: public/views/walletHome.html:542
 msgid "Address to attest"
 msgstr "Alamat yang akan disahkan"
 
@@ -104,9 +116,17 @@ msgstr "Alamat yang akan disahkan"
 msgid "Addressbook"
 msgstr "Buku alamat"
 
-#: public/views/preferences.html:59
+#: public/views/preferencesEditRealNameAttestors.html:15
+msgid "Addresses"
+msgstr ""
+
+#: public/views/preferences.html:66
 msgid "Advanced"
 msgstr "Tingkat lanjut"
+
+#: public/views/modals/view-prosaic-contract.html:136
+msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
+msgstr ""
 
 #: public/views/modals/share.html:43
 msgid "After writing it down, find this transaction in"
@@ -125,14 +145,14 @@ msgid "All Wallet Addresses"
 msgstr "Semua Alamat Dompet"
 
 #: public/views/translators.html:52
-msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr "Semua kontribusi penerjemahan Byteball akan diterima dengan senang hati. Daftar di crowdin.com dan bergabung dengan proyek Byteball di"
+msgid "All contributions to Obyte's translation are welcome. Sign up at crowdin.com and join the O<sub>byte</sub> project at"
+msgstr ""
 
 #: public/views/modals/multi-payment.html:56
 msgid "Already Paid"
 msgstr "Sudah Dibayar"
 
-#: src/js/controllers/correspondentDevice.js:1267
+#: src/js/controllers/correspondentDevice.js:1378
 msgid "Already saved"
 msgstr "Sudah disimpan"
 
@@ -153,9 +173,13 @@ msgstr "Juga, jangan lupa untuk menghapus benih anda"
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:378
+#: public/views/walletHome.html:372
 msgid "Amount"
 msgstr "Sebesar"
+
+#: public/views/walletHome.html:570
+msgid "Answer"
+msgstr ""
 
 #: public/views/modals/vote.html:22
 msgid "Answer:"
@@ -178,20 +202,20 @@ msgstr "Apakah anda yakin ingin menghapus dompet ini?"
 msgid "Asset"
 msgstr "Aset"
 
-#: public/views/walletHome.html:534
-msgid "Attest profile data linked to any Byteball address."
-msgstr "Mengesahkan data profil terkait dengan alamat Byteball."
+#: public/views/walletHome.html:528
+msgid "Attest profile data linked to any Obyte address."
+msgstr ""
 
-#: public/views/walletHome.html:348
+#: public/views/walletHome.html:341
 msgid "Attestation"
 msgstr "Pengesahan"
 
-#: public/views/modals/accept-profile.html:28
+#: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
 msgid "Attested address:"
 msgstr "Alamat yang disahkan:"
 
-#: public/views/modals/accept-profile.html:24
+#: public/views/modals/accept-profile.html:30
 #: public/views/modals/choose-profile.html:37
 msgid "Attested by:"
 msgstr "Disahkan oleh:"
@@ -215,7 +239,7 @@ msgstr "Saldo Yang Tersedia"
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/bot.html:13
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:19
+#: public/views/correspondentDevices.html:71
 #: public/views/editCorrespondentDevice.html:14
 #: public/views/includes/topbar.html:8
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
@@ -228,7 +252,7 @@ msgstr "Kembali"
 msgid "Backup now"
 msgstr "Cadangkan sekarang"
 
-#: public/views/preferencesGlobal.html:104
+#: public/views/preferencesGlobal.html:108
 msgid "Backup wallet seed"
 msgstr "Cadangan benih dompet"
 
@@ -236,11 +260,11 @@ msgstr "Cadangan benih dompet"
 msgid "Backup words deleted"
 msgstr "Cadangan kata-kata dihapus"
 
-#: public/views/preferencesGlobal.html:94
+#: public/views/preferencesGlobal.html:98
 msgid "Backups"
 msgstr "Cadangan"
 
-#: src/js/controllers/correspondentDevice.js:1252
+#: src/js/controllers/correspondentDevice.js:1361
 msgid "Bad profile"
 msgstr "Profil buruk"
 
@@ -257,12 +281,12 @@ msgid "Better yet, use multisig wallets with redundancy,"
 msgstr "Lebih baik lagi, gunakan dompet multisig dengan redundansi,"
 
 #: public/views/modals/bind.html:8
-#: public/views/modals/bind.html:86
+#: public/views/modals/bind.html:94
 msgid "Bind payment"
 msgstr "Mengikat pembayaran"
 
-#: public/views/walletHome.html:439
-#: public/views/walletHome.html:452
+#: public/views/walletHome.html:433
+#: public/views/walletHome.html:446
 msgid "Bind the payment to a condition"
 msgstr "Mengikat pembayaran dengan kondisi"
 
@@ -274,21 +298,13 @@ msgstr "Bitcoin URI TIDAK sah!"
 msgid "Bot Store"
 msgstr "Toko Bot"
 
-#: public/views/correspondentDevice.html:288
+#: public/views/correspondentDevice.html:290
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr "Baik anda dan {{correspondent.name}} mengaktifkan rekaman lokal riwayat obrolan."
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
 msgstr "Peramban tidak didukung"
-
-#: public/index.html:12
-msgid "Byteball &mdash; smart payments"
-msgstr ""
-
-#: public/views/modals/destination-address.html:119
-msgid "Byteball address"
-msgstr "Alamat Byteball"
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -299,16 +315,16 @@ msgstr "BATAL"
 msgid "CONTINUE"
 msgstr "LANJUTKAN"
 
-#: public/views/modals/destination-address.html:127
-#: public/views/walletHome.html:493
+#: public/views/modals/destination-address.html:128
+#: public/views/walletHome.html:487
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:124
+#: src/js/controllers/walletHome.js:131
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Batal"
 
-#: public/views/editCorrespondentDevice.html:35
+#: public/views/editCorrespondentDevice.html:44
 msgid "Change hub:"
 msgstr "Ganti hub:"
 
@@ -316,7 +332,7 @@ msgstr "Ganti hub:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Mengganti alias dompet hanya berpengaruh pada nama dompet lokal."
 
-#: src/js/controllers/index.js:681
+#: src/js/controllers/index.js:777
 msgid "Chat"
 msgstr "Obrolan"
 
@@ -336,7 +352,7 @@ msgstr "Pilih perangkat untuk mengirim ke"
 msgid "Choose which fields to send:"
 msgstr "Pilih bidang mana yang harus dikirim:"
 
-#: src/js/controllers/walletHome.js:490
+#: src/js/controllers/walletHome.js:502
 msgid "Claim funds"
 msgstr "Klaim dana"
 
@@ -356,17 +372,17 @@ msgstr ""
 msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
 msgstr "Klik tombol untuk <span ng-if=\"isResend\">mengirim</span>ulang surel:"
 
-#: public/views/walletHome.html:515
+#: public/views/walletHome.html:509
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr ""
 
-#: public/views/walletHome.html:514
+#: public/views/walletHome.html:508
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr "Klik tombol ini untuk membuat pembayaran dan berbagi melalui pesan pribadi di aplikasi obrolan atau untuk membuat dompet kertas."
 
-#: public/views/correspondentDevices.html:25
+#: public/views/correspondentDevices.html:76
 #: public/views/includes/topbar.html:13
-#: public/views/modals/accept-profile.html:4
+#: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
@@ -378,12 +394,14 @@ msgstr "Klik tombol ini untuk membuat pembayaran dan berbagi melalui pesan priba
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
 #: public/views/modals/offer-contract.html:29
+#: public/views/modals/offer-prosaic-contract.html:38
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
 #: public/views/modals/signed-message.html:39
 #: public/views/modals/signed-message.html:4
+#: public/views/modals/view-prosaic-contract.html:53
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Tutup"
@@ -396,7 +414,7 @@ msgstr "Co-signer {{$index+1}}:"
 msgid "Co-signers"
 msgstr "Co-signers"
 
-#: public/views/includes/sidebar.html:36
+#: public/views/includes/sidebar.html:35
 msgid "Co-signers for multisig"
 msgstr "Co-signers untuk multisig"
 
@@ -413,11 +431,11 @@ msgid "Compress the file? (Slower)"
 msgstr "Kompresi berkas? (Lambat)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:520
+#: src/js/controllers/index.js:611
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:125
-#: src/js/controllers/walletHome.js:1712
-#: src/js/controllers/walletHome.js:1716
+#: src/js/controllers/walletHome.js:132
+#: src/js/controllers/walletHome.js:1820
+#: src/js/controllers/walletHome.js:1824
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Menyetujui"
@@ -438,12 +456,12 @@ msgstr "Mengkonfirmasi suara"
 msgid "Confirmed"
 msgstr "Telah dikonfirmasi"
 
-#: public/views/correspondentDevices.html:35
+#: public/views/correspondentDevices.html:86
 msgid "Contacts"
 msgstr "Kontak"
 
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:391
+#: src/js/controllers/walletHome.js:403
 msgid "Copied to clipboard"
 msgstr "Disalin ke papan klip"
 
@@ -452,22 +470,27 @@ msgid "Copy"
 msgstr "Salin"
 
 #: public/views/recoveryFromSeed.html:42
-msgid "Correspondents are not restored."
-msgstr "Koresponden tidak dipulihkan."
+msgid "Correspondents and chats are not restored."
+msgstr ""
 
-#: src/js/controllers/walletHome.js:696
+#: public/views/modals/offer-prosaic-contract.html:75
+#: public/views/modals/view-prosaic-contract.html:111
+msgid "Cosigners"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:708
 msgid "Could not create payment proposal"
 msgstr "Tidak dapat membuat proposal pembayaran"
 
-#: src/js/services/profileService.js:279
+#: src/js/services/profileService.js:281
 msgid "Could not create using the specified extended private key"
 msgstr "Tidak dapat membuat dengan menggunakan perpanjangan kunci pribadi spesifik"
 
-#: src/js/services/profileService.js:289
+#: src/js/services/profileService.js:291
 msgid "Could not create using the specified extended public key"
 msgstr "Tidak dapat membuat dengan menggunakan perpanjangan kunci publik spesifik"
 
-#: src/js/services/profileService.js:272
+#: src/js/services/profileService.js:274
 msgid "Could not create: Invalid wallet seed"
 msgstr "Tidak dapat membuat: Benih dompet tidak valid"
 
@@ -475,29 +498,25 @@ msgstr "Tidak dapat membuat: Benih dompet tidak valid"
 msgid "Could not decrypt"
 msgstr "Tidak dapat mendeskripsi"
 
-#: public/views/walletHome.html:621
+#: public/views/walletHome.html:624
 msgid "Could not fetch transaction history"
 msgstr "Tidak dapat memperbarui riwayat transaksi"
 
-#: src/js/services/profileService.js:507
-#: src/js/services/profileService.js:534
-#: src/js/services/profileService.js:556
+#: src/js/services/profileService.js:510
+#: src/js/services/profileService.js:537
+#: src/js/services/profileService.js:559
 msgid "Could not import"
 msgstr "Tidak dapat mengimpor"
 
-#: src/js/services/profileService.js:484
+#: src/js/services/profileService.js:487
 msgid "Could not import. Check input file and password"
 msgstr "Tidak dapat mengimpor. Periksa masukkan kata kunci dan berkas"
 
-#: src/js/controllers/walletHome.js:53
-msgid "Could not recognize a valid Byteball QR Code"
-msgstr "Tidak dapat mengenali Kode QR Byteball yang benar"
-
-#: src/js/controllers/walletHome.js:696
+#: src/js/controllers/walletHome.js:708
 msgid "Could not send payment"
 msgstr "Tidak dapat mengirim pembayaran"
 
-#: src/js/controllers/correspondentDevice.js:1223
+#: src/js/controllers/correspondentDevice.js:1327
 msgid "Country"
 msgstr "Negara"
 
@@ -505,18 +524,15 @@ msgstr "Negara"
 msgid "Create"
 msgstr "Buat"
 
-#: public/views/includes/sidebar.html:26
+#: public/views/includes/sidebar.html:25
 msgid "Create a new wallet"
 msgstr "Buat dompet baru"
 
 #: public/views/add.html:15
 #: public/views/create.html:175
+#: src/js/controllers/index.js:321
 msgid "Create new wallet"
 msgstr "Buat dompet baru"
-
-#: src/js/controllers/index.js:310
-msgid "Create new wallet  together with  ?"
-msgstr "Buat dompet baru bersamaan dengan ?"
 
 #: public/views/create.html:171
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
@@ -538,19 +554,19 @@ msgstr "Membuat Dompet..."
 msgid "DELETE WORDS"
 msgstr "HAPUS KATA-KATA"
 
-#: public/views/walletHome.html:350
+#: public/views/walletHome.html:343
 msgid "Data"
 msgstr "Data"
 
-#: public/views/walletHome.html:347
+#: public/views/walletHome.html:340
 msgid "Data into datafeed"
 msgstr "Data ke dalam datafeed"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "Datafeed name"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "Datafeed value"
 msgstr ""
 
@@ -558,17 +574,13 @@ msgstr ""
 msgid "Date"
 msgstr "Tanggal"
 
-#: src/js/controllers/correspondentDevice.js:1222
+#: src/js/controllers/correspondentDevice.js:1326
 msgid "Date of birth"
 msgstr "Tanggal lahir"
 
-#: src/js/controllers/index.js:276
+#: src/js/controllers/index.js:287
 msgid "Declined"
 msgstr "Menolak"
-
-#: public/views/paperWallet.html:40
-msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Mendeskripsi dompet kertas membutuhkan waktu sekitar 5 menit pada perangkat ini. harap bersabar dan membiarkan aplikasi tetap berjalan."
 
 #: public/views/walletHome.html:194
 msgid "Definition"
@@ -590,7 +602,7 @@ msgstr "Hapus Dompet"
 msgid "Delete wallet"
 msgstr "Hapus Dompet"
 
-#: src/js/controllers/walletHome.js:1709
+#: src/js/controllers/walletHome.js:1817
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr "Menghapus textcoin akan menghilangkan kemampuan untuk mengklaim kembali atau mengirim ulang"
 
@@ -629,28 +641,28 @@ msgstr "Jangan gunakan untuk menggandakan dompet."
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Bahasa anda tidak tersedia pada Crowdin? Hubungi Pemilik pada Crowdin! Kami akan senang hati mendukung bahasa anda."
 
-#: public/views/inviteCorrespondentDevice.html:28
+#: public/views/inviteCorrespondentDevice.html:34
 #: public/views/modals/destination-address.html:41
 msgid "Done"
 msgstr "Selesai"
 
-#: public/views/walletHome.html:722
+#: public/views/walletHome.html:725
 msgid "Download CSV file"
 msgstr "Unduh berkas CSV"
 
 #: public/views/splash.html:26
-msgid "Download the entire Byteball database"
-msgstr "Mengunduh seluruh database Byteball"
+msgid "Download the entire Obyte database"
+msgstr ""
 
-#: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
 msgstr "Sunting"
 
-#: public/views/correspondentDevice.html:291
+#: public/views/correspondentDevice.html:293
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "Baik anda atau {{correspondent.name}} menonaktifkan rekaman riwayat obrolan. Riwayat tidak akan disimpan siapapun."
 
+#: public/views/editCorrespondentDevice.html:35
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
 msgstr "Mengaktifkan notifikasi push"
@@ -663,17 +675,21 @@ msgstr "Masukan kode pasangan yang diterima dari perangkat lain, atau gunakan ka
 msgid "Enter your password"
 msgstr "Masukkan kata kunci anda"
 
-#: src/js/services/profileService.js:338
-#: src/js/services/profileService.js:390
+#: src/js/services/profileService.js:341
+#: src/js/services/profileService.js:393
 msgid "Error creating wallet"
 msgstr "Kesalahan membuat dompet"
+
+#: public/views/modals/view-prosaic-contract.html:68
+msgid "Expired on"
+msgstr ""
 
 #: public/views/export.html:51
 msgid "Export"
 msgstr "Ekspor"
 
-#: src/js/controllers/export.js:136
-#: src/js/controllers/export.js:161
+#: src/js/controllers/export.js:142
+#: src/js/controllers/export.js:167
 msgid "Export completed successfully"
 msgstr "Ekspor selesai dengan sukses"
 
@@ -693,7 +709,7 @@ msgstr "Gagal mengekspor"
 msgid "Fee"
 msgstr "Biaya"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "Field"
 msgstr ""
 
@@ -701,7 +717,7 @@ msgstr ""
 msgid "Finality"
 msgstr "Kepastian"
 
-#: src/js/controllers/correspondentDevice.js:1220
+#: src/js/controllers/correspondentDevice.js:1324
 msgid "First name"
 msgstr "Nama depan"
 
@@ -713,23 +729,15 @@ msgstr "Dari"
 msgid "Full address:"
 msgstr "Alamat lengkap:"
 
-#: public/views/preferencesGlobal.html:122
+#: public/views/preferencesGlobal.html:126
 msgid "Full backup"
 msgstr "Cadangan lengkap"
-
-#: public/views/paperWallet.html:58
-msgid "Funds found"
-msgstr "Dana ditemukan"
-
-#: public/views/paperWallet.html:74
-msgid "Funds will be transferred to"
-msgstr "Dana akan ditransfer ke"
 
 #: public/views/splash.html:92
 msgid "GET STARTED"
 msgstr "MEMULAI"
 
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:432
 msgid "Generate QR Code"
 msgstr "Menghasilkan Kode QR"
 
@@ -745,7 +753,7 @@ msgstr "Membuat berkas .csv..."
 msgid "Getting address for wallet {{selectedWalletName}} ..."
 msgstr "Mendapatkan alamat untuk dompet {{selectedWalletName}} ..."
 
-#: public/views/includes/sidebar.html:46
+#: public/views/includes/sidebar.html:45
 msgid "Global preferences"
 msgstr "Preferensi global"
 
@@ -757,16 +765,20 @@ msgstr "Kembali"
 msgid "Hardware wallet"
 msgstr "Dompet perangkat keras"
 
+#: public/views/preferences.html:59
+msgid "Hidden assets"
+msgstr ""
+
 #: public/views/backup.html:45
 msgid "Hide the Wallet Seed"
 msgstr "Sembunyikan Benih Dompet"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:677
+#: src/js/controllers/index.js:773
 msgid "History"
 msgstr "Riwayat"
 
-#: src/js/controllers/index.js:665
+#: src/js/controllers/index.js:761
 msgid "Home"
 msgstr "Rumah"
 
@@ -794,15 +806,27 @@ msgstr "Saya membayar"
 msgid "I receive another payment of"
 msgstr "Saya menerima pembayaran lain dari"
 
-#: src/js/controllers/correspondentDevice.js:1225
+#: public/views/modals/tx-details.html:102
+msgid "ID"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1333
+msgid "ID expires at"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1334
+msgid "ID issued at"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1330
 msgid "ID number"
 msgstr "Nomor ID"
 
-#: src/js/controllers/correspondentDevice.js:1227
+#: src/js/controllers/correspondentDevice.js:1332
 msgid "ID subtype"
 msgstr "Subtipe ID"
 
-#: src/js/controllers/correspondentDevice.js:1226
+#: src/js/controllers/correspondentDevice.js:1331
 msgid "ID type"
 msgstr "Tipe ID"
 
@@ -810,7 +834,7 @@ msgstr "Tipe ID"
 msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr "Jika salah satu perangkat cosigner anda tidak melihat pembayaran ini, anda dapat"
 
-#: public/views/modals/bind.html:77
+#: public/views/modals/bind.html:85
 msgid "If the condition is not met, I can take this money back after"
 msgstr "Jika kondisinya tidak terpenuhi, uang saya akan kembali setelah"
 
@@ -823,7 +847,7 @@ msgstr "Jika rekanan tidak membayar, uang saya akan kembali setelah"
 msgid "If the recipient doesn't see your payment, you can"
 msgstr "Jika penerima tidak melihat pembayaran anda, anda dapat"
 
-#: public/views/import.html:58
+#: public/views/import.html:47
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr "Jika anda telah memindahkan cadangan ini dari perangkat lain, hentikan penggunaan pada perangkat sebelumnya segera setelah membuat cadangan.  Jangan pernah menggandakan dompet.  Jika anda membutuhkan akses dari beberapa perangkat, gunakan multisig."
 
@@ -847,25 +871,25 @@ msgstr "Mengimpor dompet..."
 msgid "Including pending confirmation"
 msgstr "Termasuk konfirmasi yang tertunda"
 
-#: public/views/walletHome.html:640
+#: public/views/walletHome.html:643
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Sinkronisasi riwayat transaksi awal dapat memakan waktu beberapa menit untuk dompet dengan banyak transaksi.<br>\n"
 "          Silahkan menunggu."
 
-#: public/views/correspondentDevice.html:327
+#: public/views/correspondentDevice.html:329
 msgid "Insert my address"
 msgstr "Masukkan alamat saya"
 
-#: public/views/correspondentDevice.html:343
+#: public/views/correspondentDevice.html:345
 msgid "Insert private profile"
 msgstr "Masukkan profil pribadi"
 
-#: public/views/walletHome.html:659
+#: public/views/walletHome.html:662
 msgid "Invalid"
 msgstr "Tidak sah"
 
-#: src/js/controllers/index.js:1631
+#: src/js/controllers/index.js:1743
 msgid "Invalid Touch ID"
 msgstr "Touch ID tidak sah"
 
@@ -874,14 +898,14 @@ msgid "Invite the other device"
 msgstr "Mengundang perangkat lain"
 
 #: public/views/backup.html:22
-msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets and private assets such as blackbytes."
-msgstr "Hanya benih dompet tidaklah cukup.  Dengan benih saja, anda tidak akan mampu memulihkan dompet multisig dan aset pribadi seperti blackbytes."
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
+msgstr ""
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
 msgstr "Simpan hanya data yang relevan bagi anda"
 
-#: public/views/modals/destination-address.html:120
+#: public/views/modals/destination-address.html:121
 msgid "Label"
 msgstr "Label"
 
@@ -889,7 +913,7 @@ msgstr "Label"
 msgid "Language"
 msgstr "Bahasa"
 
-#: src/js/controllers/correspondentDevice.js:1221
+#: src/js/controllers/correspondentDevice.js:1325
 msgid "Last name"
 msgstr "Nama belakang"
 
@@ -910,7 +934,9 @@ msgid "Maybe later"
 msgstr "Mungkin nanti"
 
 #: public/views/includes/copayers.html:4
-#: public/views/modals/offer-contract.html:116
+#: public/views/modals/offer-contract.html:117
+#: public/views/modals/offer-prosaic-contract.html:51
+#: public/views/modals/view-prosaic-contract.html:70
 #: public/views/preferencesInformation.html:76
 msgid "Me"
 msgstr "Saya"
@@ -919,7 +945,7 @@ msgstr "Saya"
 msgid "Merchant message"
 msgstr "Pesan pedagang"
 
-#: public/views/walletHome.html:459
+#: public/views/walletHome.html:453
 msgid "Merkle proof"
 msgstr "Bukti Merkle"
 
@@ -932,7 +958,11 @@ msgstr "Pesan"
 msgid "Message:"
 msgstr ""
 
-#: public/views/walletHome.html:658
+#: public/views/correspondentDevice.html:26
+msgid "More"
+msgstr ""
+
+#: public/views/walletHome.html:661
 msgid "Moved"
 msgstr "Dipindahkan"
 
@@ -941,14 +971,14 @@ msgid "Multidevice Wallet"
 msgstr "Dompet Multiperangkat"
 
 #: public/views/walletHome.html:255
-msgid "My Byteball address"
-msgstr "Alamat Byteball saya"
+msgid "My Obyte address"
+msgstr ""
 
-#: public/views/correspondentDevice.html:297
+#: public/views/correspondentDevice.html:299
 msgid "My recording preference"
 msgstr "Preferensi rekaman saya"
 
-#: public/views/modals/destination-address.html:121
+#: public/views/modals/destination-address.html:122
 msgid "Name of the contact"
 msgstr "Nama kontak"
 
@@ -969,8 +999,8 @@ msgid "New witnesses"
 msgstr "Saksi baru"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:519
-#: src/js/controllers/walletHome.js:1724
+#: src/js/controllers/index.js:610
+#: src/js/controllers/walletHome.js:1832
 msgid "No"
 msgstr "Tidak"
 
@@ -986,32 +1016,57 @@ msgstr "Profil tidak cocok dengan kriteria yang diminta."
 msgid "No profiles yet."
 msgstr "Belum memiliki profil."
 
-#: public/views/walletHome.html:624
+#: public/views/walletHome.html:627
 msgid "No transactions yet"
 msgstr "Belum ada transaksi"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
-#: public/views/modals/destination-address.html:112
-#: public/views/walletHome.html:370
-#: public/views/walletHome.html:407
-#: public/views/walletHome.html:416
-#: public/views/walletHome.html:550
+#: public/views/modals/destination-address.html:113
+#: public/views/walletHome.html:364
+#: public/views/walletHome.html:401
+#: public/views/walletHome.html:410
+#: public/views/walletHome.html:547
 msgid "Not valid"
 msgstr "Tidak sah"
 
 #: public/views/includes/output.html:12
 #: public/views/modals/tx-details.html:106
 #: public/views/modals/tx-details.html:81
-#: public/views/walletHome.html:470
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:464
+#: public/views/walletHome.html:690
 msgid "Note"
 msgstr "Catatan"
 
+#: src/js/controllers/export.js:89
+msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
+msgstr ""
+
+#: public/index.html:12
+msgid "Obyte &mdash; smart payments"
+msgstr ""
+
+#: public/views/modals/destination-address.html:120
+msgid "Obyte address"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:88
+msgid "Offer Contract"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:118
 msgid "Offer a contract"
 msgstr "Menawarkan kontrak"
+
+#: public/views/modals/offer-prosaic-contract.html:72
+msgid "Offer is valid for"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:42
+#: src/js/services/correspondentListService.js:118
+msgid "Offer prosaic contract"
+msgstr ""
 
 #: public/views/backup.html:87
 msgid "Once you have written your wallet seed down, it is recommended to delete it from this device."
@@ -1025,6 +1080,10 @@ msgstr "Hanya satu-sig dompet dapat dipulihkan."
 msgid "Open chat"
 msgstr "Buka obrolan"
 
+#: public/views/walletHome.html:570
+msgid "Options for answering"
+msgstr ""
+
 #: public/views/modals/share.html:39
 msgid "Or copy"
 msgstr "Atau menyalin"
@@ -1033,7 +1092,7 @@ msgstr "Atau menyalin"
 msgid "Pair"
 msgstr "Pasangan"
 
-#: public/views/includes/sidebar.html:34
+#: public/views/includes/sidebar.html:33
 msgid "Paired devices"
 msgstr "Perangkat berpasangan"
 
@@ -1041,16 +1100,15 @@ msgstr "Perangkat berpasangan"
 msgid "Pairing code"
 msgstr "Menyandingkan kode"
 
-#: public/views/paperWallet.html:30
-msgid "Paper Wallet Private Key"
-msgstr "Kunci Pribadi Dompet Kertas"
+#: public/views/paperWallet.html:79
+msgid "Paper wallets are just textcoins. Scan the paper wallet's QR code using the camera icon in the upper right corner or input the 12 words of the textcoin manually on the \"Receive\" tab."
+msgstr ""
 
-#: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
 msgstr "Frasa sandi"
 
-#: src/js/services/profileService.js:672
+#: src/js/services/profileService.js:675
 msgid "Password needed"
 msgstr "Kata sandi dibutuhkan"
 
@@ -1062,11 +1120,11 @@ msgstr "Kata sandi tidak cocok"
 msgid "Paste your paper wallet private key here"
 msgstr "Tempelkan kunci pribadi dompet kertas anda di sini"
 
-#: public/views/modals/offer-contract.html:137
+#: public/views/modals/offer-contract.html:138
 msgid "Pay and offer"
 msgstr "Membayar dan menawarkan"
 
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:118
 msgid "Pay to this address"
 msgstr "Bayar ke alamat ini"
 
@@ -1090,6 +1148,11 @@ msgstr "Pembayaran Ditolak"
 msgid "Payment Sent"
 msgstr "Pembayaran Terkirim"
 
+#: public/views/modals/offer-prosaic-contract.html:58
+#: public/views/modals/view-prosaic-contract.html:77
+msgid "Peer"
+msgstr ""
+
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
 msgstr "Rekanan:"
@@ -1098,15 +1161,27 @@ msgstr "Rekanan:"
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Hapus dompet ini secara permanen. TINDAKAN INI TIDAK DAPAT DIBALIK"
 
+#: src/js/controllers/correspondentDevice.js:1328
+msgid "Personal code"
+msgstr ""
+
 #: public/views/create.html:28
 msgid "Plain Wallet"
 msgstr "Dompet Polos"
+
+#: src/js/controllers/index.js:226
+msgid "Please approve contract fees deposit on the other devices."
+msgstr ""
+
+#: src/js/controllers/index.js:231
+msgid "Please approve posting prosaic contract hash on the other devices."
+msgstr ""
 
 #: public/views/splash.html:20
 msgid "Please choose how much data to store in your wallet"
 msgstr "Silahkan memilih berapa banyak data yang akan disimpan dalam dompet anda"
 
-#: src/js/controllers/create.js:97
+#: src/js/controllers/create.js:99
 msgid "Please enter the required fields"
 msgstr "Harap masukkan bidang yang dipersyaratkan"
 
@@ -1114,23 +1189,31 @@ msgstr "Harap masukkan bidang yang dipersyaratkan"
 msgid "Please name this device"
 msgstr "Berikan nama perangkat ini"
 
-#: src/js/controllers/correspondentDevice.js:149
+#: src/js/controllers/correspondentDevice.js:150
 msgid "Please switch to a single-address wallet and you probably need to insert your address again."
 msgstr "Harap beralih ke alamat dompet tunggal dan anda mungkin perlu untuk memasukkan alamat anda lagi."
+
+#: public/views/walletHome.html:344
+msgid "Poll"
+msgstr ""
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Port"
 
-#: public/views/walletHome.html:540
-msgid "Post arbitrary key-value pairs of data into Byteball network."
-msgstr "Terbitkan data pasangan kunci-nilai arbitrary ke jaringan Byteball."
+#: public/views/walletHome.html:537
+msgid "Post a poll into Obyte network that users can vote on with Poll bot."
+msgstr ""
 
-#: public/views/walletHome.html:531
+#: public/views/walletHome.html:534
+msgid "Post arbitrary key-value pairs of data into Obyte network."
+msgstr ""
+
+#: public/views/walletHome.html:525
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "Terbitkan nilai-nilai ke datafeed secara manual, menjadi peramal."
 
-#: public/views/walletHome.html:537
+#: public/views/walletHome.html:531
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "Terbitkan data profil anda, apa pun yang ingin anda katakan tentang diri anda."
 
@@ -1144,28 +1227,36 @@ msgid "Press again to exit"
 msgstr "Tekan lagi untuk keluar"
 
 #: public/views/recoveryFromSeed.html:40
-msgid "Private assets (such as blackbytes) are not recovered."
-msgstr "Aset pribadi (seperti blackbytes) tidak dapat dipulihkan."
+msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
+msgstr ""
 
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1886
+#: src/js/controllers/walletHome.js:1962
 msgid "Private payloads sent"
 msgstr "Muatan pribadi dikirim"
 
-#: public/views/modals/accept-profile.html:8
+#: public/views/modals/accept-profile.html:14
 msgid "Private profile"
 msgstr "Profil pribadi"
 
-#: public/views/walletHome.html:349
+#: public/views/walletHome.html:342
 msgid "Profile"
 msgstr "Profil"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "Profile field"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "Profile field value"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:91
+msgid "Proof of contract signing"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:57
+msgid "Prosaic contract"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:16
@@ -1176,15 +1267,23 @@ msgstr "Kode QR"
 msgid "QR-Scanner"
 msgstr "Pemindai QR"
 
+#: public/views/walletHome.html:557
+msgid "Question to be voted on"
+msgstr ""
+
 #: public/views/modals/vote.html:17
 msgid "Question:"
 msgstr "Pertanyaan:"
 
-#: src/js/controllers/index.js:669
+#: public/views/preferencesAttestorAddresses.html:16
+msgid "Real name attestors"
+msgstr ""
+
+#: src/js/controllers/index.js:765
 msgid "Receive"
 msgstr "Terima"
 
-#: public/views/walletHome.html:655
+#: public/views/walletHome.html:658
 msgid "Received"
 msgstr "Diterima"
 
@@ -1201,7 +1300,7 @@ msgstr "Menyambung kembali ke Layanan Dompet ..."
 msgid "Recover"
 msgstr "Memulihkan"
 
-#: public/views/preferencesGlobal.html:113
+#: public/views/preferencesGlobal.html:117
 msgid "Recovery from seed"
 msgstr "Pemulihan dari benih"
 
@@ -1209,7 +1308,7 @@ msgstr "Pemulihan dari benih"
 msgid "Recreating Wallet..."
 msgstr "Menciptakan Wallet ..."
 
-#: src/js/controllers/index.js:228
+#: src/js/controllers/index.js:239
 msgid "Refused"
 msgstr "Menolak"
 
@@ -1217,15 +1316,15 @@ msgstr "Menolak"
 msgid "Release Information"
 msgstr "Informasi Rilis"
 
-#: public/views/modals/destination-address.html:84
+#: public/views/modals/destination-address.html:85
 msgid "Remove"
 msgstr "Menghapus"
 
-#: public/views/correspondentDevices.html:75
+#: public/views/correspondentDevices.html:155
 msgid "Remove a device"
 msgstr "Hapus perangkat"
 
-#: public/views/editCorrespondentDevice.html:33
+#: public/views/editCorrespondentDevice.html:42
 msgid "Rename:"
 msgstr "Ubah nama:"
 
@@ -1251,7 +1350,7 @@ msgstr "Permintaan Kata Sandi"
 msgid "Request a specific amount"
 msgstr "Meminta jumlah tertentu"
 
-#: public/views/correspondentDevice.html:336
+#: public/views/correspondentDevice.html:338
 msgid "Request payment"
 msgstr "Permintaan pembayaran"
 
@@ -1259,7 +1358,7 @@ msgstr "Permintaan pembayaran"
 msgid "Required number of signatures"
 msgstr "Diperlukan jumlah tanda tangan"
 
-#: public/views/preferencesGlobal.html:131
+#: public/views/preferencesGlobal.html:135
 msgid "Restore from full backup"
 msgstr "Pulihkan dari cadangan lengkap"
 
@@ -1267,15 +1366,20 @@ msgstr "Pulihkan dari cadangan lengkap"
 msgid "Retrying..."
 msgstr "Mencoba lagi..."
 
+#: public/views/modals/view-prosaic-contract.html:144
+msgid "Revoke"
+msgstr ""
+
 #: public/views/includes/password.html:32
 msgid "SET"
 msgstr "SET"
 
-#: public/views/editCorrespondentDevice.html:41
-#: public/views/modals/destination-address.html:132
+#: public/views/editCorrespondentDevice.html:50
+#: public/views/modals/destination-address.html:133
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
 #: public/views/preferencesEditAttestorAddress.html:14
+#: public/views/preferencesEditRealNameAttestors.html:29
 #: public/views/preferencesEditWitness.html:15
 #: public/views/preferencesEmail.html:35
 #: public/views/preferencesHub.html:18
@@ -1287,13 +1391,9 @@ msgstr "Simpan"
 msgid "Saving preferences..."
 msgstr "Menyimpan preferensi..."
 
-#: public/views/preferences.html:69
-msgid "Scan Fingerprint"
-msgstr "Pindai Sidik Jari"
-
-#: public/views/paperWallet.html:44
-msgid "Scan Wallet Funds"
-msgstr "Pindai Dana Dompet"
+#: public/views/preferences.html:76
+msgid "Scan Fingerprint/FaceID"
+msgstr ""
 
 #: public/views/walletHome.html:121
 msgid "Scan status finished with error"
@@ -1303,7 +1403,7 @@ msgstr "Status pemindaian selesai dengan kesalahan"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Pindai kode QR di atas menggunakan perangkat lain, atau kirim kode penyandingan ini ke perangkat lain:"
 
-#: src/js/controllers/index.js:1624
+#: src/js/controllers/index.js:1736
 msgid "Scan your fingerprint please"
 msgstr "Pindai sidik jari anda"
 
@@ -1315,10 +1415,6 @@ msgstr "Memindai dana Dompet..."
 msgid "Scanning for addresses..."
 msgstr "Memindai alamat..."
 
-#: public/views/paperWallet.html:18
-msgid "Scanning wallet funds..."
-msgstr "Memindai dana dompet..."
-
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "Pilih dompet"
@@ -1327,20 +1423,20 @@ msgstr "Pilih dompet"
 msgid "Select subwallet"
 msgstr "Pilih sub dompet"
 
+#: public/views/preferencesHiddenAssets.html:29
+msgid "Select the assets to hide in the wallet"
+msgstr ""
+
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
 msgstr "Pilih identitas anda"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:496
-#: public/views/walletHome.html:586
-#: src/js/controllers/index.js:673
+#: public/views/walletHome.html:490
+#: public/views/walletHome.html:589
+#: src/js/controllers/index.js:769
 msgid "Send"
 msgstr "Kirim"
-
-#: public/views/walletHome.html:334
-msgid "Send All"
-msgstr "Kirim Semua"
 
 #: public/views/modals/multi-payment.html:53
 msgid "Send Payment"
@@ -1350,7 +1446,7 @@ msgstr "Kirim Pembayaran"
 msgid "Send addresses by email"
 msgstr "Kirim alamat melalui surel"
 
-#: public/views/walletHome.html:380
+#: public/views/walletHome.html:374
 msgid "Send all"
 msgstr "Kirim semua"
 
@@ -1362,15 +1458,11 @@ msgstr "Kirim melalui surel"
 msgid "Send this profile"
 msgstr "Kirim profil ini"
 
-#: public/views/paperWallet.html:19
-msgid "Sending funds..."
-msgstr "Mengirim dana..."
-
 #: public/views/walletHome.html:84
 msgid "Sending..."
 msgstr "Mengirim..."
 
-#: public/views/walletHome.html:657
+#: public/views/walletHome.html:660
 msgid "Sent"
 msgstr "Terkirim"
 
@@ -1386,7 +1478,7 @@ msgstr "Mengatur Kata Sandi"
 msgid "Set up a password"
 msgstr "Mengatur Kata Sandi"
 
-#: public/views/includes/sidebar.html:44
+#: public/views/includes/sidebar.html:43
 msgid "Settings"
 msgstr "Pengaturan"
 
@@ -1399,16 +1491,20 @@ msgstr "Berbagi"
 msgid "Share address"
 msgstr "Bagikan alamat"
 
+#: public/views/inviteCorrespondentDevice.html:27
+msgid "Share the code"
+msgstr ""
+
 #: public/views/walletHome.html:295
 msgid "Share this wallet address to receive payments."
 msgstr "Berbagi alamat dompet ini untuk menerima pembayaran."
 
-#: public/views/walletHome.html:395
-#: public/views/walletHome.html:516
+#: public/views/walletHome.html:389
+#: public/views/walletHome.html:510
 msgid "Share via message"
 msgstr "Berbagi melalui pesan"
 
-#: public/views/walletHome.html:714
+#: public/views/walletHome.html:717
 msgid "Show all"
 msgstr "Tampilkan semua"
 
@@ -1421,11 +1517,12 @@ msgid "Sign"
 msgstr ""
 
 #: public/views/modals/sign-message.html:8
+#: src/js/controllers/index.js:418
 msgid "Sign message"
 msgstr ""
 
-#: src/js/controllers/index.js:407
-msgid "Sign message \"\" by address ?"
+#: public/views/editCorrespondentDevice.html:57
+msgid "Signed contracts:"
 msgstr ""
 
 #: public/views/modals/signed-message.html:8
@@ -1447,7 +1544,7 @@ msgstr "Dompet alamat tunggal"
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr "Dompet alamat tunggal tidak akan membuat alamat baru pada setiap transaksi, kembalian akan selalu ditujukan ke satu-satunya alamat pada dompet."
 
-#: src/js/services/profileService.js:332
+#: src/js/services/profileService.js:335
 msgid "Small Expenses Wallet"
 msgstr "Dompet Kecil Pengeluaran"
 
@@ -1455,33 +1552,37 @@ msgstr "Dompet Kecil Pengeluaran"
 msgid "Specify Seed..."
 msgstr "Tentukan Benih..."
 
-#: public/views/preferences.html:63
+#: public/views/preferencesGlobal.html:94
+msgid "Spend unconfirmed funds"
+msgstr ""
+
+#: public/views/preferences.html:70
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "Pembatasan Pengeluaran"
 
-#: public/views/preferencesGlobal.html:100
+#: public/views/modals/view-prosaic-contract.html:65
+msgid "Status"
+msgstr ""
+
+#: public/views/preferencesGlobal.html:104
 msgid "Still not done"
 msgstr "Masih belum selesai"
 
-#: src/js/controllers/correspondentDevice.js:1269
+#: src/js/controllers/correspondentDevice.js:1380
 msgid "Store"
 msgstr "Toko"
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:136
-#: src/js/controllers/export.js:161
-#: src/js/controllers/index.js:265
-#: src/js/controllers/index.js:293
+#: src/js/controllers/export.js:142
+#: src/js/controllers/export.js:167
+#: src/js/controllers/index.js:276
+#: src/js/controllers/index.js:304
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1886
+#: src/js/controllers/walletHome.js:1962
 msgid "Success"
 msgstr "Sukses"
-
-#: public/views/paperWallet.html:64
-msgid "Sweep Wallet"
-msgstr "Sapu Dompet"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
@@ -1499,9 +1600,13 @@ msgstr "Sinkronisasi... {{index.syncProgress}}"
 msgid "TOR"
 msgstr "TOR"
 
+#: public/views/preferencesTor.html:12
+msgid "TOR enabled"
+msgstr ""
+
 #: public/views/walletHome.html:117
 #: public/views/walletHome.html:122
-#: public/views/walletHome.html:622
+#: public/views/walletHome.html:625
 msgid "Tap to retry"
 msgstr "Ketuk untuk mencoba lagi"
 
@@ -1510,7 +1615,12 @@ msgstr "Ketuk untuk mencoba lagi"
 msgid "Terms of Use"
 msgstr "Syarat Penggunaan"
 
-#: public/views/correspondentDevice.html:347
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:88
+msgid "Text"
+msgstr ""
+
+#: public/views/correspondentDevice.html:349
 msgid "Text message to"
 msgstr "Kirim pesan ke"
 
@@ -1518,7 +1628,7 @@ msgstr "Kirim pesan ke"
 msgid "Textcoin"
 msgstr "Textcoin"
 
-#: public/views/modals/accept-profile.html:32
+#: public/views/modals/accept-profile.html:38
 msgid "The attested address belongs to:"
 msgstr "Alamat yang disahkan atas nama:"
 
@@ -1555,7 +1665,7 @@ msgstr "Dompet \"{{walletName}}\" telah dihapus"
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr "Vendor dompet akan dapat mengetahui sebagian dari saldo anda dan dapat melihat transaksi mana yang menjadi milik anda, namun anda dapat segera mulai menggunakan dompet dan dompet berfungsi sepenuhnya."
 
-#: public/views/correspondentDevice.html:302
+#: public/views/correspondentDevice.html:304
 msgid "Their recording preference"
 msgstr "Preferensi rekaman mereka"
 
@@ -1575,11 +1685,11 @@ msgstr "Pilihan ini tidak bisa diubah nantinya"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "Pilihan ini lebih baik untuk privasi tetapi akan memerlukan beberapa gigabyte penyimpanan dan sinkronisasi awal akan memakan waktu beberapa hari.  Beban CPU akan tinggi selama sinkronisasi."
 
-#: public/views/walletHome.html:440
+#: public/views/walletHome.html:434
 msgid "This payment is bound to a condition"
 msgstr "Pembayaran ini terikat pada suatu kondisi"
 
-#: src/js/controllers/correspondentDevice.js:149
+#: src/js/controllers/correspondentDevice.js:150
 msgid "This payment must be paid only from single-address wallet"
 msgstr "Pembayaran ini harus dibayar hanya dari dompet alamat tunggal"
 
@@ -1603,41 +1713,42 @@ msgstr "Dompet ini tidak dapat dikonversi ke dompet alamat tunggal karena sudah 
 msgid "This wallet cannot be converted to single address wallet as it is multidevice"
 msgstr "Dompet ini tidak dapat dikonversi ke dompet alamat tunggal karena merupakan multi perangkat"
 
-#: public/views/import.html:57
+#: public/views/import.html:46
 #: public/views/recoveryFromSeed.html:39
 msgid "This will permanently delete all your existing wallets!"
 msgstr "Ini akan menghapus semua dompet anda yang ada secara permanen!"
+
+#: public/views/modals/offer-prosaic-contract.html:66
+#: public/views/modals/view-prosaic-contract.html:85
+msgid "Title of contract"
+msgstr ""
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:36
 #: public/views/modals/tx-details.html:71
-#: public/views/walletHome.html:689
-#: src/js/controllers/index.js:1431
+#: public/views/walletHome.html:692
+#: src/js/controllers/index.js:1548
 msgid "To"
 msgstr "Ke"
+
+#: public/views/walletHome.html:396
+msgid "To Obyte address"
+msgstr ""
 
 #: public/views/backup.html:24
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "Untuk dapat mengembalikan segalanya, silakan membuat cadangan lengkap (pilihan tersedia pada menu)"
 
-#: public/views/walletHome.html:597
-msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
-msgstr "Agar dapat mengirim data yang berubah-ubah ke jaringan Byteball, silakan beralih ke dompet alamat tunggal terlebih dahulu atau buat yang baru."
+#: public/views/walletHome.html:600
+msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
+msgstr ""
 
-#: public/views/walletHome.html:449
+#: public/views/walletHome.html:443
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Untuk mengikat pembayaran ke kondisi, klik alamat rekanan di obrolan"
 
-#: public/views/walletHome.html:402
-msgid "To byteball address"
-msgstr "Ke alamat byteball"
-
-#: public/views/walletHome.html:394
-msgid "To byteball address or email"
-msgstr "Ke alamat byteball atau surel"
-
-#: src/js/controllers/index.js:1434
+#: src/js/controllers/index.js:1551
 msgid "To email"
 msgstr "Ke surel"
 
@@ -1645,11 +1756,15 @@ msgstr "Ke surel"
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Untuk melindungi privasi Anda, alamat baru dihasilkan secara otomatis setelah Anda menggunakannya."
 
+#: public/views/modals/view-prosaic-contract.html:95
+msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
+msgstr ""
+
 #: public/views/walletHome.html:219
 msgid "Total Locked Balance"
 msgstr "Total Saldo Terkunci"
 
-#: public/views/walletHome.html:379
+#: public/views/walletHome.html:373
 msgid "Total amount"
 msgstr "Jumlah total"
 
@@ -1661,7 +1776,12 @@ msgstr "Jumlah total dari co-signers"
 msgid "Transaction"
 msgstr "Transaksi"
 
-#: public/views/walletHome.html:646
+#: src/js/controllers/index.js:221
+msgid "Transaction created.\n"
+"Please approve it on the other devices."
+msgstr ""
+
+#: public/views/walletHome.html:649
 msgid "Transactions<br> Downloaded"
 msgstr "Transaksi<br> Terunduh"
 
@@ -1677,16 +1797,16 @@ msgstr "Penerjemah"
 msgid "Trusted nodes"
 msgstr "Node terpercaya"
 
-#: src/js/controllers/correspondentDevice.js:1224
+#: src/js/controllers/correspondentDevice.js:1329
 msgid "US state"
 msgstr "Negara bagian Amerika"
 
-#: src/js/controllers/walletHome.js:835
+#: src/js/controllers/walletHome.js:854
 msgid "Unable to send transaction proposal"
 msgstr "Tidak dapat mengirim proposal transaksi"
 
 #: public/views/modals/tx-details.html:118
-#: public/views/walletHome.html:677
+#: public/views/walletHome.html:680
 msgid "Unconfirmed"
 msgstr "Belum dikonfirmasi"
 
@@ -1714,15 +1834,19 @@ msgstr "Pemutahiran ke {{version}}"
 msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
 msgstr "Memutakhirkan basis data, harap tunggu. Terkadang dibutuhkan beberapa menit."
 
-#: public/views/walletHome.html:567
+#: public/views/modals/view-prosaic-contract.html:67
+msgid "Valid till"
+msgstr ""
+
+#: public/views/walletHome.html:570
 msgid "Value"
 msgstr ""
 
-#: public/views/walletHome.html:560
+#: public/views/walletHome.html:570
 msgid "Values"
 msgstr "Nilai-nilai"
 
-#: src/js/controllers/correspondentDevice.js:1246
+#: src/js/controllers/correspondentDevice.js:1353
 msgid "Verifying the profile..."
 msgstr "Memverifikasi profil..."
 
@@ -1742,14 +1866,14 @@ msgstr "PERINGATAN: Cadangan diperlukan"
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "PERINGATAN: Benih ini dibuat dengan frasa sandi. Untuk memulihkan dompet ini diperlukan baik mnemonik dan frasa sandi."
 
-#: public/views/import.html:55
+#: public/views/import.html:44
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr "PERINGATAN:"
 
 #: public/views/splash.html:53
-msgid "WELCOME TO BYTEBALL"
-msgstr "SELAMAT DATANG DI BYTEBALL"
+msgid "WELCOME TO O<sub>byte</sub>"
+msgstr ""
 
 #: public/views/copayers.html:24
 msgid "Waiting for co-signers"
@@ -1784,9 +1908,9 @@ msgstr "Informasi Dompet"
 msgid "Wallet Name (at creation)"
 msgstr "Nama Dompet (saat dibuat)"
 
-#: src/js/services/profileService.js:453
-msgid "Wallet already in Byteball:"
-msgstr "Dompet sudah ada di Byteball:"
+#: src/js/services/profileService.js:456
+msgid "Wallet already in Obyte:"
+msgstr ""
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1809,17 +1933,17 @@ msgstr "Peringatan!"
 msgid "Was claimed?"
 msgstr "Telah diklaim?"
 
-#: public/views/walletHome.html:343
+#: public/views/walletHome.html:336
 msgid "What to send"
 msgstr "Apa yang dikirim"
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:111
+#: public/views/modals/offer-contract.html:112
 #: public/views/modals/sign-message.html:28
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:485
-#: public/views/walletHome.html:509
-#: public/views/walletHome.html:578
+#: public/views/walletHome.html:479
+#: public/views/walletHome.html:503
+#: public/views/walletHome.html:581
 msgid "Who signs:"
 msgstr "Siapa yang menandatangani:"
 
@@ -1839,12 +1963,12 @@ msgstr "Catat textcoin ini pada kertas dan simpan dengan aman. Klaim kembali kap
 msgid "Write it down and keep it somewhere safe."
 msgstr "Tuliskan dan simpan di tempat yang aman."
 
-#: src/js/services/profileService.js:682
+#: src/js/services/profileService.js:685
 msgid "Wrong password"
 msgstr "Kata sandi salah"
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:518
+#: src/js/controllers/index.js:609
 msgid "Yes"
 msgstr "Ya"
 
@@ -1852,7 +1976,7 @@ msgstr "Ya"
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
 msgstr "Anda dapat menghapus textcoin dari dompet anda jika anda telah menyimpannya di tempat lain (seperti dompet kertas):"
 
-#: public/views/modals/bind.html:91
+#: public/views/modals/bind.html:99
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
 msgstr "Anda tidak dapat mengikat transaksi anda untuk membalikkan pembayaran karena anda menggunakan dompet alamat tunggal. Gunakan dompet non alamat tunggal dan kemudian transfer uang ke dompet ini."
 
@@ -1863,6 +1987,10 @@ msgstr "Anda tidak mempunyai dompet"
 #: public/views/modals/choose-profile.html:69
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr "Anda perlu melalui proses pengesahan untuk mendapatkan profil.  Cari bot Pengesahan Nama Asli di toko Bot."
+
+#: public/views/modals/offer-prosaic-contract.html:92
+msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
+msgstr ""
 
 #: public/views/backup.html:55
 #: public/views/recoveryFromSeed.html:31
@@ -1893,6 +2021,17 @@ msgstr "Dompet anda akan dibuat pada perangkat ini, jaga tetap aman.  Lihat pili
 msgid "[ Add new co-signer device ]"
 msgstr "[ Tambahkan perangkat co-signer baru ]"
 
+#: public/views/modals/offer-prosaic-contract.html:56
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/view-prosaic-contract.html:75
+#: public/views/modals/view-prosaic-contract.html:82
+msgid "address"
+msgstr ""
+
+#: public/views/preferencesAttestorAddresses.html:18
+msgid "addresses"
+msgstr ""
+
 #: public/views/modals/bind.html:37
 #: public/views/modals/offer-contract.html:44
 #: public/views/modals/offer-contract.html:52
@@ -1907,15 +2046,46 @@ msgstr "peristiwa dilansir oleh peramal"
 msgid "and erase the textcoin to keep it safe from attackers."
 msgstr "dan hapus textcoin untuk tetap aman dari penyerang."
 
-#: public/views/walletHome.html:567
+#: public/views/modals/accept-profile.html:31
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attested by trusted attestor"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attested by:"
+msgstr ""
+
+#: public/views/modals/accept-profile.html:31
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attestor is not trusted by you"
+msgstr ""
+
+#: public/views/walletHome.html:570
 msgid "available"
+msgstr ""
+
+#: src/js/controllers/index.js:418
+msgid "by address"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:106
+msgid "calculated hash:"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
 msgstr "dapat membuka kontrak"
 
-#: public/views/modals/offer-contract.html:106
+#: public/views/modals/offer-contract.html:107
 msgid "can unlock the contract after it expires in"
 msgstr "dapat membuka kontrak setelah masanya berakhir dalam"
 
@@ -1927,11 +2097,11 @@ msgstr "batalkan pembuatan dompet"
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr "diklaim oleh {{btx.claimedByMe?'me':'receiver'|translate}}"
 
-#: public/views/editCorrespondentDevice.html:49
+#: public/views/editCorrespondentDevice.html:64
 msgid "clear chat history"
 msgstr "hapus riwayat obrolan"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:570
 msgid "confirmed"
 msgstr ""
 
@@ -1939,9 +2109,18 @@ msgstr ""
 msgid "created"
 msgstr "dibuat"
 
-#: public/views/modals/offer-contract.html:108
+#: public/views/modals/view-prosaic-contract.html:96
+msgid "creation date:"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:109
 msgid "days"
 msgstr "hari"
+
+#: public/views/modals/bind.html:82
+#: public/views/modals/offer-contract.html:99
+msgid "detailed instructions about using"
+msgstr ""
 
 #: public/views/backup.html:28
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
@@ -1951,7 +2130,7 @@ msgstr "misalnya 1-dari-2 dompet dengan satu kunci pada perangkat ini dan kunci 
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
 msgstr "misalnya 1-dari-2 dompet dengan satu kunci pada perangkat ini dan kunci yang lain pada ponsel pintar anda."
 
-#: public/views/modals/bind.html:72
+#: public/views/modals/bind.html:79
 msgid "either way"
 msgstr "apapun itu"
 
@@ -1959,12 +2138,21 @@ msgstr "apapun itu"
 msgid "erase textcoin"
 msgstr "hapus textcoin"
 
-#: public/views/modals/bind.html:64
+#: public/views/modals/bind.html:71
 msgid "explicitly"
 msgstr "secara jelas"
 
-#: public/views/modals/bind.html:79
+#: public/views/modals/view-prosaic-contract.html:107
+msgid "hash published in DAG:"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:97
+msgid "hash source string:"
+msgstr ""
+
+#: public/views/modals/bind.html:87
 #: public/views/modals/offer-contract.html:69
+#: public/views/modals/offer-prosaic-contract.html:72
 msgid "hours"
 msgstr "jam"
 
@@ -1972,7 +2160,7 @@ msgstr "jam"
 msgid "if an event is posted by an oracle"
 msgstr "jika peristiwa dilansir oleh peramal"
 
-#: public/views/modals/bind.html:68
+#: public/views/modals/bind.html:75
 msgid "in merkle tree"
 msgstr "di pohon merkle"
 
@@ -1996,29 +2184,37 @@ msgstr "terkunci oleh pembayaran tertunda"
 msgid "not claimed"
 msgstr "belum diklaim"
 
+#: public/views/modals/view-prosaic-contract.html:103
+msgid "not valid"
+msgstr ""
+
+#: public/views/editCorrespondentDevice.html:59
+msgid "on"
+msgstr ""
+
 #: public/views/modals/bind.html:55
 #: public/views/modals/offer-contract.html:88
 msgid "on feed name"
 msgstr "pada nama feed"
 
-#: public/views/walletHome.html:460
-#: public/views/walletHome.html:471
+#: public/views/walletHome.html:454
+#: public/views/walletHome.html:465
 msgid "optional"
 msgstr "opsional"
 
-#: public/views/modals/offer-contract.html:99
+#: public/views/modals/offer-contract.html:100
 msgid "or"
 msgstr "atau"
 
 #: public/views/backup.html:24
-msgid "or backup all Byteball data at"
-msgstr "atau cadangan semua data Byteball di"
+msgid "or backup all Obyte data at"
+msgstr ""
 
 #: public/views/modals/offer-contract.html:51
 msgid "peer pays"
 msgstr "rekanan membayar"
 
-#: public/views/modals/bind.html:60
+#: public/views/modals/bind.html:67
 msgid "posted"
 msgstr "diterbitkan"
 
@@ -2030,23 +2226,31 @@ msgstr "mengirim ulang muatan pribadi"
 msgid "re-send private payloads to cosigners"
 msgstr "mengirim ulang muatan pribadi ke cosigners"
 
+#: public/views/correspondentDevices.html:167
+msgid "search by bot name"
+msgstr ""
+
+#: public/views/correspondentDevices.html:108
+msgid "search by contact name"
+msgstr ""
+
 #: public/views/modals/share.html:35
 msgid "send"
 msgstr "kirim"
 
-#: src/js/controllers/walletHome.js:773
+#: src/js/controllers/walletHome.js:785
 msgid "send email"
 msgstr "kirim surel"
 
-#: src/js/controllers/walletHome.js:1087
-#: src/js/controllers/walletHome.js:1142
-#: src/js/controllers/walletHome.js:1280
-#: src/js/controllers/walletHome.js:1311
-#: src/js/controllers/walletHome.js:1318
-#: src/js/controllers/walletHome.js:908
-#: src/js/controllers/walletHome.js:914
-#: src/js/controllers/walletHome.js:955
-#: src/js/controllers/walletHome.js:991
+#: src/js/controllers/walletHome.js:1000
+#: src/js/controllers/walletHome.js:1013
+#: src/js/controllers/walletHome.js:1113
+#: src/js/controllers/walletHome.js:1169
+#: src/js/controllers/walletHome.js:1315
+#: src/js/controllers/walletHome.js:1352
+#: src/js/controllers/walletHome.js:1360
+#: src/js/controllers/walletHome.js:930
+#: src/js/controllers/walletHome.js:965
 msgid "sending"
 msgstr "mengirim"
 
@@ -2054,13 +2258,17 @@ msgstr "mengirim"
 msgid "share again"
 msgstr "berbagi lagi"
 
-#: public/views/walletHome.html:446
+#: public/views/walletHome.html:440
 msgid "switch to multi-address"
 msgstr "beralih ke alamat multi"
 
-#: public/views/walletHome.html:445
+#: public/views/walletHome.html:439
 msgid "switch to single address"
 msgstr "beralih ke alamat tunggal"
+
+#: public/views/modals/view-prosaic-contract.html:91
+msgid "the contract is not signed yet"
+msgstr ""
 
 #: public/views/modals/share.html:39
 msgid "the text below and send it to the recipient via any messaging app"
@@ -2070,48 +2278,55 @@ msgstr "teks di bawah ini dan kirimkan ke penerima melalui aplikasi pesan"
 msgid "to"
 msgstr "ke"
 
-#: public/views/walletHome.html:461
-#: public/views/walletHome.html:472
+#: src/js/controllers/index.js:321
+msgid "together with"
+msgstr ""
+
+#: public/views/walletHome.html:455
+#: public/views/walletHome.html:466
 msgid "too long!"
 msgstr "terlalu panjang!"
 
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+msgid "trusted"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:94
+msgid "unit in DAG:"
+msgstr ""
+
 #: public/views/modals/signed-message.html:30
+#: public/views/modals/view-prosaic-contract.html:102
 msgid "valid"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:100
+msgid "validate contract integrity"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:882
+msgid "wait for sync to complete before sending payments"
 msgstr ""
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
 msgstr "dengan"
 
+#: public/views/modals/bind.html:58
 #: public/views/modals/offer-contract.html:91
 msgid "with expected value"
 msgstr "dengan nilai yang diharapkan"
-
-#: public/views/modals/bind.html:58
-msgid "with expected value of"
-msgstr "dengan nilai yang diharapkan dari"
 
 #: public/views/modals/address-definition.html:16
 msgid "{{address}} can be spent if:"
 msgstr "{{address}} dapat digunakan jika:"
 
-#: public/views/modals/accept-profile.html:41
+#: public/views/modals/accept-profile.html:47
 #: public/views/modals/claim-textcoin.html:36
 #: public/views/modals/customized-amount.html:76
 msgid "{{buttonLabel}}"
 msgstr "{{buttonLabel}}"
-
-#: public/views/modals/confirmation.html:11
-msgid "{{cancel_label || 'Cancel'}}"
-msgstr "{{cancel_label || 'Cancel'}}"
-
-#: public/views/modals/confirmation.html:6
-msgid "{{confirm_label || 'Yes'}}"
-msgstr "{{confirm_label || 'Ya'}}"
-
-#: src/js/controllers/walletHome.js:1898
-msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} akan dikurangkan untuk biaya jaringan bitcoin."
 
 #: public/views/modals/multi-payment.html:28
 msgid "{{hrd.destinationAddress}} can be spent if:"
@@ -2122,11 +2337,15 @@ msgstr "{{hrd.destinationAddress}} dapat digunakan jika:"
 msgid "{{index.m}}-of-{{index.n}}"
 msgstr "{{index.m}}-of-{{index.n}}"
 
-#: public/views/includes/sidebar.html:16
+#: public/views/includes/sidebar.html:15
 msgid "{{item.m}}-of-{{item.n}}"
 msgstr "{{item.m}}-of-{{item.n}}"
 
-#: public/views/preferencesGlobal.html:29
-msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
-msgstr "{{prefGlobal.torEnabled?'On':'Off'}}"
+#: public/views/modals/view-prosaic-contract.html:65
+msgid "{{status}}"
+msgstr ""
+
+#: public/views/modals/destination-address.html:73
+msgid "{{w.m}} of {{w.n}}"
+msgstr ""
 
