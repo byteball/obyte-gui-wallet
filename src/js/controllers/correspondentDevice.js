@@ -1719,12 +1719,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					}, 500);
 				}
 
-				$scope.copyToClipboard = function(str) {
+				$scope.copyToClipboard = function() {
+					var text = document.getElementById('sourcetext').value;
 					if (isCordova) {
-						cordova.plugins.clipboard.copy(str);
-					} else {
-						document.getElementById('sourcetext').select();
-						document.execCommand('copy');
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
 					}
 				}
 			};
