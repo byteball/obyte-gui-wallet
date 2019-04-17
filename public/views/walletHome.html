@@ -145,6 +145,33 @@ input.datafeed_input {
 						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD && balance.total">
 							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e9'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates[balance.asset + '_USD-1e9']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e8'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e8 * home.exchangeRates[balance.asset + '_USD-1e8']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e7'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e7 * home.exchangeRates[balance.asset + '_USD-1e7']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e6'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e6 * home.exchangeRates[balance.asset + '_USD-1e6']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e5'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e5 * home.exchangeRates[balance.asset + '_USD-1e5']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e4'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e4 * home.exchangeRates[balance.asset + '_USD-1e4']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e3'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e3 * home.exchangeRates[balance.asset + '_USD-1e3']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e2'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e2 * home.exchangeRates[balance.asset + '_USD-1e2']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD-1e1'] && balance.total">
+							<span>≈ ${{ (balance.total / 1e1 * home.exchangeRates[balance.asset + '_USD-1e1']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
 						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD'] && balance.total">
 							<span>≈ ${{ (balance.total * home.exchangeRates[balance.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
