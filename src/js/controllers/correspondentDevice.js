@@ -1226,7 +1226,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var msgField = document.chatForm.message;
 		$timeout(function(){
 			$rootScope.$digest();
-			msgField.selectionStart = msgField.selectionEnd = 10000;
+			msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
 			msgField.focus();
 		});
 	}
