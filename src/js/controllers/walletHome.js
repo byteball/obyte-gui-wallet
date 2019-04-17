@@ -1784,6 +1784,7 @@ angular.module('copayApp.controllers')
 					asset: btx.asset
 				});
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
+				$scope.decimals = indexScope.arrBalances[assetIndex].decimals;
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
