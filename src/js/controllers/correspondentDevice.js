@@ -1224,8 +1224,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
-		$timeout(function(){$rootScope.$digest()});
-		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
+		$timeout(function(){
+			$rootScope.$digest();
+			msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
+			msgField.focus();
+		});
 	}
 	
 	function appendMyPaymentAddress(myPaymentAddress){
@@ -1717,6 +1720,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$timeout(function() {
 						$scope.validity_checked = true;
 					}, 500);
+				}
+
+				$scope.copyToClipboard = function() {
+					var text = document.getElementById('sourcetext').value;
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
+					}
 				}
 			};
 

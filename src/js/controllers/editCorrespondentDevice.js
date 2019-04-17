@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
-  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService) {
+  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService, nodeWebkit) {
 	
 	var self = this;
 	
@@ -109,6 +109,15 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 					$timeout(function() {
 						$scope.validity_checked = true;
 					}, 500);
+				}
+
+				$scope.copyToClipboard = function() {
+					var text = document.getElementById('sourcetext').value;
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
+					}
 				}
 			};
 

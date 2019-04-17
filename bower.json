@@ -10,7 +10,7 @@
     "angular-foundation": "byteball/angular-foundation",
     "angular-gettext": "2",
     "angular-touch": "1.6.6",
-    "angular-carousel": "*",
+    "angular-carousel": "byteball/angular-carousel#master",
     "angular-moment": "1",
     "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
     "angular-ui-router": "0.2",
