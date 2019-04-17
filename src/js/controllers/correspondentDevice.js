@@ -1224,8 +1224,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
-		$timeout(function(){$rootScope.$digest()});
-		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
+		$timeout(function(){
+			$rootScope.$digest();
+			msgField.selectionStart = msgField.selectionEnd = 10000;
+			msgField.focus();
+		});
 	}
 	
 	function appendMyPaymentAddress(myPaymentAddress){
