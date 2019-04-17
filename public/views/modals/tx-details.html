@@ -22,8 +22,8 @@
       <div class="size-14" ng-if="btx.asset === BLACKBYTES_ASSET && exchangeRates.GBB_USD">
         ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / 1e9 * exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
       </div>
-      <div class="size-14" ng-if="btx.asset === FUTURE_ASSET && exchangeRates.FUTURE_USD">
-        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.FUTURE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
+      <div class="size-14" ng-if="exchangeRates[btx.asset + '_USD']">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates[btx.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}
       </div>
     </div>
     <div class="size-42" ng-show="btx.action == 'invalid'">

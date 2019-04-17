@@ -1789,7 +1789,6 @@ angular.module('copayApp.controllers')
 				$scope.n = fc.credentials.n;
 				$scope.exchangeRates = network.exchangeRates;
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
-				$scope.FUTURE_ASSET = constants.version.match(/t$/) ? '-' : 'NMuNvOJRO2ZY9L17uKtsa7OYkgsV8LfSBIV9BUoVJPQ=';
 
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {

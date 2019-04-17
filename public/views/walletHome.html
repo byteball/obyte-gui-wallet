@@ -145,8 +145,8 @@ input.datafeed_input {
 						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD && balance.total">
 							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.FUTURE_ASSET && home.exchangeRates.FUTURE_USD && balance.total">
-							<span>≈ ${{ (balance.total * home.exchangeRates.FUTURE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD'] && balance.total">
+							<span>≈ ${{ (balance.total * home.exchangeRates[balance.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 					</div>
           <style ng-if="index.isCordova">

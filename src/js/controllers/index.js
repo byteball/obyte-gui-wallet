@@ -14,7 +14,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
-  self.FUTURE_ASSET = constants.version.match(/t$/) ? '-' : 'NMuNvOJRO2ZY9L17uKtsa7OYkgsV8LfSBIV9BUoVJPQ=';
   self.isCordova = isCordova;
   self.isSafari = isMobile.Safari();
   self.onGoingProcess = {};
