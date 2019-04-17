@@ -111,7 +111,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 					}, 500);
 				}
 
-				$scope.copyToClipboard = function(str) {
+				$scope.copyToClipboard = function() {
 					var text = document.getElementById('sourcetext').value;
 					if (isCordova) {
 						cordova.plugins.clipboard.copy(text);
