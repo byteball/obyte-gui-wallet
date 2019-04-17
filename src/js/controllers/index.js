@@ -9,7 +9,6 @@ var ecdsaSig = require('ocore/signature.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
-var prosaic_contract = require('ocore/prosaic_contract.js');
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
@@ -527,6 +526,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						}
 						// prosaic contract related requests
 						var db = require('ocore/db.js');
+						var prosaic_contract = require('ocore/prosaic_contract.js');
 						function isProsaicContractSignRequest(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
