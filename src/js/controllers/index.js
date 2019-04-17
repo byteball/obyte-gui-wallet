@@ -9,6 +9,7 @@ var ecdsaSig = require('ocore/signature.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
+var prosaic_contract = require('ocore/prosaic_contract.js');
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
@@ -525,7 +526,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract related requests
-						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var db = require('ocore/db.js');
 						function isProsaicContractSignRequest(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
@@ -689,7 +689,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.arrSharedWallets = arrSharedWallets;
 
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaic_contract = require('ocore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -697,10 +696,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
-				});
-				prosaic_contract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
-					if (row)
-						objSharedWallet.has_prosaic_contract = true;
 				});
 			},
 			function(){
