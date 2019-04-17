@@ -51,15 +51,6 @@
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
     "ocore": "git+https://github.com/byteball/ocore.git",
-    "grunt": "^1.0.1",
-    "grunt-angular-gettext": "2.2.3",
-    "grunt-browserify": "^5.0.0",
-    "grunt-contrib-compress": "^1.3.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-exec": "^1.0.0",
     "jszip": "^3.1.3",
     "lodash": "^4.6.1",
     "moment": "^2.18.1",
@@ -77,6 +68,15 @@
     "test": "./node_modules/.bin/grunt test-coveralls"
   },
   "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-angular-gettext": "2.2.3",
+    "grunt-browserify": "^5.0.0",
+    "grunt-contrib-compress": "^1.3.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-exec": "^1.0.0",
     "grunt-nw-builder": "^2.0.0"
   }
 }
