@@ -62,12 +62,12 @@
     "zip": "git+https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {
-    "innosetup-compiler": "^5.5.9"
   },
   "scripts": {
     "test": "./node_modules/.bin/grunt test-coveralls"
   },
   "devDependencies": {
+    "innosetup-compiler": "^5.5.9",
     "grunt": "^1.0.1",
     "grunt-angular-gettext": "2.2.3",
     "grunt-browserify": "^5.0.0",
