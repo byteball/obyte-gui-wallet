@@ -5,7 +5,7 @@
 var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext, nodeWebkit, notification) {
 	
 	var async = require('async');
 	var chatStorage = require('ocore/chat_storage.js');
@@ -1723,7 +1723,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				}
 
 				$scope.copyToClipboard = function() {
-					var text = document.getElementById('sourcetext').value;
+					var sourcetext = document.getElementById('sourcetext');
+					var text = sourcetext.value;
+					sourcetext.selectionStart = 0;
+					sourcetext.selectionEnd = text.length;
+					notification.success(gettext('Copied to clipboard'));
 					if (isCordova) {
 						cordova.plugins.clipboard.copy(text);
 					} else if (nodeWebkit.isDefined()) {
