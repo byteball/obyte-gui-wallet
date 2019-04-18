@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
-  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService, nodeWebkit, gettext) {
+  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService, nodeWebkit, gettext, notification) {
 	
 	var self = this;
 	
@@ -116,9 +116,9 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 					var text = sourcetext.value;
 					sourcetext.selectionStart = 0;
 					sourcetext.selectionEnd = text.length;
+					notification.success(gettext('Copied to clipboard'));
 					if (isCordova) {
 						cordova.plugins.clipboard.copy(text);
-						window.plugins.toast.showShortCenter(gettext('Copied to clipboard'));
 					} else if (nodeWebkit.isDefined()) {
 						nodeWebkit.writeToClipboard(text);
 					}
