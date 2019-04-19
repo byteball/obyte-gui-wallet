@@ -15,13 +15,16 @@
 <div class="modal-content fix-modals-touch">
   <div class="header-modal text-center enable_text_select">
     <div class="size-42" ng-show="btx.action != 'invalid'">
-		<span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
-		<div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
-			≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
-		</div>
-		<div class="size-14" ng-if="btx.asset === BLACKBYTES_ASSET && exchangeRates.GBB_USD">
-			≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBB_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
-		</div>
+      <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
+      <div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / 1e9 * exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
+      <div class="size-14" ng-if="btx.asset === BLACKBYTES_ASSET && exchangeRates.GBB_USD">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / 1e9 * exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
+      <div class="size-14" ng-if="exchangeRates[btx.asset + '_USD']">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / (Math.pow(10, assetDecimals) || 1) * exchangeRates[btx.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
     </div>
     <div class="size-42" ng-show="btx.action == 'invalid'">
       -
