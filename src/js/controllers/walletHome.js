@@ -10,6 +10,7 @@ angular.module('copayApp.controllers')
 
 		var self = this;
 		var home = this;
+		$scope.Math = window.Math;
 		var conf = require('ocore/conf.js');
 		var chatStorage = require('ocore/chat_storage.js');
 		this.bb_protocol = conf.program;
@@ -1784,6 +1785,7 @@ angular.module('copayApp.controllers')
 					asset: btx.asset
 				});
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
+				$scope.Math = window.Math;
 				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
