@@ -41,7 +41,7 @@ form[name="contractForm"] {
 	<form name="contractForm">
 
 	<span translate>I pay</span>
-	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+	<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 	<span selectable="#myasset" dropdown-toggle="#myasset" data-model="contract" data-prop="myAsset"></span>,
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
@@ -49,7 +49,7 @@ form[name="contractForm"] {
 		  </li>
 		</ul><br>
 	<span translate>peer pays</span>
-	<input type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.peerAmount" name="peerAmount" valid-amount="{{contract.peerAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+	<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.peerAmount" name="peerAmount" valid-amount="{{contract.peerAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 	<span selectable="#peerasset" dropdown-toggle="#peerasset" data-model="contract" data-prop="peerAsset"></span>
 		<ul id="peerasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrPublicAssetInfos" class="dropup-item" data-value="{{info.asset}}">
