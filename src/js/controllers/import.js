@@ -231,6 +231,8 @@ angular.module('copayApp.controllers').controller('importController',
 		self.walletImport = function() {
 			self.error = '';
 			if(isMobile.Android() && self.androidVersion < 5){
+				if (!self.oldAndroidFilePath)
+					return;
 				self.importing = true;
 				fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
 					unzipAndWriteFiles(data, self.password);
