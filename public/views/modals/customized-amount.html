@@ -59,7 +59,7 @@
             <span translate>Amount</span>
           </label>
           <div class="input">
-            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
+            <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
             ng-model="_customAmount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" required autocomplete="off">
             <a class="postfix" ng-if="index.arrBalances[index.assetIndex].asset === 'base'">{{unitName}}</a>
             <a class="postfix" ng-if="index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{bbUnitName}}</a>

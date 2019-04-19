@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
   self.isCordova = isCordova;
   self.isSafari = isMobile.Safari();
+  self.isMobile = isMobile;
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};

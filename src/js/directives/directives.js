@@ -205,7 +205,7 @@ angular.module('copayApp.directives')
       //console.log('-- amount');
       var constants = require('ocore/constants.js');
       var asset = attrs.validAmount;
-            var settings = configService.getSync().wallet.settings;
+      var settings = configService.getSync().wallet.settings;
       var unitValue = 1;
       var decimals = 0;
       if (asset === 'base'){
