@@ -34,7 +34,6 @@ angular.module('copayApp.controllers')
 		this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 		this.blockUx = false;
 		this.showScanner = false;
-		this.isMobile = isMobile.any();
 		this.addr = {};
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
@@ -1459,6 +1458,7 @@ angular.module('copayApp.controllers')
 				}
 				$scope.oracles = configService.oracles;
 				$scope.isSingleAddress = fc.isSingleAddress;
+				$scope.index = indexScope;
 
 				$scope.cancel = function() {
 					$modalInstance.dismiss('cancel');

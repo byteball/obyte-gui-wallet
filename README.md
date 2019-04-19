@@ -35,7 +35,7 @@ Build O<sub>byte</sub>:
 
 ```sh
 bower install
-npm install
+npm install # on macOS: env CXXFLAGS="-mmacosx-version-min=10.9" LDFLAGS="-mmacosx-version-min=10.9" npm install
 grunt
 ```
 If you are on Windows or using NW.js and Node.js versions other than recommended, see [NW.js instructions about building native modules](http://docs.nwjs.io/en/latest/For%20Users/Advanced/Use%20Native%20Node%20Modules/).
