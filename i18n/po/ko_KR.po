@@ -2335,11 +2335,11 @@ msgstr "해당 조건을 만족하면 {{hrd.destinationAddress}}의 자금을 �
 #: public/views/copayers.html:26
 #: public/views/includes/walletInfo.html:2
 msgid "{{index.m}}-of-{{index.n}}"
-msgstr "{{index.m} / {{index.n}}"
+msgstr "{{index.m}} / {{index.n}}"
 
 #: public/views/includes/sidebar.html:15
 msgid "{{item.m}}-of-{{item.n}}"
-msgstr "{{item.m} / {{item.n}}"
+msgstr "{{item.m}} / {{item.n}}"
 
 #: public/views/modals/view-prosaic-contract.html:65
 msgid "{{status}}"
