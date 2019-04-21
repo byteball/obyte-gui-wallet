@@ -107,7 +107,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function highlightActions(text, arrMyAddresses){
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
 		var assocReplacements = {};
-		var index = crypto.randomBytes(4).readUInt32BE();
+		var index = crypto.randomBytes(4).readUInt32BE(0);
 		function toDelayedReplacement(new_text) {
 			index++;
 			var key = '{' + index + '}';
@@ -321,7 +321,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function formatOutgoingMessage(text){
 		var assocReplacements = {};
-		var index = crypto.randomBytes(4).readUInt32BE();
+		var index = crypto.randomBytes(4).readUInt32BE(0);
 		function toDelayedReplacement(new_text) {
 			index++;
 			var key = '{' + index + '}';
