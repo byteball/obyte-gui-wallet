@@ -1923,7 +1923,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         });
         
         elm.bind('scroll', function() {
-        	if (raw.scrollTop + raw.offsetHeight != raw.scrollHeight) 
+        	if (raw.scrollTop + raw.offsetHeight < raw.scrollHeight - 30) 
         		scope.autoScrollEnabled = false;
         	else 
         		scope.autoScrollEnabled = true;
