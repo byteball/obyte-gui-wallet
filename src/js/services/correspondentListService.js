@@ -863,6 +863,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	root.listenForProsaicContractResponse = function(contracts) {
 		var prosaic_contract = require('ocore/prosaic_contract.js');
+		var storage = require('ocore/storage.js');
 		var fc = profileService.focusedClient;
 
 		var showError = function(msg) {
@@ -956,7 +957,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							var objMessage = {
 								app: "data",
 								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(value),
+								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 								payload: value
 							};
 
