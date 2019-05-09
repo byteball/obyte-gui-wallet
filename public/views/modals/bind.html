@@ -34,7 +34,7 @@
 
 
 	<div ng-if="!(binding.type == 'reverse_payment' && isSingleAddress)" style="display: inline">	
-		<input ng-if="binding.type == 'reverse_payment'" type="number" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="binding.reverseAmount" name="reverseAmount" valid-amount="{{binding.reverseAsset}}" required autocomplete="off" style="text-align: right;  width: 90px" class="inline">
+		<input ng-if="binding.type == 'reverse_payment'" type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="binding.reverseAmount" name="reverseAmount" valid-amount="{{binding.reverseAsset}}" required autocomplete="off" style="text-align: right;  width: 90px" class="inline">
 
 		<span ng-if="binding.type == 'reverse_payment'" selectable="#asset" dropdown-toggle="#asset" data-model="binding" data-prop="reverseAsset"></span><span ng-if="binding.type == 'reverse_payment'">.</span>
 			<ul id="asset" class="f-dropdown pos-at-cursor" data-dropdown-content>

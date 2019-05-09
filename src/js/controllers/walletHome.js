@@ -10,6 +10,7 @@ angular.module('copayApp.controllers')
 
 		var self = this;
 		var home = this;
+		$scope.Math = window.Math;
 		var conf = require('ocore/conf.js');
 		var chatStorage = require('ocore/chat_storage.js');
 		this.bb_protocol = conf.program;
@@ -34,7 +35,6 @@ angular.module('copayApp.controllers')
 		this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 		this.blockUx = false;
 		this.showScanner = false;
-		this.isMobile = isMobile.any();
 		this.addr = {};
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
@@ -1261,6 +1261,7 @@ angular.module('copayApp.controllers')
 
 		this.submitData = function() {
 			var objectHash = require('ocore/object_hash.js');
+			var storage = require('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -1335,7 +1336,7 @@ angular.module('copayApp.controllers')
 				var objMessage = {
 					app: app,
 					payload_location: "inline",
-					payload_hash: objectHash.getBase64Hash(value),
+					payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 					payload: value
 				};
 				var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
@@ -1459,6 +1460,7 @@ angular.module('copayApp.controllers')
 				}
 				$scope.oracles = configService.oracles;
 				$scope.isSingleAddress = fc.isSingleAddress;
+				$scope.index = indexScope;
 
 				$scope.cancel = function() {
 					$modalInstance.dismiss('cancel');
@@ -1521,32 +1523,6 @@ angular.module('copayApp.controllers')
 				var form = $scope.sendPaymentForm;
 				if (!form || !form.address) // disappeared?
 					return console.log('form.address has disappeared');
-				if (to) {
-					form.address.$setViewValue(to);
-					form.address.$isValid = true;
-					form.address.$render();
-					this.lockAddress = true;
-					$scope.mtab = 1;
-					if (recipient_device_address) // must be already paired
-						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-				}
-
-				if (amount) {
-					//	form.amount.$setViewValue("" + amount);
-					//	form.amount.$isValid = true;
-					this.lockAmount = true;
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
-					form.amount.$render();
-				}
-				else  {
-					this.lockAmount = false;
-					form.amount.$setViewValue("");
-					form.amount.$pristine = true;
-					form.amount.$render();
-				}
-				//	form.amount.$render();
-
 				if (form.merkle_proof) {
 					form.merkle_proof.$setViewValue('');
 					form.merkle_proof.$render();
@@ -1566,10 +1542,43 @@ angular.module('copayApp.controllers')
 						return self.resetForm();
 					}
 					$scope.index.assetIndex = assetIndex;
+					$scope.assetIndexSelectorValue = assetIndex;
 					this.lockAsset = true;
 				}
 				else
 					this.lockAsset = false;
+
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					$scope.mtab = 1;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
+						$scope.assetIndexSelectorValue = 0;
+				}
+				
+				this.switchForms();
+
+				$timeout((function () {
+					if (amount) {
+						//	form.amount.$setViewValue("" + amount);
+						//	form.amount.$isValid = true;
+						this.lockAmount = true;
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					}
+					else  {
+						this.lockAmount = false;
+						form.amount.$setViewValue("");
+						form.amount.$pristine = true;
+						form.amount.$render();
+					}
+				}).bind(this));
+				
 			}).bind(this), 1);
 		};
 
@@ -1598,6 +1607,9 @@ angular.module('copayApp.controllers')
 						$scope.home.poll_question = dataPrompt.question;
 						delete dataPrompt.question;
 						break;
+					case 'vote':
+						notification.error('voting not yet supported via uri');
+						return self.resetForm();
 				}
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
@@ -1774,6 +1786,8 @@ angular.module('copayApp.controllers')
 					asset: btx.asset
 				});
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
+				$scope.Math = window.Math;
+				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
@@ -1984,21 +1998,6 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		this._doSendAll = function(amount) {
-			this.setForm(null, amount, null);
-		};
-
-		this.sendAll = function(amount, feeStr) {
-			var self = this;
-			var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-				fee: feeStr
-			});
-
-			confirmDialog.show(msg, function(confirmed) {
-				if (confirmed)
-					self._doSendAll(amount);
-			});
-		};
 
 		/* Start setup */
 

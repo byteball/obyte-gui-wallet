@@ -7,6 +7,7 @@ var objectHash = require('ocore/object_hash.js');
 
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService) {
 	var root = {};
+	var crypto = require('crypto');
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 
@@ -105,7 +106,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function highlightActions(text, arrMyAddresses){
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
-		return text.replace(/(.*?\s|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
+		var assocReplacements = {};
+		var index = crypto.randomBytes(4).readUInt32BE(0);
+		function toDelayedReplacement(new_text) {
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = new_text;
+			return key;
+		}
+		var text = text.replace(/(.*?\s|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
@@ -115,7 +124,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>'+post;
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+			return pre+key+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
@@ -125,7 +137,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
 				return str;
-			return pre+'<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>'+post;
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = '<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>';
+			return pre+key+post;
 		}).replace(payment_request_regexp, function(str, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
@@ -134,31 +149,31 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
 				return str;
-			return '<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>';
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
-			return '<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
-			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
 			if (!arrMovements)
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
-			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return '<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>';
+			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			return '<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>';
+			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return '<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>';
+			return toDelayedReplacement('<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>');
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
@@ -171,13 +186,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				text += " (invalid)";
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
-			return '<i>['+text+']</i>';
+			return toDelayedReplacement('<i>['+text+']</i>');
 		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>');
 		});
+		for (var key in assocReplacements)
+			text = text.replace(key, assocReplacements[key]);
+		return text;
 	}
 	
 	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
@@ -259,7 +277,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
-		if (!ValidationUtils.isValidAddress(objProsaicContract.address) || !objProsaicContract.text.length)
+		if (!ValidationUtils.isValidAddress(objProsaicContract.my_address) || !objProsaicContract.text.length)
 			return null;
 		return objProsaicContract;
 	}
@@ -302,32 +320,40 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function formatOutgoingMessage(text){
-		return escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, address, query_string){
+		var assocReplacements = {};
+		var index = crypto.randomBytes(4).readUInt32BE(0);
+		function toDelayedReplacement(new_text) {
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = new_text;
+			return key;
+		}
+		var text = escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
 				return str;
-			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
-			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
+			return toDelayedReplacement('<i>Payment request: '+arrMovements.join(', ')+'</i>');
 		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return '<i>Vote request: '+objVote.choice+'</i>';
+			return toDelayedReplacement('<i>Vote request: '+objVote.choice+'</i>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			return '[Request for profile fields '+fields_list+']';
+			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return '<i>[Request to sign message: '+message_to_sign+']</i>';
+			return toDelayedReplacement('<i>[Request to sign message: '+message_to_sign+']</i>');
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
@@ -340,15 +366,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				text += " (invalid)";
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
-			return '<i>['+text+']</i>';
+			return toDelayedReplacement('<i>['+text+']</i>');
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+			return toDelayedReplacement('<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>');
 		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return '<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>';
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>');
 		});
+		for (var key in assocReplacements)
+			text = text.replace(key, assocReplacements[key]);
+		return text;
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
@@ -528,7 +557,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[correspondent.device_address])
 			root.messageEventsByCorrespondent[correspondent.device_address] = [];
 		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
-		var limit = 10;
+		var limit = 40;
 		var last_msg_ts = null;
 		var last_msg_id = 90071992547411;
 		if (messageEvents.length && messageEvents[0].id) {
@@ -608,7 +637,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return cb(err);
 			}
 			
-			var current_message_signing_key = require('crypto').createHash("sha256").update(address + message).digest('base64');
+			var current_message_signing_key = crypto.createHash("sha256").update(address + message).digest('base64');
 			if (current_message_signing_key === message_signing_key_in_progress){
 				return cb("This message signing is already under way");
 			}
@@ -652,7 +681,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function openInExplorer(unit) {
-		var url = 'https://explorer.obyte.org/#' + unit;
+		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 		if (typeof nw !== 'undefined')
 			nw.Shell.openExternal(url);
 		else if (isCordova)
@@ -833,6 +863,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	root.listenForProsaicContractResponse = function(contracts) {
 		var prosaic_contract = require('ocore/prosaic_contract.js');
+		var storage = require('ocore/storage.js');
 		var fc = profileService.focusedClient;
 
 		var showError = function(msg) {
@@ -893,6 +924,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					
 					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address){
+						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+						contract.cosigners.forEach(function(cosigner){
+							if (cosigner != device.getMyDeviceAddress())
+								prosaic_contract.share(contract.hash, cosigner);
+						});
+
 						profileService.bKeepUnlocked = true;
 						var opts = {
 							asset: "base",
@@ -913,16 +951,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
-							
-							prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-							device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
 
 							// post a unit with contract text hash and send it for signing to correspondent
 							var value = {"contract_text_hash": contract.hash};
 							var objMessage = {
 								app: "data",
 								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(value),
+								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 								payload: value
 							};
 
@@ -938,7 +973,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								}
 								prosaic_contract.setField(contract.hash, "unit", unit);
 								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
-								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG https://explorer.obyte.org/#" + unit;
+								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});

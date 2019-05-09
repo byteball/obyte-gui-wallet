@@ -25,7 +25,7 @@
 				</div>
 			</a>
 		</li>
-		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px" ng-hide="sw.has_prosaic_contract">
+		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px">
 			<a ng-click="selectSubwallet(sw.shared_address)" class="db oh">
 				<div class="avatar-wallet" style="margin-top:5px">{{sw.shared_address | limitTo: 1}}</div>
 				<div style="display: inline-block; width: calc(100% - 50px)">

@@ -150,6 +150,8 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   z-index: 5;
   background: #2C3E50;
+  padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
+  padding-bottom: env(safe-area-inset-bottom); /* iOS 11.2 */
 }
 
 .second-bottom-bar {
@@ -796,7 +798,7 @@ textarea:focus
   width:100%;
   position: absolute;
   top: 45px;
-  bottom: 37px;
+  bottom: 0px;
   overflow: auto;
   padding-bottom: 40px;
 }
@@ -959,4 +961,11 @@ touch-action: manipulation; /* IE11+ */
 }
 i.validation-icon {
 	padding: 3px;
+}
+
+.keyboard-open .bottom-bar {
+	display: none;
+}
+.keyboard-open .send-form {
+	padding-bottom: 0px;
 }

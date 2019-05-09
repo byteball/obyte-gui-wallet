@@ -16,7 +16,7 @@
 			</label>
 			<span ng-repeat="pair in ctrl.attestorAddresses">
 				<input type="text" ng-model="pair.address" class="datafeed_input" ng-required="true" ng-maxlength="32" maxlength="32" valid-address style="width:90%; display: inline-block;">
-				<a ng-show="$last" ng-click="ctrl.attestorAddresses.splice(ctrl.attestorAddresses.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
+				<a ng-click="ctrl.removeAttestorAddress(pair.address)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 			</span>
 			<i></i>
 			<div class="clear"></div>
