@@ -31,13 +31,13 @@ ios-prod:
 
 ios-prod-fast:
 	cordova/build.sh IOS
-	cd ../obytebuilds/project-IOS && cordova build ios
-	open -a xcode ../obytebuilds/project-IOS/platforms/ios
+	cd ../obytebuilds/project-IOS-tn && cordova build ios
+	open -a xcode ../obytebuilds/project-IOS-tn/platforms/ios
 
 ios-debug:
 	cordova/build.sh IOS --dbgjs --clear
-	cd ../obytebuilds/project-IOS && cordova build ios
-	open -a xcode ../obytebuilds/project-IOS/platforms/ios
+	cd ../obytebuilds/project-IOS-tn && cordova build ios
+	open -a xcode ../obytebuilds/project-IOS-tn/platforms/ios
 
 ios-debug-fast:
 	cordova/build.sh IOS --dbgjs
