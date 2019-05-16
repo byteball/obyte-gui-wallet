@@ -236,7 +236,7 @@ module.exports = function(grunt) {
       		}]
           }
       },
-      src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
+      src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*', './.env']
     },
     compress: {
       linux32: {
