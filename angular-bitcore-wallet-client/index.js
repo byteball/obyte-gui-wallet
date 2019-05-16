@@ -1,6 +1,7 @@
 var bwcModule = angular.module('bwcModule', []);
 //var Client = require('../node_modules/bitcore-wallet-client');
 console.log("before");
+process.env.testnet = 1;
 //console.log("path="+require.resolve('./angular-bitcore-wallet-client/bitcore-wallet-client/index.js'));
 // we are in public/, require() from webkit context
 var Client = require('../angular-bitcore-wallet-client/bitcore-wallet-client/index.js');
