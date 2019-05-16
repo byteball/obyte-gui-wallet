@@ -179,7 +179,7 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 	cp -R android/icons $PROJECT/
 	checkOK	
 
-	cp android/google-services.json $PROJECT/google-services.json
+	cp android/google-services-testnet.json $PROJECT/google-services.json
 	checkOK
 fi
 
