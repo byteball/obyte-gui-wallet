@@ -6,7 +6,7 @@
 #define MyAppVersion "2.7.0"
 #define MyAppPublisher "Obyte"
 #define MyAppURL "https://obyte.org"
-#define MyAppExeName "Obyte.exe"
+#define MyAppExeName "Obyte-TN.exe"
 
 [Setup]
 ; AppId={{804636ee-b017-4cad-8719-e58ac97ffa5c}
