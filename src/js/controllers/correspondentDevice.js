@@ -924,7 +924,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var objMessage = {
 							app: 'vote',
 							payload_location: "inline",
-							payload_hash: objectHash.getBase64Hash(payload),
+							payload_hash: objectHash.getBase64Hash(payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 							payload: payload
 						};
 
@@ -1436,11 +1436,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.requested = !!fields_list;
 			$scope.bDisabled = true;
 			var sql = fields_list
-				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
+				? "SELECT private_profiles.*, version, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
+					CROSS JOIN units USING (unit) \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
-				: "SELECT private_profiles.* FROM private_profiles \n\
+				: "SELECT private_profiles.*, version FROM private_profiles \n\
+					CROSS JOIN units USING (unit) \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
@@ -1549,7 +1551,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 				profile.entries.forEach(function(entry){
 					var value = [entry.value, entry.blinding];
-					objPrivateProfile.src_profile[entry.field] = entry.provided ? value : objectHash.getBase64Hash(value);
+					objPrivateProfile.src_profile[entry.field] = entry.provided ? value : objectHash.getBase64Hash(value, profile.version !== constants.versionWithoutTimestamp);
 				});
 				console.log('will send '+JSON.stringify(objPrivateProfile));
 				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');

@@ -1261,6 +1261,7 @@ angular.module('copayApp.controllers')
 
 		this.submitData = function() {
 			var objectHash = require('ocore/object_hash.js');
+			var storage = require('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -1335,7 +1336,7 @@ angular.module('copayApp.controllers')
 				var objMessage = {
 					app: app,
 					payload_location: "inline",
-					payload_hash: objectHash.getBase64Hash(value),
+					payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 					payload: value
 				};
 				var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
