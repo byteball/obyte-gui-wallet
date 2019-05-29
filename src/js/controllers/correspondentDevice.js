@@ -1017,10 +1017,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE wallet = ? AND address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
 					fc.credentials.walletId,
 					function (rows) {
-						if (rows.length > 0)
+						// if wallet has any of the addresses mentioned in message, pick first, otherwise keep disabled
+						if (rows.length > 0) {
 							$scope.address = rows[0].address;
-						$scope.bDisabled = false;
-						scopeApply();
+							$scope.bDisabled = false;
+							scopeApply();
+						}
 					}
 				);
 			});
