@@ -58,7 +58,7 @@
             <div class="rect4"></div>
             <div class="rect5"></div>
           </div>
-          <span translate> Getting address for wallet {{selectedWalletName}} ...</span>
+          <span translate>Getting address for wallet</span> {{selectedWalletName}} ...
         </div>
       </div>
 
@@ -70,7 +70,7 @@
               ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
             <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
             <div class="size-12">
-              <span translate>{{w.m}} of {{w.n}}</span>
+              {{w.m}} <span translate>of</span> {{w.n}}
               <span ng-show="w.network=='testnet'">[Testnet]</span>
             </div>
           </a>
