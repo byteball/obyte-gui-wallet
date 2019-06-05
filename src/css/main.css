@@ -1601,3 +1601,48 @@ form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
 a.suggest-command {
 	border-bottom: 1px dotted #3498DB;
 }
+
+.reminder-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10000;
+}
+
+.backup-reminder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  margin: auto;
+  top: 0; left: 0; bottom: 0; right: 0;
+  width: 90%;
+  background-color: #fff;
+  height: 180px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  text-align: center;
+}
+
+.backup-reminder-text {
+  padding: 20px 12px;
+  font-size: 16px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.backup-reminder-actions {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.backup-reminder-actions button {
+  width: 50%;
+  margin: 12px;
+  padding: 6px;
+  min-height: 40px;
+}

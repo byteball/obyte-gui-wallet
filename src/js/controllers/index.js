@@ -26,6 +26,49 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows();
+  
+  self.totalUSDBalance = 0;
+  self.isBackupReminderShown = false;
+
+  self.calculateTotalUsdBalance = function () {
+    var exchangeRates = require('ocore/network.js').exchangeRates;
+    var totalUSDBalance = 0;
+    
+    for (var balance of self.arrBalances){
+      var completeBalance = (balance.total + (balance.shared || 0))
+      if (!balance.pending && balance.asset === 'base' && exchangeRates.GBYTE_USD && balance.total) {
+        totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
+      } else if (!balance.pending && balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD && balance.total) {
+        totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
+      } else if (!balance.pending && exchangeRates[balance.asset + '_USD'] && balance.total) {
+        totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+      }
+    }
+
+    self.totalUSDBalance = totalUSDBalance;
+  }
+
+  $timeout(function () {
+    self.backupExceedingAmountUSD = configService.backupExceedingAmountUSD;
+    self.isBackupReminderShown = !configService.getSync().isBackupReminderShutUp;
+  }, 60 * 1000);
+
+  self.dismissBackupReminder = function () {
+    self.isBackupReminderShown = false;
+    $timeout(function () {
+      self.isBackupReminderShown = true;
+    }, 86400 * 1000)
+  }
+
+  self.shutupBackupReminder = function () {
+    self.isBackupReminderShown = false;
+    configService.set({ isBackupReminderShutUp: true }, function(err) {
+      if (err) {
+        $log.debug(err);
+      }
+    });
+  }
+
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -176,6 +219,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 
 	eventBus.on('rates_updated', function(){
+    self.calculateTotalUsdBalance();
 		$timeout(function() {
 			$rootScope.$apply();
 		});
@@ -1202,6 +1246,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.pendingAmountStr = null;
     }
       */
+
+    self.calculateTotalUsdBalance();
+
     $timeout(function() {
       $rootScope.$apply();
     });

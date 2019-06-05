@@ -1,0 +1,19 @@
+<div
+  class="reminder-container"
+  ng-show="index.isBackupReminderShown && (index.totalUSDBalance > index.backupExceedingAmountUSD)"
+>
+  <div class="backup-reminder">
+    <div class="backup-reminder-text">
+      <span translate>As total amount of money on your wallet increases we recomend you to back it up</span>
+      <span translate>Please visit Backups section in Settings</span>
+    </div>
+    <div class="backup-reminder-actions">
+        <button class="round" ng-click="index.dismissBackupReminder()" translate>
+          Remind Later
+        </button>
+        <button class="round" ng-click="index.shutupBackupReminder()" translate>
+          I created a backup
+        </button>
+    </div>
+  </div>
+</div>
