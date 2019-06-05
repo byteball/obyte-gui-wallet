@@ -85,8 +85,8 @@ angular.module('copayApp.controllers').controller('exportController',
 			}
 			else {
 				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Obyte', backupFilename, file, function(err) {
-					var text = isMobile.iOS() ? 'Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)' : 'File saved to /Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup';
-					navigator.notification.alert(gettextCatalog.getString(text), function(){
+					var text = isMobile.iOS() ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to /Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup');
+					navigator.notification.alert(text, function(){
 						window.plugins.socialsharing.shareWithOptions({files: [(isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory) + 'Obyte/'+ backupFilename]}, function(){}, function(){});
 					}, 'Backup done');
 					cb(err);
