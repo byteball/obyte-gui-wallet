@@ -1006,7 +1006,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.message_to_sign = message_to_sign;
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g);
+				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g) || [];
 				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
 				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
 					$scope.bDisabled = false;

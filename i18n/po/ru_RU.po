@@ -2349,3 +2349,18 @@ msgstr ""
 msgid "{{w.m}} of {{w.n}}"
 msgstr "{{w.m}} из {{w.n}}"
 
+#: public/views/includes/backup-reminder.html:17
+msgid "Remind Later"
+msgstr "Напомнить позже"
+
+#: public/views/includes/backup-reminder.html:20
+msgid "I created a backup"
+msgstr "Не напоминать"
+
+#: public/views/includes/backup-reminder.html:12
+msgid "As total amount of money on your wallet increases we recomend you to back it up"
+msgstr "Баланс на вашем аккаунте растет, и мы рекомендуем создать резервную копию кошелька."
+
+#: public/views/includes/backup-reminder.html:13
+msgid "Please visit Backups section in Settings"
+msgstr "Пожалуйста, посетите разделе Резервные Копии в настройках"
