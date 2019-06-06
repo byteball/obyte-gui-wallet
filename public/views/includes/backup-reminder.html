@@ -4,8 +4,8 @@
 >
   <div class="backup-reminder">
     <div class="backup-reminder-text">
-      <span translate>As total amount of money on your wallet increases we recomend you to back it up</span>
-      <span translate>Please visit Backups section in Settings</span>
+      <span translate>The total amount on your wallet is</span> ${{index.totalUSDBalance.toLocaleString([], {maximumFractionDigits: 2})}}, <span translate>it is recoommended to back it up.</span>
+      <span translate>Please visit the Backups section in</span> <a ng-click="index.dismissBackupReminder(); $root.go('preferencesGlobal')" translate>Settings</a>.
     </div>
     <div class="backup-reminder-actions">
         <button class="round" ng-click="index.dismissBackupReminder()" translate>
