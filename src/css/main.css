@@ -1611,15 +1611,13 @@ a.suggest-command {
 }
 
 .backup-reminder {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: absolute;
-  margin: auto;
-  top: 0; left: 0; bottom: 0; right: 0;
+  max-height: calc(100% - 100px);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 90%;
   background-color: #fff;
-  height: 180px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   text-align: center;
 }
