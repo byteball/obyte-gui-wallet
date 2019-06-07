@@ -59,7 +59,7 @@ msgstr ""
 msgid "Add Bot"
 msgstr ""
 
-#: public/views/correspondentDevices.html:149
+#: public/views/correspondentDevices.html:153
 msgid "Add a new device"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr ""
 msgid "Add wallet"
 msgstr ""
 
-#: public/views/correspondentDevices.html:190
+#: public/views/correspondentDevices.html:194
 msgid "Added"
 msgstr ""
 
@@ -226,7 +226,7 @@ msgstr ""
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/bot.html:13
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:71
+#: public/views/correspondentDevices.html:75
 #: public/views/editCorrespondentDevice.html:14
 #: public/views/includes/topbar.html:8
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
@@ -319,7 +319,7 @@ msgstr ""
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr ""
 
-#: src/js/controllers/index.js:777
+#: src/js/controllers/index.js:821
 msgid "Chat"
 msgstr ""
 
@@ -367,7 +367,7 @@ msgstr ""
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr ""
 
-#: public/views/correspondentDevices.html:76
+#: public/views/correspondentDevices.html:80
 #: public/views/includes/topbar.html:13
 #: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
@@ -418,7 +418,7 @@ msgid "Compress the file? (Slower)"
 msgstr ""
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:616
+#: src/js/controllers/index.js:660
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:132
 #: src/js/controllers/walletHome.js:1824
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Confirmed"
 msgstr ""
 
-#: public/views/correspondentDevices.html:86
+#: public/views/correspondentDevices.html:90
 msgid "Contacts"
 msgstr ""
 
@@ -519,7 +519,7 @@ msgstr ""
 
 #: public/views/add.html:15
 #: public/views/create.html:175
-#: src/js/controllers/index.js:326
+#: src/js/controllers/index.js:370
 msgid "Create new wallet"
 msgstr ""
 
@@ -567,7 +567,7 @@ msgstr ""
 msgid "Date of birth"
 msgstr ""
 
-#: src/js/controllers/index.js:292
+#: src/js/controllers/index.js:336
 msgid "Declined"
 msgstr ""
 
@@ -677,8 +677,8 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-#: src/js/controllers/export.js:142
-#: src/js/controllers/export.js:167
+#: src/js/controllers/export.js:141
+#: src/js/controllers/export.js:166
 msgid "Export completed successfully"
 msgstr ""
 
@@ -700,6 +700,10 @@ msgstr ""
 
 #: public/views/walletHome.html:574
 msgid "Field"
+msgstr ""
+
+#: src/js/controllers/export.js:88
+msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
 msgstr ""
 
 #: public/views/modals/tx-details.html:119
@@ -763,11 +767,11 @@ msgid "Hide the Wallet Seed"
 msgstr ""
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:773
+#: src/js/controllers/index.js:817
 msgid "History"
 msgstr ""
 
-#: src/js/controllers/index.js:761
+#: src/js/controllers/index.js:805
 msgid "Home"
 msgstr ""
 
@@ -785,6 +789,10 @@ msgstr ""
 
 #: public/views/disclaimer.html:36
 msgid "I affirm that I have read, understood, and agree with these terms."
+msgstr ""
+
+#: public/views/includes/backup-reminder.html:14
+msgid "I created a backup"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:43
@@ -874,7 +882,7 @@ msgstr ""
 msgid "Invalid"
 msgstr ""
 
-#: src/js/controllers/index.js:1743
+#: src/js/controllers/index.js:1790
 msgid "Invalid Touch ID"
 msgstr ""
 
@@ -984,7 +992,7 @@ msgid "New witnesses"
 msgstr ""
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:615
+#: src/js/controllers/index.js:659
 #: src/js/controllers/walletHome.js:1836
 msgid "No"
 msgstr ""
@@ -1023,7 +1031,7 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: src/js/controllers/export.js:89
+#: src/js/controllers/export.js:88
 msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
 msgstr ""
 
@@ -1154,11 +1162,11 @@ msgstr ""
 msgid "Plain Wallet"
 msgstr ""
 
-#: src/js/controllers/index.js:231
+#: src/js/controllers/index.js:275
 msgid "Please approve contract fees deposit on the other devices."
 msgstr ""
 
-#: src/js/controllers/index.js:236
+#: src/js/controllers/index.js:280
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr ""
 
@@ -1176,6 +1184,10 @@ msgstr ""
 
 #: src/js/controllers/correspondentDevice.js:150
 msgid "Please switch to a single-address wallet and you probably need to insert your address again."
+msgstr ""
+
+#: public/views/includes/backup-reminder.html:8
+msgid "Please visit the Backups section in"
 msgstr ""
 
 #: public/views/walletHome.html:348
@@ -1264,7 +1276,7 @@ msgstr ""
 msgid "Real name attestors"
 msgstr ""
 
-#: src/js/controllers/index.js:765
+#: src/js/controllers/index.js:809
 msgid "Receive"
 msgstr ""
 
@@ -1293,7 +1305,7 @@ msgstr ""
 msgid "Recreating Wallet..."
 msgstr ""
 
-#: src/js/controllers/index.js:244
+#: src/js/controllers/index.js:288
 msgid "Refused"
 msgstr ""
 
@@ -1301,11 +1313,15 @@ msgstr ""
 msgid "Release Information"
 msgstr ""
 
+#: public/views/includes/backup-reminder.html:11
+msgid "Remind Later"
+msgstr ""
+
 #: public/views/modals/destination-address.html:85
 msgid "Remove"
 msgstr ""
 
-#: public/views/correspondentDevices.html:155
+#: public/views/correspondentDevices.html:159
 msgid "Remove a device"
 msgstr ""
 
@@ -1388,7 +1404,7 @@ msgstr ""
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr ""
 
-#: src/js/controllers/index.js:1736
+#: src/js/controllers/index.js:1783
 msgid "Scan your fingerprint please"
 msgstr ""
 
@@ -1419,7 +1435,7 @@ msgstr ""
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:494
 #: public/views/walletHome.html:593
-#: src/js/controllers/index.js:769
+#: src/js/controllers/index.js:813
 msgid "Send"
 msgstr ""
 
@@ -1463,6 +1479,7 @@ msgstr ""
 msgid "Set up a password"
 msgstr ""
 
+#: public/views/includes/backup-reminder.html:8
 #: public/views/includes/sidebar.html:43
 msgid "Settings"
 msgstr ""
@@ -1502,7 +1519,7 @@ msgid "Sign"
 msgstr ""
 
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:423
+#: src/js/controllers/index.js:467
 msgid "Sign message"
 msgstr ""
 
@@ -1559,10 +1576,10 @@ msgid "Store"
 msgstr ""
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:142
-#: src/js/controllers/export.js:167
-#: src/js/controllers/index.js:281
-#: src/js/controllers/index.js:309
+#: src/js/controllers/export.js:141
+#: src/js/controllers/export.js:166
+#: src/js/controllers/index.js:325
+#: src/js/controllers/index.js:353
 #: src/js/controllers/preferencesDelete.js:56
 #: src/js/controllers/walletHome.js:1890
 #: src/js/controllers/walletHome.js:1966
@@ -1635,6 +1652,10 @@ msgstr ""
 
 #: public/views/modals/signed-message.html:28
 msgid "The signature is"
+msgstr ""
+
+#: public/views/includes/backup-reminder.html:7
+msgid "The total amount on your wallet is"
 msgstr ""
 
 #: public/views/modals/vote.html:52
@@ -1713,7 +1734,7 @@ msgstr ""
 #: public/views/modals/tx-details.html:39
 #: public/views/modals/tx-details.html:74
 #: public/views/walletHome.html:697
-#: src/js/controllers/index.js:1548
+#: src/js/controllers/index.js:1595
 msgid "To"
 msgstr ""
 
@@ -1733,7 +1754,7 @@ msgstr ""
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr ""
 
-#: src/js/controllers/index.js:1551
+#: src/js/controllers/index.js:1598
 msgid "To email"
 msgstr ""
 
@@ -1761,7 +1782,7 @@ msgstr ""
 msgid "Transaction"
 msgstr ""
 
-#: src/js/controllers/index.js:226
+#: src/js/controllers/index.js:270
 msgid ""
 "Transaction created.\n"
 "Please approve it on the other devices."
@@ -1954,7 +1975,7 @@ msgid "Wrong password"
 msgstr ""
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:614
+#: src/js/controllers/index.js:658
 msgid "Yes"
 msgstr ""
 
@@ -2059,7 +2080,7 @@ msgstr ""
 msgid "available"
 msgstr ""
 
-#: src/js/controllers/index.js:423
+#: src/js/controllers/index.js:467
 msgid "by address"
 msgstr ""
 
@@ -2163,6 +2184,10 @@ msgstr ""
 msgid "invalid"
 msgstr ""
 
+#: public/views/includes/backup-reminder.html:7
+msgid "it is recoommended to back it up."
+msgstr ""
+
 #: public/views/modals/share.html:36
 msgid "keep for myself"
 msgstr ""
@@ -2229,11 +2254,11 @@ msgstr ""
 msgid "re-send private payloads to cosigners"
 msgstr ""
 
-#: public/views/correspondentDevices.html:167
+#: public/views/correspondentDevices.html:171
 msgid "search by bot name"
 msgstr ""
 
-#: public/views/correspondentDevices.html:108
+#: public/views/correspondentDevices.html:112
 msgid "search by contact name"
 msgstr ""
 
@@ -2282,7 +2307,7 @@ msgstr ""
 msgid "to"
 msgstr ""
 
-#: src/js/controllers/index.js:326
+#: src/js/controllers/index.js:370
 msgid "together with"
 msgstr ""
 
