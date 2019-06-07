@@ -21,7 +21,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var constants = require('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
-
+	root.backupExceedingAmountUSD = 10;
+	
   root.oracles = {
 		"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {
 			name: "Bitcoin oracle",

@@ -140,10 +140,13 @@ input.datafeed_input {
 							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
 						</div>
 						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === 'base' && home.exchangeRates.GBYTE_USD && balance.total">
-							<span>≈ ${{ (balance.total * home.exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD && balance.total">
-							<span>≈ ${{ (balance.total * home.exchangeRates.GBB_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						</div>
+						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD'] && balance.total">
+							<span>≈ ${{ (balance.total / Math.pow(10, index.arrBalances[index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 					</div>
           <style ng-if="index.isCordova">
@@ -316,7 +319,8 @@ input.datafeed_input {
 	          <a class="size-14" ng-click="home.openClaimTextcoinModal(home.addr[index.walletId])" ng-style="{'color':index.backgroundColor}">
 	            <span translate>Claim funds using textcoin</span>
 	          </a>
-	        </div>
+          </div>
+          <br><br><br>
 	    </div>
       </div>
     </div> <!-- END Receive -->
@@ -374,7 +378,7 @@ input.datafeed_input {
 					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
-                    <input type="number" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
+                    <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
                       <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
@@ -385,11 +389,11 @@ input.datafeed_input {
             </div>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-		    	<div class="mtab-title active" ng-click="mtab = 1" ng-class="{'active': mtab == 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
-		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab == 2, 'disabled': home.send_multiple}" translate>Share via message</div>
+		    	<div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
+		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
 		    </div>
 
-		    <div class="mtab" ng-class="{'active': mtab == 1}" ng-init="mtab = 1; home.send_multiple = false;">
+		    <div class="mtab" ng-class="{'active': mtab === 1}" ng-init="mtab = 1; home.send_multiple = false;">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
@@ -487,7 +491,7 @@ input.datafeed_input {
 	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
 	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
-	                <button type="submit" ng-if="mtab == 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
 	                </button>
@@ -495,7 +499,7 @@ input.datafeed_input {
 	            </div>
         	</div>
 
-        	<div class="mtab" ng-class="{'active': mtab == 2}">
+        	<div class="mtab" ng-class="{'active': mtab === 2}">
         		<br>
         		<div class="" ng-show="index.m < index.n && index.m > 1">
 	                <div class="large-12 medium-12">
@@ -601,6 +605,7 @@ input.datafeed_input {
       		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one.
       	</div>
       </div>
+      <br><br>
       <!--div class="row columns m20t" ng-hide="home.canSendPayment()">
 		  This is a private asset, please send it only by clicking links in the chat.
       </div-->

@@ -16,6 +16,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
   self.isCordova = isCordova;
   self.isSafari = isMobile.Safari();
+  self.isMobile = isMobile;
   self.onGoingProcess = {};
   self.historyShowLimit = 10;
   self.updatingTxHistory = {};
@@ -25,6 +26,49 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.assetIndex = 0;
   self.$state = $state;
   self.usePushNotifications = isCordova && !isMobile.Windows();
+  
+  self.totalUSDBalance = 0;
+  self.isBackupReminderShown = false;
+
+  self.calculateTotalUsdBalance = function () {
+    var exchangeRates = require('ocore/network.js').exchangeRates;
+    var totalUSDBalance = 0;
+    
+    for (var balance of self.arrBalances){
+      var completeBalance = (balance.total + (balance.shared || 0))
+      if (!balance.pending && balance.asset === 'base' && exchangeRates.GBYTE_USD && balance.total) {
+        totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
+      } else if (!balance.pending && balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD && balance.total) {
+        totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
+      } else if (!balance.pending && exchangeRates[balance.asset + '_USD'] && balance.total) {
+        totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+      }
+    }
+
+    self.totalUSDBalance = totalUSDBalance;
+  }
+
+  $timeout(function () {
+    self.backupExceedingAmountUSD = configService.backupExceedingAmountUSD;
+    self.isBackupReminderShown = !configService.getSync().isBackupReminderShutUp;
+  }, 60 * 1000);
+
+  self.dismissBackupReminder = function () {
+    self.isBackupReminderShown = false;
+    $timeout(function () {
+      self.isBackupReminderShown = true;
+    }, 86400 * 1000)
+  }
+
+  self.shutupBackupReminder = function () {
+    self.isBackupReminderShown = false;
+    configService.set({ isBackupReminderShutUp: true }, function(err) {
+      if (err) {
+        $log.debug(err);
+      }
+    });
+  }
+
     /*
     console.log("process", process.env);
     var os = require('os');
@@ -90,6 +134,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				});
 			}
 		});
+	}
+
+	if (isCordova && isMobile.iOS()) {
+		Keyboard.hideFormAccessoryBar(false);
 	}
     
     eventBus.on('nonfatal_error', function(error_message, error_object) {
@@ -171,6 +219,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 
 	eventBus.on('rates_updated', function(){
+    self.calculateTotalUsdBalance();
 		$timeout(function() {
 			$rootScope.$apply();
 		});
@@ -521,8 +570,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                        });
 						}
 						// prosaic contract related requests
-						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var db = require('ocore/db.js');
+						var prosaic_contract = require('ocore/prosaic_contract.js');
 						function isProsaicContractSignRequest(cb3) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
@@ -685,7 +734,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.arrSharedWallets = arrSharedWallets;
 
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaic_contract = require('ocore/prosaic_contract.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -693,10 +741,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 					objSharedWallet.shared_address_cosigners = cosigners.map(function(cosigner){ return cosigner.name; }).join(", ");
 					objSharedWallet.creation_ts = cosigners[0].creation_ts;
 					cb();
-				});
-				prosaic_contract.getBySharedAddress(objSharedWallet.shared_address, function(row) {
-					if (row)
-						objSharedWallet.has_prosaic_contract = true;
 				});
 			},
 			function(){
@@ -1202,6 +1246,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       self.pendingAmountStr = null;
     }
       */
+
+    self.calculateTotalUsdBalance();
+
     $timeout(function() {
       $rootScope.$apply();
     });

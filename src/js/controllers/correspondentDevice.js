@@ -5,7 +5,7 @@
 var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, addressService, lodash, $deepStateRedirect, $state, backButton, gettext, nodeWebkit, notification) {
 	
 	var async = require('async');
 	var chatStorage = require('ocore/chat_storage.js');
@@ -924,7 +924,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var objMessage = {
 							app: 'vote',
 							payload_location: "inline",
-							payload_hash: objectHash.getBase64Hash(payload),
+							payload_hash: objectHash.getBase64Hash(payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 							payload: payload
 						};
 
@@ -1006,7 +1006,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.message_to_sign = message_to_sign;
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g);
+				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g) || [];
 				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
 				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
 					$scope.bDisabled = false;
@@ -1224,8 +1224,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		if (!document.chatForm || !document.chatForm.message) // already gone
 			return;
 		var msgField = document.chatForm.message;
-		$timeout(function(){$rootScope.$digest()});
-		msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
+		$timeout(function(){
+			$rootScope.$digest();
+			msgField.selectionStart = msgField.selectionEnd = msgField.value.length;
+			msgField.focus();
+		});
 	}
 	
 	function appendMyPaymentAddress(myPaymentAddress){
@@ -1433,11 +1436,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.requested = !!fields_list;
 			$scope.bDisabled = true;
 			var sql = fields_list
-				? "SELECT private_profiles.*, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
+				? "SELECT private_profiles.*, version, COUNT(*) AS c FROM private_profile_fields JOIN private_profiles USING(private_profile_id) \n\
+					CROSS JOIN units USING (unit) \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE field IN(?) AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL) GROUP BY private_profile_id"
-				: "SELECT private_profiles.* FROM private_profiles \n\
+				: "SELECT private_profiles.*, version FROM private_profiles \n\
+					CROSS JOIN units USING (unit) \n\
 					LEFT JOIN my_addresses USING (address) \n\
 					LEFT JOIN shared_addresses ON shared_addresses.shared_address = private_profiles.address \n\
 					WHERE my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL";
@@ -1546,7 +1551,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 				profile.entries.forEach(function(entry){
 					var value = [entry.value, entry.blinding];
-					objPrivateProfile.src_profile[entry.field] = entry.provided ? value : objectHash.getBase64Hash(value);
+					objPrivateProfile.src_profile[entry.field] = entry.provided ? value : objectHash.getBase64Hash(value, profile.version !== constants.versionWithoutTimestamp);
 				});
 				console.log('will send '+JSON.stringify(objPrivateProfile));
 				var privateProfileJsonBase64 = Buffer.from(JSON.stringify(objPrivateProfile)).toString('base64');
@@ -1602,6 +1607,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$scope.creation_date = objContract.creation_date;
 					$scope.hash = objContract.hash;
 					$scope.calculated_hash = prosaic_contract.getHash(objContract);
+					$scope.calculated_hash_V1 = prosaic_contract.getHashV1(objContract);
 					$scope.my_address = objContract.my_address;
 					$scope.peer_address = objContract.peer_address;
 					if (objContract.unit) {
@@ -1717,6 +1723,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					$timeout(function() {
 						$scope.validity_checked = true;
 					}, 500);
+				}
+
+				$scope.copyToClipboard = function() {
+					var sourcetext = document.getElementById('sourcetext');
+					var text = sourcetext.value;
+					sourcetext.selectionStart = 0;
+					sourcetext.selectionEnd = text.length;
+					notification.success(gettext('Copied to clipboard'));
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
+					}
 				}
 			};
 
@@ -1907,7 +1926,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         });
         
         elm.bind('scroll', function() {
-        	if (raw.scrollTop + raw.offsetHeight != raw.scrollHeight) 
+        	if (raw.scrollTop + raw.offsetHeight < raw.scrollHeight - 30) 
         		scope.autoScrollEnabled = false;
         	else 
         		scope.autoScrollEnabled = true;

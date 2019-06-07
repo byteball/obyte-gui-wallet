@@ -15,13 +15,16 @@
 <div class="modal-content fix-modals-touch">
   <div class="header-modal text-center enable_text_select">
     <div class="size-42" ng-show="btx.action != 'invalid'">
-		<span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
-		<div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
-			≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
-		</div>
-		<div class="size-14" ng-if="btx.asset === BLACKBYTES_ASSET && exchangeRates.GBB_USD">
-			≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount * exchangeRates.GBB_USD / 1e9).toLocaleString([], {maximumFractionDigits: 2}) }}
-		</div>
+      <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
+      <div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / 1e9 * exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
+      <div class="size-14" ng-if="btx.asset === BLACKBYTES_ASSET && exchangeRates.GBB_USD">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / 1e9 * exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
+      <div class="size-14" ng-if="exchangeRates[btx.asset + '_USD']">
+        ≈ {{ btx.action == 'sent' ? '-' : '+'}} ${{ (btx.amount / Math.pow(10, assetDecimals || 0) * exchangeRates[btx.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}
+      </div>
     </div>
     <div class="size-42" ng-show="btx.action == 'invalid'">
       -
@@ -99,7 +102,7 @@
       <span class="right">{{btx.feeStr + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.fee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 5})+')' : '') }}</span>
     </li>
     <li class="line-b p10 row collapse">
-      <div class="text-gray small-2 columns"><span translate>ID</span>:</div>
+      <div class="text-gray small-2 columns"><span>ID</span>:</div>
       <div class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer()" class=" ">{{btx.unit}}</a></div>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">

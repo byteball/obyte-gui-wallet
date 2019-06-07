@@ -43,6 +43,10 @@
 	.order-button:focus,
 	.order-button:hover { background: #ddd; color: #333 }
 
+	#contacts-order, #bots-order{
+		margin-top: 10px;
+	}
+
 	.bots-orders-list.f-dropdown li,
 	.contacts-orders-list.f-dropdown li { fo5nt-size: 12px }
 	
@@ -149,7 +153,7 @@
 						<span class="text-close size-12" translate>Add a new device</span>
 					</a>
 				</li>
-				<li class="m10t" ng-show="!editCorrespondentList">
+				<li class="m10t m30b" ng-show="!editCorrespondentList">
 					<a ng-click="hideRemove = !hideRemove" class="p10">
 						<i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i>
 						<span class="text-close size-12" translate>Remove a device</span>

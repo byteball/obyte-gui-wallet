@@ -39,6 +39,12 @@ function PreferencesEditRealNameAttestorsCtrl(
 		});
 	};
 
+	this.removeAttestorAddress = function (address) {
+		var idx = this.attestorAddresses.findIndex(function(pair) {return pair.address == address;});
+		if (idx > -1)
+			this.attestorAddresses.splice(idx, 1);
+	}
+
 	function setError (error) {
 		self.error = error;
 		$timeout(function () {

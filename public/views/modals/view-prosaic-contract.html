@@ -62,7 +62,7 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
-	<h3><span translate>Status</span>: <b translate>{{status}}</b></h3>
+	<h3><span translate>Status</span>: <b>{{status}}</b></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
 	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
@@ -94,16 +94,16 @@ form[name="prosaicContractForm"] {
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
 		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
-		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" onclick="document.getElementById('sourcetext').select();document.execCommand('copy')">copy text</a>
-		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
+		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard()" ng-hide="hash === calculated_hash_V1">copy text</a>
+		<textarea readonly="readonly" id="sourcetext" ng-hide="hash === calculated_hash_V1">{{title}}{{text}}{{creation_date}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
 		<span ng-show="validity_checked">integrity check: 
-			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="hash === calculated_hash && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="hash === calculated_hash && hash === hash_inside_unit" translate>valid</span>
-			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="hash !== calculated_hash || hash !== hash_inside_unit" translate>not valid</span>
+			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="(hash === calculated_hash || hash === calculated_hash_V1) && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="(hash === calculated_hash || hash === calculated_hash_V1) && hash === hash_inside_unit" translate>valid</span>
+			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="(hash !== calculated_hash && hash !== calculated_hash_V1) || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="(hash !== calculated_hash && hash !== calculated_hash_V1) || hash !== hash_inside_unit" translate>not valid</span>
 		</span><br><br>
 
-		<span ng-show="validity_checked"><span class="text-bold" translate>calculated hash:</span> {{calculated_hash}}</span><br>
+		<span ng-show="validity_checked"><span class="text-bold" translate>calculated hash:</span> {{hash == calculated_hash ? calculated_hash : calculated_hash_V1}}</span><br>
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 

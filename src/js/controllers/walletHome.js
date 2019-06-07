@@ -10,6 +10,7 @@ angular.module('copayApp.controllers')
 
 		var self = this;
 		var home = this;
+		$scope.Math = window.Math;
 		var conf = require('ocore/conf.js');
 		var chatStorage = require('ocore/chat_storage.js');
 		this.bb_protocol = conf.program;
@@ -34,7 +35,6 @@ angular.module('copayApp.controllers')
 		this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 		this.blockUx = false;
 		this.showScanner = false;
-		this.isMobile = isMobile.any();
 		this.addr = {};
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
@@ -767,10 +767,8 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				var removeFile = function() {
-
-				}
-				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
+				var removeFile = function() {};
+				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: filePath ? [filePath] : []}), removeFile, removeFile);
 				return;
 			}
 			if (filePath)
@@ -1261,6 +1259,7 @@ angular.module('copayApp.controllers')
 
 		this.submitData = function() {
 			var objectHash = require('ocore/object_hash.js');
+			var storage = require('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -1335,7 +1334,7 @@ angular.module('copayApp.controllers')
 				var objMessage = {
 					app: app,
 					payload_location: "inline",
-					payload_hash: objectHash.getBase64Hash(value),
+					payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 					payload: value
 				};
 				var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
@@ -1459,6 +1458,7 @@ angular.module('copayApp.controllers')
 				}
 				$scope.oracles = configService.oracles;
 				$scope.isSingleAddress = fc.isSingleAddress;
+				$scope.index = indexScope;
 
 				$scope.cancel = function() {
 					$modalInstance.dismiss('cancel');
@@ -1784,6 +1784,8 @@ angular.module('copayApp.controllers')
 					asset: btx.asset
 				});
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
+				$scope.Math = window.Math;
+				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;

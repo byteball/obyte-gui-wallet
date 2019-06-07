@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
-  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService) {
+  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, $modal, animationService, nodeWebkit, gettext, notification) {
 	
 	var self = this;
 	
@@ -69,6 +69,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				$scope.creation_date = objContract.creation_date
 				$scope.hash = objContract.hash;
 				$scope.calculated_hash = prosaic_contract.getHash(objContract);
+				$scope.calculated_hash_V1 = prosaic_contract.getHashV1(objContract);
 				$scope.my_address = objContract.my_address;
 				$scope.peer_address = objContract.peer_address;
 				if (objContract.unit) {
@@ -109,6 +110,19 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 					$timeout(function() {
 						$scope.validity_checked = true;
 					}, 500);
+				}
+
+				$scope.copyToClipboard = function() {
+					var sourcetext = document.getElementById('sourcetext');
+					var text = sourcetext.value;
+					sourcetext.selectionStart = 0;
+					sourcetext.selectionEnd = text.length;
+					notification.success(gettext('Copied to clipboard'));
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
+					}
 				}
 			};
 

@@ -43,6 +43,9 @@ angular.module('copayApp.services')
       name: 'Hrvatski',
       isoCode: 'hr_HR',
     }, {
+      name: 'Srpski',
+      isoCode: 'sr_CS',
+    }, {
       name: 'Magyar',
       isoCode: 'hu_HU',
     }, {
@@ -77,6 +80,15 @@ angular.module('copayApp.services')
     }, {
       name: 'Bahasa Indonesia',
       isoCode: 'id_ID',
+    }, {
+      name: 'Filipino',
+      isoCode: 'fil_PH',
+    }, {
+      name: 'Tiếng Việt',
+      isoCode: 'vi_VN',
+    }, {
+      name: 'Èdè Yorùbá',
+      isoCode: 'yo_NG',
     }, {
       name: 'Türk',
       isoCode: 'tr_TR',

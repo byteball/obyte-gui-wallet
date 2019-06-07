@@ -127,9 +127,9 @@ if [ ! -d $PROJECT ]; then
 	if [ $CURRENT_OS == "IOS" ]; then # fixes weird keyboard webview resizing bug https://github.com/apache/cordova-ios/issues/417
 		cordova plugin add cordova-plugin-ionic-webview
 		checkOK
-		cordova plugin add cordova-plugin-ionic-keyboard
-		checkOK
 	fi
+	cordova plugin add cordova-plugin-ionic-keyboard
+	checkOK
 fi
 
 if $DBGJS

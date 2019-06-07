@@ -59,7 +59,7 @@
             <span translate>Amount</span>
           </label>
           <div class="input">
-            <input type="number" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
+            <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" id="amount" name="amount" ng-attr-placeholder="{{'Amount'|translate}}" 
             ng-model="_customAmount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" required autocomplete="off">
             <a class="postfix" ng-if="index.arrBalances[index.assetIndex].asset === 'base'">{{unitName}}</a>
             <a class="postfix" ng-if="index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{bbUnitName}}</a>
@@ -73,7 +73,7 @@
           </label>
           <select class="m10t" ng-model="index.assetIndex" id="asset" name="asset" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? 'bytes' : (balance.asset === index.BLACKBYTES_ASSET ? 'blackbytes' : (balance.name || balance.asset))) for balance in index.arrBalances"></select>
         </div>
-        <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}" translate>
+        <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}">
           {{buttonLabel}}
         </button>
       </form>
