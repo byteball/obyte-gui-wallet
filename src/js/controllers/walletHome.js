@@ -767,10 +767,8 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				var removeFile = function() {
-
-				}
-				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
+				var removeFile = function() {};
+				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: filePath ? [filePath] : []}), removeFile, removeFile);
 				return;
 			}
 			if (filePath)
