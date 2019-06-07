@@ -34,7 +34,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var exchangeRates = require('ocore/network.js').exchangeRates;
     var totalUSDBalance = 0;
     
-    for (var balance of self.arrBalances){
+    for (var i = 0; i < self.arrBalances.length; i++){
+      var balance = self.arrBalances[i];
       var completeBalance = (balance.total + (balance.shared || 0))
       if (!balance.pending && balance.asset === 'base' && exchangeRates.GBYTE_USD && balance.total) {
         totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
