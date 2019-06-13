@@ -2193,7 +2193,7 @@ msgid "invalid"
 msgstr "غير صالح"
 
 #: public/views/includes/backup-reminder.html:7
-msgid "it is recoommended to back it up."
+msgid "it is recommended to back it up."
 msgstr ""
 
 #: public/views/modals/share.html:36
@@ -2354,4 +2354,3 @@ msgstr "مع"
 #: public/views/modals/offer-contract.html:91
 msgid "with expected value"
 msgstr "مع القيمة المتوقعة"
-
