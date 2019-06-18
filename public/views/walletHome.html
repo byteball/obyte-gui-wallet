@@ -432,20 +432,20 @@ input.datafeed_input {
 	                  <i class="icon-wallet size-18" style="margin-right: -3px;vertical-align: baseline;"></i>
 	                </a>
 	              </div>
-				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem;">
+				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;">
 					  <a ng-click="home.openBindModal()">
-						  <span ng-if="!home.binding" translate>Bind the payment to a condition</span>
-						  <span ng-if="home.binding" translate>This payment is bound to a condition</span>
+						  <span ng-if="!home.binding" translate>Bind the payment to a condition...</span>
+						  <span ng-if="home.binding" translate>This payment is bound to a condition...</span>
 					  </a>
 				  </div>
-				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem; float: right;">
+				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem; float: right;">
 					  <a ng-click="home.lockAmount = home.send_multiple = !home.send_multiple" class="text-gray" style="border-bottom: 1px dashed grey;">
 						  <span ng-if="home.send_multiple" translate>switch to single address</span>
 						  <span ng-if="!home.send_multiple" translate ng-click="home.resetForm(sendPaymentForm)">switch to multi-address</span>
 					  </a>
 				  </div>
 				  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
-				  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1.5rem">
+				  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem">
 					  <a dropdown-toggle="#binding-drop" data-options="align:top">
 						  <span translate class="text-gray">Bind the payment to a condition</span>
 					  </a>
@@ -475,6 +475,30 @@ input.datafeed_input {
 	                    ng-blur="home.formFocus(false)"></textarea>
 	                </div>
 	              </div>
+	            </div>
+
+              <div class="row" ng-if="home.feedvaluespairs.length === 0">
+                  <div class="large-12 columns m30b">
+                      <a style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
+	                </div>
+	            </div>
+
+              <div class="row" ng-if="home.feedvaluespairs.length > 0">
+                <div class="large-12 columns m30b m10t">
+	                <label translate>Data to be posted with the payment:</label>
+	                <div>
+                    <span ng-repeat="pair in home.feedvaluespairs">
+                      <input type="text" ng-model="pair.name" placeholder="{{'Field'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" >
+                      <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
+                      <a ng-show="$last" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
+                    </span>
+                    <div class="clear"></div>
+                    <a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
+                      <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
+                      <span class="text-close size-12" translate>Add fields</span> 
+                    </a>
+                  </div>
+                </div>
 	            </div>
 
 	            <div class="" ng-show="index.m < index.n && index.m > 1">
@@ -518,7 +542,7 @@ input.datafeed_input {
       </div>
       <div ng-show="home.shownForm=='data' && index.isSingleAddress">
       	<div class="large-12 large-centered columns">
-          <form name="sendDataForm" ng-submit="home.submitData()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate ng-init="home.feedvaluespairs=[{}]">
+          <form name="sendDataForm" ng-submit="home.submitData()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate dont-ng-init="home.feedvaluespairs=[{}]">
             <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
               <span class="text-warning">
                 {{home.error|translate}}
