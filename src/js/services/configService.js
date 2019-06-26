@@ -20,6 +20,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
   var constants = require('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
+  var isDevnet = constants.version.match(/dev$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
 	root.backupExceedingAmountUSD = 10;
 	
@@ -140,6 +141,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
   autoUpdateWitnessesList: true
   };
+	
+	if (isDevnet) {
+		root.TIMESTAMPER_ADDRESS = 'ZQFHJXFWT2OCEBXF26GFXJU4MPASWPJT';
+		defaultConfig.hub = 'localhost:6611';
+	}
 
   var configCache = null;
 
