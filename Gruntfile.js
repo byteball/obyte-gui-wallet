@@ -126,6 +126,19 @@ module.exports = function(grunt) {
         }
       }
     },
+    babel: {
+      options: {
+        sourceMaps: false,
+        presets: ['@babel/preset-env']
+      },
+      prod: {
+        files: {
+          'public/obyte.js': 'public/obyte.js',
+        //  'public/angular.js': 'public/angular.js',
+          'public/partialClient.js': 'public/partialClient.js'
+        }
+      },
+    },
     nggettext_extract: {
       pot: {
         files: {
@@ -315,6 +328,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-exec');
   //grunt.loadNpmTasks('grunt-karma');
   //grunt.loadNpmTasks('grunt-karma-coveralls');
@@ -325,7 +339,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
   grunt.registerTask('watch-dev', ['default', 'watch']);
-  grunt.registerTask('cordova', ['default', 'browserify']);
+  grunt.registerTask('cordova', ['default', 'browserify', 'babel']);
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   //grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
