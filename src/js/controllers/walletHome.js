@@ -744,17 +744,36 @@ angular.module('copayApp.controllers')
 				if (network.exchangeRates[pair]) {
 					usd_amount_str = " (≈" + ((amount/1e9)*network.exchangeRates[pair]).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
 				}
-				amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
-				asset = asset == constants.BLACKBYTES_ASSET ? "GBB" : "GB";
+				if (amount >= Math.pow(10, 9)) {
+					amount = (amount/1e9).toLocaleString([], {maximumFractionDigits: 9});
+					asset = asset == constants.BLACKBYTES_ASSET ? "GBB" : "GB";
+				}
+				else if (amount >= Math.pow(10, 6)) {
+					amount = (amount/1e6).toLocaleString([], {maximumFractionDigits: 6});
+					asset = asset == constants.BLACKBYTES_ASSET ? "MBB" : "MB";
+				}
+				else if (amount >= Math.pow(10, 3)) {
+					amount = (amount/1e3).toLocaleString([], {maximumFractionDigits: 3});
+					asset = asset == constants.BLACKBYTES_ASSET ? "KBB" : "KB";
+				}
+				else {
+					amount = amount.toLocaleString([], {maximumFractionDigits: 0});
+					asset = asset == constants.BLACKBYTES_ASSET ? "Blackbytes" : "Bytes";
+				}
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
-				if (assetInfo && assetInfo.name) {
-					asset = assetInfo.name;
-					amount /= Math.pow(10, assetInfo.decimals);
-				}
-				if (assetInfo)
+				if (assetInfo) {
 					is_private = assetInfo.is_private;
+					var pair = asset + "_USD";
+					if (network.exchangeRates[pair]) {
+						usd_amount_str = " (≈" + (amount / Math.pow(10, assetInfo.decimals || 0) * network.exchangeRates[pair]).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+					}
+					if (assetInfo.decimals) {
+						amount /= Math.pow(10, assetInfo.decimals);
+					}
+					asset = assetInfo.name ? assetInfo.name : asset;
+				}
 			}
 			return {
 				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Obyte wallet yet, install it from https://obyte.org." : (": https://obyte.org/#textcoin?" + mnemonic)),
