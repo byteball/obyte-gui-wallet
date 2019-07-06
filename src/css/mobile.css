@@ -90,15 +90,15 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar {
-  background: #FFFFFF;
+  background: #2C3E50; /*#FFFFFF;*/
   z-index: 5;
   border-bottom: 1px solid #E9E9EC;
 }
 
 .tab-bar h1 {
-  color: #7A8C9E;
-  font-weight: 500;
-  font-size: 14px;
+  color: #E4E8EC;
+  font-weight: 300;
+  font-size: 16px;
   display: inline-block;
 }
 
@@ -276,7 +276,7 @@ ul.copayer-list img {
 
 
 .right-small a, .left-small a {
-  color: #A5B2BF;
+   color: #E4E8EC; /* #A5B2BF; */
 }
 
 a.missing-copayers {
@@ -306,7 +306,8 @@ a.missing-copayers {
 }
 
 .sidebar {
-  background: #2C3E50;
+  /* background: #2C3E50; */
+  background-image: linear-gradient(#122232,#425d78);
 }
 
 .sidebar .icon {
@@ -638,7 +639,7 @@ to prevent collapsing during animation*/
   overflow-y: auto;
   bottom: 0;
   width: 100%;
-  top: 45px;
+  top: 85px;
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
   background: #fff;
@@ -856,7 +857,8 @@ textarea:focus
 .rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
 	opacity: 0.6;
 	font-size: 80px;
-	background-color: rgb(74, 144, 226);
+	background-color: rgba(0, 0, 0, 0);
+
 }
 .rn-carousel-control.rn-carousel-control-next {
 	right: -0.2em;
@@ -940,6 +942,7 @@ touch-action: manipulation; /* IE11+ */
 
 #splash{
   background-color: #283c4f;
+  background-image: linear-gradient(#122232,#425d78);
   position: absolute;
   left: 0;
   top: 0;
@@ -958,6 +961,7 @@ touch-action: manipulation; /* IE11+ */
 	font-size: 12px;
 	color: gray;
 	white-space: normal;
+  padding-top: 10px;
 }
 i.validation-icon {
 	padding: 3px;

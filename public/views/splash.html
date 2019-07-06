@@ -40,7 +40,7 @@
 						</p>
 					</div>
 					
-					<button ng-click="splash.setWalletType()" class="button black expand round size-12 text-spacing m20t" translate>
+					<button ng-click="splash.setWalletType()" class="button black expand round size-13 text-spacing m20t" translate>
 						CONTINUE
 					</button>
 				</div>
@@ -60,7 +60,7 @@
 					<logo negative="true" height="126"></logo>
 				</div>
 			</div>
-			<div class="text-center size-12 text-warning" ng-show="splash.error && !splash.creatingProfile">
+			<div class="text-center size-13 text-warning" ng-show="splash.error && !splash.creatingProfile">
 				{{splash.error|translate}}. <span translate>Retrying...</span>
 			</div>
 			<div class="onGoingProcess" ng-show="splash.creatingProfile">
@@ -82,14 +82,14 @@
 						<label><span class="text-gray" translate>Please name this device</span></label>
 						<input type="text" id="deviceName" type="text" name="deviceName" ng-model="splash.deviceName" class="text-gray dark-centered-input">
 
-						<button ng-click="splash.saveDeviceName()" class="button black expand round size-12 text-spacing" ng-disabled="!splash.deviceName" translate>
+						<button ng-click="splash.saveDeviceName()" class="button black expand round size-13 text-spacing" ng-disabled="!splash.deviceName" translate>
 							CONTINUE
 						</button>
 					</div>
 					<div ng-show="splash.bDeviceNameSet">
 						<p class="text-gray size-14 m0 text-light m20b" translate>Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu.</p>
 						<p class="text-gray size-14 m0 text-light m20b" translate>Also in the Settings menu, you will find security options such as setting a password.</p>
-						<button ng-click="splash.create()" class="button black expand round size-12 text-spacing" translate>
+						<button ng-click="splash.create()" class="button black expand round size-13 text-spacing" translate>
 							GET STARTED
 						</button>
 					</div>

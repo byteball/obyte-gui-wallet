@@ -9,7 +9,7 @@
 
   <h4></h4>
   <form name="editWitnessForm" ng-submit="ewc.save()" class="columns">
-      <div class="text-warning size-12 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
+      <div class="text-warning size-13 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
     <label><span translate>Witness address</span></label>
     <input type="text" id="witness" type="text" name="witness" ng-model="ewc.witness">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">

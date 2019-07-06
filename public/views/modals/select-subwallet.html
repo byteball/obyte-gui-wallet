@@ -34,8 +34,8 @@
 						<span ng-if="sw.totalStr">{{sw.totalStr}}</span>
 						<span ng-if="!sw.totalStr">{{sw.total.toLocaleString()}}</span>
 					</div>
-					<div class="size-12 ellipsis"><span translate>with</span> {{sw.shared_address_cosigners}}</div>
-					<div class="size-12 ellipsis">
+					<div class="size-13 ellipsis"><span translate>with</span> {{sw.shared_address_cosigners}}</div>
+					<div class="size-13 ellipsis">
 						<span translate>created</span> 
 						<time>{{ sw.creation_ts * 1000 | amDateFormat:'MM/DD/YYYY HH:mm a'}}</time>
 						<time>({{ sw.creation_ts * 1000 | amTimeAgo}})</time>
