@@ -114,9 +114,9 @@ angular
 
 					var length = ab.length;
 					for (var i = 0; i < length; i++) {
-						corrDev = ab[i];
+						var corrDev = ab[i];
 
-						corrDevAddr = corrDev.device_address;
+						var corrDevAddr = corrDev.device_address;
 
 						var ix = arrNotRemovableDeviceAddresses.indexOf(
 							corrDevAddr
