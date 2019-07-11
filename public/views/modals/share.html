@@ -27,7 +27,7 @@
     		<p><span translate>The money is stored on this textcoin:</span> <b class="enable_text_select">{{mnemonic}}</b></p>
     	</div>
         <div ng-if="address">
-        	<p translate>Click the button to <span ng-if="isResend">re</span>send email:</p>
+        	<p><span translate>Click the button to</span> <span ng-if="isResend" translate>re</span><span translate>send email</span>:</p>
           <button ng-if="isCordova" class="button black round expand" ng-style="{'background-color':index.backgroundColor}" ng-click="shareToEmail()">{{buttonLabel}}</button>
           <a class="button black round expand" ng-style="{'background-color':index.backgroundColor}" href="mailto:{{address}}?body={{text | encodeURIComponent}}&subject={{subject | encodeURIComponent}}" ng-if="!isCordova">{{buttonLabel}}</a>
         </div>

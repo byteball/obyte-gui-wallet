@@ -69,6 +69,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 				$scope.creation_date = objContract.creation_date
 				$scope.hash = objContract.hash;
 				$scope.calculated_hash = prosaic_contract.getHash(objContract);
+				$scope.calculated_hash_V1 = prosaic_contract.getHashV1(objContract);
 				$scope.my_address = objContract.my_address;
 				$scope.peer_address = objContract.peer_address;
 				if (objContract.unit) {

@@ -767,10 +767,8 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				var removeFile = function() {
-
-				}
-				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
+				var removeFile = function() {};
+				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: filePath ? [filePath] : []}), removeFile, removeFile);
 				return;
 			}
 			if (filePath)
@@ -853,6 +851,30 @@ angular.module('copayApp.controllers')
 			if (form.$invalid) {
 				this.error = gettext('Unable to send transaction proposal');
 				return;
+			}
+
+			var data_payload = {};
+			var errored = false;
+			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (data_payload[pair.name]) {
+					self.setSendError("All keys must be unique");
+					errored = true;
+					return;
+				}
+				data_payload[pair.name] = pair.value;
+			});
+			if (errored)
+				return;
+			var objDataMessage;
+			if (Object.keys(data_payload).length > 0) {
+				var objectHash = require('ocore/object_hash.js');
+				var storage = require('ocore/storage.js');
+				objDataMessage = {
+					app: 'data',
+					payload_location: "inline",
+					payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+					payload: data_payload
+				};
 			}
 
 			if (fc.isPrivKeyEncrypted()) {
@@ -1164,6 +1186,8 @@ angular.module('copayApp.controllers')
 								});
 							};
 						}
+						if (objDataMessage)
+							opts.messages = [objDataMessage];
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1251,10 +1275,14 @@ angular.module('copayApp.controllers')
 			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
+					this.feedvaluespairs = [{}];
 			}
 			else {
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length > 0 && (!this.feedvaluespairs[0].name || !this.feedvaluespairs[0].value))
+					this.feedvaluespairs = [];
 			}
 			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private && !this.lockAddress ? 2 : 1;
 		}
@@ -1635,6 +1663,7 @@ angular.module('copayApp.controllers')
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
+			this.feedvaluespairs = [];
 
 			var form = $scope.sendPaymentForm;
 			var self = this;

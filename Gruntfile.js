@@ -126,6 +126,19 @@ module.exports = function(grunt) {
         }
       }
     },
+    babel: {
+      options: {
+        sourceMaps: false,
+        presets: ['@babel/preset-env']
+      },
+      prod: {
+        files: {
+          'public/obyte.js': 'public/obyte.js',
+        //  'public/angular.js': 'public/angular.js',
+          'public/partialClient.js': 'public/partialClient.js'
+        }
+      },
+    },
     nggettext_extract: {
       pot: {
         files: {
@@ -261,14 +274,16 @@ module.exports = function(grunt) {
     browserify: {
         dist:{
             options:{
-                exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit']
+                exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
+                ignore: ['../ocore/kvstore.js', './node_modules/ocore/kvstore.js', '../ocore/desktop_app.js', './node_modules/ocore/desktop_app.js', '../ocore/mail.js', './node_modules/ocore/mail.js']
             },
             src: 'public/obyte.js',
             dest: 'public/obyte.js'
         },
 	    partialClient:{
 		    options:{
-			    exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit']
+          exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
+          ignore: ['../ocore/kvstore.js', './node_modules/ocore/kvstore.js', '../ocore/desktop_app.js', './node_modules/ocore/desktop_app.js', '../ocore/mail.js', './node_modules/ocore/mail.js']
 		    },
 		    src: 'src/js/partialClient.js',
 		    dest: 'public/partialClient.js'
@@ -315,6 +330,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-exec');
   //grunt.loadNpmTasks('grunt-karma');
   //grunt.loadNpmTasks('grunt-karma-coveralls');
@@ -325,7 +341,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
   grunt.registerTask('watch-dev', ['default', 'watch']);
-  grunt.registerTask('cordova', ['default', 'browserify']);
+  grunt.registerTask('cordova', ['default', 'browserify', 'babel']);
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   //grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
