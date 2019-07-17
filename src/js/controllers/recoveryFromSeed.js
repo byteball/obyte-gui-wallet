@@ -214,6 +214,8 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 							assocMaxAddressIndexes[currentWalletIndex][type] = startIndex + batchSize - 1;
 							checkAndAddCurrentAddresses(is_change);
 						} else {
+							if (batchSize === 1) // not a single-address wallet, retry for multi-address wallet
+								return checkAndAddCurrentAddresses(is_change);
 							if (is_change) {
 								if(assocMaxAddressIndexes[currentWalletIndex].change === undefined && assocMaxAddressIndexes[currentWalletIndex].main === undefined)
 									delete assocMaxAddressIndexes[currentWalletIndex];
