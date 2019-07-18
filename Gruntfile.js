@@ -257,9 +257,8 @@ module.exports = function(grunt) {
           archive: '../obytebuilds/obyte-tn-linux32.zip'
         },
         expand: true,
-        dot: true,
         cwd: '../obytebuilds/Obyte-TN/linux32/',
-        src: ['**/*'],
+        src: ['**/*', '.env'],
         dest: 'obyte-tn-linux32/'
       },
       linux64: {
@@ -267,9 +266,8 @@ module.exports = function(grunt) {
           archive: '../obytebuilds/obyte-tn-linux64.zip'
         },
         expand: true,
-        dot: true,
         cwd: '../obytebuilds/Obyte-TN/linux64/',
-        src: ['**/*'],
+        src: ['**/*', '.env'],
         dest: 'obyte-tn-linux64/'
       }
     },
