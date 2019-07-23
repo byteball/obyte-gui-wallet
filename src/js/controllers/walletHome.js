@@ -749,12 +749,17 @@ angular.module('copayApp.controllers')
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
-				if (assetInfo && assetInfo.name) {
-					asset = assetInfo.name;
-					amount /= Math.pow(10, assetInfo.decimals);
-				}
-				if (assetInfo)
+				if (assetInfo) {
 					is_private = assetInfo.is_private;
+					var pair = asset + "_USD";
+					if (network.exchangeRates[pair]) {
+						usd_amount_str = " (≈" + (amount / Math.pow(10, assetInfo.decimals || 0) * network.exchangeRates[pair]).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+					}
+					if (assetInfo.decimals) {
+						amount /= Math.pow(10, assetInfo.decimals);
+					}
+					asset = assetInfo.name ? assetInfo.name : asset;
+				}
 			}
 			return {
 				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Obyte wallet yet, install it from https://obyte.org." : (": https://obyte.org/#textcoin?" + mnemonic)),
@@ -851,6 +856,30 @@ angular.module('copayApp.controllers')
 			if (form.$invalid) {
 				this.error = gettext('Unable to send transaction proposal');
 				return;
+			}
+
+			var data_payload = {};
+			var errored = false;
+			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (data_payload[pair.name]) {
+					self.setSendError("All keys must be unique");
+					errored = true;
+					return;
+				}
+				data_payload[pair.name] = pair.value;
+			});
+			if (errored)
+				return;
+			var objDataMessage;
+			if (Object.keys(data_payload).length > 0) {
+				var objectHash = require('ocore/object_hash.js');
+				var storage = require('ocore/storage.js');
+				objDataMessage = {
+					app: 'data',
+					payload_location: "inline",
+					payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+					payload: data_payload
+				};
 			}
 
 			if (fc.isPrivKeyEncrypted()) {
@@ -1162,6 +1191,8 @@ angular.module('copayApp.controllers')
 								});
 							};
 						}
+						if (objDataMessage)
+							opts.messages = [objDataMessage];
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -1249,10 +1280,14 @@ angular.module('copayApp.controllers')
 			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
+					this.feedvaluespairs = [{}];
 			}
 			else {
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length > 0 && (!this.feedvaluespairs[0].name || !this.feedvaluespairs[0].value))
+					this.feedvaluespairs = [];
 			}
 			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private && !this.lockAddress ? 2 : 1;
 		}
@@ -1633,6 +1668,7 @@ angular.module('copayApp.controllers')
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
+			this.feedvaluespairs = [];
 
 			var form = $scope.sendPaymentForm;
 			var self = this;
