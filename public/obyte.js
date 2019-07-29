@@ -15169,7 +15169,7 @@ if (typeof Object.assign != 'function') {
 			  var amount = form.amount.$modelValue || 0;
 			  if (!self.aa_destinations || self.aa_destinations.length === 0)
 				  return console.log('no AA destinations');
-			  var target_to_find = /trigger\.data\.[A-Za-z_.]+/g; // Getting data field for keys suggestions
+			  var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
 			  var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
 			  if (data_fields_to_input.length) {
 				  var defined_data_list = []
