@@ -885,6 +885,8 @@ angular.module('copayApp.controllers')
 				self.aa_destinations = rows;
 				if (rows.length > 0)
 					return updateAAResults();
+				self.aa_destinations = [];
+				self.added_bounce_fees = [];
 				$timeout(function() {
 					$scope.$digest();
 				});
