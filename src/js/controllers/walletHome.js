@@ -74,6 +74,7 @@ angular.module('copayApp.controllers')
 		var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
 			self.addr = {};
 			self.resetForm();
+			self.setAddress();
 		});
 
 		var disableResumeListener = $rootScope.$on('Local/Resume', function() {
@@ -884,6 +885,8 @@ angular.module('copayApp.controllers')
 				self.aa_destinations = rows;
 				if (rows.length > 0)
 					return updateAAResults();
+				self.aa_destinations = [];
+				self.added_bounce_fees = [];
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -960,6 +963,8 @@ angular.module('copayApp.controllers')
 				bounce_fees.base = constants.MIN_BYTES_BOUNCE_FEE;
 			}
 			var address = indexScope.shared_address || self.addr[profileService.focusedClient.credentials.walletId];
+			if (!address)
+				throw Error('no address');
 			var trigger = { outputs: {}, address: address };
 			if ($scope.home.feedvaluespairs.length > 0)
 				trigger.data = {};
