@@ -1029,7 +1029,7 @@ angular.module('copayApp.controllers')
 				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
 				arrResponses.forEach(function (objResponse) {
 					if (objResponse.bounced)
-						results.push(gettext("Bounce the request"));
+						results.push(gettext("Bounce the request") + (objResponse.response.error ? ': ' + objResponse.response.error : ''));
 					if (objResponse.updatedStateVars && objResponse.updatedStateVars[aa_address]) {
 						for (var variable in objResponse.updatedStateVars[aa_address]) {
 							var state_change = { variable: variable };
