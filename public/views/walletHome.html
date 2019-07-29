@@ -512,7 +512,7 @@ input.datafeed_input {
                     <a ng-click="home.onChanged()" translate>Try again</a>
                   </div>
 	                <ul>
-                    <li ng-repeat="result in home.aa_message_results">
+                    <li ng-repeat="result in home.aa_message_results track by $index">
                       {{result}}<br>
                     </li>
                     <li ng-repeat="state_change in home.aa_state_changes">
