@@ -1069,6 +1069,8 @@ angular.module('copayApp.controllers')
 								pairs.push(field + ' = ' + message.payload[field]);
 							results.push(gettext("Post a data feed ") + pairs.join(', '));
 						}
+						else if (message.app === 'data')
+							results.push(gettext("Post data") + " " + JSON.stringify(message.payload));
 						else if (message.app === 'asset') {
 							results.push(gettext("Define a new asset with cap ") + (message.payload.cap || gettext('unlimited'))); // todo add more details
 						}
