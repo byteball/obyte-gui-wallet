@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Add a new device'; goBackToState = true; noColor = true; index.tab = 'chat'">
 </div>
@@ -10,15 +10,15 @@
 <ul class="no-bullet manage size-12">
 	<li>
 		<a ng-click="$root.go('correspondentDevices.addCorrespondentDevice.inviteCorrespondentDevice')">
-			<i class="fi-die-four circle plus-fixed"></i>	
-			<i class="icon-arrow-right3 size-18 right m20t"></i>  
-			<span translate style="max-width: 60%">Invite the other device</span>
+			<i class="fi-die-four circle plus-fixed"></i>
+			<i class="icon-arrow-right3 size-18 right m20t"></i>
+			<span translate style="max-width: 60%; margin-top: 15px;">Invite the other device</span>
 		</a>
 	</li>
 	<li>
 		<a ng-click="$root.go('correspondentDevices.addCorrespondentDevice.acceptCorrespondentInvitation')">
-			<i class="icon-scan circle"></i>	  
-			<i class="icon-arrow-right3 size-18 right m20t"></i>  
+			<i class="icon-scan circle"></i>
+			<i class="icon-arrow-right3 size-18 right m20t"></i>
 			<span translate style="max-width: 60%">Accept invitation from the other device</span>
 		</a>
 	</li>

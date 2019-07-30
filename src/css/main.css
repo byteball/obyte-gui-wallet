@@ -77,7 +77,7 @@
 #qr-canvas { display: none; }
 #qrcode-scanner-video {
   display: block;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 
 .qr-scanner-input {
@@ -92,8 +92,9 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-weight: 100;
-  font-size: 24px;
-  padding: 15px;
+  font-size: 22px;
+  padding: 0px 5px 0px 5px;
+  /* padding: 15px; */
 }
 
 h2 {
@@ -150,6 +151,19 @@ h4.title a {
   left:12px !important;
 }
 
+.switch {
+  top:0px !important;
+  width:33px !important;
+  height:20px !important;
+}
+
+.switch small {
+  width:20px !important;
+  height:20px !important;
+}
+.switch.checked small{
+  left:12px !important;
+}
 
 .preferences h4 {
   background: #F1F3F5;
@@ -556,6 +570,7 @@ ul.manage li {
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
 .p20v {padding: 20px 0;}
+.p60v {padding: 60px 0;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
@@ -757,7 +772,7 @@ select {
 label {
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   color: #34495E;
   margin-bottom: 3px;
 }
@@ -1663,4 +1678,14 @@ a.suggest-command {
   margin: 12px;
   padding: 6px;
   min-height: 40px;
+}
+
+
+.button.expand{
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding-top: .8rem;
+    padding-bottom: .8rem;
 }

@@ -53,7 +53,7 @@
         </div>
 
         <div ng-hide="create.hideWalletName">
-          <label><span translate class="left m10t">Single address wallet</span>
+          <label><span translate class="left ">Single address wallet</span>
             <switch name="isSingleAddress" ng-model="isSingleAddress" class="green right m10b"></switch>
           </label>
           <div class="description m10b" translate>
@@ -163,15 +163,15 @@
                 <span>Testnet</span>
                 <switch id="network-name" name="isTestnet" ng-model="isTestnet" class="green right m5t m10b"></switch>
               </label>
-            </div> 
+            </div>
           </div>
         </div--> <!-- advanced -->
 
-        <button type="submit" class="button round black expand m0" ng-show="totalCosigners != 1" ng-disabled="setupForm.$invalid || create.loading">
+        <button type="submit" class="button round black expand m20t" ng-show="totalCosigners != 1" ng-disabled="setupForm.$invalid || create.loading">
           <span translate>Create {{requiredCosigners}}-of-{{totalCosigners}} wallet</span>
         </button>
 
-        <button type="submit" class="button round black expand m0" ng-show="totalCosigners == 1" ng-disabled="setupForm.$invalid || create.loading">
+        <button type="submit" class="button round black expand m20t" ng-show="totalCosigners == 1" ng-disabled="setupForm.$invalid || create.loading">
           <span translate>Create new wallet</span>
         </button>
 

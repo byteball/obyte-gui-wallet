@@ -301,7 +301,7 @@ a.missing-copayers {
 }
 
 .label {
-  font-size: 70%;
+  font-size: 80%;
   padding: 0.2rem 0.2rem;
 }
 
@@ -320,7 +320,7 @@ a.missing-copayers {
 
 .sidebar li {
   overflow: hidden;
-  border-bottom: 1px solid #384B5F;
+  border-bottom: 1px solid rgba(200,200,200,.4);
 }
 
 .sidebar li.nav-item.selected {
@@ -344,7 +344,7 @@ a.missing-copayers {
 .sidebar header {
   text-align: center;
   padding: 1.7rem;
-  border-bottom: 1px solid #384B5F;
+  border-bottom: 1px solid rgba(200,200,200,.4);
 }
 
 .sidebar header h1 {
@@ -639,7 +639,7 @@ to prevent collapsing during animation*/
   overflow-y: auto;
   bottom: 0;
   width: 100%;
-  top: 85px;
+  top: 45px;
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
   background: #fff;
@@ -828,7 +828,7 @@ textarea:focus
 
 
 .create-tab a {
-  font-size: .7rem;
+  font-size: .8rem;
   padding: 0 .2rem .6rem .2rem;
   color: #929396;
   text-transform: uppercase;
@@ -958,7 +958,7 @@ touch-action: manipulation; /* IE11+ */
 }
 .description {
 	clear: both;
-	font-size: 12px;
+	font-size: 13px;
 	color: gray;
 	white-space: normal;
   padding-top: 10px;
@@ -972,4 +972,12 @@ i.validation-icon {
 }
 .keyboard-open .send-form {
 	padding-bottom: 0px;
+}
+
+/* Tweaks for Foundation css: (opacity works better on various colors)*/
+div.rn-carousel-indicator span {
+  color: rgba(0,0,0,.25) !important;
+}
+div.rn-carousel-indicator span.active {
+    color: white !important;
 }

@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Color'; goBackToState = true">
 </div>
@@ -7,11 +7,11 @@
 
 
 <div class="content preferences" ng-controller="preferencesColorController as p">
-  <h4></h4>
   <ul class="no-bullet m0">
-  <li ng-repeat="c in p.colorOpts" ng-click="p.save(c)">
-    <span ng-style="{'color': c}" class="size-16">&block;</span>
-    <i class="fi-check size-16 right" ng-show="p.color == c"></i>
+  <li ng-repeat="c in p.colorOpts" ng-click="p.save(c.hexValue)">
+    <span ng-style="{'background-color': c.hexValue}" style=" width:20px; height:20px; border-radius:50%; display:inline-block; color:transparent;" >&block;</span>
+    <span style="margin-left:10px;">{{c.colorName}}</span>
+    <i class="fi-check size-16 right" ng-show="p.color == c.hexValue"></i>
   </li>
   </ul>
 </div>

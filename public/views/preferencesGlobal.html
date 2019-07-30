@@ -1,13 +1,12 @@
 
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Global preferences'; closeToHome = true; noColor = true">
 </div>
 
 
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
-  <h4></h4>
   <ul class="no-bullet m0 ">
     <li  ng-click="$root.go('preferencesGlobal.preferencesDeviceName')">
       <div class="right text-gray">
@@ -63,26 +62,26 @@
       </li>
     </ul>
   </div>
-    
+
   <h4 translate>Trusted nodes</h4>
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.preferencesWitnesses')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>Witnesses</div>
     </li>
     <li ng-click="$root.go('preferencesGlobal.preferencesAttestorAddresses')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>Attestor addresses</div>
     </li>
   </ul>
-    
+
   <h4 translate>Device address</h4>
   <ul class="no-bullet m0 enable_text_select">
     <li>
       <div>{{prefGlobal.myDeviceAddress}}</div>
     </li>
   </ul>
-    
+
     <h4 translate>Spending Restrictions</h4>
     <ul class="no-bullet m0">
       <li>
@@ -94,9 +93,9 @@
         <div translate>Spend unconfirmed funds</div>
       </li>
     </ul>
-    
+
   <h4 translate>Backups</h4>
-	
+
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
@@ -117,7 +116,7 @@
       <div translate>Recovery from seed</div>
     </li>
   </ul>
-	
+
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
@@ -126,7 +125,7 @@
       <div translate>Full backup</div>
     </li>
   </ul>
-	
+
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.import')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
@@ -135,11 +134,11 @@
       <div translate>Restore from full backup</div>
     </li>
   </ul>
-    
+
   <h4></h4>
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.preferencesAbout')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>About Obyte</div>
     </li>
   </ul>

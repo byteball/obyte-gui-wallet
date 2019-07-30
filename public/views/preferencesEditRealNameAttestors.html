@@ -6,7 +6,7 @@
 
 <div class="content preferences" ng-controller="preferencesEditRealNameAttestorsCtrl as ctrl">
 
-	<h4></h4>
+	<!-- <h4></h4> -->
 	<form name="editAttestorAddressForm" ng-submit="ctrl.save()" class="columns">
 		<div class="text-warning size-13 m10b" ng-show="ctrl.error">{{ctrl.error|translate}}</div>
 
@@ -21,8 +21,8 @@
 			<i></i>
 			<div class="clear"></div>
 			<a ng-click="ctrl.attestorAddresses.push({})" style="padding:10px 0;">
-				<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-				<span class="text-close size-12" translate>Add address</span> 
+				<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i>
+				<span class="text-close size-12" translate>Add address</span>
 			</a>
 		</div>
 

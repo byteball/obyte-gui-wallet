@@ -4,25 +4,25 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var root = {};
 
 	root.colorOpts = [
-	  '#DD4B39',
-	  '#F38F12',
-	  '#FAA77F',
-	  '#FADA58',
-	  '#9EDD72',
-	  '#77DADA',
-	  '#4A90E2',
-	  '#484ED3',
-	  '#9B59B6',
-	  '#E856EF',
-	  '#FF599E',
-	  '#7A8C9E',
+	  {hexValue:'#DD4B39',colorName:"Punch"},
+	  {hexValue:'#F38F12',colorName:"Gamboge"},
+	  {hexValue:'#FAA77F',colorName:"Hit Pink"},
+	  {hexValue:'#FADA58',colorName:"Energy Yellow"},
+	  {hexValue:'#9EDD72',colorName:"Feijoa"},
+	  {hexValue:'#77DADA',colorName:"Bermuda"},
+	  {hexValue:'#4A90E2',colorName:"Havelock Blue"},
+	  {hexValue:'#484ED3',colorName:"Indigo"},
+	  {hexValue:'#9B59B6',colorName:"Wisteria"},
+	  {hexValue:'#E856EF',colorName:"Heliotrope"},
+	  {hexValue:'#FF599E',colorName:"Hot Pink"},
+	  {hexValue:'#7A8C9E',colorName:"Regent Gray"}
 	];
 
   var constants = require('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
 	root.backupExceedingAmountUSD = 10;
-	
+
   root.oracles = {
 		"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {
 			name: "Bitcoin oracle",
@@ -67,7 +67,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	};
 
 	root.privateTextcoinExt = 'coin';
-	
+
   var defaultConfig = {
 	// wallet limits
 	limits: {
@@ -189,13 +189,13 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   root.getDefaults = function() {
 	return lodash.clone(defaultConfig);
   };
-  
+
   if(window.config){
 	configCache = migrateLocalConfig(window.config);
   }else{
 	root.get(function() {});
   }
-  
+
   function migrateLocalConfig(localConfig) {
 	if (localConfig) {
 		var _config = JSON.parse(localConfig);
@@ -254,7 +254,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	}
 	return _config;
   }
-  
+
   function checkAndReplaceOldUnitCode(setting) {
 	  switch (setting.unitCode){
 		  case 'byte':
