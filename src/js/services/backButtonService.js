@@ -21,7 +21,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 			}
 		}*/
 
-		lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
+		var lastState = arrHistory.length ? arrHistory[arrHistory.length - 1] : null;
 		if (from.name == "" // first state
 			|| (lastState && !(to.name == lastState.to && lodash.isEqual(toParams, lastState.toParams)))) // jumped back in history 
 			arrHistory.push({to: to.name, toParams: toParams, from: from.name, fromParams: fromParams});
