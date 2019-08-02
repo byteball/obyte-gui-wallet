@@ -92,7 +92,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar {
   background: #2C3E50; /*#FFFFFF;*/
   z-index: 5;
-  border-bottom: 1px solid #E9E9EC;
+  /* border-bottom: 1px solid #E9E9EC; */
 }
 
 .tab-bar h1 {
@@ -972,6 +972,17 @@ i.validation-icon {
 }
 .keyboard-open .send-form {
 	padding-bottom: 0px;
+}
+
+.color-indicator{
+    background-color: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    line-height: 300px;
+    position: relative;
+    top: 2px;
 }
 
 /* Tweaks for Foundation css: (opacity works better on various colors)*/

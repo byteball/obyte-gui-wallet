@@ -167,7 +167,7 @@ h4.title a {
 
 .preferences h4 {
   background: #F1F3F5;
-  padding: 25px 0px 25px 20px;
+  padding: 15px 0px 15px 20px;
   text-transform: uppercase;
   color: #555;
   font-size: 13px;
@@ -232,7 +232,8 @@ ul.button-group li {
 }
 
 ul.button-group li.selected {
-  color: #fff;
+  /* color: #fff; */
+  color: #2C3E50;
   background-color: #DEDFE1;
 }
 
