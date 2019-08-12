@@ -354,11 +354,11 @@ input.datafeed_input {
       <div class="row m20t" ng-show="home.shownForm=='payment'">
         <div class="large-12 large-centered columns">
           <form name="sendPaymentForm" ng-submit="home.submitPayment()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
-            <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
+            <div class="box-notification enable_text_select" ng-show="home.error">
               <span class="text-warning">
                 {{home.error|translate}}
               </span> 
-              <a class="close-notification text-warning">&#215;</a>
+              <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
 			  
             <div class="row"  ng-hide="home.hideAmount">
