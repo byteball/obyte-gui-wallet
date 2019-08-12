@@ -354,11 +354,11 @@ input.datafeed_input {
       <div class="row m20t" ng-show="home.shownForm=='payment'">
         <div class="large-12 large-centered columns">
           <form name="sendPaymentForm" ng-submit="home.submitPayment()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
-            <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
+            <div class="box-notification enable_text_select" ng-show="home.error">
               <span class="text-warning">
                 {{home.error|translate}}
               </span> 
-              <a class="close-notification text-warning">&#215;</a>
+              <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
 			  
             <div class="row"  ng-hide="home.hideAmount">
@@ -507,16 +507,19 @@ input.datafeed_input {
               <div class="row" ng-if="home.aa_destinations && home.aa_destinations.length > 0" style="background: #F1F3F5; word-wrap: break-word; margin-bottom: 40px">
                 <div class="large-12 columns m30b m10t size-14">
                   <h4 style="font-weight: bold" translate>You are sending to an autonomous agent, the expected result:</h4>
-                  <div ng-if="home.aa_dry_run_error" class="text-warning size-12">
+                  <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
                     {{home.aa_dry_run_error}}<br>
                     <a ng-click="home.onChanged()" translate>Try again</a>
                   </div>
-	                <ul>
+	                <ul class="enable_text_select">
                     <li ng-repeat="result in home.aa_message_results track by $index" style="word-wrap: break-word">
                       {{result}}<br>
                     </li>
                     <li ng-repeat="state_change in home.aa_state_changes">
                       <span translate>Variable</span> <i>{{state_change.variable}}</i> {{state_change.action}} <b>{{state_change.value}}</b><br>
+                    </li>
+                    <li ng-repeat="responseVar in home.responseVars">
+                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b>{{responseVar.value}}</b><br>
                     </li>
                   </ul>
                   <div>
