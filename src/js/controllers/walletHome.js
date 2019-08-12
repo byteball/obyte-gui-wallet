@@ -1018,8 +1018,10 @@ angular.module('copayApp.controllers')
 				self.aa_dry_run_error = err;
 				var results = [];
 				var state_changes = [];
+				var responseVars = [];
 				self.aa_message_results = results;
 				self.aa_state_changes = state_changes;
+				self.responseVars = responseVars;
 				if (err) {
 					return $timeout(function() {
 						$scope.$digest();
@@ -1048,6 +1050,10 @@ angular.module('copayApp.controllers')
 							}
 							state_changes.push(state_change);
 						}
+					}
+					if (objResponse.response.responseVars) {
+						for (var variable in objResponse.response.responseVars)
+							responseVars.push({variable: variable, value: objResponse.response.responseVars[variable]});
 					}
 					if (!objResponse.objResponseUnit)
 						return;
