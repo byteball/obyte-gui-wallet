@@ -1695,16 +1695,26 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					prosaic_contract.getByHash(objContract.hash, function(objContract){
 						if (objContract.status !== "pending")
 							return setError("contract status was changed, reopen it");
-						device.sendMessageToDevice(correspondent.device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
-						prosaic_contract.setField(objContract.hash, "status", "revoked");
+
 						objContract.status = 'revoked';
-						delete objContract.peer_device_address;
-						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0]; // swap addresses for peer chat message
+						prosaic_contract.setField(objContract.hash, "status", objContract.status);
+						device.sendMessageToDevice(correspondent.device_address, "prosaic_contract_update", {
+							hash: objContract.hash,
+							field: "status",
+							value: objContract.status
+						});
+
 						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
-						device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+
+						// swap addresses for peer chat message
+						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
+						delete objContract.peer_device_address;
+						chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
+
 						$timeout(function() {
 							$modalInstance.dismiss('revoke');
 						});
@@ -1784,7 +1794,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
 				function(rows) {
 					if (rows.length === 0)
-						return showModal();
+						return notification.error('not my prosaic contract');
 					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
 						return showModal();
 					oldWalletId = profileService.focusedClient.credentials.walletId;

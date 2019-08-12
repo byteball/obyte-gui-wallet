@@ -925,7 +925,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address){
 						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+							hash: contract.hash,
+							field: "shared_address",
+							value: shared_address
+						});
 						contract.cosigners.forEach(function(cosigner){
 							if (cosigner != device.getMyDeviceAddress())
 								prosaic_contract.share(contract.hash, cosigner);
@@ -972,7 +976,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									return;
 								}
 								prosaic_contract.setField(contract.hash, "unit", unit);
-								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+									hash: contract.hash,
+									field: "unit",
+									value: unit
+								});
 								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
