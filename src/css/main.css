@@ -167,7 +167,7 @@ h4.title a {
 
 .preferences h4 {
   background: #F1F3F5;
-  padding: 15px 0px 15px 20px;
+  padding: 20px 0px 20px 20px;
   text-transform: uppercase;
   color: #555;
   font-size: 13px;
@@ -1251,7 +1251,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	font-weight: 500;
 	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   margin-top:8px;
-  padding:5px;
+  padding: 5px;
+  padding-top:12px !important;
+  line-height:14px;
 }
 .mtab-title.disabled {
 	cursor: not-allowed;

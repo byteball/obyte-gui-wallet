@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Wallet Information'; goBackToState = true">
 </div>
@@ -17,8 +17,8 @@
 
 
       <li class="line-b p20 oh">
-        <span translate>Wallet Id</span>
-        <span class="right text-gray enable_text_select">
+        <span translate>Wallet Id</span><br/>
+        <span class="text-gray enable_text_select" style="font-size:12px; line-height:22px;">
           {{walletId}}
         </span>
       </li>
@@ -60,7 +60,7 @@
           No private key
         </span>
       </li>
- 
+
       <li class="line-b p20 oh" ng-show="index.account">
         <span translate>Account</span> ({{derivationStrategy}})
         <span class="right text-gray">
@@ -90,12 +90,12 @@
         </div>
       </li>
     </ul>
-    
+
     <ul class="no-bullet m0 size-14" ng-show="addrs">
     <h4 class="title m0" translate>All Wallet Addresses</h4>
       <li  ng-repeat="a in addrs" class="oh">
           <div class="enable_text_select ellipsis">
-            {{a.address}} 
+            {{a.address}}
           </div>
           <div class="text-gray size-13 right enable_text_select">
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
@@ -117,15 +117,15 @@
       </ul>
 
       <li class="line-b p20" ng-show="index.isCordova">
-          <button class="black round small expand" 
-            ng-style="{'background-color':index.backgroundColor}" 
+          <button class="black round small expand"
+            ng-style="{'background-color':index.backgroundColor}"
             ng-click="info.sendAddrs()"
             ng-disabled="info.loading">
             <i class="fi-mail"></i>
             <span translate>Send addresses by email</span>
           </button>
       </li>
-    </ul>   
+    </ul>
 
     <!--ul class="no-bullet m0 size-14">
       <h4 class="title m0" translate>Transaction history</h4>
