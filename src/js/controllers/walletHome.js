@@ -41,10 +41,11 @@ angular.module('copayApp.controllers')
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			$rootScope.$emit('Local/SetTab', 'send');
-			self.setForm(address, amount, null, asset, recipient_device_address);
+			self.resetForm();
+			self.setForm(address, amount, null, asset, recipient_device_address, base64data);
 
 			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
@@ -57,12 +58,14 @@ angular.module('copayApp.controllers')
 		var disableDataPromptListener = $rootScope.$on('dataPrompt', function(event, dataPrompt) {
 			console.log('dataPrompt event ', dataPrompt);
 			$rootScope.$emit('Local/SetTab', 'send');
+			self.resetForm();
 			self.setDataForm(dataPrompt);
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
+				self.resetForm();
 				self.setForm(uri);
 			}, 100);
 		});
@@ -1874,7 +1877,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -1889,6 +1892,17 @@ angular.module('copayApp.controllers')
 					form.comment.$setViewValue(comment);
 					form.comment.$isValid = true;
 					form.comment.$render();
+				}
+
+				if (base64data) {
+					var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
+					objPaymentData = paymentData ? JSON.parse(paymentData) : null;
+					if (objPaymentData) {
+						for (var key in objPaymentData) {
+							var value = objPaymentData[key];
+							$scope.home.feedvaluespairs.push({name: key, value: value});
+						}
+					}
 				}
 
 				if (asset) {
