@@ -2150,6 +2150,7 @@ angular.module('copayApp.controllers')
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.btx = btx;
+				$scope.btx.response = $scope.btx.response ? JSON.parse(btx.response) : null;
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
