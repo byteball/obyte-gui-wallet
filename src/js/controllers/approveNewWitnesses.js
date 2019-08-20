@@ -3,7 +3,7 @@
 angular.module('copayApp.controllers').controller('approveNewWitnesses', function($scope, $modalInstance, $document, autoUpdatingWitnessesList){
   $scope.addWitnesses = autoUpdatingWitnessesList.addWitnesses;
   $scope.delWitnesses = autoUpdatingWitnessesList.delWitnesses;
-  $scope.witnessesAditionalInfo = require('ocore/network.js').knownWitnesses;
+  $scope.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
 
   $scope.replace = function(){
     var oldWitnesses = $scope.delWitnesses;

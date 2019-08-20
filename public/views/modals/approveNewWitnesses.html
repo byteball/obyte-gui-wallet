@@ -12,16 +12,17 @@
 		The hub suggests replacing the following witnesses:
 	</div>
 	<ul class="no-bullet m0 columns">
+        <!-- todo: появились слова, вопрос по переводу -->
 		<li ng-repeat="newWitness in addWitnesses" class="listWitnesses">
             <div>
                 <b>Address:</b>
                 <div class="oldWitness">{{delWitnesses[$index]}}</div>
             </div>
-            <div ng-if="witnessesAditionalInfo[delWitnesses[$index]].name">
-                <b>Name:</b> <div>{{witnessesAditionalInfo[delWitnesses[$index]].name}}</div>
+            <div ng-if="witnessesAddInfo[delWitnesses[$index]].name">
+                <b>Name:</b> <div>{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
             </div>
-            <div ng-if="witnessesAditionalInfo[delWitnesses[$index]].url">
-                <b>URL:</b> <div>{{witnessesAditionalInfo[delWitnesses[$index]].url}}</div>
+            <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
+                <b>URL:</b> <div>{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
             </div>
 
 			<div translate>to</div>
@@ -29,12 +30,12 @@
             <div>
                 <b>Address:</b> <div class="newWitnesses">{{delWitnesses[$index]}}</div>
             </div>
-            <div ng-if="witnessesAditionalInfo[newWitness].name">
-                <b>Name:</b> <div>{{witnessesAditionalInfo[newWitness].name}}</div>
+            <div ng-if="witnessesAddInfo[newWitness].name">
+                <b>Name:</b> <div>{{witnessesAddInfo[newWitness].name}}</div>
             </div>
-            <div ng-if="witnessesAditionalInfo[newWitness].url">
+            <div ng-if="witnessesAddInfo[newWitness].url">
                 <b>URL:</b>
-                <div>{{witnessesAditionalInfo[newWitness].url}}</div>
+                <div>{{witnessesAddInfo[newWitness].url}}</div>
             </div>
 		</li>
 	</ul>

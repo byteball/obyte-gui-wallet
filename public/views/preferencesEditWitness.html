@@ -13,6 +13,17 @@
     <label><span translate>Witness address</span></label>
     <input type="text" id="witness" type="text" name="witness" ng-model="ewc.witness">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
+    <ul class="no-bullet m0 correspondentList">
+      <li class="bots-list line-b" ng-repeat="wtn in ewc.witnesses | filter:ewc.witness">
+        <span>{{wtn}}</span>
+      </li>
+    </ul>
   </form>
+
 </div>
 <div class="extra-margin-bottom"></div>
+<style>
+  .preferences ul li {
+    padding: 13px 20px 13px 0;
+  }
+</style>

@@ -5,12 +5,31 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     
     var self = this;
     this.witness = witnessListService.currentWitness;
+    this.witnesses = [];
+    this.witnesses2 = [];
+
+    this.witnessList = require('ocore/my_witnesses.js');
+
+    this.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
+
+    for ( var witness in this.witnessesAddInfo) {
+
+    }
+
+    this.witnessList.readMyWitnesses(function(arrWitnesses){
+        self.witnesses = arrWitnesses;
+        $timeout(function () {
+            $scope.$apply();
+        });
+    }, 'wait');
+
 
     this.save = function() {
         var new_address = this.witness.trim();
         if (new_address === witnessListService.currentWitness)
             return goBack();
-		var myWitnesses = require('ocore/my_witnesses.js');
+
+		    var myWitnesses = require('ocore/my_witnesses.js');
         myWitnesses.replaceWitness(witnessListService.currentWitness, new_address, function(err){
             console.log(err);
             if (err)
