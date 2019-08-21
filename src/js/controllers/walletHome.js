@@ -75,6 +75,7 @@ angular.module('copayApp.controllers')
 
 		var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
 			self.addr = {};
+			self.resetForm();
 			self.setAddress();
 		});
 
