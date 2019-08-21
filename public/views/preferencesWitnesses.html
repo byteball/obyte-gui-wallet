@@ -13,7 +13,6 @@
 	</ul>
     <ul class="no-bullet m0" ng-class="{'autoUpdatingWitnessesList' : autoUpdWitnessesList}">
         <li ng-repeat="witness in wc.witnesses" ng-click="wc.edit(witness)">
-            <!-- todo: появились слова, вопрос по переводу -->
             <span  ng-click="wc.edit(witness)">
                 <i class="icon-arrow-right3 size-24 right text-gray"></i>
 			    <span class="address" title="{{witness}}"><b>Address:</b> {{witness}}</span>
