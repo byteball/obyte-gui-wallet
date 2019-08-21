@@ -14,7 +14,7 @@
     <input type="text" id="witness" type="text" name="witness" ng-model="ewc.witness">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
     <ul class="no-bullet m0 correspondentList">
-      <li class="bots-list line-b" ng-repeat="wtn in ewc.witnesses | filter:ewc.witness">
+      <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown | filter:ewc.witness" ng-click="ewc.witness = wtn">
         <span>{{wtn}}</span>
       </li>
     </ul>
@@ -25,5 +25,11 @@
 <style>
   .preferences ul li {
     padding: 13px 20px 13px 0;
+  }
+  .preferences ul li:first-child {
+    border-top: 1px solid #E9E9EC;
+  }
+  .preferences ul li:last-child {
+    border-bottom: none;
   }
 </style>

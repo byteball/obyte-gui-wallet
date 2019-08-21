@@ -19,23 +19,23 @@
                 <div class="oldWitness">{{delWitnesses[$index]}}</div>
             </div>
             <div ng-if="witnessesAddInfo[delWitnesses[$index]].name">
-                <b>Name:</b> <div>{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
+                <b>Name:</b> <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
             </div>
             <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
-                <b>URL:</b> <div>{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
+                <b>URL:</b> <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
             </div>
 
 			<div translate>to</div>
 
             <div>
-                <b>Address:</b> <div class="newWitnesses">{{delWitnesses[$index]}}</div>
+                <b>Address:</b> <div class="newWitnesses">{{newWitness}}</div>
             </div>
             <div ng-if="witnessesAddInfo[newWitness].name">
-                <b>Name:</b> <div>{{witnessesAddInfo[newWitness].name}}</div>
+                <b>Name:</b> <div class="newWitnesses">{{witnessesAddInfo[newWitness].name}}</div>
             </div>
             <div ng-if="witnessesAddInfo[newWitness].url">
                 <b>URL:</b>
-                <div>{{witnessesAddInfo[newWitness].url}}</div>
+                <div class="newWitnesses">{{witnessesAddInfo[newWitness].url}}</div>
             </div>
 		</li>
 	</ul>
