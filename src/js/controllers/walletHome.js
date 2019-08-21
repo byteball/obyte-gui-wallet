@@ -44,7 +44,7 @@ angular.module('copayApp.controllers')
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			$rootScope.$emit('Local/SetTab', 'send');
-			self.resetForm();
+			self.resetDataForm();
 			self.setForm(address, amount, null, asset, recipient_device_address, base64data);
 
 			/*var form = $scope.sendPaymentForm;
@@ -58,14 +58,13 @@ angular.module('copayApp.controllers')
 		var disableDataPromptListener = $rootScope.$on('dataPrompt', function(event, dataPrompt) {
 			console.log('dataPrompt event ', dataPrompt);
 			$rootScope.$emit('Local/SetTab', 'send');
-			self.resetForm();
 			self.setDataForm(dataPrompt);
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.resetForm();
+				self.resetDataForm();
 				self.setForm(uri);
 			}, 100);
 		});
@@ -76,7 +75,6 @@ angular.module('copayApp.controllers')
 
 		var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
 			self.addr = {};
-			self.resetForm();
 			self.setAddress();
 		});
 
