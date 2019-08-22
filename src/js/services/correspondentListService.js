@@ -158,16 +158,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//		return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest) {
-				index++;
-				var key = '{' + index + '}';
-				assocReplacements[key] = paymentDropdown(address);
-				return key;
+				return toDelayedReplacement(paymentDropdown(address));
 			}
 			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\', \''+objPaymentRequest.base64data+'\')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Pair with device: '+device_pubkey+'@'+hub+'#'+pairing_code+']</a>');
-		}).replace(textcoin_regexp, function(str, uri, mnemonics){
-			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Claim textcoin: '+mnemonics+']</a>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Claim textcoin: '+mnemonic+']</a>');
 		}).replace(data_regexp, function(str, uri, query_string){
 			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
 			if (!assocParams)
@@ -366,8 +363,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return toDelayedReplacement('<i>Payment request: '+arrMovements.join(', ')+'</i>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			return toDelayedReplacement('<i>Sent pairing code: '+ device_pubkey+'@'+hub+'#'+pairing_code+'</i>');
-		}).replace(textcoin_regexp, function(str, uri, mnemonics){
-			return toDelayedReplacement('<i>Sent textcoin: '+ mnemonics+'</i>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<i>Sent textcoin: '+ mnemonic+'</i>');
 		}).replace(data_regexp, function(str, uri, query_string){
 			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
 			if (!assocParams)

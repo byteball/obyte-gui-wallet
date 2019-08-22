@@ -1894,13 +1894,19 @@ angular.module('copayApp.controllers')
 				}
 
 				if (base64data) {
-					var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
-					objPaymentData = paymentData ? JSON.parse(paymentData) : null;
-					if (objPaymentData) {
-						for (var key in objPaymentData) {
-							var value = objPaymentData[key];
-							$scope.home.feedvaluespairs.push({name: key, value: value});
+					try {
+						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
+						objPaymentData = paymentData ? JSON.parse(paymentData) : null;
+						if (objPaymentData) {
+							for (var key in objPaymentData) {
+								var value = objPaymentData[key];
+								$scope.home.feedvaluespairs.push({name: key, value: value});
+							}
 						}
+					}
+					catch (e) {
+						notification.error("invalid data " + e.toString());
+						return self.resetForm();
 					}
 				}
 
