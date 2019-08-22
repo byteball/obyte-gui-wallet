@@ -43,9 +43,11 @@ angular.module('copayApp.controllers')
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
-			$rootScope.$emit('Local/SetTab', 'send');
-			self.resetDataForm();
-			self.setForm(address, amount, null, asset, recipient_device_address, base64data);
+			self.resetForm();
+			$timeout(function() {
+				$rootScope.$emit('Local/SetTab', 'send');
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data);
+			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
@@ -62,9 +64,10 @@ angular.module('copayApp.controllers')
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
+			console.log('paymentUri event ' + uri);
+			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.resetDataForm();
 				self.setForm(uri);
 			}, 100);
 		});
