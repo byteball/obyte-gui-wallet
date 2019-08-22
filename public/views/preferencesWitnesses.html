@@ -15,11 +15,17 @@
       <li ng-repeat="witness in wc.witnesses">
         <span ng-click="wc.edit(witness)">
           <i class="icon-arrow-right3 size-24 right text-gray"></i>
-          <span class="address" title="{{witness}}"><b>Address:</b> {{witness}}</span>
-          <span class="name" ng-if="wc.witnessesAddInfo[witness].name"><b>Name:</b> {{wc.witnessesAddInfo[witness].name}}</span>
+          <span class="address" title="{{witness}}">
+            <b translate>Address:</b>
+            {{witness}}
+          </span>
+          <span class="name" ng-if="wc.witnessesAddInfo[witness].name">
+            <b translate>Name:</b>
+            {{wc.witnessesAddInfo[witness].name}}
+          </span>
         </span>
         <span class="url" ng-if="wc.witnessesAddInfo[witness].url">
-          <b>URL:</b>
+          <b translate>URL:</b>
           <a href ng-click="$root.openExternalLink(wc.witnessesAddInfo[witness].url)">{{wc.witnessesAddInfo[witness].url}}</a>
         </span>
       </li>
