@@ -21,18 +21,17 @@
               ng-focus="ewc.suggestToggle = true"
       >
       <ul class="no-bullet m0 suggest-list" ng-if="ewc.suggestToggle && ewc.witnessesKnown.length">
-        <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown" ng-click="ewc.witness = wtn; ewc.suggestToggle = false">
-            <span>
-              <b>Adress:</b>
-              <span>{{wtn}}</span>
+        <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown">
+            <span class="block" ng-click="ewc.witness = wtn; ewc.suggestToggle = false">
+              <span class="block">
+                <span>{{wtn}}</span>
+              </span>
+              <span class="block" ng-if="ewc.witnessesAddInfo[wtn].name">
+                <span>{{ewc.witnessesAddInfo[wtn].name}}</span>
+              </span>
             </span>
-            <span ng-if="ewc.witnessesAddInfo[wtn].name">
-                <b>Name: </b>
-              <span>{{ewc.witnessesAddInfo[wtn].name}}</span>
-            </span>
-            <span ng-if="ewc.witnessesAddInfo[wtn].url">
-                <b>URL: </b>
-              <span>{{ewc.witnessesAddInfo[wtn].url}}</span>
+            <span class="block" ng-if="ewc.witnessesAddInfo[wtn].url">
+              <a href ng-click="$root.openExternalLink(ewc.witnessesAddInfo[wtn].url)">{{ewc.witnessesAddInfo[wtn].url}}</a>
             </span>
         </li>
       </ul>
@@ -49,10 +48,10 @@
   }
   .suggest-list {
     position: absolute;
-    top: 53px;
+    top: 54px;
     left: 0;
     right: 0;
-    border: 1px solid #A5B2BF;
+    /*border: 1px solid #A5B2BF;*/
     max-height: calc(100vh - 160px);
     overflow: auto;
     z-index: 1;
@@ -63,7 +62,7 @@
   .suggest-list li:hover {
     background-color: #E4E4E4;
   }
-  .suggest-list li > span {
+  .suggest-list li .block {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
