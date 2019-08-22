@@ -35,7 +35,7 @@
         </div>
         <div ng-if="witnessesAddInfo[newWitness].url">
             <b translate>URL:</b>
-            <a class="link-witness" href="{{witnessesAddInfo[newWitness].url}}">{{witnessesAddInfo[newWitness].url}}</a>
+            <a class="link-witness" href ng-click="$root.openExternalLink(witnessesAddInfo[newWitness].url)">{{witnessesAddInfo[newWitness].url}}</a>
         </div>
     </div>
     <div id="buttons">

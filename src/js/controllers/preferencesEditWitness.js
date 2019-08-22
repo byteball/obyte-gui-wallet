@@ -6,13 +6,11 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     var self = this;
     this.witness = witnessListService.currentWitness;
     this.witnesses = [];
-    this.witnessesKnown = [];
     this.suggestToggle = false;
+    this.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
+    this.witnessesKnown = Object.keys(this.witnessesAddInfo);
 
     var witnessList = require('ocore/my_witnesses.js');
-    var witnessesAddInfo = require('ocore/network.js').knownWitnesses;
-
-    this.witnessesKnown = Object.keys(witnessesAddInfo);
 
     witnessList.readMyWitnesses(function (arrWitnesses) {
       self.witnesses = arrWitnesses;
