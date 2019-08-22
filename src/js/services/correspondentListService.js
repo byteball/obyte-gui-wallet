@@ -357,7 +357,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
-				return toDelayedReplacement('<i>'+address+'</i>');
+				return toDelayedReplacement(address);
 			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
