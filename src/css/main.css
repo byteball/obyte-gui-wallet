@@ -155,6 +155,21 @@ h4.title a {
   background: white;
 }
 
+.preferences .name,
+.preferences .address,
+.preferences .url {
+  display: block;
+}
+.preferences .name,
+.preferences .url {
+  white-space: normal;
+}
+
+.preferences .address {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .preferences ul li, ul.whopays li, ul.profile-entries li {
   padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
