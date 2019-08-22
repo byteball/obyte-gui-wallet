@@ -7,18 +7,19 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     this.witness = witnessListService.currentWitness;
     this.witnesses = [];
     this.witnessesKnown = [];
+    this.suggestToggle = false;
 
-    this.witnessList = require('ocore/my_witnesses.js');
-    this.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
+    var witnessList = require('ocore/my_witnesses.js');
+    var witnessesAddInfo = require('ocore/network.js').knownWitnesses;
 
-    this.witnessesKnown = Object.keys(this.witnessesAddInfo);
+    this.witnessesKnown = Object.keys(witnessesAddInfo);
 
-    this.witnessList.readMyWitnesses(function (arrWitnesses) {
+    witnessList.readMyWitnesses(function (arrWitnesses) {
       self.witnesses = arrWitnesses;
       $timeout(function () {
         $scope.$apply();
       });
-      self.witnessesKnown = lodash.difference(lodash.difference(self.witnessesKnown, self.witnesses), lodash.difference(self.witnesses, self.witnessesKnown));
+      self.witnessesKnown = lodash.difference(self.witnessesKnown, self.witnesses);
     }, 'wait');
 
     this.save = function () {

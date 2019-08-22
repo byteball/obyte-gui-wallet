@@ -11,31 +11,33 @@
 	<div class="columns" translate>
 		The hub suggests replacing the following witnesses:
 	</div>
-	<ul class="no-bullet m0 columns">
-		<li ng-repeat="newWitness in addWitnesses" class="listWitnesses">
-            <div>
-                <b>Address:</b>
-                <div class="oldWitness">{{delWitnesses[$index]}}</div>
-            </div>
-            <div ng-if="witnessesAddInfo[delWitnesses[$index]].name">
-                <b>Name:</b> <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
-            </div>
-            <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
-                <b>URL:</b> <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
-            </div>
-			<div translate>to</div>
-            <div>
-                <b>Address:</b> <div class="newWitnesses">{{newWitness}}</div>
-            </div>
-            <div ng-if="witnessesAddInfo[newWitness].name">
-                <b>Name:</b> <div class="newWitnesses">{{witnessesAddInfo[newWitness].name}}</div>
-            </div>
-            <div ng-if="witnessesAddInfo[newWitness].url">
-                <b>URL:</b>
-                <div class="newWitnesses">{{witnessesAddInfo[newWitness].url}}</div>
-            </div>
-		</li>
-	</ul>
+    <div ng-repeat="newWitness in addWitnesses" class="listWitnesses columns">
+        <div>
+            <b translate>Address:</b>
+            <div class="oldWitness">{{delWitnesses[$index]}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[delWitnesses[$index]].name">
+            <b translate>Name:</b>
+            <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
+            <b translate>URL:</b>
+            <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
+        </div>
+        <div translate>to</div>
+        <div>
+            <b translate>Address:</b>
+            <div class="newWitnesses">{{newWitness}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[newWitness].name">
+            <b translate>Name:</b>
+            <div class="newWitnesses">{{witnessesAddInfo[newWitness].name}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[newWitness].url">
+            <b translate>URL:</b>
+            <a class="link-witness" href="{{witnessesAddInfo[newWitness].url}}">{{witnessesAddInfo[newWitness].url}}</a>
+        </div>
+    </div>
     <div id="buttons">
       <div class="columns small-6">
         <button class="button black expand round m0" style="background-color: #4A90E2"
@@ -54,7 +56,6 @@
     .listWitnesses {
         margin-bottom: 25px;
     }
-
     .oldWitness {
         color: red;
     }

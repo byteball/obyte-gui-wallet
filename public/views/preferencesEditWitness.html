@@ -10,26 +10,44 @@
   <h4></h4>
   <form name="editWitnessForm" ng-submit="ewc.save()" class="columns">
     <div class="text-warning size-12 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
-    <label><span translate>Witness address</span></label>
-    <input type="text" id="witness" type="text" name="witness" ng-model="ewc.witness">
+    <div class="form-group" click-outside="ewc.suggestToggle = false">
+      <label><span translate>Witness address</span></label>
+      <input
+              type="text"
+              id="witness"
+              autocomplete="off"
+              name="witness"
+              ng-model="ewc.witness"
+              ng-focus="ewc.suggestToggle = true"
+      >
+      <ul class="no-bullet m0 suggest-list" ng-if="ewc.suggestToggle && ewc.witnessesKnown.length">
+        <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown" ng-click="ewc.witness = wtn; ewc.suggestToggle = false">
+          <span>{{wtn}}</span>
+        </li>
+      </ul>
+    </div>
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
-    <ul class="no-bullet m0 correspondentList">
-      <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown | filter:ewc.witness" ng-click="ewc.witness = wtn">
-        <span>{{wtn}}</span>
-      </li>
-    </ul>
+
   </form>
 
 </div>
 <div class="extra-margin-bottom"></div>
 <style>
-  .preferences ul li {
-    padding: 13px 20px 13px 0;
+  .form-group {
+    position: relative;
   }
-  .preferences ul li:first-child {
-    border-top: 1px solid #E9E9EC;
+  .suggest-list {
+    position: absolute;
+    top: 53px;
+    left: 0;
+    right: 0;
+    border: 1px solid #A5B2BF;
+    z-index: 1;
   }
-  .preferences ul li:last-child {
-    border-bottom: none;
+  .preferences .suggest-list li {
+    padding: 5px 10px;
+  }
+  .suggest-list li:hover {
+    background-color: #E4E4E4;
   }
 </style>
