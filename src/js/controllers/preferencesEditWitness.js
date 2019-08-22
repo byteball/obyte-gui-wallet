@@ -34,6 +34,21 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
       });
     };
 
+    this.toggleList = function(wtn) {
+      var witnessUpdate = [];
+
+      self.suggestToggle = false;
+
+      self.witnessesKnown.push($scope.ewc.witness);
+      witnessUpdate = self.witnessesKnown.filter((e) => {
+        if (e !== wtn) {
+          return e;
+        }
+      });
+      self.witnessesKnown = witnessUpdate;
+      $scope.ewc.witness = wtn;
+    };
+
     function setError(error) {
       self.error = error;
       $timeout(function () {

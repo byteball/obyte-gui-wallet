@@ -5,8 +5,6 @@
 </div>
 
 <div class="content preferences" ng-controller="preferencesEditWitnessController as ewc">
-
-
   <h4></h4>
   <form name="editWitnessForm" ng-submit="ewc.save()" class="columns">
     <div class="text-warning size-12 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
@@ -22,24 +20,22 @@
       >
       <ul class="no-bullet m0 suggest-list" ng-if="ewc.suggestToggle && ewc.witnessesKnown.length">
         <li class="bots-list line-b" ng-repeat="wtn in ewc.witnessesKnown">
-            <span class="block" ng-click="ewc.witness = wtn; ewc.suggestToggle = false">
-              <span class="block">
-                <span>{{wtn}}</span>
-              </span>
-              <span class="block" ng-if="ewc.witnessesAddInfo[wtn].name">
-                <span>{{ewc.witnessesAddInfo[wtn].name}}</span>
-              </span>
+          <span class="block" ng-click="ewc.toggleList(wtn)">
+            <span class="block">
+              <span>{{wtn}}</span>
             </span>
-            <span class="block" ng-if="ewc.witnessesAddInfo[wtn].url">
-              <a href ng-click="$root.openExternalLink(ewc.witnessesAddInfo[wtn].url)">{{ewc.witnessesAddInfo[wtn].url}}</a>
+            <span class="block" ng-if="ewc.witnessesAddInfo[wtn].name">
+              <span>{{ewc.witnessesAddInfo[wtn].name}}</span>
             </span>
+          </span>
+          <span class="block" ng-if="ewc.witnessesAddInfo[wtn].url">
+            <a href ng-click="$root.openExternalLink(ewc.witnessesAddInfo[wtn].url)">{{ewc.witnessesAddInfo[wtn].url}}</a>
+          </span>
         </li>
       </ul>
     </div>
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
-
   </form>
-
 </div>
 <div class="extra-margin-bottom"></div>
 <style>
