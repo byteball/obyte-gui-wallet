@@ -1903,7 +1903,7 @@ angular.module('copayApp.controllers')
 						if (objPaymentData) {
 							for (var key in objPaymentData) {
 								var value = objPaymentData[key];
-								$scope.home.feedvaluespairs.push({name: key, value: value});
+								$scope.home.feedvaluespairs.push({name: key, value: value, readonly: true});
 							}
 						}
 					}
@@ -1999,7 +1999,7 @@ angular.module('copayApp.controllers')
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
 					var value = dataPrompt[key];
-					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything'} : {name: key, value: value});
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything', readonly: true} : {name: key, value: value, readonly: true});
 				}
 				this.switchForms();
 			//	$timeout(function () {
