@@ -491,7 +491,12 @@ input.datafeed_input {
 	                <label translate>Data to be posted with the payment:</label>
 	                <div>
                     <span ng-repeat="pair in home.feedvaluespairs">
-                      <input type="text" ng-model="pair.name" placeholder="{{'Field'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
+                      <input type="text" list="dataFieldList" ng-model="pair.name" placeholder="{{'Field'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
+					  <datalist id="dataFieldList">
+						<select ng-if="home.aa_data_field_defined && home.aa_data_field_defined.length > 0" >
+						<option ng-repeat="dataKey in home.aa_data_field_defined" value="{{ dataKey }}" />
+						</select>
+					  </datalist>
                       <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
                       <a ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
                     </span>
