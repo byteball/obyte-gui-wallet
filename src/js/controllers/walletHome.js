@@ -4,6 +4,7 @@ var constants = require('ocore/constants.js');
 var eventBus = require('ocore/event_bus.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var ValidationUtils = require('ocore/validation_utils.js');
+var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
@@ -166,7 +167,7 @@ angular.module('copayApp.controllers')
 							form.address.$isValid = true;
 							form.address.$render();
 						}
-						
+
 						$scope.$digest();
 					}, 100);
 				};
@@ -572,7 +573,7 @@ angular.module('copayApp.controllers')
 				});
 			});
 		}
-	
+
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			breadcrumbs.add("received claimTextcoin event with mnemonic: " + mnemonic.substr(0, 10) + "...");
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
@@ -592,7 +593,7 @@ angular.module('copayApp.controllers')
 			}
 		});
 
-		// Send 
+		// Send
 
 		$scope.$on('$destroy', function() {
 		//	unwatchSpendUnconfirmed();
@@ -830,24 +831,22 @@ angular.module('copayApp.controllers')
 			var form = $scope.sendDataForm;
 			form.definition.$setValidity('aaDef', false);
 			lodash.debounce(function () {
-				try {
-					var arrDefinition = JSON.parse(self.definition);
-				}
-				catch (e) {
-					self.aa_validation_error = e.toString();
-					$timeout(function() {
-						$scope.$digest();
-					});
-					return;
-				}
-				if (!ValidationUtils.isArrayOfLength(arrDefinition, 2) && ValidationUtils.isNonemptyObject(arrDefinition))
-					arrDefinition = ['autonomous agent', arrDefinition];
-				var aa_validation = require('ocore/aa_validation.js');
-				aa_validation.validateAADefinition(arrDefinition, function (err) {
-					self.aa_validation_error = err;
-					form.definition.$setValidity('aaDef', !err);
-					$timeout(function() {
-						$scope.$digest();
+				parse_ojson.parse(self.definition, function(err, arrDefinition) {
+					if (err) {
+						self.aa_validation_error = err.toString();
+						$timeout(function() {
+							$scope.$digest();
+						});
+						return;
+					}
+
+					var aa_validation = require('ocore/aa_validation.js');
+					aa_validation.validateAADefinition(arrDefinition, function (err) {
+						self.aa_validation_error = err;
+						form.definition.$setValidity('aaDef', !err);
+						$timeout(function() {
+							$scope.$digest();
+						});
 					});
 				});
 			}, 500)();
@@ -1313,7 +1312,7 @@ angular.module('copayApp.controllers')
 						}, 1);
 						return;
 					}
-					
+
 					var device = require('ocore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
@@ -1520,7 +1519,7 @@ angular.module('copayApp.controllers')
 						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
 								var db = require('ocore/db.js');
-								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
+								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)",
 									[unit, to_address, original_address]);
 							}
 							if (recipient_device_address) { // show payment in chat window
@@ -1674,58 +1673,63 @@ angular.module('copayApp.controllers')
 					};
 				}
 				if (app == "definition") {
-					try {
-						var arrDefinition = JSON.parse($scope.home.definition);
-						if (!ValidationUtils.isArrayOfLength(arrDefinition, 2) && ValidationUtils.isNonemptyObject(arrDefinition))
-							arrDefinition = ['autonomous agent', arrDefinition];
+					parse_ojson.parse($scope.home.definition, function(err, arrDefinition) {
+						if (err) {
+							self.setSendError(err.toString());
+							$timeout(function() {
+								$scope.$digest();
+							});
+							return;
+						}
+
 						value = {
 							definition: arrDefinition,
 							address: objectHash.getChash160(arrDefinition)
 						};
-					}
-					catch (e) {
-						self.setSendError(e.toString());
-						$timeout(function() {
-							$scope.$digest();
-						});
-						return;
-					}
+						sendData(value);
+					});
+					return;
 				}
-				var objMessage = {
-					app: app,
-					payload_location: "inline",
-					payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-					payload: value
-				};
-				var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-				if (fc.credentials.m < fc.credentials.n)
-					indexScope.copayers.forEach(function(copayer) {
-						if (copayer.me || copayer.signs)
-							arrSigningDeviceAddresses.push(copayer.device_address);
-					});
-				else if (indexScope.shared_address)
-					arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
-						return copayer.device_address;
-					});
 
-				indexScope.setOngoingProcess(gettext('sending'), true);
+				sendData(value);
 
-				fc.sendMultiPayment({
-					spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
-					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					shared_address: indexScope.shared_address,
-					messages: [objMessage]
-				}, function(err) { // can take long if multisig
-					indexScope.setOngoingProcess(gettext('sending'), false);
-					if (err) {
-						self.setSendError(err);
-						return;
-					}
-					breadcrumbs.add('done submitting data into feeds ' + Object.keys(value)
-						.join(','));
-					self.resetDataForm();
-					$rootScope.$emit('Local/SetTab', 'history');
-				});
+				function sendData (value) {
+					var objMessage = {
+						app: app,
+						payload_location: "inline",
+						payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+						payload: value
+					};
+					var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+					if (fc.credentials.m < fc.credentials.n)
+						indexScope.copayers.forEach(function(copayer) {
+							if (copayer.me || copayer.signs)
+								arrSigningDeviceAddresses.push(copayer.device_address);
+						});
+					else if (indexScope.shared_address)
+						arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
+							return copayer.device_address;
+						});
+
+					indexScope.setOngoingProcess(gettext('sending'), true);
+
+					fc.sendMultiPayment({
+						spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
+						arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+						shared_address: indexScope.shared_address,
+						messages: [objMessage]
+					}, function(err) { // can take long if multisig
+						indexScope.setOngoingProcess(gettext('sending'), false);
+						if (err) {
+							self.setSendError(err);
+							return;
+						}
+						breadcrumbs.add('done submitting data into feeds ' + Object.keys(value)
+							.join(','));
+						self.resetDataForm();
+						$rootScope.$emit('Local/SetTab', 'history');
+					});
+				}
 			});
 		}
 
@@ -1917,7 +1921,7 @@ angular.module('copayApp.controllers')
 					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
 						$scope.assetIndexSelectorValue = 0;
 				}
-				
+
 				this.switchForms();
 
 				$timeout((function () {
@@ -1936,7 +1940,7 @@ angular.module('copayApp.controllers')
 						form.amount.$render();
 					}
 				}).bind(this));
-				
+
 			}).bind(this), 1);
 		};
 
@@ -2100,7 +2104,7 @@ angular.module('copayApp.controllers')
 				return value;
 		};
 
-		// History 
+		// History
 
 		function strip(number) {
 			return (parseFloat(number.toPrecision(12)));
@@ -2113,7 +2117,7 @@ angular.module('copayApp.controllers')
 		this.getPrivatePayloadSavePath = function(cb) {
 			var fileName = 'ObytePayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
 			if (!isCordova) {
-				var inputFile = document.createElement("input"); 
+				var inputFile = document.createElement("input");
 				inputFile.type = "file";
 				inputFile.setAttribute("nwsaveas", fileName);
 				inputFile.click();
@@ -2150,6 +2154,7 @@ angular.module('copayApp.controllers')
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.btx = btx;
+				$scope.btx.response = typeof btx.response === 'string' ? JSON.parse(btx.response) : btx.response;
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
@@ -2194,9 +2199,9 @@ angular.module('copayApp.controllers')
 							$scope.ok = function() {
 								$scope.loading = true;
 								$modalInstance.close(gettextCatalog.getString('Confirm'));
-								
+
 								wallet.eraseTextcoin(btx.unit, btx.addressTo);
-								
+
 								indexScope.updateTxHistory();
 								$rootScope.$emit('Local/SetTab', 'history');
 							};
