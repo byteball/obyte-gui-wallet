@@ -11,21 +11,39 @@
 	<div class="columns" translate>
 		The hub suggests replacing the following witnesses:
 	</div>
-	<ul class="no-bullet m0 columns">
-		<li ng-repeat="newWitness in addWitnesses" class="listWitnesses">
-			<div class="delWitnesses">{{delWitnesses[$index]}}</div>
-			<div translate>to</div>
-			<div class="addWitnesses">{{newWitness}}</div>
-		</li>
-	</ul>
+    <div ng-repeat="newWitness in addWitnesses" class="listWitnesses columns">
+        <div>
+            <b translate>Address:</b>
+            <div class="oldWitness">{{delWitnesses[$index]}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[delWitnesses[$index]].name">
+            <b translate>Name:</b>
+            <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
+            <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
+        </div>
+        <div translate>to</div>
+        <div>
+            <b translate>Address:</b>
+            <div class="newWitnesses">{{newWitness}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[newWitness].name">
+            <b translate>Name:</b>
+            <div class="newWitnesses">{{witnessesAddInfo[newWitness].name}}</div>
+        </div>
+        <div ng-if="witnessesAddInfo[newWitness].url">
+            <a class="link-witness" href ng-click="$root.openExternalLink(witnessesAddInfo[newWitness].url)">{{witnessesAddInfo[newWitness].url}}</a>
+        </div>
+    </div>
     <div id="buttons">
-      <div class="columns small-6">
+      <div class="columns small-5">
         <button class="button black expand round m0" style="background-color: #4A90E2"
                 ng-click="replace()" translate>
             Replace
         </button>
       </div>
-      <div class="columns small-6">
+      <div class="columns small-7">
         <button class="button black expand round m0" ng-click="later()" translate>Maybe later</button>
       </div>
     </div>
@@ -34,16 +52,18 @@
 
 <style>
     .listWitnesses {
-        margin-bottom: 25px;
+      word-break: break-word;
+      margin-bottom: 25px;
     }
 
-    .delWitnesses {
+    .oldWitness {
         color: red;
     }
 
-    .addWitnesses {
+    .newWitnesses {
         color: green;
     }
+
     #buttons{
       margin-top: 30px;
     }
