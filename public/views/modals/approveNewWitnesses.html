@@ -21,7 +21,6 @@
             <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].name}}</div>
         </div>
         <div ng-if="witnessesAddInfo[delWitnesses[$index]].url">
-            <b translate>URL:</b>
             <div class="oldWitness">{{witnessesAddInfo[delWitnesses[$index]].url}}</div>
         </div>
         <div translate>to</div>
@@ -34,7 +33,6 @@
             <div class="newWitnesses">{{witnessesAddInfo[newWitness].name}}</div>
         </div>
         <div ng-if="witnessesAddInfo[newWitness].url">
-            <b translate>URL:</b>
             <a class="link-witness" href ng-click="$root.openExternalLink(witnessesAddInfo[newWitness].url)">{{witnessesAddInfo[newWitness].url}}</a>
         </div>
     </div>

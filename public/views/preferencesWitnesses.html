@@ -16,16 +16,13 @@
         <span ng-click="wc.edit(witness)">
           <i class="icon-arrow-right3 size-24 right text-gray"></i>
           <span class="address" title="{{witness}}">
-            <b translate>Address:</b>
             {{witness}}
           </span>
           <span class="name" ng-if="wc.witnessesAddInfo[witness].name">
-            <b translate>Name:</b>
             {{wc.witnessesAddInfo[witness].name}}
           </span>
         </span>
         <span class="url" ng-if="wc.witnessesAddInfo[witness].url">
-          <b translate>URL:</b>
           <a href ng-click="$root.openExternalLink(wc.witnessesAddInfo[witness].url)">{{wc.witnessesAddInfo[witness].url}}</a>
         </span>
       </li>
