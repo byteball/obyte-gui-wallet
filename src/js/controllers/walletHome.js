@@ -958,13 +958,17 @@ angular.module('copayApp.controllers')
 			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
 			var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
 			if (data_fields_to_input.length) {
-				var defined_data_list = [];
-				for (i = 0; i < data_fields_to_input.length; i++) {
-					if (data_fields_to_input[i].split('.').length < 4) {
-						defined_data_list.push(data_fields_to_input[i].split('.')[2])
+				var filter = []; // get third word, if object have > 3 entries
+				var semiRes = []; // get all objects with 3 entries
+				data_fields_to_input.forEach((e) => {
+					var temp = e.split('.');
+					if (temp.length >= 4) {
+						filter.push(temp[2]);
+					} else {
+						semiRes.push(temp[2]);
 					}
-				}
-				self.aa_data_field_defined = defined_data_list;
+				});
+				self.aa_data_field_defined = lodash.difference(semiRes, filter); // filter 3 entry words with filter words;
 			}
 
 			var row = self.aa_destinations[0];
