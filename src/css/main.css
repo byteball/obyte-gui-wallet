@@ -1035,11 +1035,27 @@ label.postfix, a.postfix {
   cursor: pointer;
 }
 
-.input { position: relative;}
+.input {
+  position: relative;
+}
+
+.input input {
+  padding-right: 46px;
+}
+
+.input .postfix {
+  height: 90%;
+  background: #fff;
+}
 
 .input label {
   line-height: 0;
   padding: 0;
+}
+
+.input .exchange-rate {
+  position: absolute;
+  top: 36px;
 }
 
 .icon-input {
