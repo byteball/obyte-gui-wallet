@@ -2032,6 +2032,10 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
+		this.amountExchangeRate = function(amount, exchangeRate) {
+			console.log(this.exchangeRates[exchangeRate], 'ololo');
+			//var rate = ( amount / 1e9 * home.exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2})
+		};
 
 		/* Start setup */
 
