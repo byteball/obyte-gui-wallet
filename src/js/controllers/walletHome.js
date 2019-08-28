@@ -957,17 +957,17 @@ angular.module('copayApp.controllers')
 			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
 			var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
 			if (data_fields_to_input.length) {
-				var filter = []; // get third word, if object have > 3 entries
-				var semiRes = []; // get all objects with 3 entries
+				var moreEntriesArray = []; // get third word, if object have > 3 entries
+				var threeEntriesArray = []; // get all objects with 3 entries
 				data_fields_to_input.forEach((e) => {
 					var temp = e.split('.');
 					if (temp.length >= 4) {
-						filter.push(temp[2]);
+						moreEntriesArray.push(temp[2]);
 					} else {
-						semiRes.push(temp[2]);
+						threeEntriesArray.push(temp[2]);
 					}
 				});
-				self.aa_data_field_defined = lodash.difference(semiRes, filter); // filter 3 entry words with filter words;
+				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
 			}
 
 			var row = self.aa_destinations[0];
@@ -986,7 +986,7 @@ angular.module('copayApp.controllers')
 				trigger.data = {};
 			$scope.home.feedvaluespairs.forEach(function(pair) {
 				trigger.data[pair.name] = pair.value;
-				trigger.data[pair.toggle] = false;
+				trigger.data[pair.suggestionsShown] = false;
 			});
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
@@ -2023,7 +2023,7 @@ angular.module('copayApp.controllers')
 			if (!bKeepData)
 				this.feedvaluespairs = [];
 			this.aa_destinations = [];
-			this.aa_data_field_defined = [];
+			this.aa_data_fields_defined = [];
 			this.custom_amount_error = null;
 			this.aa_dry_run_error = null;
 
