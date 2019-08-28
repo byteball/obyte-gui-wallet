@@ -488,22 +488,34 @@ input.datafeed_input {
 
               <div class="row" ng-if="home.feedvaluespairs.length > 0">
                 <div class="large-12 columns m30b m10t">
-	                <label translate>Data to be posted with the payment:</label>
-	                <div>
-                    <span ng-repeat="pair in home.feedvaluespairs">
-                      <input type="text" list="dataFieldList" ng-model="pair.name" placeholder="{{'Field'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
-					  <datalist id="dataFieldList">
-						<select ng-if="home.aa_data_field_defined && home.aa_data_field_defined.length > 0" >
-						<option ng-repeat="dataKey in home.aa_data_field_defined" value="{{ dataKey }}" />
-						</select>
-					  </datalist>
-                      <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
-                      <a ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
-                    </span>
+                  <label translate>Data to be posted with the payment:</label>
+                  <div class="payment-data-wrap">
+                    <div ng-repeat="pair in home.feedvaluespairs">
+                      <div class="datafeed_input" click-outside="pair.toggle = false">
+                        <input type="text"
+                               ng-model="pair.name"
+                               placeholder="{{'Field'|translate}}"
+                               ng-required="true"
+                               ng-maxlength="64"
+                               maxlength="64"
+                               ng-change="home.onChanged()"
+                               ng-focus="pair.toggle = true"
+                        >
+                        <div class="suggest-list" ng-if="home.aa_data_field_defined.length && pair.toggle">
+                          <div class="option"
+                               ng-repeat="dataKey in home.aa_data_field_defined | filter:pair.name"
+                               ng-click="pair.name = dataKey; pair.toggle = false">{{ dataKey }}</div>
+                        </div>
+                      </div>
+                      <div class="datafeed_input">
+                        <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
+                      </div>
+                      <a ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
+                    </div>
                     <div class="clear"></div>
                     <a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
-                      <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-                      <span class="text-close size-12" translate>Add fields</span> 
+                      <i class="fi-plus size-18 m10r"></i>
+                      <span class="text-close size-12" translate>Add fields</span>
                     </a>
                   </div>
                 </div>
