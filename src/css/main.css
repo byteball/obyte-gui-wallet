@@ -1666,10 +1666,6 @@ a.suggest-command {
   position: relative;
 }
 
-.payment-data-wrap .flex {
-  display: flex;
-}
-
 .payment-data-wrap .datafeed_input {
   position: relative;
   display: inline-block;
