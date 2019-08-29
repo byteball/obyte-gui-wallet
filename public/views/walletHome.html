@@ -334,13 +334,13 @@ input.datafeed_input {
     <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'">
       <div>
         <h4 class="title m0">
-
             <div class="size-10">
                 <span class="db text-bold">
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
-                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
+                	<option ng-repeat="balance in index.arrBalances"
+                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed</option>
                 	<option ng-value="-2" translate>Attestation</option>
                 	<option ng-value="-3" translate>Profile</option>
@@ -382,19 +382,24 @@ input.datafeed_input {
                         type="{{index.isMobile.iOS() ? 'text' : 'number'}}"
                         inputmode="numeric"
                         id="amount"
-                        ng-disabled="home.blockUx || home.lockAmount || home.bSendAll"
                         name="amount"
+                        ng-disabled="home.blockUx || home.lockAmount || home.bSendAll"
                         ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}"
                         ng-minlength="0.00000001"
                         ng-maxlength="10000000000"
                         ng-model="_amount"
-                        valid-amount="{{index.arrBalances[index.assetIndex].asset}}"
                         ng-required="!home.bSendAll && !home.send_multiple"
                         autocomplete="off"
+                        ng-value="54"
                         ng-focus="home.formFocus('amount')"
                         ng-blur="home.formFocus(false)">
-                      <div class="size-14 exchange-rate">
-                        <span>{{home.amountExchangeRate(_amount, 'GBYTE_USD')}}</span>
+                      <div class="exchange-rate">
+                        <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">
+                          <span>{{home.amountExchangeRate(_amount, 'GBYTE_USD')}}</span>
+                        </span>
+                        <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">
+                          <span>{{home.amountExchangeRate(_amount, 'GBB_USD')}}</span>
+                        </span>
                       </div>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
