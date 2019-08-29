@@ -2033,9 +2033,11 @@ angular.module('copayApp.controllers')
 		};
 
 		this.amountExchangeRate = function(amount, exchangeRate, fractionDigits = 2) {
+			if(this.bSendAll) {
+				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
+			}
 			var result =(amount / 1e9 * home.exchangeRates[exchangeRate]).toLocaleString([], {maximumFractionDigits: fractionDigits});
-			if (!isNaN(result) && result > '0') {
-				console.log(result, 'ololo');
+			if (result !== 'NaN' && result > '0') {
 				return `≈$${result}`;
 			}
 		};
