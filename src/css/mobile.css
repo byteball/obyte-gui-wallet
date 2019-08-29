@@ -223,8 +223,13 @@ _:-ms-fullscreen, :root .main {
 
 .walletHome .wallet-info {
   margin-left: 85px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 50px;
   line-height: 110%;
-  height: 60px;
   overflow: hidden;
 }
 
