@@ -491,7 +491,8 @@ input.datafeed_input {
                   <label translate>Data to be posted with the payment:</label>
                   <div class="payment-data-wrap">
                     <div ng-repeat="pair in home.feedvaluespairs">
-                      <div class="datafeed_input" click-outside="pair.suggestionsShown = false">
+                      <div class="datafeed_input"
+                           click-outside="pair.suggestionsShown = false">
                         <input type="text"
                                ng-model="pair.name"
                                placeholder="{{'Field'|translate}}"
@@ -500,6 +501,7 @@ input.datafeed_input {
                                maxlength="64"
                                ng-change="home.onChanged()"
                                ng-focus="pair.suggestionsShown = true"
+                               focus-out="pair.suggestionsShown = false"
                         >
                         <div class="suggest-list" ng-if="home.aa_data_fields_defined.length && pair.suggestionsShown">
                           <div class="option"

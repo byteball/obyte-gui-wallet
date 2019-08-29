@@ -1685,6 +1685,7 @@ a.suggest-command {
   max-width: 89vw;
   max-height: 65vw;
   overflow-y: auto;
+  font-size: 13px;
   background-color: #fff;
   box-shadow: 0 1px 1px 1px rgba(177, 177, 177, 0.45);
   z-index: 1;
