@@ -897,7 +897,7 @@ angular.module('copayApp.controllers')
 				lodash.debounce(updateAAResults, 500)();
 		};
 
-		this.suggestionsArrayShows = function (currentElem, index, arrayOfElements) {
+	this.showDateFieldSuggestions = function (currentElem, index, arrayOfElements) {
       arrayOfElements.forEach((e, idx)=>{
         if(index !== idx) {
           e.suggestionsShown = false;
