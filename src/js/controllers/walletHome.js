@@ -948,10 +948,6 @@ angular.module('copayApp.controllers')
 			});
 		}
 
-		this.suggestBlurFunc = function($event) {
-			console.log($event, '?');
-
-		};
 		function updateAAResults () {
 			var form = $scope.sendPaymentForm;
 			var amount = form.amount.$modelValue || 0;

@@ -594,26 +594,6 @@ angular.module('copayApp.directives')
         });
       }
     }
-
-  })
-  .directive('focusOut', function ($document, $timeout) {
-    return {
-      restrict: 'A',
-      scope: {
-        focusOut: '&'
-      },
-      link: function (scope, el, attrs) {
-        $document.on('blur', function(e) {
-          if(attrs.ngModel === 'pair.name') {
-            $timeout(function () {
-              scope.$apply(function () {
-                scope.$eval(scope.focusOut);
-              });
-            }, 125);
-          }
-        });
-      }
-    }
   })
   .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
