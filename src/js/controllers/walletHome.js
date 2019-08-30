@@ -897,6 +897,15 @@ angular.module('copayApp.controllers')
 				lodash.debounce(updateAAResults, 500)();
 		};
 
+		this.suggestionsArrayShows = function (currentElem, index, arrayOfElements) {
+      arrayOfElements.forEach((e, idx)=>{
+        if(index !== idx) {
+          e.suggestionsShown = false;
+        }
+      });
+      arrayOfElements[index].suggestionsShown = true;
+    };
+
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
 			var errors = form.addresses.$error;

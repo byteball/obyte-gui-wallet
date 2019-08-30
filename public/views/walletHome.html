@@ -500,7 +500,7 @@ input.datafeed_input {
                                ng-maxlength="64"
                                maxlength="64"
                                ng-change="home.onChanged()"
-                               ng-focus="pair.suggestionsShown = true"
+                               ng-focus="home.suggestionsArrayShows(pair.suggestionsShown, $index, home.feedvaluespairs)"
                         >
                         <div class="suggest-list" ng-if="home.aa_data_fields_defined.length && pair.suggestionsShown">
                           <div class="option"
