@@ -594,7 +594,6 @@ angular.module('copayApp.directives')
         });
       }
     }
-
   })
   .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;

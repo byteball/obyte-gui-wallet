@@ -897,6 +897,15 @@ angular.module('copayApp.controllers')
 				lodash.debounce(updateAAResults, 500)();
 		};
 
+		this.suggestionsArrayShows = function (currentElem, index, arrayOfElements) {
+      arrayOfElements.forEach((e, idx)=>{
+        if(index !== idx) {
+          e.suggestionsShown = false;
+        }
+      });
+      arrayOfElements[index].suggestionsShown = true;
+    };
+
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
 			var errors = form.addresses.$error;
@@ -953,6 +962,23 @@ angular.module('copayApp.controllers')
 			var amount = form.amount.$modelValue || 0;
 			if (!self.aa_destinations || self.aa_destinations.length === 0)
 				return console.log('no AA destinations');
+
+			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
+			var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
+			if (data_fields_to_input.length) {
+				var moreEntriesArray = []; // get third word, if object have > 3 entries
+				var threeEntriesArray = []; // get all objects with 3 entries
+				data_fields_to_input.forEach((e) => {
+					var temp = e.split('.');
+					if (temp.length >= 4) {
+						moreEntriesArray.push(temp[2]);
+					} else {
+						threeEntriesArray.push(temp[2]);
+					}
+				});
+				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
+			}
+
 			var row = self.aa_destinations[0];
 			var aa_address = row.address;
 			var arrDefinition = JSON.parse(row.definition);
@@ -969,6 +995,7 @@ angular.module('copayApp.controllers')
 				trigger.data = {};
 			$scope.home.feedvaluespairs.forEach(function(pair) {
 				trigger.data[pair.name] = pair.value;
+				trigger.data[pair.suggestionsShown] = false;
 			});
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
@@ -2005,6 +2032,7 @@ angular.module('copayApp.controllers')
 			if (!bKeepData)
 				this.feedvaluespairs = [];
 			this.aa_destinations = [];
+			this.aa_data_fields_defined = [];
 			this.custom_amount_error = null;
 			this.aa_dry_run_error = null;
 
