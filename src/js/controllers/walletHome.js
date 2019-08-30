@@ -2033,6 +2033,10 @@ angular.module('copayApp.controllers')
 		};
 
 		this.amountExchangeRate = function(amount, exchangeRate, fractionDigits = 2) {
+			console.log(home.exchangeRates,'exchange rates');
+			// console.log($scope.index.arrBalances,'ballance');
+			// console.log(indexScope.arrBalances, 'this is indexScopeIndex!');
+			console.log(indexScope.arrBalances[indexScope.assetIndex].name, 'indexScope?');
 			if(this.bSendAll) {
 				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
 			}

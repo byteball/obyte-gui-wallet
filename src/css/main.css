@@ -1050,7 +1050,8 @@ label.postfix, a.postfix {
 
 .input .exchange-rate {
   position: absolute;
-  top: 36px;
+  top: 7px;
+  left: 105px;
   max-width: 100%;
   white-space: nowrap;
   font-size: 13px;
