@@ -1668,7 +1668,6 @@ a.suggest-command {
 
 .flex {
   display: flex;
-  align-items: center;
 }
 .text-overflow-wrapper {
   flex-grow: 1;
