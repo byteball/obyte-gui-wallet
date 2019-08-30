@@ -155,6 +155,21 @@ h4.title a {
   background: white;
 }
 
+.preferences .name,
+.preferences .address,
+.preferences .url {
+  display: block;
+}
+.preferences .name,
+.preferences .url {
+  white-space: normal;
+}
+
+.preferences .address {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .preferences ul li, ul.whopays li, ul.profile-entries li {
   padding:13px 20px;
   border-bottom: 1px solid #E9E9EC;
@@ -1621,6 +1636,7 @@ a.suggest-command {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   text-align: center;
   border-radius: 5px;
+  padding: 20px 10px;
 }
 
 .backup-reminder-text {
@@ -1644,4 +1660,44 @@ a.suggest-command {
   margin: 12px;
   padding: 6px;
   min-height: 40px;
+}
+
+.payment-data-wrap {
+  position: relative;
+}
+
+.payment-data-wrap .datafeed_input {
+  position: relative;
+  display: inline-block;
+  width: 40%;
+}
+
+.payment-data-wrap .fi-plus,
+.payment-data-wrap .fi-minus {
+  vertical-align: middle;
+}
+.payment-data-wrap .suggest-list {
+  position: absolute;
+  padding: 8px 0;
+  top: 35px;
+  left: 0;
+  min-width: 100%;
+  max-width: 89vw;
+  max-height: 65vw;
+  overflow-y: auto;
+  font-size: 13px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px 1px rgba(177, 177, 177, 0.45);
+  z-index: 1;
+}
+
+.payment-data-wrap .suggest-list .option {
+  padding: 5px 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+.payment-data-wrap .suggest-list .option:hover {
+  background-color: #F1F3F5;
 }
