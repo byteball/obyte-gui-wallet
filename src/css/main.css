@@ -1661,3 +1661,18 @@ a.suggest-command {
   padding: 6px;
   min-height: 40px;
 }
+
+.name-outer-wrap {
+  width: calc(100% - 80px);
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+.text-overflow-wrapper {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
