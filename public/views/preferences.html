@@ -13,9 +13,13 @@
 
 
     <li  ng-click="$root.go('preferences.preferencesAlias')">
-      <div class="right text-gray">
-        {{index.alias||index.walletName}}
-        <i class="icon-arrow-right3 size-24"></i>
+      <div class="right name-outer-wrap text-gray">
+        <div class="flex">
+          <div class="text-overflow-wrapper">
+            {{index.alias||index.walletName}}
+          </div>
+          <i class="icon-arrow-right3 size-24"></i>
+        </div>
       </div>
       <div translate>Wallet Alias</div>
     </li>
@@ -25,7 +29,7 @@
       <div class="right text-gray">
         <span ng-style="{'color':index.backgroundColor}">&block;</span>
         <i class="icon-arrow-right3 size-24"></i>
-      </div>      
+      </div>
       <div translate>Color</div>
     </li>
 
