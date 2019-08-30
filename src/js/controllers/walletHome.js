@@ -1125,7 +1125,8 @@ angular.module('copayApp.controllers')
 			var form = $scope.sendPaymentForm;
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
-			form.addresses.$modelValue.split('\n').forEach(function(line){
+			var addressesValue = form.addresses.$modelValue ? form.addresses.$modelValue : '';
+			addressesValue.split('\n').forEach(function(line){
 				var tokens = line.trim().split(/[\s,;]/);
 				var address = tokens[0];
 				var amount = tokens.pop();
