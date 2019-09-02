@@ -1112,7 +1112,7 @@ angular.module('copayApp.controllers')
 						}
 					});
 				});
-				if (results.length === 0 && state_changes.length === 0)
+				if (results.length === 0 && state_changes.length === 0 && responseVars.length === 0)
 					results.push(gettext("none"));
 				$timeout(function() {
 					$scope.$digest();
