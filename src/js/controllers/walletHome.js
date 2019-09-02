@@ -42,10 +42,13 @@ angular.module('copayApp.controllers')
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
-			$rootScope.$emit('Local/SetTab', 'send');
-			self.setForm(address, amount, null, asset, recipient_device_address);
+			self.resetForm();
+			$timeout(function() {
+				$rootScope.$emit('Local/SetTab', 'send');
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data);
+			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
@@ -62,6 +65,8 @@ angular.module('copayApp.controllers')
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
+			console.log('paymentUri event ' + uri);
+			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
 				self.setForm(uri);
@@ -897,6 +902,15 @@ angular.module('copayApp.controllers')
 				lodash.debounce(updateAAResults, 500)();
 		};
 
+	this.showDateFieldSuggestions = function (currentElem, index, arrayOfElements) {
+      arrayOfElements.forEach((e, idx)=>{
+        if(index !== idx) {
+          e.suggestionsShown = false;
+        }
+      });
+      arrayOfElements[index].suggestionsShown = true;
+    };
+
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
 			var errors = form.addresses.$error;
@@ -953,6 +967,23 @@ angular.module('copayApp.controllers')
 			var amount = form.amount.$modelValue || 0;
 			if (!self.aa_destinations || self.aa_destinations.length === 0)
 				return console.log('no AA destinations');
+
+			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
+			var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
+			if (data_fields_to_input.length) {
+				var moreEntriesArray = []; // get third word, if object have > 3 entries
+				var threeEntriesArray = []; // get all objects with 3 entries
+				data_fields_to_input.forEach((e) => {
+					var temp = e.split('.');
+					if (temp.length >= 4) {
+						moreEntriesArray.push(temp[2]);
+					} else {
+						threeEntriesArray.push(temp[2]);
+					}
+				});
+				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
+			}
+
 			var row = self.aa_destinations[0];
 			var aa_address = row.address;
 			var arrDefinition = JSON.parse(row.definition);
@@ -969,6 +1000,7 @@ angular.module('copayApp.controllers')
 				trigger.data = {};
 			$scope.home.feedvaluespairs.forEach(function(pair) {
 				trigger.data[pair.name] = pair.value;
+				trigger.data[pair.suggestionsShown] = false;
 			});
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
@@ -1085,7 +1117,7 @@ angular.module('copayApp.controllers')
 						}
 					});
 				});
-				if (results.length === 0 && state_changes.length === 0)
+				if (results.length === 0 && state_changes.length === 0 && responseVars.length === 0)
 					results.push(gettext("none"));
 				$timeout(function() {
 					$scope.$digest();
@@ -1098,7 +1130,8 @@ angular.module('copayApp.controllers')
 			var form = $scope.sendPaymentForm;
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
-			form.addresses.$modelValue.split('\n').forEach(function(line){
+			var addressesValue = form.addresses.$modelValue ? form.addresses.$modelValue : '';
+			addressesValue.split('\n').forEach(function(line){
 				var tokens = line.trim().split(/[\s,;]/);
 				var address = tokens[0];
 				var amount = tokens.pop();
@@ -1878,7 +1911,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -1893,6 +1926,23 @@ angular.module('copayApp.controllers')
 					form.comment.$setViewValue(comment);
 					form.comment.$isValid = true;
 					form.comment.$render();
+				}
+
+				if (base64data) {
+					try {
+						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
+						objPaymentData = paymentData ? JSON.parse(paymentData) : null;
+						if (objPaymentData) {
+							for (var key in objPaymentData) {
+								var value = objPaymentData[key];
+								$scope.home.feedvaluespairs.push({name: key, value: value, readonly: true});
+							}
+						}
+					}
+					catch (e) {
+						notification.error("invalid data " + e.toString());
+						return self.resetForm();
+					}
 				}
 
 				if (asset) {
@@ -1981,7 +2031,7 @@ angular.module('copayApp.controllers')
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
 					var value = dataPrompt[key];
-					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything'} : {name: key, value: value});
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything', readonly: true} : {name: key, value: value, readonly: true});
 				}
 				this.switchForms();
 			//	$timeout(function () {
@@ -2005,6 +2055,7 @@ angular.module('copayApp.controllers')
 			if (!bKeepData)
 				this.feedvaluespairs = [];
 			this.aa_destinations = [];
+			this.aa_data_fields_defined = [];
 			this.custom_amount_error = null;
 			this.aa_dry_run_error = null;
 

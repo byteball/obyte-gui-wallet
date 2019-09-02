@@ -102,9 +102,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		messages.push(msg_obj);
 	}
 	
-	var payment_request_regexp = /\[.*?\]\((?:byteball|obyte):([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
+	// payment description within [] is ignored and whole URI is capturing group
+	var payment_request_regexp = /\[.*?\]\(((?:byteball|obyte):([0-9A-Z]{32})(?:\?([\w=&;+%]+))?)\)/g;
+	var pairing_regexp = /\[.*?\]\(((?:byteball|obyte):([\w\/+]{44})@([\w.:\/-]+)#(.+))\)/g;
+	var textcoin_regexp = /\[.*?\]\(((?:byteball|obyte):textcoin\?(.+))\)/g;
+	var data_regexp = /\[.*?\]\(((?:byteball|obyte):data\?(.+))\)/g;
+
+	function paymentDropdown(address) {
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+	}
+
 	function highlightActions(text, arrMyAddresses){
+		var URI = require('ocore/uri.js');
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
 		var assocReplacements = {};
 		var index = crypto.randomBytes(4).readUInt32BE(0);
@@ -126,7 +136,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
 			index++;
 			var key = '{' + index + '}';
-			assocReplacements[key] = '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+			assocReplacements[key] = paymentDropdown(address);
 			return pre+key+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
@@ -141,15 +151,25 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var key = '{' + index + '}';
 			assocReplacements[key] = '<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>';
 			return pre+key+post;
-		}).replace(payment_request_regexp, function(str, address, query_string){
+		}).replace(payment_request_regexp, function(str, uri, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
-			if (!objPaymentRequest)
+			if (!objPaymentRequest) {
+				return toDelayedReplacement(paymentDropdown(address));
+			}
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\', \''+objPaymentRequest.base64data+'\')">'+objPaymentRequest.amountStr+'</a>');
+		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Pair with device: '+device_pubkey+'@'+hub+'#'+pairing_code+']</a>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Claim textcoin: '+mnemonic+']</a>');
+		}).replace(data_regexp, function(str, uri, query_string){
+			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
+			if (!assocParams)
 				return str;
-			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>');
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
 			return toDelayedReplacement('<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
@@ -199,7 +219,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
-		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log(paymentJson);
 		try{
 			var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -238,7 +258,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getVoteFromJsonBase64(voteJsonBase64){
-		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log(voteJson);
 		try{
 			var objVote = JSON.parse(voteJson);
@@ -320,6 +340,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function formatOutgoingMessage(text){
+		var URI = require('ocore/uri.js');
 		var assocReplacements = {};
 		var index = crypto.randomBytes(4).readUInt32BE(0);
 		function toDelayedReplacement(new_text) {
@@ -328,18 +349,27 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			assocReplacements[key] = new_text;
 			return key;
 		}
-		var text = escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, address, query_string){
+		var text = escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, uri, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
-				return str;
+				return toDelayedReplacement(address);
 			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
 			return toDelayedReplacement('<i>Payment request: '+arrMovements.join(', ')+'</i>');
+		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
+			return toDelayedReplacement('<i>Sent pairing code: '+ device_pubkey+'@'+hub+'#'+pairing_code+'</i>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<i>Sent textcoin: '+ mnemonic+'</i>');
+		}).replace(data_regexp, function(str, uri, query_string){
+			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
+			if (!assocParams)
+				return str;
+			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
 		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
@@ -381,6 +411,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
+		if (!query_string)
+			return null;
 		var URI = require('ocore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
@@ -403,13 +435,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			single_address = single_address.replace(/^single/, '');
 		if (single_address && !ValidationUtils.isValidAddress(single_address))
 			single_address = 1;
-		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
+		var base64data = assocParams['base64data'] || '';
+		var amountStr = 'Payment request'+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
 			device_address: device_address,
 			amountStr: amountStr,
-			single_address: single_address
+			single_address: single_address,
+			base64data: base64data
 		};
 	}
 	

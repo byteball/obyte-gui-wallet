@@ -135,7 +135,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset, device_address, single_address){
+	$scope.sendPayment = function(address, amount, asset, device_address, single_address, base64data){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
@@ -152,7 +152,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			backButton.dontDeletePath = true;
 			go.send(function(){
 				//$rootScope.$emit('Local/SetTab', 'send', true);
-				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data);
 			});
 		});
 	};
@@ -417,7 +417,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								};
 								var objPaymentRequest = {payments: arrPayments, definitions: assocDefinitions};
 								var paymentJson = JSON.stringify(objPaymentRequest);
-								var paymentJsonBase64 = Buffer(paymentJson).toString('base64');
+								var paymentJsonBase64 = Buffer.from(paymentJson).toString('base64');
 								paymentRequestCode = 'payment:'+paymentJsonBase64;
 							}
 							else
@@ -554,7 +554,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
 		$rootScope.modalOpened = true;
@@ -835,7 +835,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	
 	$scope.sendVote = function(voteJsonBase64){
-		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log("vote "+voteJson);
 		var objVote = JSON.parse(voteJson);
 		$rootScope.modalOpened = true;
@@ -1077,7 +1077,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$rootScope.modalOpened = true;
 		var self = this;
 		var fc = profileService.focusedClient;
-		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		var objSignedMessage = JSON.parse(signedMessageJson);
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -1126,6 +1126,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	
 	
+	$scope.handleUri = function(data){
+		go.handleUri(data);
+	};
 	
 	// send a command to the bot
 	$scope.sendCommand = function(command, description){
