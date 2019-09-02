@@ -228,6 +228,12 @@ _:-ms-fullscreen, :root .main {
   overflow: hidden;
 }
 
+.walletHome .wallet-info .m0 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .copayers {
   position: relative;
   padding: 0;
