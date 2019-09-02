@@ -1700,6 +1700,9 @@ a.suggest-command {
 }
 .payment-data-wrap .suggest-list .option:hover {
   background-color: #F1F3F5;
+}
+
+
 .name-outer-wrap {
   width: calc(100% - 80px);
 }
