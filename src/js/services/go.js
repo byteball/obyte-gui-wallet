@@ -132,7 +132,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 				setTimeout(function () {
 					if (objRequest.type === 'address') {
 						root.send(function () {
-							$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
+							$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data);
 						});
 					}
 					else if (objRequest.type === 'data') {

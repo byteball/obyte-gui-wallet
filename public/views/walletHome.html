@@ -481,7 +481,7 @@ input.datafeed_input {
 	            </div>
 
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
-                  <div class="large-12 columns m30b">
+                  <div class="large-12 columns m20b">
                       <a style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
 	                </div>
 	            </div>
@@ -495,6 +495,7 @@ input.datafeed_input {
                            click-outside="pair.suggestionsShown = false">
                         <input type="text"
                                ng-model="pair.name"
+                               ng-readonly="pair.readonly"
                                placeholder="{{'Field'|translate}}"
                                ng-required="true"
                                ng-maxlength="64"
@@ -509,9 +510,9 @@ input.datafeed_input {
                         </div>
                       </div>
                       <div class="datafeed_input">
-                        <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
+                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
                       </div>
-                      <a ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
+                      <a ng-if="!pair.readonly" ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
                     </div>
                     <div class="clear"></div>
                     <a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
@@ -646,9 +647,9 @@ input.datafeed_input {
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
-						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
-						<a ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
+						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
+						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
+						<a ng-if="!pair.readonly" ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
 					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
 					<div class="clear"></div>

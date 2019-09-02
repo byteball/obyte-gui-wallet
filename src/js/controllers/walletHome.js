@@ -42,10 +42,13 @@ angular.module('copayApp.controllers')
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
-			$rootScope.$emit('Local/SetTab', 'send');
-			self.setForm(address, amount, null, asset, recipient_device_address);
+			self.resetForm();
+			$timeout(function() {
+				$rootScope.$emit('Local/SetTab', 'send');
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data);
+			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
@@ -62,6 +65,8 @@ angular.module('copayApp.controllers')
 		});
 
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
+			console.log('paymentUri event ' + uri);
+			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
 				self.setForm(uri);
@@ -1906,7 +1911,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -1921,6 +1926,23 @@ angular.module('copayApp.controllers')
 					form.comment.$setViewValue(comment);
 					form.comment.$isValid = true;
 					form.comment.$render();
+				}
+
+				if (base64data) {
+					try {
+						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
+						objPaymentData = paymentData ? JSON.parse(paymentData) : null;
+						if (objPaymentData) {
+							for (var key in objPaymentData) {
+								var value = objPaymentData[key];
+								$scope.home.feedvaluespairs.push({name: key, value: value, readonly: true});
+							}
+						}
+					}
+					catch (e) {
+						notification.error("invalid data " + e.toString());
+						return self.resetForm();
+					}
 				}
 
 				if (asset) {
@@ -2009,7 +2031,7 @@ angular.module('copayApp.controllers')
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
 					var value = dataPrompt[key];
-					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything'} : {name: key, value: value});
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything', readonly: true} : {name: key, value: value, readonly: true});
 				}
 				this.switchForms();
 			//	$timeout(function () {
