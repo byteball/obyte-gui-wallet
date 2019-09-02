@@ -393,12 +393,12 @@ input.datafeed_input {
                         ng-focus="home.formFocus('amount')"
                         ng-blur="home.formFocus(false)">
                     <div class="exchange-rate">
-                      <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base' && index.arrBalances[index.assetIndex].name === 'bytes'">
-                        <span>{{home.amountExchangeRate(_amount, 'GBYTE_USD')}}</span>
+                      <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">
+                        <span>{{home.amountExchangeRate(_amount, 'GBYTE_USD', index.arrBalances[index.assetIndex].name)}}</span>
                       </span>
-                        <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET  && index.arrBalances[index.assetIndex].name === 'blackbytes'">
-                        <span>{{home.amountExchangeRate(_amount, 'GBB_USD')}}</span>
-                      </span>
+<!--                      <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET  && index.arrBalances[index.assetIndex].name === 'blackbytes'">-->
+<!--                        <span>{{home.amountExchangeRate(_amount, 'GBB_USD')}}</span>-->
+<!--                      </span>-->
                     </div>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>

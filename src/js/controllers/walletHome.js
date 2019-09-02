@@ -2032,17 +2032,33 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		this.amountExchangeRate = function(amount, exchangeRate, fractionDigits = 2) {
-			console.log(home.exchangeRates,'exchange rates');
+		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier, fractionDigits = 2) {
+			// console.log(home.exchangeRates,'exchange rates');
 			// console.log($scope.index.arrBalances,'ballance');
 			// console.log(indexScope.arrBalances, 'this is indexScopeIndex!');
-			console.log(indexScope.arrBalances[indexScope.assetIndex].name, 'indexScope?');
-			if(this.bSendAll) {
-				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
+			// console.log(indexScope.arrBalances[indexScope.assetIndex].name, 'indexScope?');
+			var multiply = 1e9;
+			switch(byteMultiplier) {
+				case 'bytes':
+					multiply;
+					break;
+				case 'kB':
+					multiply = 1e6;
+					break;
+				case 'MB':
+					multiply = 1e3;
+					break;
+				case 'GB':
+					multiply = 1;
+					break;
 			}
-			var result =(amount / 1e9 * home.exchangeRates[exchangeRate]).toLocaleString([], {maximumFractionDigits: fractionDigits});
-			if (result !== 'NaN' && result > '0') {
-				return `≈$${result}`;
+			if (this.bSendAll) {
+				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
+				multiply = 1e9;
+			}
+			var result =(amount / multiply * home.exchangeRates[exchangeRate]);
+			if (result !== 'NaN') {
+				return `(≈$${result.toLocaleString([], {maximumFractionDigits: 20})})`;
 			}
 		};
 
