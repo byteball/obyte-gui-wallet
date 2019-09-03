@@ -4,7 +4,6 @@ var constants = require('ocore/constants.js');
 var eventBus = require('ocore/event_bus.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var ValidationUtils = require('ocore/validation_utils.js');
-const BigNumber = require('bignumber.js');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
@@ -2034,8 +2033,8 @@ angular.module('copayApp.controllers')
 		};
 
 		// exchangeRate
-		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier, fractionDigits = 2) {
-			BigNumber.config({ ROUNDING_MODE: 0 });
+		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier) {
+			var twoNumsRegExp = /0.[0]+[0-9]{2}/;
 			var multiply = 1e9;
 			switch(byteMultiplier) {
 				case 'bytes':
@@ -2067,13 +2066,13 @@ angular.module('copayApp.controllers')
 				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
 				multiply = 1e9;
 			}
-			var result = new BigNumber(amount / multiply * home.exchangeRates[exchangeRate]);
-			if (result.isFinite()) {
-				if(result.gte('0.1')) {
-					return `(≈$${result.toFixed(fractionDigits)})`;
-				}
-				else {
-					return `(≈$${new BigNumber(result.toExponential(1)).toFixed()})`;
+			var result = amount / multiply * home.exchangeRates[exchangeRate];
+			if (!isNaN(result) && result !== 0) {
+				if(result >= 0.1) {
+					return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
+				} else {
+					var regRes = (result.toLocaleString([], {maximumFractionDigits: 20}).toString()).match(twoNumsRegExp);
+					return `≈$${regRes[0]}`;
 				}
 			}
 		};
