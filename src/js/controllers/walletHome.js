@@ -4,6 +4,7 @@ var constants = require('ocore/constants.js');
 var eventBus = require('ocore/event_bus.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var ValidationUtils = require('ocore/validation_utils.js');
+const BigNumber = require('bignumber.js');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
@@ -2032,11 +2033,9 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
+		// exchangeRate
 		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier, fractionDigits = 2) {
-			// console.log(home.exchangeRates,'exchange rates');
-			// console.log($scope.index.arrBalances,'ballance');
-			// console.log(indexScope.arrBalances, 'this is indexScopeIndex!');
-			// console.log(indexScope.arrBalances[indexScope.assetIndex].name, 'indexScope?');
+			BigNumber.config({ ROUNDING_MODE: 0 });
 			var multiply = 1e9;
 			switch(byteMultiplier) {
 				case 'bytes':
@@ -2051,14 +2050,31 @@ angular.module('copayApp.controllers')
 				case 'GB':
 					multiply = 1;
 					break;
+				case 'blackbytes':
+					multiply;
+					break;
+				case 'kBB':
+					multiply = 1e6;
+					break;
+				case 'MBB':
+					multiply = 1e3;
+					break;
+				case 'GBB':
+					multiply = 1;
+					break;
 			}
 			if (this.bSendAll) {
 				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
 				multiply = 1e9;
 			}
-			var result =(amount / multiply * home.exchangeRates[exchangeRate]);
-			if (result !== 'NaN') {
-				return `(≈$${result.toLocaleString([], {maximumFractionDigits: 20})})`;
+			var result = new BigNumber(amount / multiply * home.exchangeRates[exchangeRate]);
+			if (result.isFinite()) {
+				if(result.gte('0.1')) {
+					return `(≈$${result.toFixed(fractionDigits)})`;
+				}
+				else {
+					return `(≈$${new BigNumber(result.toExponential(1)).toFixed()})`;
+				}
 			}
 		};
 
