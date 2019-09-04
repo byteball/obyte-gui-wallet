@@ -269,10 +269,14 @@ ul.copayer-list img {
 	top: 3px;
 	right: 3px;
 	font-size: 0.6em;
-	padding: 3px 7.6px 2px 7.6px;
+	padding: 3px 7px 2px 7px;
 	background-color: red;
 	border-radius: 10px;
 	color: white;
+}
+
+.bottombar-item .badge {
+
 }
 
 .box-founds {
