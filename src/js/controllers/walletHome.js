@@ -2035,38 +2035,21 @@ angular.module('copayApp.controllers')
 		// exchangeRate
 		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier) {
 			var twoNumsRegExp = /0.[0]+[0-9]{2}/;
-			var multiply = 1e9;
-			switch(byteMultiplier) {
-				case 'bytes':
-					multiply;
-					break;
-				case 'kB':
-					multiply = 1e6;
-					break;
-				case 'MB':
-					multiply = 1e3;
-					break;
-				case 'GB':
-					multiply = 1;
-					break;
-				case 'blackbytes':
-					multiply;
-					break;
-				case 'kBB':
-					multiply = 1e6;
-					break;
-				case 'MBB':
-					multiply = 1e3;
-					break;
-				case 'GBB':
-					multiply = 1;
-					break;
-			}
+			var multiplyerObj = {
+				'bytes' : 1e9,
+				'kB': 1e6,
+				'MB': 1e3,
+				'GB': 1,
+				'blackbytes': 1e9,
+				'kBB': 1e6,
+				'MBB': 1e3,
+				'GBB': 1,
+			};
+			var result = amount / multiplyerObj[byteMultiplier] * home.exchangeRates[exchangeRate];
 			if (this.bSendAll) {
 				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
-				multiply = 1e9;
+				result = amount / multiplyerObj['bytes'] * home.exchangeRates[exchangeRate];
 			}
-			var result = amount / multiply * home.exchangeRates[exchangeRate];
 			if (!isNaN(result) && result !== 0) {
 				if(result >= 0.1) {
 					return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
