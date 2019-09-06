@@ -92,11 +92,23 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
+					$timeout(function(){
+						self.countChecker(indexScope['txHistory']);
+					}, 100);
 					break;
 				case 'send':
 					self.resetError();
-			};
+			}
 		});
+
+		this.countChecker = function(btxArray) {
+			let receivedArr = btxArray.filter((elem) => {
+				if(elem.action === 'received') {
+					return elem;
+				}
+			});
+			self.newPaymentsCount = $rootScope.newPaymentsCount;
+		};
 
 		var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
 			self.setOngoingProcess(name);
@@ -1809,9 +1821,11 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
-
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
+			if(btx.unit) {
+				$rootScope.newPaymentsCount[btx.unit] = 0;
+			}
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {

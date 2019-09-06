@@ -13,8 +13,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	var chatStorage = require('ocore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
-	$rootScope.newPaymentsCount = {};
 	$rootScope.newMsgCounterEnabled = false;
+	$rootScope.newPaymentsCount = {};
 	$rootScope.newPayCounterEnabled = false;
 
 	if (typeof nw !== 'undefined') {
@@ -22,7 +22,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		win.on('focus', function(){
 			$rootScope.newMsgCounterEnabled = false;
 			$rootScope.newPayCounterEnabled = false;
-			$rootScope.totalPaymentsCount = 0;
 		});
 		win.on('blur', function(){
 			$rootScope.newMsgCounterEnabled = true;
@@ -36,11 +35,26 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				win.setBadgeLabel("");
 			}
 		}, true);
+
+		$rootScope.$watch('newPaymentsCount', function(counters) {
+			var sum = lodash.sum(lodash.values(counters));
+			if (sum) {
+				win.setBadgeLabel(""+sum);
+			} else {
+				win.setBadgeLabel("");
+			}
+		}, true);
 	}
 
 	$rootScope.$watch('newMessagesCount', function(counters) {
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
+
+	$rootScope.$watch('newPaymentsCount', function(counters) {
+		$rootScope.totalNewPaymentsCnt = lodash.sum(lodash.values(counters));
+	}, true);
+
+
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
 		var walletGeneral = require('ocore/wallet_general.js');
@@ -60,6 +74,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		if (bIncoming) {
+
 			if (peer_address in $rootScope.newMessagesCount)
 				$rootScope.newMessagesCount[peer_address]++;
 			else {
@@ -705,9 +720,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on("text", function(from_address, body, message_counter){
 		device.readCorrespondent(from_address, function(correspondent){
 			if (!root.messageEventsByCorrespondent[correspondent.device_address]) loadMoreHistory(correspondent);
-			console.log(correspondent, 'correspondent'); // +
-			console.log(body, 'this is body'); // +
-			console.log(message_counter, 'this is msg counter'); // +
 			addIncomingMessageEvent(correspondent.device_address, body, message_counter);
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(from_address, body, 1);
 		});
@@ -753,17 +765,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			});
 		});
 	});
-	
-	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		console.log(peer_address, 'this is peeradress');
-		console.log(amount, 'this is amount');
-		console.log(asset, 'this is asset');
-		console.log(message_counter, 'this is message_counter');
-		console.log(bToSharedAddress, 'this is bToSharedAddress');
-		console.log($rootScope.totalPaymentsCount, 'this is paymentTotalBefore!');
-		$rootScope.totalPaymentsCount++;
-		console.log($rootScope.totalPaymentsCount, 'this is paymentTotalAfter!');
 
+	eventBus.on('new_my_transactions', function(arrUnits){
+		if (arrUnits in $rootScope.newPaymentsCount)
+			$rootScope.newPaymentsCount[arrUnits]++;
+		else {
+			$rootScope.newPaymentsCount[arrUnits] = 1;
+		}
+	});
+
+	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
