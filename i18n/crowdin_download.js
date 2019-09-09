@@ -73,7 +73,7 @@ if (no_key == false) { // Reminder: Any changes to the script below must also be
             data.push(chunk);
             dataLen += chunk.length;
           }).on('end', function() {
-            var buf = new Buffer(dataLen);
+            var buf = new Buffer.assoc(dataLen);
             for (var i=0, len = data.length, pos = 0; i < len; i++) {
               data[i].copy(buf, pos);
               pos += data[i].length;
@@ -167,7 +167,7 @@ if (no_key == false) { // Reminder: Any changes to the script below must also be
         data.push(chunk);
         dataLen += chunk.length;
       }).on('end', function() {
-        var buf = new Buffer(dataLen);
+        var buf = new Buffer.assoc(dataLen);
         for (var i=0, len = data.length, pos = 0; i < len; i++) {
           data[i].copy(buf, pos);
           pos += data[i].length;

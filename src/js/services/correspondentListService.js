@@ -104,10 +104,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	
 	// payment description within [] is ignored and whole URI is capturing group
-	var payment_request_regexp = /\[.*?\]\(((?:byteball|obyte):([0-9A-Z]{32})(?:\?([\w=&;+%]+))?)\)/g;
-	var pairing_regexp = /\[.*?\]\(((?:byteball|obyte):([\w\/+]{44})@([\w.:\/-]+)#(.+))\)/g;
-	var textcoin_regexp = /\[.*?\]\(((?:byteball|obyte):textcoin\?(.+))\)/g;
-	var data_regexp = /\[.*?\]\(((?:byteball|obyte):data\?(.+))\)/g;
+	var payment_request_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([0-9A-Z]{32})(?:\?([\w=&;+%]+))?)\)/g;
+	var pairing_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([\w\/+]{44})@([\w.:\/-]+)#(.+))\)/g;
+	var textcoin_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):textcoin\?(.+))\)/g;
+	var data_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):data\?(.+))\)/g;
 
 	function paymentDropdown(address) {
 		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
