@@ -102,11 +102,16 @@ angular.module('copayApp.controllers')
 		});
 
 		this.countChecker = function(btxArray) {
-			let receivedArr = btxArray.filter((elem) => {
-				if(elem.action === 'received') {
+			let sendArr = btxArray.filter((elem) => {
+				if(elem.action === 'sent') {
 					return elem;
 				}
 			});
+      sendArr.forEach(()=> {
+
+      });
+			console.log(sendArr, 'send only arr');
+      console.log(btxArray, 'all events arr');
 			self.newPaymentsCount = $rootScope.newPaymentsCount;
 		};
 

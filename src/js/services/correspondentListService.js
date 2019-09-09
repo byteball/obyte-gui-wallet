@@ -767,14 +767,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', function(arrUnits){
+	  console.log('new_my_transactions');
 		if (arrUnits in $rootScope.newPaymentsCount)
 			$rootScope.newPaymentsCount[arrUnits]++;
 		else {
 			$rootScope.newPaymentsCount[arrUnits] = 1;
 		}
+    console.log($rootScope.newPaymentsCount, 'after');
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
+	  console.log('we recieve payment ?');
+	  console.log('what address', peer_address);
+	  console.log('how much', amount);
+	  console.log('btosharedadress', bToSharedAddress);
+
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);

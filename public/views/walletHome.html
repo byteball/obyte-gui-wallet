@@ -711,7 +711,7 @@ input.datafeed_input {
                 Unconfirmed
               </span>
             </div>
-            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
+            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0 && btx.action == 'received'">{{ newPaymentsCount[btx.unit] }}</div>
           </div>
           <div class="large-1 medium-1 small-1 columns text-right">
             <i class="icon-arrow-right3 size-18"></i>
