@@ -1048,7 +1048,7 @@ label.postfix, a.postfix {
   padding: 0;
 }
 
-.input .exchange-rate {
+.input .dollar-value {
   position: absolute;
   top: -21px;
   right: 16px;

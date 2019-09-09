@@ -392,12 +392,12 @@ input.datafeed_input {
                         autocomplete="off"
                         ng-focus="home.formFocus('amount')"
                         ng-blur="home.formFocus(false)">
-                    <div class="exchange-rate">
+                    <div class="dollar-value">
                       <span ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">
-                        <span>{{home.amountExchangeRate(_amount, 'GBYTE_USD', index.arrBalances[index.assetIndex].name)}}</span>
+                        <span>{{home.exchangeAmount(_amount, 'GBYTE_USD')}}</span>
                       </span>
                       <span ng-if="index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">
-                        <span>{{home.amountExchangeRate(_amount, 'GBB_USD', index.arrBalances[index.assetIndex].name)}}</span>
+                        <span>{{home.exchangeAmount(_amount, 'GBB_USD')}}</span>
                       </span>
                     </div>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>

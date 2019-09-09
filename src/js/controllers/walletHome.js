@@ -2033,29 +2033,22 @@ angular.module('copayApp.controllers')
 		};
 
 		// exchangeRate
-		this.amountExchangeRate = function(amount, exchangeRate, byteMultiplier) {
-			var twoNumsRegExp = /0.[0]+[0-9]{2}/;
-			var multiplyerObj = {
-				'bytes' : 1e9,
-				'kB': 1e6,
-				'MB': 1e3,
-				'GB': 1,
-				'blackbytes': 1e9,
-				'kBB': 1e6,
-				'MBB': 1e3,
-				'GBB': 1,
-			};
-			var result = amount / multiplyerObj[byteMultiplier] * home.exchangeRates[exchangeRate];
+		this.exchangeAmount = function(amount, exchangeRate) {
+			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+			if (!asset)
+				throw Error("no asset");
+			var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
+			var result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
 			if (this.bSendAll) {
-				amount = indexScope.arrBalances[indexScope.assetIndex].stable;
-				result = amount / multiplyerObj['bytes'] * home.exchangeRates[exchangeRate];
+				amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+				result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
 			}
 			if (!isNaN(result) && result !== 0) {
 				if(result >= 0.1) {
 					return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
-				} else {
-					var regRes = (result.toLocaleString([], {maximumFractionDigits: 20}).toString()).match(twoNumsRegExp);
-					return `≈$${regRes[0]}`;
+				}
+				if(result < 0.1 && result > 1e-6) {
+					return `≈$${result.toPrecision(2)}`;
 				}
 			}
 		};
