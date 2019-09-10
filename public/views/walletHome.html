@@ -365,7 +365,7 @@ input.datafeed_input {
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
                   <span class="has-error right size-12" ng-if="sendPaymentForm.amount.$invalid">
                     <i class="icon-close-circle size-14"></i>
-                    <span clas="vm" translate>Not valid</span>
+                    <span class="vm" translate>Not valid</span>
                   </span>
                   <small class="text-primary right" ng-if="!sendPaymentForm.amount.$invalid">
                     <i class="icon-checkmark-circle size-14"></i>
@@ -398,6 +398,9 @@ input.datafeed_input {
                       </span>
                       <span ng-if="index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">
                         <span>{{home.exchangeAmount(_amount, 'GBB_USD')}}</span>
+                      </span>
+                      <span ng-if="home.exchangeRates[index.arrBalances[index.assetIndex].asset + '_USD']">
+                        {{home.exchangeAmount(_amount, index.arrBalances[index.assetIndex].asset + '_USD')}}
                       </span>
                     </div>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>

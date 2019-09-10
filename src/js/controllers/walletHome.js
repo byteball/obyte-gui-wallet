@@ -2035,19 +2035,25 @@ angular.module('copayApp.controllers')
 		// exchangeRate
 		this.exchangeAmount = function(amount, exchangeRate) {
 			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
+			var result = 0;
 			if (!asset)
 				throw Error("no asset");
-			var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
-			var result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
-			if (this.bSendAll) {
-				amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+			if (exchangeRate === 'GBYTE_USD' || exchangeRate === 'GBB_USD') {
+				var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
 				result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
+				if (this.bSendAll) {
+					amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
+				}
+			} else {
+				result = amount * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'];
 			}
+
 			if (!isNaN(result) && result !== 0) {
 				if(result >= 0.1) {
 					return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
 				}
-				if(result < 0.1 && result > 1e-6) {
+				if(result < 0.1) {
 					return `≈$${result.toPrecision(2)}`;
 				}
 			}
