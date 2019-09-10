@@ -2033,20 +2033,20 @@ angular.module('copayApp.controllers')
 		};
 
 		// exchangeRate
-		this.exchangeAmount = function(amount, exchangeRate) {
+		this.getDollarValue = function(amount, exchangePair) {
 			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
 			var result = 0;
 			if (!asset)
 				throw Error("no asset");
-			if (exchangeRate === 'GBYTE_USD' || exchangeRate === 'GBB_USD') {
+			if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
 				var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
-				result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
+				result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 				if (this.bSendAll) {
 					amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
-					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 				}
 			} else {
-				result = amount * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'];
+				result = (amount / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0)) * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'] ;
 			}
 
 			if (!isNaN(result) && result !== 0) {
