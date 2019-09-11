@@ -2035,8 +2035,6 @@ angular.module('copayApp.controllers')
 
 		this.getDollarValue = function(amount, balanceObject) {
 			function getResult(exchangePair) {
-				console.log(balanceObject, 'eto object');
-				console.log($scope.index.arrBalances[$scope.index.assetIndex], 'eto slogniy asset');
 				var result = 0;
 				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
