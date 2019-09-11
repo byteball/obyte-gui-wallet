@@ -2032,30 +2032,38 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		// exchangeRate
-		this.getDollarValue = function(amount, exchangePair) {
-			var asset = $scope.index.arrBalances[$scope.index.assetIndex].asset;
-			var result = 0;
-			if (!asset)
-				throw Error("no asset");
-			if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
-				var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
-				result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
-				if (this.bSendAll) {
-					amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+
+		this.getDollarValue = function(amount, asset) {
+
+			function resultValue(exchangePair) {
+				var result = 0;
+				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
 					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					if (this.bSendAll) {
+						amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					}
+				} else {
+					result = (amount / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0)) * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'];
 				}
-			} else {
-				result = (amount / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0)) * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'] ;
+				if (!isNaN(result) && result !== 0) {
+					if(result >= 0.1) {
+						return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
+					}
+					if(result < 0.1) {
+						return `≈$${result.toPrecision(2)}`;
+					}
+				}
 			}
 
-			if (!isNaN(result) && result !== 0) {
-				if(result >= 0.1) {
-					return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
-				}
-				if(result < 0.1) {
-					return `≈$${result.toPrecision(2)}`;
-				}
+			if (asset === 'base') {
+				return resultValue('GBYTE_USD');
+			} else if(asset === $scope.index.BLACKBYTES_ASSET) {
+				return resultValue('GBB_USD');
+			}
+			else if(home.exchangeRates[asset + '_USD']) {
+				return resultValue(home.exchangeRates[asset + '_USD']);
 			}
 		};
 
