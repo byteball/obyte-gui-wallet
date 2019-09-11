@@ -2039,9 +2039,10 @@ angular.module('copayApp.controllers')
 				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
 					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
-					if (this.bSendAll) {
-						amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
+					if (home.bSendAll) {
+						amountInSmallestUnits = balanceObject.stable;
 						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+						console.log(result, '123 result');
 					}
 				} else {
 					result = (amount / Math.pow(10, balanceObject.decimals || 0)) * home.exchangeRates[exchangePair];
