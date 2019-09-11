@@ -394,7 +394,7 @@ input.datafeed_input {
                         ng-blur="home.formFocus(false)">
                     <div class="dollar-value">
                       <span ng-if="index.arrBalances[index.assetIndex].asset">
-                        <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex].asset)}}</span>
+                        <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
                       </span>
                     </div>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>

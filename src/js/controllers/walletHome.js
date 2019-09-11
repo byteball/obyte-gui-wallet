@@ -2033,19 +2033,20 @@ angular.module('copayApp.controllers')
 		};
 
 
-		this.getDollarValue = function(amount, asset) {
-
-			function resultValue(exchangePair) {
+		this.getDollarValue = function(amount, balanceObject) {
+			function getResult(exchangePair) {
+				console.log(balanceObject, 'eto object');
+				console.log($scope.index.arrBalances[$scope.index.assetIndex], 'eto slogniy asset');
 				var result = 0;
 				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
-					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
 					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 					if (this.bSendAll) {
 						amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
 						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 					}
 				} else {
-					result = (amount / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0)) * home.exchangeRates[$scope.index.arrBalances[$scope.index.assetIndex].asset + '_USD'];
+					result = (amount / Math.pow(10, balanceObject.decimals || 0)) * home.exchangeRates[exchangePair];
 				}
 				if (!isNaN(result) && result !== 0) {
 					if(result >= 0.1) {
@@ -2057,13 +2058,13 @@ angular.module('copayApp.controllers')
 				}
 			}
 
-			if (asset === 'base') {
-				return resultValue('GBYTE_USD');
-			} else if(asset === $scope.index.BLACKBYTES_ASSET) {
-				return resultValue('GBB_USD');
+			if (balanceObject.asset === 'base') {
+				return getResult('GBYTE_USD');
+			} else if(balanceObject.asset === $scope.index.BLACKBYTES_ASSET) {
+				return getResult('GBB_USD');
 			}
-			else if(home.exchangeRates[asset + '_USD']) {
-				return resultValue(home.exchangeRates[asset + '_USD']);
+			else if(home.exchangeRates[balanceObject.asset + '_USD']) {
+				return getResult(balanceObject.asset + '_USD');
 			}
 		};
 
