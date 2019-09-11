@@ -2034,17 +2034,17 @@ angular.module('copayApp.controllers')
 
 
 		this.getDollarValue = function(amount, balanceObject) {
-			function getResult(exchangePair) {
+			function getResult(exchangeRate) {
 				var result = 0;
-				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
+				if (exchangeRate === 'GBYTE_USD' || exchangeRate === 'GBB_USD') {
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
-					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
 					if (this.bSendAll) {
 						amountInSmallestUnits = indexScope.arrBalances[indexScope.assetIndex].stable;
-						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangeRate];
 					}
 				} else {
-					result = (amount / Math.pow(10, balanceObject.decimals || 0)) * home.exchangeRates[exchangePair];
+					result = (amount / Math.pow(10, balanceObject.decimals || 0)) * home.exchangeRates[exchangeRate];
 				}
 				if (!isNaN(result) && result !== 0) {
 					if(result >= 0.1) {
