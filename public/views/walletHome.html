@@ -388,6 +388,7 @@ input.datafeed_input {
                         ng-minlength="0.00000001"
                         ng-maxlength="10000000000"
                         ng-model="_amount"
+                        valid-amount="{{index.arrBalances[index.assetIndex].asset}}"
                         ng-required="!home.bSendAll && !home.send_multiple"
                         autocomplete="off"
                         ng-focus="home.formFocus('amount')"
