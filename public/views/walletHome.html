@@ -363,13 +363,18 @@ input.datafeed_input {
             <div class="row"  ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
-                  <span class="has-error right size-12" ng-if="sendPaymentForm.amount.$invalid">
-                    <i class="icon-close-circle size-14"></i>
-                    <span class="vm" translate>Not valid</span>
-                  </span>
-                  <small class="text-primary right" ng-if="!sendPaymentForm.amount.$invalid">
-                    <i class="icon-checkmark-circle size-14"></i>
-                  </small>
+                  <div class="flex">
+                    <div class="dollar-value" ng-if="index.arrBalances[index.assetIndex].asset">
+                      <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
+                    </div>
+                    <small class="has-error size-12" ng-if="sendPaymentForm.amount.$invalid">
+                      <i class="icon-close-circle size-14"></i>
+                      <span class="vm" translate>Not valid</span>
+                    </small>
+                    <small class="text-primary size-12" ng-if="!sendPaymentForm.amount.$invalid">
+                      <i class="icon-checkmark-circle size-14"></i>
+                    </small>
+                  </div>
                 </div>
                 <div>
                   <label for="amount">
@@ -393,11 +398,7 @@ input.datafeed_input {
                         autocomplete="off"
                         ng-focus="home.formFocus('amount')"
                         ng-blur="home.formFocus(false)">
-                    <div class="dollar-value">
-                      <span ng-if="index.arrBalances[index.assetIndex].asset">
-                        <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
-                      </span>
-                    </div>
+
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
                     <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
