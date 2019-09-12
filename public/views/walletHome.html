@@ -360,20 +360,20 @@ input.datafeed_input {
               <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
 			  
-            <div class="row"  ng-hide="home.hideAmount">
+            <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
-                  <div class="flex">
+                  <div class="flex" ng-if="!sendPaymentForm.amount.$invalid">
                     <div class="dollar-value" ng-if="index.arrBalances[index.assetIndex].asset">
                       <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
                     </div>
-                    <small class="has-error size-12" ng-if="sendPaymentForm.amount.$invalid">
-                      <i class="icon-close-circle size-14"></i>
-                      <span class="vm" translate>Not valid</span>
-                    </small>
-                    <small class="text-primary size-12" ng-if="!sendPaymentForm.amount.$invalid">
+                    <div class="text-primary size-12" >
                       <i class="icon-checkmark-circle size-14"></i>
-                    </small>
+                    </div>
+                  </div>
+                  <div class="has-error size-12" ng-if="sendPaymentForm.amount.$invalid">
+                    <i class="icon-close-circle size-14"></i>
+                    <span class="vm" translate>Not valid</span>
                   </div>
                 </div>
                 <div>
