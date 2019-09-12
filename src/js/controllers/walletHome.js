@@ -2042,10 +2042,10 @@ angular.module('copayApp.controllers')
 					if (home.bSendAll) {
 						amountInSmallestUnits = balanceObject.stable;
 						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
-						console.log(result, '123 result');
 					}
 				} else {
-					result = (amount / Math.pow(10, balanceObject.decimals || 0)) * home.exchangeRates[exchangePair];
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
+					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
 				}
 				if (!isNaN(result) && result !== 0) {
 					if(result >= 0.1) {
