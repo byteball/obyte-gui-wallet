@@ -10,12 +10,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var crypto = require('crypto');
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
-
 	var chatStorage = require('ocore/chat_storage.js');
+	var self = this;
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
 	$rootScope.newPayCounterEnabled = false;
+	this.paymentType = 'receive';
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
@@ -751,7 +752,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			}
 		});
 	});
-	
+
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
@@ -764,30 +765,27 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				go.path('correspondentDevices.correspondentDevice');
 			});
 		});
-	});
-
-	eventBus.on('new_my_transactions', function(arrUnits){
-	  console.log('new_my_transactions');
-		if (arrUnits in $rootScope.newPaymentsCount)
-			$rootScope.newPaymentsCount[arrUnits]++;
-		else {
-			$rootScope.newPaymentsCount[arrUnits] = 1;
-		}
-    console.log($rootScope.newPaymentsCount, 'after');
+		self.paymentType = 'sent';
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-	  console.log('we recieve payment ?');
-	  console.log('what address', peer_address);
-	  console.log('how much', amount);
-	  console.log('btosharedadress', bToSharedAddress);
-
+		self.paymentType = 'receive';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
+	});
+
+	eventBus.on('new_my_transactions', function (arrUnits) {
+		if (self.paymentType === 'receive') {
+			if (arrUnits in $rootScope.newPaymentsCount)
+				$rootScope.newPaymentsCount[arrUnits]++;
+			else {
+				$rootScope.newPaymentsCount[arrUnits] = 1;
+			}
+		}
 	});
 	
 	eventBus.on('paired', function(device_address){

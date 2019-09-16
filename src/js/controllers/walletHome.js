@@ -110,8 +110,6 @@ angular.module('copayApp.controllers')
       sendArr.forEach(()=> {
 
       });
-			console.log(sendArr, 'send only arr');
-      console.log(btxArray, 'all events arr');
 			self.newPaymentsCount = $rootScope.newPaymentsCount;
 		};
 
