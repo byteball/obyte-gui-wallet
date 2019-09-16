@@ -1051,7 +1051,7 @@ label.postfix, a.postfix {
 .dollar-value {
   position: absolute;
   top: -21px;
-  right: 16px;
+  right: 18px;
   max-width: 100%;
   white-space: nowrap;
   font-size: 13px;
@@ -1690,6 +1690,15 @@ a.suggest-command {
 .flex {
   display: flex;
 }
+
+.flex.align-items-start {
+  align-items: flex-start;
+}
+
+.flex.align-items-center {
+  align-items: center;
+}
+
 .text-overflow-wrapper {
   flex-grow: 1;
   white-space: nowrap;

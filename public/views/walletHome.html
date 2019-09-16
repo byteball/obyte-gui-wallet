@@ -362,13 +362,13 @@ input.datafeed_input {
 			  
             <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
-                <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
-                  <div class="text-primary size-12" ng-if="!sendPaymentForm.amount.$invalid">
-                    <i class="icon-checkmark-circle size-14"></i>
+                <div class="right valid-block" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
+                  <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid">
+                    <i class="icon icon-checkmark-circle size-14"></i>
                   </div>
-                  <div class="has-error size-12" ng-if="sendPaymentForm.amount.$invalid">
-                    <i class="icon-close-circle size-14"></i>
-                    <span class="vm" translate>Not valid</span>
+                  <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
+                    <i class="icon icon-close-circle size-14 m5r"></i>
+                    <span class="size-12" translate> Not valid</span>
                   </div>
                 </div>
                 <div>
