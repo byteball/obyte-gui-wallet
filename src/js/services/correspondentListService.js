@@ -11,14 +11,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
-	var self = this;
+	var paymentType = 'receive';
 	var messagesCounter,
 		paymentsCounter= 0;
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
 	$rootScope.newPayCounterEnabled = false;
-	this.paymentType = 'receive';
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
@@ -38,7 +37,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			} else {
 				win.setBadgeLabel("");
 			}
-
 		}, true);
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
@@ -758,6 +756,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
+		paymentType = 'sent';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
@@ -769,11 +768,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				go.path('correspondentDevices.correspondentDevice');
 			});
 		});
-		self.paymentType = 'sent';
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		self.paymentType = 'receive';
+		paymentType = 'receive';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
@@ -782,16 +780,22 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on('new_my_transactions', function (arrUnits) {
-		if (self.paymentType === 'receive') {
-			if (arrUnits in $rootScope.newPaymentsCount)
-				$rootScope.newPaymentsCount[arrUnits]++;
-			else {
-				$rootScope.newPaymentsCount[arrUnits] = 1;
+	eventBus.on('new_my_transactions', (arrUnits) => {
+		$timeout(() => {
+			if (paymentType === 'receive') {
+				if (arrUnits in $rootScope.newPaymentsCount)
+					$rootScope.newPaymentsCount[arrUnits]++;
+				else {
+					$rootScope.newPaymentsCount[arrUnits] = 1;
+				}
 			}
-		}
+		}, 1500);
+
+
 	});
-	
+
+
+
 	eventBus.on('paired', function(device_address){
 		pushNotificationsService.pushNotificationsInit();
 		if ($state.is('correspondentDevices'))
