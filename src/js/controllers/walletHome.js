@@ -2033,6 +2033,40 @@ angular.module('copayApp.controllers')
 		};
 
 
+		this.getDollarValue = function(amount, balanceObject) {
+			function getResult(exchangePair) {
+				var result = 0;
+				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					if (home.bSendAll) {
+						amountInSmallestUnits = balanceObject.stable;
+						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					}
+				} else {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
+					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
+				}
+				if (!isNaN(result) && result !== 0) {
+					if(result >= 0.1) {
+						return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
+					}
+					if(result < 0.1) {
+						return `≈$${result.toPrecision(2)}`;
+					}
+				}
+			}
+
+			if (balanceObject.asset === 'base') {
+				return getResult('GBYTE_USD');
+			} else if(balanceObject.asset === $scope.index.BLACKBYTES_ASSET) {
+				return getResult('GBB_USD');
+			}
+			else if(home.exchangeRates[balanceObject.asset + '_USD']) {
+				return getResult(balanceObject.asset + '_USD');
+			}
+		};
+
 		/* Start setup */
 
 		this.bindTouchDown();

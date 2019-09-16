@@ -334,13 +334,13 @@ input.datafeed_input {
     <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'">
       <div>
         <h4 class="title m0">
-
             <div class="size-10">
                 <span class="db text-bold">
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
-                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
+                	<option ng-repeat="balance in index.arrBalances"
+                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed</option>
                 	<option ng-value="-2" translate>Attestation</option>
                 	<option ng-value="-3" translate>Profile</option>
@@ -360,29 +360,48 @@ input.datafeed_input {
               <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
 			  
-            <div class="row"  ng-hide="home.hideAmount">
+            <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
-                <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue ">
-                  <span class="has-error right size-12" ng-if="sendPaymentForm.amount.$invalid">
-                    <i class="icon-close-circle size-14"></i>
-                    <span clas="vm" translate>Not valid</span>
-                  </span>
-                  <small class="text-primary right" ng-if="!sendPaymentForm.amount.$invalid">
-                    <i class="icon-checkmark-circle size-14"></i>
-                  </small>
+                <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
+                  <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid">
+                    <i class="icon icon-checkmark-circle size-14"></i>
+                  </div>
+                  <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
+                    <i class="icon icon-close-circle size-14 m5r"></i>
+                    <span class="size-12" translate> Not valid</span>
+                  </div>
                 </div>
                 <div>
                   <label for="amount">
                     <span translate ng-if="!home.send_multiple">Amount</span>
                     <span translate ng-if="home.send_multiple">Total amount</span>
-					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
+					          <a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
-                    <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)">
-                      <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
-                      <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
-                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
-                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
+                    <input
+                        type="{{index.isMobile.iOS() ? 'text' : 'number'}}"
+                        inputmode="numeric"
+                        id="amount"
+                        name="amount"
+                        ng-disabled="home.blockUx || home.lockAmount || home.bSendAll"
+                        ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}"
+                        ng-minlength="0.00000001"
+                        ng-maxlength="10000000000"
+                        ng-model="_amount"
+                        valid-amount="{{index.arrBalances[index.assetIndex].asset}}"
+                        ng-required="!home.bSendAll && !home.send_multiple"
+                        autocomplete="off"
+                        ng-focus="home.formFocus('amount')"
+                        ng-blur="home.formFocus(false)">
+                    <div class="dollar-value"
+						 ng-if="index.arrBalances[index.assetIndex].asset && !sendPaymentForm.amount.$invalid"
+						 ng-class="{'send-all': home.bSendAll}">
+                      <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
+                    </div>
+                    <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
+                    <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
+                    <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
+                    <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
                   </div>
                 </div>
               </div>
