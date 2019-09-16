@@ -393,7 +393,9 @@ input.datafeed_input {
                         autocomplete="off"
                         ng-focus="home.formFocus('amount')"
                         ng-blur="home.formFocus(false)">
-                    <div class="dollar-value" ng-if="index.arrBalances[index.assetIndex].asset" ng-class="{'send-all': home.bSendAll}">
+                    <div class="dollar-value"
+						 ng-if="index.arrBalances[index.assetIndex].asset && !sendPaymentForm.amount.$invalid"
+						 ng-class="{'send-all': home.bSendAll}">
                       <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
                     </div>
                     <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
