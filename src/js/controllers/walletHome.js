@@ -92,7 +92,7 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
-					$timeout(function(){
+					$timeout(() => {
 						self.countChecker(indexScope['txHistory']);
 					}, 100);
 					break;

@@ -11,9 +11,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
-	var paymentType = 'receive';
 	var messagesCounter,
 		paymentsCounter= 0;
+  var paymentType = 'receive';
+
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
@@ -32,7 +33,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 		$rootScope.$watch('newMessagesCount', function(counters) {
 			messagesCounter = lodash.sum(lodash.values(counters));
-			if (messagesCounter) {
+			if (messagesCounter || paymentsCounter) {
 				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
@@ -41,7 +42,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
 			paymentsCounter = lodash.sum(lodash.values(counters));
-			if (paymentsCounter) {
+			if (paymentsCounter || messagesCounter) {
 				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
@@ -768,6 +769,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				go.path('correspondentDevices.correspondentDevice');
 			});
 		});
+		paymentType = 'sent';
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
@@ -793,9 +795,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 
 	});
-
-
-
+	
 	eventBus.on('paired', function(device_address){
 		pushNotificationsService.pushNotificationsInit();
 		if ($state.is('correspondentDevices'))
