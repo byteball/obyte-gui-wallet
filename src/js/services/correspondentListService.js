@@ -13,7 +13,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var chatStorage = require('ocore/chat_storage.js');
 	var messagesCounter,
 		paymentsCounter= 0;
-  var paymentType = 'receive';
+  	var paymentType = 'receive';
 
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
@@ -769,7 +769,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				go.path('correspondentDevices.correspondentDevice');
 			});
 		});
-		paymentType = 'sent';
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
@@ -792,8 +791,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				}
 			}
 		}, 1500);
-
-
 	});
 	
 	eventBus.on('paired', function(device_address){
