@@ -11,7 +11,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
-	var self = this;
 	var messagesCounter,
 		paymentsCounter= 0;
   var paymentType = 'receive';
