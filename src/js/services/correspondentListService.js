@@ -11,24 +11,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
-	var messagesCounter,
-		paymentsCounter= 0;
-  	var paymentType = 'receive';
+	var messagesCounter;
+	var paymentsCounter;
+  var paymentType = 'receive';
 
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
-	$rootScope.newPayCounterEnabled = false;
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
 		win.on('focus', function(){
 			$rootScope.newMsgCounterEnabled = false;
-			$rootScope.newPayCounterEnabled = false;
 		});
 		win.on('blur', function(){
 			$rootScope.newMsgCounterEnabled = true;
-			$rootScope.newPayCounterEnabled = true;
 		});
 
 		$rootScope.$watch('newMessagesCount', function(counters) {
