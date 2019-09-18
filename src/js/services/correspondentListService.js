@@ -12,6 +12,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
 	var self = this;
+	var messagesCounter,
+		paymentsCounter= 0;
   var paymentType = 'receive';
 
 	$rootScope.newMessagesCount = {};
@@ -29,19 +31,21 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			$rootScope.newMsgCounterEnabled = true;
 			$rootScope.newPayCounterEnabled = true;
 		});
+
 		$rootScope.$watch('newMessagesCount', function(counters) {
-			var sum = lodash.sum(lodash.values(counters));
-			if (sum) {
-				win.setBadgeLabel(""+sum);
+			messagesCounter = lodash.sum(lodash.values(counters));
+			if (messagesCounter) {
+				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
 			}
+
 		}, true);
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
-			var sum = lodash.sum(lodash.values(counters));
-			if (sum) {
-				win.setBadgeLabel(""+sum);
+			paymentsCounter = lodash.sum(lodash.values(counters));
+			if (paymentsCounter) {
+				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
 			}
