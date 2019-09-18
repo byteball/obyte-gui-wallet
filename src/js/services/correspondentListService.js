@@ -13,7 +13,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var chatStorage = require('ocore/chat_storage.js');
 	var messagesCounter;
 	var paymentsCounter;
-  var paymentType = 'receive';
 
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
@@ -754,7 +753,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
-		paymentType = 'sent';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
@@ -769,7 +767,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		paymentType = 'receive';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
@@ -779,15 +776,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrUnits) => {
-		$timeout(() => {
-			if (paymentType === 'receive') {
-				if (arrUnits in $rootScope.newPaymentsCount)
-					$rootScope.newPaymentsCount[arrUnits]++;
-				else {
-					$rootScope.newPaymentsCount[arrUnits] = 1;
-				}
-			}
-		}, 1500);
+    if (arrUnits in $rootScope.newPaymentsCount) {
+      $rootScope.newPaymentsCount[arrUnits]++;
+    } else {
+      $rootScope.newPaymentsCount[arrUnits] = 1;
+    }
+    $rootScope.newPaymentsCount[$rootScope.sentUnit] = 0;
 	});
 	
 	eventBus.on('paired', function(device_address){
