@@ -33,7 +33,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 		$rootScope.$watch('newMessagesCount', function(counters) {
 			messagesCounter = lodash.sum(lodash.values(counters));
-			if (messagesCounter) {
+			if (messagesCounter || paymentsCounter) {
 				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
@@ -43,7 +43,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
 			paymentsCounter = lodash.sum(lodash.values(counters));
-			if (paymentsCounter) {
+			if (paymentsCounter || messagesCounter) {
 				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
 			} else {
 				win.setBadgeLabel("");
