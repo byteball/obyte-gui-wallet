@@ -12,11 +12,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
 	var self = this;
+  var paymentType = 'receive';
+
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
 	$rootScope.newPayCounterEnabled = false;
-	this.paymentType = 'receive';
 
 	if (typeof nw !== 'undefined') {
 		var win = nw.Window.get();
@@ -765,11 +766,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				go.path('correspondentDevices.correspondentDevice');
 			});
 		});
-		self.paymentType = 'sent';
+		paymentType = 'sent';
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		self.paymentType = 'receive';
+		paymentType = 'receive';
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
@@ -779,7 +780,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', function (arrUnits) {
-		if (self.paymentType === 'receive') {
+		if (paymentType === 'receive') {
 			if (arrUnits in $rootScope.newPaymentsCount)
 				$rootScope.newPaymentsCount[arrUnits]++;
 			else {

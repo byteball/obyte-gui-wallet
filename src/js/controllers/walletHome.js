@@ -92,8 +92,8 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
-					$timeout(function(){
-						self.countChecker(indexScope['txHistory']);
+					$timeout(() => {
+						countChecker();
 					}, 100);
 					break;
 				case 'send':
@@ -101,12 +101,7 @@ angular.module('copayApp.controllers')
 			}
 		});
 
-		this.countChecker = function(btxArray) {
-			btxArray.filter((elem) => {
-				if(elem.action === 'sent') {
-					return elem;
-				}
-			});
+		function countChecker() {
 			self.newPaymentsCount = $rootScope.newPaymentsCount;
 		};
 
