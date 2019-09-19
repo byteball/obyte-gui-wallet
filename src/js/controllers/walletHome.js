@@ -1398,7 +1398,8 @@ angular.module('copayApp.controllers')
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					shared_address: indexScope.shared_address,
 					messages: [objMessage]
-				}, function(err) { // can take long if multisig
+				}, function(err, unit) { // can take long if multisig
+					$rootScope.sentUnit = unit;
 					indexScope.setOngoingProcess(gettext('sending'), false);
 					if (err) {
 						self.setSendError(err);
@@ -1819,9 +1820,7 @@ angular.module('copayApp.controllers')
 		};
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
-			if(btx.unit) {
-				$rootScope.newPaymentsCount[btx.unit] = 0;
-			}
+			$rootScope.newPaymentsCount[btx.unit] = 0;
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {

@@ -11,14 +11,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
 	var chatStorage = require('ocore/chat_storage.js');
-	var messagesCounter;
-	var paymentsCounter;
 
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
 
 	if (typeof nw !== 'undefined') {
+		var messagesCount;
+		var paymentsCount;
 		var win = nw.Window.get();
 		win.on('focus', function(){
 			$rootScope.newMsgCounterEnabled = false;
@@ -28,18 +28,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 
 		$rootScope.$watch('newMessagesCount', function(counters) {
-			messagesCounter = lodash.sum(lodash.values(counters));
-			if (messagesCounter || paymentsCounter) {
-				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
+			messagesCount = lodash.sum(lodash.values(counters));
+			if (messagesCount || paymentsCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
 			} else {
 				win.setBadgeLabel("");
 			}
 		}, true);
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
-			paymentsCounter = lodash.sum(lodash.values(counters));
-			if (paymentsCounter || messagesCounter) {
-				win.setBadgeLabel(""+ (messagesCounter + paymentsCounter));
+			paymentsCount = lodash.sum(lodash.values(counters));
+			if (paymentsCount || messagesCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
 			} else {
 				win.setBadgeLabel("");
 			}
@@ -775,13 +775,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on('new_my_transactions', (arrUnits) => {
-    if (arrUnits in $rootScope.newPaymentsCount) {
-      $rootScope.newPaymentsCount[arrUnits]++;
-    } else {
-      $rootScope.newPaymentsCount[arrUnits] = 1;
-    }
-    $rootScope.newPaymentsCount[$rootScope.sentUnit] = 0;
+	eventBus.on('new_my_transactions', (unit) => {
+		if (unit in $rootScope.newPaymentsCount) {
+			$rootScope.newPaymentsCount[unit]++;
+		} else {
+			$rootScope.newPaymentsCount[unit] = 1;
+		}
+		$rootScope.newPaymentsCount[$rootScope.sentUnit] = 0;
 	});
 	
 	eventBus.on('paired', function(device_address){
@@ -972,10 +972,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							amount: prosaic_contract.CHARGE_AMOUNT,
 							arrSigningDeviceAddresses: contract.cosigners
 						};
-						fc.sendMultiPayment(opts, function(err){
+						fc.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
 							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
@@ -1001,6 +1002,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								messages: [objMessage]
 							}, function(err, unit) { // can take long if multisig
 								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								$rootScope.sentUnit = unit;
 								if (err) {
 									showError(err);
 									return;
