@@ -775,7 +775,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on('new_my_transactions', (unit) => {
+	eventBus.on('new_my_transactions', (arrNewUnits) => {
+		var unit = arrNewUnits [0];
 		if (unit in $rootScope.newPaymentsCount) {
 			$rootScope.newPaymentsCount[unit]++;
 		} else {
