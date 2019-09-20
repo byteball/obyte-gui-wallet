@@ -776,11 +776,20 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
-		var unit = arrNewUnits [0];
-		if (unit in $rootScope.newPaymentsCount) {
-			$rootScope.newPaymentsCount[unit]++;
+		if (arrNewUnits.length > 1) {
+			arrNewUnits.forEach((elem) => {
+				if (!$rootScope.newPaymentsCount[elem]) {
+					$rootScope.newPaymentsCount[elem] = 1;
+				} else {
+					$rootScope.newPaymentsCount[elem]++;
+				}
+			});
 		} else {
-			$rootScope.newPaymentsCount[unit] = 1;
+			if (!$rootScope.newPaymentsCount[arrNewUnits]) {
+				$rootScope.newPaymentsCount[arrNewUnits] = 1;
+			} else {
+				$rootScope.newPaymentsCount[arrNewUnits]++;
+			}
 		}
 		$rootScope.newPaymentsCount[$rootScope.sentUnit] = 0;
 	});
