@@ -1820,7 +1820,7 @@ angular.module('copayApp.controllers')
 		};
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
-			$rootScope.newPaymentsCount[btx.unit] = 0;
+			delete $rootScope.newPaymentsCount[btx.unit];
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
