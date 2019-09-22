@@ -277,6 +277,7 @@ ul.copayer-list img {
 
 .time-block {
   margin-right: 16px;
+  margin-top: 4px; /* 1px up */
 }
 
 .history-badge {
