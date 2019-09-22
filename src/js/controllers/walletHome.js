@@ -92,11 +92,18 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
+					$timeout(() => {
+						self.countChecker();
+					}, 100);
 					break;
 				case 'send':
 					self.resetError();
-			};
+			}
 		});
+
+		this.countChecker = function() {
+			self.newPaymentsCount = $rootScope.newPaymentsCount;
+		};
 
 		var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
 			self.setOngoingProcess(name);
@@ -1195,6 +1202,7 @@ angular.module('copayApp.controllers')
 							opts.messages = [objDataMessage];
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
+							$rootScope.sentUnit = unit;
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
 							delete self.current_payment_key;
@@ -1390,7 +1398,8 @@ angular.module('copayApp.controllers')
 					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 					shared_address: indexScope.shared_address,
 					messages: [objMessage]
-				}, function(err) { // can take long if multisig
+				}, function(err, unit) { // can take long if multisig
+					$rootScope.sentUnit = unit;
 					indexScope.setOngoingProcess(gettext('sending'), false);
 					if (err) {
 						self.setSendError(err);
@@ -1809,9 +1818,9 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
-
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
+			$rootScope.newPaymentsCount[btx.unit] = 0;
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {

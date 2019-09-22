@@ -391,11 +391,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
-						fc.sendMultiPayment(opts, function(err){
+						fc.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
 							$scope.bWorking = false;
 							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
@@ -756,8 +757,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							recipient_device_address: recipient_device_address,
 							base_outputs: arrBaseOutputs,
 							asset_outputs: arrAssetOutputs
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_multi_payment_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
@@ -944,8 +946,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							shared_address: indexScope.shared_address,
 							change_address: arrAddresses[0],
 							messages: [objMessage]
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_vote_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
