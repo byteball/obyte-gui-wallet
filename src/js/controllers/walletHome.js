@@ -1931,11 +1931,10 @@ angular.module('copayApp.controllers')
 				if (base64data) {
 					try {
 						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
-						objPaymentData = paymentData ? JSON.parse(paymentData) : null;
-						if (objPaymentData) {
-							for (var key in objPaymentData) {
-								var value = objPaymentData[key];
-								$scope.home.feedvaluespairs.push({name: key, value: value, readonly: true});
+						paymentData = paymentData ? JSON.parse(paymentData) : null;
+						if (paymentData) {
+							for (var key in paymentData) {
+								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
 							}
 						}
 					}
