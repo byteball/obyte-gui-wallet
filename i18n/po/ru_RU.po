@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
-"PO-Revision-Date: 2019-06-07 14:34\n"
+"PO-Revision-Date: 2019-09-24 19:12\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -29,7 +29,7 @@ msgstr "(текущий кошелек)"
 msgid "(my other wallet)"
 msgstr "(другой мой кошелек)"
 
-#: public/views/walletHome.html:674
+#: public/views/walletHome.html:717
 msgid "(possible double spend)"
 msgstr "(возможна двойная трата)"
 
@@ -47,7 +47,7 @@ msgstr ""
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:130
+#: src/js/controllers/walletHome.js:137
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Принять"
@@ -79,13 +79,14 @@ msgstr "Добавить новую запись"
 
 #: public/views/preferencesEditRealNameAttestors.html:25
 msgid "Add address"
-msgstr ""
+msgstr "Добавить адрес"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Add answer"
 msgstr "Добавить вариант ответа"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:517
+#: public/views/walletHome.html:617
 msgid "Add fields"
 msgstr "Добавить поля"
 
@@ -103,9 +104,14 @@ msgstr "Добавлен"
 msgid "Address"
 msgstr "Адрес"
 
-#: public/views/walletHome.html:546
+#: public/views/walletHome.html:589
 msgid "Address to attest"
 msgstr "Какой адрес атттестовать"
+
+#: public/views/modals/approveNewWitnesses.html:16
+#: public/views/modals/approveNewWitnesses.html:28
+msgid "Address:"
+msgstr ""
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -114,9 +120,9 @@ msgstr "Адресная книга"
 
 #: public/views/preferencesEditRealNameAttestors.html:15
 msgid "Addresses"
-msgstr ""
+msgstr "Адреса"
 
-#: public/views/preferences.html:66
+#: public/views/preferences.html:70
 msgid "Advanced"
 msgstr "Подробнее"
 
@@ -148,7 +154,7 @@ msgstr ""
 msgid "Already Paid"
 msgstr "Уже оплачено"
 
-#: src/js/controllers/correspondentDevice.js:1381
+#: src/js/controllers/correspondentDevice.js:1384
 msgid "Already saved"
 msgstr "Уже сохранено"
 
@@ -159,6 +165,10 @@ msgstr "Также"
 #: public/views/splash.html:91
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr "Также в меню «Настройки» Вы найдете параметры безопасности, такие как установка пароля."
+
+#: public/views/walletHome.html:501
+msgid "Also send data..."
+msgstr ""
 
 #: public/views/includes/password.html:42
 msgid "Also, don't forget to delete your seed"
@@ -173,7 +183,7 @@ msgstr "Также, не забудьте удалить Вашу мнемони
 msgid "Amount"
 msgstr "Сумма"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Answer"
 msgstr "Ответ"
 
@@ -198,7 +208,7 @@ msgstr "Вы уверены, что хотите удалить этот кош�
 msgid "Asset"
 msgstr "Актив"
 
-#: public/views/walletHome.html:532
+#: public/views/walletHome.html:575
 msgid "Attest profile data linked to any Obyte address."
 msgstr ""
 
@@ -244,13 +254,17 @@ msgstr "Доступный баланс"
 msgid "Back"
 msgstr "Назад"
 
+#: public/views/preferencesGlobal.html:105
+msgid "Backup all wallet data"
+msgstr ""
+
 #: public/views/walletHome.html:250
 msgid "Backup now"
 msgstr "Создать резервную копию"
 
-#: public/views/preferencesGlobal.html:108
-msgid "Backup wallet seed"
-msgstr "Резервное копирование мнемоники (seed)"
+#: public/views/preferencesGlobal.html:126
+msgid "Backup only the seed words"
+msgstr ""
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
@@ -260,7 +274,7 @@ msgstr "Мнемоника удалена"
 msgid "Backups"
 msgstr "Резервные копии"
 
-#: src/js/controllers/correspondentDevice.js:1364
+#: src/js/controllers/correspondentDevice.js:1367
 msgid "Bad profile"
 msgstr "Неверный профиль"
 
@@ -281,10 +295,13 @@ msgstr "А лучше используйте кошельки с мультип�
 msgid "Bind payment"
 msgstr "Связать платеж"
 
-#: public/views/walletHome.html:437
-#: public/views/walletHome.html:450
+#: public/views/walletHome.html:469
 msgid "Bind the payment to a condition"
 msgstr "Привязать платеж к условию"
+
+#: public/views/walletHome.html:456
+msgid "Bind the payment to a condition..."
+msgstr ""
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -312,10 +329,10 @@ msgid "CONTINUE"
 msgstr "ПРОДОЛЖИТЬ"
 
 #: public/views/modals/destination-address.html:128
-#: public/views/walletHome.html:491
+#: public/views/walletHome.html:534
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:131
+#: src/js/controllers/walletHome.js:138
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Отмена"
@@ -328,7 +345,7 @@ msgstr "Изменить хаб:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Изменение псевдонима кошелька влияет только на название локального кошелька."
 
-#: src/js/controllers/index.js:821
+#: src/js/controllers/index.js:822
 msgid "Chat"
 msgstr "Чат"
 
@@ -348,7 +365,7 @@ msgstr "Выберите устройство куда отправить"
 msgid "Choose which fields to send:"
 msgstr "Выбрать поля для отправки:"
 
-#: src/js/controllers/walletHome.js:502
+#: src/js/controllers/walletHome.js:509
 msgid "Claim funds"
 msgstr "Запросить деньги"
 
@@ -368,11 +385,11 @@ msgstr "Получаем..."
 msgid "Click the button to"
 msgstr ""
 
-#: public/views/walletHome.html:513
+#: public/views/walletHome.html:556
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr "Нажмите, чтобы создать файл платежа и отправить его получателю."
 
-#: public/views/walletHome.html:512
+#: public/views/walletHome.html:555
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr "Нажмите здесь для отправки денег через приватное сообщение в мессенджере или создания бумажного кошелька."
 
@@ -384,7 +401,7 @@ msgstr "Нажмите здесь для отправки денег через 
 #: public/views/modals/approveNewWitnesses.html:4
 #: public/views/modals/bind.html:4
 #: public/views/modals/choose-profile.html:4
-#: public/views/modals/choose-profile.html:70
+#: public/views/modals/choose-profile.html:71
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
@@ -414,7 +431,7 @@ msgstr "Совладельцы"
 msgid "Co-signers for multisig"
 msgstr "Совладельцы для мульти подписи"
 
-#: public/views/preferences.html:29
+#: public/views/preferences.html:33
 msgid "Color"
 msgstr "Цвет"
 
@@ -427,11 +444,11 @@ msgid "Compress the file? (Slower)"
 msgstr "Сжать файл? (медленнее)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:660
+#: src/js/controllers/index.js:661
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:132
-#: src/js/controllers/walletHome.js:1824
-#: src/js/controllers/walletHome.js:1828
+#: src/js/controllers/walletHome.js:139
+#: src/js/controllers/walletHome.js:1867
+#: src/js/controllers/walletHome.js:1871
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Подтвердить"
@@ -456,10 +473,10 @@ msgstr "Подтверждено"
 msgid "Contacts"
 msgstr "Контакты"
 
-#: src/js/controllers/correspondentDevice.js:1733
+#: src/js/controllers/correspondentDevice.js:1752
 #: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:403
+#: src/js/controllers/walletHome.js:410
 msgid "Copied to clipboard"
 msgstr "Скопировано в буфер обмена"
 
@@ -476,7 +493,7 @@ msgstr ""
 msgid "Cosigners"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:708
+#: src/js/controllers/walletHome.js:715
 msgid "Could not create payment proposal"
 msgstr "Не удалось создать предложение платежа"
 
@@ -496,7 +513,7 @@ msgstr "Не удалось создать: недействительная м�
 msgid "Could not decrypt"
 msgstr "Не удалось расшифровать"
 
-#: public/views/walletHome.html:629
+#: public/views/walletHome.html:672
 msgid "Could not fetch transaction history"
 msgstr "Не удалось получить историю транзакций"
 
@@ -510,11 +527,11 @@ msgstr "Не удалось импортировать"
 msgid "Could not import. Check input file and password"
 msgstr "Не удалось импортировать. Проверьте входной файл и пароль"
 
-#: src/js/controllers/walletHome.js:708
+#: src/js/controllers/walletHome.js:715
 msgid "Could not send payment"
 msgstr "Не удалось отправить платеж"
 
-#: src/js/controllers/correspondentDevice.js:1330
+#: src/js/controllers/correspondentDevice.js:1333
 msgid "Country"
 msgstr "Страна"
 
@@ -528,7 +545,7 @@ msgstr "Создать новый кошелек"
 
 #: public/views/add.html:15
 #: public/views/create.html:175
-#: src/js/controllers/index.js:370
+#: src/js/controllers/index.js:371
 msgid "Create new wallet"
 msgstr "Создать новый кошелек"
 
@@ -560,11 +577,15 @@ msgstr "Данные"
 msgid "Data into datafeed"
 msgstr "Данные в фиде"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:507
+msgid "Data to be posted with the payment:"
+msgstr ""
+
+#: public/views/walletHome.html:617
 msgid "Datafeed name"
 msgstr "Имя датафида"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Datafeed value"
 msgstr "Значение в датафиде"
 
@@ -572,11 +593,11 @@ msgstr "Значение в датафиде"
 msgid "Date"
 msgstr "Дата"
 
-#: src/js/controllers/correspondentDevice.js:1329
+#: src/js/controllers/correspondentDevice.js:1332
 msgid "Date of birth"
 msgstr "Дата рождения"
 
-#: src/js/controllers/index.js:336
+#: src/js/controllers/index.js:337
 msgid "Declined"
 msgstr "Отклонено"
 
@@ -600,7 +621,7 @@ msgstr "Удалить кошелек"
 msgid "Delete wallet"
 msgstr "Удалить кошелек"
 
-#: src/js/controllers/walletHome.js:1821
+#: src/js/controllers/walletHome.js:1864
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr "Удаление этого textcoin не позволить получить его обратно или отправить повторно"
 
@@ -644,13 +665,13 @@ msgstr "Не видите свой язык на Crowdin? Свяжитесь с 
 msgid "Done"
 msgstr "Готово"
 
-#: public/views/walletHome.html:730
+#: public/views/walletHome.html:774
 msgid "Download CSV file"
 msgstr "Скачать CSV-файл"
 
 #: public/views/splash.html:26
 msgid "Download the entire Obyte database"
-msgstr ""
+msgstr "Скачать всю базу данных Obyte"
 
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
@@ -707,19 +728,20 @@ msgstr "Не удалось экспортировать"
 msgid "Fee"
 msgstr "Комиссия"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:510
+#: public/views/walletHome.html:617
 msgid "Field"
 msgstr "Поле"
 
 #: src/js/controllers/export.js:88
 msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
-msgstr ""
+msgstr "Файл сохранен в /Obyte/. Теперь вы можете также отправить его куда-нибудь, используя чат приложения или email, чтобы иметь больше копий бэкап файла"
 
 #: public/views/modals/tx-details.html:119
 msgid "Finality"
 msgstr "Завершенность"
 
-#: src/js/controllers/correspondentDevice.js:1327
+#: src/js/controllers/correspondentDevice.js:1330
 msgid "First name"
 msgstr "Имя"
 
@@ -731,15 +753,11 @@ msgstr "От"
 msgid "Full address:"
 msgstr "Полный адрес"
 
-#: public/views/preferencesGlobal.html:126
-msgid "Full backup"
-msgstr "Полное резервное копирование"
-
 #: public/views/splash.html:92
 msgid "GET STARTED"
 msgstr "НАЧАТЬ"
 
-#: src/js/controllers/walletHome.js:432
+#: src/js/controllers/walletHome.js:439
 msgid "Generate QR Code"
 msgstr "Сгенерировать QR-код"
 
@@ -753,7 +771,7 @@ msgstr "Создание .сsv-файла..."
 
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet"
-msgstr ""
+msgstr "Получение адреса для кошелька"
 
 #: public/views/includes/sidebar.html:45
 msgid "Global preferences"
@@ -763,11 +781,11 @@ msgstr "Общие настройки"
 msgid "Go back"
 msgstr "Вернуться"
 
-#: public/views/preferences.html:51
+#: public/views/preferences.html:55
 msgid "Hardware wallet"
 msgstr "Аппаратный кошелек"
 
-#: public/views/preferences.html:59
+#: public/views/preferences.html:63
 msgid "Hidden assets"
 msgstr "Скрытые активы"
 
@@ -776,11 +794,11 @@ msgid "Hide the Wallet Seed"
 msgstr "Скрыть мнемонику (seed)"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:817
+#: src/js/controllers/index.js:818
 msgid "History"
 msgstr "История"
 
-#: src/js/controllers/index.js:805
+#: src/js/controllers/index.js:806
 msgid "Home"
 msgstr "Главная"
 
@@ -802,7 +820,7 @@ msgstr "Я подтверждаю, что я прочитал(а), понял(а
 
 #: public/views/includes/backup-reminder.html:14
 msgid "I created a backup"
-msgstr ""
+msgstr "Я создал(а) резервную копию"
 
 #: public/views/modals/offer-contract.html:43
 msgid "I pay"
@@ -812,23 +830,23 @@ msgstr "Я плачу"
 msgid "I receive another payment of"
 msgstr "я получаю другой платёж"
 
-#: src/js/controllers/correspondentDevice.js:1336
+#: src/js/controllers/correspondentDevice.js:1339
 msgid "ID expires at"
-msgstr ""
+msgstr "ID истекает"
 
-#: src/js/controllers/correspondentDevice.js:1337
+#: src/js/controllers/correspondentDevice.js:1340
 msgid "ID issued at"
-msgstr ""
+msgstr "ID выдан"
 
-#: src/js/controllers/correspondentDevice.js:1333
+#: src/js/controllers/correspondentDevice.js:1336
 msgid "ID number"
 msgstr "ID номер"
 
-#: src/js/controllers/correspondentDevice.js:1335
+#: src/js/controllers/correspondentDevice.js:1338
 msgid "ID subtype"
 msgstr "ID подтип"
 
-#: src/js/controllers/correspondentDevice.js:1334
+#: src/js/controllers/correspondentDevice.js:1337
 msgid "ID type"
 msgstr "ID тип"
 
@@ -873,7 +891,7 @@ msgstr "Импорт кошелька..."
 msgid "Including pending confirmation"
 msgstr "Включая ожидающие подтверждения"
 
-#: public/views/walletHome.html:648
+#: public/views/walletHome.html:691
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Первоначальная синхронизация истории транзакций может занять несколько минут для кошельков с большим количеством транзакциями.<br>Пожалуйста, подождите."
@@ -886,11 +904,11 @@ msgstr "Вставить мой адрес"
 msgid "Insert private profile"
 msgstr "Вставить приватный профиль"
 
-#: public/views/walletHome.html:667
+#: public/views/walletHome.html:710
 msgid "Invalid"
 msgstr "Недействительно"
 
-#: src/js/controllers/index.js:1790
+#: src/js/controllers/index.js:1791
 msgid "Invalid Touch ID"
 msgstr "Недействительный Touch ID"
 
@@ -900,7 +918,7 @@ msgstr "Пригласить другое устройство"
 
 #: public/views/backup.html:22
 msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
-msgstr ""
+msgstr "Сохранения только мнемофразы (seed) недостаточно. При наличии одной лишь мнемофразы, вы не сможете восстановить кошельки с мультиподписью, смарт-контракты, контакты, историю переписки и приватные активы, такие как blackbytes."
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
@@ -914,7 +932,7 @@ msgstr "Ярлык"
 msgid "Language"
 msgstr "Язык"
 
-#: src/js/controllers/correspondentDevice.js:1328
+#: src/js/controllers/correspondentDevice.js:1331
 msgid "Last name"
 msgstr "Фамилия"
 
@@ -930,7 +948,7 @@ msgstr "Загрузка..."
 msgid "Make a payment to"
 msgstr "Сделать платеж"
 
-#: public/views/modals/approveNewWitnesses.html:29
+#: public/views/modals/approveNewWitnesses.html:47
 msgid "Maybe later"
 msgstr "Возможно позже"
 
@@ -946,7 +964,7 @@ msgstr "Я"
 msgid "Merchant message"
 msgstr "Сообщение от продавца"
 
-#: public/views/walletHome.html:457
+#: public/views/walletHome.html:476
 msgid "Merkle proof"
 msgstr "Доказательство Меркле"
 
@@ -963,7 +981,7 @@ msgstr "Сообщение:"
 msgid "More"
 msgstr ""
 
-#: public/views/walletHome.html:666
+#: public/views/walletHome.html:709
 msgid "Moved"
 msgstr "Перемещено"
 
@@ -973,7 +991,7 @@ msgstr "Кошелек для нескольких устройств"
 
 #: public/views/walletHome.html:258
 msgid "My Obyte address"
-msgstr ""
+msgstr "Мой Obyte адрес"
 
 #: public/views/correspondentDevice.html:300
 msgid "My recording preference"
@@ -982,6 +1000,11 @@ msgstr "Мой выбор о сохранении чата"
 #: public/views/modals/destination-address.html:122
 msgid "Name of the contact"
 msgstr "Имя контакта"
+
+#: public/views/modals/approveNewWitnesses.html:20
+#: public/views/modals/approveNewWitnesses.html:32
+msgid "Name:"
+msgstr ""
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -1000,8 +1023,8 @@ msgid "New witnesses"
 msgstr "Новые свидетели"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:659
-#: src/js/controllers/walletHome.js:1836
+#: src/js/controllers/index.js:660
+#: src/js/controllers/walletHome.js:1879
 msgid "No"
 msgstr "Нет"
 
@@ -1009,33 +1032,33 @@ msgstr "Нет"
 msgid "No password given"
 msgstr "Не указан пароль"
 
-#: public/views/modals/choose-profile.html:67
+#: public/views/modals/choose-profile.html:68
 msgid "No profiles matching the requested criteria."
 msgstr "Нет профилей, удовлетворяющих критерию."
 
-#: public/views/modals/choose-profile.html:68
+#: public/views/modals/choose-profile.html:69
 msgid "No profiles yet."
 msgstr "Пока нет профилей."
 
-#: public/views/walletHome.html:632
+#: public/views/walletHome.html:675
 msgid "No transactions yet"
 msgstr "Транзакций пока не было"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:113
-#: public/views/walletHome.html:368
-#: public/views/walletHome.html:405
-#: public/views/walletHome.html:414
-#: public/views/walletHome.html:551
+#: public/views/walletHome.html:371
+#: public/views/walletHome.html:424
+#: public/views/walletHome.html:433
+#: public/views/walletHome.html:594
 msgid "Not valid"
 msgstr "Не действительно"
 
 #: public/views/includes/output.html:12
 #: public/views/modals/tx-details.html:109
 #: public/views/modals/tx-details.html:84
-#: public/views/walletHome.html:468
-#: public/views/walletHome.html:695
+#: public/views/walletHome.html:487
+#: public/views/walletHome.html:739
 msgid "Note"
 msgstr "Примечание"
 
@@ -1045,18 +1068,18 @@ msgstr "Теперь вам нужно надежно сохранить это�
 
 #: public/index.html:12
 msgid "Obyte &mdash; smart payments"
-msgstr ""
+msgstr "Obyte &mdash; умные платежи"
 
 #: public/views/modals/destination-address.html:120
 msgid "Obyte address"
-msgstr ""
+msgstr "Obyte адрес"
 
 #: public/views/modals/offer-prosaic-contract.html:88
 msgid "Offer Contract"
-msgstr ""
+msgstr "Предложить контракт"
 
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:129
+#: src/js/services/correspondentListService.js:150
 msgid "Offer a contract"
 msgstr "Предложить контракт"
 
@@ -1065,7 +1088,7 @@ msgid "Offer is valid for"
 msgstr ""
 
 #: public/views/modals/offer-prosaic-contract.html:42
-#: src/js/services/correspondentListService.js:129
+#: src/js/services/correspondentListService.js:150
 msgid "Offer prosaic contract"
 msgstr ""
 
@@ -1081,7 +1104,7 @@ msgstr "Могут быть восстановлены только кошель
 msgid "Open chat"
 msgstr "Открыть чат"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Options for answering"
 msgstr "Варианты ответа"
 
@@ -1125,7 +1148,7 @@ msgstr "Вставьте закрытый ключ бумажного кошел
 msgid "Pay and offer"
 msgstr "Заплатить и предложить"
 
-#: src/js/services/correspondentListService.js:129
+#: src/js/services/correspondentListService.js:150
 msgid "Pay to this address"
 msgstr "Заплатить на этот адрес"
 
@@ -1162,7 +1185,7 @@ msgstr "Контрагент:"
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Окончательно удалить этот кошелек. ЭТО ДЕЙСТВИЕ НЕ МОЖЕТ БЫТЬ ОТМЕНЕНО"
 
-#: src/js/controllers/correspondentDevice.js:1331
+#: src/js/controllers/correspondentDevice.js:1334
 msgid "Personal code"
 msgstr ""
 
@@ -1170,11 +1193,11 @@ msgstr ""
 msgid "Plain Wallet"
 msgstr "Простой кошелек"
 
-#: src/js/controllers/index.js:275
+#: src/js/controllers/index.js:276
 msgid "Please approve contract fees deposit on the other devices."
 msgstr ""
 
-#: src/js/controllers/index.js:280
+#: src/js/controllers/index.js:281
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr ""
 
@@ -1206,19 +1229,19 @@ msgstr "Опрос"
 msgid "Port"
 msgstr "Порт"
 
-#: public/views/walletHome.html:541
+#: public/views/walletHome.html:584
 msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr ""
 
-#: public/views/walletHome.html:538
+#: public/views/walletHome.html:581
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr ""
 
-#: public/views/walletHome.html:529
+#: public/views/walletHome.html:572
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "Вставить данные в фид вручную как оракул."
 
-#: public/views/walletHome.html:535
+#: public/views/walletHome.html:578
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "Опубликуйте данные о себе, всё чем вы хотели бы поделиться."
 
@@ -1235,8 +1258,8 @@ msgstr "Нажмите еще раз для выхода"
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1890
-#: src/js/controllers/walletHome.js:1966
+#: src/js/controllers/walletHome.js:1933
+#: src/js/controllers/walletHome.js:2009
 msgid "Private payloads sent"
 msgstr "Приватная информация отправлена"
 
@@ -1248,17 +1271,17 @@ msgstr "Приватный профиль"
 msgid "Profile"
 msgstr "Профиль"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Profile field"
 msgstr "Поле профиля"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Profile field value"
 msgstr "Значение в поле профиля"
 
 #: public/views/modals/view-prosaic-contract.html:91
 msgid "Proof of contract signing"
-msgstr ""
+msgstr "Доказательство подписания контракта"
 
 #: public/views/modals/view-prosaic-contract.html:57
 msgid "Prosaic contract"
@@ -1272,7 +1295,7 @@ msgstr "QR-код"
 msgid "QR-Scanner"
 msgstr "QR-сканер"
 
-#: public/views/walletHome.html:561
+#: public/views/walletHome.html:604
 msgid "Question to be voted on"
 msgstr "Вопрос выносится на голосование"
 
@@ -1284,11 +1307,11 @@ msgstr "Вопрос:"
 msgid "Real name attestors"
 msgstr ""
 
-#: src/js/controllers/index.js:809
+#: src/js/controllers/index.js:810
 msgid "Receive"
 msgstr "Получить"
 
-#: public/views/walletHome.html:663
+#: public/views/walletHome.html:706
 msgid "Received"
 msgstr "Получен"
 
@@ -1305,15 +1328,15 @@ msgstr "Повторное подключение к службе кошельк
 msgid "Recover"
 msgstr "Восстановить"
 
-#: public/views/preferencesGlobal.html:117
-msgid "Recovery from seed"
-msgstr "Восстановление из мнемоники (seed)"
+#: public/views/preferencesGlobal.html:135
+msgid "Recover with seed words"
+msgstr "Восстановить с помощью мнемофразы"
 
 #: public/views/walletHome.html:80
 msgid "Recreating Wallet..."
 msgstr "Воссоздаю кошелек..."
 
-#: src/js/controllers/index.js:288
+#: src/js/controllers/index.js:289
 msgid "Refused"
 msgstr "Отказано"
 
@@ -1323,7 +1346,7 @@ msgstr "Информация о выпуске"
 
 #: public/views/includes/backup-reminder.html:11
 msgid "Remind Later"
-msgstr ""
+msgstr "Напомнить позже"
 
 #: public/views/modals/destination-address.html:85
 msgid "Remove"
@@ -1346,7 +1369,7 @@ msgstr "Повторите пароль"
 msgid "Repeat the password"
 msgstr "Повторите пароль"
 
-#: public/views/modals/approveNewWitnesses.html:23
+#: public/views/modals/approveNewWitnesses.html:41
 msgid "Replace"
 msgstr "Заменить"
 
@@ -1367,9 +1390,9 @@ msgstr "Запросить платеж"
 msgid "Required number of signatures"
 msgstr "Требуемое число подписей"
 
-#: public/views/preferencesGlobal.html:135
-msgid "Restore from full backup"
-msgstr "Восстановление из полной резервной копии"
+#: public/views/preferencesGlobal.html:114
+msgid "Restore all wallet data"
+msgstr "Восстановить все данные кошелька"
 
 #: public/views/splash.html:64
 msgid "Retrying..."
@@ -1389,7 +1412,7 @@ msgstr "УСТАНОВИТЬ"
 #: public/views/preferencesDeviceName.html:14
 #: public/views/preferencesEditAttestorAddress.html:14
 #: public/views/preferencesEditRealNameAttestors.html:29
-#: public/views/preferencesEditWitness.html:15
+#: public/views/preferencesEditWitness.html:37
 #: public/views/preferencesEmail.html:35
 #: public/views/preferencesHub.html:18
 #: public/views/preferencesTor.html:19
@@ -1400,7 +1423,7 @@ msgstr "Сохранить"
 msgid "Saving preferences..."
 msgstr "Сохранение настроек..."
 
-#: public/views/preferences.html:76
+#: public/views/preferences.html:80
 msgid "Scan Fingerprint/FaceID"
 msgstr ""
 
@@ -1412,7 +1435,7 @@ msgstr "Сканирование завершено с ошибкой"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Отсканируйте приведенный выше QR-код с помощью другого устройства или отправьте этот код сопряжения на другое устройство:"
 
-#: src/js/controllers/index.js:1783
+#: src/js/controllers/index.js:1784
 msgid "Scan your fingerprint please"
 msgstr "Пожалуйста, отсканируйте Ваш отпечаток пальца"
 
@@ -1441,9 +1464,9 @@ msgid "Select your identity"
 msgstr "Выберите аккаунт"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:494
-#: public/views/walletHome.html:593
-#: src/js/controllers/index.js:813
+#: public/views/walletHome.html:537
+#: public/views/walletHome.html:636
+#: src/js/controllers/index.js:814
 msgid "Send"
 msgstr "Отправить"
 
@@ -1463,7 +1486,7 @@ msgstr "Отправить все"
 msgid "Send by email"
 msgstr "Отправить по электронной почте"
 
-#: public/views/modals/choose-profile.html:62
+#: public/views/modals/choose-profile.html:63
 msgid "Send this profile"
 msgstr "Отправить этот профиль"
 
@@ -1471,7 +1494,7 @@ msgstr "Отправить этот профиль"
 msgid "Sending..."
 msgstr "Отправка..."
 
-#: public/views/walletHome.html:665
+#: public/views/walletHome.html:708
 msgid "Sent"
 msgstr "Отправлено"
 
@@ -1509,12 +1532,12 @@ msgstr "Поделиться кодом"
 msgid "Share this wallet address to receive payments."
 msgstr "Используйте этот адрес кошелька для получения платежей."
 
-#: public/views/walletHome.html:393
-#: public/views/walletHome.html:514
+#: public/views/walletHome.html:412
+#: public/views/walletHome.html:557
 msgid "Share via message"
 msgstr "Отправить через сообщение"
 
-#: public/views/walletHome.html:722
+#: public/views/walletHome.html:766
 msgid "Show all"
 msgstr "Показать все"
 
@@ -1527,13 +1550,13 @@ msgid "Sign"
 msgstr "Подписать"
 
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:467
+#: src/js/controllers/index.js:468
 msgid "Sign message"
 msgstr "Подписать сообщение"
 
 #: public/views/editCorrespondentDevice.html:57
 msgid "Signed contracts:"
-msgstr ""
+msgstr "Подписанные контракты:"
 
 #: public/views/modals/signed-message.html:8
 msgid "Signed message"
@@ -1545,12 +1568,12 @@ msgid "Signing address:"
 msgstr "Адрес, подписывающий транзакцию:"
 
 #: public/views/create.html:56
-#: public/views/preferences.html:36
+#: public/views/preferences.html:40
 msgid "Single address wallet"
 msgstr "Кошелёк с одним адресом"
 
 #: public/views/create.html:59
-#: public/views/preferences.html:38
+#: public/views/preferences.html:42
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr "Кошелёк с одним адресом (монокошелёк) не создаёт новый адрес для каждой транзакции, сдача всегда приходит на этот единственный адрес кошелька."
 
@@ -1566,7 +1589,7 @@ msgstr "Укажите мнемонику (seed)..."
 msgid "Spend unconfirmed funds"
 msgstr ""
 
-#: public/views/preferences.html:70
+#: public/views/preferences.html:74
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "Ограничение расходов"
@@ -1575,22 +1598,22 @@ msgstr "Ограничение расходов"
 msgid "Status"
 msgstr ""
 
-#: public/views/preferencesGlobal.html:104
+#: public/views/preferencesGlobal.html:122
 msgid "Still not done"
 msgstr "Все еще не завершено"
 
-#: src/js/controllers/correspondentDevice.js:1383
+#: src/js/controllers/correspondentDevice.js:1386
 msgid "Store"
 msgstr "Хранить"
 
 #: src/js/controllers/copayers.js:76
 #: src/js/controllers/export.js:141
 #: src/js/controllers/export.js:166
-#: src/js/controllers/index.js:325
-#: src/js/controllers/index.js:353
+#: src/js/controllers/index.js:326
+#: src/js/controllers/index.js:354
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1890
-#: src/js/controllers/walletHome.js:1966
+#: src/js/controllers/walletHome.js:1933
+#: src/js/controllers/walletHome.js:2009
 msgid "Success"
 msgstr "Успешно"
 
@@ -1616,7 +1639,7 @@ msgstr "TOR включен"
 
 #: public/views/walletHome.html:117
 #: public/views/walletHome.html:122
-#: public/views/walletHome.html:630
+#: public/views/walletHome.html:673
 msgid "Tap to retry"
 msgstr "Нажмите для повторения"
 
@@ -1663,8 +1686,8 @@ msgid "The signature is"
 msgstr "Подпись"
 
 #: public/views/includes/backup-reminder.html:7
-msgid "The total amount on your wallet is"
-msgstr ""
+msgid "The total amount in your wallet is"
+msgstr "Общая сумма в вашем кошельке"
 
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
@@ -1699,9 +1722,9 @@ msgstr "Выбор не может быть изменен позже"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "Этот вариант лучше для безопасности (ваши данные не будут передаваться через хаб сети Byteball, обслуживающий лёгкие кошельки), но кошельку потребуется несколько гигабайт дискового пространства и начальная синхронизация может занять несколько дней. Также при синхронизации возможна значительная загрузка процессора."
 
-#: public/views/walletHome.html:438
-msgid "This payment is bound to a condition"
-msgstr "Платеж привязан к условию"
+#: public/views/walletHome.html:457
+msgid "This payment is bound to a condition..."
+msgstr "Этот платеж привязан к условию..."
 
 #: src/js/controllers/correspondentDevice.js:150
 msgid "This payment must be paid only from single-address wallet"
@@ -1711,19 +1734,19 @@ msgstr "Платёж может быть проведён только с кош
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Эта транзакция стала недействительной; возможно из-за попытки двойной траты."
 
-#: public/views/preferences.html:42
+#: public/views/preferences.html:46
 msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
 msgstr "Кошелек нельзя сконвертировать в многоадресный если он уже аттестован"
 
-#: public/views/preferences.html:41
+#: public/views/preferences.html:45
 msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
 msgstr "Кошелек нельзя сконвертировать в многоадресный если используется мультиподпись на нескольких устройствах"
 
-#: public/views/preferences.html:39
+#: public/views/preferences.html:43
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
 msgstr "Кошелек нельзя сконвертировать в одноадресный если он уже содержит несколько адресов"
 
-#: public/views/preferences.html:40
+#: public/views/preferences.html:44
 msgid "This wallet cannot be converted to single address wallet as it is multidevice"
 msgstr "Кошелек нельзя сконвертировать в одноадресный если используется мультиподпись"
 
@@ -1735,34 +1758,34 @@ msgstr "Все ваши существующие кошельки будут б�
 #: public/views/modals/offer-prosaic-contract.html:66
 #: public/views/modals/view-prosaic-contract.html:85
 msgid "Title of contract"
-msgstr ""
+msgstr "Название контракта"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
 #: public/views/modals/tx-details.html:74
-#: public/views/walletHome.html:697
-#: src/js/controllers/index.js:1595
+#: public/views/walletHome.html:741
+#: src/js/controllers/index.js:1596
 msgid "To"
 msgstr "Кому"
 
-#: public/views/walletHome.html:400
+#: public/views/walletHome.html:419
 msgid "To Obyte address"
-msgstr ""
+msgstr "На Obyte адрес"
 
 #: public/views/backup.html:24
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "Полная резервная копия позволит сохранить и восстановить абсолютно все данные (выберете эту опцию в меню)"
 
-#: public/views/walletHome.html:604
+#: public/views/walletHome.html:647
 msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
 msgstr ""
 
-#: public/views/walletHome.html:447
+#: public/views/walletHome.html:466
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Чтобы привязать платеж к условию, кликайте адрес контрагента в чате"
 
-#: src/js/controllers/index.js:1598
+#: src/js/controllers/index.js:1599
 msgid "To email"
 msgstr "На email"
 
@@ -1790,12 +1813,13 @@ msgstr "Количество совладельцев"
 msgid "Transaction"
 msgstr "Транзакция"
 
-#: src/js/controllers/index.js:270
+#: src/js/controllers/index.js:271
 msgid "Transaction created.\n"
 "Please approve it on the other devices."
-msgstr ""
+msgstr "Транзакция создана.\n"
+"Пожалуйста, подтвердите ее на других устройствах."
 
-#: public/views/walletHome.html:654
+#: public/views/walletHome.html:697
 msgid "Transactions<br> Downloaded"
 msgstr "Транзакций<br>Загружено"
 
@@ -1811,16 +1835,16 @@ msgstr "Переводчики"
 msgid "Trusted nodes"
 msgstr "Доверенный узлы"
 
-#: src/js/controllers/correspondentDevice.js:1332
+#: src/js/controllers/correspondentDevice.js:1335
 msgid "US state"
 msgstr "Штат США"
 
-#: src/js/controllers/walletHome.js:854
+#: src/js/controllers/walletHome.js:864
 msgid "Unable to send transaction proposal"
 msgstr "Не удается отправить предложение транзакции"
 
 #: public/views/modals/tx-details.html:121
-#: public/views/walletHome.html:685
+#: public/views/walletHome.html:728
 msgid "Unconfirmed"
 msgstr "Ожидает"
 
@@ -1852,15 +1876,16 @@ msgstr "Обновление базы данных, пожалуйста под�
 msgid "Valid till"
 msgstr ""
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:511
+#: public/views/walletHome.html:617
 msgid "Value"
 msgstr "Значение"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "Values"
 msgstr "Значения"
 
-#: src/js/controllers/correspondentDevice.js:1356
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Verifying the profile..."
 msgstr "Идёт подтверждение профиля..."
 
@@ -1901,7 +1926,7 @@ msgstr "Ожидание..."
 msgid "Wallet"
 msgstr "Кошелек"
 
-#: public/views/preferences.html:20
+#: public/views/preferences.html:24
 msgid "Wallet Alias"
 msgstr "Псевдоним кошелька"
 
@@ -1947,7 +1972,7 @@ msgstr "Внимание!"
 msgid "Was claimed?"
 msgstr "Уже было запрошено?"
 
-#: public/views/walletHome.html:340
+#: public/views/walletHome.html:339
 msgid "What to send"
 msgstr "Что отправить"
 
@@ -1955,13 +1980,13 @@ msgstr "Что отправить"
 #: public/views/modals/offer-contract.html:112
 #: public/views/modals/sign-message.html:28
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:483
-#: public/views/walletHome.html:507
-#: public/views/walletHome.html:585
+#: public/views/walletHome.html:526
+#: public/views/walletHome.html:550
+#: public/views/walletHome.html:628
 msgid "Who signs:"
 msgstr "Кто подписывает:"
 
-#: public/views/preferencesEditWitness.html:13
+#: public/views/preferencesEditWitness.html:12
 msgid "Witness address"
 msgstr "Адрес свидетеля"
 
@@ -1982,7 +2007,7 @@ msgid "Wrong password"
 msgstr "Неверный пароль"
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:658
+#: src/js/controllers/index.js:659
 msgid "Yes"
 msgstr "Да"
 
@@ -1998,7 +2023,7 @@ msgstr "Вы не можете привязать транзакцию к вст
 msgid "You do not have a wallet"
 msgstr "У вас нет кошелька"
 
-#: public/views/modals/choose-profile.html:69
+#: public/views/modals/choose-profile.html:70
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr "Вам нужно пройти аттестацию для получения профиля. Воспользуйтесь Ботом Аттестации реальных имён в Bot Store."
 
@@ -2041,11 +2066,11 @@ msgstr "[ Добавить новое устройство совладельц�
 #: public/views/modals/view-prosaic-contract.html:75
 #: public/views/modals/view-prosaic-contract.html:82
 msgid "address"
-msgstr ""
+msgstr "адрес"
 
 #: public/views/preferencesAttestorAddresses.html:18
 msgid "addresses"
-msgstr ""
+msgstr "адреса"
 
 #: public/views/modals/bind.html:37
 #: public/views/modals/offer-contract.html:44
@@ -2060,6 +2085,10 @@ msgstr "событие зарегистрировано оракулом"
 #: public/views/modals/share.html:43
 msgid "and erase the textcoin to keep it safe from attackers."
 msgstr "и удалите tectcoin чтобы обезопасить его от атак."
+
+#: public/views/includes/backup-reminder.html:7
+msgid "and it is recommended you back it up."
+msgstr ""
 
 #: public/views/modals/accept-profile.html:31
 #: public/views/modals/offer-prosaic-contract.html:55
@@ -2084,11 +2113,11 @@ msgstr ""
 msgid "attestor is not trusted by you"
 msgstr ""
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "available"
 msgstr "доступно"
 
-#: src/js/controllers/index.js:467
+#: src/js/controllers/index.js:468
 msgid "by address"
 msgstr "по адресу"
 
@@ -2121,7 +2150,7 @@ msgstr "запрошено через {{btx.claimedByMe?'me':'receiver'|translat
 msgid "clear chat history"
 msgstr "очистить историю чата"
 
-#: public/views/walletHome.html:574
+#: public/views/walletHome.html:617
 msgid "confirmed"
 msgstr "подтверждено"
 
@@ -2192,10 +2221,6 @@ msgstr "в смарт кошельках"
 msgid "invalid"
 msgstr "недопустимое значение"
 
-#: public/views/includes/backup-reminder.html:7
-msgid "it is recoommended to back it up."
-msgstr ""
-
 #: public/views/modals/share.html:36
 msgid "keep for myself"
 msgstr "хранить для себя"
@@ -2229,8 +2254,8 @@ msgstr ""
 msgid "on feed name"
 msgstr "в фиде с именем"
 
-#: public/views/walletHome.html:458
-#: public/views/walletHome.html:469
+#: public/views/walletHome.html:477
+#: public/views/walletHome.html:488
 msgid "optional"
 msgstr "необязательно"
 
@@ -2275,19 +2300,19 @@ msgid "send"
 msgstr "отправить"
 
 #: public/views/modals/share.html:30
-#: src/js/controllers/walletHome.js:785
+#: src/js/controllers/walletHome.js:795
 msgid "send email"
 msgstr "отправить email"
 
-#: src/js/controllers/walletHome.js:1000
-#: src/js/controllers/walletHome.js:1013
-#: src/js/controllers/walletHome.js:1113
-#: src/js/controllers/walletHome.js:1169
-#: src/js/controllers/walletHome.js:1316
-#: src/js/controllers/walletHome.js:1353
-#: src/js/controllers/walletHome.js:1361
-#: src/js/controllers/walletHome.js:930
-#: src/js/controllers/walletHome.js:965
+#: src/js/controllers/walletHome.js:1034
+#: src/js/controllers/walletHome.js:1047
+#: src/js/controllers/walletHome.js:1147
+#: src/js/controllers/walletHome.js:1206
+#: src/js/controllers/walletHome.js:1357
+#: src/js/controllers/walletHome.js:1394
+#: src/js/controllers/walletHome.js:1403
+#: src/js/controllers/walletHome.js:964
+#: src/js/controllers/walletHome.js:999
 msgid "sending"
 msgstr "отправка"
 
@@ -2295,11 +2320,11 @@ msgstr "отправка"
 msgid "share again"
 msgstr "отправить снова"
 
-#: public/views/walletHome.html:444
+#: public/views/walletHome.html:463
 msgid "switch to multi-address"
 msgstr "переключить на мультиадресный"
 
-#: public/views/walletHome.html:443
+#: public/views/walletHome.html:462
 msgid "switch to single address"
 msgstr "переключить на одноадресный"
 
@@ -2311,16 +2336,16 @@ msgstr ""
 msgid "the text below and send it to the recipient via any messaging app"
 msgstr "texcoin ниже и отправите его через любой мессенджер"
 
-#: public/views/modals/approveNewWitnesses.html:17
+#: public/views/modals/approveNewWitnesses.html:26
 msgid "to"
 msgstr "на"
 
-#: src/js/controllers/index.js:370
+#: src/js/controllers/index.js:371
 msgid "together with"
 msgstr "вместе с"
 
-#: public/views/walletHome.html:459
-#: public/views/walletHome.html:470
+#: public/views/walletHome.html:478
+#: public/views/walletHome.html:489
 msgid "too long!"
 msgstr "содержание слишком длинное!"
 
@@ -2342,7 +2367,7 @@ msgstr "допустимое значение"
 msgid "validate contract integrity"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:882
+#: src/js/controllers/walletHome.js:916
 msgid "wait for sync to complete before sending payments"
 msgstr "дождитесь завершения синхронизации перед тем как отправлять платеж"
 
