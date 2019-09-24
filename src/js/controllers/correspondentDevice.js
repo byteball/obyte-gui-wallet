@@ -391,11 +391,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
-						fc.sendMultiPayment(opts, function(err){
+						fc.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
 							$scope.bWorking = false;
 							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
@@ -756,8 +757,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							recipient_device_address: recipient_device_address,
 							base_outputs: arrBaseOutputs,
 							asset_outputs: arrAssetOutputs
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_multi_payment_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
@@ -944,8 +946,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							shared_address: indexScope.shared_address,
 							change_address: arrAddresses[0],
 							messages: [objMessage]
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_vote_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
@@ -1654,9 +1657,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							return setError("contract status was changed, reopen it");
 						prosaic_contract.setField(objContract.hash, "status", status);
 						prosaic_contract.respond(objContract, status, signedMessageBase64, require('ocore/wallet.js').getSigner());
-						var body = "contract \""+objContract.title+"\" " + status;
+						objContract.status = status;
+						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
 						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
 							cosigners.forEach(function(cosigner){
@@ -1693,12 +1698,26 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					prosaic_contract.getByHash(objContract.hash, function(objContract){
 						if (objContract.status !== "pending")
 							return setError("contract status was changed, reopen it");
-						device.sendMessageToDevice(objContract.peer_device_address, "prosaic_contract_update", {hash: objContract.hash, field: "status", value: "revoked"});
-						prosaic_contract.setField(objContract.hash, "status", "revoked");
-						var body = "contract \""+objContract.title+"\" revoked";
-						device.sendMessageToDevice(objContract.peer_device_address, "text", body);
+
+						objContract.status = 'revoked';
+						prosaic_contract.setField(objContract.hash, "status", objContract.status);
+						device.sendMessageToDevice(correspondent.device_address, "prosaic_contract_update", {
+							hash: objContract.hash,
+							field: "status",
+							value: objContract.status
+						});
+
+						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+
+						// swap addresses for peer chat message
+						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
+						delete objContract.peer_device_address;
+						chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
+
 						$timeout(function() {
 							$modalInstance.dismiss('revoke');
 						});
@@ -1777,6 +1796,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
 				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
 				function(rows) {
+					if (rows.length === 0)
+						return notification.error('not my prosaic contract');
 					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
 						return showModal();
 					oldWalletId = profileService.focusedClient.credentials.walletId;

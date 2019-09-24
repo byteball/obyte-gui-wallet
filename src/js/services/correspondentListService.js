@@ -10,12 +10,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var crypto = require('crypto');
 	var device = require('ocore/device.js');
 	var wallet = require('ocore/wallet.js');
-
 	var chatStorage = require('ocore/chat_storage.js');
+
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
+	$rootScope.newPaymentsCount = {};
 
 	if (typeof nw !== 'undefined') {
+		var messagesCount;
+		var paymentsCount;
 		var win = nw.Window.get();
 		win.on('focus', function(){
 			$rootScope.newMsgCounterEnabled = false;
@@ -23,18 +26,35 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		win.on('blur', function(){
 			$rootScope.newMsgCounterEnabled = true;
 		});
+
 		$rootScope.$watch('newMessagesCount', function(counters) {
-			var sum = lodash.sum(lodash.values(counters));
-			if (sum) {
-				win.setBadgeLabel(""+sum);
+			messagesCount = lodash.sum(lodash.values(counters));
+			if (messagesCount || paymentsCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
+			} else {
+				win.setBadgeLabel("");
+			}
+		}, true);
+
+		$rootScope.$watch('newPaymentsCount', function(counters) {
+			paymentsCount = lodash.sum(lodash.values(counters));
+			if (paymentsCount || messagesCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
 			} else {
 				win.setBadgeLabel("");
 			}
 		}, true);
 	}
+
 	$rootScope.$watch('newMessagesCount', function(counters) {
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
+
+	$rootScope.$watch('newPaymentsCount', function(counters) {
+		$rootScope.totalNewPaymentsCnt = lodash.sum(lodash.values(counters));
+	}, true);
+
+
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
 		var walletGeneral = require('ocore/wallet_general.js');
@@ -54,6 +74,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		if (bIncoming) {
+
 			if (peer_address in $rootScope.newMessagesCount)
 				$rootScope.newMessagesCount[peer_address]++;
 			else {
@@ -191,7 +212,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -373,7 +394,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract offer: '+objContract.title+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -730,7 +751,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			}
 		});
 	});
-	
+
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
@@ -744,7 +765,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			});
 		});
 	});
-	
+
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
@@ -752,6 +773,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
+	});
+
+	eventBus.on('new_my_transactions', (arrNewUnits) => {
+		arrNewUnits.forEach((unit) => {
+			if (!$rootScope.newPaymentsCount[unit])
+				$rootScope.newPaymentsCount[unit] = 1;
+			else
+				$rootScope.newPaymentsCount[unit]++;
+		});
+		delete $rootScope.newPaymentsCount[$rootScope.sentUnit];
 	});
 	
 	eventBus.on('paired', function(device_address){
@@ -925,7 +956,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address){
 						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "shared_address", value: shared_address});
+						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+							hash: contract.hash,
+							field: "shared_address",
+							value: shared_address
+						});
 						contract.cosigners.forEach(function(cosigner){
 							if (cosigner != device.getMyDeviceAddress())
 								prosaic_contract.share(contract.hash, cosigner);
@@ -938,10 +973,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							amount: prosaic_contract.CHARGE_AMOUNT,
 							arrSigningDeviceAddresses: contract.cosigners
 						};
-						fc.sendMultiPayment(opts, function(err){
+						fc.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
 							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
@@ -967,12 +1003,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								messages: [objMessage]
 							}, function(err, unit) { // can take long if multisig
 								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								$rootScope.sentUnit = unit;
 								if (err) {
 									showError(err);
 									return;
 								}
 								prosaic_contract.setField(contract.hash, "unit", unit);
-								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {hash: contract.hash, field: "unit", value: unit});
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+									hash: contract.hash,
+									field: "unit",
+									value: unit
+								});
 								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
