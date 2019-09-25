@@ -1654,6 +1654,9 @@ angular.module('copayApp.controllers')
 				case -6:
 					app = "definition";
 					break;
+				case -7:
+					app = "text";
+					break;
 				default:
 					throw new Error("invalid app selected");
 			}
@@ -1667,8 +1670,7 @@ angular.module('copayApp.controllers')
 				value[pair.name] = pair.value;
 			});
 			if (errored) return;
-			if (Object.keys(value)
-				.length === 0) {
+			if (Object.keys(value).length === 0) {
 				self.setSendError("Provide at least one value");
 				return;
 			}
@@ -1722,6 +1724,9 @@ angular.module('copayApp.controllers')
 						sendData(value);
 					});
 					return;
+				}
+				if (app == "text") {
+					value = $scope.home.content;
 				}
 
 				sendData(value);
@@ -2025,6 +2030,11 @@ angular.module('copayApp.controllers')
 						$scope.assetIndexSelectorValue = -6;
 						$scope.home.definition = dataPrompt.definition;
 						delete dataPrompt.definition;
+						break;
+					case 'text':
+						$scope.assetIndexSelectorValue = -7;
+						$scope.home.content = dataPrompt.content;
+						delete dataPrompt.content;
 						break;
 				}
 				$scope.home.feedvaluespairs = [];

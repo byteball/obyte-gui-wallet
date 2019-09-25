@@ -341,12 +341,13 @@ input.datafeed_input {
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms(); home.onChanged()">
                 	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
-                	<option ng-value="-1" translate>Data into datafeed</option>
-                	<option ng-value="-2" translate>Attestation</option>
-                	<option ng-value="-3" translate>Profile</option>
-                	<option ng-value="-4" translate>Data</option>
-                	<option ng-value="-5" translate>Poll</option>
+                	<option ng-value="-1" translate>Data into datafeed (searchable)</option>
+                	<option ng-value="-2" translate>Attestation of any address</option>
+                	<option ng-value="-3" translate>Profile of my address</option>
+                	<option ng-value="-4" translate>Unstructured data</option>
+                	<option ng-value="-5" translate>Question with options</option>
                 	<option ng-value="-6" translate>Definition of autonomous agent</option>
+                	<option ng-value="-7" translate>Text content</option>
                 </select>
             </div>
         </h4>
@@ -642,7 +643,13 @@ input.datafeed_input {
           <span ng-if="home.aa_validation_error" class="text-warning size-12">{{home.aa_validation_error}}</span>
           <span ng-if="sendDataForm.definition.$valid" class="text-success size-12" translate>Looks OK</span>
 				</div>
-				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6">
+        <div class="row m20t" ng-if="assetIndexSelectorValue == -7">
+          <label style="float: left;">
+            <span translate>Plain text or Markdown:</span>
+          </label>
+          <textarea name="content" ng-model="home.content" placeholder="Text content" required rows="10" style="margin-bottom: 0px"></textarea>
+        </div>
+				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7">
 					<label>
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
