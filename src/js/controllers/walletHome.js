@@ -1729,7 +1729,7 @@ angular.module('copayApp.controllers')
 				form.amount.$render();
 			}
 			else {
-				var full_amount = assetInfo.stable;
+				var full_amount = assetInfo.total;
 				if (assetInfo.asset === constants.BLACKBYTES_ASSET)
 					full_amount /= this.bbUnitValue;
 				else if (assetInfo.decimals)

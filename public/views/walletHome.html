@@ -340,7 +340,7 @@ input.datafeed_input {
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
                 	<option ng-repeat="balance in index.arrBalances"
-                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
+                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.totalStr ? balance.totalStr : (balance.total.toLocaleString())) + (balance.pending && 0 ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed</option>
                 	<option ng-value="-2" translate>Attestation</option>
                 	<option ng-value="-3" translate>Profile</option>
