@@ -1181,6 +1181,7 @@ angular.module('copayApp.controllers')
 			var data_payload = {};
 			var errored = false;
 			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
 				if (data_payload[pair.name]) {
 					self.setSendError("All keys must be unique");
 					errored = true;
@@ -1662,6 +1663,7 @@ angular.module('copayApp.controllers')
 			}
 			var errored = false;
 			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
 				if (value[pair.name]) {
 					self.setSendError("All keys must be unique");
 					errored = true;
@@ -1670,9 +1672,11 @@ angular.module('copayApp.controllers')
 				value[pair.name] = pair.value;
 			});
 			if (errored) return;
-			if (Object.keys(value).length === 0) {
-				self.setSendError("Provide at least one value");
-				return;
+			if ($scope.assetIndexSelectorValue !== -6 && $scope.assetIndexSelectorValue !== -7) {
+				if (Object.keys(value).length === 0) {
+					self.setSendError("Provide at least one value");
+					return;
+				}
 			}
 
 			if (fc.isPrivKeyEncrypted()) {
