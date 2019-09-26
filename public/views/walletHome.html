@@ -647,7 +647,9 @@ input.datafeed_input {
           <label style="float: left;">
             <span translate>Plain text or Markdown:</span>
           </label>
-          <textarea name="content" ng-model="home.content" placeholder="Text content" required rows="10" style="margin-bottom: 0px"></textarea>
+          <textarea name="content" ng-model="home.content" placeholder="Text content" required rows="10" ng-change="home.validataTextLength()" style="margin-bottom: 0px"></textarea>
+          <div ng-if="sendDataForm.content.$invalid && home.content" class="text-warning size-12" translate>Too long text</div>
+          <div ng-if="sendDataForm.content.$valid || !home.content" class="size-12">{{home.content.length || 0}} <span translate>character(s)</span></div>
         </div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7">
 					<label>

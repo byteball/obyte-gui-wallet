@@ -857,6 +857,11 @@ angular.module('copayApp.controllers')
 			}, 500)();
 		}
 
+		this.validataTextLength = function () {
+			var form = $scope.sendDataForm;
+			form.content.$setValidity('validLength', !(self.content && self.content.length > 280));
+		}
+
 		this.onAddressChanged = function () {
 			var form = $scope.sendPaymentForm;
 			if (form.address.$invalid) {
@@ -1619,6 +1624,11 @@ angular.module('copayApp.controllers')
 					$timeout(function () {
 						if (self.definition && self.definition.length > 0)
 							self.validateAADefinition();
+					});
+				if ($scope.assetIndexSelectorValue === -7)
+					$timeout(function () {
+						if (self.content && self.content.length > 0)
+							self.validataTextLength();
 					});
 			}
 			else {
