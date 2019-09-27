@@ -286,7 +286,7 @@ API.prototype.decryptBIP38PrivateKey = function(encryptedPrivateKeyBase58, passp
 
   var privateKey = new Bitcore.PrivateKey(privateKeyWif);
   var address = privateKey.publicKey.toAddress().toString();
-  var addrBuff = new Buffer(address, 'ascii');
+  var addrBuff = new Buffer.from(address, 'ascii');
   var actualChecksum = Bitcore.crypto.Hash.sha256sha256(addrBuff).toString('hex').substring(0, 8);
   var expectedChecksum = Bitcore.encoding.Base58Check.decode(encryptedPrivateKeyBase58).toString('hex').substring(6, 14);
 
