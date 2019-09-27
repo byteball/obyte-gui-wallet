@@ -857,9 +857,9 @@ angular.module('copayApp.controllers')
 			}, 500)();
 		}
 
-		this.validataTextLength = function () {
+		this.validateTextLength = function () {
 			var form = $scope.sendDataForm;
-			form.content.$setValidity('validLength', !(self.content && self.content.length > 280));
+			form.content.$setValidity('validLength', !(self.content && self.content.length > 140));
 		}
 
 		this.onAddressChanged = function () {
@@ -1628,7 +1628,7 @@ angular.module('copayApp.controllers')
 				if ($scope.assetIndexSelectorValue === -7)
 					$timeout(function () {
 						if (self.content && self.content.length > 0)
-							self.validataTextLength();
+							self.validateTextLength();
 					});
 			}
 			else {
