@@ -857,6 +857,11 @@ angular.module('copayApp.controllers')
 			}, 500)();
 		}
 
+		this.validataTextLength = function () {
+			var form = $scope.sendDataForm;
+			form.content.$setValidity('validLength', !(self.content && self.content.length > 280));
+		}
+
 		this.onAddressChanged = function () {
 			var form = $scope.sendPaymentForm;
 			if (form.address.$invalid) {
@@ -1181,6 +1186,7 @@ angular.module('copayApp.controllers')
 			var data_payload = {};
 			var errored = false;
 			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
 				if (data_payload[pair.name]) {
 					self.setSendError("All keys must be unique");
 					errored = true;
@@ -1619,6 +1625,11 @@ angular.module('copayApp.controllers')
 						if (self.definition && self.definition.length > 0)
 							self.validateAADefinition();
 					});
+				if ($scope.assetIndexSelectorValue === -7)
+					$timeout(function () {
+						if (self.content && self.content.length > 0)
+							self.validataTextLength();
+					});
 			}
 			else {
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
@@ -1654,11 +1665,15 @@ angular.module('copayApp.controllers')
 				case -6:
 					app = "definition";
 					break;
+				case -7:
+					app = "text";
+					break;
 				default:
 					throw new Error("invalid app selected");
 			}
 			var errored = false;
 			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
 				if (value[pair.name]) {
 					self.setSendError("All keys must be unique");
 					errored = true;
@@ -1667,10 +1682,11 @@ angular.module('copayApp.controllers')
 				value[pair.name] = pair.value;
 			});
 			if (errored) return;
-			if (Object.keys(value)
-				.length === 0) {
-				self.setSendError("Provide at least one value");
-				return;
+			if ($scope.assetIndexSelectorValue !== -6 && $scope.assetIndexSelectorValue !== -7) {
+				if (Object.keys(value).length === 0) {
+					self.setSendError("Provide at least one value");
+					return;
+				}
 			}
 
 			if (fc.isPrivKeyEncrypted()) {
@@ -1722,6 +1738,9 @@ angular.module('copayApp.controllers')
 						sendData(value);
 					});
 					return;
+				}
+				if (app == "text") {
+					value = $scope.home.content;
 				}
 
 				sendData(value);
@@ -2025,6 +2044,11 @@ angular.module('copayApp.controllers')
 						$scope.assetIndexSelectorValue = -6;
 						$scope.home.definition = dataPrompt.definition;
 						delete dataPrompt.definition;
+						break;
+					case 'text':
+						$scope.assetIndexSelectorValue = -7;
+						$scope.home.content = dataPrompt.content;
+						delete dataPrompt.content;
 						break;
 				}
 				$scope.home.feedvaluespairs = [];
