@@ -260,7 +260,7 @@ Terminal=false\n\
 Categories=Office;Finance;\n\
 MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
 X-Ubuntu-Touch=true\n\
-X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
+X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (err)
 					throw Error("failed to write desktop file: "+err);
 				child_process.exec('update-desktop-database '+applicationsDir, function(err){
@@ -273,7 +273,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 	   <comment>Obyte Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
-	 </mime-info>\n", {mode: 0755}, function(err) {
+	 </mime-info>\n", {mode: parseInt('755', 8)}, function(err) {
 	 						if (err)
 								throw Error("failed to write MIME config file: "+err);
 							child_process.exec('update-mime-database '+mimeDir, function(err){

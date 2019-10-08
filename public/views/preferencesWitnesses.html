@@ -11,16 +11,25 @@
 			<div translate>Auto-update the witness list from the hub</div>
 		</li>
 	</ul>
-    <ul class="no-bullet m0" ng-class="{'autoUpdatingWitnessesList' : autoUpdWitnessesList}">
-      <li ng-repeat="witness in wc.witnesses" ng-click="wc.edit(witness)">
-        <i class="icon-arrow-right3 size-24 right text-gray"></i>
-        {{witness}}
+  <ul class="no-bullet m0" ng-class="{'autoUpdatingWitnessesList' : autoUpdWitnessesList}">
+      <li ng-repeat="witness in wc.witnesses">
+        <span ng-click="wc.edit(witness)">
+          <i class="icon-arrow-right3 size-24 right text-gray"></i>
+          <span class="address" title="{{witness}}">
+            {{witness}}
+          </span>
+          <span class="name" ng-if="wc.witnessesAddInfo[witness].name">
+            {{wc.witnessesAddInfo[witness].name}}
+          </span>
+        </span>
+        <span class="url" ng-if="wc.witnessesAddInfo[witness].url">
+          <a href ng-click="$root.openExternalLink(wc.witnessesAddInfo[witness].url)">{{wc.witnessesAddInfo[witness].url}}</a>
+        </span>
       </li>
-    </ul>
-
+  </ul>
 </div>
 <style>
-  .autoUpdatingWitnessesList{
+  .autoUpdatingWitnessesList {
     color: #C1C1C1;
   }
 </style>

@@ -83,10 +83,10 @@ form[name="prosaicContractForm"] {
 		</div>
 
 	<h3 class="title" translate>Title of contract</h3>
-	<span style="width: 100%; word-wrap: break-word;">{{title}}</span>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{title}}</span>
 
 	<h3 class="title" translate>Text</h3>
-	<span style="width: 100%; word-wrap: break-word;" markdown>{{text}}</span>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
