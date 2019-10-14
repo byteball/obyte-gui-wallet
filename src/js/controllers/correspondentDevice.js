@@ -553,6 +553,96 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		});
 	};
 
+	$scope.offerArbiterContract = function(address){
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var prosaic_contract = require('ocore/arbiter_contract.js');
+		$rootScope.modalOpened = true;
+		var fc = profileService.focusedClient;
+		
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+
+			$scope.form = {
+				ttl: 24*7
+			};
+			$scope.index = indexScope;
+			$scope.isMobile = isMobile.any();
+
+			readMyPaymentAddress(fc, function(my_address) {
+				$scope.my_address = my_address;
+				$scope.peer_address = address;
+				correspondentListService.populateScopeWithAttestedFields($scope, my_address, address, function() {
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
+			});
+
+			$scope.CHARGE_AMOUNT = prosaic_contract.CHARGE_AMOUNT;
+			
+			$scope.payAndOffer = function() {
+				profileService.requestTouchid(function(err) {
+					if (err) {
+						profileService.lockFC();
+						$scope.error = err;
+						return;
+					}
+					console.log('offerProsaicContract');
+					$scope.error = '';
+
+					var contract_text = $scope.form.contractText;
+					var contract_title = $scope.form.contractTitle;
+					var ttl = $scope.form.ttl;
+					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
+
+					readMyPaymentAddress(fc, function(my_address) {
+						var cosigners = getSigningDeviceAddresses(fc);
+						if (!cosigners.length && fc.credentials.m > 1) {
+							indexScope.copayers.forEach(function(copayer) {
+								cosigners.push(copayer.device_address);
+							});
+						}
+						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
+							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
+							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+							var body = correspondentListService.formatOutgoingMessage(chat_message);
+							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+							device.readCorrespondent(correspondent.device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							});
+							$modalInstance.dismiss('sent');
+						});
+					});
+				});
+			};
+			
+			$scope.cancel = function() {
+				$modalInstance.dismiss('cancel');
+			};
+
+			$scope.openInExplorer = correspondentListService.openInExplorer;
+		};
+		
+		
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/offer-arbiter-contract.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
+
 	$scope.sendMultiPayment = function(paymentJsonBase64){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
