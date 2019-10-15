@@ -1425,8 +1425,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	function getDisplayField(field){
 		switch (field){
-			case 'first_name': return gettext('First name');
-			case 'last_name': return gettext('Last name');
+			case 'first_name': return gettext('Given name');
+			case 'last_name': return gettext('Surname');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
 			case 'personal_code': return gettext('Personal code');
@@ -1436,7 +1436,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'id_subtype': return gettext('ID subtype');
 			case 'id_expiry': return gettext('ID expires at');
 			case 'id_issued_at': return gettext('ID issued at');
-			default: return field;
+			default: return typeof(field) === 'string' ? field.replace(/_/g, ' ') : field;
 		}
 	}
 	

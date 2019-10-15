@@ -681,24 +681,42 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
 		var privateProfile = require('ocore/private_profile.js');
-		scope.my_first_name = "FIRST NAME UNKNOWN";
-		scope.my_last_name = "LAST NAME UNKNOWN";
+		scope.my_name = "NAME UNKNOWN";
 		scope.my_attestor = {};
-		scope.peer_first_name = "FIRST NAME UNKNOWN";
-		scope.peer_last_name = "LAST NAME UNKNOWN";
+		scope.peer_name = "NAME UNKNOWN";
 		scope.peer_attestor = {};
 		async.series([function(cb2) {
 			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				scope.peer_first_name = profile.first_name || scope.peer_first_name;
-				scope.peer_last_name = profile.last_name || scope.peer_last_name;
-				scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				if (profile.first_name && profile.last_name) {
+					scope.peer_name = profile.first_name +' '+ profile.last_name;
+					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
 				cb2();
 			});
 		}, function(cb2) {
 			privateProfile.getFieldsForAddress(my_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				scope.my_first_name = profile.first_name || scope.my_first_name;
-				scope.my_last_name = profile.last_name || scope.my_last_name;
-				scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				if (profile.first_name && profile.last_name) {
+					scope.my_name = profile.first_name +' '+ profile.last_name;
+					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}, function(cb2) {
+			if (Object.keys(scope.peer_attestor).length) return cb2();
+			privateProfile.getFieldsForAddress(peer_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.name) {
+					scope.peer_name = profile.name;
+					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}, function(cb2) {
+			if (Object.keys(scope.my_attestor).length) return cb2();
+			privateProfile.getFieldsForAddress(my_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.name) {
+					scope.my_name = profile.name;
+					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
 				cb2();
 			});
 		}], function(){
