@@ -94,7 +94,7 @@ angular.module('copayApp.directives')
           ctrl.$setValidity('validAddresses', false);
           return value;
         }
-        for (i = 0; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i++) {
           var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
           if (!tokens) {
             ctrl.$setValidity('validAddresses', false);
