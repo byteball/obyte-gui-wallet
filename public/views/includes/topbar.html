@@ -23,7 +23,7 @@
         style="color: #E4E8EC !important;">
 		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
-			<a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#E4E8EC' : index.backgroundColor, 'display':'flex', 'justify-content': 'center'}">
+			<a ng-click="index.openSubwalletModal()" style="font-weight: bold;" ng-style="{'color': noColor ? '#E4E8EC' : index.backgroundColor, 'display':'flex', 'justify-content': 'center'}">
 				<span class="ellipsis" style="float: left;">
 					{{(index.shared_address || index.alias || index.walletName)}}
 				</span>

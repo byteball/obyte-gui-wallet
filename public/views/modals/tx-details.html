@@ -13,7 +13,7 @@
 </nav>
 
 <div class="modal-content fix-modals-touch">
-  <div class="header-modal text-center enable_text_select">
+  <div class="header-modal text-center enable_text_select" ng-style="{'background-color':color}" style="color:white; font-weight: bold;">
     <div class="size-42" ng-show="btx.action != 'invalid'">
       <span ng-if="btx.action == 'received'">+</span><span ng-if="btx.action == 'sent'">-</span>{{btx.amountStr}}
       <div class="size-14" ng-if="btx.asset === 'base' && exchangeRates.GBYTE_USD">
@@ -33,7 +33,7 @@
 
   <h4 class="title m0" translate>Details</h4>
 
-  <ul class="no-bullet size-14 m0 tx-details"> 
+  <ul class="no-bullet size-14 m0 tx-details">
 
     <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
     <span class="text-gray" translate>To</span>:
@@ -56,7 +56,7 @@
 	    </span>
     </li>
 
-    <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
+    <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh"
       ng-click="showMultiplesOutputs = !showMultiplesOutputs">
       <span class="text-gray" translate>Recipients</span>:
       <span class="right">{{btx.recipientCount}}
@@ -64,7 +64,7 @@
         <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
       </span>
     </li>
-	  
+
     <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
       <div class="text-gray small-2 columns"><span translate>From</span>:</div>
 	  <div class="right small-10 columns enable_text_select ellipsis"><div ng-repeat="address in btx.arrPayerAddresses" class="right">{{address}}</div></div>
@@ -84,7 +84,7 @@
       <span class="text-gray" translate>Note</span>:
       <span class="right">{{btx.message}}</span>
     </li>
-    
+
     <li ng-if="btx.action == 'invalid'" class="line-b p10 oh">
     <span class="right" translate>
       This transaction has become invalid; possibly due to a double spend attempt.
@@ -124,7 +124,7 @@
       <span class="label gray radius" ng-show="btx.confirmations" translate>
         Confirmed
       </span>
- 
+
     </span>
     </li>
 
@@ -140,7 +140,7 @@
 	      <span class="label gray radius" ng-show="btx.claimed" translate>
 	        claimed by {{btx.claimedByMe?'me':'receiver'|translate}}
 	      </span>
-	 
+
 	    </span>
     </li>
 

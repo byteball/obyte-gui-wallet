@@ -229,8 +229,29 @@ input.datafeed_input {
           <b>{{index.lockedBalanceStr}} </b>
         </div>
       </div>
-      <div class="extra-margin-bottom" style="height:275px">
-          <img style="margin: 15% 30% 5% 30%;width: 40%;" src="img/wallet_dark2.png">
+      <div id="imgframe" class="extra-margin-bottom" style="
+      height: 50%;      /* equals max image height */
+         width: 100%;
+         //border: 1px solid red;
+         white-space: nowrap;
+
+         text-align: center; margin: 1em 0;
+
+      ">
+        <span id="helper"
+        style="
+              display: inline-block;
+              height: 100%;
+              vertical-align: middle;
+              ">  </span>
+          <img style="
+                          vertical-align: top;
+                          max-height: 170px;
+                          max-width: 170px;
+                          height:170px;
+                          "
+                          src="img/wallet_dark2.png">
+
       </div>
     </div> <!-- END WalletHome -->
 
@@ -750,16 +771,16 @@ input.datafeed_input {
         </div>
 
         <div class="row m20t">
-          <div class="large-6 medium-6 small-6 columns">
+          <div class="large-12 medium-12 small-12 columns" style="text-align: right;">
             <button type="submit" class="button black round expand" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}"  translate>
               Show all
             </button>
           </div>
-          <div class="large-6 medium-6 small-6 columns" ng-show="!index.isCordova">
+          <div class="large-12 medium-12 small-12 columns" ng-show="!index.isCordova" style="text-align: right;">
             <input id="export_file" type="file" nwsaveas="Obyte-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
             <a class="button outline dark-gray round" ng-click="index.csvHistory();">
               <i class="fi-page-export-csv"></i>
-              <span translate>Download CSV file</span>
+              <span style="font-size: 0.9em;" translate>Download CSV file</span>
             </a>
           </div>
         </div>
