@@ -4,11 +4,13 @@ angular.module('copayApp.controllers').controller('preferencesWitnessesControlle
   function($scope, go, witnessListService, autoUpdatingWitnessesList, $timeout){
     var self = this;
     this.witnesses = [];
+    this.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
     console.log('preferencesWitnessesController');
 
     $scope.autoUpdWitnessesList = autoUpdatingWitnessesList.autoUpdate;
 
     var myWitnesses = require('ocore/my_witnesses.js');
+
     myWitnesses.readMyWitnesses(function(arrWitnesses){
         self.witnesses = arrWitnesses;
 	    $timeout(function(){

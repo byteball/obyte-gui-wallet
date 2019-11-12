@@ -228,6 +228,12 @@ _:-ms-fullscreen, :root .main {
   overflow: hidden;
 }
 
+.walletHome .wallet-info .m0 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .copayers {
   position: relative;
   padding: 0;
@@ -263,10 +269,30 @@ ul.copayer-list img {
 	top: 3px;
 	right: 3px;
 	font-size: 0.6em;
-	padding: 3px 7.6px 2px 7.6px;
+	padding: 3px 7px 2px 7px;
 	background-color: red;
 	border-radius: 10px;
 	color: white;
+}
+
+.time-block {
+  margin-right: 16px;
+  margin-top: 4px; /* 1px up */
+}
+
+.history-badge {
+  position: absolute;
+  top: 3px;
+  right: -10px;
+  font-size: 0.6em;
+  padding: 3px 7px 2px 7px;
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+}
+
+.bottombar-item .badge {
+
 }
 
 .box-founds {
@@ -973,7 +999,6 @@ i.validation-icon {
 .keyboard-open .send-form {
 	padding-bottom: 0px;
 }
-
 .color-indicator{
     background-color: white;
     border-radius: 50%;
@@ -984,7 +1009,6 @@ i.validation-icon {
     position: relative;
     top: 2px;
 }
-
 /* Tweaks for Foundation css: (opacity works better on various colors)*/
 div.rn-carousel-indicator span {
   color: rgba(0,0,0,.25) !important;
@@ -992,3 +1016,4 @@ div.rn-carousel-indicator span {
 div.rn-carousel-indicator span.active {
     color: white !important;
 }
+
