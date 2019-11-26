@@ -994,31 +994,52 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}; // sendVote
 	
 	
-	$scope.showSignMessageModal = function(message_to_sign){
+	$scope.showSignMessageModal = function(message_to_sign, bNetworkAware){
 		$rootScope.modalOpened = true;
 		var self = this;
 		var fc = profileService.focusedClient;
 		$scope.error = '';
+		// try to parse message_to_sign into object
+		var json = Buffer.from(message_to_sign, 'base64').toString('utf8');
+		try{
+			var object_to_sign = JSON.parse(json);
+			console.log("signing object", object_to_sign);
+		}
+		catch(e){
+			console.log("signing a string");
+		}
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
 			$scope.bDisabled = true;
-			$scope.message_to_sign = message_to_sign;
+			$scope.message_to_sign = correspondentListService.escapeHtmlAndInsertBr(object_to_sign ? JSON.stringify(object_to_sign, null, '\t') : message_to_sign);
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g) || [];
+				var arrAddreses = (object_to_sign ? json : message_to_sign).match(/\b[2-7A-Z]{32}\b/g) || [];
 				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
 				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
 					$scope.bDisabled = false;
 					return scopeApply();
 				}
 				db.query(
-					"SELECT address FROM my_addresses \n\
-					WHERE wallet = ? AND address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
-					fc.credentials.walletId,
+					"SELECT address, wallet FROM my_addresses \n\
+					WHERE address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
 					function (rows) {
-						if (rows.length > 0)
-							$scope.address = rows[0].address;
+						var new_wallet;
+						if (rows.length > 0) {
+							var rows_on_current_wallet = rows.filter(function (row) { return (row.wallet === fc.credentials.walletId) });
+							if (rows_on_current_wallet.length > 0)
+								$scope.address = rows_on_current_wallet[0].address;
+							else {
+								$scope.address = rows[0].address;
+								new_wallet = rows[0].wallet;
+							}
+						}
+						if (new_wallet) // switch to another wallet
+							return profileService.setAndStoreFocus(new_wallet, function () {
+								$scope.bDisabled = false;
+								scopeApply();		
+							});
 						$scope.bDisabled = false;
 						scopeApply();
 					}
@@ -1034,7 +1055,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				correspondentListService.signMessageFromAddress(message_to_sign, $scope.address, getSigningDeviceAddresses(fc), function(err, signedMessageBase64){
+				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
 					if (err) {
 						$scope.error = err;
 						return scopeApply();
@@ -1082,7 +1103,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
-			$scope.signed_message = objSignedMessage.signed_message;
+			$scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
 			$scope.address = objSignedMessage.authors[0].address;
 			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
@@ -1687,7 +1708,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 					$modalInstance.dismiss();
 
-					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
 						if (err)
 							return setError(err);
 						respond('accepted', signedMessageBase64);

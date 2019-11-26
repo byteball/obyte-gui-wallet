@@ -567,9 +567,12 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 	}
 };
 
-API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, cb) {
+API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, bNetworkAware, cb) {
 	var Wallet = require('ocore/wallet.js');
-	Wallet.signMessage(from_address, message, arrSigningDeviceAddresses, this.getSignerWithLocalPrivateKey(), cb);
+  var signed_message = require('ocore/signed_message.js');
+  var signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
+	var signer = Wallet.getSigner({}, arrSigningDeviceAddresses, signWithLocalPrivateKey);
+	signed_message.signMessage(message, from_address, signer, bNetworkAware, cb);
 };
 
 API.prototype.getAddresses = function(opts, cb) {
