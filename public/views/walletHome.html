@@ -511,7 +511,7 @@ input.datafeed_input {
                         </div>
                       </div>
                       <div class="datafeed_input">
-                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" ng-maxlength="64" maxlength="64" ng-change="home.onChanged()">
+                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" ng-maxlength="256" maxlength="256" ng-change="home.onChanged()">
                       </div>
                       <a ng-if="!pair.readonly" ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
                     </div>
