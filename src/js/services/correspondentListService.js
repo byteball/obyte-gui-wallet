@@ -184,22 +184,23 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>');
+			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+escapeHtml(objVote.choice)+'</a>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>');
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
-		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return toDelayedReplacement('<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>');
+		}).replace(/\[(.+?)\]\(sign-message-request(-network-aware)?:(.+?)\)/g, function(str, description, network_aware, message_to_sign){
+			return toDelayedReplacement('<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\', '+!!network_aware+')">[Request to sign message: '+tryParseBase64(message_to_sign)+']</a>');
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -211,7 +212,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -323,6 +324,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 		return info;
 	}
+
+	function tryParseBase64(str) {
+		var json = Buffer.from(str, 'base64').toString('utf8');
+		try{
+			var obj = JSON.parse(json);
+		}
+		catch(e){
+			return str;
+		}
+		return escapeHtml(JSON.stringify(obj, null, '\t'));
+	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
 		var assocPaymentsByAsset = {};
@@ -374,12 +386,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return toDelayedReplacement('<i>Vote request: '+objVote.choice+'</i>');
+			return toDelayedReplacement('<i>Vote request: '+escapeHtml(objVote.choice)+'</i>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>');
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
@@ -389,7 +401,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -653,14 +666,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	var message_signing_key_in_progress;
-	function signMessageFromAddress(message, address, signingDeviceAddresses, cb) {
+	function signMessageFromAddress(message, address, signingDeviceAddresses, bNetworkAware, cb) {
 		var fc = profileService.focusedClient;
 		if (fc.isPrivKeyEncrypted()) {
 			profileService.unlockFC(null, function(err) {
 				if (err){
 					return cb(err.message);
 				}
-				signMessageFromAddress(message, address, signingDeviceAddresses, cb);
+				signMessageFromAddress(message, address, signingDeviceAddresses, bNetworkAware, cb);
 			});
 			return;
 		}
@@ -676,7 +689,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return cb("This message signing is already under way");
 			}
 			message_signing_key_in_progress = current_message_signing_key;
-			fc.signMessage(address, message, signingDeviceAddresses, function(err, objSignedMessage){
+			fc.signMessage(address, message, signingDeviceAddresses, bNetworkAware, function(err, objSignedMessage){
 				message_signing_key_in_progress = null;
 				if (err){
 					return cb(err);

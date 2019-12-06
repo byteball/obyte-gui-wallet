@@ -2306,8 +2306,8 @@ angular.module('copayApp.controllers')
 					return self.getUnitName();
 				};
 
-				$scope.openInExplorer = function() {
-					return self.openInExplorer(btx.unit);
+				$scope.openInExplorer = function(unit) {
+					return self.openInExplorer(unit);
 				};
 
 				$scope.copyAddress = function(addr) {
