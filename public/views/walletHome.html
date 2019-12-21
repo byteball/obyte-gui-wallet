@@ -119,7 +119,7 @@ input.datafeed_input {
 
           <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
-              <span class="size-13db m10b">{{index.updateError|translate}}</span>
+              <span class="size-13 db m10b">{{index.updateError|translate}}</span>
               <button class="outline white tiny round" translate>Tap to retry</button>
             </div>
 
@@ -223,7 +223,7 @@ input.datafeed_input {
           ng-include="index.txTemplateUrl">
         </div>
 
-        <div class="text-gray text-center size-13p10t"
+        <div class="text-gray text-center size-13 p10t"
           ng-show="index.lockedBalanceBytes && !index.updatingStatus">
           <span translate>Total Locked Balance</span>:
           <b>{{index.lockedBalanceStr}} </b>
@@ -699,7 +699,7 @@ input.datafeed_input {
         <div class="large-12 columns">
           <div class="oh text-center">
             <span ng-show="index.txHistoryError" ng-click='index.updateTxHistory()'>
-              <p class="size-13m10b db text-gray" translate>Could not fetch transaction history</p>
+              <p class="size-13 m10b db text-gray" translate>Could not fetch transaction history</p>
               <button class="outline round light-gray tiny" translate>Tap to retry</button>
             </span>
             <span ng-if="!index.txHistoryError" translate>
