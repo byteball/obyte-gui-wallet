@@ -176,8 +176,13 @@
       </li>
 
       <li ng-show="btx.response.error" class="line-b p10 row collapse">
-        <div class="text-gray small-2 columns"><span translate>Notice</span></div>
+        <div class="text-gray small-2 columns"><span translate>Error</span></div>
         <div class="right small-10 columns text-right enable_text_select" style="word-wrap: break-word">{{btx.response.error}}</div>
+      </li>
+
+      <li ng-show="btx.response.info" class="line-b p10 row collapse">
+        <div class="text-gray small-2 columns"><span translate>Notice</span></div>
+        <div class="right small-10 columns text-right enable_text_select" style="word-wrap: break-word">{{btx.response.info}}</div>
       </li>
     </ul>
 
