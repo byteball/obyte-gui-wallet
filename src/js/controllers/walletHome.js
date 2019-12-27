@@ -889,8 +889,7 @@ angular.module('copayApp.controllers')
 		};
 
 		function checkIfAAAndUpdateResults(address) {
-			var aa_addresses = require('ocore/aa_addresses.js');
-			aa_addresses.readAADefinitions([address], function (rows) {
+			readAADefinitionsWithBaseDefinitions(address, function (rows) {
 				self.aa_destinations = rows;
 				if (rows.length > 0)
 					return updateAAResults();
@@ -898,6 +897,23 @@ angular.module('copayApp.controllers')
 				self.added_bounce_fees = [];
 				$timeout(function() {
 					$scope.$digest();
+				});
+			});
+		}
+
+		function readAADefinitionsWithBaseDefinitions(address, handleResult) {
+			var aa_addresses = require('ocore/aa_addresses.js');
+			aa_addresses.readAADefinitions([address], function (rows) {
+				if (rows.length === 0)
+					return handleResult([]);
+				if (!rows[0].base_aa) // regular AA
+					return handleResult(rows);
+				// else, parameterized AA
+				aa_addresses.readAADefinitions([rows[0].base_aa], function (base_rows) {
+					if (base_rows.length === 0) // should never happen
+						return handleResult(rows);
+					rows[0].base_definition = base_rows[0].definition;
+					handleResult(rows);
 				});
 			});
 		}
@@ -974,7 +990,8 @@ angular.module('copayApp.controllers')
 				return console.log('no AA destinations');
 
 			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
-			var data_fields_to_input = [... new Set (self.aa_destinations[0].definition.match(target_to_find))];
+			var strDefinition = self.aa_destinations[0].base_definition || self.aa_destinations[0].definition;
+			var data_fields_to_input = [... new Set (strDefinition.match(target_to_find))];
 			if (data_fields_to_input.length) {
 				var moreEntriesArray = []; // get third word, if object have > 3 entries
 				var threeEntriesArray = []; // get all objects with 3 entries
@@ -993,6 +1010,11 @@ angular.module('copayApp.controllers')
 			var aa_address = row.address;
 			var arrDefinition = JSON.parse(row.definition);
 			var bounce_fees = arrDefinition[1].bounce_fees || { base: constants.MIN_BYTES_BOUNCE_FEE };
+			if (row.base_definition) {
+				var arrBaseDefinition = JSON.parse(row.base_definition);
+				if (arrBaseDefinition[1].bounce_fees)
+					bounce_fees = arrBaseDefinition[1].bounce_fees;
+			}
 			if (!bounce_fees.base) {
 				bounce_fees = lodash.clone(bounce_fees); // do not modify the definition
 				bounce_fees.base = constants.MIN_BYTES_BOUNCE_FEE;
