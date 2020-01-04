@@ -4,18 +4,18 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var root = {};
 
 	root.colorOpts = [
-	  {hexValue:'#DD4B39',colorName:"Punch"},
-	  {hexValue:'#F38F12',colorName:"Gamboge"},
-	  {hexValue:'#FAA77F',colorName:"Hit Pink"},
-	  {hexValue:'#FADA58',colorName:"Energy Yellow"},
-	  {hexValue:'#9EDD72',colorName:"Feijoa"},
-	  {hexValue:'#77DADA',colorName:"Bermuda"},
-	  {hexValue:'#4A90E2',colorName:"Havelock Blue"},
-	  {hexValue:'#484ED3',colorName:"Indigo"},
-	  {hexValue:'#9B59B6',colorName:"Wisteria"},
-	  {hexValue:'#E856EF',colorName:"Heliotrope"},
-	  {hexValue:'#FF599E',colorName:"Hot Pink"},
-	  {hexValue:'#7A8C9E',colorName:"Regent Gray"}
+      {hexValue:'#DD4B39',colorName:"Punch"},
+   	  {hexValue:'#F38F12',colorName:"Gamboge"},
+   	  {hexValue:'#FAA77F',colorName:"Hit Pink"},
+   	  {hexValue:'#FADA58',colorName:"Energy Yellow"},
+   	  {hexValue:'#9EDD72',colorName:"Feijoa"},
+   	  {hexValue:'#77DADA',colorName:"Bermuda"},
+   	  {hexValue:'#4A90E2',colorName:"Havelock Blue"},
+   	  {hexValue:'#484ED3',colorName:"Indigo"},
+   	  {hexValue:'#9B59B6',colorName:"Wisteria"},
+   	  {hexValue:'#E856EF',colorName:"Heliotrope"},
+   	  {hexValue:'#FF599E',colorName:"Hot Pink"},
+   	  {hexValue:'#7A8C9E',colorName:"Regent Gray"}
 	];
 
   var constants = require('ocore/constants.js');

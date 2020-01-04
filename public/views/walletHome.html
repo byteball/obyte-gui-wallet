@@ -12,10 +12,9 @@ input.datafeed_input {
 }
 #send .mtab-title, .modal-content .mtab-title {
 	padding: 5px;
-	/* font-weight: bold; */
-	font-size: 12px;
+	font-weight: bold;
+	font-size: 11px;
 	text-transform: uppercase;
-  text-align: center;
 }
 #send .mtab-title.active, .modal-content .mtab-title.active {
 	color: #34495E;
@@ -111,12 +110,7 @@ input.datafeed_input {
     <div id="walletHome" class="walletHome tab-view tab-in">
 	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
-        <div class="amount"
-        ng-style="{'background-color':index.backgroundColor}"
-        style="background-image: linear-gradient( rgba(255, 255, 255,.3), rgba(0, 0, 0,.2));"
-        ng-swipe-right="index.suspendSwipe()">
-<div></div>
-
+        <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
           <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span class="size-13 db m10b">{{index.updateError|translate}}</span>
@@ -162,7 +156,7 @@ input.datafeed_input {
           </style>
           <style>
           	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
-            	/* background-color: {{index.backgroundColor}}; */
+            	background-color: {{index.backgroundColor}};
             }
 			.secondrow {
 				margin-top: -7px;
@@ -194,7 +188,7 @@ input.datafeed_input {
             ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
           </div>
           <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" style="margin-top:6px" ng-if="!index.shared_address">
+            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
               <i class="fi-widget size-18 vm wallet-settings"></i>
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
@@ -203,8 +197,8 @@ input.datafeed_input {
               <span class="show-for-medium-up" translate>Definition</span>
             </a>
           </div>
-          <div class="wallet-info" >
-              <p class="m0" style="margin-top: 12px;">
+          <div class="wallet-info">
+              <p class="m0">
               {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
               </p>
               <div class="size-13 text-gray" ng-if="!index.shared_address">
@@ -229,30 +223,7 @@ input.datafeed_input {
           <b>{{index.lockedBalanceStr}} </b>
         </div>
       </div>
-      <div id="imgframe" class="extra-margin-bottom" style="
-      height: 50%;      /* equals max image height */
-         width: 100%;
-         //border: 1px solid red;
-         white-space: nowrap;
-
-         text-align: center; margin: 1em 0;
-
-      ">
-        <span id="helper"
-        style="
-              display: inline-block;
-              height: 100%;
-              vertical-align: middle;
-              ">  </span>
-          <img style="
-                          vertical-align: top;
-                          max-height: 170px;
-                          max-width: 170px;
-                          height:170px;
-                          "
-                          src="img/wallet_dark2.png">
-
-      </div>
+      <div class="extra-margin-bottom"></div>
     </div> <!-- END WalletHome -->
 
     <!--
@@ -306,7 +277,7 @@ input.datafeed_input {
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-13">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -385,11 +356,10 @@ input.datafeed_input {
             <div class="box-notification enable_text_select" ng-show="home.error">
               <span class="text-warning">
                 {{home.error|translate}}
-
-              </span> 
+              </span>
               <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
-			  
+
             <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
@@ -398,7 +368,7 @@ input.datafeed_input {
                   </div>
                   <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
                     <i class="icon icon-close-circle size-14 m5r"></i>
-                    <span class="size-12" translate> Not valid</span>
+                    <span class="size-13" translate> Not valid</span>
                   </div>
                 </div>
                 <div>
@@ -449,7 +419,7 @@ input.datafeed_input {
 	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
-	                  <span class="has-error right size-12" ng-show="sendPaymentForm.address.$invalid && _address">
+	                  <span class="has-error right size-13" ng-show="sendPaymentForm.address.$invalid && _address">
 	                    <i class="icon-close-circle size-14"></i>
 	                    <span class="vm" translate>Not valid</span>
 	                  </span>
@@ -458,7 +428,7 @@ input.datafeed_input {
 	                  </small>
 	                </span>
 	                <span ng-if="home.send_multiple">
-	                  <span class="has-error right size-12" ng-show="sendPaymentForm.addresses.$invalid && !sendPaymentForm.addresses.$pristine">
+	                  <span class="has-error right size-13" ng-show="sendPaymentForm.addresses.$invalid && !sendPaymentForm.addresses.$pristine">
 	                    <i class="icon-close-circle size-14"></i>
 	                    <span class="vm" translate>Not valid</span>
 	                    <span class="vm">{{(sendPaymentForm.addresses.$error | objectKeys)[0].indexOf('line-') > -1 ? (sendPaymentForm.addresses.$error | objectKeys)[0].replace('line-', '') : ''}}</span>
@@ -478,10 +448,10 @@ input.datafeed_input {
 	                  {{index.addressbook[_address] || _address}}
 	                </div>-->
 	                <a class="postfix size-13 m0 text-gray" ng-hide="home.blockUx || home.lockAddress || home.send_multiple" ng-click="openDestinationAddressModal(index.otherWallets, _address)">
-	                  <i class="icon-wallet size-21" style="margin-right: -3px;vertical-align: baseline;"></i>
+	                  <i class="icon-wallet size-18" style="margin-right: -3px;vertical-align: baseline;"></i>
 	                </a>
 	              </div>
-				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;">
+				  <div ng-if="home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;">
 					  <a ng-click="home.openBindModal()">
 						  <span ng-if="!home.binding" translate>Bind the payment to a condition...</span>
 						  <span ng-if="home.binding" translate>This payment is bound to a condition...</span>
@@ -494,7 +464,7 @@ input.datafeed_input {
 					  </a>
 				  </div>
 				  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>
-				  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem">
+				  <div ng-if="!home.deviceAddressIsKnown()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem">
 					  <a dropdown-toggle="#binding-drop" data-options="align:top">
 						  <span translate class="text-gray">Bind the payment to a condition</span>
 					  </a>
@@ -528,7 +498,7 @@ input.datafeed_input {
 
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
                   <div class="large-12 columns m30b">
-                      <a style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
+                      <a style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
 	                </div>
 	            </div>
 
@@ -544,7 +514,7 @@ input.datafeed_input {
                     <div class="clear"></div>
                     <a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
                       <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i>
-                      <span class="text-close size-12" translate>Add fields</span>
+                      <span class="text-close size-13" translate>Add fields</span>
                     </a>
                   </div>
                 </div>
@@ -599,19 +569,19 @@ input.datafeed_input {
               <a class="close-notification text-warning">&#215;</a>
             </div>
 
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -1" translate>
+				<div class="row m20t text-gray size-13" ng-show="assetIndexSelectorValue == -1" translate>
 					Post values into datafeeds manually, be an oracle.
 				</div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -2" translate>
+				<div class="row m20t text-gray size-13" ng-show="assetIndexSelectorValue == -2" translate>
 					Attest profile data linked to any Obyte address.
 				</div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -3" translate>
+				<div class="row m20t text-gray size-13" ng-show="assetIndexSelectorValue == -3" translate>
 					Post your profile data, anything you want to say about yourself.
 				</div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -4" translate>
+				<div class="row m20t text-gray size-13" ng-show="assetIndexSelectorValue == -4" translate>
 					Post arbitrary key-value pairs of data into Obyte network.
 				</div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -5" translate>
+				<div class="row m20t text-gray size-13" ng-show="assetIndexSelectorValue == -5" translate>
 					Post a poll into Obyte network that users can vote on with Poll bot.
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -2">
@@ -619,7 +589,7 @@ input.datafeed_input {
 						<span translate>Address to attest</span>
 					</label>
 					<span ng-hide="sendDataForm.address.$pristine">
-                  <span class="has-error right size-12" ng-show="sendDataForm.address.$invalid && home.attested_address">
+                  <span class="has-error right size-13" ng-show="sendDataForm.address.$invalid && home.attested_address">
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
@@ -648,7 +618,7 @@ input.datafeed_input {
 					<div class="clear"></div>
 					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i>
-						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span>
+						<span class="text-close size-13">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span>
 					</a>
 				</div>
 
@@ -744,7 +714,7 @@ input.datafeed_input {
             <span class="size-16">
               <span ng-if="btx.action == 'received'">+</span>
               <span ng-if="btx.action == 'sent'">-</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+              <span  class="size-13" ng-if="btx.action == 'invalid'" translate>
               (possible double spend)
               </span>
               <span  ng-if="btx.action != 'invalid'">
@@ -753,9 +723,7 @@ input.datafeed_input {
             </span>
           </div>
           <div class="large-4 medium-4 small-4 columns text-right">
-
-            <div class="m5t size-12 text-gray time-block">
-
+            <div class="m5t size-13 text-gray time-block">
               <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
               <span translate class="text-warning"
                 ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
@@ -794,16 +762,16 @@ input.datafeed_input {
         </div>
 
         <div class="row m20t">
-          <div class="large-12 medium-12 small-12 columns" style="text-align: right;">
+          <div class="large-6 medium-6 small-6 columns">
             <button type="submit" class="button black round expand" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}"  translate>
               Show all
             </button>
           </div>
-          <div class="large-12 medium-12 small-12 columns" ng-show="!index.isCordova" style="text-align: right;">
+          <div class="large-6 medium-6 small-6 columns" ng-show="!index.isCordova">
             <input id="export_file" type="file" nwsaveas="Obyte-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
             <a class="button outline dark-gray round" ng-click="index.csvHistory();">
               <i class="fi-page-export-csv"></i>
-              <span style="font-size: 0.9em;" translate>Download CSV file</span>
+              <span translate>Download CSV file</span>
             </a>
           </div>
         </div>

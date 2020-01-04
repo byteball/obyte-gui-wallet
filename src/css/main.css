@@ -184,16 +184,16 @@ h4.title a {
 .preferences .name,
 .preferences .address,
 .preferences .url {
-  display: block;
+    display: block;
 }
 .preferences .name,
 .preferences .url {
-  white-space: normal;
+    white-space: normal;
 }
 
 .preferences .address {
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .preferences ul li, ul.whopays li, ul.profile-entries li {
@@ -1072,11 +1072,7 @@ label.postfix, a.postfix {
 }
 
 .input {
-  position: relative;
-}
-
-.input input {
-  padding-right: 46px;
+    position: relative;
 }
 
 .input label {
@@ -1084,19 +1080,23 @@ label.postfix, a.postfix {
   padding: 0;
 }
 
+.input input {
+    padding-right: 46px;
+}
+
 .dollar-value {
-  position: absolute;
-  top: -21px;
-  right: 18px;
-  max-width: 100%;
-  white-space: nowrap;
-  font-size: 13px;
-  overflow: hidden;
-  color: #A5B2BF;
-  text-overflow: ellipsis;
+    position: absolute;
+    top: -21px;
+    right: 18px;
+    max-width: 100%;
+    white-space: nowrap;
+    font-size: 13px;
+    overflow: hidden;
+    color: #A5B2BF;
+    text-overflow: ellipsis;
 }
 .send-all.dollar-value {
-  right: 0;
+    right: 0;
 }
 
 .icon-input {
@@ -1290,10 +1290,10 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	font-size: 14px;
 	font-weight: 500;
 	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-  margin-top:8px;
-  padding: 5px;
-  padding-top:12px !important;
-  line-height:14px;
+    margin-top:8px;
+    padding: 5px;
+    padding-top:12px !important;
+    line-height:14px;
 }
 .mtab-title.disabled {
 	cursor: not-allowed;
@@ -1698,7 +1698,6 @@ a.suggest-command {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   text-align: center;
   border-radius: 5px;
-  padding: 20px 10px;
 }
 
 .backup-reminder-text {
@@ -1740,26 +1739,4 @@ a.suggest-command {
 
 .label .gray .radius{
   padding: 10px;
-
-.name-outer-wrap {
-  width: calc(100% - 80px);
-}
-
-.flex {
-  display: flex;
-}
-
-.flex.align-items-start {
-  align-items: flex-start;
-}
-
-.flex.align-items-center {
-  align-items: center;
-}
-
-.text-overflow-wrapper {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

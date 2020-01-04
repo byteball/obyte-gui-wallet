@@ -32,6 +32,7 @@
         </li>
       </ul>
     </section>
+
     <section class="right-small" ng-show="!selectedWalletsOpt" ng-click="toggleEditAddressbook()">
       <a ng-show="!editAddressbook && !addAddressbookEntry" href class="p10">
         <span class="text-close" translate>Edit</span>
@@ -68,7 +69,7 @@
             <div class="avatar-wallet"
               ng-style="{'background-color':w.color}">{{(w.name || w.id) | limitTo: 1}}</div>
             <div class="ellipsis name-wallet text-bold">{{w.name || w.id}}</div>
-            <div class="size-12">
+            <div class="size-13">
               {{w.m}} <span translate>of</span> {{w.n}}
               <span ng-show="w.network=='testnet'">[Testnet]</span>
             </div>
@@ -96,7 +97,7 @@
         <li class="m10t" ng-show="!editAddressbook">
           <a ng-click="toggleAddAddressbookEntry()" class="p10">
             <i class="fi-plus size-18 m10r"></i>
-            <span class="text-close size-12" translate>Add a new entry</span>
+            <span class="text-close size-13" translate>Add a new entry</span>
             <span ng-show="!list[newAddress] && newAddress">({{newAddress}})</span>
           </a>
         </li>
@@ -107,7 +108,7 @@
         <form name="addressbookForm" class="p10" no-validate>
           <div class="text-warning size-13 m10b" ng-show="error">{{error|translate}}</div>
           <span ng-hide="addressbookForm.address.$pristine">
-            <span class="has-error right size-12" ng-show="addressbookForm.address.$invalid && addressbook.address">
+            <span class="has-error right size-13" ng-show="addressbookForm.address.$invalid && addressbook.address">
               <i class="icon-close-circle size-14"></i>
               <span class="vm" translate>Not valid</span>
             </span>

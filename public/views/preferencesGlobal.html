@@ -7,6 +7,7 @@
 
 
 <div class="content preferences" ng-controller="preferencesGlobalController as prefGlobal" ng-init="prefGlobal.init()">
+  <!-- <h4></h4> -->
   <ul class="no-bullet m0 ">
     <li  ng-click="$root.go('preferencesGlobal.preferencesDeviceName')">
       <div class="right text-gray">
@@ -97,14 +98,32 @@
   <h4 translate>Backups</h4>
 
   <ul class="no-bullet m0">
-   <li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">
+    <li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Backup all wallet data</div>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('preferencesGlobal.import')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Restore all wallet data</div>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <span class="text-warning" ng-show="index.needsBackup">
           <i class="fi-alert"></i><span translate>Still not done</span>
         </span>
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
-      <div translate>Backup all wallet data</div>
+      <div translate>Backup only the seed words</div>
     </li>
   </ul>
 
@@ -114,24 +133,6 @@
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
       <div translate>Recover with seed words</div>
-    </li>
-  </ul>
-
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Backup only the seed words</div>
-    </li>
-  </ul>
-
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesGlobal.import')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Restore from full backup</div>
     </li>
   </ul>
 
