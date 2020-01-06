@@ -110,7 +110,9 @@ input.datafeed_input {
     <div id="walletHome" class="walletHome tab-view tab-in">
 	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
       <div class="oh">
-        <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
+        <div class="amount" ng-style="{'background-color':index.backgroundColor}"
+          style="background-image: linear-gradient( rgba(255, 255, 255,.3), rgba(0, 0, 0,.2));"
+          ng-swipe-right="index.suspendSwipe()">
           <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
             <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
               <span class="size-13 db m10b">{{index.updateError|translate}}</span>
@@ -156,7 +158,7 @@ input.datafeed_input {
           </style>
           <style>
           	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
-            	background-color: {{index.backgroundColor}};
+            	background-color: transparent;
             }
 			.secondrow {
 				margin-top: -7px;
@@ -335,7 +337,7 @@ input.datafeed_input {
       <div>
         <h4 class="title m0">
             <div class="size-10">
-                <span class="db text-bold">
+                <span class="db text-bold size-13">
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
@@ -363,7 +365,7 @@ input.datafeed_input {
             <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
-                  <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid">
+                  <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid" style="margin-top: -2px;">
                     <i class="icon icon-checkmark-circle size-14"></i>
                   </div>
                   <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
@@ -373,8 +375,8 @@ input.datafeed_input {
                 </div>
                 <div>
                   <label for="amount">
-                    <span translate ng-if="!home.send_multiple">Amount</span>
-                    <span translate ng-if="home.send_multiple">Total amount</span>
+                    <span translate ng-if="!home.send_multiple" class="size-13">Amount</span>
+                    <span translate ng-if="home.send_multiple" class="size-13">Total amount</span>
 					          <a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
@@ -523,7 +525,7 @@ input.datafeed_input {
 	            <div class="" ng-show="index.m < index.n && index.m > 1">
 	                <div class="large-12 medium-12">
 	                    <label>
-	                        <span translate>Who signs:</span>
+	                        <span translate class="size-13">Who signs:</span>
 	                    </label>
 	        			<cosigners></cosigners>
             		</div>

@@ -189,6 +189,7 @@ h4.title a {
 .preferences .name,
 .preferences .url {
     white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .preferences .address {
@@ -634,7 +635,7 @@ ul.manage li {
   font-size: 14px;
   font-weight: 400;
   padding-top: 0 !important;
-  color: #2C3E50;
+  color: #A5B2BF;
 
 }
 
