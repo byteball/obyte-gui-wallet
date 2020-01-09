@@ -5,7 +5,7 @@
 </div>
 
 <div class="content preferences" ng-controller="recoveryFromSeed as recFromSeed">
-	<h4></h4>
+	<!-- <h4></h4> -->
 
 	<div class="onGoingProcess" ng-show="recFromSeed.scanning">
 		<div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
@@ -33,7 +33,7 @@
 			<input ng-show="!recFromSeed.scanning" type="submit" class="button expand black round"
 				   value="{{'Recover'|translate}}" ng-style="{'background-color':index.backgroundColor}">
 		</form>
-		<div class="text-alert size-12 columns">
+		<div class="text-alert size-13 columns">
 			<span translate>WARNINGS:</span>
 			<ul class="warnings">
 				<li translate>This will permanently delete all your existing wallets!</li>

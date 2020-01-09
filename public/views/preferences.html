@@ -1,6 +1,6 @@
 
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Preferences'; closeToHome = true">
 </div>
@@ -8,18 +8,13 @@
 
 <div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
-  <h4></h4>
   <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
 
     <li  ng-click="$root.go('preferences.preferencesAlias')">
-      <div class="right name-outer-wrap text-gray">
-        <div class="flex">
-          <div class="text-overflow-wrapper">
-            {{index.alias||index.walletName}}
-          </div>
-          <i class="icon-arrow-right3 size-24"></i>
-        </div>
+      <div class="right text-gray">
+        {{index.alias||index.walletName}}
+        <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Wallet Alias</div>
     </li>
@@ -27,7 +22,7 @@
 
     <li ng-click="$root.go('preferences.preferencesColor')">
       <div class="right text-gray">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+        <span ng-style="{'background-color':index.backgroundColor}" style=" width:20px; height:20px; border-radius:50%; display:inline-block; color:transparent;" >&block;</span>
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Color</div>
@@ -49,11 +44,11 @@
 
     <li ng-show="index.isPrivKeyExternal">
       <div class="right text-gray">
-        {{preferences.externalSource}} 
+        {{preferences.externalSource}}
         <!-- (Accont {{preferences.externalAccount}}) -->
       </div>
       <div translate>Hardware wallet</div>
-    </li> 
+    </li>
 
     <h4>
     </h4>
@@ -64,9 +59,9 @@
     </li>
 
     <h4></h4>
- 
+
     <li ng-click="$root.go('preferences.preferencesAdvanced')">
-      <i class="icon-arrow-right3 size-24 right text-gray"></i>  
+      <i class="icon-arrow-right3 size-24 right text-gray"></i>
       <div translate>Advanced</div>
     </li>
   </ul>

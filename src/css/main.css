@@ -77,7 +77,7 @@
 #qr-canvas { display: none; }
 #qrcode-scanner-video {
   display: block;
-  margin: 0 auto;
+  margin: 40px auto;
 }
 
 .qr-scanner-input {
@@ -92,12 +92,15 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-weight: 100;
-  font-size: 24px;
+  font-size: 22px;
+  padding: 0px 5px 0px 5px;
+  /* padding: 15px; */
 }
 
 h2 {
   font-size: 20px;
   font-weight: 100;
+  padding: 10px;
 }
 h3 {
   font-weight: 300;
@@ -135,17 +138,40 @@ h4.title a {
 }
 
 .preferences .switch {
-  top:-5px !important;
+  top:0px !important;
+  width:33px !important;
+  height:20px !important;
+
+}
+.preferences .switch small{
+  width:20px !important;
+  height:20px !important;
+}
+.preferences .switch.checked small{
+  left:12px !important;
 }
 
+.switch {
+  top:0px !important;
+  width:33px !important;
+  height:20px !important;
+}
+
+.switch small {
+  width:20px !important;
+  height:20px !important;
+}
+.switch.checked small{
+  left:12px !important;
+}
 
 .preferences h4 {
   background: #F1F3F5;
-  padding: 25px 0px 5px 20px;
+  padding: 20px 0px 20px 20px;
   text-transform: uppercase;
   color: #555;
-  font-size: 12px;
-  font-weight:300;
+  font-size: 13px;
+  font-weight:500;
   margin:0;
 }
 
@@ -158,16 +184,17 @@ h4.title a {
 .preferences .name,
 .preferences .address,
 .preferences .url {
-  display: block;
+    display: block;
 }
 .preferences .name,
 .preferences .url {
-  white-space: normal;
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .preferences .address {
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .preferences ul li, ul.whopays li, ul.profile-entries li {
@@ -221,7 +248,8 @@ ul.button-group li {
 }
 
 ul.button-group li.selected {
-  color: #fff;
+  /* color: #fff; */
+  color: #2C3E50;
   background-color: #DEDFE1;
 }
 
@@ -517,7 +545,8 @@ ul.manage li {
 .p0i {padding: 0 !important;}
 .db {display: block;}
 .size-10 { font-size: 10px; }
-.size-12 { font-size: 12px; }
+.size-12{ font-size: 12px; }
+.size-13 { font-size: 13px; }
 .size-14 { font-size: 14px; }
 .size-16 { font-size: 16px; }
 .size-18 { font-size: 18px; }
@@ -558,6 +587,7 @@ ul.manage li {
 .p5h {padding: 0 5px;}
 .p20h {padding: 0 20px;}
 .p20v {padding: 20px 0;}
+.p60v {padding: 60px 0;}
 .p25l {padding-left: 25px;}
 .p15 {padding:15px;}
 .p20 {padding:20px;}
@@ -594,6 +624,7 @@ ul.manage li {
 
 .line-t {
   border-top: 1px solid #E9E9EC;
+  padding:10px;
 }
 
 .line-b {
@@ -604,11 +635,16 @@ ul.manage li {
   font-size: 14px;
   font-weight: 400;
   padding-top: 0 !important;
+  color: #A5B2BF;
+
 }
 
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
   /*line-height: 2.7rem;*/
   line-height: 3rem; /* tested on mac and win */
+  padding:0px;
+  color: #ffffff !important;
+  font-weight: bold !important;;
 }
 
 .wallet-settings{
@@ -688,11 +724,12 @@ input[type=number]::-webkit-outer-spin-button {
 
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
-.label.gray {background-color: #4B6178;}
+.label.gray {background-color: #4B6178;padding: 10px;}
 .label.light-gray {background-color: #7A8C9E;;}
 
 .history .label  {
-  width: 57px;
+  /* width: 75px; */
+  padding:8px;
   text-align: center;
   font-size: 65%;
   overflow: hidden;
@@ -730,7 +767,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   background: transparent;
   border: none;
   padding-left: 0.1rem;
-  font-size: 13px;
+  font-size: 14px;
   border-bottom: 1px solid #A5B2BF;
 }
 
@@ -756,7 +793,7 @@ select {
 label {
   text-transform: uppercase;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 12px;
   color: #34495E;
   margin-bottom: 3px;
 }
@@ -1036,11 +1073,7 @@ label.postfix, a.postfix {
 }
 
 .input {
-  position: relative;
-}
-
-.input input {
-  padding-right: 46px;
+    position: relative;
 }
 
 .input label {
@@ -1048,19 +1081,23 @@ label.postfix, a.postfix {
   padding: 0;
 }
 
+.input input {
+    padding-right: 46px;
+}
+
 .dollar-value {
-  position: absolute;
-  top: -21px;
-  right: 18px;
-  max-width: 100%;
-  white-space: nowrap;
-  font-size: 13px;
-  overflow: hidden;
-  color: #A5B2BF;
-  text-overflow: ellipsis;
+    position: absolute;
+    top: -21px;
+    right: 18px;
+    max-width: 100%;
+    white-space: nowrap;
+    font-size: 13px;
+    overflow: hidden;
+    color: #A5B2BF;
+    text-overflow: ellipsis;
 }
 .send-all.dollar-value {
-  right: 0;
+    right: 0;
 }
 
 .icon-input {
@@ -1239,6 +1276,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 	justify-content: space-between;
 	height: 100%;
   vertical-align: top;
+  line-height: 25px;
 }
 
 .mtab-title {
@@ -1252,7 +1290,11 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   	border-radius: 3px 3px 0 0;
 	font-size: 14px;
 	font-weight: 500;
-	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif
+	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+    margin-top:8px;
+    padding: 5px;
+    padding-top:12px !important;
+    line-height:14px;
 }
 .mtab-title.disabled {
 	cursor: not-allowed;
@@ -1657,7 +1699,6 @@ a.suggest-command {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   text-align: center;
   border-radius: 5px;
-  padding: 20px 10px;
 }
 
 .backup-reminder-text {
@@ -1683,25 +1724,20 @@ a.suggest-command {
   min-height: 40px;
 }
 
-.name-outer-wrap {
-  width: calc(100% - 80px);
+
+.button.expand{
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    padding-top: .8rem;
+    padding-bottom: .8rem;
 }
 
-.flex {
-  display: flex;
+.message-log {
+    padding:10px;
 }
 
-.flex.align-items-start {
-  align-items: flex-start;
-}
-
-.flex.align-items-center {
-  align-items: center;
-}
-
-.text-overflow-wrapper {
-  flex-grow: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.label .gray .radius{
+  padding: 10px;
 }

@@ -90,15 +90,15 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar {
-  background: #FFFFFF;
+  background: #2C3E50; /*#FFFFFF;*/
   z-index: 5;
-  border-bottom: 1px solid #E9E9EC;
+  /* border-bottom: 1px solid #E9E9EC; */
 }
 
 .tab-bar h1 {
-  color: #7A8C9E;
-  font-weight: 500;
-  font-size: 14px;
+  color: #E4E8EC;
+  font-weight: 300;
+  font-size: 16px;
   display: inline-block;
 }
 
@@ -223,15 +223,14 @@ _:-ms-fullscreen, :root .main {
 
 .walletHome .wallet-info {
   margin-left: 85px;
+  margin-bottom: 25px;
   line-height: 110%;
-  height: 60px;
   overflow: hidden;
 }
-
 .walletHome .wallet-info .m0 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .copayers {
@@ -269,40 +268,38 @@ ul.copayer-list img {
 	top: 3px;
 	right: 3px;
 	font-size: 0.6em;
-	padding: 3px 7px 2px 7px;
+	padding: 3px 7.6px 2px 7.6px;
 	background-color: red;
 	border-radius: 10px;
 	color: white;
-}
-
-.time-block {
-  margin-right: 16px;
-  margin-top: 4px; /* 1px up */
-}
-
-.history-badge {
-  position: absolute;
-  top: 3px;
-  right: -10px;
-  font-size: 0.6em;
-  padding: 3px 7px 2px 7px;
-  background-color: red;
-  border-radius: 10px;
-  color: white;
-}
-
-.bottombar-item .badge {
-
 }
 
 .box-founds {
   background-color: #213140;
 }
 
+.time-block {
+    margin-right: 16px;
+    margin-top: 4px; /* 1px up */
+}
 
+.history-badge {
+    position: absolute;
+    top: 3px;
+    right: -10px;
+    font-size: 0.6em;
+    padding: 3px 7px 2px 7px;
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+}
+
+.bottombar-item .badge {
+    
+}
 
 .right-small a, .left-small a {
-  color: #A5B2BF;
+   color: #E4E8EC; /* #A5B2BF; */
 }
 
 a.missing-copayers {
@@ -327,12 +324,13 @@ a.missing-copayers {
 }
 
 .label {
-  font-size: 70%;
+  font-size: 80%;
   padding: 0.2rem 0.2rem;
 }
 
 .sidebar {
-  background: #2C3E50;
+  /* background: #2C3E50; */
+  background-image: linear-gradient(90deg, #122232,#425d78);
 }
 
 .sidebar .icon {
@@ -345,7 +343,7 @@ a.missing-copayers {
 
 .sidebar li {
   overflow: hidden;
-  border-bottom: 1px solid #384B5F;
+  border-bottom: 1px solid rgba(200,200,200,.4);
 }
 
 .sidebar li.nav-item.selected {
@@ -369,7 +367,7 @@ a.missing-copayers {
 .sidebar header {
   text-align: center;
   padding: 1.7rem;
-  border-bottom: 1px solid #384B5F;
+  border-bottom: 1px solid rgba(200,200,200,.4);
 }
 
 .sidebar header h1 {
@@ -853,7 +851,7 @@ textarea:focus
 
 
 .create-tab a {
-  font-size: .7rem;
+  font-size: .8rem;
   padding: 0 .2rem .6rem .2rem;
   color: #929396;
   text-transform: uppercase;
@@ -882,7 +880,8 @@ textarea:focus
 .rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
 	opacity: 0.6;
 	font-size: 80px;
-	background-color: rgb(74, 144, 226);
+	background-color: rgba(0, 0, 0, 0);
+
 }
 .rn-carousel-control.rn-carousel-control-next {
 	right: -0.2em;
@@ -966,6 +965,7 @@ touch-action: manipulation; /* IE11+ */
 
 #splash{
   background-color: #283c4f;
+  background-image: linear-gradient(#122232,#425d78);
   position: absolute;
   left: 0;
   top: 0;
@@ -981,9 +981,10 @@ touch-action: manipulation; /* IE11+ */
 }
 .description {
 	clear: both;
-	font-size: 12px;
+	font-size: 13px;
 	color: gray;
 	white-space: normal;
+  padding-top: 10px;
 }
 i.validation-icon {
 	padding: 3px;
@@ -992,6 +993,27 @@ i.validation-icon {
 .keyboard-open .bottom-bar {
 	display: none;
 }
+
+
 .keyboard-open .send-form {
 	padding-bottom: 0px;
+}
+
+.color-indicator{
+    background-color: white;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    line-height: 300px;
+    position: relative;
+    top: 2px;
+}
+
+/* Tweaks for Foundation css: (opacity works better on various colors)*/
+div.rn-carousel-indicator span {
+  color: rgba(0,0,0,.25) !important;
+}
+div.rn-carousel-indicator span.active {
+    color: white !important;
 }

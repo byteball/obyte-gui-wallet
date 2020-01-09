@@ -6,9 +6,9 @@
 
 <div class="content preferences" ng-controller="preferencesEditAttestorAddressCtrl as ctrl">
 
-	<h4></h4>
+	<!-- <h4></h4> -->
 	<form name="editAttestorAddressForm" ng-submit="ctrl.save()" class="columns">
-		<div class="text-warning size-12 m10b" ng-show="ctrl.error">{{ctrl.error|translate}}</div>
+		<div class="text-warning size-13 m10b" ng-show="ctrl.error">{{ctrl.error|translate}}</div>
 		<label><span>{{ctrl.title|translate}}</span></label>
 		<input type="text" type="text" name="attestorAddress" ng-model="ctrl.attestorAddress">
 		<input type="submit" class="button expand black round" value="{{'Save'|translate}}"

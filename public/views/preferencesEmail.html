@@ -1,5 +1,5 @@
-<div 
-  class="topbar-container" 
+<div
+  class="topbar-container"
   ng-include="'views/includes/topbar.html'"
   ng-init="titleSection='Email Notifications'; goBackToState = true">
 </div>
@@ -8,7 +8,7 @@
 
 <div class="content preferences" ng-controller="preferencesEmailController as prefEmail">
 
-  <h4></h4>
+  <!-- <h4></h4> -->
   <div class="onGoingProcess" ng-show="prefEmail.saving && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
@@ -35,7 +35,7 @@
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}"
     ng-style="{'background-color':index.backgroundColor}" ng-disabled="emailForm.$invalid && !index.preferencesGlobal.preferencesEmail">
   </form>
-    <div class="text-gray size-12 text-center" donttranslate>Setting up email notifications could weaken your privacy, if the email service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
+    <div class="text-gray size-13 text-center" donttranslate>Setting up email notifications could weaken your privacy, if the email service provider is compromised. Information available to an attacker would include your wallet addresses and its balance, but no more.
   </div>
 </div>
 <div class="extra-margin-bottom"></div>

@@ -5,9 +5,9 @@
 </div>
 
 <div class="content preferences" ng-controller="preferencesEditWitnessController as ewc">
-  <h4></h4>
+  <!-- <h4></h4> -->
   <form name="editWitnessForm" ng-submit="ewc.save()" class="columns">
-    <div class="text-warning size-12 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
+    <div class="text-warning size-13 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
     <div class="form-group" click-outside="ewc.suggestToggle = false">
       <label><span translate>Witness address</span></label>
       <input
