@@ -368,7 +368,7 @@ input.datafeed_input {
                   <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid" style="margin-top: -2px;">
                     <i class="icon icon-checkmark-circle size-14"></i>
                   </div>
-                  <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
+                  <div class="flex align-items-center has-error" style="margin-top: -5px;" ng-if="sendPaymentForm.amount.$invalid">
                     <i class="icon icon-close-circle size-14 m5r"></i>
                     <span class="size-13" translate> Not valid</span>
                   </div>
@@ -421,7 +421,7 @@ input.datafeed_input {
 	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
-	                  <span class="has-error right size-13" ng-show="sendPaymentForm.address.$invalid && _address">
+	                  <span class="has-error right size-13" style="margin-top: -2px;" ng-show="sendPaymentForm.address.$invalid && _address">
 	                    <i class="icon-close-circle size-14"></i>
 	                    <span class="vm" translate>Not valid</span>
 	                  </span>
@@ -430,7 +430,7 @@ input.datafeed_input {
 	                  </small>
 	                </span>
 	                <span ng-if="home.send_multiple">
-	                  <span class="has-error right size-13" ng-show="sendPaymentForm.addresses.$invalid && !sendPaymentForm.addresses.$pristine">
+	                  <span class="has-error right size-13" style="margin-top: -5px;" ng-show="sendPaymentForm.addresses.$invalid && !sendPaymentForm.addresses.$pristine">
 	                    <i class="icon-close-circle size-14"></i>
 	                    <span class="vm" translate>Not valid</span>
 	                    <span class="vm">{{(sendPaymentForm.addresses.$error | objectKeys)[0].indexOf('line-') > -1 ? (sendPaymentForm.addresses.$error | objectKeys)[0].replace('line-', '') : ''}}</span>
@@ -441,7 +441,7 @@ input.datafeed_input {
 	                </span>
 	            </div>
 
-	              <div class="input">
+	              <div class="input" style="  margin-top: 5px;">
 	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
 	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Obyte address' : 'Obyte address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
 	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join('')"></textarea>
@@ -500,7 +500,7 @@ input.datafeed_input {
 
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
                   <div class="large-12 columns m30b">
-                      <a style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
+                      <a style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
 	                </div>
 	            </div>
 
@@ -554,8 +554,8 @@ input.datafeed_input {
 	        			<cosigners></cosigners>
             		</div>
 	            </div>
-	            <p translate ng-show="!index.arrBalances[index.assetIndex].is_private">Click this button to create payment and share it via private message in chat apps or to create a paper wallet.</p>
-	            <p translate ng-show="index.arrBalances[index.assetIndex].is_private">Click this button to create a payment file and send it to a recipient.</p>
+	            <p translate class="size-13" ng-show="!index.arrBalances[index.assetIndex].is_private">Click this button to create payment and share it via private message in chat apps or to create a paper wallet.</p>
+	            <p translate class="size-13" ng-show="index.arrBalances[index.assetIndex].is_private">Click this button to create a payment file and send it to a recipient.</p>
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>
@@ -591,7 +591,7 @@ input.datafeed_input {
 						<span translate>Address to attest</span>
 					</label>
 					<span ng-hide="sendDataForm.address.$pristine">
-                  <span class="has-error right size-13" ng-show="sendDataForm.address.$invalid && home.attested_address">
+                  <span class="has-error right size-13" style="margin-top: -5px;" ng-show="sendDataForm.address.$invalid && home.attested_address">
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
