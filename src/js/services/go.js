@@ -212,7 +212,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (start != -1) {
 						tokens.push(str.substring(start+1, i));
 						start = -1;
-					} else
+					}
+					else if (str[i - 1] === ' ')
 						start = i;
 				if (str[i] == ' ' && start == -1) {
 					if (str.substring(lastSpace+1, i).length)
