@@ -863,6 +863,7 @@ angular.module('copayApp.controllers')
 		}
 
 		this.onAddressChanged = function () {
+			resetAAFields();
 			var form = $scope.sendPaymentForm;
 			if (form.address.$invalid) {
 				self.aa_destinations = [];
@@ -888,13 +889,26 @@ angular.module('copayApp.controllers')
 			checkIfAAAndUpdateResults(bb_address);
 		};
 
+		function resetAAFields() {
+			self.aa_destinations = [];
+			self.added_bounce_fees = [];
+			self.aa_data_fields_defined = [];
+
+			self.aa_description = '';
+			self.aa_truncated_description = '';
+			self.bShowFullDescription = false;
+			self.aa_homepage_url = '';
+			self.aa_source_url = '';
+			self.aa_field_descriptions = {};
+		}
+
 		function checkIfAAAndUpdateResults(address) {
 			readAADefinitionsWithBaseDefinitions(address, function (rows) {
 				self.aa_destinations = rows;
-				if (rows.length > 0)
+				if (rows.length > 0) {
+					updateAADocs();
 					return updateAAResults();
-				self.aa_destinations = [];
-				self.added_bounce_fees = [];
+				}
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -918,12 +932,64 @@ angular.module('copayApp.controllers')
 			});
 		}
 
-		this.onChanged = function () {
+		function updateAADocs() {
+			var row = self.aa_destinations[0];
+			var aa_address = row.address;
+			var arrBaseDefinition = JSON.parse(row.base_definition || row.definition);
+			var doc_url = arrBaseDefinition[1].doc_url;
+			if (!doc_url)
+				return;
+			// allow other protocols, e.g. ipfs
+			if (doc_url.indexOf(':') === -1)
+				doc_url = 'https://' + doc_url;
+			doc_url = doc_url.replace(/{{aa_address}}/g, aa_address);
+			require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
+				if (err)
+					return console.log("fetching doc_url failed: " + err);
+				try {
+					var doc = JSON.parse(response);
+					self.aa_description = doc.description;
+					self.aa_homepage_url = doc.homepage_url;
+					self.aa_source_url = doc.source_url;
+					self.aa_field_descriptions = doc.field_descriptions;
+					if (self.aa_description.length > 200)
+						self.aa_truncated_description = self.aa_description.substr(0, 180) + '...';
+				}
+				catch (e) {
+					return console.log("failed to parse doc_url response: " + e + ", the response was: " + response);
+				}
+				$timeout(function() {
+					$scope.$digest();
+				});
+			});
+		}
+
+		this.hasDocs = function () {
+			return !!(self.aa_description || self.aa_homepage_url || self.aa_source_url);
+		}
+
+		// a hack to force revalidation of amount field after asset is updated
+		this.forceAmountRevalidation = function () {
 			if ($scope.assetIndexSelectorValue >= 0)
-				lodash.debounce(updateAAResults, 500)();
+				$timeout(function () {
+					var form = $scope.sendPaymentForm;
+					var val = form.amount.$modelValue;
+					if (val) {
+						form.amount.$setViewValue(val + '0');
+						form.amount.$setViewValue(val + '');
+					}
+				});
 		};
 
-	this.showDateFieldSuggestions = function (currentElem, index, arrayOfElements) {
+		this.onChanged = function () {
+			if ($scope.assetIndexSelectorValue >= 0)
+				$timeout(function () {
+					if (!$scope.sendPaymentForm.$invalid)
+						lodash.debounce(updateAAResults, 500)();
+				}, 100);
+		};
+
+	this.showDataFieldSuggestions = function (currentElem, index, arrayOfElements) {
       arrayOfElements.forEach((e, idx)=>{
         if(index !== idx) {
           e.suggestionsShown = false;
@@ -1009,12 +1075,8 @@ angular.module('copayApp.controllers')
 			var row = self.aa_destinations[0];
 			var aa_address = row.address;
 			var arrDefinition = JSON.parse(row.definition);
-			var bounce_fees = arrDefinition[1].bounce_fees || { base: constants.MIN_BYTES_BOUNCE_FEE };
-			if (row.base_definition) {
-				var arrBaseDefinition = JSON.parse(row.base_definition);
-				if (arrBaseDefinition[1].bounce_fees)
-					bounce_fees = arrBaseDefinition[1].bounce_fees;
-			}
+			var arrBaseDefinition = row.base_definition ? JSON.parse(row.base_definition) : arrDefinition;
+			var bounce_fees = arrBaseDefinition[1].bounce_fees || { base: constants.MIN_BYTES_BOUNCE_FEE };
 			if (!bounce_fees.base) {
 				bounce_fees = lodash.clone(bounce_fees); // do not modify the definition
 				bounce_fees.base = constants.MIN_BYTES_BOUNCE_FEE;
@@ -2101,6 +2163,7 @@ angular.module('copayApp.controllers')
 				this.feedvaluespairs = [];
 			this.aa_destinations = [];
 			this.aa_data_fields_defined = [];
+			this.aa_field_descriptions = {};
 			this.custom_amount_error = null;
 			this.aa_dry_run_error = null;
 

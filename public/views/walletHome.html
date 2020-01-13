@@ -339,7 +339,7 @@ input.datafeed_input {
                 <span class="db text-bold">
                     <span translate>What to send</span>:
                 </span>
-                <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms(); home.onChanged()">
+                <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.forceAmountRevalidation(); home.switchForms(); home.onChanged()">
                 	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed (searchable)</option>
                 	<option ng-value="-2" translate>Attestation of any address</option>
@@ -502,12 +502,14 @@ input.datafeed_input {
                                ng-maxlength="64"
                                maxlength="64"
                                ng-change="home.onChanged()"
-                               ng-focus="home.showDateFieldSuggestions(pair.suggestionsShown, $index, home.feedvaluespairs)"
+                               ng-focus="home.showDataFieldSuggestions(pair.suggestionsShown, $index, home.feedvaluespairs)"
                         >
                         <div class="suggest-list" ng-if="home.aa_data_fields_defined.length && pair.suggestionsShown">
                           <div class="option"
                                ng-repeat="dataKey in home.aa_data_fields_defined | filter:pair.name"
-                               ng-click="pair.name = dataKey; pair.suggestionsShown = false">{{ dataKey }}</div>
+                               ng-click="pair.name = dataKey; pair.suggestionsShown = false">
+                               {{ dataKey }}<span ng-if="home.aa_field_descriptions[dataKey]">: {{home.aa_field_descriptions[dataKey]}}</span>
+                          </div>
                         </div>
                       </div>
                       <div class="datafeed_input">
@@ -526,7 +528,20 @@ input.datafeed_input {
 
               <div class="row" ng-if="home.aa_destinations && home.aa_destinations.length > 0" style="background: #F1F3F5; word-wrap: break-word; margin-bottom: 40px">
                 <div class="large-12 columns m30b m10t size-14">
-                  <h4 style="font-weight: bold" translate>You are sending to an autonomous agent, the expected result:</h4>
+                  <h4 style="font-weight: bold" ng-if="!home.hasDocs()" translate>You are sending to an autonomous agent, the expected result:</h4>
+                  <div ng-if="home.hasDocs()" class="enable_text_select">
+                    <h4 style="font-weight: bold" translate>You are sending to an autonomous agent:</h4>
+                    <div ng-if="home.aa_description">
+                      <div ng-if="!home.aa_truncated_description">{{home.aa_description}}</div>
+                      <div ng-if="home.aa_truncated_description">
+                        <div ng-if="!home.bShowFullDescription">{{home.aa_truncated_description}} (<a ng-click="home.bShowFullDescription=true" translate>more</a>)</div>
+                        <div ng-if="home.bShowFullDescription">{{home.aa_description}} (<a ng-click="home.bShowFullDescription=false" translate>less</a>)</div>
+                      </div>
+                    </div>
+                    <div ng-if="home.aa_homepage_url"><span style="font-weight: bold" translate>Home page:</span style="font-weight: bold"> <a ng-click="$root.openExternalLink(home.aa_homepage_url)">{{home.aa_homepage_url.substr(8)}}</a></div>
+                    <div ng-if="home.aa_source_url"><span style="font-weight: bold" translate>Source code:</span> <a ng-click="$root.openExternalLink(home.aa_source_url)">{{home.aa_source_url.substr(8)}}</a></div>
+                    <h4 style="font-weight: bold" translate>The expected result:</h4>
+                  </div>
                   <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
                     {{home.aa_dry_run_error}}<br>
                     <a ng-click="home.onChanged()" translate>Try again</a>
