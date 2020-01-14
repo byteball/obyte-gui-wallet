@@ -35,17 +35,11 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     };
 
     this.toggleList = function(wtn) {
-      var witnessUpdate = [];
-
       self.suggestToggle = false;
 
       self.witnessesKnown.push($scope.ewc.witness);
-      witnessUpdate = self.witnessesKnown.filter((e) => {
-        if (e !== wtn) {
-          return e;
-        }
-      });
-      self.witnessesKnown = witnessUpdate;
+      var witnessesUpdated = self.witnessesKnown.filter(w => w !== wtn);
+      self.witnessesKnown = witnessesUpdated;
       $scope.ewc.witness = wtn;
     };
 
