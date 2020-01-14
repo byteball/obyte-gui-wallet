@@ -585,12 +585,16 @@ angular.module('copayApp.directives')
         clickOutside: '&'
       },
       link: function (scope, el) {
-        $document.on('click', function (e) {
+        var handler = function (e) {
           if (el !== e.target && !el[0].contains(e.target)) {
-            scope.$apply(function () {
-              scope.$eval(scope.clickOutside);
-            });
+              scope.$apply(function () {
+                  scope.$eval(scope.clickOutside);
+              });
           }
+        }
+        $document.on('click', handler);
+        scope.$on('$destroy', function() {
+          $document.off('click', handler);
         });
       }
     }
