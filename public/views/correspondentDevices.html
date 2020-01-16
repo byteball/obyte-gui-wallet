@@ -1,9 +1,12 @@
 <style type="text/css">
-	.bots-list { padding: 10px 10px 5px 10px }
+	.bots-list {
+		 padding: 10px 10px 5px 10px;
+		 height: 50px;
+	 }
 
 	.bot_name {
 		text-overflow: ellipsis;
-		max-width: 75%;
+		max-width: 60%;
 		display: inline-block;
 		white-space: nowrap;
 		overflow: hidden;
@@ -140,7 +143,7 @@
 					<a class="selectCorrespondentList" ng-show="editCorrespondentList" ng-click="toggleSelectCorrespondentList(correspondent.device_address)">
 						<i class="fi-trash"></i>
 					</a>
-					<div ng-click="showCorrespondent(correspondent)" class="pointer">
+					<div ng-click="showCorrespondent(correspondent)" class="pointer size-13">
 						{{correspondent.name}} ({{correspondent.device_address | limitTo:4}}...)
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
 						<div class="right correspondentlist_badge" ng-show="newMessagesCount[correspondent.device_address]">{{newMessagesCount[correspondent.device_address]}}</div>
@@ -189,9 +192,10 @@
 			<ul class="no-bullet m0 correspondentList">
 				<li class="bots-list line-b" ng-repeat="bot in bots | filter:{name_and_desc: botsSearchText} | orderBy:botsSortOrder">
 					<div ng-click="showBot(bot)" class="pointer">
-						<span class="bot_name">{{bot.name}}</span>
+						<div class="label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
+						<span class="bot_name size-13">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-						<div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
+
 					</div>
 				</li>
 			</ul>

@@ -532,10 +532,10 @@ input.datafeed_input {
 	            </div>
 
 	            <div class="row" ng-show="!home.onGoingProcess">
-	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)">
+	              <div class="large-12 medium-12 small-12 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)">
 	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
-	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
+	              <div class="columns" ng-class="{'small-12 medium-12 large-12':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
 	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
@@ -740,13 +740,13 @@ input.datafeed_input {
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
             <div ng-show="!btx.message">
-              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}}
+              <span translate>To</span>:<span style="font-size:12px"> {{index.addressbook[btx.addressTo] || btx.addressTo}}</span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}
             </span>
-            <span ng-show="btx.isTextcoin" class="small-2 right">
-              <span class="label tu light-gray radius">textcoin</span>
+            <span ng-show="btx.isTextcoin" class="small-12">
+              <span class="label tu light-gray radius" style="margin-top:10px">textcoin</span>
             </span>
           </div>
         </div>
@@ -764,7 +764,7 @@ input.datafeed_input {
         </div>
 
         <div class="row m20t">
-          <div class="large-6 medium-6 small-6 columns">
+          <div class="large-12 medium-12 small-12 columns">
             <button type="submit" class="button black round expand" ng-show="index.historyShowShowAll" ng-click="index.showAllHistory()" ng-style="{'background-color':index.backgroundColor}"  translate>
               Show all
             </button>
