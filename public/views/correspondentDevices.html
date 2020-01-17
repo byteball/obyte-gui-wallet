@@ -191,8 +191,8 @@
 			<!--hr class="order-divider"-->
 			<ul class="no-bullet m0 correspondentList">
 				<li class="bots-list line-b" ng-repeat="bot in bots | filter:{name_and_desc: botsSearchText} | orderBy:botsSortOrder">
-					<div ng-click="showBot(bot)" class="pointer">
-						<div class="label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
+					<div ng-click="showBot(bot)" class="pointer" style="linr-height:40px; height:40px;">
+						<div class="label tu radius light-gray" ng-if="bot.isPaired" translate style="vertical-align:middle">Added</div>
 						<span class="bot_name size-13">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
 

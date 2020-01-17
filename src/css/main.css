@@ -1739,6 +1739,7 @@ a.suggest-command {
     display: block;
     padding-top: .8rem;
     padding-bottom: .8rem;
+    margin-bottom: 2em;
 }
 
 .message-log {
