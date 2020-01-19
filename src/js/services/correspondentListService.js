@@ -237,8 +237,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (objMultiPaymentRequest.definitions){
 			for (var destinationAddress in objMultiPaymentRequest.definitions){
 				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-				if (destinationAddress !== objectHash.getChash160(arrDefinition))
+				try {
+					if (destinationAddress !== objectHash.getChash160(arrDefinition))
+						return null;
+				}
+				catch(e){
+					console.log(e);
 					return null;
+				}
 			}
 		}
 		try{
