@@ -369,7 +369,7 @@ input.datafeed_input {
                     <i class="icon icon-checkmark-circle size-14"></i>
                   </div>
                   <div class="flex align-items-center has-error" style="margin-top: -3px;" ng-if="sendPaymentForm.amount.$invalid">
-                    <i class="icon icon-close-circle size-14 m5r"></i>
+                    <i class="icon icon-close-circle size-14"></i>
                     <span class="size-13" translate> Not valid</span>
                   </div>
                 </div>
@@ -415,7 +415,7 @@ input.datafeed_input {
 		    </div>
 
 		    <div class="mtab" ng-class="{'active': mtab === 1}" ng-init="mtab = 1; home.send_multiple = false;">
-	            <div ng-hide="home.hideAddress">
+	            <div ng-hide="home.hideAddress" style="padding-top:10px">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
 	                  <span translate>To Obyte address</span>
@@ -740,7 +740,7 @@ input.datafeed_input {
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
             <div ng-show="!btx.message">
-              <span translate>To</span>:<span style="font-size:12px"> {{index.addressbook[btx.addressTo] || btx.addressTo}}</span>
+              <span translate style="font-size:12px">To</span>:<span style="font-size:12px"> {{index.addressbook[btx.addressTo] || btx.addressTo}}</span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}

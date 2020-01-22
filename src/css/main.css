@@ -1733,13 +1733,13 @@ a.suggest-command {
 
 
 .button.expand{
-    width: 85%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     display: block;
     padding-top: .8rem;
     padding-bottom: .8rem;
-    margin-bottom: 2em;
+    margin-bottom: 1.5em;
 }
 
 .message-log {
