@@ -391,11 +391,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
-						fc.sendMultiPayment(opts, function(err){
+						fc.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
 							$scope.bWorking = false;
 							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
@@ -577,54 +578,54 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					return text;
 				});
 			};
-			if (objMultiPaymentRequest.definitions){
+			if (objMultiPaymentRequest.definitions) {
 				var arrAllMemberAddresses = [];
 				var arrFuncs = [];
 				var assocMemberAddressesByDestAddress = {};
-				for (var destinationAddress in objMultiPaymentRequest.definitions){
+				for (var destinationAddress in objMultiPaymentRequest.definitions) {
 					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
 					var arrMemberAddresses = extractAddressesFromDefinition(arrDefinition);
 					assocMemberAddressesByDestAddress[destinationAddress] = arrMemberAddresses;
 					arrAllMemberAddresses = arrAllMemberAddresses.concat(arrMemberAddresses);
-					arrFuncs.push(function(cb){
+					arrFuncs.push(function (cb) {
 						walletDefinedByAddresses.validateAddressDefinition(arrDefinition, cb);
 					});
 				}
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
-					throw Error("no member addresses in "+paymentJson);
+					throw Error("no member addresses in " + paymentJson);
 				var assocPeerNamesByDeviceAddress = {};
-				var loadCorrespondentNames = function(cb){
-					device.readCorrespondents(function(arrCorrespondents){
-						arrCorrespondents.forEach(function(corr){
+				var loadCorrespondentNames = function (cb) {
+					device.readCorrespondents(function (arrCorrespondents) {
+						arrCorrespondents.forEach(function (corr) {
 							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
 						});
 						cb();
 					});
 				};
-				var findMyAddresses = function(cb){
+				var findMyAddresses = function (cb) {
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
 						UNION \n\
 						SELECT shared_address AS address FROM shared_addresses WHERE shared_address IN(?)",
 						[arrAllMemberAddresses, arrAllMemberAddresses],
-						function(rows){
-							var arrMyAddresses = rows.map(function(row){ return row.address; });
-							for (var destinationAddress in assocMemberAddressesByDestAddress){
+						function (rows) {
+							var arrMyAddresses = rows.map(function (row) { return row.address; });
+							for (var destinationAddress in assocMemberAddressesByDestAddress) {
 								var arrMemberAddresses = assocMemberAddressesByDestAddress[destinationAddress];
 								if (lodash.intersection(arrMemberAddresses, arrMyAddresses).length > 0)
 									assocSharedDestinationAddresses[destinationAddress] = true;
 							}
 							createMovementLines();
 							$scope.arrHumanReadableDefinitions = [];
-							for (var destinationAddress in objMultiPaymentRequest.definitions){
+							for (var destinationAddress in objMultiPaymentRequest.definitions) {
 								var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
 								var assocSignersByPath = objMultiPaymentRequest.definitions[destinationAddress].signers;
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
 								var assocPeerNamesByAddress = {};
-								for (var path in assocSignersByPath){
+								for (var path in assocSignersByPath) {
 									var signerInfo = assocSignersByPath[path];
 									if (signerInfo.device_address !== device.getMyDeviceAddress())
 										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
@@ -638,13 +639,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
-				var checkDuplicatePayment = function(cb){
+				var checkDuplicatePayment = function (cb) {
 					var objFirstPayment = objMultiPaymentRequest.payments[0];
 					db.query(
 						"SELECT 1 FROM outputs JOIN unit_authors USING(unit) JOIN my_addresses ON unit_authors.address=my_addresses.address \n\
 						WHERE outputs.address=? AND amount=? LIMIT 1",
 						[objFirstPayment.address, objFirstPayment.amount],
-						function(rows){
+						function (rows) {
 							$scope.bAlreadyPaid = (rows.length > 0);
 							cb();
 						}
@@ -653,19 +654,21 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
-				async.series(arrFuncs, function(err){
+				async.series(arrFuncs, function (err) {
 					if (err)
 						$scope.error = err;
 					else
 						$scope.bDisabled = false;
-					$timeout(function(){
+					$timeout(function () {
 						$scope.$apply();
 					});
 				});
 			}
-			else
+			else {
+				createMovementLines();
 				$scope.bDisabled = false;
-			
+			}
+
 			function insertSharedAddress(shared_address, arrDefinition, signers, cb){
 				db.query("SELECT 1 FROM shared_addresses WHERE shared_address=?", [shared_address], function(rows){
 					if (rows.length > 0){
@@ -756,8 +759,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							recipient_device_address: recipient_device_address,
 							base_outputs: arrBaseOutputs,
 							asset_outputs: arrAssetOutputs
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_multi_payment_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
@@ -944,8 +948,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							shared_address: indexScope.shared_address,
 							change_address: arrAddresses[0],
 							messages: [objMessage]
-						}, function(err){ // can take long if multisig
+						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_vote_key;
+							$rootScope.sentUnit = unit;
 							if (err){
 								if (chatScope){
 									setError(err);
@@ -1348,8 +1353,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	function getDisplayField(field){
 		switch (field){
-			case 'first_name': return gettext('First name');
-			case 'last_name': return gettext('Last name');
+			case 'first_name': return gettext('Given name');
+			case 'last_name': return gettext('Surname');
 			case 'dob': return gettext('Date of birth');
 			case 'country': return gettext('Country');
 			case 'personal_code': return gettext('Personal code');
@@ -1359,7 +1364,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			case 'id_subtype': return gettext('ID subtype');
 			case 'id_expiry': return gettext('ID expires at');
 			case 'id_issued_at': return gettext('ID issued at');
-			default: return field;
+			default: return typeof(field) === 'string' ? field.replace(/_/g, ' ') : field;
 		}
 	}
 	

@@ -1035,11 +1035,32 @@ label.postfix, a.postfix {
   cursor: pointer;
 }
 
-.input { position: relative;}
+.input {
+  position: relative;
+}
+
+.input input {
+  padding-right: 46px;
+}
 
 .input label {
   line-height: 0;
   padding: 0;
+}
+
+.dollar-value {
+  position: absolute;
+  top: -21px;
+  right: 18px;
+  max-width: 100%;
+  white-space: nowrap;
+  font-size: 13px;
+  overflow: hidden;
+  color: #A5B2BF;
+  text-overflow: ellipsis;
+}
+.send-all.dollar-value {
+  right: 0;
 }
 
 .icon-input {
@@ -1710,6 +1731,15 @@ a.suggest-command {
 .flex {
   display: flex;
 }
+
+.flex.align-items-start {
+  align-items: flex-start;
+}
+
+.flex.align-items-center {
+  align-items: center;
+}
+
 .text-overflow-wrapper {
   flex-grow: 1;
   white-space: nowrap;
