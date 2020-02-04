@@ -334,7 +334,6 @@ input.datafeed_input {
     <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'">
       <div>
         <h4 class="title m0">
-
             <div class="size-10">
                 <span class="db text-bold">
                     <span translate>What to send</span>:
@@ -362,7 +361,7 @@ input.datafeed_input {
               <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
             </div>
 			  
-            <div class="row"  ng-hide="home.hideAmount">
+            <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
                 <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue ">
                   <span class="has-error right size-12" ng-if="sendPaymentForm.amount.$invalid">
@@ -378,7 +377,7 @@ input.datafeed_input {
                   <label for="amount">
                     <span translate ng-if="!home.send_multiple">Amount</span>
                     <span translate ng-if="home.send_multiple">Total amount</span>
-					<a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
+					          <a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
                     <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ng-change="home.onChanged()">
@@ -784,13 +783,14 @@ input.datafeed_input {
             </span>
           </div>
           <div class="large-4 medium-4 small-4 columns text-right">
-            <div class="m5t size-12 text-gray">
+            <div class="m5t size-12 text-gray time-block">
               <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
               <span translate class="text-warning"
                 ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
                 Unconfirmed
               </span>
             </div>
+            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
           </div>
           <div class="large-1 medium-1 small-1 columns text-right">
             <i class="icon-arrow-right3 size-18"></i>

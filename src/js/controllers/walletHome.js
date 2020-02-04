@@ -99,11 +99,18 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
+					$timeout(() => {
+						self.countChecker();
+					}, 100);
 					break;
 				case 'send':
 					self.resetError();
-			};
+			}
 		});
+
+		this.countChecker = function() {
+			self.newPaymentsCount = $rootScope.newPaymentsCount;
+		};
 
 		var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
 			self.setOngoingProcess(name);
@@ -1618,6 +1625,7 @@ angular.module('copayApp.controllers')
 							opts.messages = [objDataMessage];
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
+							$rootScope.sentUnit = unit;
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
 							delete self.current_payment_key;
@@ -1862,7 +1870,8 @@ angular.module('copayApp.controllers')
 						arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 						shared_address: indexScope.shared_address,
 						messages: [objMessage]
-					}, function(err) { // can take long if multisig
+					}, function (err) { // can take long if multisig
+						$rootScope.sentUnit = unit;
 						indexScope.setOngoingProcess(gettext('sending'), false);
 						if (err) {
 							self.setSendError(err);
@@ -2235,7 +2244,7 @@ angular.module('copayApp.controllers')
 				form.amount.$render();
 			}
 			else {
-				var full_amount = assetInfo.stable;
+				var full_amount = assetInfo.total;
 				if (assetInfo.asset === constants.BLACKBYTES_ASSET)
 					full_amount /= this.bbUnitValue;
 				else if (assetInfo.decimals)
@@ -2324,9 +2333,9 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
-
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
+			delete $rootScope.newPaymentsCount[btx.unit];
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -2548,6 +2557,40 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
+
+		this.getDollarValue = function(amount, balanceObject) {
+			function getResult(exchangePair) {
+				var result = 0;
+				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					if (home.bSendAll) {
+						amountInSmallestUnits = balanceObject.stable;
+						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					}
+				} else {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
+					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
+				}
+				if (!isNaN(result) && result !== 0) {
+					if(result >= 0.1) {
+						return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
+					}
+					if(result < 0.1) {
+						return `≈$${result.toPrecision(2)}`;
+					}
+				}
+			}
+
+			if (balanceObject.asset === 'base') {
+				return getResult('GBYTE_USD');
+			} else if(balanceObject.asset === $scope.index.BLACKBYTES_ASSET) {
+				return getResult('GBB_USD');
+			}
+			else if(home.exchangeRates[balanceObject.asset + '_USD']) {
+				return getResult(balanceObject.asset + '_USD');
+			}
+		};
 
 		/* Start setup */
 
