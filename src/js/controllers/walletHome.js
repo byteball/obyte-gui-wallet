@@ -42,12 +42,12 @@ angular.module('copayApp.controllers')
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.setForm(address, amount, null, asset, recipient_device_address, base64data);
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address);
 			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
@@ -1576,6 +1576,8 @@ angular.module('copayApp.controllers')
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
+						if (self.from_address && !indexScope.shared_address)
+							opts.paying_addresses = [self.from_address];
 						if (!isMultipleSend) {
 							opts.to_address = to_address;
 							opts.amount = amount;
@@ -1629,8 +1631,14 @@ angular.module('copayApp.controllers')
 								}
 								else if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
-								else if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								else if (err.match(/no funded/)) {
+									if (self.from_address) {
+										err = "Not enough spendable funds on address " + self.from_address + ", you may want to refill its balance";
+										self.resetForm(); // to enable to fill the form anew to refill this address
+									}
+									else
+										err = "Not enough spendable funds, make sure all your funds are confirmed";
+								}
 								else if (err.match(/authentifier verification failed/))
 									err = "Check that smart contract conditions are satisfied and signatures are correct";
 								else if (err.match(/precommit/))
@@ -2014,7 +2022,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -2047,7 +2055,16 @@ angular.module('copayApp.controllers')
 					}
 				}
 
+				if (from_address)
+					this.from_address = from_address;
+
 				if (asset) {
+					if ($scope.index.arrBalances.length === 0) { // wait till balances are set
+						console.log("no balances yet, will wait");
+						return $timeout(function () {
+							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address);
+						}, 1000);
+					}
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
 						asset: asset
 					});
@@ -2156,6 +2173,7 @@ angular.module('copayApp.controllers')
 			this.lockAmount = false;
 			this.hideAdvSend = true;
 			this.send_multiple = false;
+			this.from_address = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
