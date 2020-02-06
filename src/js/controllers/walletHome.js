@@ -907,6 +907,9 @@ angular.module('copayApp.controllers')
 			self.aa_homepage_url = '';
 			self.aa_source_url = '';
 			self.aa_field_descriptions = {};
+
+			self.custom_amount_error = null;
+			self.aa_dry_run_error = null;
 		}
 
 		function checkIfAAAndUpdateResults(address) {
@@ -2188,11 +2191,7 @@ angular.module('copayApp.controllers')
 			this.bSendAll = false;
 			if (!bKeepData)
 				this.feedvaluespairs = [];
-			this.aa_destinations = [];
-			this.aa_data_fields_defined = [];
-			this.aa_field_descriptions = {};
-			this.custom_amount_error = null;
-			this.aa_dry_run_error = null;
+			resetAAFields();
 
 			var form = $scope.sendPaymentForm;
 			var self = this;
