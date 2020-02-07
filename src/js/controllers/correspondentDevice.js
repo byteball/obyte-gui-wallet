@@ -554,15 +554,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.offerArbiterContract = function(address){
-		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaic_contract = require('ocore/arbiter_contract.js');
+		var arbiter_contract = require('ocore/arbiter_contract.js');
+		var arbiters = require('ocore/arbiters.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 
 			$scope.form = {
-				ttl: 24*7
+				ttl: 24*7,
+				payer: 'me',
+				amount: 0
 			};
 			$scope.index = indexScope;
 			$scope.isMobile = isMobile.any();
@@ -577,7 +579,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				});
 			});
 
-			$scope.CHARGE_AMOUNT = prosaic_contract.CHARGE_AMOUNT;
+			$scope.CHARGE_AMOUNT = arbiter_contract.CHARGE_AMOUNT;
 			
 			$scope.payAndOffer = function() {
 				profileService.requestTouchid(function(err) {
@@ -589,28 +591,37 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					console.log('offerProsaicContract');
 					$scope.error = '';
 
-					var contract_text = $scope.form.contractText;
-					var contract_title = $scope.form.contractTitle;
-					var ttl = $scope.form.ttl;
-					var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
+					device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
+						var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
+						var contract_text = $scope.form.contractText;
+						var contract_title = $scope.form.contractTitle;
+						var ttl = $scope.form.ttl;
+						var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+						var arbiter_address = $scope.form.arbiterAddress;
+						var payer = $scope.form.payer;
+						var amount = $scope.form.amount;
+						var hash = arbiter_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date, arbiter_address: arbiter_address, amount: amount});
+						var contactInfo = $scope.form.contactInfo;
 
-					readMyPaymentAddress(fc, function(my_address) {
-						var cosigners = getSigningDeviceAddresses(fc);
-						if (!cosigners.length && fc.credentials.m > 1) {
-							indexScope.copayers.forEach(function(copayer) {
-								cosigners.push(copayer.device_address);
+						readMyPaymentAddress(fc, function(my_address) {
+							var cosigners = getSigningDeviceAddresses(fc);
+							if (!cosigners.length && fc.credentials.m > 1) {
+								indexScope.copayers.forEach(function(copayer) {
+									cosigners.push(copayer.device_address);
+								});
+							}
+							arbiter_contract.createAndSend(hash, address, correspondent.device_address, my_address, arbiter_address, (payer == 'me'), amount, creation_date, ttl, contract_title, contract_text, cosigners, pairing_code, contactInfo, function(objContract) {
+								correspondentListService.listenForArbiterContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners,
+									arbiter_address: arbiter_address, amount: amount, me_is_payer: (payer == 'me')}]);
+								var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+								var body = correspondentListService.formatOutgoingMessage(chat_message);
+								correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+								device.readCorrespondent(correspondent.device_address, function(correspondent) {
+									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+								});
+								$modalInstance.dismiss('sent');
 							});
-						}
-						prosaic_contract.createAndSend(hash, address, correspondent.device_address, my_address, creation_date, ttl, contract_title, contract_text, cosigners, function(objContract) {
-							correspondentListService.listenForProsaicContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners}]);
-							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
-							var body = correspondentListService.formatOutgoingMessage(chat_message);
-							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							device.readCorrespondent(correspondent.device_address, function(correspondent) {
-								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
-							});
-							$modalInstance.dismiss('sent');
+							arbiters.getInfo(arbiter_address);
 						});
 					});
 				});
@@ -1850,6 +1861,295 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 			var modalInstance = $modal.open({
 				templateUrl: 'views/modals/view-prosaic-contract.html',
+				windowClass: animationService.modalAnimated.slideUp,
+				controller: ModalInstanceCtrl,
+				scope: $scope
+			});
+
+			var disableCloseModal = $rootScope.$on('closeModal', function() {
+				modalInstance.dismiss('cancel');
+			});
+
+			modalInstance.result.finally(function() {
+				$rootScope.modalOpened = false;
+				disableCloseModal();
+				var m = angular.element(document.getElementsByClassName('reveal-modal'));
+				m.addClass(animationService.modalAnimated.slideOutDown);
+				if (oldWalletId) {
+					profileService._setFocus(oldWalletId, function(){});
+					correspondentListService.currentCorrespondent = oldCorrespondent;
+					go.path('correspondentDevices.correspondentDevice');
+					$timeout(function(){
+						$rootScope.tab = $scope.index.tab = 'chat';
+					});
+				}
+			});
+		};
+
+		var oldWalletId;
+		var oldCorrespondent;
+		var cosigners;
+		if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
+			db.query(
+				"SELECT wallet FROM my_addresses \n\
+				LEFT JOIN shared_address_signing_paths ON \n\
+						shared_address_signing_paths.address=my_addresses.address AND shared_address_signing_paths.device_address=? \n\
+					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
+				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
+				function(rows) {
+					if (rows.length === 0)
+						return notification.error('not my prosaic contract');
+					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
+						return showModal();
+					oldWalletId = profileService.focusedClient.credentials.walletId;
+					oldCorrespondent = correspondentListService.currentCorrespondent;
+					profileService._setFocus(rows[0].wallet, function(){
+						showModal();
+					});
+				}	
+			);
+		} else {
+			showModal();
+		}
+	};
+
+	$scope.showArbiterContractOffer = function(contractJsonBase64, isIncoming){
+		$rootScope.modalOpened = true;
+		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
+		if (!objContract)
+			throw Error('failed to parse the already validated base64 arbiter contract '+contractJsonBase64);
+		objContract.peer_device_address = correspondent.device_address;
+
+		var showModal = function() {
+			var ModalInstanceCtrl = function($scope, $modalInstance) {
+				var arbiter_contract = require('ocore/arbiter_contract.js');
+
+				$scope.isIncoming = !!isIncoming;
+				$scope.text = objContract.text;
+				$scope.title = objContract.title;
+				$scope.arbiter_address = objContract.arbiter_address;
+				$scope.amount = objContract.amount;
+				$scope.isMobile = isMobile.any();
+				$scope.form = {};
+				arbiter_contract.getByHash(objContract.hash, function(objContract){
+					if (!objContract)
+						throw Error("no contract found in database for already received offer message");
+					$scope.unit = objContract.unit;
+					$scope.status = objContract.status;
+					$scope.creation_date = objContract.creation_date;
+					$scope.hash = objContract.hash;
+					$scope.calculated_hash = arbiter_contract.getHash(objContract);
+					$scope.my_address = objContract.my_address;
+					$scope.peer_address = objContract.peer_address;
+					$scope.me_is_payer = objContract.me_is_payer;
+					$scope.amount = objContract.amount;
+					$scope.my_contact_info = objContract.my_contact_info;
+					$scope.peer_contact_info = objContract.peer_contact_info;
+
+					if (objContract.unit) {
+						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
+							if (!rows.length)
+								return;
+							var payload = rows[0].payload;
+							try {
+								$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+								$timeout(function() {
+									$rootScope.$apply();
+								});
+							} catch (e) {}
+						})
+					}
+					var objDateCopy = new Date(objContract.creation_date_obj);
+					$scope.valid_till = objDateCopy.setHours(objDateCopy.getHours() + objContract.ttl);
+					if ($scope.status === "pending" && $scope.valid_till < Date.now())
+						$scope.status = 'expired';
+
+					correspondentListService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
+						require('ocore/arbiters.js').getInfo(objContract.arbiter_address, function(info){
+							$scope.arbiter_name = info.real_name;
+						});
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
+
+					$timeout(function() {
+						$rootScope.tab = $scope.index.tab = 'chat';
+						$rootScope.$apply();
+					});
+				});
+
+				var setError = function(err) {
+					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				}
+
+				var respond = function(status, signedMessageBase64) {
+					// read again, as we might already updated contract status by network in background
+					arbiter_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+						arbiter_contract.setField(objContract.hash, "status", status);
+						device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
+							var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
+							arbiter_contract.respond(objContract, status, signedMessageBase64, pairing_code, objContract.my_contact_info, require('ocore/wallet.js').getSigner());
+						});
+						objContract.status = status;
+						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						var body = correspondentListService.formatOutgoingMessage(chat_message);
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						// share accepted contract to previously saced cosigners
+						if (status == "accepted") {
+							cosigners.forEach(function(cosigner){
+								arbiter_contract.share(objContract.hash, cosigner);
+							});
+						}
+						if (status != "accepted") {
+							$timeout(function() {
+								$modalInstance.dismiss(status);
+							});
+						}
+					});
+				};
+				$scope.accept = function() {
+					// save cosigners here as respond() can be called
+					cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
+					if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
+						indexScope.copayers.forEach(function(copayer) {
+							if (!copayer.me)
+								cosigners.push(copayer.device_address);
+						});
+					}
+
+					if ($scope.form.my_contact_info) {
+						arbiter_contract.setField(objContract.hash, "my_contact_info", $scope.form.my_contact_info);
+					}
+
+					$modalInstance.dismiss();
+
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+						if (err)
+							return setError(err);
+						respond('accepted', signedMessageBase64);
+					});
+				};
+
+				$scope.revoke = function() {
+					arbiter_contract.getByHash(objContract.hash, function(objContract){
+						if (objContract.status !== "pending")
+							return setError("contract status was changed, reopen it");
+
+						objContract.status = 'revoked';
+						arbiter_contract.setField(objContract.hash, "status", objContract.status);
+						device.sendMessageToDevice(correspondent.device_address, "arbiter_contract_update", {
+							hash: objContract.hash,
+							field: "status",
+							value: objContract.status
+						});
+
+						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						var body = correspondentListService.formatOutgoingMessage(chat_message);
+						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+
+						// swap addresses for peer chat message
+						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
+						delete objContract.peer_device_address;
+						chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
+						device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
+
+						$timeout(function() {
+							$modalInstance.dismiss('revoke');
+						});
+					});
+				};
+
+				$scope.pay = function() {
+					arbiter_contract.getByHash(objContract.hash, function(objContract){
+						if (!objContract.shared_address || objContract.status != "accepted")
+							return setError("contract can't be paid");
+						if (fc.isPrivKeyEncrypted()) {
+							profileService.unlockFC(null, function(err) {
+								if (err){
+									setError(err);
+									return;
+								}
+								$scope.pay();
+							});
+							return;
+						}
+						profileService.bKeepUnlocked = true;
+
+						var opts = {
+							asset: "base",
+							to_address: objContract.shared_address,
+							amount: objContract.amount,
+							arrSigningDeviceAddresses: objContract.cosigners
+						};
+						fc.sendMultiPayment(opts, function(err, unit){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								return setError(err);
+							}
+							$rootScope.$emit("NewOutgoingTx");
+
+							arbiter_contract.setField(objContract.hash, "status", "paid");
+							
+							var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+							var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+							var text = '"' + objContract.title +"\" contract was paid, unit: " + url;
+							correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+							$modalInstance.dismiss();
+						});
+					});
+				}
+
+				$scope.decline = function() {
+					respond('declined');
+				};
+
+				$scope.close = function() {
+					$modalInstance.dismiss('cancel');
+				};
+
+				$scope.openInExplorer = correspondentListService.openInExplorer;
+
+				$scope.expandProofBlock = function() {
+					$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
+				};
+
+				$scope.checkValidity = function() {
+					$timeout(function() {
+						$scope.validity_checked = true;
+					}, 500);
+				}
+
+				$scope.copyToClipboard = function() {
+					var sourcetext = document.getElementById('sourcetext');
+					var text = sourcetext.value;
+					sourcetext.selectionStart = 0;
+					sourcetext.selectionEnd = text.length;
+					notification.success(gettext('Copied to clipboard'));
+					if (isCordova) {
+						cordova.plugins.clipboard.copy(text);
+					} else if (nodeWebkit.isDefined()) {
+						nodeWebkit.writeToClipboard(text);
+					}
+				}
+			};
+
+			var modalInstance = $modal.open({
+				templateUrl: 'views/modals/view-arbiter-contract.html',
 				windowClass: animationService.modalAnimated.slideUp,
 				controller: ModalInstanceCtrl,
 				scope: $scope

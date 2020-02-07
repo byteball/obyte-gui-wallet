@@ -34,14 +34,14 @@ form[name="prosaicContractForm"] {
 </style>
 <nav class="tab-bar">
   <section class="left-small">
-    <a ng-click="cancel()" class="p10">
-      <span class="text-close" translate>Close</span>
-    </a>
+	<a ng-click="cancel()" class="p10">
+	  <span class="text-close" translate>Close</span>
+	</a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
-      Offer arbiter contract
-    </h1>
+	<h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
+	  Offer arbiter contract
+	</h1>
   </section>
 </nav>
 
@@ -54,6 +54,14 @@ form[name="prosaicContractForm"] {
 			<span class="last_name">{{my_last_name}}</span>
 			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
+			<ul class="button-group round even-2">
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" ng-click="form.payer = 'peer'" translate>
+					Doer
+				</li>
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" ng-click="form.payer = 'me'" translate>
+					Payer
+				</li>
+			</ul>
 		</div>
 		<span class="person title" translate>Peer</span>
 		<div class="name p10l">
@@ -61,7 +69,20 @@ form[name="prosaicContractForm"] {
 			<span class="last_name">{{peer_last_name}}</span>
 			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+			<ul class="button-group round even-2" ng-disabled>
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" translate>
+					Doer
+				</li>
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" translate>
+					Payer
+				</li>
+			</ul>
 		</div>
+
+		<span translate>Contract amount</span> <input type="number" name="amount" required ng-model="form.amount" style="text-align: right" class="inline w40"> <span translate>bytes</span>
+
+		<span class="title" translate>Arbiter Address</span>
+		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress"/>
 
 		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>
@@ -70,6 +91,9 @@ form[name="prosaicContractForm"] {
 		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n"></textarea>
 
 		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
+
+		<span class="contact_info" translate>Contact Info</span>
+		<textarea id="contact_info" name="contactInfo" ng-model="form.contactInfo" rows=2 msd-elastic="\n"></textarea>
 
 		<div ng-if="index.m < index.n && index.m > 1">
 			<h3 class="title" translate>Cosigners</h3>

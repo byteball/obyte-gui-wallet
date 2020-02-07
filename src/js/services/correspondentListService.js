@@ -213,6 +213,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
+		}).replace(/\(arbiter-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Arbiter contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -395,6 +400,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
+		}).replace(/\(arbiter-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+contractJsonBase64+'\', false)" class="arbiter_contract_offer">[Contract with arbiter '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -1052,6 +1062,207 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	root.listenForProsaicContractResponse();
+
+	root.listenForArbiterContractResponse = function(contracts) {
+		var arbiter_contract = require('ocore/arbiter_contract.js');
+		var storage = require('ocore/storage.js');
+		var fc = profileService.focusedClient;
+
+		var showError = function(msg) {
+			$rootScope.$emit('Local/ShowErrorAlert', msg);
+		}
+
+		var start_listening = function(contracts) {
+			contracts.forEach(function(contract){
+				console.log('listening for arbiter contract response ' + contract.hash);
+
+				var sendUnit = function(accepted, authors){
+					if (!accepted) {
+						return;
+					}
+
+					if (fc.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								showError(err);
+								return;
+							}
+							sendUnit(accepted, authors);
+						});
+						return;
+					}
+					
+					root.readLastMainChainIndex(function(err, last_mci){
+						if (err){
+							showError(err);
+							return;
+						}
+						var arrDefinition =
+						['or', [
+							['and', [
+								['address', contract.my_address],
+								['address', contract.peer_address]
+							]],
+							["and", [
+						        ["address", contract.me_is_payer ? contract.my_address : contract.peer_address],
+						        ["has", {
+						            what: "output",
+						            asset: "base", 
+						            amount: contract.amount, 
+						            address: contract.me_is_payer ? contract.peer_address : contract.my_address
+						        }]
+						    ]],
+						    ["and", [
+						        ["address", contract.me_is_payer ? contract.peer_address : contract.my_address],
+						        ["has", {
+						            what: "output",
+						            asset: "base", 
+						            amount: contract.amount, 
+						            address: contract.me_is_payer ? contract.my_address : contract.peer_address
+						        }]
+						    ]],
+							["and", [
+						        ["address", contract.me_is_payer ? contract.my_address : contract.peer_address],
+						        ["in data feed", [[contract.arbiter_address], "CONTRACT_" + contract.hash, "=", contract.me_is_payer ? contract.my_address : contract.peer_address]]
+						    ]],
+						    ["and", [
+						        ["address", contract.me_is_payer ? contract.peer_address : contract.my_address],
+						        ["in data feed", [[contract.arbiter_address], "CONTRACT_" + contract.hash, "=", contract.me_is_payer ? contract.peer_address : contract.my_address]]
+						    ]]
+						]];
+						var assocSignersByPath = {
+							'r.0.0': {
+								address: contract.my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							},
+							'r.0.1': {
+								address: contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.peer_device_address
+							},
+							'r.1.0': {
+								address: contract.me_is_payer ? contract.my_address : contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.me_is_payer ? device.getMyDeviceAddress() : contract.peer_device_address
+							},
+							'r.2.0': {
+								address: contract.me_is_payer ? contract.peer_address : contract.my_address,
+								member_signing_path: 'r',
+								device_address: contract.me_is_payer ? contract.peer_device_address : device.getMyDeviceAddress()
+							},
+							'r.3.0': {
+								address: contract.me_is_payer ? contract.my_address : contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.me_is_payer ? device.getMyDeviceAddress() : contract.peer_device_address
+							},
+							'r.4.0': {
+								address: contract.me_is_payer ? contract.peer_address : contract.my_address,
+								member_signing_path: 'r',
+								device_address: contract.me_is_payer ? contract.peer_device_address : device.getMyDeviceAddress()
+							},
+						};
+						require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+							ifError: function(err){
+								showError(err);
+							},
+							ifOk: function(shared_address){
+								composeAndSend(shared_address);
+							}
+						});
+					});
+					
+					// create shared address and deposit some bytes to cover fees
+					function composeAndSend(shared_address){
+						arbiter_contract.setField(contract.hash, "shared_address", shared_address);
+						device.sendMessageToDevice(contract.peer_device_address, "arbiter_contract_update", {
+							hash: contract.hash,
+							field: "shared_address",
+							value: shared_address
+						});
+						contract.cosigners.forEach(function(cosigner){
+							if (cosigner != device.getMyDeviceAddress())
+								arbiter_contract.share(contract.hash, cosigner);
+						});
+
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							asset: "base",
+							to_address: shared_address,
+							amount: arbiter_contract.CHARGE_AMOUNT,
+							arrSigningDeviceAddresses: contract.cosigners
+						};
+						fc.sendMultiPayment(opts, function(err, unit){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								showError(err);
+								return;
+							}
+							$rootScope.$emit("NewOutgoingTx");
+
+							// post a unit with contract text hash and send it for signing to correspondent
+							var value = {"contract_text_hash": contract.hash};
+							var objMessage = {
+								app: "data",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+								payload: value
+							};
+
+							fc.sendMultiPayment({
+								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
+								shared_address: shared_address,
+								messages: [objMessage]
+							}, function(err, unit) { // can take long if multisig
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								$rootScope.sentUnit = unit;
+								if (err) {
+									showError(err);
+									return;
+								}
+								arbiter_contract.setField(contract.hash, "unit", unit);
+								device.sendMessageToDevice(contract.peer_device_address, "arbiter_contract_update", {
+									hash: contract.hash,
+									field: "unit",
+									value: unit
+								});
+								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
+								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								device.sendMessageToDevice(contract.peer_device_address, "text", text);
+							});
+						});
+					}
+				};
+				eventBus.once("arbiter_contract_response_received" + contract.hash, sendUnit);
+			});
+		}
+
+		if (contracts)
+			return start_listening(contracts);
+		arbiter_contract.getAllByStatus("pending", function(contracts){
+			start_listening(contracts);
+		});
+	}
+	root.listenForArbiterContractResponse();
+
+	eventBus.on('new_my_transactions', function(arrNewUnits) {
+		var db = require('ocore/db.js');
+		var storage = require('ocore/storage.js');
+		arrNewUnits.forEach(function(unit) {
+			storage.readUnitProps(db, unit, function(objUnit) {
+				
+			});
+		});
+	});
 
 	root.readLastMainChainIndex = function(cb){
 		if (require('ocore/conf.js').bLight){
