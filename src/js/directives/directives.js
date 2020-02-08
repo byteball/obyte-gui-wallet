@@ -220,7 +220,8 @@ angular.module('copayApp.directives')
         decimals = profileService.assetMetadata[asset].decimals || 0;
         unitValue = Math.pow(10, decimals);
       }
-        
+        	if (typeof value === "string")
+        		value = value.replace(",", ".");
             var vNum = Number((value * unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
