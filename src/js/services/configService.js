@@ -38,7 +38,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 				name: "Precious metal exchange rates oracle",
 				feedname_placeholder: "e.g. XAU_GBYTE",
 				feedvalue_placeholder: "e.g. 1234.56",
-				instructions_url: "https://wiki.obyte.org/Oracle",
+				instructions_url: "https://medium.com/obyte/profit-from-gold-and-silver-without-holding-the-physical-metal-or-buying-financial-funds-3a2fd0feaa10",
 				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
 				feedvalues_filter: ["^[\\d\\.]+$"]
 			},
@@ -74,7 +74,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 				name: "Precious metal exchange rates oracle",
 				feedname_placeholder: "e.g. XAU_GBYTE",
 				feedvalue_placeholder: "e.g. 1234.56",
-				instructions_url: "https://wiki.obyte.org/Oracle",
+				instructions_url: "https://medium.com/obyte/profit-from-gold-and-silver-without-holding-the-physical-metal-or-buying-financial-funds-3a2fd0feaa10",
 				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
 				feedvalues_filter: ["^[\\d\\.]+$"]
 			},
