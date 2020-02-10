@@ -85,7 +85,7 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
-	cordova plugin add https://github.com/bytelabsco/Custom-URL-scheme --variable URL_SCHEME=byteball-tn
+	cordova plugin add https://github.com/bytelabsco/Custom-URL-scheme --variable URL_SCHEME=obyte-tn
 	checkOK
 	cordova plugin add cordova-plugin-inappbrowser
 	checkOK
