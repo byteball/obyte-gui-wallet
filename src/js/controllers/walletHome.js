@@ -1873,7 +1873,7 @@ angular.module('copayApp.controllers')
 						arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 						shared_address: indexScope.shared_address,
 						messages: [objMessage]
-					}, function (err) { // can take long if multisig
+					}, function (err, unit) { // can take long if multisig
 						$rootScope.sentUnit = unit;
 						indexScope.setOngoingProcess(gettext('sending'), false);
 						if (err) {
