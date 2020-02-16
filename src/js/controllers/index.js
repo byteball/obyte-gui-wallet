@@ -225,11 +225,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			$rootScope.$apply();
 		});
 	});
-	eventBus.on('started_db_upgrade', function(){
+	eventBus.on('started_db_upgrade', function(bLongUpgrade){
 		$timeout(function() {
 			if (self.bUpgradingDb === undefined)
 				self.bUpgradingDb = true;
-			$rootScope.$apply();
+      self.bLongUpgrade = bLongUpgrade;
+      $rootScope.$apply();
 		}, 100);
 	});
 	eventBus.on('finished_db_upgrade', function(){
