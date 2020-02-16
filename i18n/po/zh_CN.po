@@ -4,14 +4,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: byteball\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: byteball\n"
 "X-Crowdin-Language: zh-CN\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
-"Last-Translator: testz\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2019-09-24 19:13\n"
+"PO-Revision-Date: 2020-01-18 09:11\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -111,7 +109,7 @@ msgstr "需要证明的地址"
 #: public/views/modals/approveNewWitnesses.html:16
 #: public/views/modals/approveNewWitnesses.html:28
 msgid "Address:"
-msgstr ""
+msgstr "地址："
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -168,7 +166,7 @@ msgstr "此外在设置菜单中，你可以找到安全选项，例如密码设
 
 #: public/views/walletHome.html:501
 msgid "Also send data..."
-msgstr ""
+msgstr "同时发送数据..."
 
 #: public/views/includes/password.html:42
 msgid "Also, don't forget to delete your seed"
@@ -1005,7 +1003,7 @@ msgstr "联系人姓名"
 #: public/views/modals/approveNewWitnesses.html:20
 #: public/views/modals/approveNewWitnesses.html:32
 msgid "Name:"
-msgstr ""
+msgstr "名称:"
 
 #: public/views/paymentUri.html:18
 msgid "Network"
@@ -1077,7 +1075,7 @@ msgstr "Obyte地址"
 
 #: public/views/modals/offer-prosaic-contract.html:88
 msgid "Offer Contract"
-msgstr ""
+msgstr "报价合同"
 
 #: public/views/modals/offer-contract.html:33
 #: src/js/services/correspondentListService.js:150
@@ -1176,7 +1174,7 @@ msgstr "付款已发送"
 #: public/views/modals/offer-prosaic-contract.html:58
 #: public/views/modals/view-prosaic-contract.html:77
 msgid "Peer"
-msgstr ""
+msgstr "节点"
 
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
