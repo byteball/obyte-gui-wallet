@@ -286,7 +286,7 @@ API.prototype.decryptBIP38PrivateKey = function(encryptedPrivateKeyBase58, passp
 
   var privateKey = new Bitcore.PrivateKey(privateKeyWif);
   var address = privateKey.publicKey.toAddress().toString();
-  var addrBuff = new Buffer(address, 'ascii');
+  var addrBuff = new Buffer.from(address, 'ascii');
   var actualChecksum = Bitcore.crypto.Hash.sha256sha256(addrBuff).toString('hex').substring(0, 8);
   var expectedChecksum = Bitcore.encoding.Base58Check.decode(encryptedPrivateKeyBase58).toString('hex').substring(6, 14);
 
@@ -567,9 +567,12 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 	}
 };
 
-API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, cb) {
+API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, bNetworkAware, cb) {
 	var Wallet = require('ocore/wallet.js');
-	Wallet.signMessage(from_address, message, arrSigningDeviceAddresses, this.getSignerWithLocalPrivateKey(), cb);
+  var signed_message = require('ocore/signed_message.js');
+  var signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
+	var signer = Wallet.getSigner({}, arrSigningDeviceAddresses, signWithLocalPrivateKey);
+	signed_message.signMessage(message, from_address, signer, bNetworkAware, cb);
 };
 
 API.prototype.getAddresses = function(opts, cb) {

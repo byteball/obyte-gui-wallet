@@ -24,7 +24,8 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.isCordova = isCordova;
 		self.bCompression = false;
 		self.connection = null;
-		$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
+		if (!isCordova)
+			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
 
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';

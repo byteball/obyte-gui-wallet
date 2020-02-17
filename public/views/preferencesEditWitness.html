@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Edit witness'; goBackToState = true">
+  ng-init="titleSection='Edit order provider'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesEditWitnessController as ewc">
@@ -9,7 +9,7 @@
   <form name="editWitnessForm" ng-submit="ewc.save()" class="columns">
     <div class="text-warning size-12 m10b" ng-show="ewc.error">{{ewc.error|translate}}</div>
     <div class="form-group" click-outside="ewc.suggestToggle = false">
-      <label><span translate>Witness address</span></label>
+      <label><span translate>Order Provider (witness) address</span></label>
       <input
               type="text"
               id="witness"

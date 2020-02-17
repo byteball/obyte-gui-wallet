@@ -94,7 +94,7 @@ angular.module('copayApp.directives')
           ctrl.$setValidity('validAddresses', false);
           return value;
         }
-        for (i = 0; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i++) {
           var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
           if (!tokens) {
             ctrl.$setValidity('validAddresses', false);
@@ -220,7 +220,8 @@ angular.module('copayApp.directives')
         decimals = profileService.assetMetadata[asset].decimals || 0;
         unitValue = Math.pow(10, decimals);
       }
-        
+        	if (typeof value === "string")
+        		value = value.replace(",", ".");
             var vNum = Number((value * unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
@@ -585,16 +586,19 @@ angular.module('copayApp.directives')
         clickOutside: '&'
       },
       link: function (scope, el) {
-        $document.on('click', function (e) {
+        var handler = function (e) {
           if (el !== e.target && !el[0].contains(e.target)) {
-            scope.$apply(function () {
-              scope.$eval(scope.clickOutside);
-            });
+              scope.$apply(function () {
+                  scope.$eval(scope.clickOutside);
+              });
           }
+        }
+        $document.on('click', handler);
+        scope.$on('$destroy', function() {
+          $document.off('click', handler);
         });
       }
     }
-
   })
   .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;

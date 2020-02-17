@@ -338,14 +338,15 @@ input.datafeed_input {
                 <span class="db text-bold">
                     <span translate>What to send</span>:
                 </span>
-                <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.switchForms()">
-                	<option ng-repeat="balance in index.arrBalances"
-                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
-                	<option ng-value="-1" translate>Data into datafeed</option>
-                	<option ng-value="-2" translate>Attestation</option>
-                	<option ng-value="-3" translate>Profile</option>
-                	<option ng-value="-4" translate>Data</option>
+                <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.forceAmountRevalidation(); home.switchForms(); home.onChanged()">
+                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
+                	<option ng-value="-1" translate>Data into datafeed (searchable)</option>
+                	<option ng-value="-2" translate>Attestation of any address</option>
+                	<option ng-value="-3" translate>Profile of my address</option>
+                	<option ng-value="-4" translate>Raw data</option>
                 	<option ng-value="-5" translate>Poll</option>
+                	<option ng-value="-6" translate>Definition of autonomous agent</option>
+                	<option ng-value="-7" translate>Text</option>
                 </select>
             </div>
         </h4>
@@ -362,14 +363,15 @@ input.datafeed_input {
 			  
             <div class="row" ng-hide="home.hideAmount">
               <div class="large-12 medium-12 columns">
-                <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue">
-                  <div class="flex align-items-center text-primary" ng-if="!sendPaymentForm.amount.$invalid">
-                    <i class="icon icon-checkmark-circle size-14"></i>
-                  </div>
-                  <div class="flex align-items-center has-error" ng-if="sendPaymentForm.amount.$invalid">
-                    <i class="icon icon-close-circle size-14 m5r"></i>
-                    <span class="size-12" translate> Not valid</span>
-                  </div>
+                <div class="right" ng-hide="sendPaymentForm.amount.$pristine && !sendPaymentForm.amount.$modelValue ">
+                  <span class="has-error right size-12" ng-if="sendPaymentForm.amount.$invalid">
+                    <i class="icon-close-circle size-14"></i>
+                    <span clas="vm" ng-if="!home.custom_amount_error" translate>Not valid</span>
+                    <span clas="vm" ng-if="home.custom_amount_error" translate>{{home.custom_amount_error}}</span>
+                  </span>
+                  <small class="text-primary right" ng-if="!sendPaymentForm.amount.$invalid">
+                    <i class="icon-checkmark-circle size-14"></i>
+                  </small>
                 </div>
                 <div>
                   <label for="amount">
@@ -378,30 +380,11 @@ input.datafeed_input {
 					          <a ng-click="home.setSendAll()" ng-show="!home.bSendAll && !home.lockAmount" style="text-transform: none; margin-left: 10px" translate>Send all</a>
                   </label>
                   <div class="input">
-                    <input
-                        type="{{index.isMobile.iOS() ? 'text' : 'number'}}"
-                        inputmode="numeric"
-                        id="amount"
-                        name="amount"
-                        ng-disabled="home.blockUx || home.lockAmount || home.bSendAll"
-                        ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}"
-                        ng-minlength="0.00000001"
-                        ng-maxlength="10000000000"
-                        ng-model="_amount"
-                        valid-amount="{{index.arrBalances[index.assetIndex].asset}}"
-                        ng-required="!home.bSendAll && !home.send_multiple"
-                        autocomplete="off"
-                        ng-focus="home.formFocus('amount')"
-                        ng-blur="home.formFocus(false)">
-                    <div class="dollar-value"
-						 ng-if="index.arrBalances[index.assetIndex].asset && !sendPaymentForm.amount.$invalid"
-						 ng-class="{'send-all': home.bSendAll}">
-                      <span>{{home.getDollarValue(_amount,  index.arrBalances[index.assetIndex])}}</span>
-                    </div>
-                    <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
-                    <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
-                    <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
-                    <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
+                    <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="decimal" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ng-change="home.onChanged()">
+                      <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
+                      <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
+                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
+                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
                   </div>
                 </div>
               </div>
@@ -430,8 +413,9 @@ input.datafeed_input {
 	                <span ng-if="home.send_multiple">
 	                  <span class="has-error right size-12" ng-show="sendPaymentForm.addresses.$invalid && !sendPaymentForm.addresses.$pristine">
 	                    <i class="icon-close-circle size-14"></i>
-	                    <span class="vm" translate>Not valid</span>
+	                    <span class="vm" translate>Not valid</span>:
 	                    <span class="vm">{{(sendPaymentForm.addresses.$error | objectKeys)[0].indexOf('line-') > -1 ? (sendPaymentForm.addresses.$error | objectKeys)[0].replace('line-', '') : ''}}</span>
+	                    <span class="vm" ng-if="sendPaymentForm.addresses.$error.noAA" translate>AAs not allowed in multi-send</span>
 	                  </span>
 	                  <small class="right text-primary" ng-show="!sendPaymentForm.addresses.$invalid">
 	                    <i class="icon-checkmark-circle size-14"></i>
@@ -440,9 +424,9 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">
+	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)" ng-change="home.onAddressChanged()">
 	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Obyte address' : 'Obyte address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
-	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join('')"></textarea>
+	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join(''); home.onMultiAddressesChanged()"></textarea>
 
 	                <!--<div class="addressbook-input" ng-show="!sendPaymentForm.address.$invalid && _address">
 	                  {{index.addressbook[_address] || _address}}
@@ -460,7 +444,7 @@ input.datafeed_input {
 				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem; float: right;">
 					  <a ng-click="home.lockAmount = home.send_multiple = !home.send_multiple" class="text-gray" style="border-bottom: 1px dashed grey;">
 						  <span ng-if="home.send_multiple" translate>switch to single address</span>
-						  <span ng-if="!home.send_multiple" translate ng-click="home.resetForm(sendPaymentForm)">switch to multi-address</span>
+						  <span ng-if="!home.send_multiple" translate ng-click="home.resetForm(true)">switch to multi-address</span>
 					  </a>
 				  </div>
 				  <div id="binding-drop" class="f-dropdown" data-dropdown-content style="padding: 10px;" translate>To bind the payment to a condition, please click the peer's address in chat</div>  
@@ -497,25 +481,85 @@ input.datafeed_input {
 	            </div>
 
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
-                  <div class="large-12 columns m30b">
-                      <a style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
+                  <div class="large-12 columns m20b">
+                      <a style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
 	                </div>
 	            </div>
 
               <div class="row" ng-if="home.feedvaluespairs.length > 0">
                 <div class="large-12 columns m30b m10t">
-	                <label translate>Data to be posted with the payment:</label>
-	                <div>
-                    <span ng-repeat="pair in home.feedvaluespairs">
-                      <input type="text" ng-model="pair.name" placeholder="{{'Field'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" >
-                      <input type="text" ng-model="pair.value" placeholder="{{'Value'|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
-                      <a ng-show="$last" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
-                    </span>
+                  <label translate>Data to be posted with the payment:</label>
+                  <div class="payment-data-wrap">
+                    <div ng-repeat="pair in home.feedvaluespairs">
+                      <div class="datafeed_input"
+                           click-outside="pair.suggestionsShown = false">
+                        <input type="text"
+                               ng-model="pair.name"
+                               ng-readonly="pair.readonly"
+                               placeholder="{{'Field'|translate}}"
+                               ng-required="true"
+                               ng-maxlength="64"
+                               maxlength="64"
+                               ng-change="home.onChanged()"
+                               ng-focus="home.showDataFieldSuggestions(pair.suggestionsShown, $index, home.feedvaluespairs)"
+                        >
+                        <div class="suggest-list" ng-if="home.aa_data_fields_defined.length && pair.suggestionsShown">
+                          <div class="option"
+                               ng-repeat="dataKey in home.aa_data_fields_defined | filter:pair.name"
+                               ng-click="pair.name = dataKey; pair.suggestionsShown = false">
+                               <span style="font-weight: bold;">{{dataKey}}</span><span ng-if="home.aa_field_descriptions[dataKey]">: {{home.aa_field_descriptions[dataKey]}}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="datafeed_input">
+                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" maxlength="256" ng-change="home.onChanged()">
+                      </div>
+                      <a ng-if="!pair.readonly" ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
+                    </div>
                     <div class="clear"></div>
                     <a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
-                      <i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-                      <span class="text-close size-12" translate>Add fields</span> 
+                      <i class="fi-plus size-18 m10r"></i>
+                      <span class="text-close size-12" translate>Add fields</span>
                     </a>
+                  </div>
+                </div>
+	            </div>
+
+              <div class="row" ng-if="home.aa_destinations && home.aa_destinations.length > 0" style="background: #F1F3F5; word-wrap: break-word; margin-bottom: 40px">
+                <div class="large-12 columns m30b m10t size-14">
+                  <h4 style="font-weight: bold" ng-if="!home.hasDocs()" translate>You are sending to an autonomous agent, the expected result:</h4>
+                  <div ng-if="home.hasDocs()" class="enable_text_select">
+                    <h4 style="font-weight: bold" translate>You are sending to an autonomous agent:</h4>
+                    <div ng-if="home.aa_description">
+                      <div ng-if="!home.aa_truncated_description">{{home.aa_description}}</div>
+                      <div ng-if="home.aa_truncated_description">
+                        <div ng-if="!home.bShowFullDescription">{{home.aa_truncated_description}} (<a ng-click="home.bShowFullDescription=true" translate>more</a>)</div>
+                        <div ng-if="home.bShowFullDescription">{{home.aa_description}} (<a ng-click="home.bShowFullDescription=false" translate>less</a>)</div>
+                      </div>
+                    </div>
+                    <div ng-if="home.aa_homepage_url"><span style="font-weight: bold" translate>Home page:</span style="font-weight: bold"> <a ng-click="$root.openExternalLink(home.aa_homepage_url)">{{home.aa_homepage_url.substr(8)}}</a></div>
+                    <div ng-if="home.aa_source_url"><span style="font-weight: bold" translate>Source code:</span> <a ng-click="$root.openExternalLink(home.aa_source_url)">{{home.aa_source_url.substr(8)}}</a></div>
+                    <h4 style="font-weight: bold" translate>The expected result:</h4>
+                  </div>
+                  <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
+                    {{home.aa_dry_run_error}}<br>
+                    <a ng-click="home.onChanged()" translate>Try again</a>
+                  </div>
+	                <ul class="enable_text_select">
+                    <li ng-repeat="result in home.aa_message_results track by $index" style="word-wrap: break-word">
+                      {{result}}<br>
+                    </li>
+                    <li ng-repeat="state_change in home.aa_state_changes">
+                      <span translate>Variable</span> <i>{{state_change.variable}}</i> {{state_change.action}} <b>{{state_change.value}}</b><br>
+                    </li>
+                    <li ng-repeat="responseVar in home.responseVars">
+                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b>{{responseVar.value}}</b><br>
+                    </li>
+                  </ul>
+                  <div>
+                    <span ng-repeat="feeInfo in home.added_bounce_fees">
+                      {{feeInfo.display_amount}} <span translate>were added as it is the minimum amount for this AA</span><br>
+                    </span>
                   </div>
                 </div>
 	            </div>
@@ -531,7 +575,7 @@ input.datafeed_input {
 
 	            <div class="row" ng-show="!home.onGoingProcess">
 	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)">
-	                <a ng-click="home.resetForm(sendPaymentForm)" class="button expand outline dark-gray round" translate>Cancel</a>
+	                <a ng-click="home.resetForm()" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
 	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
 	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
@@ -605,14 +649,30 @@ input.datafeed_input {
 					</label>
 					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question" ng-required="true">
 				</div>
-				<div class="row m20t">
+				<div class="row m20t" ng-if="assetIndexSelectorValue == -6">
+					<label style="float: left;">
+						<span translate>Definition of autonomous agent:</span>
+					</label>
+          <textarea name="definition" ng-model="home.definition" placeholder="JSON of autonomous agent definition" required rows="10" ng-change="home.validateAADefinition()" style="margin-bottom: 0px"></textarea>
+          <span ng-if="home.aa_validation_error" class="text-warning size-12">{{home.aa_validation_error}}</span>
+          <span ng-if="sendDataForm.definition.$valid" class="text-success size-12" translate>Looks OK</span>
+				</div>
+        <div class="row m20t" ng-if="assetIndexSelectorValue == -7">
+          <label style="float: left;">
+            <span translate>Text to be forever saved on the DAG:</span>
+          </label>
+          <textarea name="content" ng-model="home.content" placeholder="Text" required rows="4" ng-change="home.validateTextLength()" style="margin-bottom: 0px;/*font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;*/" ng-trim="false"></textarea>
+          <div ng-if="sendDataForm.content.$invalid && home.content" class="text-warning size-12" translate>Too long text</div>
+          <div ng-if="sendDataForm.content.$valid || !home.content" class="size-12">{{home.content.length || 0}} <span translate>character(s)</span></div>
+        </div>
+				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7">
 					<label>
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
-						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64">
-						<a ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
+						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
+						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" maxlength="256">
+						<a ng-if="!pair.readonly" ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
 					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
 					<div class="clear"></div>
@@ -730,10 +790,15 @@ input.datafeed_input {
                 Unconfirmed
               </span>
             </div>
-            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0 && btx.action == 'received'">{{ newPaymentsCount[btx.unit] }}</div>
+            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
           </div>
           <div class="large-1 medium-1 small-1 columns text-right">
             <i class="icon-arrow-right3 size-18"></i>
+          </div>
+          <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
+            <span ng-show="btx.from_aa" class="small-2 right">
+              <span class="label tu light-gray radius" translate>From AA</span>
+            </span>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
@@ -745,6 +810,9 @@ input.datafeed_input {
             </span>
             <span ng-show="btx.isTextcoin" class="small-2 right">
               <span class="label tu light-gray radius">textcoin</span>
+            </span>
+            <span ng-show="btx.to_aa" class="small-2 right">
+              <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
         </div>

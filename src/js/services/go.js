@@ -2,7 +2,7 @@
 
 var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -131,8 +131,28 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 				console.log("request: " + JSON.stringify(objRequest));
 				setTimeout(function () {
 					if (objRequest.type === 'address') {
-						root.send(function () {
-							$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
+						var emitPaymentRequest = function () {
+							root.send(function () {
+								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address);
+							});
+						}
+						if (!objRequest.from_address)
+							return emitPaymentRequest();
+						var db = require('ocore/db.js');
+						db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [objRequest.from_address], function (rows) {
+							$timeout(function () {
+								if (rows.length === 0)
+									return notification.error("Payment cannot be sent from address " + objRequest.from_address + " as this address doesn't belong to this wallet");
+								var row = rows[0];
+								// same wallet
+								if (row.wallet === profileService.focusedClient.credentials.walletId)
+									return emitPaymentRequest();
+								// switch to another wallet first
+								console.log("will switch to another wallet where from_address is member of");
+								profileService.setAndStoreFocus(row.wallet, function () {
+									emitPaymentRequest();	
+								});
+							});
 						});
 					}
 					else if (objRequest.type === 'data') {
@@ -212,7 +232,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (start != -1) {
 						tokens.push(str.substring(start+1, i));
 						start = -1;
-					} else
+					}
+					else if (str[i - 1] === ' ')
 						start = i;
 				if (str[i] == ' ' && start == -1) {
 					if (str.substring(lastSpace+1, i).length)

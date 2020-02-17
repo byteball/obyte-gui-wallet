@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.byteball.wallet"
-  version="2.8.0"
-  android-versionCode="1080"
-  ios-CFBundleVersion="2.8.0" xmlns:android="http://schemas.android.com/apk/res/android">
+  version="3.0.0"
+  android-versionCode="1083"
+  ios-CFBundleVersion="3.0.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Obyte</name>
     <description>
       Obyte wallet.

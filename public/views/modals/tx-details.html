@@ -103,7 +103,7 @@
     </li>
     <li class="line-b p10 row collapse">
       <div class="text-gray small-2 columns"><span>ID</span>:</div>
-      <div class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer()" class=" ">{{btx.unit}}</a></div>
+      <div class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.unit)" class=" ">{{btx.unit}}</a></div>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
       <span class="text-gray" translate>Note</span>:
@@ -158,5 +158,41 @@
     </li>
   </ul>
 
+  <div ng-if="btx.to_aa" style="margin-top: 40px">
+    <h4 class="title m0" translate>This transaction was sent to an autonomous agent</h4>
+
+    <ul class="no-bullet size-14 m0 tx-details">
+
+      <li class="line-b p10 row collapse">
+        <div class="text-gray small-2 columns"><span translate>Response unit</span>:</div>
+        <div ng-if="btx.response_unit" class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.response_unit)">{{btx.response_unit}}</a></div>
+        <div ng-if="!btx.response_unit" class="right small-10 columns text-right" translate>none</div>
+      </li>
+  
+      <li class="line-b p10">
+        <span class="text-gray"><span translate>Bounced?</span></span>
+        <span ng-if="btx.bounced" class="right" translate>Yes</span>
+        <span ng-if="!btx.bounced" class="right" translate>No</span>
+      </li>
+
+      <li ng-show="btx.response.error" class="line-b p10 row collapse">
+        <div class="text-gray small-2 columns"><span translate>Error</span></div>
+        <div class="right small-10 columns text-right enable_text_select" style="word-wrap: break-word">{{btx.response.error}}</div>
+      </li>
+
+      <li ng-show="btx.response.info" class="line-b p10 row collapse">
+        <div class="text-gray small-2 columns"><span translate>Notice</span></div>
+        <div class="right small-10 columns text-right enable_text_select" style="word-wrap: break-word">{{btx.response.info}}</div>
+      </li>
+    </ul>
+
+    <h4 ng-show="btx.response.responseVars" class="title m0" translate>Response variables</h4>
+    <ul ng-show="btx.response.responseVars" class="no-bullet size-14 m0 tx-details">
+      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse">
+        <div class="text-gray small-4 columns enable_text_select"><span>{{key}}</span></div>
+        <div class="right small-8 columns text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
+      </li>
+    </ul>
+  </div>
 
 </div>
