@@ -172,23 +172,30 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	    if(isCordova) wallet.showCompleteClient();
     });
 	
+  function readLastTimestamp(cb) {
+    var db = require('ocore/db.js');
+    var data_feeds = require('ocore/data_feeds.js');
+    db.query("SELECT timestamp FROM units WHERE is_free=1 ORDER BY timestamp DESC LIMIT 1", function (rows) {
+      if (rows.length === 0)
+        return cb(0);
+      var timestamp = rows[0].timestamp;
+      if (timestamp)
+        return cb(timestamp);
+      data_feeds.readDataFeedValue([configService.TIMESTAMPER_ADDRESS], 'timestamp', null, 0, 1e15, false, 'last', function (objResult) {
+        cb(objResult.value ? parseInt(objResult.value) : 0);
+      });
+    });
+  }
+
 	function readLastDateString(cb){
 		var conf = require('ocore/conf.js');
 		if (conf.storage !== 'sqlite')
 			return cb();
-		var db = require('ocore/db.js');
-		db.query(
-			"SELECT int_value FROM data_feeds CROSS JOIN unit_authors USING(unit) \n\
-			WHERE +address=? AND +feed_name='timestamp' \n\
-			ORDER BY data_feeds.rowid DESC LIMIT 1",
-			[configService.TIMESTAMPER_ADDRESS],
-			function(rows){
-				if (rows.length === 0)
-					return cb();
-				var ts = rows[0].int_value;
-				cb('at '+$filter('date')(ts, 'short'));
-			}
-		);
+		readLastTimestamp(function(ts){
+      if (!ts)
+        return cb();
+      cb('at '+$filter('date')(ts, 'short'));
+		});
 	}
 	
 	function readSyncPercent(cb){
