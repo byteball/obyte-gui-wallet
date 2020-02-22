@@ -1484,6 +1484,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.showPopup(msg, 'fi-alert', cb);
   };
 
+  /*
   self.recreate = function(cb) {
     var fc = profileService.focusedClient;
     self.setOngoingProcess('recreating', true);
@@ -1498,7 +1499,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         $rootScope.$emit('Local/WalletImported', self.walletId);
       }, 100);
     });
-  };
+  };*/
 
   self.openMenu = function() {
   	backButton.menuOpened = true;

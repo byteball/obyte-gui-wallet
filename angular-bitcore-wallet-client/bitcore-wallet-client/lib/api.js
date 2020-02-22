@@ -470,6 +470,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
  *
  * @returns {Callback} cb - Returns the wallet
  */
+/*
 API.prototype.recreateWallet = function(cb) {
   $.checkState(this.credentials);
   $.checkState(this.credentials.isComplete());
@@ -481,7 +482,7 @@ API.prototype.recreateWallet = function(cb) {
           });
 
       cb();
-};
+};*/
 
 
 
