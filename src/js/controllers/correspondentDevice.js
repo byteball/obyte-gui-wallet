@@ -422,7 +422,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								paymentRequestCode = 'payment:'+paymentJsonBase64;
 							}
 							else
-								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+								paymentRequestCode = 'obyte:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
@@ -1307,7 +1307,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (asset !== 'base')
 					params += '&asset='+encodeURIComponent(asset);
 				var units = profileService.getUnitName(asset);
-				appendText('['+amount+' '+units+'](byteball:'+myPaymentAddress+'?'+params+')');
+				appendText('['+amount+' '+units+'](obyte:'+myPaymentAddress+'?'+params+')');
 				$modalInstance.dismiss('cancel');
 			};
 
