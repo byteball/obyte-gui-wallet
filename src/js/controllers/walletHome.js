@@ -1675,7 +1675,7 @@ angular.module('copayApp.controllers')
 									var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
 									correspondentListService.addMessageEvent(false, recipient_device_address, body);
 									device.readCorrespondent(recipient_device_address, function(correspondent) {
-										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, paymentRequestText, 0);
 									});
 
 									// issue next address to avoid reusing the reverse payment address

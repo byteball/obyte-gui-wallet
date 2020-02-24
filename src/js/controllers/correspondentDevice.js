@@ -427,7 +427,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, paymentRequestText, 0);
 							if (contract.peer_pays_to === 'me')
 								issueNextAddress(fc); // make sure the address is not reused
 						});
@@ -518,7 +518,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 							device.readCorrespondent(correspondent.device_address, function(correspondent) {
-								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 							});
 							$modalInstance.dismiss('sent');
 						});
@@ -1687,7 +1687,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
 							cosigners.forEach(function(cosigner){
@@ -1736,7 +1736,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 
 						// swap addresses for peer chat message
 						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
