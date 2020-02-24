@@ -1886,7 +1886,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		replace: true,
 		link: function (scope, ele, attrs) {
 			scope.$watch(attrs.dynamic, function(html) {
-				ele.html(html);
+				ele.html(html.replace(/(^|>)(.*?)(<|$)/g, function (str, closing_bracket, between, opening_bracket) {
+					if (!between.match(/\W/))
+						return str;
+					return closing_bracket + '<span ng-non-bindable>' + between + '</span>' + opening_bracket;
+				}));
+			//	ele.html(html);
 				$compile(ele.contents())(scope);
 			});
 		}
