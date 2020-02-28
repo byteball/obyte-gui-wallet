@@ -8,9 +8,24 @@
 .w80 {
 	width: 80px !important;
 }
+.help-link {
+	font-size: 9px;
+}
+.expand-link {
+	font-size: 12px;
+	color: #3498DB;
+	border-bottom: 1px dotted #3498DB;
+	cursor: pointer;
+}
 .attestor {
 	clear: both;
 	font-size: 11px;
+	line-height: 15px;
+}
+.help-text {
+	font-size: 11px;
+	line-height: 15px;
+	color: #aEaFc1;
 }
 span.capitalize {
 	display: inline-block;
@@ -27,7 +42,7 @@ form[name="prosaicContractForm"] {
 	line-height: 26px;
 }
 .title {
-	margin-top: 10px;
+	margin-top: 15px;
 	margin-bottom: 0;
 	display: inline-block;
 }
@@ -56,10 +71,10 @@ form[name="prosaicContractForm"] {
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
 			<ul class="button-group round even-2">
 				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" ng-click="form.payer = 'peer'" translate>
-					Doer
+					Seller
 				</li>
 				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" ng-click="form.payer = 'me'" translate>
-					Payer
+					Buyer
 				</li>
 			</ul>
 		</div>
@@ -69,31 +84,42 @@ form[name="prosaicContractForm"] {
 			<span class="last_name">{{peer_last_name}}</span>
 			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
-			<ul class="button-group round even-2" ng-disabled>
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" translate>
-					Doer
+			<ul class="button-group round even-2">
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" ng-click="form.payer = 'me'" translate>
+					Seller
 				</li>
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" translate>
-					Payer
+				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" ng-click="form.payer = 'peer'" translate>
+					Buyer
 				</li>
 			</ul>
 		</div>
+		<br>
+		<div class="person title" translate>Amount</div>
+		<div class="help-text">Amount buyer paying to seller for his services, money will be locked on contract untill buyer release them. Can be in asset.</div>
+		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+		<span selectable="#myasset" dropdown-toggle="#myasset" data-model="form" data-prop="asset"></span>
+		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
+		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
+			<a><span >{{info.displayName|translate}}</span></a>
+		  </li>
+		</ul><br>
 
-		<span translate>Contract amount</span> <input type="number" name="amount" required ng-model="form.amount" style="text-align: right" class="inline w40"> <span translate>bytes</span>
-
-		<span class="title" translate>Arbiter Address</span>
+		<div class="title" translate>Arbiter Address</div>
+		<div class="help-text"><a class="help-link" ng-click="openExternalLink('https://obyte.org/where-to-get-arbiters')">Where to get arbiter address?</a></div>
 		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress"/>
 
 		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>
 		
-		<span class="title" translate>Text</span>
+		<div class="title" translate>Text</div>
+		<div class="help-text">Markdown supported: <a class="help-link" ng-click="openExternalLink('https://guides.github.com/features/mastering-markdown/')">markdown cheatsheet</a></div>
 		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n"></textarea>
 
 		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
-
-		<span class="contact_info" translate>Contact Info</span>
-		<textarea id="contact_info" name="contactInfo" ng-model="form.contactInfo" rows=2 msd-elastic="\n"></textarea>
+		<br>
+		<div class="contact_info title" translate>Your Contact Info <span ng-click="expandContactBlock()" class="expand-link">expand</span></div>
+		<div class="help-text" ng-show="contactBlockExpanded">Your contacts on which peer or arbiter can reach you out in case.</div>
+		<textarea id="contact_info" name="contactInfo" ng-model="form.contactInfo" rows=2 msd-elastic="\n" ng-show="contactBlockExpanded"></textarea>
 
 		<div ng-if="index.m < index.n && index.m > 1">
 			<h3 class="title" translate>Cosigners</h3>

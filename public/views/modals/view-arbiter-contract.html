@@ -55,7 +55,7 @@ form[name="prosaicContractForm"] {
   </section>
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
-      Prosaic contract
+      Arbiter contract
     </h1>
   </section>
 </nav>
@@ -74,10 +74,10 @@ form[name="prosaicContractForm"] {
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
 			<ul class="button-group round even-2">
 				<li class="ellipsis" ng-class="{'selected': !!!me_is_payer}" translate>
-					Doer
+					Seller
 				</li>
 				<li class="ellipsis" ng-class="{'selected': !!me_is_payer}"  translate>
-					Payer
+					Buyer
 				</li>
 			</ul>
 		</div>
@@ -94,7 +94,7 @@ form[name="prosaicContractForm"] {
 		</div>
 
 	<h3 class="title" translate>Amount</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amount}} <i translate>bytes</i></span>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">of {{asset}}</i></span>
 
 	<h3 class="title" translate>Title of contract</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{title}}</span>
@@ -103,9 +103,9 @@ form[name="prosaicContractForm"] {
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact Info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>Peer contacts: {{peer_contact_info}}</span>
-	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>My contacts: {{my_contact_info}}</span>
-	<input ng-if="!my_contact_info && status == 'pending' && isIncoming" type="text" name="form.my_contact_info" ng-model="form.my_contact_info">
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Peer contacts: {{peer_contact_info}}</span><br>
+	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >My contacts: {{my_contact_info}}</span>
+	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info"></div>
 
 	<h3 class="unit" ng-if="status === 'accepted'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
