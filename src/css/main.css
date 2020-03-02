@@ -1683,6 +1683,47 @@ a.suggest-command {
   min-height: 40px;
 }
 
+.payment-data-wrap {
+  position: relative;
+}
+
+.payment-data-wrap .datafeed_input {
+  position: relative;
+  display: inline-block;
+  width: 40%;
+}
+
+.payment-data-wrap .fi-plus,
+.payment-data-wrap .fi-minus {
+  vertical-align: middle;
+}
+.payment-data-wrap .suggest-list {
+  position: absolute;
+  padding: 8px 0;
+  top: 35px;
+  left: 0;
+  min-width: 100%;
+  max-width: 89vw;
+  max-height: 65vw;
+  overflow-y: auto;
+  font-size: 13px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px 1px rgba(177, 177, 177, 0.45);
+  z-index: 1;
+}
+
+.payment-data-wrap .suggest-list .option {
+  padding: 5px 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+.payment-data-wrap .suggest-list .option:hover {
+  background-color: #F1F3F5;
+}
+
+
 .name-outer-wrap {
   width: calc(100% - 80px);
 }

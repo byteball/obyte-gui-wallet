@@ -27,3 +27,5 @@ angular.module('copayApp.controllers', []);
 angular.module('copayApp.directives', []);
 angular.module('copayApp.addons', []);
 
+angular.element.prototype.injector = function () { };
+

@@ -758,6 +758,8 @@ angular.module('copayApp.services')
 		root.profile.credentials = [];
 		root.profile.xPrivKey = xPrivKey;
 		root.profile.mnemonic = mnemonic;
+    delete root.profile.xPrivKeyEncrypted;
+    delete root.profile.mnemonicEncrypted;
 		root.profile.my_device_address = myDeviceAddress;
 		device.setNewDeviceAddress(myDeviceAddress);
 		

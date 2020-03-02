@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: testz\n"
 "Language-Team: Danish\n"
 "Language: da_DK\n"
-"PO-Revision-Date: 2019-09-24 19:13\n"
+"PO-Revision-Date: 2019-09-24 22:21\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -111,7 +111,7 @@ msgstr "Adresse der skal bevidnes"
 #: public/views/modals/approveNewWitnesses.html:16
 #: public/views/modals/approveNewWitnesses.html:28
 msgid "Address:"
-msgstr ""
+msgstr "Adresse:"
 
 #: public/views/modals/destination-address.html:19
 #: public/views/modals/destination-address.html:23
@@ -1005,7 +1005,7 @@ msgstr "Navn på kontakt"
 #: public/views/modals/approveNewWitnesses.html:20
 #: public/views/modals/approveNewWitnesses.html:32
 msgid "Name:"
-msgstr ""
+msgstr "Navn:"
 
 #: public/views/paymentUri.html:18
 msgid "Network"

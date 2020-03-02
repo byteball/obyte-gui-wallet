@@ -20,51 +20,90 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
   var constants = require('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
+  var isDevnet = constants.version.match(/dev$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
 	root.backupExceedingAmountUSD = 10;
 	
-  root.oracles = {
-		"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {
-			name: "Bitcoin oracle",
-			feedname_placeholder: "bitcoin_merkle or randomXXXXXX",
-			feedvalue_placeholder: "e.g. 1LR5xew1X13okNYKRu7qA3uN4hpRH1Tfnn:0.5",
-			instructions_url: "https://medium.com/obyte/making-p2p-great-again-episode-ii-bitcoin-exchange-d98adfbde2a5",
-			feednames_filter: ["^bitcoin_merkle$", "^random[\\d]+$"],
-			feedvalues_filter: ["^[13][a-km-zA-HJ-NP-Z1-9]{25,34}\\:[0-9\\.]+$", "^\\d{1,6}$"]
-		},
-		"JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC" : {
-			name: "Crypto exchange rates oracle",
-			feedname_placeholder: "e.g. BTC_USD",
-			feedvalue_placeholder: "e.g. 1234.56",
-			instructions_url: "https://wiki.obyte.org/Oracle#Using_the_crypto-exchange-rates_oracle_in_a_smart_contract",
-			feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
-			feedvalues_filter: ["^[\\d\\.]+$"]
-		},
-		"GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN" : {
-			name: "Flight delay oracle",
-			feedname_placeholder: "e.g. BA950-2018-12-25",
-			feedvalue_placeholder: "e.g. 30",
-			instructions_url: "https://wiki.obyte.org/Oracle#Flight_delays_tracker",
-			feednames_filter: ["^[\\w\\d]+-\\d{4}-\\d{2}-\\d{2}$"],
-			feedvalues_filter: ["^[\\d]+$"]
-		},
-		"TKT4UESIKTTRALRRLWS4SENSTJX6ODCW" : {
-			name: "Sports betting oracle",
-			feedname_placeholder: "e.g. BROOKLYNNETS_CHARLOTTEHORNETS_2018-03-21",
-			feedvalue_placeholder: "e.g. BROOKLYNNETS",
-			instructions_url: "https://wiki.obyte.org/Sports_betting",
-			feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"],
-			feedvalues_filter: ["^[\\w\\d]+$"]
-		},
-		"I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT" : {
-			name: "Timestamp oracle",
-			feedname_placeholder: "timestamp",
-			feedvalue_placeholder: "e.g. 1541341626704",
-			instructions_url: "https://wiki.obyte.org/Oracle",
-			feednames_filter: ["^timestamp$"],
-			feedvalues_filter: ["^\\d{13,}$"]
-		}
-	};
+	if (isTestnet) {
+		root.oracles = {
+			"F4KHJUCLJKY4JV7M5F754LAJX4EB7M4N" : {
+				name: "Cryptocurrency exchange rates oracle",
+				feedname_placeholder: "e.g. BTC_USD",
+				feedvalue_placeholder: "e.g. 1234.56",
+				instructions_url: "https://wiki.obyte.org/Oracle#Using_the_crypto-exchange-rates_oracle_in_a_smart_contract",
+				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
+				feedvalues_filter: ["^[\\d\\.]+$"]
+			},
+			"E2U77O5AO5UPNSKKQEDKFGKNYWQ5467H" : {
+				name: "Precious metal exchange rates oracle",
+				feedname_placeholder: "e.g. XAU_GBYTE",
+				feedvalue_placeholder: "e.g. 1234.56",
+				instructions_url: "https://medium.com/obyte/profit-from-gold-and-silver-without-holding-the-physical-metal-or-buying-financial-funds-3a2fd0feaa10",
+				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
+				feedvalues_filter: ["^[\\d\\.]+$"]
+			},
+			"OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD" : {
+				name: "Timestamp oracle",
+				feedname_placeholder: "timestamp",
+				feedvalue_placeholder: "e.g. 1541341626704",
+				instructions_url: "https://wiki.obyte.org/Oracle",
+				feednames_filter: ["^timestamp$"],
+				feedvalues_filter: ["^\\d{13,}$"]
+			}
+		};
+	}
+	else {
+		root.oracles = {
+			"FOPUBEUPBC6YLIQDLKL6EW775BMV7YOH": {
+				name: "Bitcoin oracle",
+				feedname_placeholder: "bitcoin_merkle or randomXXXXXX",
+				feedvalue_placeholder: "e.g. 1LR5xew1X13okNYKRu7qA3uN4hpRH1Tfnn:0.5",
+				instructions_url: "https://medium.com/obyte/making-p2p-great-again-episode-ii-bitcoin-exchange-d98adfbde2a5",
+				feednames_filter: ["^bitcoin_merkle$", "^random[\\d]+$"],
+				feedvalues_filter: ["^[13][a-km-zA-HJ-NP-Z1-9]{25,34}\\:[0-9\\.]+$", "^\\d{1,6}$"]
+			},
+			"JPQKPRI5FMTQRJF4ZZMYZYDQVRD55OTC" : {
+				name: "Cryptocurrency exchange rates oracle",
+				feedname_placeholder: "e.g. BTC_USD",
+				feedvalue_placeholder: "e.g. 1234.56",
+				instructions_url: "https://wiki.obyte.org/Oracle#Using_the_crypto-exchange-rates_oracle_in_a_smart_contract",
+				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
+				feedvalues_filter: ["^[\\d\\.]+$"]
+			},
+			"DXYWHSZ72ZDNDZ7WYZXKWBBH425C6WZN" : {
+				name: "Precious metal exchange rates oracle",
+				feedname_placeholder: "e.g. XAU_GBYTE",
+				feedvalue_placeholder: "e.g. 1234.56",
+				instructions_url: "https://medium.com/obyte/profit-from-gold-and-silver-without-holding-the-physical-metal-or-buying-financial-funds-3a2fd0feaa10",
+				feednames_filter: ["^[\\dA-Z]+_[\\dA-Z]+$"],
+				feedvalues_filter: ["^[\\d\\.]+$"]
+			},
+			"GFK3RDAPQLLNCMQEVGGD2KCPZTLSG3HN" : {
+				name: "Flight delay oracle",
+				feedname_placeholder: "e.g. BA950-2018-12-25",
+				feedvalue_placeholder: "e.g. 30",
+				instructions_url: "https://wiki.obyte.org/Oracle#Flight_delays_tracker",
+				feednames_filter: ["^[\\w\\d]+-\\d{4}-\\d{2}-\\d{2}$"],
+				feedvalues_filter: ["^[\\d]+$"]
+			},
+			"TKT4UESIKTTRALRRLWS4SENSTJX6ODCW" : {
+				name: "Sports betting oracle",
+				feedname_placeholder: "e.g. BROOKLYNNETS_CHARLOTTEHORNETS_2018-03-21",
+				feedvalue_placeholder: "e.g. BROOKLYNNETS",
+				instructions_url: "https://wiki.obyte.org/Sports_betting",
+				feednames_filter: ["^[\\w\\d]+_[\\w\\d]+_\\d{4}-\\d{2}-\\d{2}$"],
+				feedvalues_filter: ["^[\\w\\d]+$"]
+			},
+			"I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT" : {
+				name: "Timestamp oracle",
+				feedname_placeholder: "timestamp",
+				feedvalue_placeholder: "e.g. 1541341626704",
+				instructions_url: "https://wiki.obyte.org/Oracle",
+				feednames_filter: ["^timestamp$"],
+				feedvalues_filter: ["^\\d{13,}$"]
+			}
+		};
+	}
 
 	root.privateTextcoinExt = 'coin';
 	
@@ -140,6 +179,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
   autoUpdateWitnessesList: true
   };
+	
+	if (isDevnet) {
+		root.TIMESTAMPER_ADDRESS = 'ZQFHJXFWT2OCEBXF26GFXJU4MPASWPJT';
+		defaultConfig.hub = 'localhost:6611';
+	}
 
   var configCache = null;
 

@@ -135,7 +135,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset, device_address, single_address){
+	$scope.sendPayment = function(address, amount, asset, device_address, single_address, base64data){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
@@ -152,7 +152,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			backButton.dontDeletePath = true;
 			go.send(function(){
 				//$rootScope.$emit('Local/SetTab', 'send', true);
-				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address);
+				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data);
 			});
 		});
 	};
@@ -418,16 +418,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								};
 								var objPaymentRequest = {payments: arrPayments, definitions: assocDefinitions};
 								var paymentJson = JSON.stringify(objPaymentRequest);
-								var paymentJsonBase64 = Buffer(paymentJson).toString('base64');
+								var paymentJsonBase64 = Buffer.from(paymentJson).toString('base64');
 								paymentRequestCode = 'payment:'+paymentJsonBase64;
 							}
 							else
-								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+								paymentRequestCode = 'obyte:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, paymentRequestText, 0);
 							if (contract.peer_pays_to === 'me')
 								issueNextAddress(fc); // make sure the address is not reused
 						});
@@ -518,7 +518,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 							device.readCorrespondent(correspondent.device_address, function(correspondent) {
-								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 							});
 							$modalInstance.dismiss('sent');
 						});
@@ -686,7 +686,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
 		$rootScope.modalOpened = true;
@@ -709,54 +709,54 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					return text;
 				});
 			};
-			if (objMultiPaymentRequest.definitions){
+			if (objMultiPaymentRequest.definitions) {
 				var arrAllMemberAddresses = [];
 				var arrFuncs = [];
 				var assocMemberAddressesByDestAddress = {};
-				for (var destinationAddress in objMultiPaymentRequest.definitions){
+				for (var destinationAddress in objMultiPaymentRequest.definitions) {
 					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
 					var arrMemberAddresses = extractAddressesFromDefinition(arrDefinition);
 					assocMemberAddressesByDestAddress[destinationAddress] = arrMemberAddresses;
 					arrAllMemberAddresses = arrAllMemberAddresses.concat(arrMemberAddresses);
-					arrFuncs.push(function(cb){
+					arrFuncs.push(function (cb) {
 						walletDefinedByAddresses.validateAddressDefinition(arrDefinition, cb);
 					});
 				}
 				arrAllMemberAddresses = lodash.uniq(arrAllMemberAddresses);
 				if (arrAllMemberAddresses.length === 0)
-					throw Error("no member addresses in "+paymentJson);
+					throw Error("no member addresses in " + paymentJson);
 				var assocPeerNamesByDeviceAddress = {};
-				var loadCorrespondentNames = function(cb){
-					device.readCorrespondents(function(arrCorrespondents){
-						arrCorrespondents.forEach(function(corr){
+				var loadCorrespondentNames = function (cb) {
+					device.readCorrespondents(function (arrCorrespondents) {
+						arrCorrespondents.forEach(function (corr) {
 							assocPeerNamesByDeviceAddress[corr.device_address] = corr.name;
 						});
 						cb();
 					});
 				};
-				var findMyAddresses = function(cb){
+				var findMyAddresses = function (cb) {
 					db.query(
 						"SELECT address FROM my_addresses WHERE address IN(?) \n\
 						UNION \n\
 						SELECT shared_address AS address FROM shared_addresses WHERE shared_address IN(?)",
 						[arrAllMemberAddresses, arrAllMemberAddresses],
-						function(rows){
-							var arrMyAddresses = rows.map(function(row){ return row.address; });
-							for (var destinationAddress in assocMemberAddressesByDestAddress){
+						function (rows) {
+							var arrMyAddresses = rows.map(function (row) { return row.address; });
+							for (var destinationAddress in assocMemberAddressesByDestAddress) {
 								var arrMemberAddresses = assocMemberAddressesByDestAddress[destinationAddress];
 								if (lodash.intersection(arrMemberAddresses, arrMyAddresses).length > 0)
 									assocSharedDestinationAddresses[destinationAddress] = true;
 							}
 							createMovementLines();
 							$scope.arrHumanReadableDefinitions = [];
-							for (var destinationAddress in objMultiPaymentRequest.definitions){
+							for (var destinationAddress in objMultiPaymentRequest.definitions) {
 								var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
 								var assocSignersByPath = objMultiPaymentRequest.definitions[destinationAddress].signers;
 								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
 								var assocPeerNamesByAddress = {};
-								for (var path in assocSignersByPath){
+								for (var path in assocSignersByPath) {
 									var signerInfo = assocSignersByPath[path];
 									if (signerInfo.device_address !== device.getMyDeviceAddress())
 										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
@@ -770,13 +770,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}
 					);
 				};
-				var checkDuplicatePayment = function(cb){
+				var checkDuplicatePayment = function (cb) {
 					var objFirstPayment = objMultiPaymentRequest.payments[0];
 					db.query(
 						"SELECT 1 FROM outputs JOIN unit_authors USING(unit) JOIN my_addresses ON unit_authors.address=my_addresses.address \n\
 						WHERE outputs.address=? AND amount=? LIMIT 1",
 						[objFirstPayment.address, objFirstPayment.amount],
-						function(rows){
+						function (rows) {
 							$scope.bAlreadyPaid = (rows.length > 0);
 							cb();
 						}
@@ -785,19 +785,21 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				arrFuncs.push(loadCorrespondentNames);
 				arrFuncs.push(findMyAddresses);
 				arrFuncs.push(checkDuplicatePayment);
-				async.series(arrFuncs, function(err){
+				async.series(arrFuncs, function (err) {
 					if (err)
 						$scope.error = err;
 					else
 						$scope.bDisabled = false;
-					$timeout(function(){
+					$timeout(function () {
 						$scope.$apply();
 					});
 				});
 			}
-			else
+			else {
+				createMovementLines();
 				$scope.bDisabled = false;
-			
+			}
+
 			function insertSharedAddress(shared_address, arrDefinition, signers, cb){
 				db.query("SELECT 1 FROM shared_addresses WHERE shared_address=?", [shared_address], function(rows){
 					if (rows.length > 0){
@@ -968,7 +970,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	
 	$scope.sendVote = function(voteJsonBase64){
-		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log("vote "+voteJson);
 		var objVote = JSON.parse(voteJson);
 		$rootScope.modalOpened = true;
@@ -1128,31 +1130,52 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}; // sendVote
 	
 	
-	$scope.showSignMessageModal = function(message_to_sign){
+	$scope.showSignMessageModal = function(message_to_sign, bNetworkAware){
 		$rootScope.modalOpened = true;
 		var self = this;
 		var fc = profileService.focusedClient;
 		$scope.error = '';
+		// try to parse message_to_sign into object
+		var json = Buffer.from(message_to_sign, 'base64').toString('utf8');
+		try{
+			var object_to_sign = JSON.parse(json);
+			console.log("signing object", object_to_sign);
+		}
+		catch(e){
+			console.log("signing a string");
+		}
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
 			$scope.bDisabled = true;
-			$scope.message_to_sign = message_to_sign;
+			$scope.message_to_sign = correspondentListService.escapeHtmlAndInsertBr(object_to_sign ? JSON.stringify(object_to_sign, null, '\t') : message_to_sign);
 			readMyPaymentAddress(fc, function(address){
 				$scope.address = address;
-				var arrAddreses = message_to_sign.match(/\b[2-7A-Z]{32}\b/g) || [];
+				var arrAddreses = (object_to_sign ? json : message_to_sign).match(/\b[2-7A-Z]{32}\b/g) || [];
 				arrAddreses = arrAddreses.filter(ValidationUtils.isValidAddress);
 				if (arrAddreses.length === 0 || arrAddreses.indexOf(address) >= 0) {
 					$scope.bDisabled = false;
 					return scopeApply();
 				}
 				db.query(
-					"SELECT address FROM my_addresses \n\
-					WHERE wallet = ? AND address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
-					fc.credentials.walletId,
+					"SELECT address, wallet FROM my_addresses \n\
+					WHERE address IN(" + arrAddreses.map(db.escape).join(', ') + ")",
 					function (rows) {
-						if (rows.length > 0)
-							$scope.address = rows[0].address;
+						var new_wallet;
+						if (rows.length > 0) {
+							var rows_on_current_wallet = rows.filter(function (row) { return (row.wallet === fc.credentials.walletId) });
+							if (rows_on_current_wallet.length > 0)
+								$scope.address = rows_on_current_wallet[0].address;
+							else {
+								$scope.address = rows[0].address;
+								new_wallet = rows[0].wallet;
+							}
+						}
+						if (new_wallet) // switch to another wallet
+							return profileService.setAndStoreFocus(new_wallet, function () {
+								$scope.bDisabled = false;
+								scopeApply();		
+							});
 						$scope.bDisabled = false;
 						scopeApply();
 					}
@@ -1168,7 +1191,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				correspondentListService.signMessageFromAddress(message_to_sign, $scope.address, getSigningDeviceAddresses(fc), function(err, signedMessageBase64){
+				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
 					if (err) {
 						$scope.error = err;
 						return scopeApply();
@@ -1211,12 +1234,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$rootScope.modalOpened = true;
 		var self = this;
 		var fc = profileService.focusedClient;
-		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		var objSignedMessage = JSON.parse(signedMessageJson);
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.color = fc.backgroundColor;
-			$scope.signed_message = objSignedMessage.signed_message;
+			$scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
 			$scope.address = objSignedMessage.authors[0].address;
 			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
@@ -1260,6 +1283,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	
 	
+	$scope.handleUri = function(data){
+		go.handleUri(data);
+	};
 	
 	// send a command to the bot
 	$scope.sendCommand = function(command, description){
@@ -1412,7 +1438,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (asset !== 'base')
 					params += '&asset='+encodeURIComponent(asset);
 				var units = profileService.getUnitName(asset);
-				appendText('['+amount+' '+units+'](byteball:'+myPaymentAddress+'?'+params+')');
+				appendText('['+amount+' '+units+'](obyte:'+myPaymentAddress+'?'+params+')');
 				$modalInstance.dismiss('cancel');
 			};
 
@@ -1780,7 +1806,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		replace: true,
 		link: function (scope, ele, attrs) {
 			scope.$watch(attrs.dynamic, function(html) {
-				ele.html(html);
+				ele.html((html || '').replace(/(^|>)(.*?)(<|$)/g, function (str, closing_bracket, between, opening_bracket) {
+					if (!between.match(/\W/))
+						return str;
+					return closing_bracket + '<span ng-non-bindable>' + between + '</span>' + opening_bracket;
+				}));
+			//	ele.html(html);
 				$compile(ele.contents())(scope);
 			});
 		}
