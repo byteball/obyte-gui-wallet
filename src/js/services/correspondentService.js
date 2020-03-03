@@ -8,6 +8,7 @@ var objectHash = require('ocore/object_hash.js');
 angular.module('copayApp.services').factory('correspondentService', function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService) {
 	var root = {};
 	var device = require('ocore/device.js');
+	var chatStorage = require('ocore/chat_storage.js');
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
 		var privateProfile = require('ocore/private_profile.js');
@@ -452,7 +453,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 					if ($scope.status === "pending" && $scope.valid_till < Date.now())
 						$scope.status = 'expired';
 
-					correspondentService.populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
+					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						$timeout(function() {
 							$rootScope.$apply();
 						});
@@ -480,8 +481,8 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 							objContract.status = status;
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
-							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0, 'html');
+							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
+							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
 							// share accepted contract to previously saced cosigners
 							if (status == "accepted") {
 								cosigners.forEach(function(cosigner){
@@ -521,7 +522,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 							objContract.status = 'revoked';
 							prosaic_contract.setField(objContract.hash, "status", objContract.status);
-							device.sendMessageToDevice(correspondent.device_address, "prosaic_contract_update", {
+							device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "prosaic_contract_update", {
 								hash: objContract.hash,
 								field: "status",
 								value: objContract.status
@@ -529,14 +530,14 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
-							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0, 'html');
+							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
+							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
 
 							// swap addresses for peer chat message
 							objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
 							delete objContract.peer_device_address;
 							chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
-							device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
+							device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "text", chat_message);
 
 							$timeout(function() {
 								$modalInstance.dismiss('revoke');
@@ -713,8 +714,8 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 						objContract.status = status;
 						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
-						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
+						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, body, 0, 'html');
 						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
 							cosigners.forEach(function(cosigner){
@@ -757,7 +758,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 						objContract.status = 'revoked';
 						arbiter_contract.setField(objContract.hash, "status", objContract.status);
-						device.sendMessageToDevice(correspondent.device_address, "arbiter_contract_update", {
+						device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
 							hash: objContract.hash,
 							field: "status",
 							value: objContract.status
@@ -765,14 +766,14 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
-						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0, 'html');
+						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
+						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
 
 						// swap addresses for peer chat message
 						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
 						delete objContract.peer_device_address;
 						chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
-						device.sendMessageToDevice(correspondent.device_address, "text", chat_message);
+						device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "text", chat_message);
 
 						$timeout(function() {
 							$modalInstance.dismiss('revoke');
