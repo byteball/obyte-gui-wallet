@@ -39,7 +39,19 @@ if [ $(echo " $_BACKGROUND_IMAGE_DPI_H != 72.0 " | bc) -eq 1 -o $(echo " $_BACKG
 fi
 
 echo "Signing the app ..."
-codesign --sign="Developer ID Application: Matrix Platform LLC" --verbose=3 --deep "${PATH_NAME}${APP_NAME}.app"
+
+# the same for both main app and nested binaries
+CHILD_ARGS=('--sign' "Developer ID Application: Matrix Platform LLC" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
+APP_ARGS=('--sign' "Developer ID Application: Matrix Platform LLC" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
+
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Helper.app/Contents/MacOS/nwjs Helper"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework/Libraries/exif.so"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework/Resources/app_mode_loader.app/Contents/MacOS/app_mode_loader"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64/node_sqlite3.node"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/secp256k1/build/Release/secp256k1.node"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/rocksdb/build/Release/leveldown.node"
+codesign "${APP_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app"
 
 # clear out any old data
 echo "Clearing ..."
