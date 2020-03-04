@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
     var _modalDeleteWallet = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
-        $scope.title = $sce.trustAsHtml(delete_msg);
+        $scope.title = delete_msg;
         $scope.loading = false;
 
         $scope.ok = function() {

@@ -526,7 +526,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                    
                         var arrDestinations = [];
                         for (var asset in assocAmountByAssetAndAddress){
-							var formatted_asset = isCordova ? asset : ("<span class='small'>"+asset+'</span><br/>');
+							var formatted_asset = asset.substr(0, 8) + '...';
 							var currency = "of asset "+formatted_asset;
 							var assetInfo = profileService.assetMetadata[asset];
 							if (asset === 'base')
@@ -550,7 +550,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									var arrPairs = [];
 									for (var field in obj)
 										arrPairs.push(field+": "+obj[field]);
-									var nl = isCordova ? "\n" : "<br>";
+									var nl = "\n";
 									var list = arrPairs.join(nl)+nl;
 									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
 										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from wallet '+credentials.walletName+'?';
@@ -670,7 +670,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
     var _modalRequestApproval = function(question, callbacks) {
       var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
-        $scope.title = $sce.trustAsHtml(question);
+        $scope.title = question;
         $scope.yes_icon = 'fi-check';
         $scope.yes_button_class = 'primary';
         $scope.cancel_button_class = 'warning';

@@ -158,7 +158,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
 	$scope.purge_chat = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
-        $scope.title = $sce.trustAsHtml('Delete the whole chat history with ' + correspondent.name + '?');
+        $scope.title = 'Delete the whole chat history with ' + correspondent.name + '?';
 
         $scope.ok = function() {
           $modalInstance.close(true);
