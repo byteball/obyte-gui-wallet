@@ -366,7 +366,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var obj = JSON.parse(json);
 		}
 		catch(e){
-			return str;
+			return str; // it is already escapeHtml'd
 		}
 		return escapeHtml(JSON.stringify(obj, null, '\t'));
 	}
@@ -455,7 +455,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+objContract.title+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -546,7 +546,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		else if (profileService.assetMetadata[asset]){
 			amount /= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
-			return amount + ' ' + profileService.assetMetadata[asset].name;
+			return amount + ' ' + escapeHtml(profileService.assetMetadata[asset].name);
 		}
 		else{
 			wallet.readAssetMetadata([asset], function(){});
@@ -568,7 +568,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			switch(op){
 				case 'sig':
 					var pubkey = args.pubkey;
-					return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+pubkey);
+					return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+escapeHtml(pubkey));
 				case 'address':
 					var address = args;
 					return 'signed by '+getDisplayAddress(address);
@@ -612,7 +612,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
 					if (args.what === 'output' && args.asset && args.amount && args.address)
 						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
 						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
@@ -624,10 +624,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
 						return 'there was a transaction that spends '+how_much+' from '+args.address;
 					}
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 
 				default:
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 			}
 		}
 		function parseAndIndent(arrSubdefinition){
