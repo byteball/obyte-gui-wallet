@@ -3,7 +3,7 @@
 
 #define MyAppName "Obyte"
 #define MyAppPackageName "Obyte"
-#define MyAppVersion "3.0.1"
+#define MyAppVersion "3.0.2"
 #define MyAppPublisher "Obyte"
 #define MyAppURL "https://obyte.org"
 #define MyAppExeName "Obyte.exe"
