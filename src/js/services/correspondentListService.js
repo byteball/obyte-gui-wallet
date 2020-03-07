@@ -586,6 +586,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					return 'the total weight of the true conditions below is at least '+args.required+':<br>'+args.set.map(function(arg){
 						return arg.weight+': '+parseAndIndent(arg.value);
 					}).join(',');
+				case 'timestamp':
+					var relation = args[0];
+					var timestamp = args[1];
+					var when = '';
+					if (relation === '>' || relation === '>=')
+						when = 'after';
+					if (relation === '<' || relation === '<=')
+						when = 'before';
+					if (relation === '=')
+						when = 'at';
+					if (relation === '!=')
+						when = 'not at';
+					return when + ' ' + (new Date(timestamp * 1000).toString());
 				case 'in data feed':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
