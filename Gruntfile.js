@@ -189,7 +189,7 @@ module.exports = function(grunt) {
         expand: true,
         flatten: true,
         options: {timestamp: true, mode: true},
-        src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/Background.png'],
+        src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/app.entitlements', 'webkitbuilds/Background.png'],
         dest: '../obytebuilds/'
       },
       linux: {
