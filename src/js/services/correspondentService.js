@@ -178,7 +178,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
-								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});
 						});
@@ -366,7 +366,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
-								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});
 						});
@@ -396,7 +396,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 					arbiter_contract.getByHash(row.hash, function(contract){
 						arbiter_contract.setField(contract.hash, "status", "paid");
 						var text = 'Contract ' + contract.title + ' was paid. Unit: https://explorer.obyte.org/#' + row.unit;
-						addMessageEvent(true, contract.peer_device_address, formatOutgoingMessage(text));
+						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 					});
 				});
 			});
@@ -482,7 +482,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
-							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
+							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'text');
 							// share accepted contract to previously saced cosigners
 							if (status == "accepted") {
 								cosigners.forEach(function(cosigner){
@@ -508,7 +508,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 						$modalInstance.dismiss();
 
-						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
 							if (err)
 								return setError(err);
 							respond('accepted', signedMessageBase64);
@@ -531,7 +531,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
-							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
+							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'text');
 
 							// swap addresses for peer chat message
 							objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
@@ -715,7 +715,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
-						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, body, 0, 'html');
+						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'text');
 						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
 							cosigners.forEach(function(cosigner){
@@ -745,7 +745,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 
 						$modalInstance.dismiss();
 
-						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), function (err, signedMessageBase64) {
+						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
 							if (err)
 								return setError(err);
 							respond('accepted', signedMessageBase64);
@@ -767,7 +767,7 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 						var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
-						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'html');
+						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, 'text');
 
 						// swap addresses for peer chat message
 						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];

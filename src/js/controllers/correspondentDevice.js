@@ -643,7 +643,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								var body = correspondentListService.formatOutgoingMessage(chat_message);
 								correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 								device.readCorrespondent(correspondent.device_address, function(correspondent) {
-									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 								});
 								$modalInstance.dismiss('sent');
 							});
