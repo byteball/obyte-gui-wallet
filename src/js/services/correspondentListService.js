@@ -502,11 +502,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function text2html(text){
-		return text.replace(/\r/g, '').replace(/\n/g, '<br>').replace(/\t/g, ' &nbsp; &nbsp; ');
+		return text.toString().replace(/\r/g, '').replace(/\n/g, '<br>').replace(/\t/g, ' &nbsp; &nbsp; ');
 	}
 	
 	function escapeHtml(text){
-		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 	
 	function escapeHtmlAndInsertBr(text){
@@ -514,7 +514,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeQuotes(text){
-		return text.replace(/(['\\])/g, "\\$1").replace(/"/g, "&quot;");
+		return text.toString().replace(/(['\\])/g, "\\$1").replace(/"/g, "&quot;");
 	}
 	
 	function setCurrentCorrespondent(correspondent_device_address, onDone){
