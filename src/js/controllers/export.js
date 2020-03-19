@@ -27,13 +27,26 @@ angular.module('copayApp.controllers').controller('exportController',
 		if (!isCordova)
 			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
 
-		function addDBAndConfToZip(cb) {
-			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
+		function listDBFiles(dbDirPath, cb) {
 			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
 				if (err) return cb(err);
 				listFilenames = listFilenames.filter(function(name) {
 					return (name == 'conf.json' || /\.sqlite/.test(name));
 				});
+				fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
+					if (err) return cb(err);
+					listRocksDB.forEach(function(filename) {
+						if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
+					});
+					cb(null, listFilenames);
+				});
+			});
+		}
+
+		function addDBAndConfToZip(cb) {
+			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
+			listDBFiles(dbDirPath, function(err, listFilenames) {
+				if (err) return cb(err);
 				if(isCordova) {
 					async.forEachSeries(listFilenames, function(name, callback) {
 						fileSystemService.readFile(dbDirPath + '/' + name, function(err, data) {

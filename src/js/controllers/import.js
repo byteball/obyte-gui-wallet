@@ -49,96 +49,155 @@ angular.module('copayApp.controllers').controller('importController',
 		
 		function writeDBAndFileStorageMobile(zip, cb) {
 			var db = require('ocore/db');
+			var kvstore = require('ocore/kvstore');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
-			db.close(function() {
-				async.forEachOfSeries(zip.files, function(objFile, key, callback) {
-					if (key == 'profile') {
-						zip.file(key).async('string').then(function(data) {
-							storageService.storeProfile(Profile.fromString(data), callback);
-							storageService.storeProfile = function(){};
+			async.series([
+				function(next) {
+					kvstore.close(function() {
+						db.close(function() {
+							next();
 						});
-					}
-					else if (key == 'config') {
-						zip.file(key).async('string').then(function(data) {
-							storageService.storeConfig(data, callback);
-							storageService.storeConfig = function(){};
+					});
+				},
+				function(next) {
+					// remove old RocksDB database
+					fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
+						if(err) return next(err);
+						// remove old SQLite database
+						fileSystemService.deleteDirFiles(dbDirPath, function(err) {
+							if(err) return next(err);
+							next();
 						});
-					}
-					else if (/\.sqlite/.test(key)) {
-						zip.file(key).async('nodebuffer').then(function(data) {
-							fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
-						});
-					}
-					else {
-						callback();
-					}
-				}, function(err) {
-					if (err) return cb(err);
-					return cb();
-				});
+					});
+				},
+				function(next) {
+					async.forEachOfSeries(zip.files, function(objFile, key, callback) {
+						if (key == 'profile') {
+							zip.file(key).async('string').then(function(data) {
+								storageService.storeProfile(Profile.fromString(data), callback);
+								storageService.storeProfile = function(){};
+							});
+						}
+						else if (key == 'config') {
+							zip.file(key).async('string').then(function(data) {
+								storageService.storeConfig(data, callback);
+								storageService.storeConfig = function(){};
+							});
+						}
+						else if (/\.sqlite/.test(key)) {
+							zip.file(key).async('nodebuffer').then(function(data) {
+								fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
+							});
+						}
+						else if (/^rocksdb\//.test(key)) {
+							zip.file(key).async('nodebuffer').then(function(data) {
+								fileSystemService.cordovaWriteFile(dbDirPath + 'rocksdb/', null, key.replace('rocksdb/', ''), data, callback);
+							});
+						}
+						else {
+							callback();
+						}
+					}, function(err) {
+						if (err) return next(err);
+						return next();
+					});
+				}
+			], function(err) {
+				cb(err);
 			});
 		}
 		
 		function writeDBAndFileStoragePC(cb) {
 			var db = require('ocore/db');
+			var kvstore = require('ocore/kvstore');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
-			db.close(function() {
-				async.series([
-					function(callback) {
-						fileSystemService.readFile(dbDirPath + 'temp/' + 'profile', function(err, data) {
-							if(err) return callback(err);
-							storageService.storeProfile(Profile.fromString(data.toString()), callback)
-							storageService.storeProfile = function(){};
+			async.series([
+				function(next) {
+					kvstore.close(function() {
+						db.close(function() {
+							next();
 						});
-					},
-					function(callback) {
-						fileSystemService.readFile(dbDirPath + 'temp/' + 'config', function(err, data) {
-							if(err) return callback(err);
-							storageService.storeConfig(data.toString(), callback);
-							storageService.storeConfig = function(){};
+					});
+				},
+				function(next) {
+					// remove old RocksDB database
+					fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
+						if(err) return next(err);
+						// remove old SQLite database
+						fileSystemService.deleteDirFiles(dbDirPath, function(err) {
+							if(err) return next(err);
+							next();
 						});
-					},
-					function(callback) {
-						fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
-							fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
-							async.forEach(fileNames, function(name, callback2) {
-								fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback2);
-							}, function(err) {
-								if(err) return callback(err);
-								callback();
-							})
-						});
-					},
-					function(callback) {
-						var existsConfJson = fileSystemService.nwExistsSync(dbDirPath + 'temp/conf.json');
-						var existsLight = fileSystemService.nwExistsSync(dbDirPath + 'temp/light');
-						if(existsConfJson){
-							fileSystemService.nwMoveFile(dbDirPath + 'temp/conf.json', dbDirPath + 'conf.json', callback);
-						}else if(existsLight && !existsConfJson){
-							fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), callback);
-						}else if(!existsLight && conf.bLight){
-							var _conf = require(dbDirPath + 'conf.json');
-							_conf.bLight = false;
-							fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), callback);
-						}else{
-							callback();
-						}
-					},
-					function(callback) {
-						fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
-							async.forEach(fileNames, function(name, callback2) {
-								fileSystemService.nwUnlink(dbDirPath + 'temp/' + name, callback2);
-							}, function(err) {
-								if(err) return callback(err);
-								fileSystemService.nwRmDir(dbDirPath + 'temp/', function() {
-									callback();
-								});
-							})
-						});
+					});
+				},
+				function(next) {
+					// restore wallet profile
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'profile', function(err, data) {
+						if(err) return next(err);
+						storageService.storeProfile(Profile.fromString(data.toString()), next)
+						storageService.storeProfile = function(){};
+					});
+				},
+				function(next) {
+					// restore wallet config
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'config', function(err, data) {
+						if(err) return next(err);
+						storageService.storeConfig(data.toString(), next);
+						storageService.storeConfig = function(){};
+					});
+				},
+				function(next) {
+					// move SQLite database in place
+					fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
+						fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
+						async.forEach(fileNames, function(name, callback) {
+							fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback);
+						}, function(err) {
+							if(err) return next(err);
+							next();
+						})
+					});
+				},
+				function(next) {
+					// move RocksDB database in place
+					fileSystemService.readdir(dbDirPath + 'temp/rocksdb/', function(err, fileNames) {
+						async.forEach(fileNames, function(name, callback) {
+							fileSystemService.nwMoveFile(dbDirPath + 'temp/rocksdb/' + name, dbDirPath + 'rocksdb/' + name, callback);
+						}, function(err) {
+							if(err) return next(err);
+							next();
+						})
+					});
+				},
+				function(next) {
+					// recreate conf.json
+					var existsConfJson = fileSystemService.nwExistsSync(dbDirPath + 'temp/conf.json');
+					var existsLight = fileSystemService.nwExistsSync(dbDirPath + 'temp/light');
+					if(existsConfJson){
+						fileSystemService.nwMoveFile(dbDirPath + 'temp/conf.json', dbDirPath + 'conf.json', next);
+					}else if(existsLight && !existsConfJson){
+						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), next);
+					}else if(!existsLight && conf.bLight){
+						var _conf = require(dbDirPath + 'conf.json');
+						_conf.bLight = false;
+						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), next);
+					}else{
+						next();
 					}
-				], function(err) {
-					cb(err);
-				})
+				},
+				function(next) {
+					// cleanup extracted files and folders
+					fileSystemService.nwRmDir(dbDirPath + 'temp/rocksdb/', function() {
+						fileSystemService.deleteDirFiles(dbDirPath + 'temp/', function() {
+							fileSystemService.nwRmDir(dbDirPath + 'temp/', function(err) {
+								if(err) return next(err);
+								next();
+							});
+						});
+					});
+				}
+			], function(err) {
+				cb(err);
 			});
 		}
 		
