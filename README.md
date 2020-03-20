@@ -109,9 +109,12 @@ O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is us
 ## Create an AppImage
 
 The application and the libraries it requires can be bundled into a one-file executable called AppImage. It should run on most Linux distribution without any additional package installation.
-There is a script that handles the whole image creation process.
+There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 16.04.
 
-Install Node.JS version >= 8.
+Install Node.JS version >= 8 preferably using [NVM](https://github.com/creationix/nvm)
+
+Install compilation tools:
+`sudo apt-get install build-essential python`
 
 Clone the source:
 
@@ -125,11 +128,13 @@ If you are building for testnet, switch to testnet branch:
 git checkout testnet
 ```
 
-Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
+Install bower, grunt, node-gyp and nw-gyp if you haven't already:
 
 ```sh
 npm install -g bower
 npm install -g grunt-cli
+npm install -g nw-gyp
+npm install -g node-gyp
 ```
 
 Go to appimage directory and execute the script:
