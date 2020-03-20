@@ -265,7 +265,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		if (process.env.APPIMAGE){
 			console.log("run from appimage " + process.env.APPIMAGE);
 			var execPath = process.env.APPIMAGE;
-			var iconDir = process.env.HOME + "/.local/icons/share";
+			var iconDir = process.env.HOME + "/.local/share/icons";
 			var iconPath = iconDir + "/obyte-logo-circle-256.png";
 			fileSystemService.recursiveMkdir(iconDir, parseInt('700', 8), function(err){
 				console.log('mkdir icons: '+err);
