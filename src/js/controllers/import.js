@@ -60,15 +60,15 @@ angular.module('copayApp.controllers').controller('importController',
 					});
 				},
 				function(next) {
-					// remove old RocksDB database
-					fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
-						if(err) return next(err);
+					// // remove old RocksDB database
+					// fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
+					// 	if(err) return next(err);
 						// remove old SQLite database
 						fileSystemService.deleteDirFiles(dbDirPath, function(err) {
 							if(err) return next(err);
 							next();
 						});
-					});
+					// });
 				},
 				function(next) {
 					async.forEachOfSeries(zip.files, function(objFile, key, callback) {
@@ -89,11 +89,11 @@ angular.module('copayApp.controllers').controller('importController',
 								fileSystemService.cordovaWriteFile(dbDirPath, null, key, data, callback);
 							});
 						}
-						else if (/^rocksdb\//.test(key)) {
-							zip.file(key).async('nodebuffer').then(function(data) {
-								fileSystemService.cordovaWriteFile(dbDirPath + 'rocksdb/', null, key.replace('rocksdb/', ''), data, callback);
-							});
-						}
+						// else if (/^rocksdb\//.test(key)) {
+						// 	zip.file(key).async('nodebuffer').then(function(data) {
+						// 		fileSystemService.cordovaWriteFile(dbDirPath + 'rocksdb/', null, key.replace('rocksdb/', ''), data, callback);
+						// 	});
+						// }
 						else {
 							callback();
 						}

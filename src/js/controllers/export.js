@@ -33,13 +33,17 @@ angular.module('copayApp.controllers').controller('exportController',
 				listFilenames = listFilenames.filter(function(name) {
 					return (name == 'conf.json' || /\.sqlite/.test(name));
 				});
-				fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
-					if (err) return cb(err);
-					listRocksDB.forEach(function(filename) {
-						if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
-					});
+				if(isCordova)
 					cb(null, listFilenames);
-				});
+				else {
+					fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
+						if (err) return cb(err);
+						listRocksDB.forEach(function(filename) {
+							if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
+						});
+						cb(null, listFilenames);
+					});
+				}
 			});
 		}
 
