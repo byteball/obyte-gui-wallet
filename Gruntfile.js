@@ -197,6 +197,7 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
           {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './node_modules/', src: ['**'], dest: '../obytebuilds/Obyte/linux64/node_modules' },
         ],
       }
     },
@@ -225,7 +226,7 @@ module.exports = function(grunt) {
           platforms: [getPlatform()],
           appName: 'Obyte',
           buildDir: '../obytebuilds',
-          version: '0.14.7',
+          version: grunt.option('nw') || '0.14.7',
           zip: false,
           macIcns: './public/img/icons/logo-circle.icns',
           winIco: './public/img/icons/logo-circle.ico',
