@@ -17,15 +17,21 @@ function selectText(element) {
 }
 
 function isValidAddress(value) {
-  var ValidationUtils = require('byteballcore/validation_utils.js');
+  var ValidationUtils = require('ocore/validation_utils.js');
   if (!value) {
     return false;
   }
 
   // byteball uri
-  var conf = require('byteballcore/conf.js');
+  var conf = require('ocore/conf.js');
   var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
   var arrMatches = value.match(re);
+  if (arrMatches) {
+    return ValidationUtils.isValidAddress(arrMatches[1]);
+  }
+
+  re = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':([A-Z2-7]{32})\b', 'i');
+  arrMatches = value.match(re);
   if (arrMatches) {
     return ValidationUtils.isValidAddress(arrMatches[1]);
   }
@@ -88,7 +94,7 @@ angular.module('copayApp.directives')
           ctrl.$setValidity('validAddresses', false);
           return value;
         }
-        for (i = 0; i < lines.length; i++) {
+        for (var i = 0; i < lines.length; i++) {
           var tokens = lines[i].trim().match(/^([A-Z0-9]{32})[\s,;]+([0-9]*\.[0-9]+|[0-9]+)$/);
           if (!tokens) {
             ctrl.$setValidity('validAddresses', false);
@@ -197,9 +203,9 @@ angular.module('copayApp.directives')
         return value;
       }*/
       //console.log('-- amount');
-      var constants = require('byteballcore/constants.js');
+      var constants = require('ocore/constants.js');
       var asset = attrs.validAmount;
-            var settings = configService.getSync().wallet.settings;
+      var settings = configService.getSync().wallet.settings;
       var unitValue = 1;
       var decimals = 0;
       if (asset === 'base'){
@@ -214,7 +220,8 @@ angular.module('copayApp.directives')
         decimals = profileService.assetMetadata[asset].decimals || 0;
         unitValue = Math.pow(10, decimals);
       }
-        
+        	if (typeof value === "string")
+        		value = value.replace(",", ".");
             var vNum = Number((value * unitValue).toFixed(0));
 
             if (typeof value == 'undefined' || value == 0) {
@@ -466,15 +473,15 @@ angular.module('copayApp.directives')
       restrict: 'E',
       scope: {
         width: "@",
+        height: "@",
         negative: "="
       },
       controller: function($scope) {
-        //$scope.logo_url = $scope.negative ? 'img/logo-negative.svg' : 'img/logo.svg';
-        $scope.logo_url = $scope.negative ? 'img/icons/icon-white-32.png' : 'img/icons/icon-black-32.png';
+        $scope.styles = { width: $scope.width ? $scope.width +'px' : 'auto', height: $scope.height ? $scope.height +'px' : 'auto' };
+        $scope.logo_url = $scope.negative ? 'img/icons/obyte-logo-negative.svg' : 'img/icons/obyte-logo.svg';
       },
       replace: true,
-      //template: '<img ng-src="{{ logo_url }}" alt="Byteball">'
-      template: '<div><img ng-src="{{ logo_url }}" alt="Byteball"><br>Byteball</div>'
+      template: '<img ng-style="styles" ng-src="{{ logo_url }}" alt="Obyte">'
     }
   })
   .directive('availableBalance', function() {
@@ -552,7 +559,48 @@ angular.module('copayApp.directives')
                 </ul>\
                 '
     }
-  }).filter('encodeURIComponent', function() {
+  }).directive('markdown', function ($rootScope, $timeout, isCordova) {
+  	var md = window.markdownit({linkify: true}).disable(['image', 'link']);
+  return {
+    restrict: 'A',
+    link: function (scope, elem, attrs) {
+    	$timeout(function () {
+	    	var text = elem.html();
+	    	var html = md.render(text);
+	    	elem.html(html);
+	    	elem.find('a').on('click', function(e) {
+	    		e.preventDefault();
+	    		var url = angular.element(this).attr('href');
+	    		if (typeof nw !== 'undefined')
+					nw.Shell.openExternal(url);
+				else if (isCordova)
+					cordova.InAppBrowser.open(url, '_system');
+	    	})
+	    });
+  	}
+ }})
+  .directive('clickOutside', function ($document) {
+    return {
+      restrict: 'A',
+      scope: {
+        clickOutside: '&'
+      },
+      link: function (scope, el) {
+        var handler = function (e) {
+          if (el !== e.target && !el[0].contains(e.target)) {
+              scope.$apply(function () {
+                  scope.$eval(scope.clickOutside);
+              });
+          }
+        }
+        $document.on('click', handler);
+        scope.$on('$destroy', function() {
+          $document.off('click', handler);
+        });
+      }
+    }
+  })
+  .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
 })
  .filter('objectKeys', [function() {

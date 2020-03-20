@@ -23,7 +23,7 @@
 					<div class="m20t">
 						<div style="display: table">
 							<div style="display: table-cell; padding-right: 10px"><input type="radio" name="wallet_type" value="full" ng-model="splash.wallet_type" id="wallet_type_full"></div>
-							<div style="display: table-cell"><label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Download the entire Byteball database</label></div>
+							<div style="display: table-cell"><label class="text-gray size-14" style="vertical-align: middle" for="wallet_type_full" translate>Download the entire Obyte database</label></div>
 						</div>
 						<p class="text-gray size-14 m0 text-light" translate>
 							This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync.
@@ -50,14 +50,14 @@
 			<div class="row">
 				<div class="medium-centered small-centered large-centered columns">
 					<div class="m20t">
-						<span class="text-bold size-16 text-white" translate>WELCOME TO BYTEBALL</span>
+						<span class="text-bold size-16 text-white" translate>WELCOME TO O<sub>byte</sub></span>
 						<p class="text-gray size-14 m0 text-light" donttranslate>Smart payments made simple</p>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="container-image large-3 medium-3 small-3 medium-centered small-centered large-centered columns">
-					<img src="img/icon-splash.png" alt="icon" width="100%">
+					<logo negative="true" height="126"></logo>
 				</div>
 			</div>
 			<div class="text-center size-12 text-warning" ng-show="splash.error && !splash.creatingProfile">

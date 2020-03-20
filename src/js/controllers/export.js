@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
 		var async = require('async');
 		var crypto = require('crypto');
-		var conf = require('byteballcore/conf');
+		var conf = require('ocore/conf');
 		var zip;
 		if (isCordova) {
 			var JSZip = require("jszip");
@@ -24,7 +24,8 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.isCordova = isCordova;
 		self.bCompression = false;
 		self.connection = null;
-		$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
+		if (!isCordova)
+			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
 
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
@@ -73,7 +74,7 @@ angular.module('copayApp.controllers').controller('exportController',
 
 
 		function saveFile(file, cb) {
-			var backupFilename = 'ByteballBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
+			var backupFilename = 'ObyteBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
 				var inputFile = document.getElementById('nwExportInputFile');
 				inputFile.setAttribute("nwsaveas", backupFilename);
@@ -84,12 +85,11 @@ angular.module('copayApp.controllers').controller('exportController',
 				};
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Byteball', backupFilename, file, function(err) {
-					if (isMobile.iOS()) {
-						navigator.notification.alert(gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)'), function(){
-							window.plugins.socialsharing.shareWithOptions({files: [window.cordova.file.cacheDirectory + 'Byteball/'+ backupFilename]}, function(){}, function(){});
-						}, 'Backup done');
-					}
+				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Obyte', backupFilename, file, function(err) {
+					var text = isMobile.iOS() ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to /Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup');
+					navigator.notification.alert(text, function(){
+						window.plugins.socialsharing.shareWithOptions({files: [(isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory) + 'Obyte/'+ backupFilename]}, function(){}, function(){});
+					}, 'Backup done');
 					cb(err);
 				});
 			}
@@ -178,7 +178,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			var db = require('byteballcore/db');
+			var db = require('ocore/db');
 			db.takeConnectionFromPool(function(connection) {
 				if (isCordova) {
 					self.walletExportCordova(connection);

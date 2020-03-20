@@ -1,20 +1,24 @@
 'use strict';
 
-var constants = require('byteballcore/constants.js');
-var eventBus = require('byteballcore/event_bus.js');
-var ValidationUtils = require('byteballcore/validation_utils.js');
-var objectHash = require('byteballcore/object_hash.js');
+var constants = require('ocore/constants.js');
+var eventBus = require('ocore/event_bus.js');
+var ValidationUtils = require('ocore/validation_utils.js');
+var objectHash = require('ocore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, pushNotificationsService) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService) {
 	var root = {};
-	var device = require('byteballcore/device.js');
-	var wallet = require('byteballcore/wallet.js');
+	var crypto = require('crypto');
+	var device = require('ocore/device.js');
+	var wallet = require('ocore/wallet.js');
+	var chatStorage = require('ocore/chat_storage.js');
 
-	var chatStorage = require('byteballcore/chat_storage.js');
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
+	$rootScope.newPaymentsCount = {};
 
 	if (typeof nw !== 'undefined') {
+		var messagesCount;
+		var paymentsCount;
 		var win = nw.Window.get();
 		win.on('focus', function(){
 			$rootScope.newMsgCounterEnabled = false;
@@ -22,21 +26,38 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		win.on('blur', function(){
 			$rootScope.newMsgCounterEnabled = true;
 		});
+
 		$rootScope.$watch('newMessagesCount', function(counters) {
-			var sum = lodash.sum(lodash.values(counters));
-			if (sum) {
-				win.setBadgeLabel(""+sum);
+			messagesCount = lodash.sum(lodash.values(counters));
+			if (messagesCount || paymentsCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
+			} else {
+				win.setBadgeLabel("");
+			}
+		}, true);
+
+		$rootScope.$watch('newPaymentsCount', function(counters) {
+			paymentsCount = lodash.sum(lodash.values(counters));
+			if (paymentsCount || messagesCount) {
+				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
 			} else {
 				win.setBadgeLabel("");
 			}
 		}, true);
 	}
+
 	$rootScope.$watch('newMessagesCount', function(counters) {
 		$rootScope.totalNewMsgCnt = lodash.sum(lodash.values(counters));
 	}, true);
+
+	$rootScope.$watch('newPaymentsCount', function(counters) {
+		$rootScope.totalNewPaymentsCnt = lodash.sum(lodash.values(counters));
+	}, true);
+
+
 	
 	function addIncomingMessageEvent(from_address, body, message_counter){
-		var walletGeneral = require('byteballcore/wallet_general.js');
+		var walletGeneral = require('ocore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
 			body = highlightActions(escapeHtml(body), arrMyAddresses);
 			body = text2html(body);
@@ -53,6 +74,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
 		if (bIncoming) {
+
 			if (peer_address in $rootScope.newMessagesCount)
 				$rootScope.newMessagesCount[peer_address]++;
 			else {
@@ -75,6 +97,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
+		root.assocLastMessageDateByCorrespondent[peer_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
 		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$timeout(function(){
@@ -100,11 +123,29 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		messages.push(msg_obj);
 	}
 	
-	var payment_request_regexp = /\[.*?\]\(byteball:([0-9A-Z]{32})\?([\w=&;+%]+)\)/g; // payment description within [] is ignored
 	
+	// payment description within [] is ignored and whole URI is capturing group
+	var payment_request_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([0-9A-Z]{32})(?:\?([\w=&;+%]+))?)\)/g;
+	var pairing_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([\w\/+]{44})@([\w.:\/-]+)#(.+))\)/g;
+	var textcoin_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):textcoin\?(.+))\)/g;
+	var data_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):data\?(.+))\)/g;
+
+	function paymentDropdown(address) {
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+	}
+
 	function highlightActions(text, arrMyAddresses){
+		var URI = require('ocore/uri.js');
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
-		return text.replace(/(.*?\b)([2-7A-Z]{32})(\b.*?)/g, function(str, pre, address, post){
+		var assocReplacements = {};
+		var index = crypto.randomBytes(4).readUInt32BE(0);
+		function toDelayedReplacement(new_text) {
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = new_text;
+			return key;
+		}
+		var text = text.replace(/(.*?\s|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
@@ -114,64 +155,93 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return address;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
-			return pre+'<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li></ul>'+post;
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = paymentDropdown(address);
+			return pre+key+post;
 		//	return '<a ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
-		}).replace(payment_request_regexp, function(str, address, query_string){
+		}).replace(/(.*?\s|^)\b(https?:\/\/\S+)([\s.,;!:].*?|$)/g, function(str, pre, link, post){
+			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
+				return str;
+			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
+				return str;
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = '<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>';
+			return pre+key+post;
+		}).replace(payment_request_regexp, function(str, uri, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 		//	if (arrMyAddresses.indexOf(address) >= 0)
 		//		return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
-			if (!objPaymentRequest)
+			if (!objPaymentRequest) {
+				return toDelayedReplacement(paymentDropdown(address));
+			}
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\', \''+objPaymentRequest.base64data+'\')">'+objPaymentRequest.amountStr+'</a>');
+		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Pair with device: '+device_pubkey+'@'+hub+'#'+pairing_code+']</a>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Claim textcoin: '+mnemonic+']</a>');
+		}).replace(data_regexp, function(str, uri, query_string){
+			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
+			if (!assocParams)
 				return str;
-			return '<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>';
+			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
-			return '<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
-			return '<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
 			if (!arrMovements)
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
-			return '<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>';
+			return toDelayedReplacement('<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return '<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+objVote.choice+'</a>';
+			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+escapeHtml(objVote.choice)+'</a>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			return '<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>';
-		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return '<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\')">[Request to sign message: '+message_to_sign+']</a>';
+			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
+		}).replace(/\[(.+?)\]\(sign-message-request(-network-aware)?:(.+?)\)/g, function(str, description, network_aware, message_to_sign){
+			return toDelayedReplacement('<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\', '+!!network_aware+')">[Request to sign message: '+tryParseBase64(message_to_sign)+']</a>');
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
 				text += " (invalid)";
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
-			return '<i>['+text+']</i>';
-		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+			return toDelayedReplacement('<i>['+text+']</i>');
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
 		});
+		for (var key in assocReplacements)
+			text = text.replace(key, assocReplacements[key]);
+		return text;
 	}
 	
 	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
-		var paymentJson = Buffer(paymentJsonBase64, 'base64').toString('utf8');
+		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log(paymentJson);
 		try{
 			var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -179,11 +249,23 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
+		if (!ValidationUtils.isNonemptyArray(objMultiPaymentRequest.payments))
+			return null;
+		if (!objMultiPaymentRequest.payments.every(function(objPayment){
+			return ( ValidationUtils.isValidAddress(objPayment.address) && ValidationUtils.isPositiveInteger(objPayment.amount) && (!objPayment.asset || objPayment.asset === "base" || ValidationUtils.isValidBase64(objPayment.asset, constants.HASH_LENGTH)) );
+		}))
+			return null;
 		if (objMultiPaymentRequest.definitions){
 			for (var destinationAddress in objMultiPaymentRequest.definitions){
 				var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-				if (destinationAddress !== objectHash.getChash160(arrDefinition))
+				try {
+					if (destinationAddress !== objectHash.getChash160(arrDefinition))
+						return null;
+				}
+				catch(e){
+					console.log(e);
 					return null;
+				}
 			}
 		}
 		try{
@@ -204,7 +286,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getVoteFromJsonBase64(voteJsonBase64){
-		var voteJson = Buffer(voteJsonBase64, 'base64').toString('utf8');
+		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log(voteJson);
 		try{
 			var objVote = JSON.parse(voteJson);
@@ -218,7 +300,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
-		var privateProfile = require('byteballcore/private_profile.js');
+		var privateProfile = require('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
 			return null;
@@ -234,9 +316,22 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		objPrivateProfile._label = arrFirstFields.join(' ');
 		return objPrivateProfile;
 	}
+
+	function getProsaicContractFromJsonBase64(strJsonBase64){
+		var strJSON = Buffer.from(strJsonBase64, 'base64').toString('utf8');
+		try{
+			var objProsaicContract = JSON.parse(strJSON);
+		}
+		catch(e){
+			return null;
+		}
+		if (!ValidationUtils.isValidAddress(objProsaicContract.my_address) || !objProsaicContract.text.length)
+			return null;
+		return objProsaicContract;
+	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
-		var signedMessageJson = Buffer(signedMessageBase64, 'base64').toString('utf8');
+		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		console.log(signedMessageJson);
 		try{
 			var objSignedMessage = JSON.parse(signedMessageJson);
@@ -248,13 +343,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			objSignedMessage: objSignedMessage,
 			bValid: undefined
 		};
-		var validation = require('byteballcore/validation.js');
+		var validation = require('ocore/validation.js');
 		validation.validateSignedMessage(objSignedMessage, function(err){
 			info.bValid = !err;
 			if (err)
 				console.log("validateSignedMessage: "+err);
 		});
 		return info;
+	}
+
+	function tryParseBase64(str) {
+		var json = Buffer.from(str, 'base64').toString('utf8');
+		try{
+			var obj = JSON.parse(json);
+		}
+		catch(e){
+			return str;
+		}
+		return escapeHtml(JSON.stringify(obj, null, '\t'));
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
@@ -273,52 +379,81 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function formatOutgoingMessage(text){
-		return escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, address, query_string){
+		var URI = require('ocore/uri.js');
+		var assocReplacements = {};
+		var index = crypto.randomBytes(4).readUInt32BE(0);
+		function toDelayedReplacement(new_text) {
+			index++;
+			var key = '{' + index + '}';
+			assocReplacements[key] = new_text;
+			return key;
+		}
+		var text = escapeHtmlAndInsertBr(text).replace(payment_request_regexp, function(str, uri, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			var objPaymentRequest = parsePaymentRequestQueryString(query_string);
 			if (!objPaymentRequest)
-				return str;
-			return '<i>'+objPaymentRequest.amountStr+' to '+address+'</i>';
+				return toDelayedReplacement(address);
+			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
 		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
-			return '<i>Payment request: '+arrMovements.join(', ')+'</i>';
+			return toDelayedReplacement('<i>Payment request: '+arrMovements.join(', ')+'</i>');
+		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
+			return toDelayedReplacement('<i>Sent pairing code: '+ device_pubkey+'@'+hub+'#'+pairing_code+'</i>');
+		}).replace(textcoin_regexp, function(str, uri, mnemonic){
+			return toDelayedReplacement('<i>Sent textcoin: '+ mnemonic+'</i>');
+		}).replace(data_regexp, function(str, uri, query_string){
+			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
+			if (!assocParams)
+				return str;
+			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
 		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
-			return '<i>Vote request: '+objVote.choice+'</i>';
+			return toDelayedReplacement('<i>Vote request: '+escapeHtml(objVote.choice)+'</i>');
 		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
-			return '<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+objPrivateProfile._label+']</a>';
+			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
-			return '[Request for profile fields '+fields_list+']';
+			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return '<i>[Request to sign message: '+message_to_sign+']</i>';
+			return toDelayedReplacement('<i>[Request to sign message: '+message_to_sign+']</i>');
 		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+objSignedMessage.signed_message;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
 				text += " (invalid)";
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
-			return '<i>['+text+']</i>';
+			return toDelayedReplacement('<i>['+text+']</i>');
 		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return '<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>';
+			return toDelayedReplacement('<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>');
+		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
 		});
+		for (var key in assocReplacements)
+			text = text.replace(key, assocReplacements[key]);
+		return text;
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
-		var URI = require('byteballcore/uri.js');
+		if (!query_string)
+			return null;
+		var URI = require('ocore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
 		if (!strAmount)
@@ -340,13 +475,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			single_address = single_address.replace(/^single/, '');
 		if (single_address && !ValidationUtils.isValidAddress(single_address))
 			single_address = 1;
-		var amountStr = 'Payment request: ' + getAmountText(amount, asset);
+		var base64data = assocParams['base64data'] || '';
+		var amountStr = 'Payment request'+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
 			device_address: device_address,
 			amountStr: amountStr,
-			single_address: single_address
+			single_address: single_address,
+			base64data: base64data
 		};
 	}
 	
@@ -403,12 +540,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 	}
 		
-	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, arrPeerAddresses, bWithLinks){
+	function getHumanReadableDefinition(arrDefinition, arrMyAddresses, arrMyPubKeys, assocPeerNamesByAddress, bWithLinks){
 		function getDisplayAddress(address){
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
-			if (arrPeerAddresses.indexOf(address) >= 0)
-				return '<span title="peer address: '+address+'">peer</span>';
+			if (assocPeerNamesByAddress[address])
+				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){
@@ -441,8 +578,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var relation = args[2];
 					var value = args[3];
 					var min_mci = args[4];
-					if (feed_name === 'timestamp' && relation === '>')
-						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : value);
+					if (feed_name === 'timestamp' && relation === '>' && (typeof value === 'number' || parseInt(value).toString() === value))
+						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : new Date(parseInt(value)).toString());
 					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
 					if (min_mci)
 						str += ' after MCI '+min_mci;
@@ -494,7 +631,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (!root.messageEventsByCorrespondent[correspondent.device_address])
 			root.messageEventsByCorrespondent[correspondent.device_address] = [];
 		var messageEvents = root.messageEventsByCorrespondent[correspondent.device_address];
-		var limit = 10;
+		var limit = 40;
 		var last_msg_ts = null;
 		var last_msg_id = 90071992547411;
 		if (messageEvents.length && messageEvents[0].id) {
@@ -505,7 +642,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			for (var i in messages) {
 				messages[i] = parseMessage(messages[i]);
 			}
-			var walletGeneral = require('byteballcore/wallet_general.js');
+			var walletGeneral = require('ocore/wallet_general.js');
 			walletGeneral.readMyAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;
@@ -529,9 +666,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
 					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
-				$timeout(function(){
-					$rootScope.$digest();
-				});
 				if (cb) cb();
 			});
 		});
@@ -557,6 +691,102 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		return message;
 	}
+
+	var message_signing_key_in_progress;
+	function signMessageFromAddress(message, address, signingDeviceAddresses, bNetworkAware, cb) {
+		var fc = profileService.focusedClient;
+		if (fc.isPrivKeyEncrypted()) {
+			profileService.unlockFC(null, function(err) {
+				if (err){
+					return cb(err.message);
+				}
+				signMessageFromAddress(message, address, signingDeviceAddresses, bNetworkAware, cb);
+			});
+			return;
+		}
+		
+		profileService.requestTouchid(function(err) {
+			if (err) {
+				profileService.lockFC();
+				return cb(err);
+			}
+			
+			var current_message_signing_key = crypto.createHash("sha256").update(address + message).digest('base64');
+			if (current_message_signing_key === message_signing_key_in_progress){
+				return cb("This message signing is already under way");
+			}
+			message_signing_key_in_progress = current_message_signing_key;
+			fc.signMessage(address, message, signingDeviceAddresses, bNetworkAware, function(err, objSignedMessage){
+				message_signing_key_in_progress = null;
+				if (err){
+					return cb(err);
+				}
+				var signedMessageBase64 = Buffer.from(JSON.stringify(objSignedMessage)).toString('base64');
+				cb(null, signedMessageBase64);
+			});
+		});
+	}
+
+	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
+		var privateProfile = require('ocore/private_profile.js');
+		scope.my_name = "NAME UNKNOWN";
+		scope.my_attestor = {};
+		scope.peer_name = "NAME UNKNOWN";
+		scope.peer_attestor = {};
+		async.series([function(cb2) {
+			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.first_name && profile.last_name) {
+					scope.peer_name = profile.first_name +' '+ profile.last_name;
+					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}, function(cb2) {
+			privateProfile.getFieldsForAddress(my_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.first_name && profile.last_name) {
+					scope.my_name = profile.first_name +' '+ profile.last_name;
+					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}, function(cb2) {
+			if (Object.keys(scope.peer_attestor).length) return cb2();
+			privateProfile.getFieldsForAddress(peer_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.name) {
+					scope.peer_name = profile.name;
+					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}, function(cb2) {
+			if (Object.keys(scope.my_attestor).length) return cb2();
+			privateProfile.getFieldsForAddress(my_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
+				if (profile.name) {
+					scope.my_name = profile.name;
+					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
+				}
+				cb2();
+			});
+		}], function(){
+			cb();
+		});
+	}
+
+	function openInExplorer(unit) {
+		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
+	};
+
+	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
+		signMessageFromAddress(message, address, signingDeviceAddresses, function(err, signedMessageBase64){
+			if (signedMessageBase64)
+				eventBus.emit("message_signed_from_address", message, address, signedMessageBase64);
+		});
+	});*/
 	
 	eventBus.on("text", function(from_address, body, message_counter){
 		device.readCorrespondent(from_address, function(correspondent){
@@ -592,7 +822,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			}
 		});
 	});
-	
+
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
@@ -606,7 +836,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			});
 		});
 	});
-	
+
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
@@ -614,6 +844,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
+	});
+
+	eventBus.on('new_my_transactions', (arrNewUnits) => {
+		arrNewUnits.forEach((unit) => {
+			if (!$rootScope.newPaymentsCount[unit])
+				$rootScope.newPaymentsCount[unit] = 1;
+			else
+				$rootScope.newPaymentsCount[unit]++;
+		});
+		delete $rootScope.newPaymentsCount[$rootScope.sentUnit];
 	});
 	
 	eventBus.on('paired', function(device_address){
@@ -673,6 +913,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.parseMessage = parseMessage;
 	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	root.addMessageEvent = addMessageEvent;
+	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
+	root.signMessageFromAddress = signMessageFromAddress;
+	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
+	root.openInExplorer = openInExplorer;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
@@ -717,7 +961,162 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	root.currentCorrespondent = null;
 	root.messageEventsByCorrespondent = {};
+	root.assocLastMessageDateByCorrespondent = {};
 
+	root.listenForProsaicContractResponse = function(contracts) {
+		var prosaic_contract = require('ocore/prosaic_contract.js');
+		var storage = require('ocore/storage.js');
+		var fc = profileService.focusedClient;
+
+		var showError = function(msg) {
+			$rootScope.$emit('Local/ShowErrorAlert', msg);
+		}
+
+		var start_listening = function(contracts) {
+			contracts.forEach(function(contract){
+				console.log('listening for prosaic contract response ' + contract.hash);
+
+				var sendUnit = function(accepted, authors){
+					if (!accepted) {
+						return;
+					}
+
+					if (fc.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								showError(err);
+								return;
+							}
+							sendUnit(accepted, authors);
+						});
+						return;
+					}
+					
+					root.readLastMainChainIndex(function(err, last_mci){
+						if (err){
+							showError(err);
+							return;
+						}
+						var arrDefinition = 
+							['and', [
+								['address', contract.my_address],
+								['address', contract.peer_address]
+							]];
+						var assocSignersByPath = {
+							'r.0': {
+								address: contract.my_address,
+								member_signing_path: 'r',
+								device_address: device.getMyDeviceAddress()
+							},
+							'r.1': {
+								address: contract.peer_address,
+								member_signing_path: 'r',
+								device_address: contract.peer_device_address
+							}
+						};
+						require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
+							ifError: function(err){
+								showError(err);
+							},
+							ifOk: function(shared_address){
+								composeAndSend(shared_address);
+							}
+						});
+					});
+					
+					// create shared address and deposit some bytes to cover fees
+					function composeAndSend(shared_address){
+						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
+						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+							hash: contract.hash,
+							field: "shared_address",
+							value: shared_address
+						});
+						contract.cosigners.forEach(function(cosigner){
+							if (cosigner != device.getMyDeviceAddress())
+								prosaic_contract.share(contract.hash, cosigner);
+						});
+
+						profileService.bKeepUnlocked = true;
+						var opts = {
+							asset: "base",
+							to_address: shared_address,
+							amount: prosaic_contract.CHARGE_AMOUNT,
+							arrSigningDeviceAddresses: contract.cosigners
+						};
+						fc.sendMultiPayment(opts, function(err, unit){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
+							if (err){
+								if (err.match(/device address/))
+									err = "This is a private asset, please send it only by clicking links from chat";
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								showError(err);
+								return;
+							}
+							$rootScope.$emit("NewOutgoingTx");
+
+							// post a unit with contract text hash and send it for signing to correspondent
+							var value = {"contract_text_hash": contract.hash};
+							var objMessage = {
+								app: "data",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+								payload: value
+							};
+
+							fc.sendMultiPayment({
+								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
+								shared_address: shared_address,
+								messages: [objMessage]
+							}, function(err, unit) { // can take long if multisig
+								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
+								$rootScope.sentUnit = unit;
+								if (err) {
+									showError(err);
+									return;
+								}
+								prosaic_contract.setField(contract.hash, "unit", unit);
+								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
+									hash: contract.hash,
+									field: "unit",
+									value: unit
+								});
+								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
+								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
+								device.sendMessageToDevice(contract.peer_device_address, "text", text);
+							});
+						});
+					}
+				};
+				eventBus.once("prosaic_contract_response_received" + contract.hash, sendUnit);
+			});
+		}
+
+		if (contracts)
+			return start_listening(contracts);
+		prosaic_contract.getAllByStatus("pending", function(contracts){
+			start_listening(contracts);
+		});
+	}
+	root.listenForProsaicContractResponse();
+
+	root.readLastMainChainIndex = function(cb){
+		if (require('ocore/conf.js').bLight){
+			require('ocore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
+				response.error ? cb(response.error) : cb(null, response);
+			});
+		}
+		else
+			require('ocore/storage.js').readLastMainChainIndex(function(last_mci){
+				cb(null, last_mci);
+			})
+	}
   /*
   root.remove = function(addr, cb) {
 	var fc = profileService.focusedClient;

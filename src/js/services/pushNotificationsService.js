@@ -6,25 +6,18 @@ angular.module('copayApp.services')
 	var usePushNotifications = isCordova && !isMobile.Windows() && (isMobile.Android() || isMobile.iOS());
 	var projectNumber;
 	var _ws;
+	var push;
 	
-	var eventBus = require('byteballcore/event_bus.js');
+	var eventBus = require('ocore/event_bus.js');
 	
 	function sendRequestEnableNotification(ws, registrationId) {
-		var network = require('byteballcore/network.js');
+		var network = require('ocore/network.js');
 		network.sendRequest(ws, 'hub/enable_notification', {registrationId: registrationId, platform: isMobile.iOS() ? 'ios' : 'android'}, false, function(ws, request, response) {
 			if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 		});
 	}
 	
 	window.onNotification = function(data) {
-		if (data.event === 'registered') {
-			storageService.setPushInfo(projectNumber, data.regid, true, function() {
-				sendRequestEnableNotification(_ws, data.regid);
-			});
-		}
-		else {
-			return false;
-		}
 	};
 
 	window.onNotificationAPN = function(event) {
@@ -59,32 +52,34 @@ angular.module('copayApp.services')
 	root.pushNotificationsInit = function() {
 		if (!usePushNotifications) return;
 		
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.readCorrespondents(function(devices){
 			if (devices.length == 0)
 				return;
-
-			var errorHandler = function(e) {
+			
+			if (isMobile.Android()) {
+				push = PushNotification.init({android:{
+					clearBadge: true,
+					icon: 'notification',
+					iconColor: '#2c3e50'
+				}});
+			} else if (isMobile.iOS()) {
+				push = PushNotification.init({ios: {
+					alert: true,
+					badge: true,
+					sound: true,
+					clearBadge: true
+				}});
+			}
+			push.on('registration', function(data) {
+				storageService.setPushInfo(projectNumber, data.registrationId, true, function() {
+					sendRequestEnableNotification(_ws, data.registrationId);
+				});
+			});
+			push.on('error', function(e) {
 				console.warn("push notification register failed", e);
 				usePushNotifications = false;
-			}
-			if (isMobile.Android()) {
-				window.plugins.pushNotification.register(function(data) {}, errorHandler,
-					{
-						"senderID": projectNumber,
-						"ecb": "onNotification"
-					}
-				);
-			} else if (isMobile.iOS()) {
-				window.plugins.pushNotification.register(function(token) {
-					storageService.setPushInfo(projectNumber, token, true, function() {
-						sendRequestEnableNotification(_ws, token);
-					});
-				}, errorHandler,
-					{"badge":"true","sound":"true","alert":"true","ecb":"onNotificationAPN"}
-				);
-			}
-			
+			});
 			configService.set({pushNotifications: {enabled: true}}, function(err) {
 				if (err) $log.debug(err);
 			});
@@ -93,8 +88,10 @@ angular.module('copayApp.services')
 	
 	function disable_notification() {
 		storageService.getPushInfo(function(err, pushInfo) {
+			if (err)
+				return $log.error('Error getting push info');
 			storageService.removePushInfo(function() {
-				var network = require('byteballcore/network.js');
+				var network = require('ocore/network.js');
 				network.sendRequest(_ws, 'hub/disable_notification', pushInfo.registrationId, false, function(ws, request, response) {
 					if (!response || (response && response !== 'ok')) return $log.error('Error sending push info');
 				});
@@ -106,8 +103,8 @@ angular.module('copayApp.services')
 	}
 	
 	root.pushNotificationsUnregister = function() {
-		if (!usePushNotifications) return;
-		window.plugins.pushNotification.unregister(function() {
+		if (!usePushNotifications || !push) return;
+		push.unregister(function() {
 			disable_notification();
 		}, function() {
 			disable_notification();

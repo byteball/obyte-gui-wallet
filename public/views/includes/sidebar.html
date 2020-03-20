@@ -1,7 +1,6 @@
 <nav class="sidebar left-off-canvas-menu" ng-controller="sidebarController as sidebar">
   <header>
-    <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" width="80"></logo>
-    <img ng-if="sidebar.isWindowsPhoneApp" src="img/logo-negative.png" alt="Byteball" width="80">
+    <logo ng-if="!sidebar.isWindowsPhoneApp" negative="true" height="75"></logo>
     <div ng-include="'views/includes/versionAndWalletType.html'"></div>
   </header>
   <ul class="off-canvas-list">
@@ -13,7 +12,7 @@
       <div class="avatar-wallet"
         ng-style="{'background-color':item.color}">{{(item.name || item.id) | limitTo: 1}}</div>
       <div class="name-wallet" ng-class="{'m8t':item.n == 1}">{{item.name || item.id}}</div>
-      <div class="size-12" ng-show="item.n > 1" translate>{{item.m}}-of-{{item.n}}</div>
+      <div class="size-12" ng-show="item.n > 1">{{item.m}}-<span translate>of</span>-{{item.n}}</div>
     </a>
     </li>
     <li>

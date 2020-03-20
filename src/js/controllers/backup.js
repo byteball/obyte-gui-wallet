@@ -10,7 +10,7 @@ angular.module('copayApp.controllers').controller('wordsController',
     var fc = profileService.focusedClient;
 	
 	if (!isCordova){
-		var desktopApp = require('byteballcore/desktop_app.js'+'');
+		var desktopApp = require('ocore/desktop_app.js'+'');
 		self.appDataDir = desktopApp.getAppDataDir();
 	}
 	self.isCordova = isCordova;

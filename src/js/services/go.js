@@ -1,8 +1,8 @@
 'use strict';
 
-var eventBus = require('byteballcore/event_bus.js');
+var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -117,35 +117,63 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		if (uri.indexOf("byteball:") == -1) return handleFile(uri);
+		if (uri.indexOf("byteball-tn:") == -1 && uri.indexOf("obyte-tn:") == -1) return handleFile(uri);
 
 		console.log("handleUri "+uri);
 
-		require('byteballcore/uri.js').parseUri(uri, {
-			ifError: function(err){
+		require('ocore/uri.js').parseUri(uri, {
+			ifError: function (err) {
 				console.log(err);
 				notification.error(err);
 				//notification.success(gettextCatalog.getString('Success'), err);
 			},
-			ifOk: function(objRequest){
-				console.log("request: "+JSON.stringify(objRequest));
-				if (objRequest.type === 'address'){
-					root.send(function(){
-						$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset);
-					});
-				}
-				else if (objRequest.type === 'pairing'){
-					$rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
-				}
-				else if (objRequest.type === 'auth'){
-					authService.objRequest = objRequest;
-					root.path('authConfirmation');
-				}
-				else if (objRequest.type === 'textcoin') {
-					$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
-				}
-				else
-					throw Error('unknown url type: '+objRequest.type);
+			ifOk: function (objRequest) {
+				console.log("request: " + JSON.stringify(objRequest));
+				setTimeout(function () {
+					if (objRequest.type === 'address') {
+						var emitPaymentRequest = function () {
+							root.send(function () {
+								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address);
+							});
+						}
+						if (!objRequest.from_address)
+							return emitPaymentRequest();
+						var db = require('ocore/db.js');
+						db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [objRequest.from_address], function (rows) {
+							$timeout(function () {
+								if (rows.length === 0)
+									return notification.error("Payment cannot be sent from address " + objRequest.from_address + " as this address doesn't belong to this wallet");
+								var row = rows[0];
+								// same wallet
+								if (row.wallet === profileService.focusedClient.credentials.walletId)
+									return emitPaymentRequest();
+								// switch to another wallet first
+								console.log("will switch to another wallet where from_address is member of");
+								profileService.setAndStoreFocus(row.wallet, function () {
+									emitPaymentRequest();	
+								});
+							});
+						});
+					}
+					else if (objRequest.type === 'data') {
+						delete objRequest.type;
+						root.send(function () {
+							$rootScope.$emit('dataPrompt', objRequest);
+						});
+					}
+					else if (objRequest.type === 'pairing') {
+						$rootScope.$emit('Local/CorrespondentInvitation', objRequest.pubkey, objRequest.hub, objRequest.pairing_secret);
+					}
+					else if (objRequest.type === 'auth') {
+						authService.objRequest = objRequest;
+						root.path('authConfirmation');
+					}
+					else if (objRequest.type === 'textcoin') {
+						$rootScope.$emit('claimTextcoin', objRequest.mnemonic);
+					}
+					else
+						throw Error('unknown url type: ' + objRequest.type);
+				});
 			}
 		});
 	}
@@ -163,7 +191,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			return;
 		}
 		last_handle_file_ts = Date.now();
-		var breadcrumbs = require('byteballcore/breadcrumbs.js');
+		var breadcrumbs = require('ocore/breadcrumbs.js');
 		console.log("handleFile "+uri);
 		root.walletHome();
 		$rootScope.$emit('process_status_change', 'claiming', true);
@@ -178,21 +206,22 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
 				breadcrumbs.add("handleFile - content url");
-				require('byteballcore/wallet.js').handlePrivatePaymentFile(null, content, cb);
+				require('ocore/wallet.js').handlePrivatePaymentFile(null, content, cb);
 			}, function (err) {throw err});
 			return checkDoubleClaim();
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
 			breadcrumbs.add("handleFile - file path url");
-			require('byteballcore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
+			require('ocore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
 			return checkDoubleClaim();
 		}
 		$rootScope.$emit('process_status_change', 'claiming', false);
 	}
 	
-	function extractByteballArgFromCommandLine(commandLine){
-		var conf = require('byteballcore/conf.js');
-		var url = new RegExp('^'+conf.program+':', 'i');
+	function extractObyteArgFromCommandLine(commandLine){
+		var conf = require('ocore/conf.js');
+		var bb_url = new RegExp('^'+conf.program+':', 'i');
+		var ob_url = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
 		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
 		var tokenize = function(str) {
 			var tokens = [];
@@ -203,7 +232,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (start != -1) {
 						tokens.push(str.substring(start+1, i));
 						start = -1;
-					} else
+					}
+					else if (str[i - 1] === ' ')
 						start = i;
 				if (str[i] == ' ' && start == -1) {
 					if (str.substring(lastSpace+1, i).length)
@@ -211,12 +241,15 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					lastSpace = i;
 				}
 			}
+			if (lastSpace != -1 && str.substring(lastSpace+1, i).length) {
+				tokens.push(str.substring(lastSpace+1, i));
+			}
 			return (tokens.length > 0) ? tokens : [str];
 		}
 		var arrParts = tokenize(commandLine); // on windows commandLine includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim().replace(/"/g, '');
-			if (part.match(url) || part.match(file))
+			if (part.match(bb_url) || part.match(ob_url) || part.match(file))
 				return part;
 		}
 		return null;
@@ -232,41 +265,42 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var path = require('path'+'');
 		var child_process = require('child_process'+'');
 		var package_json = require('../package.json'+''); // relative to html root
+		var oname = package_json.name.replace(/byteball/i, 'obyte');
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
-			fs.writeFile(applicationsDir + '/' +package_json.name+'.desktop', "[Desktop Entry]\n\
+			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+package_json.name+"\n\
+Name="+oname+"\n\
 Comment="+package_json.description+"\n\
 Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+path.dirname(process.execPath)+"/public/img/icons/logo-circle-256.png\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";\n\
+MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
 X-Ubuntu-Touch=true\n\
-X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
+X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (err)
 					throw Error("failed to write desktop file: "+err);
 				child_process.exec('update-desktop-database '+applicationsDir, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
 					var writeXml = function() {
-						fs.writeFile(mimeDir + '/packages/' + package_json.name+'.xml', "<?xml version=\"1.0\"?>\n\
+						fs.writeFile(mimeDir + '/packages/' + oname+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
-	   <mime-type type=\"application/x-"+package_json.name+"\">\n\
-	   <comment>Byteball Private Coin</comment>\n\
+	   <mime-type type=\"application/x-"+oname+"\">\n\
+	   <comment>Obyte Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
-	 </mime-info>\n", {mode: 0755}, function(err) {
+	 </mime-info>\n", {mode: parseInt('755', 8)}, function(err) {
 	 						if (err)
 								throw Error("failed to write MIME config file: "+err);
 							child_process.exec('update-mime-database '+mimeDir, function(err){
 								if (err)
 									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+package_json.name, function(err){});
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
 							});
 	 						console.log(".desktop done");
 	 					});
@@ -296,9 +330,9 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 			gui.App.on('open', function(commandLine) {
 				console.log("Open url: " + commandLine);
 				if (commandLine){
-					var file = extractByteballArgFromCommandLine(commandLine);
+					var file = extractObyteArgFromCommandLine(commandLine);
 					if (!file)
-						return console.log("no byteball: arg found");
+						return console.log("no byteball-tn:, obyte-tn:, or file arg found");
 					handleUri(file);
 					gui.Window.get().focus();
 				}
@@ -327,7 +361,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: 0755}, function(err){
 		/*var win = gui.Window.get();
 		win.on('close', function(){
 			console.log('close event');
-			var db = require('byteballcore/db.js');
+			var db = require('ocore/db.js');
 			db.close(function(err){
 				console.log('close err: '+err);
 			});

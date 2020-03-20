@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('newVersionIsAvailable', funct
 	    link = 'https://itunes.apple.com/us/app/byteball/id1147137332';
     }
     else {
-      link = 'https://github.com/byteball/byteball/releases/tag/v' + newVersion.version;
+      link = 'https://github.com/byteball/obyte-gui-wallet/releases/tag/v' + newVersion.version;
     }
     go.openExternalLink(link);
     $modalInstance.close('closed result');

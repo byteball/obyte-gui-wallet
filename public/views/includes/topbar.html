@@ -19,11 +19,11 @@
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor, 'max-width': '100%'}">
+    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor, 'width': '100%'}">
 		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
-			<a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-				<span class="ellipsis" style="max-width: calc(100% - 14px);float: left;">
+			<a ng-click="index.openSubwalletModal()" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor, 'display':'flex', 'justify-content': 'center'}">
+				<span class="ellipsis" style="float: left;">
 					{{(index.shared_address || index.alias || index.walletName)}}
 				</span>
 				<span class="arrow-down" ng-style="{'float': 'left', 'border-top-color': index.backgroundColor}"></span>

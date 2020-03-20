@@ -8,10 +8,10 @@ msgstr ""
 "X-Crowdin-Project: byteball\n"
 "X-Crowdin-Language: hu\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
-"Last-Translator: testz <testzcrypto@gmail.com>\n"
+"Last-Translator: testz\n"
 "Language-Team: Hungarian\n"
 "Language: hu_HU\n"
-"PO-Revision-Date: 2018-06-22T09:24:07+0000\n"
+"PO-Revision-Date: 2019-09-24 19:13\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -29,7 +29,7 @@ msgstr ""
 msgid "(my other wallet)"
 msgstr ""
 
-#: public/views/walletHome.html:666
+#: public/views/walletHome.html:717
 msgid "(possible double spend)"
 msgstr "(valószínűleg double spend)"
 
@@ -41,13 +41,13 @@ msgstr ""
 msgid "12 words separated by dashes"
 msgstr ""
 
-#: public/views/preferencesGlobal.html:139
-msgid "About Byteball"
-msgstr "A Byteball-ról"
+#: public/views/preferencesGlobal.html:143
+msgid "About Obyte"
+msgstr ""
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:123
+#: src/js/controllers/walletHome.js:137
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Elfogad"
@@ -68,35 +68,49 @@ msgstr "Számla"
 msgid "Add Bot"
 msgstr ""
 
-#: public/views/correspondentDevices.html:69
+#: public/views/correspondentDevices.html:153
 msgid "Add a new device"
 msgstr "Új eszköz hozzáadása"
 
-#: public/views/modals/destination-address.html:106
-#: public/views/modals/destination-address.html:99
+#: public/views/modals/destination-address.html:100
+#: public/views/modals/destination-address.html:107
 msgid "Add a new entry"
 msgstr "Új bejegyzés hozzáadása"
 
-#: public/views/walletHome.html:571
+#: public/views/preferencesEditRealNameAttestors.html:25
+msgid "Add address"
+msgstr ""
+
+#: public/views/walletHome.html:617
+msgid "Add answer"
+msgstr ""
+
+#: public/views/walletHome.html:517
+#: public/views/walletHome.html:617
 msgid "Add fields"
 msgstr ""
 
-#: public/views/includes/sidebar.html:24
+#: public/views/includes/sidebar.html:23
 msgid "Add wallet"
 msgstr "Tárca hozzáadása"
 
-#: public/views/correspondentDevices.html:89
+#: public/views/correspondentDevices.html:194
 msgid "Added"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:32
-#: public/views/modals/destination-address.html:118
+#: public/views/modals/destination-address.html:119
 #: public/views/paymentUri.html:15
 msgid "Address"
 msgstr "Cím"
 
-#: public/views/walletHome.html:545
+#: public/views/walletHome.html:589
 msgid "Address to attest"
+msgstr ""
+
+#: public/views/modals/approveNewWitnesses.html:16
+#: public/views/modals/approveNewWitnesses.html:28
+msgid "Address:"
 msgstr ""
 
 #: public/views/modals/destination-address.html:19
@@ -104,9 +118,17 @@ msgstr ""
 msgid "Addressbook"
 msgstr "Címjegyzék"
 
-#: public/views/preferences.html:59
+#: public/views/preferencesEditRealNameAttestors.html:15
+msgid "Addresses"
+msgstr ""
+
+#: public/views/preferences.html:70
 msgid "Advanced"
 msgstr "Haladó"
+
+#: public/views/modals/view-prosaic-contract.html:136
+msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
+msgstr ""
 
 #: public/views/modals/share.html:43
 msgid "After writing it down, find this transaction in"
@@ -117,31 +139,35 @@ msgid "Agree"
 msgstr "Egyetért"
 
 #: public/views/preferencesAlias.html:12
-msgid "Alias for <i>{{index.walletName}}</i>"
-msgstr "A(z) <i>{{index.walletName}}</i> álneve"
+msgid "Alias for"
+msgstr ""
 
 #: public/views/preferencesInformation.html:95
 msgid "All Wallet Addresses"
 msgstr "A tárca címei"
 
 #: public/views/translators.html:52
-msgid "All contributions to Byteball's translation are welcome. Sign up at crowdin.com and join the Byteball project at"
-msgstr "Szívesen látunk minden segítséget a Byteball fordításához. Jelentkezz be a crowdin.com oldalon és csatlakozz a Byteball projekthez  "
+msgid "All contributions to Obyte's translation are welcome. Sign up at crowdin.com and join the O<sub>byte</sub> project at"
+msgstr ""
 
 #: public/views/modals/multi-payment.html:56
 msgid "Already Paid"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1267
+#: src/js/controllers/correspondentDevice.js:1384
 msgid "Already saved"
 msgstr ""
 
-#: public/views/walletHome.html:165
+#: public/views/walletHome.html:168
 msgid "Also"
 msgstr "Szintén"
 
 #: public/views/splash.html:91
 msgid "Also in the Settings menu, you will find security options such as setting a password."
+msgstr ""
+
+#: public/views/walletHome.html:501
+msgid "Also send data..."
 msgstr ""
 
 #: public/views/includes/password.html:42
@@ -153,9 +179,13 @@ msgstr ""
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:378
+#: public/views/walletHome.html:376
 msgid "Amount"
 msgstr "Összeg"
+
+#: public/views/walletHome.html:617
+msgid "Answer"
+msgstr ""
 
 #: public/views/modals/vote.html:22
 msgid "Answer:"
@@ -178,20 +208,20 @@ msgstr "Biztosan törölni szeretnéd ezt a tárcát?"
 msgid "Asset"
 msgstr "Értéktárgy"
 
-#: public/views/walletHome.html:534
-msgid "Attest profile data linked to any Byteball address."
+#: public/views/walletHome.html:575
+msgid "Attest profile data linked to any Obyte address."
 msgstr ""
 
-#: public/views/walletHome.html:348
+#: public/views/walletHome.html:345
 msgid "Attestation"
 msgstr ""
 
-#: public/views/modals/accept-profile.html:28
+#: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
 msgid "Attested address:"
 msgstr ""
 
-#: public/views/modals/accept-profile.html:24
+#: public/views/modals/accept-profile.html:30
 #: public/views/modals/choose-profile.html:37
 msgid "Attested by:"
 msgstr ""
@@ -215,7 +245,7 @@ msgstr "Hozzáférhető egyenleg"
 #: public/views/acceptCorrespondentInvitation.html:13
 #: public/views/bot.html:13
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:19
+#: public/views/correspondentDevices.html:75
 #: public/views/editCorrespondentDevice.html:14
 #: public/views/includes/topbar.html:8
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
@@ -224,23 +254,27 @@ msgstr "Hozzáférhető egyenleg"
 msgid "Back"
 msgstr "Vissza"
 
-#: public/views/walletHome.html:247
+#: public/views/preferencesGlobal.html:105
+msgid "Backup all wallet data"
+msgstr ""
+
+#: public/views/walletHome.html:250
 msgid "Backup now"
 msgstr "Biztonsági mentés azonnal"
 
-#: public/views/preferencesGlobal.html:104
-msgid "Backup wallet seed"
-msgstr "A tárca 'seed' biztonsági mentése"
+#: public/views/preferencesGlobal.html:126
+msgid "Backup only the seed words"
+msgstr ""
 
 #: src/js/controllers/backup.js:7
 msgid "Backup words deleted"
 msgstr "Biztonsági mentés szavai törölve"
 
-#: public/views/preferencesGlobal.html:94
+#: public/views/preferencesGlobal.html:98
 msgid "Backups"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1252
+#: src/js/controllers/correspondentDevice.js:1367
 msgid "Bad profile"
 msgstr ""
 
@@ -248,7 +282,7 @@ msgstr ""
 msgid "Balance By Address"
 msgstr "Címenkénti egyenleg"
 
-#: public/views/walletHome.html:241
+#: public/views/walletHome.html:244
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Összegek fogadása előtt javasolt biztonsági mentés készítése a tárca titkos kulcsáról."
 
@@ -257,14 +291,17 @@ msgid "Better yet, use multisig wallets with redundancy,"
 msgstr ""
 
 #: public/views/modals/bind.html:8
-#: public/views/modals/bind.html:86
+#: public/views/modals/bind.html:94
 msgid "Bind payment"
 msgstr "Feltételes fizetés"
 
-#: public/views/walletHome.html:439
-#: public/views/walletHome.html:452
+#: public/views/walletHome.html:469
 msgid "Bind the payment to a condition"
 msgstr "Fizetés kötése egy feltételhez"
+
+#: public/views/walletHome.html:456
+msgid "Bind the payment to a condition..."
+msgstr ""
 
 #: public/views/paymentUri.html:10
 msgid "Bitcoin URI is NOT valid!"
@@ -274,21 +311,13 @@ msgstr "Érvénytelen Bitcoin URI!"
 msgid "Bot Store"
 msgstr ""
 
-#: public/views/correspondentDevice.html:288
+#: public/views/correspondentDevice.html:291
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr ""
 
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
 msgstr "Nem támogatott böngésző"
-
-#: public/index.html:12
-msgid "Byteball &mdash; smart payments"
-msgstr ""
-
-#: public/views/modals/destination-address.html:119
-msgid "Byteball address"
-msgstr ""
 
 #: public/views/includes/password.html:24
 msgid "CANCEL"
@@ -299,16 +328,16 @@ msgstr "MÉGSEM"
 msgid "CONTINUE"
 msgstr "TOVÁBB"
 
-#: public/views/modals/destination-address.html:127
-#: public/views/walletHome.html:493
+#: public/views/modals/destination-address.html:128
+#: public/views/walletHome.html:534
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:124
+#: src/js/controllers/walletHome.js:138
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Mégsem"
 
-#: public/views/editCorrespondentDevice.html:35
+#: public/views/editCorrespondentDevice.html:44
 msgid "Change hub:"
 msgstr ""
 
@@ -316,7 +345,7 @@ msgstr ""
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "A tárca állnév megváltoztatása csak a helyi tárca nevére van hatással."
 
-#: src/js/controllers/index.js:681
+#: src/js/controllers/index.js:822
 msgid "Chat"
 msgstr "Cseveg"
 
@@ -336,7 +365,7 @@ msgstr "Válassz egy eszközt a küldéshez"
 msgid "Choose which fields to send:"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:490
+#: src/js/controllers/walletHome.js:509
 msgid "Claim funds"
 msgstr ""
 
@@ -344,7 +373,7 @@ msgstr ""
 msgid "Claim funds by textcoin"
 msgstr ""
 
-#: public/views/walletHome.html:317
+#: public/views/walletHome.html:320
 msgid "Claim funds using textcoin"
 msgstr ""
 
@@ -353,54 +382,56 @@ msgid "Claiming..."
 msgstr ""
 
 #: public/views/modals/share.html:30
-msgid "Click the button to <span ng-if=\"isResend\">re</span>send email:"
+msgid "Click the button to"
 msgstr ""
 
-#: public/views/walletHome.html:515
+#: public/views/walletHome.html:556
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr ""
 
-#: public/views/walletHome.html:514
+#: public/views/walletHome.html:555
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr ""
 
-#: public/views/correspondentDevices.html:25
+#: public/views/correspondentDevices.html:80
 #: public/views/includes/topbar.html:13
-#: public/views/modals/accept-profile.html:4
+#: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
 #: public/views/modals/bind.html:4
 #: public/views/modals/choose-profile.html:4
-#: public/views/modals/choose-profile.html:70
+#: public/views/modals/choose-profile.html:71
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
 #: public/views/modals/offer-contract.html:29
+#: public/views/modals/offer-prosaic-contract.html:38
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
 #: public/views/modals/signed-message.html:39
 #: public/views/modals/signed-message.html:4
+#: public/views/modals/view-prosaic-contract.html:53
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Bezár"
 
 #: public/views/create.html:90
-msgid "Co-signer {{$index+1}}:"
-msgstr "Társ-aláíró {{$index+1}}:"
+msgid "Co-signer"
+msgstr ""
 
 #: public/views/preferencesInformation.html:73
 msgid "Co-signers"
 msgstr "Társ-aláírók"
 
-#: public/views/includes/sidebar.html:36
+#: public/views/includes/sidebar.html:35
 msgid "Co-signers for multisig"
 msgstr "Többszörös aláírás társ-aláírói"
 
-#: public/views/preferences.html:29
+#: public/views/preferences.html:33
 msgid "Color"
 msgstr "Szín"
 
@@ -413,11 +444,11 @@ msgid "Compress the file? (Slower)"
 msgstr "Fájl tömörítése? (Lassabb)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:520
+#: src/js/controllers/index.js:661
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:125
-#: src/js/controllers/walletHome.js:1712
-#: src/js/controllers/walletHome.js:1716
+#: src/js/controllers/walletHome.js:139
+#: src/js/controllers/walletHome.js:1867
+#: src/js/controllers/walletHome.js:1871
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Jóváhagy"
@@ -434,16 +465,18 @@ msgstr "Fizetés jóváhagyás"
 msgid "Confirm vote"
 msgstr ""
 
-#: public/views/modals/tx-details.html:121
+#: public/views/modals/tx-details.html:124
 msgid "Confirmed"
 msgstr "Jóváhagyva"
 
-#: public/views/correspondentDevices.html:35
+#: public/views/correspondentDevices.html:90
 msgid "Contacts"
 msgstr ""
 
+#: src/js/controllers/correspondentDevice.js:1752
+#: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:391
+#: src/js/controllers/walletHome.js:410
 msgid "Copied to clipboard"
 msgstr "Vágópadra másolva"
 
@@ -452,22 +485,27 @@ msgid "Copy"
 msgstr ""
 
 #: public/views/recoveryFromSeed.html:42
-msgid "Correspondents are not restored."
-msgstr "Társalgó felek nem lettek visszaállítva."
+msgid "Correspondents and chats are not restored."
+msgstr ""
 
-#: src/js/controllers/walletHome.js:696
+#: public/views/modals/offer-prosaic-contract.html:75
+#: public/views/modals/view-prosaic-contract.html:111
+msgid "Cosigners"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:715
 msgid "Could not create payment proposal"
 msgstr "Fizetési ajánlat létrehozása nem sikerült"
 
-#: src/js/services/profileService.js:279
+#: src/js/services/profileService.js:281
 msgid "Could not create using the specified extended private key"
 msgstr "Nem sikerült létrehozni a megadott kiterjesztett titkos kulccsal "
 
-#: src/js/services/profileService.js:289
+#: src/js/services/profileService.js:291
 msgid "Could not create using the specified extended public key"
 msgstr "Nem sikerült létrehozni a megadott kiterjesztett nyilvános kulccsal"
 
-#: src/js/services/profileService.js:272
+#: src/js/services/profileService.js:274
 msgid "Could not create: Invalid wallet seed"
 msgstr "Nem sikerült létrehozni: érvénytelen tárca 'seed'"
 
@@ -475,29 +513,25 @@ msgstr "Nem sikerült létrehozni: érvénytelen tárca 'seed'"
 msgid "Could not decrypt"
 msgstr "Nem sikerült visszafejteni"
 
-#: public/views/walletHome.html:621
+#: public/views/walletHome.html:672
 msgid "Could not fetch transaction history"
 msgstr "Nem sikerült lekérni a tranzakciótörténetet"
 
-#: src/js/services/profileService.js:507
-#: src/js/services/profileService.js:534
-#: src/js/services/profileService.js:556
+#: src/js/services/profileService.js:510
+#: src/js/services/profileService.js:537
+#: src/js/services/profileService.js:559
 msgid "Could not import"
 msgstr "Importálás nem sikerült"
 
-#: src/js/services/profileService.js:484
+#: src/js/services/profileService.js:487
 msgid "Could not import. Check input file and password"
 msgstr "Importálás nem sikerült. Ellenőrizd a megadott fájlt és a jelszót"
 
-#: src/js/controllers/walletHome.js:53
-msgid "Could not recognize a valid Byteball QR Code"
-msgstr "Nem sikerült felismerni érvényes Byteball QR kódot"
-
-#: src/js/controllers/walletHome.js:696
+#: src/js/controllers/walletHome.js:715
 msgid "Could not send payment"
 msgstr "Nem sikerült elküldeni a fizetést"
 
-#: src/js/controllers/correspondentDevice.js:1223
+#: src/js/controllers/correspondentDevice.js:1333
 msgid "Country"
 msgstr ""
 
@@ -505,18 +539,15 @@ msgstr ""
 msgid "Create"
 msgstr "Létrehoz"
 
-#: public/views/includes/sidebar.html:26
+#: public/views/includes/sidebar.html:25
 msgid "Create a new wallet"
 msgstr "Új tárca létrehozása"
 
 #: public/views/add.html:15
 #: public/views/create.html:175
+#: src/js/controllers/index.js:371
 msgid "Create new wallet"
 msgstr "Új tárca létrehozása"
-
-#: src/js/controllers/index.js:310
-msgid "Create new wallet  together with  ?"
-msgstr "Új tárca létrehozása együtt ?"
 
 #: public/views/create.html:171
 msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
@@ -538,39 +569,39 @@ msgstr "Tárca készítése..."
 msgid "DELETE WORDS"
 msgstr "SZAVAK TÖRLÉSE"
 
-#: public/views/walletHome.html:350
+#: public/views/walletHome.html:347
 msgid "Data"
 msgstr ""
 
-#: public/views/walletHome.html:347
+#: public/views/walletHome.html:344
 msgid "Data into datafeed"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:507
+msgid "Data to be posted with the payment:"
+msgstr ""
+
+#: public/views/walletHome.html:617
 msgid "Datafeed name"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:617
 msgid "Datafeed value"
 msgstr ""
 
-#: public/views/modals/tx-details.html:91
+#: public/views/modals/tx-details.html:94
 msgid "Date"
 msgstr "Dátum"
 
-#: src/js/controllers/correspondentDevice.js:1222
+#: src/js/controllers/correspondentDevice.js:1332
 msgid "Date of birth"
 msgstr ""
 
-#: src/js/controllers/index.js:276
+#: src/js/controllers/index.js:337
 msgid "Declined"
 msgstr "Elutasítva"
 
-#: public/views/paperWallet.html:40
-msgid "Decrypting a paper wallet could take around 5 minutes on this device. please be patient and keep the app open."
-msgstr "Papír tárca visszafejtése 5 percet is igénybe vehet ezen az eszközön. Kérlek légy türelemmel, és hagyd nyitva az alkalmazást!"
-
-#: public/views/walletHome.html:194
+#: public/views/walletHome.html:197
 msgid "Definition"
 msgstr "Definíció"
 
@@ -590,7 +621,7 @@ msgstr "Tárca törlése"
 msgid "Delete wallet"
 msgstr "Tárca törlése"
 
-#: src/js/controllers/walletHome.js:1709
+#: src/js/controllers/walletHome.js:1864
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr ""
 
@@ -600,7 +631,7 @@ msgstr "Leszármaztatási stratégia"
 
 #: public/views/modals/customized-amount.html:29
 #: public/views/modals/multi-payment.html:17
-#: public/views/modals/tx-details.html:31
+#: public/views/modals/tx-details.html:34
 msgid "Details"
 msgstr "Részletek"
 
@@ -629,28 +660,28 @@ msgstr ""
 msgid "Don't see your language on Crowdin? Contact the Owner on Crowdin! We'd love to support your language."
 msgstr "Nem látod a nyelvedet a Crowdin oldalon? Lépj kapcsolatba a tulajdonossal a Crowdin-en! Örömmel támogatjuk a nyelvedet!"
 
-#: public/views/inviteCorrespondentDevice.html:28
+#: public/views/inviteCorrespondentDevice.html:34
 #: public/views/modals/destination-address.html:41
 msgid "Done"
 msgstr "Kész"
 
-#: public/views/walletHome.html:722
+#: public/views/walletHome.html:774
 msgid "Download CSV file"
 msgstr "CSV fájl letöltése"
 
 #: public/views/splash.html:26
-msgid "Download the entire Byteball database"
+msgid "Download the entire Obyte database"
 msgstr ""
 
-#: public/views/correspondentDevice.html:26
 #: public/views/modals/destination-address.html:38
 msgid "Edit"
 msgstr "Szerkeszt"
 
-#: public/views/correspondentDevice.html:291
+#: public/views/correspondentDevice.html:294
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr ""
 
+#: public/views/editCorrespondentDevice.html:35
 #: public/views/preferencesGlobal.html:62
 msgid "Enable push notifications"
 msgstr "'Push' értesítések engedélyezése"
@@ -663,17 +694,21 @@ msgstr "Add meg másik eszköz által megadott párosító kódot, vagy olvasd l
 msgid "Enter your password"
 msgstr "Add  meg a jelszót"
 
-#: src/js/services/profileService.js:338
-#: src/js/services/profileService.js:390
+#: src/js/services/profileService.js:341
+#: src/js/services/profileService.js:393
 msgid "Error creating wallet"
 msgstr "Hiba történt a tárca létrehozásakor"
+
+#: public/views/modals/view-prosaic-contract.html:68
+msgid "Expired on"
+msgstr ""
 
 #: public/views/export.html:51
 msgid "Export"
 msgstr "Exportál"
 
-#: src/js/controllers/export.js:136
-#: src/js/controllers/export.js:161
+#: src/js/controllers/export.js:141
+#: src/js/controllers/export.js:166
 msgid "Export completed successfully"
 msgstr "Exportálás sikeresen befejeződött"
 
@@ -689,23 +724,28 @@ msgstr "Kiterjesztett nyilvános kulcs"
 msgid "Failed to export"
 msgstr "Exportálás nem sikerült"
 
-#: public/views/modals/tx-details.html:98
+#: public/views/modals/tx-details.html:101
 msgid "Fee"
 msgstr "Díj"
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:510
+#: public/views/walletHome.html:617
 msgid "Field"
 msgstr ""
 
-#: public/views/modals/tx-details.html:116
+#: src/js/controllers/export.js:88
+msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
+msgstr ""
+
+#: public/views/modals/tx-details.html:119
 msgid "Finality"
 msgstr "Véglegesség"
 
-#: src/js/controllers/correspondentDevice.js:1220
+#: src/js/controllers/correspondentDevice.js:1330
 msgid "First name"
 msgstr ""
 
-#: public/views/modals/tx-details.html:66
+#: public/views/modals/tx-details.html:69
 msgid "From"
 msgstr "Honnan"
 
@@ -713,27 +753,15 @@ msgstr "Honnan"
 msgid "Full address:"
 msgstr "Teljes cím"
 
-#: public/views/preferencesGlobal.html:122
-msgid "Full backup"
-msgstr "Teljes biztonsági mentés"
-
-#: public/views/paperWallet.html:58
-msgid "Funds found"
-msgstr "Pénzkészlet megtalálva"
-
-#: public/views/paperWallet.html:74
-msgid "Funds will be transferred to"
-msgstr "Pénzkészlet utalása ide"
-
 #: public/views/splash.html:92
 msgid "GET STARTED"
 msgstr "Kezdjük el!"
 
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:439
 msgid "Generate QR Code"
 msgstr ""
 
-#: public/views/walletHome.html:303
+#: public/views/walletHome.html:306
 msgid "Generate new address"
 msgstr "Új cím készítése"
 
@@ -742,10 +770,10 @@ msgid "Generating .csv file..."
 msgstr "CSV fájl készítése"
 
 #: public/views/modals/destination-address.html:61
-msgid "Getting address for wallet {{selectedWalletName}} ..."
-msgstr "{{selectedWalletName}} tárca címének lekérése..."
+msgid "Getting address for wallet"
+msgstr ""
 
-#: public/views/includes/sidebar.html:46
+#: public/views/includes/sidebar.html:45
 msgid "Global preferences"
 msgstr "Globális beállítások"
 
@@ -753,20 +781,24 @@ msgstr "Globális beállítások"
 msgid "Go back"
 msgstr "Vissza"
 
-#: public/views/preferences.html:51
+#: public/views/preferences.html:55
 msgid "Hardware wallet"
 msgstr "Hardware tárca"
+
+#: public/views/preferences.html:63
+msgid "Hidden assets"
+msgstr ""
 
 #: public/views/backup.html:45
 msgid "Hide the Wallet Seed"
 msgstr "A tárca 'seed' elrejtése"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:677
+#: src/js/controllers/index.js:818
 msgid "History"
 msgstr "Történet"
 
-#: src/js/controllers/index.js:665
+#: src/js/controllers/index.js:806
 msgid "Home"
 msgstr "Kezdőlap"
 
@@ -786,6 +818,10 @@ msgstr ""
 msgid "I affirm that I have read, understood, and agree with these terms."
 msgstr "Megerősítem, hogy ezeket a feltételeket elolvastam, megértettem és elfogadom."
 
+#: public/views/includes/backup-reminder.html:14
+msgid "I created a backup"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:43
 msgid "I pay"
 msgstr ""
@@ -794,23 +830,31 @@ msgstr ""
 msgid "I receive another payment of"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1225
+#: src/js/controllers/correspondentDevice.js:1339
+msgid "ID expires at"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1340
+msgid "ID issued at"
+msgstr ""
+
+#: src/js/controllers/correspondentDevice.js:1336
 msgid "ID number"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1227
+#: src/js/controllers/correspondentDevice.js:1338
 msgid "ID subtype"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1226
+#: src/js/controllers/correspondentDevice.js:1337
 msgid "ID type"
 msgstr ""
 
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:157
 msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr ""
 
-#: public/views/modals/bind.html:77
+#: public/views/modals/bind.html:85
 msgid "If the condition is not met, I can take this money back after"
 msgstr ""
 
@@ -818,12 +862,12 @@ msgstr ""
 msgid "If the peer doesn't pay, I can take my money back after"
 msgstr ""
 
-#: public/views/modals/tx-details.html:145
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:154
 msgid "If the recipient doesn't see your payment, you can"
 msgstr ""
 
-#: public/views/import.html:58
+#: public/views/import.html:47
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr ""
 
@@ -847,25 +891,25 @@ msgstr "Tárca importálása"
 msgid "Including pending confirmation"
 msgstr "Folyamatban lévő jóváhagyással együtt"
 
-#: public/views/walletHome.html:640
+#: public/views/walletHome.html:691
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "A kezdeti tranzakciótörténet szinkronizálása néhány percet is igénybe vehet sok tranzakció esetén.<br>\n"
 "          Kérlek légy türelemmel!"
 
-#: public/views/correspondentDevice.html:327
+#: public/views/correspondentDevice.html:330
 msgid "Insert my address"
 msgstr "Saját cím beillesztése"
 
-#: public/views/correspondentDevice.html:343
+#: public/views/correspondentDevice.html:346
 msgid "Insert private profile"
 msgstr ""
 
-#: public/views/walletHome.html:659
+#: public/views/walletHome.html:710
 msgid "Invalid"
 msgstr "Érvénytelen"
 
-#: src/js/controllers/index.js:1631
+#: src/js/controllers/index.js:1791
 msgid "Invalid Touch ID"
 msgstr "Érvénytelen Touch ID"
 
@@ -874,14 +918,14 @@ msgid "Invite the other device"
 msgstr "Másik eszköz meghívása"
 
 #: public/views/backup.html:22
-msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets and private assets such as blackbytes."
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
 msgstr ""
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
 msgstr ""
 
-#: public/views/modals/destination-address.html:120
+#: public/views/modals/destination-address.html:121
 msgid "Label"
 msgstr "Címke"
 
@@ -889,7 +933,7 @@ msgstr "Címke"
 msgid "Language"
 msgstr "Nyelv"
 
-#: src/js/controllers/correspondentDevice.js:1221
+#: src/js/controllers/correspondentDevice.js:1331
 msgid "Last name"
 msgstr ""
 
@@ -905,21 +949,23 @@ msgstr "Betöltés"
 msgid "Make a payment to"
 msgstr "Átutalás indítása ide"
 
-#: public/views/modals/approveNewWitnesses.html:29
+#: public/views/modals/approveNewWitnesses.html:47
 msgid "Maybe later"
 msgstr "Talán később"
 
 #: public/views/includes/copayers.html:4
-#: public/views/modals/offer-contract.html:116
+#: public/views/modals/offer-contract.html:117
+#: public/views/modals/offer-prosaic-contract.html:51
+#: public/views/modals/view-prosaic-contract.html:70
 #: public/views/preferencesInformation.html:76
 msgid "Me"
 msgstr "Én"
 
-#: public/views/modals/tx-details.html:110
+#: public/views/modals/tx-details.html:113
 msgid "Merchant message"
 msgstr "Kereskedő üzenete"
 
-#: public/views/walletHome.html:459
+#: public/views/walletHome.html:476
 msgid "Merkle proof"
 msgstr "Merkle bizonyíték"
 
@@ -932,7 +978,11 @@ msgstr "Üzenet"
 msgid "Message:"
 msgstr ""
 
-#: public/views/walletHome.html:658
+#: public/views/correspondentDevice.html:26
+msgid "More"
+msgstr ""
+
+#: public/views/walletHome.html:709
 msgid "Moved"
 msgstr "Mozgatva"
 
@@ -940,16 +990,21 @@ msgstr "Mozgatva"
 msgid "Multidevice Wallet"
 msgstr "Többeszközös tárca"
 
-#: public/views/walletHome.html:255
-msgid "My Byteball address"
-msgstr "Saját Byteball cím"
+#: public/views/walletHome.html:258
+msgid "My Obyte address"
+msgstr ""
 
-#: public/views/correspondentDevice.html:297
+#: public/views/correspondentDevice.html:300
 msgid "My recording preference"
 msgstr ""
 
-#: public/views/modals/destination-address.html:121
+#: public/views/modals/destination-address.html:122
 msgid "Name of the contact"
+msgstr ""
+
+#: public/views/modals/approveNewWitnesses.html:20
+#: public/views/modals/approveNewWitnesses.html:32
+msgid "Name:"
 msgstr ""
 
 #: public/views/paymentUri.html:18
@@ -969,8 +1024,8 @@ msgid "New witnesses"
 msgstr "Új tanúk"
 
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:519
-#: src/js/controllers/walletHome.js:1724
+#: src/js/controllers/index.js:660
+#: src/js/controllers/walletHome.js:1879
 msgid "No"
 msgstr "Nem"
 
@@ -978,39 +1033,64 @@ msgstr "Nem"
 msgid "No password given"
 msgstr ""
 
-#: public/views/modals/choose-profile.html:67
+#: public/views/modals/choose-profile.html:68
 msgid "No profiles matching the requested criteria."
 msgstr ""
 
-#: public/views/modals/choose-profile.html:68
+#: public/views/modals/choose-profile.html:69
 msgid "No profiles yet."
 msgstr ""
 
-#: public/views/walletHome.html:624
+#: public/views/walletHome.html:675
 msgid "No transactions yet"
 msgstr "Nincsenek még tranzakciók"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
-#: public/views/modals/destination-address.html:112
-#: public/views/walletHome.html:370
-#: public/views/walletHome.html:407
-#: public/views/walletHome.html:416
-#: public/views/walletHome.html:550
+#: public/views/modals/destination-address.html:113
+#: public/views/walletHome.html:371
+#: public/views/walletHome.html:424
+#: public/views/walletHome.html:433
+#: public/views/walletHome.html:594
 msgid "Not valid"
 msgstr "Nem érvényes"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:106
-#: public/views/modals/tx-details.html:81
-#: public/views/walletHome.html:470
-#: public/views/walletHome.html:687
+#: public/views/modals/tx-details.html:109
+#: public/views/modals/tx-details.html:84
+#: public/views/walletHome.html:487
+#: public/views/walletHome.html:739
 msgid "Note"
 msgstr "Megjegyzés"
 
+#: src/js/controllers/export.js:88
+msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
+msgstr ""
+
+#: public/index.html:12
+msgid "Obyte &mdash; smart payments"
+msgstr ""
+
+#: public/views/modals/destination-address.html:120
+msgid "Obyte address"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:88
+msgid "Offer Contract"
+msgstr ""
+
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:150
 msgid "Offer a contract"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:72
+msgid "Offer is valid for"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:42
+#: src/js/services/correspondentListService.js:150
+msgid "Offer prosaic contract"
 msgstr ""
 
 #: public/views/backup.html:87
@@ -1025,6 +1105,10 @@ msgstr "Egyszeres aláírású tárcákat lehet csak visszaállítani."
 msgid "Open chat"
 msgstr ""
 
+#: public/views/walletHome.html:617
+msgid "Options for answering"
+msgstr ""
+
 #: public/views/modals/share.html:39
 msgid "Or copy"
 msgstr ""
@@ -1033,7 +1117,7 @@ msgstr ""
 msgid "Pair"
 msgstr "Párosít"
 
-#: public/views/includes/sidebar.html:34
+#: public/views/includes/sidebar.html:33
 msgid "Paired devices"
 msgstr "Párosított eszközök"
 
@@ -1041,16 +1125,15 @@ msgstr "Párosított eszközök"
 msgid "Pairing code"
 msgstr ""
 
-#: public/views/paperWallet.html:30
-msgid "Paper Wallet Private Key"
-msgstr "Papír tárca titkos kulcsa"
+#: public/views/paperWallet.html:79
+msgid "Paper wallets are just textcoins. Scan the paper wallet's QR code using the camera icon in the upper right corner or input the 12 words of the textcoin manually on the \"Receive\" tab."
+msgstr ""
 
-#: public/views/paperWallet.html:37
 #: public/views/paperWallet.html:39
 msgid "Passphrase"
 msgstr "Jelmondat"
 
-#: src/js/services/profileService.js:672
+#: src/js/services/profileService.js:675
 msgid "Password needed"
 msgstr "Jelszó szükséges"
 
@@ -1062,11 +1145,11 @@ msgstr "A jelszavak nem egyeznek"
 msgid "Paste your paper wallet private key here"
 msgstr "Írd a papír tárca titkus kulcsát ide"
 
-#: public/views/modals/offer-contract.html:137
+#: public/views/modals/offer-contract.html:138
 msgid "Pay and offer"
 msgstr ""
 
-#: src/js/services/correspondentListService.js:110
+#: src/js/services/correspondentListService.js:150
 msgid "Pay to this address"
 msgstr ""
 
@@ -1078,7 +1161,7 @@ msgstr "Fizetés Elfogadva"
 msgid "Payment Proposal Created"
 msgstr "Fizetési Ajánlat Létrehozva"
 
-#: public/views/walletHome.html:211
+#: public/views/walletHome.html:214
 msgid "Payment Proposals"
 msgstr "Fizetési Ajánlatok"
 
@@ -1090,6 +1173,11 @@ msgstr "Fizetés Elutasítva"
 msgid "Payment Sent"
 msgstr "Fizetés Elküldve"
 
+#: public/views/modals/offer-prosaic-contract.html:58
+#: public/views/modals/view-prosaic-contract.html:77
+msgid "Peer"
+msgstr ""
+
 #: public/views/modals/address-definition.html:19
 msgid "Peer:"
 msgstr "Társ:"
@@ -1098,15 +1186,27 @@ msgstr "Társ:"
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "A tárca végleges törlése. EZ A MŰVELET NEM FORDÍTHATÓ VISSZA!"
 
+#: src/js/controllers/correspondentDevice.js:1334
+msgid "Personal code"
+msgstr ""
+
 #: public/views/create.html:28
 msgid "Plain Wallet"
 msgstr "Egyszerű tárca"
+
+#: src/js/controllers/index.js:276
+msgid "Please approve contract fees deposit on the other devices."
+msgstr ""
+
+#: src/js/controllers/index.js:281
+msgid "Please approve posting prosaic contract hash on the other devices."
+msgstr ""
 
 #: public/views/splash.html:20
 msgid "Please choose how much data to store in your wallet"
 msgstr ""
 
-#: src/js/controllers/create.js:97
+#: src/js/controllers/create.js:99
 msgid "Please enter the required fields"
 msgstr "Kérlek add meg a kötelező adatokat"
 
@@ -1114,27 +1214,39 @@ msgstr "Kérlek add meg a kötelező adatokat"
 msgid "Please name this device"
 msgstr "Kérlek nevezd el ezt az eszközt"
 
-#: src/js/controllers/correspondentDevice.js:149
+#: src/js/controllers/correspondentDevice.js:150
 msgid "Please switch to a single-address wallet and you probably need to insert your address again."
+msgstr ""
+
+#: public/views/includes/backup-reminder.html:8
+msgid "Please visit the Backups section in"
+msgstr ""
+
+#: public/views/walletHome.html:348
+msgid "Poll"
 msgstr ""
 
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr ""
 
-#: public/views/walletHome.html:540
-msgid "Post arbitrary key-value pairs of data into Byteball network."
+#: public/views/walletHome.html:584
+msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr ""
 
-#: public/views/walletHome.html:531
+#: public/views/walletHome.html:581
+msgid "Post arbitrary key-value pairs of data into Obyte network."
+msgstr ""
+
+#: public/views/walletHome.html:572
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr ""
 
-#: public/views/walletHome.html:537
+#: public/views/walletHome.html:578
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr ""
 
-#: public/views/walletHome.html:190
+#: public/views/walletHome.html:193
 #: public/views/walletHome.html:47
 msgid "Preferences"
 msgstr "Beállítások"
@@ -1144,28 +1256,36 @@ msgid "Press again to exit"
 msgstr "Kattints újra a kilépéshez"
 
 #: public/views/recoveryFromSeed.html:40
-msgid "Private assets (such as blackbytes) are not recovered."
-msgstr "Privát pénzeszközök (mint pl. blackbyte) nem lesznek visszaállítva."
+msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
+msgstr ""
 
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1933
+#: src/js/controllers/walletHome.js:2009
 msgid "Private payloads sent"
 msgstr "Privát adatok elküldve"
 
-#: public/views/modals/accept-profile.html:8
+#: public/views/modals/accept-profile.html:14
 msgid "Private profile"
 msgstr ""
 
-#: public/views/walletHome.html:349
+#: public/views/walletHome.html:346
 msgid "Profile"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:617
 msgid "Profile field"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:617
 msgid "Profile field value"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:91
+msgid "Proof of contract signing"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:57
+msgid "Prosaic contract"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:16
@@ -1176,20 +1296,28 @@ msgstr "QR Kód"
 msgid "QR-Scanner"
 msgstr "QR-Leolvasó"
 
+#: public/views/walletHome.html:604
+msgid "Question to be voted on"
+msgstr ""
+
 #: public/views/modals/vote.html:17
 msgid "Question:"
 msgstr ""
 
-#: src/js/controllers/index.js:669
+#: public/views/preferencesAttestorAddresses.html:16
+msgid "Real name attestors"
+msgstr ""
+
+#: src/js/controllers/index.js:810
 msgid "Receive"
 msgstr "Fogad"
 
-#: public/views/walletHome.html:655
+#: public/views/walletHome.html:706
 msgid "Received"
 msgstr "Fogadott"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:58
+#: public/views/modals/tx-details.html:61
 msgid "Recipients"
 msgstr "Címzettek"
 
@@ -1201,15 +1329,15 @@ msgstr "Újrakapcsolódás a tárcaszolgáltatóhoz"
 msgid "Recover"
 msgstr "Visszaállít"
 
-#: public/views/preferencesGlobal.html:113
-msgid "Recovery from seed"
-msgstr "Visszaállítás 'seed' alapján"
+#: public/views/preferencesGlobal.html:135
+msgid "Recover with seed words"
+msgstr ""
 
 #: public/views/walletHome.html:80
 msgid "Recreating Wallet..."
 msgstr "Tárca újrakészítése..."
 
-#: src/js/controllers/index.js:228
+#: src/js/controllers/index.js:289
 msgid "Refused"
 msgstr "Visszautasított"
 
@@ -1217,15 +1345,19 @@ msgstr "Visszautasított"
 msgid "Release Information"
 msgstr "Kiadás adatai"
 
-#: public/views/modals/destination-address.html:84
+#: public/views/includes/backup-reminder.html:11
+msgid "Remind Later"
+msgstr ""
+
+#: public/views/modals/destination-address.html:85
 msgid "Remove"
 msgstr "Eltávolít"
 
-#: public/views/correspondentDevices.html:75
+#: public/views/correspondentDevices.html:159
 msgid "Remove a device"
 msgstr ""
 
-#: public/views/editCorrespondentDevice.html:33
+#: public/views/editCorrespondentDevice.html:42
 msgid "Rename:"
 msgstr ""
 
@@ -1238,7 +1370,7 @@ msgstr "Jelszó ismét"
 msgid "Repeat the password"
 msgstr "Add meg a jelszót még egyszer"
 
-#: public/views/modals/approveNewWitnesses.html:23
+#: public/views/modals/approveNewWitnesses.html:41
 msgid "Replace"
 msgstr "Kicserél"
 
@@ -1247,11 +1379,11 @@ msgid "Request Password"
 msgstr "Jelszó igénylés"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:312
+#: public/views/walletHome.html:315
 msgid "Request a specific amount"
 msgstr "Adott összeg igénylése"
 
-#: public/views/correspondentDevice.html:336
+#: public/views/correspondentDevice.html:339
 msgid "Request payment"
 msgstr "Fizetés igénylés"
 
@@ -1259,24 +1391,29 @@ msgstr "Fizetés igénylés"
 msgid "Required number of signatures"
 msgstr "Kötelező aláírások száma"
 
-#: public/views/preferencesGlobal.html:131
-msgid "Restore from full backup"
-msgstr "Visszaállítás teljes biztonsági mentésből"
+#: public/views/preferencesGlobal.html:114
+msgid "Restore all wallet data"
+msgstr ""
 
 #: public/views/splash.html:64
 msgid "Retrying..."
 msgstr "Újrapróbálkozás..."
 
+#: public/views/modals/view-prosaic-contract.html:144
+msgid "Revoke"
+msgstr ""
+
 #: public/views/includes/password.html:32
 msgid "SET"
 msgstr "BEÁLLÍT"
 
-#: public/views/editCorrespondentDevice.html:41
-#: public/views/modals/destination-address.html:132
+#: public/views/editCorrespondentDevice.html:50
+#: public/views/modals/destination-address.html:133
 #: public/views/preferencesAlias.html:14
 #: public/views/preferencesDeviceName.html:14
 #: public/views/preferencesEditAttestorAddress.html:14
-#: public/views/preferencesEditWitness.html:15
+#: public/views/preferencesEditRealNameAttestors.html:29
+#: public/views/preferencesEditWitness.html:37
 #: public/views/preferencesEmail.html:35
 #: public/views/preferencesHub.html:18
 #: public/views/preferencesTor.html:19
@@ -1287,13 +1424,9 @@ msgstr "Elment"
 msgid "Saving preferences..."
 msgstr "Beállítások mentése..."
 
-#: public/views/preferences.html:69
-msgid "Scan Fingerprint"
-msgstr "Ujjlenyomat leolvasás"
-
-#: public/views/paperWallet.html:44
-msgid "Scan Wallet Funds"
-msgstr "Tárca pénzkészlet leolvasás"
+#: public/views/preferences.html:80
+msgid "Scan Fingerprint/FaceID"
+msgstr ""
 
 #: public/views/walletHome.html:121
 msgid "Scan status finished with error"
@@ -1303,7 +1436,7 @@ msgstr "A leolvasás hibával végződött"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Olvasd be a fenti QR kódot a másik eszközön,  vagy küldd el ezt a párosító kódot a másik eszközre:"
 
-#: src/js/controllers/index.js:1624
+#: src/js/controllers/index.js:1784
 msgid "Scan your fingerprint please"
 msgstr "Kérlek olvasd le az ujjlenyomatodat"
 
@@ -1315,10 +1448,6 @@ msgstr "Tárca pénzkészletének leolvasása..."
 msgid "Scanning for addresses..."
 msgstr "Címek keresése..."
 
-#: public/views/paperWallet.html:18
-msgid "Scanning wallet funds..."
-msgstr "Tárca pénzkészletének leolvasása..."
-
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "Válassz tárcát"
@@ -1327,20 +1456,20 @@ msgstr "Válassz tárcát"
 msgid "Select subwallet"
 msgstr "Válassz altárcát"
 
+#: public/views/preferencesHiddenAssets.html:29
+msgid "Select the assets to hide in the wallet"
+msgstr ""
+
 #: public/views/authConfirmation.html:10
 msgid "Select your identity"
 msgstr "Válaszd ki az azonosítódat"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:496
-#: public/views/walletHome.html:586
-#: src/js/controllers/index.js:673
+#: public/views/walletHome.html:537
+#: public/views/walletHome.html:636
+#: src/js/controllers/index.js:814
 msgid "Send"
 msgstr "Küld"
-
-#: public/views/walletHome.html:334
-msgid "Send All"
-msgstr "Összes küldése"
 
 #: public/views/modals/multi-payment.html:53
 msgid "Send Payment"
@@ -1350,7 +1479,7 @@ msgstr "Fizetés küldése"
 msgid "Send addresses by email"
 msgstr "Címek küldése emailben"
 
-#: public/views/walletHome.html:380
+#: public/views/walletHome.html:378
 msgid "Send all"
 msgstr "Összes küldése"
 
@@ -1358,19 +1487,15 @@ msgstr "Összes küldése"
 msgid "Send by email"
 msgstr "Küldés emailben"
 
-#: public/views/modals/choose-profile.html:62
+#: public/views/modals/choose-profile.html:63
 msgid "Send this profile"
 msgstr ""
-
-#: public/views/paperWallet.html:19
-msgid "Sending funds..."
-msgstr "Pénzkészlet küldése..."
 
 #: public/views/walletHome.html:84
 msgid "Sending..."
 msgstr ""
 
-#: public/views/walletHome.html:657
+#: public/views/walletHome.html:708
 msgid "Sent"
 msgstr "Elküldve"
 
@@ -1386,7 +1511,8 @@ msgstr "Jelszó beállítása"
 msgid "Set up a password"
 msgstr "Jelszó beállítása"
 
-#: public/views/includes/sidebar.html:44
+#: public/views/includes/backup-reminder.html:8
+#: public/views/includes/sidebar.html:43
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -1395,20 +1521,24 @@ msgid "Share"
 msgstr ""
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:290
+#: public/views/walletHome.html:293
 msgid "Share address"
 msgstr "Cím megosztása"
 
-#: public/views/walletHome.html:295
+#: public/views/inviteCorrespondentDevice.html:27
+msgid "Share the code"
+msgstr ""
+
+#: public/views/walletHome.html:298
 msgid "Share this wallet address to receive payments."
 msgstr ""
 
-#: public/views/walletHome.html:395
-#: public/views/walletHome.html:516
+#: public/views/walletHome.html:412
+#: public/views/walletHome.html:557
 msgid "Share via message"
 msgstr ""
 
-#: public/views/walletHome.html:714
+#: public/views/walletHome.html:766
 msgid "Show all"
 msgstr "Mindet mutat"
 
@@ -1421,11 +1551,12 @@ msgid "Sign"
 msgstr ""
 
 #: public/views/modals/sign-message.html:8
+#: src/js/controllers/index.js:468
 msgid "Sign message"
 msgstr ""
 
-#: src/js/controllers/index.js:407
-msgid "Sign message \"\" by address ?"
+#: public/views/editCorrespondentDevice.html:57
+msgid "Signed contracts:"
 msgstr ""
 
 #: public/views/modals/signed-message.html:8
@@ -1438,16 +1569,16 @@ msgid "Signing address:"
 msgstr ""
 
 #: public/views/create.html:56
-#: public/views/preferences.html:36
+#: public/views/preferences.html:40
 msgid "Single address wallet"
 msgstr ""
 
 #: public/views/create.html:59
-#: public/views/preferences.html:38
+#: public/views/preferences.html:42
 msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
 msgstr ""
 
-#: src/js/services/profileService.js:332
+#: src/js/services/profileService.js:335
 msgid "Small Expenses Wallet"
 msgstr "Kisértékű Kiadások Tárcája"
 
@@ -1455,33 +1586,37 @@ msgstr "Kisértékű Kiadások Tárcája"
 msgid "Specify Seed..."
 msgstr "'Seed' megadása..."
 
-#: public/views/preferences.html:63
+#: public/views/preferencesGlobal.html:94
+msgid "Spend unconfirmed funds"
+msgstr ""
+
+#: public/views/preferences.html:74
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "Költekezési megszorítások"
 
-#: public/views/preferencesGlobal.html:100
+#: public/views/modals/view-prosaic-contract.html:65
+msgid "Status"
+msgstr ""
+
+#: public/views/preferencesGlobal.html:122
 msgid "Still not done"
 msgstr "Még nincs kész"
 
-#: src/js/controllers/correspondentDevice.js:1269
+#: src/js/controllers/correspondentDevice.js:1386
 msgid "Store"
 msgstr ""
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:136
-#: src/js/controllers/export.js:161
-#: src/js/controllers/index.js:265
-#: src/js/controllers/index.js:293
+#: src/js/controllers/export.js:141
+#: src/js/controllers/export.js:166
+#: src/js/controllers/index.js:326
+#: src/js/controllers/index.js:354
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1783
-#: src/js/controllers/walletHome.js:1857
+#: src/js/controllers/walletHome.js:1933
+#: src/js/controllers/walletHome.js:2009
 msgid "Success"
 msgstr "Sikeres"
-
-#: public/views/paperWallet.html:64
-msgid "Sweep Wallet"
-msgstr "Tárca besöprés"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
@@ -1499,9 +1634,13 @@ msgstr "Szinkronizálás... {{index.syncProgress}}"
 msgid "TOR"
 msgstr ""
 
+#: public/views/preferencesTor.html:12
+msgid "TOR enabled"
+msgstr ""
+
 #: public/views/walletHome.html:117
 #: public/views/walletHome.html:122
-#: public/views/walletHome.html:622
+#: public/views/walletHome.html:673
 msgid "Tap to retry"
 msgstr "Koppints újrapróbálkozáshoz"
 
@@ -1510,7 +1649,12 @@ msgstr "Koppints újrapróbálkozáshoz"
 msgid "Terms of Use"
 msgstr "Használási feltételek"
 
-#: public/views/correspondentDevice.html:347
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:88
+msgid "Text"
+msgstr ""
+
+#: public/views/correspondentDevice.html:350
 msgid "Text message to"
 msgstr ""
 
@@ -1518,7 +1662,7 @@ msgstr ""
 msgid "Textcoin"
 msgstr ""
 
-#: public/views/modals/accept-profile.html:32
+#: public/views/modals/accept-profile.html:38
 msgid "The attested address belongs to:"
 msgstr ""
 
@@ -1542,6 +1686,10 @@ msgstr ""
 msgid "The signature is"
 msgstr ""
 
+#: public/views/includes/backup-reminder.html:7
+msgid "The total amount in your wallet is"
+msgstr ""
+
 #: public/views/modals/vote.html:52
 msgid "The vote will be signed by all your funded addresses"
 msgstr ""
@@ -1555,7 +1703,7 @@ msgstr "A \"{{walletName}}\" nevű tárca törölve"
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr ""
 
-#: public/views/correspondentDevice.html:302
+#: public/views/correspondentDevice.html:305
 msgid "Their recording preference"
 msgstr ""
 
@@ -1563,7 +1711,7 @@ msgstr ""
 msgid "There are no wallets to make this payment"
 msgstr "Egyik tárca sem használható a fizetéshez"
 
-#: public/views/walletHome.html:294
+#: public/views/walletHome.html:297
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr ""
 
@@ -1575,81 +1723,86 @@ msgstr "Ez a választás később nem módosítható"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr ""
 
-#: public/views/walletHome.html:440
-msgid "This payment is bound to a condition"
-msgstr "Ez az átutalás egy feltételhez kötött"
+#: public/views/walletHome.html:457
+msgid "This payment is bound to a condition..."
+msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:149
+#: src/js/controllers/correspondentDevice.js:150
 msgid "This payment must be paid only from single-address wallet"
 msgstr ""
 
-#: public/views/modals/tx-details.html:86
+#: public/views/modals/tx-details.html:89
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Ez a tranzakció érvénytelené vált; valószínűleg double spend kísérlet miatt."
 
-#: public/views/preferences.html:42
+#: public/views/preferences.html:46
 msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
 msgstr ""
 
-#: public/views/preferences.html:41
+#: public/views/preferences.html:45
 msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
 msgstr ""
 
-#: public/views/preferences.html:39
+#: public/views/preferences.html:43
 msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
 msgstr ""
 
-#: public/views/preferences.html:40
+#: public/views/preferences.html:44
 msgid "This wallet cannot be converted to single address wallet as it is multidevice"
 msgstr ""
 
-#: public/views/import.html:57
+#: public/views/import.html:46
 #: public/views/recoveryFromSeed.html:39
 msgid "This will permanently delete all your existing wallets!"
 msgstr "Ez véglegesen törölni fogja az összes létező tárcádat!"
 
+#: public/views/modals/offer-prosaic-contract.html:66
+#: public/views/modals/view-prosaic-contract.html:85
+msgid "Title of contract"
+msgstr ""
+
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
-#: public/views/modals/tx-details.html:36
-#: public/views/modals/tx-details.html:71
-#: public/views/walletHome.html:689
-#: src/js/controllers/index.js:1431
+#: public/views/modals/tx-details.html:39
+#: public/views/modals/tx-details.html:74
+#: public/views/walletHome.html:741
+#: src/js/controllers/index.js:1596
 msgid "To"
 msgstr "Hova"
+
+#: public/views/walletHome.html:419
+msgid "To Obyte address"
+msgstr ""
 
 #: public/views/backup.html:24
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr ""
 
-#: public/views/walletHome.html:597
-msgid "To be able to send arbitrary data into Byteball network, please switch to a single-address wallet first or create one."
+#: public/views/walletHome.html:647
+msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
 msgstr ""
 
-#: public/views/walletHome.html:449
+#: public/views/walletHome.html:466
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr ""
 
-#: public/views/walletHome.html:402
-msgid "To byteball address"
-msgstr ""
-
-#: public/views/walletHome.html:394
-msgid "To byteball address or email"
-msgstr ""
-
-#: src/js/controllers/index.js:1434
+#: src/js/controllers/index.js:1599
 msgid "To email"
 msgstr ""
 
-#: public/views/walletHome.html:296
+#: public/views/walletHome.html:299
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr ""
 
-#: public/views/walletHome.html:219
+#: public/views/modals/view-prosaic-contract.html:95
+msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
+msgstr ""
+
+#: public/views/walletHome.html:222
 msgid "Total Locked Balance"
 msgstr "Teljes zárolt egyenleg"
 
-#: public/views/walletHome.html:379
+#: public/views/walletHome.html:377
 msgid "Total amount"
 msgstr ""
 
@@ -1661,7 +1814,12 @@ msgstr "Társ-aláírók száma"
 msgid "Transaction"
 msgstr "Tranzakció"
 
-#: public/views/walletHome.html:646
+#: src/js/controllers/index.js:271
+msgid "Transaction created.\n"
+"Please approve it on the other devices."
+msgstr ""
+
+#: public/views/walletHome.html:697
 msgid "Transactions<br> Downloaded"
 msgstr "Tranzakció<br> Letöltve"
 
@@ -1677,16 +1835,16 @@ msgstr "Fordítók"
 msgid "Trusted nodes"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1224
+#: src/js/controllers/correspondentDevice.js:1335
 msgid "US state"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:835
+#: src/js/controllers/walletHome.js:864
 msgid "Unable to send transaction proposal"
 msgstr "Nem sikerült elküldeni a tranzakció ajánlatot"
 
-#: public/views/modals/tx-details.html:118
-#: public/views/walletHome.html:677
+#: public/views/modals/tx-details.html:121
+#: public/views/walletHome.html:728
 msgid "Unconfirmed"
 msgstr "Meg nem erősített"
 
@@ -1698,7 +1856,7 @@ msgstr "Blackbyte egysége"
 msgid "Unit for bytes"
 msgstr "Byte egysége"
 
-#: public/views/walletHome.html:212
+#: public/views/walletHome.html:215
 msgid "Unsent transactions"
 msgstr "El nem küldött tranzakciók"
 
@@ -1714,15 +1872,20 @@ msgstr "Frissíts {{version}} verzióra"
 msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/modals/view-prosaic-contract.html:67
+msgid "Valid till"
+msgstr ""
+
+#: public/views/walletHome.html:511
+#: public/views/walletHome.html:617
 msgid "Value"
 msgstr ""
 
-#: public/views/walletHome.html:560
+#: public/views/walletHome.html:617
 msgid "Values"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1246
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Verifying the profile..."
 msgstr ""
 
@@ -1734,7 +1897,7 @@ msgstr "Verzió"
 msgid "WARNING:"
 msgstr ""
 
-#: public/views/walletHome.html:237
+#: public/views/walletHome.html:240
 msgid "WARNING: Backup needed"
 msgstr "FIGYELEM: Biztonsági mentés szükséges"
 
@@ -1742,14 +1905,14 @@ msgstr "FIGYELEM: Biztonsági mentés szükséges"
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "FIGYELEM: Ez a 'seed' jelmondattal lett létrehozva. A tárca visszaállításához az emlékeztető szavak és a jelmondat is szükséges."
 
-#: public/views/import.html:55
+#: public/views/import.html:44
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr "FIGYELMEZTETÉSEK:"
 
 #: public/views/splash.html:53
-msgid "WELCOME TO BYTEBALL"
-msgstr "A BYTEBALL ÜDVÖZÖL"
+msgid "WELCOME TO O<sub>byte</sub>"
+msgstr ""
 
 #: public/views/copayers.html:24
 msgid "Waiting for co-signers"
@@ -1763,7 +1926,7 @@ msgstr "Várakozás..."
 msgid "Wallet"
 msgstr "Tárca"
 
-#: public/views/preferences.html:20
+#: public/views/preferences.html:24
 msgid "Wallet Alias"
 msgstr "Tárca álnév"
 
@@ -1784,9 +1947,9 @@ msgstr "Információk a Tárcáról"
 msgid "Wallet Name (at creation)"
 msgstr "Tárca neve (létrehozáskor)"
 
-#: src/js/services/profileService.js:453
-msgid "Wallet already in Byteball:"
-msgstr "A tárca már létezik a Byteball-ban"
+#: src/js/services/profileService.js:456
+msgid "Wallet already in Obyte:"
+msgstr ""
 
 #: public/views/create.html:48
 msgid "Wallet name"
@@ -1805,25 +1968,25 @@ msgstr "Tárcák"
 msgid "Warning!"
 msgstr "Figyelem!"
 
-#: public/views/modals/tx-details.html:129
+#: public/views/modals/tx-details.html:132
 msgid "Was claimed?"
 msgstr ""
 
-#: public/views/walletHome.html:343
+#: public/views/walletHome.html:339
 msgid "What to send"
 msgstr ""
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:111
+#: public/views/modals/offer-contract.html:112
 #: public/views/modals/sign-message.html:28
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:485
-#: public/views/walletHome.html:509
-#: public/views/walletHome.html:578
+#: public/views/walletHome.html:526
+#: public/views/walletHome.html:550
+#: public/views/walletHome.html:628
 msgid "Who signs:"
 msgstr "Az aláíró:"
 
-#: public/views/preferencesEditWitness.html:13
+#: public/views/preferencesEditWitness.html:12
 msgid "Witness address"
 msgstr "Tanú címe"
 
@@ -1839,20 +2002,20 @@ msgstr ""
 msgid "Write it down and keep it somewhere safe."
 msgstr "Írd le és tartsd biztonságos helyen."
 
-#: src/js/services/profileService.js:682
+#: src/js/services/profileService.js:685
 msgid "Wrong password"
 msgstr "Rossz jelszó"
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:518
+#: src/js/controllers/index.js:659
 msgid "Yes"
 msgstr "Igen"
 
-#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:151
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
 msgstr ""
 
-#: public/views/modals/bind.html:91
+#: public/views/modals/bind.html:99
 msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
 msgstr ""
 
@@ -1860,8 +2023,12 @@ msgstr ""
 msgid "You do not have a wallet"
 msgstr "Nincs tárcád"
 
-#: public/views/modals/choose-profile.html:69
+#: public/views/modals/choose-profile.html:70
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:92
+msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
 msgstr ""
 
 #: public/views/backup.html:55
@@ -1893,6 +2060,17 @@ msgstr ""
 msgid "[ Add new co-signer device ]"
 msgstr ""
 
+#: public/views/modals/offer-prosaic-contract.html:56
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/view-prosaic-contract.html:75
+#: public/views/modals/view-prosaic-contract.html:82
+msgid "address"
+msgstr ""
+
+#: public/views/preferencesAttestorAddresses.html:18
+msgid "addresses"
+msgstr ""
+
 #: public/views/modals/bind.html:37
 #: public/views/modals/offer-contract.html:44
 #: public/views/modals/offer-contract.html:52
@@ -1907,15 +2085,55 @@ msgstr ""
 msgid "and erase the textcoin to keep it safe from attackers."
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/includes/backup-reminder.html:7
+msgid "and it is recommended you back it up."
+msgstr ""
+
+#: public/views/modals/accept-profile.html:31
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attested by trusted attestor"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attested by:"
+msgstr ""
+
+#: public/views/modals/accept-profile.html:31
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:81
+msgid "attestor is not trusted by you"
+msgstr ""
+
+#: public/views/walletHome.html:617
 msgid "available"
+msgstr ""
+
+#: src/js/controllers/index.js:468
+msgid "by address"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:106
+msgid "calculated hash:"
+msgstr ""
+
+#: public/views/modals/address-definition.html:16
+#: public/views/modals/multi-payment.html:28
+msgid "can be spent if:"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:77
 msgid "can unlock the contract"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:106
+#: public/views/modals/offer-contract.html:107
 msgid "can unlock the contract after it expires in"
 msgstr ""
 
@@ -1923,15 +2141,15 @@ msgstr ""
 msgid "cancel wallet creation"
 msgstr ""
 
-#: public/views/modals/tx-details.html:137
+#: public/views/modals/tx-details.html:140
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr ""
 
-#: public/views/editCorrespondentDevice.html:49
+#: public/views/editCorrespondentDevice.html:64
 msgid "clear chat history"
 msgstr ""
 
-#: public/views/walletHome.html:567
+#: public/views/walletHome.html:617
 msgid "confirmed"
 msgstr ""
 
@@ -1939,8 +2157,17 @@ msgstr ""
 msgid "created"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:108
+#: public/views/modals/view-prosaic-contract.html:96
+msgid "creation date:"
+msgstr ""
+
+#: public/views/modals/offer-contract.html:109
 msgid "days"
+msgstr ""
+
+#: public/views/modals/bind.html:82
+#: public/views/modals/offer-contract.html:99
+msgid "detailed instructions about using"
 msgstr ""
 
 #: public/views/backup.html:28
@@ -1951,20 +2178,29 @@ msgstr ""
 msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
 msgstr ""
 
-#: public/views/modals/bind.html:72
+#: public/views/modals/bind.html:79
 msgid "either way"
 msgstr "bármely módon"
 
-#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:151
 msgid "erase textcoin"
 msgstr ""
 
-#: public/views/modals/bind.html:64
+#: public/views/modals/bind.html:71
 msgid "explicitly"
 msgstr "explicit"
 
-#: public/views/modals/bind.html:79
+#: public/views/modals/view-prosaic-contract.html:107
+msgid "hash published in DAG:"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:97
+msgid "hash source string:"
+msgstr ""
+
+#: public/views/modals/bind.html:87
 #: public/views/modals/offer-contract.html:69
+#: public/views/modals/offer-prosaic-contract.html:72
 msgid "hours"
 msgstr "óra"
 
@@ -1972,11 +2208,11 @@ msgstr "óra"
 msgid "if an event is posted by an oracle"
 msgstr ""
 
-#: public/views/modals/bind.html:68
+#: public/views/modals/bind.html:75
 msgid "in merkle tree"
 msgstr "merkle fában"
 
-#: public/views/walletHome.html:168
+#: public/views/walletHome.html:171
 msgid "in smart wallets"
 msgstr "okos tárcákban"
 
@@ -1992,8 +2228,24 @@ msgstr ""
 msgid "locked by pending payments"
 msgstr "Folyamatban levő átutalás miatt zárolva"
 
-#: public/views/modals/tx-details.html:131
+#: public/views/modals/tx-details.html:134
 msgid "not claimed"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:103
+msgid "not valid"
+msgstr ""
+
+#: public/views/copayers.html:26
+#: public/views/includes/sidebar.html:15
+#: public/views/includes/walletInfo.html:2
+#: public/views/modals/destination-address.html:73
+#: public/views/paymentUri.html:37
+msgid "of"
+msgstr ""
+
+#: public/views/editCorrespondentDevice.html:59
+msgid "on"
 msgstr ""
 
 #: public/views/modals/bind.html:55
@@ -2001,132 +2253,129 @@ msgstr ""
 msgid "on feed name"
 msgstr ""
 
-#: public/views/walletHome.html:460
-#: public/views/walletHome.html:471
+#: public/views/walletHome.html:477
+#: public/views/walletHome.html:488
 msgid "optional"
 msgstr "nem kötelező"
 
-#: public/views/modals/offer-contract.html:99
+#: public/views/modals/offer-contract.html:100
 msgid "or"
 msgstr ""
 
 #: public/views/backup.html:24
-msgid "or backup all Byteball data at"
+msgid "or backup all Obyte data at"
 msgstr ""
 
 #: public/views/modals/offer-contract.html:51
 msgid "peer pays"
 msgstr ""
 
-#: public/views/modals/bind.html:60
+#: public/views/modals/bind.html:67
 msgid "posted"
 msgstr ""
 
-#: public/views/modals/tx-details.html:151
-msgid "re-send private payloads"
+#: public/views/modals/share.html:30
+msgid "re"
 msgstr ""
 
 #: public/views/modals/tx-details.html:154
+msgid "re-send private payloads"
+msgstr ""
+
+#: public/views/modals/tx-details.html:157
 msgid "re-send private payloads to cosigners"
+msgstr ""
+
+#: public/views/correspondentDevices.html:171
+msgid "search by bot name"
+msgstr ""
+
+#: public/views/correspondentDevices.html:112
+msgid "search by contact name"
 msgstr ""
 
 #: public/views/modals/share.html:35
 msgid "send"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:773
+#: public/views/modals/share.html:30
+#: src/js/controllers/walletHome.js:795
 msgid "send email"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1087
-#: src/js/controllers/walletHome.js:1142
-#: src/js/controllers/walletHome.js:1280
-#: src/js/controllers/walletHome.js:1311
-#: src/js/controllers/walletHome.js:1318
-#: src/js/controllers/walletHome.js:908
-#: src/js/controllers/walletHome.js:914
-#: src/js/controllers/walletHome.js:955
-#: src/js/controllers/walletHome.js:991
+#: src/js/controllers/walletHome.js:1034
+#: src/js/controllers/walletHome.js:1047
+#: src/js/controllers/walletHome.js:1147
+#: src/js/controllers/walletHome.js:1206
+#: src/js/controllers/walletHome.js:1357
+#: src/js/controllers/walletHome.js:1394
+#: src/js/controllers/walletHome.js:1403
+#: src/js/controllers/walletHome.js:964
+#: src/js/controllers/walletHome.js:999
 msgid "sending"
 msgstr ""
 
-#: public/views/modals/tx-details.html:145
+#: public/views/modals/tx-details.html:148
 msgid "share again"
 msgstr ""
 
-#: public/views/walletHome.html:446
+#: public/views/walletHome.html:463
 msgid "switch to multi-address"
 msgstr ""
 
-#: public/views/walletHome.html:445
+#: public/views/walletHome.html:462
 msgid "switch to single address"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:91
+msgid "the contract is not signed yet"
 msgstr ""
 
 #: public/views/modals/share.html:39
 msgid "the text below and send it to the recipient via any messaging app"
 msgstr ""
 
-#: public/views/modals/approveNewWitnesses.html:17
+#: public/views/modals/approveNewWitnesses.html:26
 msgid "to"
 msgstr "az alábbira"
 
-#: public/views/walletHome.html:461
-#: public/views/walletHome.html:472
+#: src/js/controllers/index.js:371
+msgid "together with"
+msgstr ""
+
+#: public/views/walletHome.html:478
+#: public/views/walletHome.html:489
 msgid "too long!"
 msgstr "Túl hosszú!"
 
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:62
+msgid "trusted"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:94
+msgid "unit in DAG:"
+msgstr ""
+
 #: public/views/modals/signed-message.html:30
+#: public/views/modals/view-prosaic-contract.html:102
 msgid "valid"
+msgstr ""
+
+#: public/views/modals/view-prosaic-contract.html:100
+msgid "validate contract integrity"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:916
+msgid "wait for sync to complete before sending payments"
 msgstr ""
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
 msgstr ""
 
+#: public/views/modals/bind.html:58
 #: public/views/modals/offer-contract.html:91
 msgid "with expected value"
-msgstr ""
-
-#: public/views/modals/bind.html:58
-msgid "with expected value of"
-msgstr ""
-
-#: public/views/modals/address-definition.html:16
-msgid "{{address}} can be spent if:"
-msgstr "{{address}} elkölthető, ha:"
-
-#: public/views/modals/accept-profile.html:41
-#: public/views/modals/claim-textcoin.html:36
-#: public/views/modals/customized-amount.html:76
-msgid "{{buttonLabel}}"
-msgstr ""
-
-#: public/views/modals/confirmation.html:11
-msgid "{{cancel_label || 'Cancel'}}"
-msgstr "{{cancel_label || 'Mégsem'}}"
-
-#: public/views/modals/confirmation.html:6
-msgid "{{confirm_label || 'Yes'}}"
-msgstr ""
-
-#: src/js/controllers/walletHome.js:1898
-msgid "{{fee}} will be deducted for bitcoin networking fees"
-msgstr "{{fee}} díj lesz levonva"
-
-#: public/views/modals/multi-payment.html:28
-msgid "{{hrd.destinationAddress}} can be spent if:"
-msgstr "{{hrd.destinationAddress}} elkölthető, ha:"
-
-#: public/views/copayers.html:26
-#: public/views/includes/walletInfo.html:2
-msgid "{{index.m}}-of-{{index.n}}"
-msgstr ""
-
-#: public/views/includes/sidebar.html:16
-msgid "{{item.m}}-of-{{item.n}}"
-msgstr ""
-
-#: public/views/preferencesGlobal.html:29
-msgid "{{prefGlobal.torEnabled?'On':'Off'}}"
 msgstr ""
 

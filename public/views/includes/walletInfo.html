@@ -1,5 +1,5 @@
 
-<span ng-show="index.n>1"><span translate>{{index.m}}-of-{{index.n}}</span></span>
+<span ng-show="index.n>1">{{index.m}}-<span translate>of</span>-{{index.n}}</span>
 <img style="height:1em"  ng-show="index.network != 'livenet'" src="img/icon-testnet.svg">
 <img style="height:1em"  ng-show="!index.canSign && !index.isPrivKeyExternal" src="img/icon-read-only.svg">
 

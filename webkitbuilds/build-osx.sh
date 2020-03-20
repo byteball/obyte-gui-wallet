@@ -10,7 +10,7 @@ if [ -d "$dir" ]; then
 fi
 
 # set up your app name, architecture, and background image file name
-APP_NAME="Byteball-TN"
+APP_NAME="Obyte-TN"
 ARCH="$1"
 DMG_BACKGROUND_IMG="Background.png"
 

@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="format-detection" content="telephone=no">
   <link rel="stylesheet" type="text/css" href="css/foundation.css">
   <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
-  <link rel="stylesheet" type="text/css" href="css/byteball.css">
-  <title translate>Byteball &mdash; smart payments</title>
+  <link rel="stylesheet" type="text/css" href="css/obyte.css">
+  <title translate>Obyte &mdash; smart payments</title>
   <link rel="shortcut icon" href="img/icons/favicon-circle.ico">
 </head>
 <body ng-cloak class="ng-cloak">
@@ -22,6 +22,7 @@
 
     <div class="off-canvas-wrap" id="off-canvas-wrap">
       <div class="inner-wrap">
+        <div ng-include="'views/includes/backup-reminder.html'"></div>        
         <div ng-include="'views/includes/sidebar.html'" ng-if="index.hasProfile"></div>
 
         <div notifications="right top"></div> 
@@ -52,7 +53,7 @@
   <!-- DO NOT DELETE THIS COMMET  -->
   <!-- PLACEHOLDER: CORDOVA SRIPT -->
 
-  <script src="byteball.js"></script>
+  <script src="obyte.js"></script>
   <script>console.log("done scripts");</script>
 
 </body>

@@ -1,7 +1,7 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='About Byteball'; goBackToState = true">
+  ng-init="titleSection='About Obyte'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesAbout as about">
@@ -14,7 +14,7 @@
             v{{v.version}} 
           </span>      
         </li>
-        <li  ng-conf ng-click="$root.openExternalLink('https://github.com/byteball/byteball/tree/'+v.commitHash)">
+        <li  ng-conf ng-click="$root.openExternalLink('https://github.com/byteball/obyte-gui-wallet/tree/'+v.commitHash)">
           <span translate>Commit hash</span>
           <span class="right text-gray">
             #{{v.commitHash}}

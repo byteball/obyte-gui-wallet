@@ -7,7 +7,7 @@ angular.module('copayApp.controllers').controller('splashController',
 	
 	this.saveDeviceName = function(){
 		console.log('saveDeviceName: '+self.deviceName);
-		var device = require('byteballcore/device.js');
+		var device = require('ocore/device.js');
 		device.setDeviceName(self.deviceName);
 		var opts = {deviceName: self.deviceName};
 		configService.set(opts, function(err) {
@@ -35,13 +35,13 @@ angular.module('copayApp.controllers').controller('splashController',
 			return;
 		}
 		var fs = require('fs'+'');
-		var desktopApp = require('byteballcore/desktop_app.js');
+		var desktopApp = require('ocore/desktop_app.js');
 		var appDataDir = desktopApp.getAppDataDir();
 		var userConfFile = appDataDir + '/conf.json';
 		fs.writeFile(userConfFile, JSON.stringify({bLight: bLight}, null, '\t'), 'utf8', function(err){
 			if (err)
 				throw Error('failed to write conf.json: '+err);
-			var conf = require('byteballcore/conf.js');
+			var conf = require('ocore/conf.js');
 			if (!conf.bLight)
 				throw Error("Failed to switch to light, please restart the app");
 			self.step = 'device_name';

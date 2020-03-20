@@ -1,25 +1,27 @@
 'use strict';
 
-var constants = require('byteballcore/constants.js');
-var eventBus = require('byteballcore/event_bus.js');
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
-var ValidationUtils = require('byteballcore/validation_utils.js');
+var constants = require('ocore/constants.js');
+var eventBus = require('ocore/event_bus.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
+var ValidationUtils = require('ocore/validation_utils.js');
+var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
 
 		var self = this;
 		var home = this;
-		var conf = require('byteballcore/conf.js');
-		var chatStorage = require('byteballcore/chat_storage.js');
-		this.protocol = conf.program;
+		$scope.Math = window.Math;
+		var conf = require('ocore/conf.js');
+		var chatStorage = require('ocore/chat_storage.js');
+		this.bb_protocol = conf.program;
+		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
-		$scope.currentSpendUnconfirmed = configWallet.spendUnconfirmed;
-		var network = require('byteballcore/network.js');
+		var network = require('ocore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
@@ -34,27 +36,37 @@ angular.module('copayApp.controllers')
 		this.isWindowsPhoneApp = isMobile.Windows() && isCordova;
 		this.blockUx = false;
 		this.showScanner = false;
-		this.isMobile = isMobile.any();
 		this.addr = {};
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
-			$rootScope.$emit('Local/SetTab', 'send');
-			self.setForm(address, amount, null, asset, recipient_device_address);
+			self.resetForm();
+			$timeout(function() {
+				$rootScope.$emit('Local/SetTab', 'send');
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address);
+			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
 			if (form.address && form.address.$invalid && !self.blockUx) {
 				console.log("invalid address, resetting form");
 				self.resetForm();
-				self.error = gettext('Could not recognize a valid Byteball QR Code');
+				self.error = gettext('Could not recognize a valid Obyte QR Code');
 			}*/
 		});
 
+		var disableDataPromptListener = $rootScope.$on('dataPrompt', function(event, dataPrompt) {
+			console.log('dataPrompt event ', dataPrompt);
+			$rootScope.$emit('Local/SetTab', 'send');
+			self.setDataForm(dataPrompt);
+		});
+
 		var disablePaymentUriListener = $rootScope.$on('paymentUri', function(event, uri) {
+			console.log('paymentUri event ' + uri);
+			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
 				self.setForm(uri);
@@ -68,6 +80,7 @@ angular.module('copayApp.controllers')
 		var disableFocusListener = $rootScope.$on('Local/NewFocusedWallet', function() {
 			self.addr = {};
 			self.resetForm();
+			self.setAddress();
 		});
 
 		var disableResumeListener = $rootScope.$on('Local/Resume', function() {
@@ -86,11 +99,18 @@ angular.module('copayApp.controllers')
 					break;
 				case 'history':
 					$rootScope.$emit('Local/NeedFreshHistory');
+					$timeout(() => {
+						self.countChecker();
+					}, 100);
 					break;
 				case 'send':
 					self.resetError();
-			};
+			}
 		});
+
+		this.countChecker = function() {
+			self.newPaymentsCount = $rootScope.newPaymentsCount;
+		};
 
 		var disableOngoingProcessListener = $rootScope.$on('Addon/OngoingProcess', function(e, name) {
 			self.setOngoingProcess(name);
@@ -108,6 +128,7 @@ angular.module('copayApp.controllers')
 			console.log("walletHome $destroy");
 			disableAddrListener();
 			disablePaymentRequestListener();
+			disableDataPromptListener();
 			disablePaymentUriListener();
 			disableTabListener();
 			disableFocusListener();
@@ -153,11 +174,12 @@ angular.module('copayApp.controllers')
 						var form = addressbookForm;
 						if (data && form) {
 							data = data.replace(self.protocol + ':', '');
+							data = data.replace(self.bb_protocol + ':', '');
 							form.address.$setViewValue(data);
 							form.address.$isValid = true;
 							form.address.$render();
 						}
-						
+
 						$scope.$digest();
 					}, 100);
 				};
@@ -291,12 +313,12 @@ angular.module('copayApp.controllers')
 				$scope.address = address;
 				$scope.shared_address_cosigners = indexScope.shared_address_cosigners;
 
-				var walletGeneral = require('byteballcore/wallet_general.js');
-				var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
+				var walletGeneral = require('ocore/wallet_general.js');
+				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 				walletGeneral.readMyAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
-						walletDefinedByAddresses.readSharedAddressPeerAddresses(address, function(arrPeerAddresses) {
-							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], arrPeerAddresses, true);
+						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
+							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress, true);
 							$scope.creation_ts = creation_ts;
 							$timeout(function() {
 								$scope.$apply();
@@ -404,7 +426,7 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				window.plugins.socialsharing.shareWithOptions({message: "My byteball address " + self.protocol +  ':' + addr, subject: "My byteball address"/*, url: self.protocol +  ':' + addr*/}, function(){}, function(){});
+				window.plugins.socialsharing.shareWithOptions({message: "My Obyte address " + self.protocol +  ':' + addr, subject: "My Obyte address"/*, url: self.protocol +  ':' + addr*/}, function(){}, function(){});
 			}
 		};
 
@@ -422,7 +444,7 @@ angular.module('copayApp.controllers')
 				$scope.bbUnitName = walletSettings.bbUnitName;
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
-				$scope.protocol = conf.program;
+				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
@@ -530,7 +552,7 @@ angular.module('copayApp.controllers')
 		};
 
 		function claimTextCoin(mnemonic, addr) {
-			var wallet = require('byteballcore/wallet.js');
+			var wallet = require('ocore/wallet.js');
 			$rootScope.$emit('process_status_change', 'claiming', true);
 			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
 				$timeout(function() {
@@ -563,7 +585,7 @@ angular.module('copayApp.controllers')
 				});
 			});
 		}
-	
+
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
 			breadcrumbs.add("received claimTextcoin event with mnemonic: " + mnemonic.substr(0, 10) + "...");
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
@@ -583,15 +605,10 @@ angular.module('copayApp.controllers')
 			}
 		});
 
-		// Send 
-
-		var unwatchSpendUnconfirmed = $scope.$watch('currentSpendUnconfirmed', function(newVal, oldVal) {
-			if (newVal == oldVal) return;
-			$scope.currentSpendUnconfirmed = newVal;
-		});
+		// Send
 
 		$scope.$on('$destroy', function() {
-			unwatchSpendUnconfirmed();
+		//	unwatchSpendUnconfirmed();
 		});
 
 		this.resetError = function() {
@@ -746,16 +763,21 @@ angular.module('copayApp.controllers')
 			} else {
 				//indexScope.arrBalances[$scope.index.assetIndex]
 				var assetInfo = lodash.find(indexScope.arrBalances, function(balance){return balance.asset == asset});
-				if (assetInfo && assetInfo.name) {
-					asset = assetInfo.name;
-					amount /= Math.pow(10, assetInfo.decimals);
-				}
-				if (assetInfo)
+				if (assetInfo) {
 					is_private = assetInfo.is_private;
+					var pair = asset + "_USD";
+					if (network.exchangeRates[pair]) {
+						usd_amount_str = " (≈" + (amount / Math.pow(10, assetInfo.decimals || 0) * network.exchangeRates[pair]).toLocaleString([], {maximumFractionDigits: 2}) + " USD)";
+					}
+					if (assetInfo.decimals) {
+						amount /= Math.pow(10, assetInfo.decimals);
+					}
+					asset = assetInfo.name ? assetInfo.name : asset;
+				}
 			}
 			return {
-				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Byteball wallet yet, install it from https://byteball.org." : (": https://byteball.org/#textcoin?" + mnemonic)),
-				subject: "Byteball user beamed you money"
+				message: "Here is your " + (is_private ? "file" : "link") + " to receive " + amount + " " + asset + usd_amount_str + (is_private ? ".  If you don't have a Obyte wallet yet, install it from https://obyte.org." : (": https://obyte.org/#textcoin?" + mnemonic)),
+				subject: "Obyte user beamed you money"
 			}
 		}
 
@@ -764,10 +786,8 @@ angular.module('copayApp.controllers')
 				if (isMobile.Android() || isMobile.Windows()) {
 					window.ignoreMobilePause = true;
 				}
-				var removeFile = function() {
-
-				}
-				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: [filePath]}), removeFile, removeFile);
+				var removeFile = function() {};
+				window.plugins.socialsharing.shareWithOptions(lodash.assign(getShareMessage(amount, mnemonic, asset), {files: filePath ? [filePath] : []}), removeFile, removeFile);
 				return;
 			}
 			if (filePath)
@@ -819,6 +839,411 @@ angular.module('copayApp.controllers')
 			});
 		};
 
+		this.validateAADefinition = function () {
+			var form = $scope.sendDataForm;
+			form.definition.$setValidity('aaDef', false);
+			lodash.debounce(function () {
+				parse_ojson.parse(self.definition, function(err, arrDefinition) {
+					if (err) {
+						self.aa_validation_error = err.toString();
+						$timeout(function() {
+							$scope.$digest();
+						});
+						return;
+					}
+
+					var aa_validation = require('ocore/aa_validation.js');
+					aa_validation.validateAADefinition(arrDefinition, function (err) {
+						self.aa_validation_error = err;
+						form.definition.$setValidity('aaDef', !err);
+						$timeout(function() {
+							$scope.$digest();
+						});
+					});
+				});
+			}, 500)();
+		}
+
+		this.validateTextLength = function () {
+			var form = $scope.sendDataForm;
+			form.content.$setValidity('validLength', !(self.content && self.content.length > 140));
+		}
+
+		this.onAddressChanged = function () {
+			resetAAFields();
+			var form = $scope.sendPaymentForm;
+			if (form.address.$invalid) {
+				self.aa_destinations = [];
+				return console.log('address still invalid');
+			}
+			var address = form.address.$modelValue;
+			if (ValidationUtils.isValidAddress(address))
+				return checkIfAAAndUpdateResults(address);
+			var accountValidationResult = aliasValidationService.validate(address);
+			if (!accountValidationResult.isValid)
+				return;
+			var attestorKey = accountValidationResult.attestorKey;
+			var account = accountValidationResult.account;
+			var bb_address = aliasValidationService.getBbAddress(attestorKey, account);
+			if (!bb_address) {
+				return aliasValidationService.resolveValueToBbAddress(attestorKey, account, function () {
+					// assocBbAddresses in aliasValidationService is now filled
+					self.onAddressChanged();
+				});
+			}
+			if (bb_address === 'unknown' || bb_address === 'none' || !ValidationUtils.isValidAddress(bb_address))
+				return;
+			checkIfAAAndUpdateResults(bb_address);
+		};
+
+		function resetAAFields() {
+			self.aa_destinations = [];
+			self.added_bounce_fees = [];
+			self.aa_data_fields_defined = [];
+
+			self.aa_description = '';
+			self.aa_truncated_description = '';
+			self.bShowFullDescription = false;
+			self.aa_homepage_url = '';
+			self.aa_source_url = '';
+			self.aa_field_descriptions = {};
+
+			self.custom_amount_error = null;
+			self.aa_dry_run_error = null;
+		}
+
+		function checkIfAAAndUpdateResults(address) {
+			readAADefinitionsWithBaseDefinitions(address, function (rows) {
+				self.aa_destinations = rows;
+				if (rows.length > 0) {
+					updateAADocs();
+					return updateAAResults();
+				}
+				$timeout(function() {
+					$scope.$digest();
+				});
+			});
+		}
+
+		function readAADefinitionsWithBaseDefinitions(address, handleResult) {
+			var aa_addresses = require('ocore/aa_addresses.js');
+			aa_addresses.readAADefinitions([address], function (rows) {
+				if (rows.length === 0)
+					return handleResult([]);
+				if (!rows[0].base_aa) // regular AA
+					return handleResult(rows);
+				// else, parameterized AA
+				aa_addresses.readAADefinitions([rows[0].base_aa], function (base_rows) {
+					if (base_rows.length === 0) // should never happen
+						return handleResult(rows);
+					rows[0].base_definition = base_rows[0].definition;
+					handleResult(rows);
+				});
+			});
+		}
+
+		function updateAADocs() {
+			var row = self.aa_destinations[0];
+			var aa_address = row.address;
+			var arrBaseDefinition = JSON.parse(row.base_definition || row.definition);
+			var doc_url = arrBaseDefinition[1].doc_url;
+			if (!doc_url)
+				return;
+			// allow other protocols, e.g. ipfs
+			if (doc_url.indexOf(':') === -1)
+				doc_url = 'https://' + doc_url;
+			doc_url = doc_url.replace(/{{aa_address}}/g, aa_address);
+			require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
+				if (err)
+					return console.log("fetching doc_url failed: " + err);
+				try {
+					var doc = JSON.parse(response);
+					self.aa_description = doc.description;
+					self.aa_homepage_url = doc.homepage_url;
+					self.aa_source_url = doc.source_url;
+					self.aa_field_descriptions = doc.field_descriptions;
+					if (self.aa_description.length > 200)
+						self.aa_truncated_description = self.aa_description.substr(0, 180) + '...';
+				}
+				catch (e) {
+					return console.log("failed to parse doc_url response: " + e + ", the response was: " + response);
+				}
+				$timeout(function() {
+					$scope.$digest();
+				});
+			});
+		}
+
+		this.hasDocs = function () {
+			return !!(self.aa_description || self.aa_homepage_url || self.aa_source_url);
+		}
+
+		// a hack to force revalidation of amount field after asset is updated
+		this.forceAmountRevalidation = function () {
+			if ($scope.assetIndexSelectorValue >= 0)
+				$timeout(function () {
+					var form = $scope.sendPaymentForm;
+					var val = form.amount.$modelValue;
+					if (val) {
+						form.amount.$setViewValue(val + '0');
+						form.amount.$setViewValue(val + '');
+					}
+				});
+		};
+
+		this.onChanged = function () {
+			if ($scope.assetIndexSelectorValue >= 0)
+				$timeout(function () {
+					if (!$scope.sendPaymentForm.$invalid)
+						lodash.debounce(updateAAResults, 500)();
+				}, 100);
+		};
+
+	this.showDataFieldSuggestions = function (currentElem, index, arrayOfElements) {
+      arrayOfElements.forEach((e, idx)=>{
+        if(index !== idx) {
+          e.suggestionsShown = false;
+        }
+      });
+      arrayOfElements[index].suggestionsShown = true;
+    };
+
+		this.onMultiAddressesChanged = function () {
+			var form = $scope.sendPaymentForm;
+			var errors = form.addresses.$error;
+			if (errors.validAddresses) // not valid yet
+				return;
+			var arrAddresses = getOutputsForMultiSend().map(function (output) { return output.address; });
+			var aa_addresses = require('ocore/aa_addresses.js');
+			aa_addresses.readAADefinitions(arrAddresses, function (rows) {
+				form.addresses.$setValidity('noAA', rows.length === 0);
+				$timeout(function() {
+					$scope.$digest();
+				});
+			});
+		};
+
+		function addBounceFees(asset, amount, address) {
+			if (!self.added_bounce_fees)
+				self.added_bounce_fees = [];
+			if (self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === asset; }).length === 0) {
+				var feeInfo = {
+					asset: asset,
+					address: address,
+					amount: amount,
+					display_amount: profileService.formatAmountWithUnit(amount, asset, {dontRound: true})
+				};
+				self.added_bounce_fees.push(feeInfo);
+			}
+		}
+
+		function dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, handleResponses) {
+			if (!conf.bLight) {
+				var aa_composer = require('ocore/aa_composer.js');
+				return aa_composer.dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, function (arrResponses) {
+					if (constants.COUNT_WITNESSES === 1) { // the temp unit might rebuild the MC
+						var storage = require('ocore/storage.js');
+						var db = require('ocore/db.js');
+						db.executeInTransaction(function (conn, onDone) {
+							storage.resetMemory(conn, onDone);
+						});
+					}
+					handleResponses(null, arrResponses);
+				});
+			}
+			network.requestFromLightVendor('light/dry_run_aa', { trigger: trigger, address: aa_address }, function (ws, request, response) {
+				if (response.error)
+					return handleResponses(response.error);
+				var arrResponses = response;
+				handleResponses(null, arrResponses);
+			});
+		}
+
+		function updateAAResults () {
+			var form = $scope.sendPaymentForm;
+			var amount = form.amount.$modelValue || 0;
+			if (!self.aa_destinations || self.aa_destinations.length === 0)
+				return console.log('no AA destinations');
+
+			var target_to_find = /trigger\.data\.[A-Za-z_0-9.]+/g; // Getting data field for keys suggestions
+			var strDefinition = self.aa_destinations[0].base_definition || self.aa_destinations[0].definition;
+			var data_fields_to_input = [... new Set (strDefinition.match(target_to_find))];
+			if (data_fields_to_input.length) {
+				var moreEntriesArray = []; // get third word, if object have > 3 entries
+				var threeEntriesArray = []; // get all objects with 3 entries
+				data_fields_to_input.forEach((e) => {
+					var temp = e.split('.');
+					if (temp.length >= 4) {
+						moreEntriesArray.push(temp[2]);
+					} else {
+						threeEntriesArray.push(temp[2]);
+					}
+				});
+				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
+			}
+
+			var row = self.aa_destinations[0];
+			var aa_address = row.address;
+			var arrDefinition = JSON.parse(row.definition);
+			var arrBaseDefinition = row.base_definition ? JSON.parse(row.base_definition) : arrDefinition;
+			var bounce_fees = arrBaseDefinition[1].bounce_fees || { base: constants.MIN_BYTES_BOUNCE_FEE };
+			if (!bounce_fees.base) {
+				bounce_fees = lodash.clone(bounce_fees); // do not modify the definition
+				bounce_fees.base = constants.MIN_BYTES_BOUNCE_FEE;
+			}
+			var address = indexScope.shared_address || self.addr[profileService.focusedClient.credentials.walletId];
+			if (!address)
+				throw Error('no address');
+			var trigger = { outputs: {}, address: address };
+			if ($scope.home.feedvaluespairs.length > 0)
+				trigger.data = {};
+			$scope.home.feedvaluespairs.forEach(function(pair) {
+				trigger.data[pair.name] = pair.value;
+				trigger.data[pair.suggestionsShown] = false;
+			});
+			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
+			var asset = assetInfo.asset;
+			if (asset === "base")
+				amount *= self.unitValue;
+			else if (asset === constants.BLACKBYTES_ASSET)
+				amount *= self.bbUnitValue;
+			else if (assetInfo.decimals)
+				amount *= Math.pow(10, assetInfo.decimals);
+			amount = Math.round(amount);
+			if (self.bSendAll)
+				amount = assetInfo.total;
+			if (amount < (bounce_fees[asset] || 0)) {
+				if (amount === 0) {
+					amount = bounce_fees[asset];
+					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+					form.amount.$isValid = true;
+					form.amount.$render();
+					addBounceFees(asset, amount, aa_address);
+				}
+				else {
+					self.custom_amount_error = gettext("Minimum amount") + " " + profileService.getAmountInDisplayUnits(bounce_fees[asset], asset);
+					form.amount.$setValidity('aaBounceFees', false);
+					form.amount.$render();
+				}
+			}
+			else {
+				self.custom_amount_error = null;
+				if (amount > 0)
+					form.amount.$setValidity('aaBounceFees', true);
+			}
+			if (!amount)
+				return console.log('no amount yet');
+			if (!$scope.sendPaymentForm.$valid)
+				return console.log('form not valid yet');
+			trigger.outputs[asset] = amount;
+			for (var a in bounce_fees) {
+				if (a !== asset) {
+					addBounceFees(a, bounce_fees[a], aa_address);
+					trigger.outputs[a] = bounce_fees[a];
+				}
+			}
+			console.log("trigger", trigger);
+			self.aa_dry_run_error = null;
+			dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, function (err, arrResponses) {
+				self.aa_dry_run_error = err;
+				var results = [];
+				var state_changes = [];
+				var responseVars = [];
+				self.aa_message_results = results;
+				self.aa_state_changes = state_changes;
+				self.responseVars = responseVars;
+				if (err) {
+					return $timeout(function() {
+						$scope.$digest();
+					});
+				}
+				// the array includes the primary AA address too but it doesn't matter
+				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
+				arrResponses.forEach(function (objResponse) {
+					if (objResponse.bounced)
+						results.push(gettext("Bounce the request") + (objResponse.response.error ? ': ' + objResponse.response.error : ''));
+					if (objResponse.updatedStateVars && objResponse.updatedStateVars[aa_address]) {
+						for (var variable in objResponse.updatedStateVars[aa_address]) {
+							var state_change = { variable: variable };
+							var varInfo = objResponse.updatedStateVars[aa_address][variable];
+							if (varInfo.delta > 0) {
+								state_change.action = gettext('increased by');
+								state_change.value = varInfo.delta;
+							}
+							else if (varInfo.delta < 0) {
+								state_change.action = gettext('decreased by');
+								state_change.value = -varInfo.delta;
+							}
+							else {
+								state_change.action = gettext('set to');
+								state_change.value = varInfo.value;
+							}
+							state_changes.push(state_change);
+						}
+					}
+					if (objResponse.response.responseVars) {
+						for (var variable in objResponse.response.responseVars)
+							responseVars.push({variable: variable, value: objResponse.response.responseVars[variable]});
+					}
+					if (!objResponse.objResponseUnit)
+						return;
+					objResponse.objResponseUnit.messages.forEach(function (message) {
+						if (message.app === 'payment') {
+							message.payload.outputs.forEach(function (output) {
+								if (output.address === objResponse.aa_address) // change
+									return;
+								if (arrSecondaryAAAdresses.indexOf(output.address) >= 0) // to another AA
+									return;
+								var display_address = (output.address === objResponse.trigger_address) ? gettext('you') : output.address;
+								var display_amount = profileService.formatAmountWithUnit(output.amount, message.payload.asset || "base", {dontRound: true});
+								results.push(gettext("Send") + " " + display_amount + " " + gettext('to') + " " + display_address);
+							});
+						}
+						else if (message.app === 'data_feed') {
+							var pairs = [];
+							for (var field in message.payload)
+								pairs.push(field + ' = ' + message.payload[field]);
+							results.push(gettext("Post a data feed ") + pairs.join(', '));
+						}
+						else if (message.app === 'data')
+							results.push(gettext("Post data") + " " + JSON.stringify(message.payload));
+						else if (message.app === 'asset') {
+							results.push(gettext("Define a new asset with cap ") + (message.payload.cap || gettext('unlimited'))); // todo add more details
+						}
+						// todo add other apps
+						else {
+							results.push(gettext("Post a ") + message.app);
+						}
+					});
+				});
+				if (results.length === 0 && state_changes.length === 0 && responseVars.length === 0)
+					results.push(gettext("none"));
+				$timeout(function() {
+					$scope.$digest();
+				});
+			});
+		}
+
+		function getOutputsForMultiSend() {
+			var outputs = [];
+			var form = $scope.sendPaymentForm;
+			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
+			var asset = assetInfo.asset;
+			var addressesValue = form.addresses.$modelValue ? form.addresses.$modelValue : '';
+			addressesValue.split('\n').forEach(function(line){
+				var tokens = line.trim().split(/[\s,;]/);
+				var address = tokens[0];
+				var amount = tokens.pop();
+				if (asset === "base")
+					amount *= self.unitValue;
+				else if (assetInfo.decimals)
+					amount *= Math.pow(10, assetInfo.decimals);
+				amount = Math.round(amount);
+				outputs.push({address: address, amount: +amount});
+			});
+			return outputs;
+		}
+
 		this.submitPayment = function() {
 			if ($scope.index.arrBalances.length === 0)
 				return console.log('send payment: no balances yet');
@@ -852,6 +1277,31 @@ angular.module('copayApp.controllers')
 				return;
 			}
 
+			var data_payload = {};
+			var errored = false;
+			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
+				if (data_payload[pair.name]) {
+					self.setSendError("All keys must be unique");
+					errored = true;
+					return;
+				}
+				data_payload[pair.name] = pair.value;
+			});
+			if (errored)
+				return;
+			var objDataMessage;
+			if (Object.keys(data_payload).length > 0) {
+				var objectHash = require('ocore/object_hash.js');
+				var storage = require('ocore/storage.js');
+				objDataMessage = {
+					app: 'data',
+					payload_location: "inline",
+					payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+					payload: data_payload
+				};
+			}
+
 			if (fc.isPrivKeyEncrypted()) {
 				profileService.unlockFC(null, function(err) {
 					if (err)
@@ -870,10 +1320,14 @@ angular.module('copayApp.controllers')
 				return self.setSendError(gettext(msg));
 			}
 
-			var wallet = require('byteballcore/wallet.js');
+			var wallet = require('ocore/wallet.js');
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
+			if (assetInfo.is_private && self.aa_destinations && self.aa_destinations.length > 0)
+				return self.setSendError(gettext("It is not allowed to send private assets to autonomous agents"));
+			if (self.binding && self.aa_destinations && self.aa_destinations.length > 0)
+				return self.setSendError(gettext("It is not allowed to bind conditions to payments to autonomous agents"));
 
 			if (conf.bLight && indexScope.copayers.length > 1 && indexScope.onGoingProcess['Syncing']) //wait for sync before sending
 					return self.setSendError(gettext("wait for sync to complete before sending payments"));
@@ -881,24 +1335,13 @@ angular.module('copayApp.controllers')
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
-				var outputs = [];
-				form.addresses.$modelValue.split('\n').forEach(function(line){
-					var tokens = line.trim().split(/[\s,;]/);
-					var address = tokens[0];
-					var amount = tokens.pop();
-					if (asset === "base")
-						amount *= unitValue;
-					else if (assetInfo.decimals)
-						amount *= Math.pow(10, assetInfo.decimals);
-					amount = Math.round(amount);
-					outputs.push({address: address, amount: +amount});
-				});
+				var outputs = getOutputsForMultiSend();
 				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
 			} else {
 				var address = form.address.$modelValue;
 				var recipient_device_address = assocDeviceAddressesByPaymentAddress[address];
 				var amount = form.amount.$modelValue;
-				// address can be [bytreball_addr, email, account, empty => social sharing]
+				// address can be [obyte_addr, email, account, empty => social sharing]
 				var accountValidationResult = aliasValidationService.validate(address);
 				var isEmail = ValidationUtils.isValidEmail(address);
 				var isTextcoin = (isEmail || !address);
@@ -1002,18 +1445,18 @@ angular.module('copayApp.controllers')
 						}, 1);
 						return;
 					}
-					
-					var device = require('byteballcore/device.js');
+
+					var device = require('ocore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
 							delete self.current_payment_key;
 							indexScope.setOngoingProcess(gettext('sending'), false);
-							return self.setSendError("you can send bound payments to byteball adresses only");
+							return self.setSendError("you can send bound payments to Obyte adresses only");
 						}
 						if (!recipient_device_address)
 							throw Error('recipient device address not known');
-						var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses.js');
-						var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+						var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+						var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 						var my_address;
 						// never reuse addresses as the required output could be already present
 						useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo) {
@@ -1052,9 +1495,13 @@ angular.module('copayApp.controllers')
 								};
 							}
 							else {
+								if (self.binding.relation !== '=')
+									self.binding.feed_type = 'explicit';
+								if (self.binding.oracle_address === configService.TIMESTAMPER_ADDRESS)
+									self.binding.feed_value = parseInt(self.binding.feed_value);
 								var arrExplicitEventCondition =
 									['in data feed', [
-										[self.binding.oracle_address], self.binding.feed_name, '=', self.binding.feed_value
+										[self.binding.oracle_address], self.binding.feed_name, self.binding.relation, self.binding.feed_value
 									]];
 								var arrMerkleEventCondition =
 									['in merkle', [
@@ -1135,9 +1582,12 @@ angular.module('copayApp.controllers')
 							asset: asset,
 							do_not_email: true,
 							send_all: self.bSendAll,
+							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 							arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 							recipient_device_address: recipient_device_address
 						};
+						if (self.from_address && !indexScope.shared_address)
+							opts.paying_addresses = [self.from_address];
 						if (!isMultipleSend) {
 							opts.to_address = to_address;
 							opts.amount = amount;
@@ -1147,6 +1597,24 @@ angular.module('copayApp.controllers')
 							else
 								opts.base_outputs = outputs;
 						}
+						// add bounce fees if necessary
+						if (self.added_bounce_fees && self.added_bounce_fees.length > 0) {
+							var other_asset_added_bounce_fees = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset !== 'base' && feeInfo.asset !== asset; });
+							if (other_asset_added_bounce_fees.length > 0) {
+								delete self.current_payment_key;
+								indexScope.setOngoingProcess(gettext('sending'), false);
+								return self.setSendError("cannot add bounce fees in asset " + other_asset_added_bounce_fees[0].asset);
+							}
+							if (asset !== "base") { // add base_outputs to pay for bounce fees
+								if (!isMultipleSend) {
+									opts.asset_outputs = [{ address: to_address, amount: amount }];
+									delete opts.to_address;
+									delete opts.amount;
+								}
+								opts.base_outputs = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === 'base'; }).map(function (feeInfo) { return { address: feeInfo.address, amount: feeInfo.amount }; });
+							}
+						}
+
 						var filePath;
 						if (assetInfo.is_private) {
 							opts.getPrivateAssetPayloadSavePath = function(cb) {
@@ -1156,8 +1624,11 @@ angular.module('copayApp.controllers')
 								});
 							};
 						}
+						if (objDataMessage)
+							opts.messages = [objDataMessage];
 						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
 							// if multisig, it might take very long before the callback is called
+							$rootScope.sentUnit = unit;
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
 							delete self.current_payment_key;
@@ -1165,13 +1636,20 @@ angular.module('copayApp.controllers')
 							profileService.bKeepUnlocked = false;
 							if (err) {
 								if (typeof err === 'object') {
-									err = JSON.stringify(err);
-									eventBus.emit('nonfatal_error', "error object from sendMultiPayment: " + err, new Error());
+									err = err.toString();
+								//	err = JSON.stringify(err);
+								//	eventBus.emit('nonfatal_error', "error object from sendMultiPayment: " + err, new Error());
 								}
 								else if (err.match(/device address/))
 									err = "This is a private asset, please send it only by clicking links from chat";
-								else if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								else if (err.match(/no funded/)) {
+									if (self.from_address) {
+										err = "Not enough spendable funds on address " + self.from_address + ", you may want to refill its balance";
+										self.resetForm(); // to enable to fill the form anew to refill this address
+									}
+									else
+										err = "Not enough spendable funds, make sure all your funds are confirmed";
+								}
 								else if (err.match(/authentifier verification failed/))
 									err = "Check that smart contract conditions are satisfied and signatures are correct";
 								else if (err.match(/precommit/))
@@ -1182,8 +1660,8 @@ angular.module('copayApp.controllers')
 							self.resetForm();
 						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
-								var db = require('byteballcore/db.js');
-								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)", 
+								var db = require('ocore/db.js');
+								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)",
 									[unit, to_address, original_address]);
 							}
 							if (recipient_device_address) { // show payment in chat window
@@ -1243,16 +1721,31 @@ angular.module('copayApp.controllers')
 			 	this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
+					this.feedvaluespairs = [{}];
+				if ($scope.assetIndexSelectorValue === -6)
+					$timeout(function () {
+						if (self.definition && self.definition.length > 0)
+							self.validateAADefinition();
+					});
+				if ($scope.assetIndexSelectorValue === -7)
+					$timeout(function () {
+						if (self.content && self.content.length > 0)
+							self.validateTextLength();
+					});
 			}
 			else {
 				$scope.index.assetIndex = $scope.assetIndexSelectorValue;
 				this.shownForm = 'payment';
+				if (!this.feedvaluespairs || this.feedvaluespairs.length > 0 && (!this.feedvaluespairs[0].name || !this.feedvaluespairs[0].value))
+					this.feedvaluespairs = [];
 			}
 			$scope.mtab = $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private && !this.lockAddress ? 2 : 1;
 		}
 
 		this.submitData = function() {
-			var objectHash = require('byteballcore/object_hash.js');
+			var objectHash = require('ocore/object_hash.js');
+			var storage = require('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -1272,12 +1765,18 @@ angular.module('copayApp.controllers')
 				case -5:
 					app = "poll";
 					break;
-				default:
-					throw new Error("invalid asset selected");
+				case -6:
+					app = "definition";
 					break;
+				case -7:
+					app = "text";
+					break;
+				default:
+					throw new Error("invalid app selected");
 			}
 			var errored = false;
 			$scope.home.feedvaluespairs.forEach(function(pair) {
+				if (!pair.name) return;
 				if (value[pair.name]) {
 					self.setSendError("All keys must be unique");
 					errored = true;
@@ -1286,10 +1785,11 @@ angular.module('copayApp.controllers')
 				value[pair.name] = pair.value;
 			});
 			if (errored) return;
-			if (Object.keys(value)
-				.length === 0) {
-				self.setSendError("Provide at least one value");
-				return;
+			if ($scope.assetIndexSelectorValue !== -6 && $scope.assetIndexSelectorValue !== -7) {
+				if (Object.keys(value).length === 0) {
+					self.setSendError("Provide at least one value");
+					return;
+				}
 			}
 
 			if (fc.isPrivKeyEncrypted()) {
@@ -1324,40 +1824,68 @@ angular.module('copayApp.controllers')
 						choices: Object.keys(value)
 					};
 				}
-				var objMessage = {
-					app: app,
-					payload_location: "inline",
-					payload_hash: objectHash.getBase64Hash(value),
-					payload: value
-				};
-				var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-				if (fc.credentials.m < fc.credentials.n)
-					indexScope.copayers.forEach(function(copayer) {
-						if (copayer.me || copayer.signs)
-							arrSigningDeviceAddresses.push(copayer.device_address);
-					});
-				else if (indexScope.shared_address)
-					arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
-						return copayer.device_address;
-					});
+				if (app == "definition") {
+					parse_ojson.parse($scope.home.definition, function(err, arrDefinition) {
+						if (err) {
+							self.setSendError(err.toString());
+							$timeout(function() {
+								$scope.$digest();
+							});
+							return;
+						}
 
-				indexScope.setOngoingProcess(gettext('sending'), true);
+						value = {
+							definition: arrDefinition,
+							address: objectHash.getChash160(arrDefinition)
+						};
+						sendData(value);
+					});
+					return;
+				}
+				if (app == "text") {
+					value = $scope.home.content;
+				}
 
-				fc.sendMultiPayment({
-					arrSigningDeviceAddresses: arrSigningDeviceAddresses,
-					shared_address: indexScope.shared_address,
-					messages: [objMessage]
-				}, function(err) { // can take long if multisig
-					indexScope.setOngoingProcess(gettext('sending'), false);
-					if (err) {
-						self.setSendError(err);
-						return;
-					}
-					breadcrumbs.add('done submitting data into feeds ' + Object.keys(value)
-						.join(','));
-					self.resetDataForm();
-					$rootScope.$emit('Local/SetTab', 'history');
-				});
+				sendData(value);
+
+				function sendData (value) {
+					var objMessage = {
+						app: app,
+						payload_location: "inline",
+						payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+						payload: value
+					};
+					var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+					if (fc.credentials.m < fc.credentials.n)
+						indexScope.copayers.forEach(function(copayer) {
+							if (copayer.me || copayer.signs)
+								arrSigningDeviceAddresses.push(copayer.device_address);
+						});
+					else if (indexScope.shared_address)
+						arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer) {
+							return copayer.device_address;
+						});
+
+					indexScope.setOngoingProcess(gettext('sending'), true);
+
+					fc.sendMultiPayment({
+						spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
+						arrSigningDeviceAddresses: arrSigningDeviceAddresses,
+						shared_address: indexScope.shared_address,
+						messages: [objMessage]
+					}, function (err, unit) { // can take long if multisig
+						$rootScope.sentUnit = unit;
+						indexScope.setOngoingProcess(gettext('sending'), false);
+						if (err) {
+							self.setSendError(err);
+							return;
+						}
+						breadcrumbs.add('done submitting data into feeds ' + Object.keys(value)
+							.join(','));
+						self.resetDataForm();
+						$rootScope.$emit('Local/SetTab', 'history');
+					});
+				}
 			});
 		}
 
@@ -1408,6 +1936,7 @@ angular.module('copayApp.controllers')
 
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.color = fc.backgroundColor;
+				$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
 				$scope.arrPublicAssetInfos = indexScope.arrBalances.filter(function(b) {
 						return !b.is_private;
 					})
@@ -1428,6 +1957,7 @@ angular.module('copayApp.controllers')
 				$scope.binding = { // defaults
 					type: fc.isSingleAddress ? 'data' : 'reverse_payment',
 					timeout: 4,
+					relation: '=',
 					reverseAsset: 'base',
 					feed_type: 'either'
 				};
@@ -1441,12 +1971,14 @@ angular.module('copayApp.controllers')
 					else {
 						$scope.binding.oracle_address = self.binding.oracle_address;
 						$scope.binding.feed_name = self.binding.feed_name;
+						$scope.binding.relation = self.binding.relation;
 						$scope.binding.feed_value = self.binding.feed_value;
 						$scope.binding.feed_type = self.binding.feed_type;
 					}
 				}
 				$scope.oracles = configService.oracles;
 				$scope.isSingleAddress = fc.isSingleAddress;
+				$scope.index = indexScope;
 
 				$scope.cancel = function() {
 					$modalInstance.dismiss('cancel');
@@ -1463,6 +1995,7 @@ angular.module('copayApp.controllers')
 					else {
 						binding.oracle_address = $scope.binding.oracle_address;
 						binding.feed_name = $scope.binding.feed_name;
+						binding.relation = $scope.binding.relation;
 						binding.feed_value = $scope.binding.feed_value;
 						binding.feed_type = $scope.binding.feed_type;
 					}
@@ -1501,39 +2034,13 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
 				var form = $scope.sendPaymentForm;
 				if (!form || !form.address) // disappeared?
 					return console.log('form.address has disappeared');
-				if (to) {
-					form.address.$setViewValue(to);
-					form.address.$isValid = true;
-					form.address.$render();
-					this.lockAddress = true;
-					$scope.mtab = 1;
-					if (recipient_device_address) // must be already paired
-						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
-				}
-
-				if (amount) {
-					//	form.amount.$setViewValue("" + amount);
-					//	form.amount.$isValid = true;
-					this.lockAmount = true;
-					form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-					form.amount.$isValid = true;
-					form.amount.$render();
-				}
-				else  {
-					this.lockAmount = false;
-					form.amount.$setViewValue("");
-					form.amount.$pristine = true;
-					form.amount.$render();
-				}
-				//	form.amount.$render();
-
 				if (form.merkle_proof) {
 					form.merkle_proof.$setViewValue('');
 					form.merkle_proof.$render();
@@ -1544,21 +2051,132 @@ angular.module('copayApp.controllers')
 					form.comment.$render();
 				}
 
+				if (base64data) {
+					try {
+						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
+						paymentData = paymentData ? JSON.parse(paymentData) : null;
+						if (paymentData) {
+							for (var key in paymentData) {
+								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
+							}
+						}
+					}
+					catch (e) {
+						notification.error("invalid data " + e.toString());
+						return self.resetForm();
+					}
+				}
+
+				if (from_address)
+					this.from_address = from_address;
+
 				if (asset) {
+					if ($scope.index.arrBalances.length === 0) { // wait till balances are set
+						console.log("no balances yet, will wait");
+						return $timeout(function () {
+							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address);
+						}, 1000);
+					}
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
 						asset: asset
 					});
-					if (assetIndex < 0)
-						throw Error("failed to find asset index of asset " + asset);
+					if (assetIndex < 0) {
+						notification.error("failed to find asset index of asset " + asset);
+						return self.resetForm();
+					}
 					$scope.index.assetIndex = assetIndex;
+					$scope.assetIndexSelectorValue = assetIndex;
 					this.lockAsset = true;
 				}
 				else
 					this.lockAsset = false;
+
+				if (to) {
+					form.address.$setViewValue(to);
+					form.address.$isValid = true;
+					form.address.$render();
+					this.lockAddress = true;
+					$scope.mtab = 1;
+					if (recipient_device_address) // must be already paired
+						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
+					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
+						$scope.assetIndexSelectorValue = 0;
+				}
+
+				this.switchForms();
+
+				$timeout((function () {
+					if (amount) {
+						//	form.amount.$setViewValue("" + amount);
+						//	form.amount.$isValid = true;
+						this.lockAmount = true;
+						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+						form.amount.$isValid = true;
+						form.amount.$render();
+					}
+					else  {
+						this.lockAmount = false;
+						form.amount.$setViewValue("");
+						form.amount.$pristine = true;
+						form.amount.$render();
+					}
+				}).bind(this));
+
 			}).bind(this), 1);
 		};
 
-		this.resetForm = function() {
+		this.setDataForm = function (dataPrompt) {
+			var app = dataPrompt.app;
+			delete dataPrompt.app;
+			this.resetError();
+			$timeout((function() {
+				switch (app) {
+					case 'data_feed':
+						$scope.assetIndexSelectorValue = -1;
+						break;
+					case 'attestation':
+						$scope.assetIndexSelectorValue = -2;
+						$scope.home.attested_address = dataPrompt.address;
+						delete dataPrompt.address;
+						break;
+					case 'profile':
+						$scope.assetIndexSelectorValue = -3;
+						break;
+					case 'data':
+						$scope.assetIndexSelectorValue = -4;
+						break;
+					case 'poll':
+						$scope.assetIndexSelectorValue = -5;
+						$scope.home.poll_question = dataPrompt.question;
+						delete dataPrompt.question;
+						break;
+					case 'vote':
+						notification.error('voting not yet supported via uri');
+						return self.resetForm();
+					case 'definition':
+						$scope.assetIndexSelectorValue = -6;
+						$scope.home.definition = dataPrompt.definition;
+						delete dataPrompt.definition;
+						break;
+					case 'text':
+						$scope.assetIndexSelectorValue = -7;
+						$scope.home.content = dataPrompt.content;
+						delete dataPrompt.content;
+						break;
+				}
+				$scope.home.feedvaluespairs = [];
+				for (var key in dataPrompt) {
+					var value = dataPrompt[key];
+					$scope.home.feedvaluespairs.push(app === 'poll' ? {name: value, value: 'anything', readonly: true} : {name: key, value: value, readonly: true});
+				}
+				this.switchForms();
+			//	$timeout(function () {
+			//		$rootScope.$digest();
+			//	})
+			}).bind(this), 1);
+		};
+
+		this.resetForm = function(bKeepData) {
 			this.resetError();
 			delete this.binding;
 
@@ -1567,11 +2185,13 @@ angular.module('copayApp.controllers')
 			this.lockAmount = false;
 			this.hideAdvSend = true;
 			this.send_multiple = false;
-			$scope.currentSpendUnconfirmed = configService.getSync()
-				.wallet.spendUnconfirmed;
+			this.from_address = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
+			if (!bKeepData)
+				this.feedvaluespairs = [];
+			resetAAFields();
 
 			var form = $scope.sendPaymentForm;
 			var self = this;
@@ -1623,7 +2243,7 @@ angular.module('copayApp.controllers')
 				form.amount.$render();
 			}
 			else {
-				var full_amount = assetInfo.stable;
+				var full_amount = assetInfo.total;
 				if (assetInfo.asset === constants.BLACKBYTES_ASSET)
 					full_amount /= this.bbUnitValue;
 				else if (assetInfo.decimals)
@@ -1641,7 +2261,7 @@ angular.module('copayApp.controllers')
 
 		this.setFromUri = function(uri) {
 			var objRequest;
-			require('byteballcore/uri.js')
+			require('ocore/uri.js')
 				.parseUri(uri, {
 					ifError: function(err) {},
 					ifOk: function(_objRequest) {
@@ -1663,13 +2283,13 @@ angular.module('copayApp.controllers')
 			this.resetError();
 			if (!value) return '';
 
-			if (value.indexOf(self.protocol + ':') === 0)
+			if (value.indexOf(self.protocol + ':') === 0 || value.indexOf(self.bb_protocol + ':') === 0)
 				return this.setFromUri(value);
 			else
 				return value;
 		};
 
-		// History 
+		// History
 
 		function strip(number) {
 			return (parseFloat(number.toPrecision(12)));
@@ -1680,9 +2300,9 @@ angular.module('copayApp.controllers')
 		};
 
 		this.getPrivatePayloadSavePath = function(cb) {
-			var fileName = 'ByteballPayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
+			var fileName = 'ObytePayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
 			if (!isCordova) {
-				var inputFile = document.createElement("input"); 
+				var inputFile = document.createElement("input");
 				inputFile.type = "file";
 				inputFile.setAttribute("nwsaveas", fileName);
 				inputFile.click();
@@ -1699,30 +2319,33 @@ angular.module('copayApp.controllers')
 			}
 			else {
 				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
-				var path = 'Byteball';
+				var path = 'Obyte';
 				cb(null, {root: root, path: path, fileName: fileName});
 			}
 		};
 
 		this.openInExplorer = function(unit) {
 			var testnet = home.isTestnet ? 'testnet' : '';
-			var url = 'https://' + testnet + 'explorer.byteball.org/#' + unit;
+			var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
 			if (typeof nw !== 'undefined')
 				nw.Shell.openExternal(url);
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
-
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
+			delete $rootScope.newPaymentsCount[btx.unit];
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
 				$scope.btx = btx;
+				$scope.btx.response = typeof btx.response === 'string' ? JSON.parse(btx.response) : btx.response;
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
+				$scope.Math = window.Math;
+				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
 				$scope.settings = walletSettings;
 				$scope.color = fc.backgroundColor;
 				$scope.n = fc.credentials.n;
@@ -1731,8 +2354,8 @@ angular.module('copayApp.controllers')
 
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
-						var indivisible_asset = require('byteballcore/indivisible_asset');
-						var wallet = require('byteballcore/wallet.js');
+						var indivisible_asset = require('ocore/indivisible_asset');
+						var wallet = require('ocore/wallet.js');
 						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
 							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
 								if (!fullPath && !cordovaPathObj)
@@ -1751,7 +2374,7 @@ angular.module('copayApp.controllers')
 
 				$scope.eraseTextcoin = function() {
 					(function(){
-						var wallet = require('byteballcore/wallet.js');
+						var wallet = require('ocore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
 							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend'));
 							$scope.cancel_button_class = 'light-gray outline';
@@ -1761,9 +2384,9 @@ angular.module('copayApp.controllers')
 							$scope.ok = function() {
 								$scope.loading = true;
 								$modalInstance.close(gettextCatalog.getString('Confirm'));
-								
+
 								wallet.eraseTextcoin(btx.unit, btx.addressTo);
-								
+
 								indexScope.updateTxHistory();
 								$rootScope.$emit('Local/SetTab', 'history');
 							};
@@ -1794,8 +2417,8 @@ angular.module('copayApp.controllers')
 					return self.getUnitName();
 				};
 
-				$scope.openInExplorer = function() {
-					return self.openInExplorer(btx.unit);
+				$scope.openInExplorer = function(unit) {
+					return self.openInExplorer(unit);
 				};
 
 				$scope.copyAddress = function(addr) {
@@ -1815,9 +2438,9 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.reSendPrivateMultiSigPayment = function() {
-					var indivisible_asset = require('byteballcore/indivisible_asset');
-					var wallet_defined_by_keys = require('byteballcore/wallet_defined_by_keys');
-					var walletDefinedByAddresses = require('byteballcore/wallet_defined_by_addresses');
+					var indivisible_asset = require('ocore/indivisible_asset');
+					var wallet_defined_by_keys = require('ocore/wallet_defined_by_keys');
+					var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses');
 					var fc = profileService.focusedClient;
 
 					function success() {
@@ -1891,8 +2514,8 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.sendPrivatePayments = function(correspondent) {
-					var indivisible_asset = require('byteballcore/indivisible_asset');
-					var wallet_general = require('byteballcore/wallet_general');
+					var indivisible_asset = require('ocore/indivisible_asset');
+					var wallet_general = require('ocore/wallet_general');
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						wallet_general.sendPrivatePayments(correspondent.device_address, arrRecipientChains, true, null, function() {
 							modalInstance.dismiss('cancel');
@@ -1933,20 +2556,39 @@ angular.module('copayApp.controllers')
 			return actions.hasOwnProperty('create');
 		};
 
-		this._doSendAll = function(amount) {
-			this.setForm(null, amount, null);
-		};
 
-		this.sendAll = function(amount, feeStr) {
-			var self = this;
-			var msg = gettextCatalog.getString("{{fee}} will be deducted for bitcoin networking fees", {
-				fee: feeStr
-			});
+		this.getDollarValue = function(amount, balanceObject) {
+			function getResult(exchangePair) {
+				var result = 0;
+				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
+					result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					if (home.bSendAll) {
+						amountInSmallestUnits = balanceObject.stable;
+						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
+					}
+				} else {
+					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
+					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
+				}
+				if (!isNaN(result) && result !== 0) {
+					if(result >= 0.1) {
+						return `≈$${result.toLocaleString([], {maximumFractionDigits: 2})}`;
+					}
+					if(result < 0.1) {
+						return `≈$${result.toPrecision(2)}`;
+					}
+				}
+			}
 
-			confirmDialog.show(msg, function(confirmed) {
-				if (confirmed)
-					self._doSendAll(amount);
-			});
+			if (balanceObject.asset === 'base') {
+				return getResult('GBYTE_USD');
+			} else if(balanceObject.asset === $scope.index.BLACKBYTES_ASSET) {
+				return getResult('GBB_USD');
+			}
+			else if(home.exchangeRates[balanceObject.asset + '_USD']) {
+				return getResult(balanceObject.asset + '_USD');
+			}
 		};
 
 		/* Start setup */
