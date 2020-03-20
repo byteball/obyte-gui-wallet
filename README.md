@@ -149,8 +149,8 @@ When completed, you will find the appimage in `../obytebuilds`
 Obyte appimage can be launched from any directory, ensure to make it executable then launch it:
 
 ```
-chmod a+x obyte-tn-0.33.4-x86_64.AppImage
-./obyte-tn-0.33.4-x86_64.AppImage
+chmod a+x obyte-0.33.4-x86_64.AppImage
+./obyte-0.33.4-x86_64.AppImage
 ```
 
 By default the app is built using 0.33.4 NW.js, you can set the environment variable NW_VERSION to build using another NW.js version.

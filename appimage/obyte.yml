@@ -10,7 +10,7 @@ ingredients:
 script:
   - cp -r ../../../../obytebuilds/Obyte/linux64/* usr/bin/
   - cp ../../../../obytebuilds/Obyte/linux64/public/img/icons/logo-circle-256.png obyte.png
-  - cat > obyte-tn.desktop << EOF
+  - cat > obyte.desktop << EOF
   - [Desktop Entry]
   - Type=Application
   - Name=obyte
