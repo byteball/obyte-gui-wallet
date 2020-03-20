@@ -113,8 +113,8 @@ There is a script that handles the whole image creation process, the following p
 
 Install Node.JS version >= 8 preferably using [NVM](https://github.com/creationix/nvm)
 
-Install compilation tools:
-`sudo apt-get install build-essential python`
+Install tools:
+`sudo apt-get install build-essential python desktop-file-utils libglib2.0-bin`
 
 Clone the source:
 
