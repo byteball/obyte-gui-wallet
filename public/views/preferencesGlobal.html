@@ -68,7 +68,7 @@
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.preferencesWitnesses')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <div translate>Witnesses</div>
+      <div translate>Order Providers (Witnesses)</div>
     </li>
     <li ng-click="$root.go('preferencesGlobal.preferencesAttestorAddresses')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
@@ -89,37 +89,20 @@
         <switch id="network-name" name="encrypt" ng-model="encrypt" class="green right"></switch>
         <div translate>Request Password</div>
       </li>
+      <li>
+        <switch id="network-name" name="spendUnconfirmed" ng-model="spendUnconfirmed" class="green right"></switch>
+        <div translate>Spend unconfirmed funds</div>
+      </li>
     </ul>
     
   <h4 translate>Backups</h4>
-	
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <span class="text-warning" ng-show="index.needsBackup">
-          <i class="fi-alert"></i><span translate>Still not done</span>
-        </span>
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Backup wallet seed</div>
-    </li>
-  </ul>
-
-  <ul class="no-bullet m0">
-    <li ng-click="$root.go('preferencesGlobal.recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
-      <div class="right text-gray">
-        <i class="icon-arrow-right3 size-24 text-gray"></i>
-      </div>
-      <div translate>Recovery from seed</div>
-    </li>
-  </ul>
-	
+  
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.export')"  ng-hide="index.isPrivKeyExternal">
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
-      <div translate>Full backup</div>
+      <div translate>Backup all wallet data</div>
     </li>
   </ul>
 	
@@ -128,7 +111,28 @@
       <div class="right text-gray">
         <i class="icon-arrow-right3 size-24 text-gray"></i>
       </div>
-      <div translate>Restore from full backup</div>
+      <div translate>Restore all wallet data</div>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('preferencesGlobal.backup')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <span class="text-warning" ng-show="index.needsBackup">
+          <i class="fi-alert"></i><span translate>Still not done</span>
+        </span>
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Backup only the seed words</div>
+    </li>
+  </ul>
+
+  <ul class="no-bullet m0">
+    <li ng-click="$root.go('preferencesGlobal.recoveryFromSeed')"  ng-hide="index.isPrivKeyExternal">
+      <div class="right text-gray">
+        <i class="icon-arrow-right3 size-24 text-gray"></i>
+      </div>
+      <div translate>Recover with seed words</div>
     </li>
   </ul>
     
@@ -136,7 +140,7 @@
   <ul class="no-bullet m0">
     <li ng-click="$root.go('preferencesGlobal.preferencesAbout')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>  
-      <div translate>About Byteball</div>
+      <div translate>About Obyte</div>
     </li>
   </ul>
   <h4></h4>

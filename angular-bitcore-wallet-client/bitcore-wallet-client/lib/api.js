@@ -2,15 +2,15 @@
 'use strict';
 
 if (process.browser){
-	var conf = require('byteballcore/conf.js');
+	var conf = require('ocore/conf.js');
 	var appPackageJson = require('../../../package.json');
 	conf.program = appPackageJson.name;
 	conf.program_version = appPackageJson.version;
 }
 
-var ecdsaSig = require('byteballcore/signature.js');
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
-var constants = require('byteballcore/constants.js');
+var ecdsaSig = require('ocore/signature.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
+var constants = require('ocore/constants.js');
 
 var _ = require('lodash');
 var $ = require('preconditions').singleton();
@@ -286,7 +286,7 @@ API.prototype.decryptBIP38PrivateKey = function(encryptedPrivateKeyBase58, passp
 
   var privateKey = new Bitcore.PrivateKey(privateKeyWif);
   var address = privateKey.publicKey.toAddress().toString();
-  var addrBuff = new Buffer(address, 'ascii');
+  var addrBuff = new Buffer.from(address, 'ascii');
   var actualChecksum = Bitcore.crypto.Hash.sha256sha256(addrBuff).toString('hex').substring(0, 8);
   var expectedChecksum = Bitcore.encoding.Base58Check.decode(encryptedPrivateKeyBase58).toString('hex').substring(6, 14);
 
@@ -452,7 +452,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
         //self.credentials.account = account;
     }
     
-	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
     walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function(wallet){
         self.credentials.walletId = wallet;
         console.log("wallet created: " + JSON.stringify(self.credentials));
@@ -470,6 +470,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
  *
  * @returns {Callback} cb - Returns the wallet
  */
+/*
 API.prototype.recreateWallet = function(cb) {
   $.checkState(this.credentials);
   $.checkState(this.credentials.isComplete());
@@ -481,7 +482,7 @@ API.prototype.recreateWallet = function(cb) {
           });
 
       cb();
-};
+};*/
 
 
 
@@ -499,7 +500,7 @@ API.prototype.createAddress = function(is_change, cb) {
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
 	breadcrumbs.add('createAddress wallet='+this.credentials.walletId+', is_change='+is_change);
-	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
     walletDefinedByKeys.issueOrSelectNextAddress(this.credentials.walletId, is_change, function(addressInfo){
         var path = "m/44'/" + coin + "'/" + self.credentials.account + "'/0/"+addressInfo.address_index;
         cb(null, {address: addressInfo.address, path: path, createdOn: addressInfo.creation_ts});
@@ -535,8 +536,8 @@ API.prototype.getSignerWithLocalPrivateKey = function(){
 
 API.prototype.sendMultiPayment = function(opts, cb) {
     var self = this;
-	var Wallet = require('byteballcore/wallet.js');
-	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+	var Wallet = require('ocore/wallet.js');
+	var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 	
 	opts.signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
     
@@ -567,13 +568,16 @@ API.prototype.sendMultiPayment = function(opts, cb) {
 	}
 };
 
-API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, cb) {
-	var Wallet = require('byteballcore/wallet.js');
-	Wallet.signMessage(from_address, message, arrSigningDeviceAddresses, this.getSignerWithLocalPrivateKey(), cb);
+API.prototype.signMessage = function(from_address, message, arrSigningDeviceAddresses, bNetworkAware, cb) {
+	var Wallet = require('ocore/wallet.js');
+  var signed_message = require('ocore/signed_message.js');
+  var signWithLocalPrivateKey = this.getSignerWithLocalPrivateKey();
+	var signer = Wallet.getSigner({}, arrSigningDeviceAddresses, signWithLocalPrivateKey);
+	signed_message.signMessage(message, from_address, signer, bNetworkAware, cb);
 };
 
 API.prototype.getAddresses = function(opts, cb) {
-	var walletDefinedByKeys = require('byteballcore/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
     var coin = (this.credentials.network == 'livenet' ? "0" : "1");
     var self = this;
     walletDefinedByKeys.readAddresses(this.credentials.walletId, opts, function(arrAddressInfos){
@@ -594,7 +598,7 @@ API.prototype.getAddresses = function(opts, cb) {
  * @param {Callback} cb
  */
 API.prototype.getBalance = function(shared_address, cb) {
-	var Wallet = require('byteballcore/wallet.js');
+	var Wallet = require('ocore/wallet.js');
 	$.checkState(this.credentials && this.credentials.isComplete());
 	var walletId = this.credentials.walletId;
 	Wallet.readBalance(shared_address || walletId, function(assocBalances){
@@ -634,7 +638,7 @@ API.prototype.getBalance = function(shared_address, cb) {
 };
 
 API.prototype.getListOfBalancesOnAddresses = function(cb) {
-	var Wallet = require('byteballcore/wallet.js');
+	var Wallet = require('ocore/wallet.js');
 	$.checkState(this.credentials && this.credentials.isComplete());
 	var walletId = this.credentials.walletId;
 	Wallet.readBalancesOnAddresses(walletId, function(assocBalances) {
@@ -643,7 +647,7 @@ API.prototype.getListOfBalancesOnAddresses = function(cb) {
 };
 
 API.prototype.getTxHistory = function(asset, shared_address, cb) {
-	var Wallet = require('byteballcore/wallet.js');
+	var Wallet = require('ocore/wallet.js');
 	$.checkState(this.credentials && this.credentials.isComplete());
 	var opts = {asset: asset};
 	if (shared_address)
@@ -657,7 +661,7 @@ API.prototype.getTxHistory = function(asset, shared_address, cb) {
 
 API.prototype.initDeviceProperties = function(xPrivKey, device_address, hub, deviceName) {
     console.log("initDeviceProperties");
-    var device = require('byteballcore/device.js');
+    var device = require('ocore/device.js');
     if (device_address)
         device.setDeviceAddress(device_address);
     device.setDeviceName(deviceName);
@@ -686,6 +690,10 @@ API.prototype.initDeviceProperties = function(xPrivKey, device_address, hub, dev
             throw e;
         }
     //}, 1);
+    setTimeout(function () {
+      var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+      walletDefinedByKeys.scanForGaps();
+    }, 1000);
 };
 
 

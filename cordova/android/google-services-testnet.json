@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "3090332601",
+    "firebase_url": "https://obyte-tn.firebaseio.com",
+    "project_id": "obyte-tn",
+    "storage_bucket": "obyte-tn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3090332601:android:8e8a41ad347a0a89",
+        "android_client_info": {
+          "package_name": "org.byteball.wallet.testnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3090332601-b7ult24vpk659ut7lnd2sgo6hmptid83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

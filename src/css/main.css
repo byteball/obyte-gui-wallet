@@ -1,6 +1,6 @@
 /*
  *
- * Byteball main CSS
+ * Obyte main CSS
  *
  */
 
@@ -153,6 +153,21 @@ h4.title a {
 .preferences ul {
   font-size:14px;
   background: white;
+}
+
+.preferences .name,
+.preferences .address,
+.preferences .url {
+  display: block;
+}
+.preferences .name,
+.preferences .url {
+  white-space: normal;
+}
+
+.preferences .address {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preferences ul li, ul.whopays li, ul.profile-entries li {
@@ -680,6 +695,8 @@ input[type=number]::-webkit-outer-spin-button {
   width: 57px;
   text-align: center;
   font-size: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bg-alert {
@@ -1018,11 +1035,32 @@ label.postfix, a.postfix {
   cursor: pointer;
 }
 
-.input { position: relative;}
+.input {
+  position: relative;
+}
+
+.input input {
+  padding-right: 46px;
+}
 
 .input label {
   line-height: 0;
   padding: 0;
+}
+
+.dollar-value {
+  position: absolute;
+  top: -21px;
+  right: 18px;
+  max-width: 100%;
+  white-space: nowrap;
+  font-size: 13px;
+  overflow: hidden;
+  color: #A5B2BF;
+  text-overflow: ellipsis;
+}
+.send-all.dollar-value {
+  right: 0;
 }
 
 .icon-input {
@@ -1598,4 +1636,113 @@ form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
 }
 a.suggest-command {
 	border-bottom: 1px dotted #3498DB;
+}
+
+.reminder-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 10000;
+}
+
+.backup-reminder {
+  max-height: calc(100% - 100px);
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  width: 90%;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  text-align: center;
+  border-radius: 5px;
+  padding: 20px 10px;
+}
+
+.backup-reminder-text {
+  padding: 20px 12px;
+  font-size: 16px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.backup-reminder-actions {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.backup-reminder-actions button {
+  width: 50%;
+  margin: 12px;
+  padding: 6px;
+  min-height: 40px;
+}
+
+.payment-data-wrap {
+  position: relative;
+}
+
+.payment-data-wrap .datafeed_input {
+  position: relative;
+  display: inline-block;
+  width: 40%;
+}
+
+.payment-data-wrap .fi-plus,
+.payment-data-wrap .fi-minus {
+  vertical-align: middle;
+}
+.payment-data-wrap .suggest-list {
+  position: absolute;
+  padding: 8px 0;
+  top: 35px;
+  left: 0;
+  min-width: 100%;
+  max-width: 89vw;
+  max-height: 65vw;
+  overflow-y: auto;
+  font-size: 13px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px 1px rgba(177, 177, 177, 0.45);
+  z-index: 1;
+}
+
+.payment-data-wrap .suggest-list .option {
+  padding: 5px 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+.payment-data-wrap .suggest-list .option:hover {
+  background-color: #F1F3F5;
+}
+
+
+.name-outer-wrap {
+  width: calc(100% - 80px);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex.align-items-start {
+  align-items: flex-start;
+}
+
+.flex.align-items-center {
+  align-items: center;
+}
+
+.text-overflow-wrapper {
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

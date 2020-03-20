@@ -1,7 +1,7 @@
 'use strict';
 
 var unsupported, isaosp;
-var breadcrumbs = require('byteballcore/breadcrumbs.js');
+var breadcrumbs = require('ocore/breadcrumbs.js');
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);
@@ -74,7 +74,7 @@ angular
 
     // whitelist 'chrome-extension:' for chromeApp to work with image URLs processed by Angular
     // link: http://stackoverflow.com/questions/15606751/angular-changes-urls-to-unsafe-in-extension-page?lq=1
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*((https?|ftp|file|blob|chrome-extension):|data:image\/)/);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*((ionic|https?|ftp|file|blob|chrome-extension):|data:image\/)/);
 
     $stateProvider
       .state('splash', {
@@ -372,6 +372,16 @@ angular
           },
         }
       })
+      .state('preferencesGlobal.preferencesAttestorAddresses.preferencesEditRealNameAttestors', {
+        url: '/editrna',
+        walletShouldBeComplete: true,
+        needProfile: true,
+        views: {
+          'main@': {
+            templateUrl: 'views/preferencesEditRealNameAttestors.html'
+          },
+        }
+      })
       .state('preferencesGlobal.preferencesUnit', {
         url: '/preferencesGlobal/unit',
         templateUrl: 'views/preferencesUnit.html',
@@ -590,7 +600,7 @@ angular
         type: "menubar"
       });
       try {
-        nativeMenuBar.createMacBuiltin("Byteball");
+        nativeMenuBar.createMacBuiltin("Obyte");
       } catch (e) {
         $log.debug('This is not OSX');
       }

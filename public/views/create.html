@@ -87,7 +87,7 @@
                 {{cosigner.name}} {{cosigner.device_address}} {{create.cosigners.length}}
           </div-->
           <div class="large-6 medium-6 columns" ng-repeat="cosigner in create.cosigners track by $index">
-            <label><span translate>Co-signer {{$index+1}}:</span>
+            <label><span translate>Co-signer</span> {{$index+1}}:
               <select class="m10t" ng-model="cosigner.device_address" ng-disabled="$parent.totalCosigners == 1" ng-change="create.onCorrespondentSelected(cosigner.device_address)">
                   <option value="" translate>-- Select co-signer --</option>
                   <option ng-repeat="candidate_cosigner in create.candidate_cosigners" value="{{candidate_cosigner.device_address}}">{{candidate_cosigner.name+' ('+candidate_cosigner.device_address.substr(0,4)+'...)'}}</option>

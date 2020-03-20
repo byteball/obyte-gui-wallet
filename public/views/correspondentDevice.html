@@ -23,7 +23,7 @@
       
     <section class="right-small" ng-click="editCorrespondent()">
       <a href class="p10">
-        <span class="text-close" translate>Edit</span>
+        <span class="text-close" translate>More</span>
       </a>
     </section>
   </nav>
@@ -41,7 +41,9 @@
         position: absolute;
         width: 100%;
         padding-bottom: 58px;
-        bottom: 0px;
+        padding-bottom: calc(58px + constant(safe-area-inset-bottom));
+        padding-bottom: calc(58px + env(safe-area-inset-bottom));
+        bottom: 0;
         border-top: 1px solid #E9E9EC;
         background-color: white;
         z-index: 5;
@@ -50,6 +52,7 @@
     }
     .send-form .textinput {
     	min-height:30px;
+    	max-height:200px;
     	width: 75%;
     	margin: 0 auto;
     	display: inline;
@@ -199,12 +202,12 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	text-align: center;
 	max-width: 100%;
 }
-.system span{
+.system span.system-span{
 	color: #888;
 	padding: 0 10px;
 	background-color: white;
 }
-.system span.padding {
+.system span.system-span.padding {
 	padding: 0 10px 0 0;
 }
 .system b{
@@ -307,7 +310,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
         <div class="chat-message" ng-repeat="messageEvent in messageEvents">
             <!--div style="width:100%" ng-style="messageEvent.bIncoming ? {'text-align': 'left'} : {'text-align': 'right'}"-->
               <!--div style="max-width: 70%; text-align: left; display: inline-block" ng-bind-html="messageEvent.message"></div-->
-              <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')" class="bubble" dynamic="messageEvent.message"></div>
+              <div ng-class="messageEvent.bIncoming ? 'from-them' : (messageEvent.type == 'system' ? 'system' : 'from-me')" class="bubble" dynamic="messageEvent.message.text || messageEvent.message"></div>
               <span></span>
               <div ng-class="(messageEvent.bIncoming ? 'left' : 'right')" class="msg-ts" ng-if="messageEvent.type != 'system'">{{messageEvent.timestamp * 1000 | date:'shortTime'}}</div>
             <!--/div-->
@@ -344,7 +347,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 			  	</a>
 			  </li>
 			</ul>
-          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" autofocus required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
+          <textarea rows="1" msd-elastic id="message" name="message" ng-model="message" ng-attr-autofocus="{{!isCordova && true || undefined}}" required ng-enter="send()" class="textinput" placeholder="{{'Text message to'|translate}} {{correspondent.name}}"></textarea>
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"

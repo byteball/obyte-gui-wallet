@@ -126,7 +126,7 @@ Credentials.fromExtendedPublicKey = function(xPubKey, source, entropySourceHex, 
   $.shouldBeNumber(account);
   $.checkArgument(_.includes(_.values(Constants.DERIVATION_STRATEGIES), derivationStrategy));
 
-  var entropyBuffer = new Buffer(entropySourceHex, 'hex');
+  var entropyBuffer = new Buffer.from(entropySourceHex, 'hex');
   //require at least 112 bits of entropy
   $.checkArgument(entropyBuffer.length >= 14, 'At least 112 bits of entropy are needed')
 
@@ -149,8 +149,8 @@ Credentials._getNetworkFromExtendedKey = function(xKey) {
 
 Credentials.prototype._hashFromEntropy = function(prefix, length) {
   $.checkState(prefix);
-  var b = new Buffer(this.entropySource, 'hex');
-  var b2 = Bitcore.crypto.Hash.sha256hmac(b, new Buffer(prefix));
+  var b = new Buffer.from(this.entropySource, 'hex');
+  var b2 = Bitcore.crypto.Hash.sha256hmac(b, new Buffer.from(prefix));
   return b2.slice(0, length);
 };
 

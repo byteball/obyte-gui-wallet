@@ -5,7 +5,9 @@
   <div class="columns m20v">
     <div class="m20v  size-14 text-center enable_text_select">
         <i ng-class="fi-info"></i>
-        <span translate>Upgrading the database, please wait.  Sometimes it takes several minutes.</span>
+        <span translate>Upgrading the database, please wait.</span>
+        <span ng-if="!index.bLongUpgrade">Sometimes it takes several minutes.</span>
+        <span ng-if="index.bLongUpgrade">It will take several hours, please be patient.</span>
     </div>
   </div>
 </div>

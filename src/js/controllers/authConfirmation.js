@@ -15,7 +15,7 @@ To do:
 
 */
 
-var ecdsaSig = require('byteballcore/signature.js');
+var ecdsaSig = require('ocore/signature.js');
 
 angular.module('copayApp.controllers').controller('authConfirmationController',
   function($scope, $timeout, configService, profileService, go, authService) {
@@ -28,7 +28,7 @@ angular.module('copayApp.controllers').controller('authConfirmationController',
     }
     
     var self = this;
-	var bbWallet = require('byteballcore/wallet.js');
+	var bbWallet = require('ocore/wallet.js');
     
     // the wallet to sign with
     $scope.walletId = profileService.focusedClient.credentials.walletId;
