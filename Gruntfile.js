@@ -357,5 +357,6 @@ module.exports = function(grunt) {
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
   grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
-  grunt.registerTask('partial-fast', ['browserify:partialClient']);
+	grunt.registerTask('partial-fast', ['browserify:partialClient']);
+	grunt.registerTask('appimage', ['desktop','copy:linux']);
 };
