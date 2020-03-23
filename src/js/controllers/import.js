@@ -58,10 +58,7 @@ angular.module('copayApp.controllers').controller('importController',
 				},
 				function(next) {
 					// remove old SQLite database
-					fileSystemService.deleteDirFiles(dbDirPath, function(err) {
-						if(err) return next(err);
-						next();
-					});
+					fileSystemService.deleteDirFiles(dbDirPath, next);
 				},
 				function(next) {
 					// unzip files
@@ -86,14 +83,9 @@ angular.module('copayApp.controllers').controller('importController',
 						else {
 							callback();
 						}
-					}, function(err) {
-						if (err) return next(err);
-						return next();
-					});
+					}, next);
 				}
-			], function(err) {
-				cb(err);
-			});
+			], cb);
 		}
 		
 		function writeDBAndFileStoragePC(cb) {
@@ -104,19 +96,13 @@ angular.module('copayApp.controllers').controller('importController',
 				function(next) {
 					kvstore.close(function() {
 						// remove old RocksDB database
-						fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
-							if(err) return next(err);
-							next();
-						});
+						fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', next);
 					});
 				},
 				function(next) {
 					db.close(function() {
 						// remove old SQLite database
-						fileSystemService.deleteDirFiles(dbDirPath, function(err) {
-							if(err) return next(err);
-							next();
-						});
+						fileSystemService.deleteDirFiles(dbDirPath, next);
 					});
 				},
 				function(next) {
@@ -157,22 +143,14 @@ angular.module('copayApp.controllers').controller('importController',
 						fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
 						async.forEach(fileNames, function(name, callback) {
 							fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback);
-						}, function(err) {
-							if(err) return next(err);
-							next();
-						})
+						}, next);
 					});
 				},
 				function(next) {
 					if (fileSystemService.nwExistsSync(dbDirPath + 'temp/rocksdb/')) {
 						// move RocksDB database in place (only when backup originates from desktop)
-						fileSystemService.readdir(dbDirPath + 'temp/rocksdb/', function(err, fileNames) {
-							async.forEach(fileNames, function(name, callback) {
-								fileSystemService.nwMoveFile(dbDirPath + 'temp/rocksdb/' + name, dbDirPath + 'rocksdb/' + name, callback);
-							}, function(err) {
-								if(err) return next(err);
-								next();
-							})
+						fileSystemService.nwRmDir(dbDirPath + 'rocksdb/', function(err) {
+							fileSystemService.nwRename(dbDirPath + 'temp/rocksdb/', dbDirPath + 'rocksdb/', next);
 						});
 					}
 					else {
@@ -182,18 +160,11 @@ angular.module('copayApp.controllers').controller('importController',
 				},
 				function(next) {
 					// cleanup extracted files and folders
-					fileSystemService.nwRmDir(dbDirPath + 'temp/rocksdb/', function() {
-						fileSystemService.deleteDirFiles(dbDirPath + 'temp/', function() {
-							fileSystemService.nwRmDir(dbDirPath + 'temp/', function(err) {
-								if(err) return next(err);
-								next();
-							});
-						});
+					fileSystemService.deleteDirFiles(dbDirPath + 'temp/', function(err) {
+						fileSystemService.nwRmDir(dbDirPath + 'temp/', next);
 					});
 				}
-			], function(err) {
-				cb(err);
-			});
+			], cb);
 		}
 
 		function migrateJoints(callback) {

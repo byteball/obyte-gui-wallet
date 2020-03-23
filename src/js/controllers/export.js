@@ -114,7 +114,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 
 		function migrateJoints(callback) {
-			if (!conf.bLight || isCordova) return callback(null, []);
+			if (!conf.bLight || isCordova) return callback();
 			var options = {};
 			options.gte = "j\n";
 			options.lte = "j\n\uFFFF";
@@ -129,7 +129,7 @@ angular.module('copayApp.controllers').controller('exportController',
 				})
 				.on('end', function(){
 					console.log(arrQueries.length + ' joints migrated');
-					callback(null, arrQueries);
+					async.series(arrQueries, callback);
 				})
 				.on('error', callback);
 		}
@@ -219,17 +219,15 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exporting = true;
 			self.error = '';
 			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
-			migrateJoints(function(err, insertQueries) {
+			migrateJoints(function(err) {
 				if (err) return showError(err);
-				async.series(insertQueries, function() {
-					var db = require('ocore/db');
-					db.takeConnectionFromPool(function(connection) {
-						if (isCordova) {
-							self.walletExportCordova(connection);
-						} else {
-							self.walletExportPC(connection);
-						}
-					});
+				var db = require('ocore/db');
+				db.takeConnectionFromPool(function(connection) {
+					if (isCordova) {
+						self.walletExportCordova(connection);
+					} else {
+						self.walletExportPC(connection);
+					}
 				});
 			});
 		}
