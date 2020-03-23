@@ -51,7 +51,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			listDBFiles(dbDirPath, function(err, listFilenames) {
 				if (err) return cb(err);
-				if(isCordova) {
+				if (isCordova) {
 					async.forEachSeries(listFilenames, function(name, callback) {
 						fileSystemService.readFile(dbDirPath + '/' + name, function(err, data) {
 							if (err) return callback(err);
@@ -59,7 +59,8 @@ angular.module('copayApp.controllers').controller('exportController',
 							callback();
 						});
 					}, cb);
-				}else{
+				}
+				else {
 					async.forEachSeries(listFilenames, function(name, callback) {
 						fileSystemService.getPath(dbDirPath + '/' + name, function(err, path) {
 							if (err) return callback(err);
@@ -112,6 +113,27 @@ angular.module('copayApp.controllers').controller('exportController',
 			}
 		}
 
+		function migrateJoints(callback) {
+			if (!conf.bLight || isCordova) return callback(null, []);
+			var options = {};
+			options.gte = "j\n";
+			options.lte = "j\n\uFFFF";
+			var db = require('ocore/db');
+			var kvstore = require('ocore/kvstore');
+			var stream = kvstore.createReadStream(options);
+			var arrQueries = [];
+			stream.on('data', function (data) {
+					var unit = data.key.substr(2);
+					var json = data.value;
+					db.addQuery(arrQueries, "INSERT " + db.getIgnore() + " INTO joints (unit, json) VALUES (?,?)", [unit, json]);
+				})
+				.on('end', function(){
+					console.log(arrQueries.length + ' joints migrated');
+					callback(null, arrQueries);
+				})
+				.on('error', callback);
+		}
+
 		function encrypt(buffer, password) {
 			password = Buffer.from(password);
 			var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
@@ -154,6 +176,7 @@ angular.module('copayApp.controllers').controller('exportController',
 								connection.release();
 								self.connection = null;
 								self.exporting = false;
+								zip = null;
 								$timeout(function() {
 									$rootScope.$apply();
 									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -195,13 +218,19 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			var db = require('ocore/db');
-			db.takeConnectionFromPool(function(connection) {
-				if (isCordova) {
-					self.walletExportCordova(connection);
-				} else {
-					self.walletExportPC(connection);
-				}
+			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
+			migrateJoints(function(err, insertQueries) {
+				if (err) return showError(err);
+				async.series(insertQueries, function() {
+					var db = require('ocore/db');
+					db.takeConnectionFromPool(function(connection) {
+						if (isCordova) {
+							self.walletExportCordova(connection);
+						} else {
+							self.walletExportPC(connection);
+						}
+					});
+				});
 			});
 		}
 	});

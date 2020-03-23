@@ -64,6 +64,7 @@ angular.module('copayApp.controllers').controller('importController',
 					});
 				},
 				function(next) {
+					// unzip files
 					async.forEachOfSeries(zip.files, function(objFile, key, callback) {
 						if (key == 'profile') {
 							zip.file(key).async('string').then(function(data) {
@@ -102,15 +103,15 @@ angular.module('copayApp.controllers').controller('importController',
 			async.series([
 				function(next) {
 					kvstore.close(function() {
-						db.close(function() {
+						// remove old RocksDB database
+						fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
+							if(err) return next(err);
 							next();
 						});
 					});
 				},
 				function(next) {
-					// remove old RocksDB database
-					fileSystemService.deleteDirFiles(dbDirPath + 'rocksdb/', function(err) {
-						if(err) return next(err);
+					db.close(function() {
 						// remove old SQLite database
 						fileSystemService.deleteDirFiles(dbDirPath, function(err) {
 							if(err) return next(err);
@@ -135,29 +136,6 @@ angular.module('copayApp.controllers').controller('importController',
 					});
 				},
 				function(next) {
-					// move SQLite database in place
-					fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
-						fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
-						async.forEach(fileNames, function(name, callback) {
-							fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback);
-						}, function(err) {
-							if(err) return next(err);
-							next();
-						})
-					});
-				},
-				function(next) {
-					// move RocksDB database in place
-					fileSystemService.readdir(dbDirPath + 'temp/rocksdb/', function(err, fileNames) {
-						async.forEach(fileNames, function(name, callback) {
-							fileSystemService.nwMoveFile(dbDirPath + 'temp/rocksdb/' + name, dbDirPath + 'rocksdb/' + name, callback);
-						}, function(err) {
-							if(err) return next(err);
-							next();
-						})
-					});
-				},
-				function(next) {
 					// recreate conf.json
 					var existsConfJson = fileSystemService.nwExistsSync(dbDirPath + 'temp/conf.json');
 					var existsLight = fileSystemService.nwExistsSync(dbDirPath + 'temp/light');
@@ -171,6 +149,35 @@ angular.module('copayApp.controllers').controller('importController',
 						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), next);
 					}else{
 						next();
+					}
+				},
+				function(next) {
+					// move SQLite database in place
+					fileSystemService.readdir(dbDirPath + 'temp/', function(err, fileNames) {
+						fileNames = fileNames.filter(function(name){ return /\.sqlite/.test(name); });
+						async.forEach(fileNames, function(name, callback) {
+							fileSystemService.nwMoveFile(dbDirPath + 'temp/' + name, dbDirPath + name, callback);
+						}, function(err) {
+							if(err) return next(err);
+							next();
+						})
+					});
+				},
+				function(next) {
+					if (fileSystemService.nwExistsSync(dbDirPath + 'temp/rocksdb/')) {
+						// move RocksDB database in place (only when backup originates from desktop)
+						fileSystemService.readdir(dbDirPath + 'temp/rocksdb/', function(err, fileNames) {
+							async.forEach(fileNames, function(name, callback) {
+								fileSystemService.nwMoveFile(dbDirPath + 'temp/rocksdb/' + name, dbDirPath + 'rocksdb/' + name, callback);
+							}, function(err) {
+								if(err) return next(err);
+								next();
+							})
+						});
+					}
+					else {
+						// move joints from SQLite to RocksDB (only when backup originates from mobile)
+						migrateJoints(next);
 					}
 				},
 				function(next) {
@@ -188,7 +195,36 @@ angular.module('copayApp.controllers').controller('importController',
 				cb(err);
 			});
 		}
-		
+
+		function migrateJoints(callback) {
+			conf = require('ocore/conf');
+			if (!conf.bLight || conf.storage !== 'sqlite' || isCordova) return callback();
+			// re-open SQLite
+			var sqlite3 = require('sqlite3');
+			var path = require('ocore/desktop_app').getAppDataDir() + '/';
+			var db = new sqlite3.Database(path + conf.database.filename, sqlite3.OPEN_READONLY);
+			db.get("PRAGMA user_version", function(err, row) {
+				// old backups will be migrated on next launch
+				if (row.user_version < 30) return callback();
+				// re-open RocksDB
+				var kvstore = require('ocore/kvstore');
+				kvstore.open(function(err){
+					if(err) return callback(err);
+					var batch = kvstore.batch();
+					db.each("SELECT unit, json FROM joints", function (err, row) {
+						batch.put('j\n'+ row.unit, row.json);
+					},
+					function(err, count) {
+						console.log(count + ' joints migrated');
+						batch.write(function(err) {
+							if(err) return callback(err);
+							kvstore.close(callback);
+						});
+					});
+				});
+			});
+		}
+
 		function decrypt(buffer, password) {
 			password = Buffer.from(password);
 			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
