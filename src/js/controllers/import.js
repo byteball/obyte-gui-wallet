@@ -53,12 +53,9 @@ angular.module('copayApp.controllers').controller('importController',
 			async.series([
 				function(next) {
 					db.close(function() {
-						next();
+						// remove old SQLite database
+						fileSystemService.deleteDirFiles(dbDirPath, next);
 					});
-				},
-				function(next) {
-					// remove old SQLite database
-					fileSystemService.deleteDirFiles(dbDirPath, next);
 				},
 				function(next) {
 					// unzip files
