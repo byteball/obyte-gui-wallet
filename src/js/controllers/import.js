@@ -42,7 +42,7 @@ angular.module('copayApp.controllers').controller('importController',
 					if(err) return callback(err);
 					var batch = kvstore.batch();
 					db.each("SELECT unit, json FROM joints", function (err, row) {
-						if(err) return callback(err);
+						if(err) console.log(err);
 						batch.put('j\n'+ row.unit, row.json);
 					},
 					function(err, count) {
