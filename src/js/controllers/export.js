@@ -27,6 +27,27 @@ angular.module('copayApp.controllers').controller('exportController',
 		if (!isCordova)
 			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
 
+		function migrateJoints(callback) {
+			if (!conf.bLight || isCordova) return callback();
+			var options = {};
+			options.gte = "j\n";
+			options.lte = "j\n\uFFFF";
+			var db = require('ocore/db');
+			var kvstore = require('ocore/kvstore');
+			var stream = kvstore.createReadStream(options);
+			var arrQueries = [];
+			stream.on('data', function (data) {
+					var unit = data.key.substr(2);
+					var json = data.value;
+					db.addQuery(arrQueries, "INSERT " + db.getIgnore() + " INTO joints (unit, json) VALUES (?,?)", [unit, json]);
+				})
+				.on('end', function(){
+					console.log(arrQueries.length + ' joints migrated');
+					async.series(arrQueries, callback);
+				})
+				.on('error', callback);
+		}
+
 		function listDBFiles(dbDirPath, cb) {
 			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
 				if (err) return cb(err);
@@ -111,27 +132,6 @@ angular.module('copayApp.controllers').controller('exportController',
 					cb(err);
 				});
 			}
-		}
-
-		function migrateJoints(callback) {
-			if (!conf.bLight || isCordova) return callback();
-			var options = {};
-			options.gte = "j\n";
-			options.lte = "j\n\uFFFF";
-			var db = require('ocore/db');
-			var kvstore = require('ocore/kvstore');
-			var stream = kvstore.createReadStream(options);
-			var arrQueries = [];
-			stream.on('data', function (data) {
-					var unit = data.key.substr(2);
-					var json = data.value;
-					db.addQuery(arrQueries, "INSERT " + db.getIgnore() + " INTO joints (unit, json) VALUES (?,?)", [unit, json]);
-				})
-				.on('end', function(){
-					console.log(arrQueries.length + ' joints migrated');
-					async.series(arrQueries, callback);
-				})
-				.on('error', callback);
 		}
 
 		function encrypt(buffer, password) {

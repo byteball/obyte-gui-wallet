@@ -25,7 +25,36 @@ angular.module('copayApp.controllers').controller('importController',
 		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
-		
+
+		function migrateJoints(callback) {
+			conf = require('ocore/conf');
+			if (!conf.bLight || conf.storage !== 'sqlite' || isCordova) return callback();
+			// re-open SQLite
+			var sqlite3 = require('sqlite3');
+			var path = require('ocore/desktop_app').getAppDataDir() + '/';
+			var db = new sqlite3.Database(path + conf.database.filename, sqlite3.OPEN_READONLY);
+			db.get("PRAGMA user_version", function(err, row) {
+				// old backups will be migrated on next launch
+				if (row.user_version < 30) return callback();
+				// re-open RocksDB
+				var kvstore = require('ocore/kvstore');
+				kvstore.open(function(err){
+					if(err) return callback(err);
+					var batch = kvstore.batch();
+					db.each("SELECT unit, json FROM joints", function (err, row) {
+						batch.put('j\n'+ row.unit, row.json);
+					},
+					function(err, count) {
+						console.log(count + ' joints migrated');
+						batch.write(function(err) {
+							if(err) return callback(err);
+							kvstore.close(callback);
+						});
+					});
+				});
+			});
+		}
+
 		function generateListFilesForIos() {
 			var backupDirPath = window.cordova.file.documentsDirectory + '/Obyte/';
 			fileSystemService.readdir(backupDirPath, function(err, listFilenames) {
@@ -162,35 +191,6 @@ angular.module('copayApp.controllers').controller('importController',
 					});
 				}
 			], cb);
-		}
-
-		function migrateJoints(callback) {
-			conf = require('ocore/conf');
-			if (!conf.bLight || conf.storage !== 'sqlite' || isCordova) return callback();
-			// re-open SQLite
-			var sqlite3 = require('sqlite3');
-			var path = require('ocore/desktop_app').getAppDataDir() + '/';
-			var db = new sqlite3.Database(path + conf.database.filename, sqlite3.OPEN_READONLY);
-			db.get("PRAGMA user_version", function(err, row) {
-				// old backups will be migrated on next launch
-				if (row.user_version < 30) return callback();
-				// re-open RocksDB
-				var kvstore = require('ocore/kvstore');
-				kvstore.open(function(err){
-					if(err) return callback(err);
-					var batch = kvstore.batch();
-					db.each("SELECT unit, json FROM joints", function (err, row) {
-						batch.put('j\n'+ row.unit, row.json);
-					},
-					function(err, count) {
-						console.log(count + ' joints migrated');
-						batch.write(function(err) {
-							if(err) return callback(err);
-							kvstore.close(callback);
-						});
-					});
-				});
-			});
 		}
 
 		function decrypt(buffer, password) {
