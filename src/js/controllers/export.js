@@ -48,26 +48,6 @@ angular.module('copayApp.controllers').controller('exportController',
 				.on('error', callback);
 		}
 
-		function listDBFiles(dbDirPath, cb) {
-			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
-				if (err) return cb(err);
-				listFilenames = listFilenames.filter(function(name) {
-					return (name == 'conf.json' || /\.sqlite/.test(name));
-				});
-				if(isCordova)
-					cb(null, listFilenames);
-				else {
-					fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
-						if (err) return cb(err);
-						listRocksDB.forEach(function(filename) {
-							if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
-						});
-						cb(null, listFilenames);
-					});
-				}
-			});
-		}
-
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			listDBFiles(dbDirPath, function(err, listFilenames) {
@@ -89,6 +69,26 @@ angular.module('copayApp.controllers').controller('exportController',
 							callback();
 						});
 					}, cb);
+				}
+			});
+		}
+
+		function listDBFiles(dbDirPath, cb) {
+			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
+				if (err) return cb(err);
+				listFilenames = listFilenames.filter(function(name) {
+					return (name == 'conf.json' || /\.sqlite/.test(name));
+				});
+				if(isCordova)
+					cb(null, listFilenames);
+				else {
+					fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
+						if (err) return cb(err);
+						listRocksDB.forEach(function(filename) {
+							if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
+						});
+						cb(null, listFilenames);
+					});
 				}
 			});
 		}
