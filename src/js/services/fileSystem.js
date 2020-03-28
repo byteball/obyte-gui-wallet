@@ -68,7 +68,7 @@ angular.module('copayApp.services')
 		if (isCordova) {
 			root.init(function() {
 				window.resolveLocalFileSystemURL(path, function(fileEntry) {
-					fileEntry.delete(function() {
+					fileEntry.remove(function() {
 						cb();
 					}, function() {
 						cb('error deleting file');
@@ -186,7 +186,7 @@ angular.module('copayApp.services')
 							function(entries) {
 								async.forEach(entries, function(entry, callback) {
 									if (entry.isFile) {
-										entry.delete(function(){
+										entry.remove(function(){
 											callback();
 										}, function() {
 											callback('failed to delete: '+ entry.name);
