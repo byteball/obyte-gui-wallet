@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "innosetup-compiler": "^5.5.9",
-    "grunt": "^1.0.4",
+    "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
     "grunt-browserify": "=5.0.0",
     "grunt-babel": "^8.0.0",
