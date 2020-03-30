@@ -197,18 +197,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			param_index++
 			params[param_index] = command;
 			return toDelayedReplacement('<a ng-click="sendCommand(messageEvent.message.params[' + param_index + '])" class="command">'+description+'</a>');
-		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+		}).replace(/\[(.+?)\]\(payment:([\w\/+=]+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
 			if (!arrMovements)
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
 			return toDelayedReplacement('<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>');
-		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
 			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+escapeHtml(objVote.choice)+'</a>');
-		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+		}).replace(/\[(.+?)\]\(profile:([\w\/+=]+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
@@ -219,7 +219,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			param_index++
 			params[param_index] = message_to_sign;
 			return toDelayedReplacement('<a ng-click="showSignMessageModal(messageEvent.message.params[' + param_index + '], '+!!network_aware+')">[Request to sign message: '+tryParseBase64(message_to_sign)+']</a>');
-		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+		}).replace(/\[(.+?)\]\(signed-message:([\w\/+=]+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
@@ -237,7 +237,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			param_index++;
 			params[param_index] = str;
 			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
-		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
@@ -249,6 +249,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
+		if (!ValidationUtils.isValidBase64(paymentJsonBase64))
+			return null;
 		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log(paymentJson);
 		try{
@@ -294,6 +296,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getVoteFromJsonBase64(voteJsonBase64){
+		if (!ValidationUtils.isValidBase64(voteJsonBase64))
+			return null;
 		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log(voteJson);
 		try{
@@ -308,6 +312,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
+		if (!ValidationUtils.isValidBase64(privateProfileJsonBase64))
+			return null;
 		var privateProfile = require('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
@@ -326,6 +332,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function getProsaicContractFromJsonBase64(strJsonBase64){
+		if (!ValidationUtils.isValidBase64(strJsonBase64))
+			return null;
 		var strJSON = Buffer.from(strJsonBase64, 'base64').toString('utf8');
 		try{
 			var objProsaicContract = JSON.parse(strJSON);
@@ -339,6 +347,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
+		if (!ValidationUtils.isValidBase64(signedMessageBase64))
+			return null;
 		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		console.log(signedMessageJson);
 		try{
@@ -361,6 +371,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function tryParseBase64(str) {
+		if (!ValidationUtils.isValidBase64(str))
+			return str;
 		var json = Buffer.from(str, 'base64').toString('utf8');
 		try{
 			var obj = JSON.parse(json);
@@ -405,7 +417,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest)
 				return toDelayedReplacement(address);
 			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
-		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+		}).replace(/\[(.+?)\]\(payment:([\w\/+=]+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
@@ -419,12 +431,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!assocParams)
 				return str;
 			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
-		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
 			return toDelayedReplacement('<i>Vote request: '+escapeHtml(objVote.choice)+'</i>');
-		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+		}).replace(/\[(.+?)\]\(profile:([\w\/+=]+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
@@ -433,7 +445,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
 			return toDelayedReplacement('<i>[Request to sign message: '+message_to_sign+']</i>');
-		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+		}).replace(/\[(.+?)\]\(signed-message:([\w\/+=]+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
@@ -451,7 +463,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			param_index++;
 			params[param_index] = str;
 			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
-		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
