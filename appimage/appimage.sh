@@ -1,4 +1,4 @@
-if [[ -z "${NW_VERSION}" ]]; then
+if [ -z "${NW_VERSION}" ]; then
   NW_VERSION="0.33.4"
 fi
 cd ..
