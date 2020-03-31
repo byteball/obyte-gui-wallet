@@ -337,14 +337,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 										]],
 										['and', [
 											['address', expiry_address],
-											['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.expiry*24*3600*1000)]]
+											['timestamp', ['>', Math.round(Date.now()/1000 + contract.expiry*24*3600)]]
 										]]
 									]]
 								]],
 								['and', [
 									['address', my_address],
 									['not', arrSeenCondition],
-									['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.timeout*3600*1000)]]
+									['timestamp', ['>', Math.round(Date.now()/1000 + contract.timeout*3600)]]
 								]]
 							]];
 							var assocSignersByPath = {

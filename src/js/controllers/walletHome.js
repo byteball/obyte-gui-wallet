@@ -1476,8 +1476,7 @@ angular.module('copayApp.controllers')
 									['and', [
 										['address', my_address],
 										['not', arrSeenCondition],
-										['in data feed', [
-											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
+										['timestamp', ['>', Math.round(Date.now()/1000 + self.binding.timeout * 3600)
 										]]
 									]]
 								]];
@@ -1523,8 +1522,7 @@ angular.module('copayApp.controllers')
 									]],
 									['and', [
 										['address', my_address],
-										['in data feed', [
-											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
+										['timestamp', ['>', Math.round(Date.now()/1000 + self.binding.timeout * 3600)
 										]]
 									]]
 								]];
