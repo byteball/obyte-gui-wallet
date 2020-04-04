@@ -404,6 +404,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								if ($scope)
 									$scope.error = err;
+								if (chatScope) {
+									setError(err);
+									$timeout(function() {
+										chatScope.$apply();
+									});
+								}
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
