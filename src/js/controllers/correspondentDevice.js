@@ -1407,6 +1407,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.bMyAddress = bMyAddress;
 				$scope.unit = objPrivateProfile.unit;
 				$scope.trusted = !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == attestor_address});
+				if (!$scope.trusted) {
+					$scope.trusted = !!lodash.find(configService.getSync().attestorAddresses, function(attestor){return attestor == attestor_address});
+				}
 				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();
