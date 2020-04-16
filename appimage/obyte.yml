@@ -2,11 +2,10 @@ app: obyte
 
 ingredients:
   packages: 
-    - libgconf2-4
+    - libgconf-2-4
     - libxss1
-    - libcups2
-  dist: xenial
-  sources: deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+  dist: bionic
+  sources: deb https://packages.ubuntu.com/ bionic main universe
 script:
   - cp -r ../../../../obytebuilds/Obyte/linux64/* usr/bin/
   - cp ../../../../obytebuilds/Obyte/linux64/public/img/icons/logo-circle-256.png obyte.png
