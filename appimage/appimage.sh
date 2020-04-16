@@ -1,5 +1,5 @@
 if [ -z "${NW_VERSION}" ]; then
-  NW_VERSION="0.33.4"
+  NW_VERSION="0.35.5"
 fi
 cd ..
 rm -rf node_modules
@@ -9,6 +9,8 @@ grunt desktop --nw=${NW_VERSION}
 rm -rf node_modules
 npm_config_target=${NW_VERSION} npm_config_arch=x64 npm_config_target_arch=x64 npm_config_runtime=node-webkit npm_config_build_from_source=true npm_config_node_gyp=$(which nw-gyp) npm install --production
 cp -r node_modules ../obytebuilds/Obyte/linux64/node_modules
+npm install grunt
+grunt linux64
 cd appimage
 rm -rf obyte
 rm pkg2appimage
