@@ -405,6 +405,10 @@ input.datafeed_input {
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
+                    <div ng-if="home.from_address">
+                        <span translate>From Obyte address</span>
+                        {{home.from_address}}
+                    </div>
 	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
@@ -545,8 +549,8 @@ input.datafeed_input {
                     </div>
                     <div ng-if="home.aa_homepage_url"><span style="font-weight: bold" translate>Home page:</span style="font-weight: bold"> <a ng-click="$root.openExternalLink(home.aa_homepage_url)">{{home.aa_homepage_url.substr(8)}}</a></div>
                     <div ng-if="home.aa_source_url"><span style="font-weight: bold" translate>Source code:</span> <a ng-click="$root.openExternalLink(home.aa_source_url)">{{home.aa_source_url.substr(8)}}</a></div>
-                    <h4 style="font-weight: bold" translate>The expected result:</h4>
                   </div>
+                  <h4 ng-if="home.aa_dry_run_error || (home.aa_message_results && home.aa_message_results.length)" style="font-weight: bold" translate>The expected result:</h4>
                   <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
                     {{home.aa_dry_run_error}}<br>
                     <a ng-click="home.onChanged()" translate>Try again</a>
