@@ -1230,7 +1230,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}; // showSignMessageModal
 
 	$scope.sendPairingCode = function(isPermanent) {
-		var fun = isPermanent ? device.generatePermanentPairingInfo : device.startWaitingForPairing;
+		var fun = isPermanent == "true" ? device.getOrGeneratePermanentPairingInfo : device.startWaitingForPairing;
 		fun(function(pairingInfo) {
 			$scope.message = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
 			$scope.send();

@@ -174,10 +174,12 @@ form[name="prosaicContractForm"] {
 	</div>
 
 	<div class="row columns m20t">
-		<div class="large-12 medium-12 small-12 columns">
-			<button class="button expand round" ng-show="status === 'paid' && !!unit" ng-class="yes_button_class" ng-click="complete()">
+		<div class="large-12 medium-12 small-12 columns center" ng-show="status === 'paid' && !!unit">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Cancel'}}</span>
 			</button>
+
+			<span ng-click="dispute()" translate class="validation_check">open dispute</span>
 		</div>
 	</div>
 </div>
