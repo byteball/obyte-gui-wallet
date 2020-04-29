@@ -385,6 +385,9 @@ angular.module('copayApp.controllers')
 			if (!forceNew && self.addr[fc.credentials.walletId])
 				return;
 
+			if (!fc.credentials.isComplete())
+				return console.log('wallet not complete yet');
+
 			if (indexScope.shared_address && forceNew)
 				throw Error('attempt to generate for shared address');
 
