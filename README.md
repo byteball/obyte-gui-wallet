@@ -153,7 +153,7 @@ chmod a+x obyte-x86_64.AppImage
 ./obyte-x86_64.AppImage
 ```
 
-By default the app is built using 0.33.4 NW.js, you can set the environment variable NW_VERSION to build using another NW.js version.
+By default the app is built using 0.35.5 NW.js to support latest Linux distributions, you can set the environment variable NW_VERSION to build using another NW.js version.
 ```sh
 NW_VERSION=0.23.7 bash appimage.sh
 ```

@@ -95,7 +95,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (credentialsIndex < 0)
                 throw Error("failed to find our credentials in profile");
             profileService.profile.credentials[credentialsIndex] = JSON.parse(walletClient.export());
-            console.log("saving profile: "+JSON.stringify(profileService.profile));
             storageService.storeProfile(profileService.profile, function(){
                 if (onDone)
                     onDone();
