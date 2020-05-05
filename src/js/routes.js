@@ -258,6 +258,17 @@ angular
 	        },
 	      }
 	    })
+      .state('preferences.preferencesHiddenSubWallets', {
+	      url: '/hiddenSubWallets',
+	      templateUrl: 'views/preferencesHiddenSubWallets.html',
+	      walletShouldBeComplete: true,
+	      needProfile: true,
+	      views: {
+	        'main@': {
+	          templateUrl: 'views/preferencesHiddenSubWallets.html'
+	        },
+	      }
+	    })
       .state('preferences.preferencesAdvanced', {
 	      url: '/advanced',
 	      templateUrl: 'views/preferencesAdvanced.html',
