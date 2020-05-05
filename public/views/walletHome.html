@@ -549,7 +549,7 @@ input.datafeed_input {
                     </div>
                     <div ng-if="home.aa_homepage_url"><span style="font-weight: bold" translate>Home page:</span style="font-weight: bold"> <a ng-click="$root.openExternalLink(home.aa_homepage_url)">{{home.aa_homepage_url.substr(8)}}</a></div>
                     <div ng-if="home.aa_source_url"><span style="font-weight: bold" translate>Source code:</span> <a ng-click="$root.openExternalLink(home.aa_source_url)">{{home.aa_source_url.substr(8)}}</a></div>
-                    <h4 ng-if="home.aa_dry_run_error || (home.aa_message_results && home.aa_message_results.length)" style="font-weight: bold" translate>The expected result:</h4>
+                    <h4 ng-if="home.aa_dry_run_error || home.aa_message_results.length || home.aa_state_changes.length || home.responseVars.length" style="font-weight: bold" translate>The expected result:</h4>
                   </div>
                   <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
                     {{home.aa_dry_run_error}}<br>
