@@ -510,10 +510,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			amount: amount,
 			asset: asset,
 			device_address: device_address,
-			amountStr: amountStr,
 			base64data: base64data,
 			from_address: from_address,
-			single_address: single_address
+			single_address: single_address,
+			amountStr: amountStr
 		};
 	}
 	
