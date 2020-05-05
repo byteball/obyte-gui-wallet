@@ -156,6 +156,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
 	// hidden assets: key = wallet id, value = set of assets (string: boolean)
 	hiddenAssets: {},
+  
+  // hidden sub wallets: key = wallet id, value = set of sub wallet addresses (string: boolean)
+  hiddenSubWallets: {},
 
 	rates: {
 	  url: 'https://insight.bitpay.com:443/api/rates',
