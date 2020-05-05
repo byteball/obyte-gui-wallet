@@ -405,7 +405,7 @@ input.datafeed_input {
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
-                    <div ng-if="home.from_address">
+                    <div ng-if="home.from_address && !index.isSingleAddress">
                         <span translate>From Obyte address</span>
                         <span class="enable_text_select">{{home.from_address}}</span>
                     </div>
