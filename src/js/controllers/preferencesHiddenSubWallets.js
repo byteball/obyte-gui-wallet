@@ -18,12 +18,13 @@ function PreferencesHiddenSubWalletsCtrl($scope, $timeout, configService) {
   self.isChanged = false;
   self.arrSubWalletsData = [];
   
-  Object.keys(indexScope.arrBalances[0].assocSharedByAddress).forEach(function (address) {
-    self.arrSubWalletsData.push({
-      address: address,
-      value: assocHiddenSubWallets[address] || false
+  if (indexScope.arrBalances[0].assocSharedByAddress) {
+    Object.keys(indexScope.arrBalances[0].assocSharedByAddress).forEach(function (address) {
+      self.arrSubWalletsData.push({
+        address: address, value: assocHiddenSubWallets[address] || false
+      });
     });
-  });
+  }
   
   var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
   async.eachSeries(self.arrSubWalletsData, function (objSharedWallet, cb) {

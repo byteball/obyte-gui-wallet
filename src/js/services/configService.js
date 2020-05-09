@@ -291,6 +291,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		if (!_config.hiddenAssets) {
 			_config.hiddenAssets = defaultConfig.hiddenAssets;
 		}
+		if (!_config.hiddenSubWallets) {
+			_config.hiddenSubWallets = defaultConfig.hiddenSubWallets;
+		}
 		if (!_config.deviceName)
 			_config.deviceName = defaultConfig.getDeviceName();
 
