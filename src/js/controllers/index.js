@@ -1162,11 +1162,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
   
   self.getCurrentWalletHiddenSubWallets = function(){
-    var hiddenSubWallets = configService.getSync().hiddenSubWallets;
+    var configHiddenSubWallets = configService.getSync().hiddenSubWallets;
     var fc = profileService.focusedClient;
     var walletId = fc.credentials.walletId;
-    if (hiddenSubWallets.hasOwnProperty(walletId)) {
-      return hiddenSubWallets[walletId];
+    if (configHiddenSubWallets.hasOwnProperty(walletId)) {
+      return configHiddenSubWallets[walletId];
     } else {
       return {};
     }
