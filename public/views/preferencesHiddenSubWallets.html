@@ -1,0 +1,47 @@
+<div 
+  class="topbar-container" 
+  ng-include="'views/includes/topbar.html'"
+  ng-init="titleSection='Hidden subwallets'; goBackToState = true">
+</div>
+
+<div class="content preferences" ng-controller="preferencesHiddenSubWalletsCtrl as ctrl">
+
+  <style>
+    .list-switch {}
+    .list-switch .list-switch__row {
+      display: table;
+      width: 100%;
+    }
+    .list-switch .list-switch__row > .list-switch__cell {
+      display: table-cell;
+    }
+    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_content {
+      vertical-align: middle;
+      width: 100%;
+      word-break: break-all;
+    }
+    .list-switch .list-switch__row > .list-switch__cell.list-switch__cell_switch .switch {
+      top: 0 !important;
+      vertical-align: middle;
+    }
+  </style>
+
+  <h4 translate>Select the subwallets to hide in the wallet</h4>
+
+  <table class="no-bullet m0 list-switch">
+    <tr class="list-switch__row"
+      ng-repeat="subWalletData in ctrl.arrSubWalletsData">
+      <td class="list-switch__cell list-switch__cell_content">
+        <div class="ellipsis name-wallet text-bold">{{subWalletData.address}}</div>
+        <div class="size-13 ellipsis"><span translate>with</span> {{subWalletData.shared_address_cosigners}}</div>
+      </td>
+      <td class="list-switch__cell list-switch__cell_switch">
+        <switch class="green"
+          ng-change="ctrl.hanldeSubWalletChangeVisibility(subWalletData)"
+          ng-model="subWalletData.value"></switch>
+      </td>
+    </tr>
+  </table>
+
+</div>
+<div class="extra-margin-bottom"></div>

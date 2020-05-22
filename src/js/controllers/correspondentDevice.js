@@ -337,14 +337,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 										]],
 										['and', [
 											['address', expiry_address],
-											['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.expiry*24*3600*1000)]]
+											['timestamp', ['>', Math.round(Date.now()/1000 + contract.expiry*24*3600)]]
 										]]
 									]]
 								]],
 								['and', [
 									['address', my_address],
 									['not', arrSeenCondition],
-									['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.timeout*3600*1000)]]
+									['timestamp', ['>', Math.round(Date.now()/1000 + contract.timeout*3600)]]
 								]]
 							]];
 							var assocSignersByPath = {
@@ -404,6 +404,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								if ($scope)
 									$scope.error = err;
+								if (chatScope) {
+									setError(err);
+									$timeout(function() {
+										chatScope.$apply();
+									});
+								}
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
@@ -1540,6 +1546,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.bMyAddress = bMyAddress;
 				$scope.unit = objPrivateProfile.unit;
 				$scope.trusted = !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == attestor_address});
+				if (!$scope.trusted) {
+					$scope.trusted = !!lodash.find(configService.getSync().attestorAddresses, function(attestor){return attestor == attestor_address});
+				}
 				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();

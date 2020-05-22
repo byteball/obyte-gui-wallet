@@ -95,7 +95,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (credentialsIndex < 0)
                 throw Error("failed to find our credentials in profile");
             profileService.profile.credentials[credentialsIndex] = JSON.parse(walletClient.export());
-            console.log("saving profile: "+JSON.stringify(profileService.profile));
             storageService.storeProfile(profileService.profile, function(){
                 if (onDone)
                     onDone();
@@ -780,6 +779,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var fc = profileService.focusedClient;
 
     var ModalInstanceCtrl = function($scope, $modalInstance) {
+    var hiddenSubWallets = self.getCurrentWalletHiddenSubWallets();
 		$scope.color = fc.backgroundColor;
 		$scope.indexCtl = self;
 		var arrSharedWallets = [];
@@ -789,6 +789,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var assetInfo = self.arrBalances[self.assetIndex];
 		var assocSharedByAddress = assetInfo.assocSharedByAddress;
 		for (var sa in assocSharedByAddress) {
+		  if(hiddenSubWallets[sa]) continue;
+		  
 			var objSharedWallet = {};
 			objSharedWallet.shared_address = sa;
 			objSharedWallet.total = assocSharedByAddress[sa];
@@ -1214,6 +1216,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return {};
     }
   };
+  
+  self.getCurrentWalletHiddenSubWallets = function(){
+    var configHiddenSubWallets = configService.getSync().hiddenSubWallets;
+    var fc = profileService.focusedClient;
+    var walletId = fc.credentials.walletId;
+    if (configHiddenSubWallets.hasOwnProperty(walletId)) {
+      return configHiddenSubWallets[walletId];
+    } else {
+      return {};
+    }
+  };
 
   self.isAssetHidden = function (asset, assetsSet) {
     if (!assetsSet) {
@@ -1227,6 +1240,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var config = configService.getSync().wallet.settings;
     var fc = profileService.focusedClient;
     var hiddenAssets = self.getCurrentWalletHiddenAssets();
+    var hiddenSubWallets = self.getCurrentWalletHiddenSubWallets();
     console.log('setBalance hiddenAssets:', hiddenAssets);
 
     // Selected unit
@@ -1244,7 +1258,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			balanceInfo.shared = 0;
 			balanceInfo.assocSharedByAddress = {};
 			for (var sa in assocSharedBalances[asset]){
-				var total_on_shared_address = (assocSharedBalances[asset][sa].stable || 0) + (assocSharedBalances[asset][sa].pending || 0);
+        var total_on_shared_address = 0;
+			  if(!hiddenSubWallets[sa]) {
+          total_on_shared_address = (assocSharedBalances[asset][sa].stable || 0) + (assocSharedBalances[asset][sa].pending || 0);
+        }
 				balanceInfo.shared += total_on_shared_address;
 				balanceInfo.assocSharedByAddress[sa] = total_on_shared_address;
 			}

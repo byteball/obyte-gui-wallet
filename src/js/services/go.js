@@ -133,7 +133,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (objRequest.type === 'address') {
 						var emitPaymentRequest = function () {
 							root.send(function () {
-								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address);
+								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address, objRequest.single_address);
 							});
 						}
 						if (!objRequest.from_address)
@@ -293,7 +293,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+oname+"\n\
+Name="+oname[0].toUpperCase() + oname.slice(1)+"\n\
 Comment="+package_json.description+"\n\
 Exec="+execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+ iconPath +"\n\
