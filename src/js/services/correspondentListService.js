@@ -250,6 +250,17 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Arbiter contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
+			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
+				return null;
+			var strJSON = Buffer.from(disputeJsonBase64, 'base64').toString('utf8');
+			try{
+				var objDispute = JSON.parse(strJSON);
+			}
+			catch(e){
+				return '[invalid dispute request]';
+			}	
+			return toDelayedReplacement('<a ng-click="showDisputeRequest(\''+disputeJsonBase64+'\')" class="prosaic_contract_offer">Dispute request for contract ['+objDispute.contract_content.title+' on ' + objDispute.contract_content.creation_date + ']</a><br><br><a ng-click="suggestCommand(\''+objDispute.contract_hash+' 10000\')" class="suggest-command">Set my service fee for this contract</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);

@@ -1765,7 +1765,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			throw Error('failed to parse the already validated base64 arbiter contract '+contractJsonBase64);
 		correspondentService.showArbiterContractOfferModal($scope, objContract.hash, isIncoming, getSigningDeviceAddresses);
 	};
-	
+
+	$scope.showDisputeRequest = function(disputeJsonBase64) {
+		correspondentService.showDisputeRequestModal($scope, disputeJsonBase64);
+	};
 
 	function setOngoingProcess(name) {
 		if (isCordova) {

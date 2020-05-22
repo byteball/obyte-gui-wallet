@@ -906,41 +906,17 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 						profileService.bKeepUnlocked = true;
 
 						arbiter_contract.openDispute(objContract.hash, function(err, res) {
-							debugger;
-						});
-
-						return;
-
-						var opts = {
-							shared_address: objContract.shared_address,
-							asset: objContract.asset,
-							to_address: objContract.peer_address,
-							amount: objContract.amount,
-							arrSigningDeviceAddresses: objContract.cosigners
-						};
-						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
-							// if multisig, it might take very long before the callback is called
-							//self.setOngoingProcess();
-							profileService.bKeepUnlocked = false;
-							$rootScope.sentUnit = unit;
-							if (err){
-								if (err.match(/device address/))
-									err = "This is a private asset, please send it only by clicking links from chat";
-								if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
-								return setError(err);
+							if (err) {
+								setError(err);
+								return;
 							}
-							$rootScope.$emit("NewOutgoingTx");
 
-							var status = objContract.me_is_payer ? "completed" : "cancelled";
-							arbiter_contract.setField(objContract.hash, "status", status);
-							
-							var testnet = constants.version.match(/t$/) ? 'testnet' : '';
-							var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
-							var text = '"' + objContract.title +"\" contract is " + status + ", unit: " + url;
-							correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
-							// peer will handle completion on his side by his own, checking incoming transactions
-							$modalInstance.dismiss();
+							require('ocore/arbiters').getInfo(objContract.arbiter_address, function(objArbiter) {
+								var text = '"' + objContract.title +"\" contract is in disput now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
+								correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+								device.sendMessageToDevice(objContract.peer_device_address, "text", text);
+								$modalInstance.dismiss();
+							});
 						});
 					}
 
@@ -1033,12 +1009,162 @@ angular.module('copayApp.services').factory('correspondentService', function($ro
 		});
 	};
 
+	function showDisputeRequestModal($scope, disputeJsonBase64){
+		$rootScope.modalOpened = true;
+		var arbiter_contract = require('ocore/arbiter_contract.js');
+		var strJSON = Buffer.from(disputeJsonBase64, 'base64').toString('utf8');
+		var objDispute = JSON.parse(strJSON);
+		var ModalInstanceCtrl = function($scope, $modalInstance) {
+			$scope.plaintiff_address = objDispute.my_address;
+			$scope.peer_address = objDispute.peer_address;
+			$scope.plaintiff_pairing_code = objDispute.my_pairing_code;
+			$scope.peer_pairing_code = objDispute.peer_pairing_code;
+			$scope.text = objDispute.contract_content.text;
+			$scope.title = objDispute.contract_content.title;
+			$scope.creation_date = objDispute.contract_content.creation_date;
+			$scope.arbiter_address = objDispute.arbiter_address;
+			$scope.contract_hash = objDispute.contract_hash;
+			$scope.payer = objDispute.me_is_payer ? "plaintiff" : "peer";
+			$scope.unit = objDispute.unit;
+			$scope.isMobile = isMobile.any();
+			$scope.amount = objDispute.amount;
+			$scope.calculated_hash = arbiter_contract.getHash($scope);
+			$scope.asset = objDispute.asset;
+			$scope.amountStr = txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : 'base');
+			$scope.plaintiff_contact_info = objDispute.my_contact_info;
+			$scope.peer_contact_info = objDispute.peer_contact_info;
+
+			if (objDispute.unit) {
+				db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.unit], function(rows) {
+					if (!rows.length)
+						return;
+					var payload = rows[0].payload;
+					try {
+						$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					} catch (e) {}
+				})
+			}
+
+			$timeout(function() {
+				$rootScope.tab = $scope.index.tab = 'chat';
+				$rootScope.$apply();
+			});
+
+			var setError = function(err) {
+				$scope.error = err;
+				$timeout(function() {
+					$rootScope.$apply();
+				});
+			}
+
+			$scope.pair = function(code) {
+				var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#(.+)$/);
+				if (!matches)
+					return setError("Invalid pairing code");
+				var pubkey = matches[1];
+				var hub = matches[2];
+				var pairing_secret = matches[3];
+				if (pubkey.length !== 44)
+					return setError("Invalid pubkey length");
+				correspondentListService.acceptInvitation(hub, pubkey, pairing_secret, function(err){
+					if (err)
+						return setError(err);
+					$scope.close();
+				});
+			}
+
+			$scope.close = function() {
+				$modalInstance.dismiss('cancel');
+			};
+
+			$scope.openInExplorer = correspondentListService.openInExplorer;
+
+			$scope.expandProofBlock = function() {
+				$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
+			};
+
+			$scope.checkValidity = function() {
+				$timeout(function() {
+					$scope.validity_checked = true;
+				}, 500);
+			};
+
+			$scope.resolve = function(address) {
+				if (profileService.focusedClient.isPrivKeyEncrypted()) {
+					profileService.unlockFC(null, function(err) {
+						if (err){
+							setError(err);
+							return;
+						}
+						$scope.complete();
+					});
+					return;
+				}
+				profileService.bKeepUnlocked = true;
+
+				var data_payload = {};
+				data_payload["CONTRACT_" + objDispute.contract_hash] = address;
+				var opts = {
+					messages: [
+						{
+							app: 'data_feed',
+							payload_location: "inline",
+							payload_hash: objectHash.getBase64Hash(data_payload, require('ocore/storage.js').getMinRetrievableMci() >= constants.timestampUpgradeMci),
+							payload: data_payload
+						}
+					]
+				};
+				profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
+					// if multisig, it might take very long before the callback is called
+					//self.setOngoingProcess();
+					profileService.bKeepUnlocked = false;
+					$rootScope.sentUnit = unit;
+					if (err){
+						if (err.match(/no funded/))
+							err = "Not enough spendable funds, make sure all your funds are confirmed";
+						return setError(err);
+					}
+					$rootScope.$emit("NewOutgoingTx");
+					
+					var testnet = constants.version.match(/t$/) ? 'testnet' : '';
+					var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+					var text = '"' + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.my_address ? "plaintiff" : "peer") + " ["+address+"], unit: " + url;
+					correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
+					// peer will handle completion on his side by his own, checking incoming transactions
+					$modalInstance.dismiss();
+				});
+			};
+		};
+
+		var modalInstance = $modal.open({
+			templateUrl: 'views/modals/view-dispute-request.html',
+			windowClass: animationService.modalAnimated.slideUp,
+			controller: ModalInstanceCtrl,
+			scope: $scope
+		});
+
+		var disableCloseModal = $rootScope.$on('closeModal', function() {
+			modalInstance.dismiss('cancel');
+		});
+
+		modalInstance.result.finally(function() {
+			$rootScope.modalOpened = false;
+			disableCloseModal();
+			var m = angular.element(document.getElementsByClassName('reveal-modal'));
+			m.addClass(animationService.modalAnimated.slideOutDown);
+		});
+	};
+
 	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
 	root.listenForProsaicContractResponse = listenForProsaicContractResponse;
 	root.listenForArbiterContractResponse = listenForArbiterContractResponse;
 	root.readLastMainChainIndex = readLastMainChainIndex;
 	root.showProsaicContractOfferModal = showProsaicContractOfferModal;
 	root.showArbiterContractOfferModal = showArbiterContractOfferModal;
+	root.showDisputeRequestModal = showDisputeRequestModal;
 
 	root.listenForProsaicContractResponse();
 	root.listenForArbiterContractResponse();
