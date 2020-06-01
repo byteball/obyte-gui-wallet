@@ -2062,6 +2062,7 @@ angular.module('copayApp.controllers')
 						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
 						paymentData = paymentData ? JSON.parse(paymentData) : null;
 						if (paymentData) {
+							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
 								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
 							}
