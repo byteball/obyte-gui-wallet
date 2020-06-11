@@ -133,7 +133,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (objRequest.type === 'address') {
 						var emitPaymentRequest = function () {
 							root.send(function () {
-								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address);
+								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address, objRequest.single_address);
 							});
 						}
 						if (!objRequest.from_address)
@@ -260,9 +260,29 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	}
 	
 	function createLinuxDesktopFile(){
+
+		var path = require('path'+'');
+		if (process.env.APPIMAGE){
+			console.log("run from appimage " + process.env.APPIMAGE);
+			var execPath = process.env.APPIMAGE;
+			var iconDir = process.env.HOME + "/.local/share/icons";
+			var iconPath = iconDir + "/obyte-logo-circle-256.png";
+			fileSystemService.recursiveMkdir(iconDir, parseInt('700', 8), function(err){
+				console.log('mkdir icons: '+err);
+				//we store the app icon outside the appimage filesystem
+				fileSystemService.readFile(path.dirname(process.execPath) + "/public/img/icons/logo-circle-256.png", function(err, data) {
+					console.log("error when reading icon: " + err);
+					fileSystemService.nwWriteFile(iconPath, data, function(err){
+						console.log("error when writing icon: " + err);
+					});
+				});
+			})
+		} else {
+			var execPath = process.execPath;
+			var iconPath = path.dirname(execPath)+"/public/img/icons/logo-circle-256.png";
+		}
 		console.log("will write .desktop file");
 		var fs = require('fs'+'');
-		var path = require('path'+'');
 		var child_process = require('child_process'+'');
 		var package_json = require('../package.json'+''); // relative to html root
 		var oname = package_json.name.replace(/byteball/i, 'obyte');
@@ -273,10 +293,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+oname+"\n\
+Name="+oname[0].toUpperCase() + oname.slice(1)+"\n\
 Comment="+package_json.description+"\n\
-Exec="+process.execPath.replace(/ /g, '\\ ')+" %u\n\
-Icon="+path.dirname(process.execPath)+"/public/img/icons/logo-circle-256.png\n\
+Exec="+execPath.replace(/ /g, '\\ ')+" %u\n\
+Icon="+ iconPath +"\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
 MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
@@ -300,7 +320,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 							child_process.exec('update-mime-database '+mimeDir, function(err){
 								if (err)
 									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(process.execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
 							});
 	 						console.log(".desktop done");
 	 					});
@@ -315,6 +335,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				});
 			});
 		});
+
 	}
 	
 	var gui;

@@ -337,14 +337,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 										]],
 										['and', [
 											['address', expiry_address],
-											['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.expiry*24*3600*1000)]]
+											['timestamp', ['>', Math.round(Date.now()/1000 + contract.expiry*24*3600)]]
 										]]
 									]]
 								]],
 								['and', [
 									['address', my_address],
 									['not', arrSeenCondition],
-									['in data feed', [[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(contract.timeout*3600*1000)]]
+									['timestamp', ['>', Math.round(Date.now()/1000 + contract.timeout*3600)]]
 								]]
 							]];
 							var assocSignersByPath = {
@@ -404,6 +404,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									err = "Not enough spendable funds, make sure all your funds are confirmed";
 								if ($scope)
 									$scope.error = err;
+								if (chatScope) {
+									setError(err);
+									$timeout(function() {
+										chatScope.$apply();
+									});
+								}
 								return;
 							}
 							$rootScope.$emit("NewOutgoingTx");
@@ -422,12 +428,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								paymentRequestCode = 'payment:'+paymentJsonBase64;
 							}
 							else
-								paymentRequestCode = 'byteball:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
+								paymentRequestCode = 'obyte:'+my_address+'?amount='+peer_amount+'&asset='+encodeURIComponent(contract.peerAsset);
 							var paymentRequestText = '[your share of payment to the contract]('+paymentRequestCode+')';
 							device.sendMessageToDevice(correspondent.device_address, 'text', paymentRequestText);
 							var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, paymentRequestText, 0);
 							if (contract.peer_pays_to === 'me')
 								issueNextAddress(fc); // make sure the address is not reused
 						});
@@ -518,7 +524,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondent.device_address, body);
 							device.readCorrespondent(correspondent.device_address, function(correspondent) {
-								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 							});
 							$modalInstance.dismiss('sent');
 						});
@@ -1307,7 +1313,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (asset !== 'base')
 					params += '&asset='+encodeURIComponent(asset);
 				var units = profileService.getUnitName(asset);
-				appendText('['+amount+' '+units+'](byteball:'+myPaymentAddress+'?'+params+')');
+				appendText('['+amount+' '+units+'](obyte:'+myPaymentAddress+'?'+params+')');
 				$modalInstance.dismiss('cancel');
 			};
 
@@ -1401,6 +1407,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$scope.bMyAddress = bMyAddress;
 				$scope.unit = objPrivateProfile.unit;
 				$scope.trusted = !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == attestor_address});
+				if (!$scope.trusted) {
+					$scope.trusted = !!lodash.find(configService.getSync().attestorAddresses, function(attestor){return attestor == attestor_address});
+				}
 				/*if (!bMyAddress)
 					return $timeout(function() {
 						$rootScope.$apply();
@@ -1687,7 +1696,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 						// share accepted contract to previously saced cosigners
 						if (status == "accepted") {
 							cosigners.forEach(function(cosigner){
@@ -1736,7 +1745,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 
 						// swap addresses for peer chat message
 						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
@@ -1886,7 +1895,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		replace: true,
 		link: function (scope, ele, attrs) {
 			scope.$watch(attrs.dynamic, function(html) {
-				ele.html(html);
+				ele.html((html || '').replace(/(^|>)(.*?)(<|$)/g, function (str, closing_bracket, between, opening_bracket) {
+					if (!between.match(/\W/))
+						return str;
+					return closing_bracket + '<span ng-non-bindable>' + between + '</span>' + opening_bracket;
+				}));
+			//	ele.html(html);
 				$compile(ele.contents())(scope);
 			});
 		}

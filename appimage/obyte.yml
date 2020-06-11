@@ -1,0 +1,21 @@
+app: obyte
+
+ingredients:
+  packages: 
+    - libgconf-2-4
+    - libxss1
+  dist: bionic
+  sources: deb https://packages.ubuntu.com/ bionic main universe
+script:
+  - cp -r ../../../../obytebuilds/Obyte/linux64/* usr/bin/
+  - cp ../../../../obytebuilds/Obyte/linux64/public/img/icons/logo-circle-256.png obyte.png
+  - cat > obyte.desktop << EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=obyte
+  - Icon=obyte
+  - Exec=Obyte %u
+  - Categories=Office;Finance;
+  - Comment=Smart payments
+  - MimeType=x-scheme-handler/byteball;x-scheme-handler/obyte
+  - EOF

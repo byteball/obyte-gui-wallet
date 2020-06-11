@@ -56,12 +56,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 
 	
-	function addIncomingMessageEvent(from_address, body, message_counter){
+	function addIncomingMessageEvent(from_address, in_body, message_counter){
 		var walletGeneral = require('ocore/wallet_general.js');
 		walletGeneral.readMyAddresses(function(arrMyAddresses){
-			body = highlightActions(escapeHtml(body), arrMyAddresses);
-			body = text2html(body);
-			console.log("body with markup: "+body);
+			var body = highlightActions(escapeHtml(in_body), arrMyAddresses);
+			body.text = text2html(body.text);
+			console.log("body with markup: "+body.text);
 			addMessageEvent(true, from_address, body, message_counter);
 		});
 	}
@@ -83,7 +83,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
 				root.messageEventsByCorrespondent[peer_address].push({
 					bIncoming: false,
-					message: '<span>new messages</span>',
+					message: '<span class=\"system-span\">new messages</span>',
 					type: 'system',
 					new_message_delim: true
 				});
@@ -127,8 +127,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	// payment description within [] is ignored and whole URI is capturing group
 	var payment_request_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([0-9A-Z]{32})(?:\?([\w=&;+%]+))?)\)/g;
 	var pairing_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):([\w\/+]{44})@([\w.:\/-]+)#(.+))\)/g;
-	var textcoin_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):textcoin\?(.+))\)/g;
+	var textcoin_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):textcoin\?([a-z-]+))\)/g;
 	var data_regexp = /\[.*?\]\(((?:byteball-tn|byteball|obyte-tn|obyte):data\?(.+))\)/g;
+	var url_regexp = /\bhttps?:\/\/[\w+&@#/%?=~|!:,.;-]+[\w+&@#/%=~|-]/g;
 
 	function paymentDropdown(address) {
 		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
@@ -137,6 +138,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function highlightActions(text, arrMyAddresses){
 		var URI = require('ocore/uri.js');
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+		var params = [];
+		var param_index = -1;
 		var assocReplacements = {};
 		var index = crypto.randomBytes(4).readUInt32BE(0);
 		function toDelayedReplacement(new_text) {
@@ -163,15 +166,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			//return '<a send-payment ng-click="sendPayment(\''+address+'\')">'+address+'</a>';
 			//return '<a send-payment ng-click="console.log(\''+address+'\')">'+address+'</a>';
 			//return '<a onclick="console.log(\''+address+'\')">'+address+'</a>';
-		}).replace(/(.*?\s|^)\b(https?:\/\/\S+)([\s.,;!:].*?|$)/g, function(str, pre, link, post){
-			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
-				return str;
-			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
-				return str;
-			index++;
-			var key = '{' + index + '}';
-			assocReplacements[key] = '<a ng-click="openExternalLink(\''+escapeQuotes(link)+'\')" class="external-link">'+link+'</a>';
-			return pre+key+post;
 		}).replace(payment_request_regexp, function(str, uri, address, query_string){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
@@ -183,30 +177,38 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			}
 			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\', \''+objPaymentRequest.base64data+'\')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
-			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Pair with device: '+device_pubkey+'@'+hub+'#'+pairing_code+']</a>');
+			param_index++;
+			params[param_index] = uri;
+			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Pair with device: '+device_pubkey+'@'+hub+'#'+pairing_code+']</a>');
 		}).replace(textcoin_regexp, function(str, uri, mnemonic){
 			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Claim textcoin: '+mnemonic+']</a>');
 		}).replace(data_regexp, function(str, uri, query_string){
 			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
 			if (!assocParams)
 				return str;
-			return toDelayedReplacement('<a ng-click="handleUri(\''+uri+'\')">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
+			param_index++
+			params[param_index] = uri;
+			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
-			return toDelayedReplacement('<a ng-click="suggestCommand(\''+escapeQuotes(command)+'\')" class="suggest-command">'+description+'</a>');
+			param_index++
+			params[param_index] = command;
+			return toDelayedReplacement('<a ng-click="suggestCommand(messageEvent.message.params[' + param_index + '])" class="suggest-command">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(command:(.+?)\)/g, function(str, description, command){
-			return toDelayedReplacement('<a ng-click="sendCommand(\''+escapeQuotes(command)+'\', \''+escapeQuotes(description)+'\')" class="command">'+description+'</a>');
-		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+			param_index++
+			params[param_index] = command;
+			return toDelayedReplacement('<a ng-click="sendCommand(messageEvent.message.params[' + param_index + '])" class="command">'+description+'</a>');
+		}).replace(/\[(.+?)\]\(payment:([\w\/+=]+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
 			if (!arrMovements)
 				return '[invalid payment request]';
 			description = 'Payment request: '+arrMovements.join(', ');
 			return toDelayedReplacement('<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>');
-		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
 			return toDelayedReplacement('<a ng-click="sendVote(\''+voteJsonBase64+'\')">'+escapeHtml(objVote.choice)+'</a>');
-		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+		}).replace(/\[(.+?)\]\(profile:([\w\/+=]+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
@@ -214,8 +216,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
 		}).replace(/\[(.+?)\]\(sign-message-request(-network-aware)?:(.+?)\)/g, function(str, description, network_aware, message_to_sign){
-			return toDelayedReplacement('<a ng-click="showSignMessageModal(\''+escapeQuotes(message_to_sign)+'\', '+!!network_aware+')">[Request to sign message: '+tryParseBase64(message_to_sign)+']</a>');
-		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+			param_index++
+			params[param_index] = message_to_sign;
+			return toDelayedReplacement('<a ng-click="showSignMessageModal(messageEvent.message.params[' + param_index + '], '+!!network_aware+')">[Request to sign message: '+tryParseBase64(message_to_sign)+']</a>');
+		}).replace(/\[(.+?)\]\(signed-message:([\w\/+=]+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
@@ -229,18 +233,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
 			return toDelayedReplacement('<i>['+text+']</i>');
-		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(url_regexp, function(str){
+			param_index++;
+			params[param_index] = str;
+			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
+		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
-		return text;
+		return { text: text, params: params };
 	}
 	
 	function getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, bAggregatedByAsset){
+		if (!ValidationUtils.isValidBase64(paymentJsonBase64))
+			return null;
 		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log(paymentJson);
 		try{
@@ -286,6 +296,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getVoteFromJsonBase64(voteJsonBase64){
+		if (!ValidationUtils.isValidBase64(voteJsonBase64))
+			return null;
 		var voteJson = Buffer.from(voteJsonBase64, 'base64').toString('utf8');
 		console.log(voteJson);
 		try{
@@ -300,6 +312,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
+		if (!ValidationUtils.isValidBase64(privateProfileJsonBase64))
+			return null;
 		var privateProfile = require('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
@@ -318,6 +332,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function getProsaicContractFromJsonBase64(strJsonBase64){
+		if (!ValidationUtils.isValidBase64(strJsonBase64))
+			return null;
 		var strJSON = Buffer.from(strJsonBase64, 'base64').toString('utf8');
 		try{
 			var objProsaicContract = JSON.parse(strJSON);
@@ -331,6 +347,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function getSignedMessageInfoFromJsonBase64(signedMessageBase64){
+		if (!ValidationUtils.isValidBase64(signedMessageBase64))
+			return null;
 		var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
 		console.log(signedMessageJson);
 		try{
@@ -353,12 +371,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function tryParseBase64(str) {
+		if (!ValidationUtils.isValidBase64(str))
+			return str;
 		var json = Buffer.from(str, 'base64').toString('utf8');
 		try{
 			var obj = JSON.parse(json);
 		}
 		catch(e){
-			return str;
+			return str; // it is already escapeHtml'd
 		}
 		return escapeHtml(JSON.stringify(obj, null, '\t'));
 	}
@@ -382,6 +402,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var URI = require('ocore/uri.js');
 		var assocReplacements = {};
 		var index = crypto.randomBytes(4).readUInt32BE(0);
+		var params = [];
+		var param_index = -1;
 		function toDelayedReplacement(new_text) {
 			index++;
 			var key = '{' + index + '}';
@@ -395,7 +417,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest)
 				return toDelayedReplacement(address);
 			return toDelayedReplacement('<i>'+objPaymentRequest.amountStr+' to '+address+'</i>');
-		}).replace(/\[(.+?)\]\(payment:(.+?)\)/g, function(str, description, paymentJsonBase64){
+		}).replace(/\[(.+?)\]\(payment:([\w\/+=]+?)\)/g, function(str, description, paymentJsonBase64){
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
@@ -409,12 +431,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!assocParams)
 				return str;
 			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
-		}).replace(/\[(.+?)\]\(vote:(.+?)\)/g, function(str, description, voteJsonBase64){
+		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
 				return '[invalid vote request]';
 			return toDelayedReplacement('<i>Vote request: '+escapeHtml(objVote.choice)+'</i>');
-		}).replace(/\[(.+?)\]\(profile:(.+?)\)/g, function(str, description, privateProfileJsonBase64){
+		}).replace(/\[(.+?)\]\(profile:([\w\/+=]+?)\)/g, function(str, description, privateProfileJsonBase64){
 			var objPrivateProfile = getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 			if (!objPrivateProfile)
 				return '[invalid profile]';
@@ -423,7 +445,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
 			return toDelayedReplacement('<i>[Request to sign message: '+message_to_sign+']</i>');
-		}).replace(/\[(.+?)\]\(signed-message:(.+?)\)/g, function(str, description, signedMessageBase64){
+		}).replace(/\[(.+?)\]\(signed-message:([\w\/+=]+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)
 				return '<i>[invalid signed message]</i>';
@@ -437,17 +459,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			else
 				text += ' (<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')">verify</a>)';
 			return toDelayedReplacement('<i>['+text+']</i>');
-		}).replace(/\bhttps?:\/\/\S+/g, function(str){
-			return toDelayedReplacement('<a ng-click="openExternalLink(\''+escapeQuotes(str)+'\')" class="external-link">'+str+'</a>');
-		}).replace(/\(prosaic-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(url_regexp, function(str){
+			param_index++;
+			params[param_index] = str;
+			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
+		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? objContract.status : 'offer')+': '+objContract.title+']</a>');
+			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
-		return text;
+		return {text: text, params: params};
 	}
 	
 	function parsePaymentRequestQueryString(query_string){
@@ -476,6 +500,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (single_address && !ValidationUtils.isValidAddress(single_address))
 			single_address = 1;
 		var base64data = assocParams['base64data'] || '';
+		if (base64data && !ValidationUtils.isValidBase64(base64data))
+			return null;
 		var amountStr = 'Payment request'+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
@@ -488,11 +514,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function text2html(text){
-		return text.replace(/\r/g, '').replace(/\n/g, '<br>').replace(/\t/g, ' &nbsp; &nbsp; ');
+		return text.toString().replace(/\r/g, '').replace(/\n/g, '<br>').replace(/\t/g, ' &nbsp; &nbsp; ');
 	}
 	
 	function escapeHtml(text){
-		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 	}
 	
 	function escapeHtmlAndInsertBr(text){
@@ -500,7 +526,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeQuotes(text){
-		return text.replace(/(['\\])/g, "\\$1").replace(/"/g, "&quot;");
+		return text.toString().replace(/(['\\])/g, "\\$1").replace(/"/g, "&quot;");
 	}
 	
 	function setCurrentCorrespondent(correspondent_device_address, onDone){
@@ -532,7 +558,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}
 		else if (profileService.assetMetadata[asset]){
 			amount /= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
-			return amount + ' ' + profileService.assetMetadata[asset].name;
+			return amount + ' ' + escapeHtml(profileService.assetMetadata[asset].name);
 		}
 		else{
 			wallet.readAssetMetadata([asset], function(){});
@@ -554,7 +580,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			switch(op){
 				case 'sig':
 					var pubkey = args.pubkey;
-					return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+pubkey);
+					return 'signed by '+(arrMyPubKeys.indexOf(pubkey) >=0 ? 'you' : 'public key '+escapeHtml(pubkey));
 				case 'address':
 					var address = args;
 					return 'signed by '+getDisplayAddress(address);
@@ -572,6 +598,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					return 'the total weight of the true conditions below is at least '+args.required+':<br>'+args.set.map(function(arg){
 						return arg.weight+': '+parseAndIndent(arg.value);
 					}).join(',');
+				case 'timestamp':
+					var relation = args[0];
+					var timestamp = args[1];
+					var when = '';
+					if (relation === '>' || relation === '>=')
+						when = 'after';
+					if (relation === '<' || relation === '<=')
+						when = 'before';
+					if (relation === '=')
+						when = 'at';
+					if (relation === '!=')
+						when = 'not at';
+					return when + ' ' + (new Date(timestamp * 1000).toString());
 				case 'in data feed':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
@@ -580,7 +619,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>' && (typeof value === 'number' || parseInt(value).toString() === value))
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : new Date(parseInt(value)).toString());
-					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+escapeHtml(feed_name)+' '+relation+' '+escapeHtml(value);
 					if (min_mci)
 						str += ' after MCI '+min_mci;
 					return str;
@@ -589,7 +628,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var feed_name = args[1];
 					var value = args[2];
 					var min_mci = args[3];
-					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+escapeHtml(value)+' in '+escapeHtml(feed_name);
 					if (min_mci)
 						str += ' after MCI '+min_mci;
 					return str;
@@ -598,7 +637,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
 					if (args.what === 'output' && args.asset && args.amount && args.address)
 						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
 						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
@@ -610,10 +649,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
 						return 'there was a transaction that spends '+how_much+' from '+args.address;
 					}
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 
 				default:
-					return JSON.stringify(arrSubdefinition);
+					return escapeHtml(JSON.stringify(arrSubdefinition));
 			}
 		}
 		function parseAndIndent(arrSubdefinition){
@@ -650,13 +689,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var message = messages[i];
 					var msg_ts = new Date(message.creation_date.replace(' ', 'T')+'.000Z');
 					if (last_msg_ts && last_msg_ts.getDay() != msg_ts.getDay()) {
-						messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + last_msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+						messageEvents.unshift({type: 'system', bIncoming: false, message: "<span class=\"system-span\">" + last_msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
 					last_msg_ts = msg_ts;
 					if (message.type == "text") {
 						if (message.is_incoming) {
 							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
-							message.message = text2html(message.message);
+							message.message.text = text2html(message.message.text);
 						} else {
 							message.message = formatOutgoingMessage(message.message);
 						}
@@ -664,7 +703,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					messageEvents.unshift({id: message.id, type: message.type, bIncoming: message.is_incoming, message: message.message, timestamp: Math.floor(msg_ts.getTime() / 1000), chat_recording_status: message.chat_recording_status});
 				}
 				if (historyEndForCorrespondent[correspondent.device_address] && messageEvents.length > 1) {
-					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span>" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
+					messageEvents.unshift({type: 'system', bIncoming: false, message: "<span class=\"system-span\">" + (last_msg_ts ? last_msg_ts : new Date()).toDateString() + "</span>", timestamp: Math.floor((last_msg_ts ? last_msg_ts : new Date()).getTime() / 1000)});
 				}
 				if (cb) cb();
 			});
@@ -677,7 +716,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var msg_ts = new Date(message.timestamp * 1000);
 		var last_msg_ts = new Date(messageEvents[messageEvents.length-1].timestamp * 1000);
 		if (last_msg_ts.getDay() != msg_ts.getDay()) {
-			messageEvents.push({type: 'system', bIncoming: false, message: "<span>" + msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
+			messageEvents.push({type: 'system', bIncoming: false, message: "<span class=\"system-span\">" + msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 		}
 	}
 
@@ -685,7 +724,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		switch (message.type) {
 			case "system":
 				message.message = JSON.parse(message.message);
-				message.message = "<span>chat recording " + (message.message.state ? "&nbsp;" : "") + "</span><b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"padding\"></span>";
+				message.message = "<span class=\"system-span\">chat recording " + (message.message.state ? "&nbsp;" : "") + "</span><b dropdown-toggle=\"#recording-drop\">" + (message.message.state ? "ON" : "OFF") + "</b><span class=\"system-span padding\"></span>";
 				message.chat_recording_status = true;
 				break;
 		}

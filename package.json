@@ -2,7 +2,7 @@
   "name": "byteball",
   "description": "Smart payments made simple",
   "author": "Obyte",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "keywords": [
     "wallet",
     "obyte",
@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "innosetup-compiler": "^5.5.9",
-    "grunt": "^1.0.1",
+    "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
     "grunt-browserify": "=5.0.0",
     "grunt-babel": "^8.0.0",

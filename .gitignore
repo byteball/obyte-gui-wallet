@@ -88,3 +88,8 @@ public/languages
 *.sublime-workspace
 package-lock.json
 .env
+
+#appimage
+appimage/obyte/*
+appimage/out/*
+appimage/pkg2appimage

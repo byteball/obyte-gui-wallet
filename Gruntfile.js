@@ -189,7 +189,7 @@ module.exports = function(grunt) {
         expand: true,
         flatten: true,
         options: {timestamp: true, mode: true},
-        src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/Background.png'],
+        src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/app.entitlements', 'webkitbuilds/Background.png'],
         dest: '../obytebuilds/'
       },
       linux: {
@@ -225,7 +225,7 @@ module.exports = function(grunt) {
           platforms: [getPlatform()],
           appName: 'Obyte',
           buildDir: '../obytebuilds',
-          version: '0.14.7',
+          version: grunt.option('nw') || '0.14.7',
           zip: false,
           macIcns: './public/img/icons/logo-circle.icns',
           winIco: './public/img/icons/logo-circle.ico',
@@ -356,5 +356,5 @@ module.exports = function(grunt) {
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
   grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
-  grunt.registerTask('partial-fast', ['browserify:partialClient']);
+	grunt.registerTask('partial-fast', ['browserify:partialClient']);
 };
