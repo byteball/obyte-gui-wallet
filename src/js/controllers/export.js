@@ -27,14 +27,32 @@ angular.module('copayApp.controllers').controller('exportController',
 		if (!isCordova)
 			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
 
+		function migrateJoints(callback) {
+			if (!conf.bLight || isCordova) return callback();
+			var options = {};
+			options.gte = "j\n";
+			options.lte = "j\n\uFFFF";
+			var db = require('ocore/db');
+			var kvstore = require('ocore/kvstore');
+			var stream = kvstore.createReadStream(options);
+			var arrQueries = [];
+			stream.on('data', function (data) {
+					var unit = data.key.substr(2);
+					var json = data.value;
+					db.addQuery(arrQueries, "INSERT " + db.getIgnore() + " INTO joints (unit, json) VALUES (?,?)", [unit, json]);
+				})
+				.on('end', function(){
+					console.log(arrQueries.length + ' joints migrated');
+					async.series(arrQueries, callback);
+				})
+				.on('error', callback);
+		}
+
 		function addDBAndConfToZip(cb) {
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
-			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
+			listDBFiles(dbDirPath, function(err, listFilenames) {
 				if (err) return cb(err);
-				listFilenames = listFilenames.filter(function(name) {
-					return (name == 'conf.json' || /\.sqlite/.test(name));
-				});
-				if(isCordova) {
+				if (isCordova) {
 					async.forEachSeries(listFilenames, function(name, callback) {
 						fileSystemService.readFile(dbDirPath + '/' + name, function(err, data) {
 							if (err) return callback(err);
@@ -42,7 +60,8 @@ angular.module('copayApp.controllers').controller('exportController',
 							callback();
 						});
 					}, cb);
-				}else{
+				}
+				else {
 					async.forEachSeries(listFilenames, function(name, callback) {
 						fileSystemService.getPath(dbDirPath + '/' + name, function(err, path) {
 							if (err) return callback(err);
@@ -50,6 +69,26 @@ angular.module('copayApp.controllers').controller('exportController',
 							callback();
 						});
 					}, cb);
+				}
+			});
+		}
+
+		function listDBFiles(dbDirPath, cb) {
+			fileSystemService.readdir(dbDirPath, function(err, listFilenames) {
+				if (err) return cb(err);
+				listFilenames = listFilenames.filter(function(name) {
+					return (name == 'conf.json' || /\.sqlite/.test(name));
+				});
+				if(isCordova)
+					cb(null, listFilenames);
+				else {
+					fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
+						if (err) return cb(err);
+						listRocksDB.forEach(function(filename) {
+							if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
+						});
+						cb(null, listFilenames);
+					});
 				}
 			});
 		}
@@ -137,6 +176,7 @@ angular.module('copayApp.controllers').controller('exportController',
 								connection.release();
 								self.connection = null;
 								self.exporting = false;
+								zip = null;
 								$timeout(function() {
 									$rootScope.$apply();
 									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -178,13 +218,17 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			var db = require('ocore/db');
-			db.takeConnectionFromPool(function(connection) {
-				if (isCordova) {
-					self.walletExportCordova(connection);
-				} else {
-					self.walletExportPC(connection);
-				}
+			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
+			migrateJoints(function(err) {
+				if (err) return showError(err);
+				var db = require('ocore/db');
+				db.takeConnectionFromPool(function(connection) {
+					if (isCordova) {
+						self.walletExportCordova(connection);
+					} else {
+						self.walletExportPC(connection);
+					}
+				});
 			});
 		}
 	});

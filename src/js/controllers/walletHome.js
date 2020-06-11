@@ -42,12 +42,12 @@ angular.module('copayApp.controllers')
 		this.exchangeRates = network.exchangeRates;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address);
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address, single_address);
 			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
@@ -384,6 +384,9 @@ angular.module('copayApp.controllers')
 			// Address already set?
 			if (!forceNew && self.addr[fc.credentials.walletId])
 				return;
+
+			if (!fc.credentials.isComplete())
+				return console.log('wallet not complete yet');
 
 			if (indexScope.shared_address && forceNew)
 				throw Error('attempt to generate for shared address');
@@ -910,6 +913,9 @@ angular.module('copayApp.controllers')
 
 			self.custom_amount_error = null;
 			self.aa_dry_run_error = null;
+			self.aa_message_results = [];
+			self.aa_state_changes = [];
+			self.responseVars = [];
 		}
 
 		function checkIfAAAndUpdateResults(address) {
@@ -1092,6 +1098,8 @@ angular.module('copayApp.controllers')
 				bounce_fees.base = constants.MIN_BYTES_BOUNCE_FEE;
 			}
 			var address = indexScope.shared_address || self.addr[profileService.focusedClient.credentials.walletId];
+			if (self.from_address && !indexScope.shared_address)
+				address = self.from_address;
 			if (!address)
 				throw Error('no address');
 			var trigger = { outputs: {}, address: address };
@@ -1476,8 +1484,7 @@ angular.module('copayApp.controllers')
 									['and', [
 										['address', my_address],
 										['not', arrSeenCondition],
-										['in data feed', [
-											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
+										['timestamp', ['>', Math.round(Date.now()/1000 + self.binding.timeout * 3600)
 										]]
 									]]
 								]];
@@ -1523,8 +1530,7 @@ angular.module('copayApp.controllers')
 									]],
 									['and', [
 										['address', my_address],
-										['in data feed', [
-											[configService.TIMESTAMPER_ADDRESS], 'timestamp', '>', Date.now() + Math.round(self.binding.timeout * 3600 * 1000)
+										['timestamp', ['>', Math.round(Date.now()/1000 + self.binding.timeout * 3600)
 										]]
 									]]
 								]];
@@ -1644,7 +1650,7 @@ angular.module('copayApp.controllers')
 									err = "This is a private asset, please send it only by clicking links from chat";
 								else if (err.match(/no funded/)) {
 									if (self.from_address) {
-										err = "Not enough spendable funds on address " + self.from_address + ", you may want to refill its balance";
+										$rootScope.$emit('Local/ShowErrorAlert', "Not enough spendable funds on address " + self.from_address + ", you may want to refill its balance");
 										self.resetForm(); // to enable to fill the form anew to refill this address
 									}
 									else
@@ -1669,13 +1675,13 @@ angular.module('copayApp.controllers')
 								if (binding && binding.reverseAmount) { // create a request for reverse payment
 									if (!my_address)
 										throw Error('my address not known');
-									var paymentRequestCode = 'byteball:' + my_address + '?amount=' + binding.reverseAmount + '&asset=' + encodeURIComponent(binding.reverseAsset);
+									var paymentRequestCode = 'obyte:' + my_address + '?amount=' + binding.reverseAmount + '&asset=' + encodeURIComponent(binding.reverseAsset);
 									var paymentRequestText = '[reverse payment](' + paymentRequestCode + ')';
 									device.sendMessageToDevice(recipient_device_address, 'text', paymentRequestText);
 									var body = correspondentListService.formatOutgoingMessage(paymentRequestText);
 									correspondentListService.addMessageEvent(false, recipient_device_address, body);
 									device.readCorrespondent(recipient_device_address, function(correspondent) {
-										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, body, 0, 'html');
+										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, paymentRequestText, 0);
 									});
 
 									// issue next address to avoid reusing the reverse payment address
@@ -2034,7 +2040,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -2056,13 +2062,14 @@ angular.module('copayApp.controllers')
 						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
 						paymentData = paymentData ? JSON.parse(paymentData) : null;
 						if (paymentData) {
+							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
 								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
 							}
 						}
 					}
 					catch (e) {
-						notification.error("invalid data " + e.toString());
+						$rootScope.$emit('Local/ShowErrorAlert', "invalid data " + e.toString());
 						return self.resetForm();
 					}
 				}
@@ -2073,15 +2080,16 @@ angular.module('copayApp.controllers')
 				if (asset) {
 					if ($scope.index.arrBalances.length === 0) { // wait till balances are set
 						console.log("no balances yet, will wait");
+						self.resetForm();
 						return $timeout(function () {
-							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address);
+							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address);
 						}, 1000);
 					}
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
 						asset: asset
 					});
 					if (assetIndex < 0) {
-						notification.error("failed to find asset index of asset " + asset);
+						$rootScope.$emit('Local/ShowErrorAlert', "failed to find asset index of asset " + asset);
 						return self.resetForm();
 					}
 					$scope.index.assetIndex = assetIndex;
@@ -2105,23 +2113,32 @@ angular.module('copayApp.controllers')
 
 				this.switchForms();
 
-				$timeout((function () {
-					if (amount) {
-						//	form.amount.$setViewValue("" + amount);
-						//	form.amount.$isValid = true;
-						this.lockAmount = true;
-						form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
-						form.amount.$isValid = true;
-						form.amount.$render();
+				addressService.getAddress(profileService.focusedClient.credentials.walletId, false, function(err, my_address) {
+					if (single_address && single_address !== '0'){
+						var displayed_single_address = from_address ? ' '+from_address : '';
+						var fc = profileService.focusedClient;
+						if (!fc.isSingleAddress || from_address && from_address !== my_address) {
+							$rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".");
+							return self.resetForm();
+						}
 					}
-					else  {
-						this.lockAmount = false;
-						form.amount.$setViewValue("");
-						form.amount.$pristine = true;
-						form.amount.$render();
-					}
-				}).bind(this));
-
+					$timeout((function () {
+						if (amount) {
+							//	form.amount.$setViewValue("" + amount);
+							//	form.amount.$isValid = true;
+							this.lockAmount = true;
+							form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
+							form.amount.$isValid = true;
+							form.amount.$render();
+						}
+						else  {
+							this.lockAmount = false;
+							form.amount.$setViewValue("");
+							form.amount.$pristine = true;
+							form.amount.$render();
+						}
+					}).bind(this));
+				});
 			}).bind(this), 1);
 		};
 
@@ -2151,7 +2168,7 @@ angular.module('copayApp.controllers')
 						delete dataPrompt.question;
 						break;
 					case 'vote':
-						notification.error('voting not yet supported via uri');
+						$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
 						return self.resetForm();
 					case 'definition':
 						$scope.assetIndexSelectorValue = -6;
@@ -2376,7 +2393,7 @@ angular.module('copayApp.controllers')
 					(function(){
 						var wallet = require('ocore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
-							$scope.title = $sce.trustAsHtml(gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend'));
+							$scope.title = gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend');
 							$scope.cancel_button_class = 'light-gray outline';
 							$scope.loading = false;
 							$scope.confirm_label = gettextCatalog.getString('Confirm');

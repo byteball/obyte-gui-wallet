@@ -24,7 +24,7 @@ angular.module('copayApp.controllers').controller('copayersController',
 
     var _modalDeleteWallet = function() {
       var ModalInstanceCtrl = function($scope, $modalInstance, $sce, gettext) {
-        $scope.title = $sce.trustAsHtml(delete_msg);;
+        $scope.title = delete_msg;
           $scope.yes_icon = 'fi-trash';
           $scope.yes_button_class = 'warning';
           $scope.cancel_button_class = 'light-gray outline';

@@ -24,7 +24,7 @@
   <div class="m20b" ng-if="arrHumanReadableDefinitions">
 	  <h4 class="title m0" translate>Definitions of addresses</h4>
 	  <ul class="no-bullet size-14 m0">
-		<li class="line-b p10 oh" ng-repeat="hrd in arrHumanReadableDefinitions">
+		<li class="line-b p10 oh enable_text_select" ng-repeat="hrd in arrHumanReadableDefinitions">
 		  <div>{{hrd.destinationAddress}} <span translate>can be spent if:</span></div>
 		  <div class="center" dynamic="hrd.humanReadableDefinition"></div>
 		</li>

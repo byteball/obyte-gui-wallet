@@ -106,6 +106,59 @@ O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is us
 * Windows: `%LOCALAPPDATA%\byteball`
 
 
+## Create an AppImage
+
+The application and the libraries it requires can be bundled into a one-file executable called AppImage. It should run on most Linux distribution without any additional package installation.
+There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 16.04.
+
+Install Node.JS version >= 8 preferably using [NVM](https://github.com/creationix/nvm)
+
+Install tools:
+`sudo apt-get install build-essential python desktop-file-utils libglib2.0-bin`
+
+Clone the source:
+
+```sh
+git clone https://github.com/byteball/obyte-gui-wallet.git
+cd obyte-gui-wallet
+```
+
+If you are building for testnet, switch to testnet branch:
+```sh
+git checkout testnet
+```
+
+Install bower, grunt, node-gyp and nw-gyp if you haven't already:
+
+```sh
+npm install -g bower
+npm install -g grunt-cli
+npm install -g nw-gyp
+npm install -g node-gyp
+```
+
+Go to appimage directory and execute the script:
+
+```sh
+cd appimage
+bash appimage.sh
+```
+
+When completed, you will find the appimage in `../obytebuilds`
+
+Obyte appimage can be launched from any directory, ensure to make it executable then launch it:
+
+```
+chmod a+x obyte-x86_64.AppImage
+./obyte-x86_64.AppImage
+```
+
+By default the app is built using 0.35.5 NW.js to support latest Linux distributions, you can set the environment variable NW_VERSION to build using another NW.js version.
+```sh
+NW_VERSION=0.23.7 bash appimage.sh
+```
+
+
 ## Translations
 
 O<sub>byte</sub> uses standard gettext PO files for translations and [Crowdin](https://crowdin.com/project/byteball) as the front-end tool for translators. To join our team of translators, please create an account at [Crowdin](https://crowdin.com) and translate the O<sub>byte</sub> documentation and application text into your native language.
