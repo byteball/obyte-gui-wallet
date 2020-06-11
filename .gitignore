@@ -93,3 +93,4 @@ package-lock.json
 appimage/obyte/*
 appimage/out/*
 appimage/pkg2appimage
+viewkv.js
