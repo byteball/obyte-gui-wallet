@@ -90,7 +90,7 @@ package-lock.json
 # .env
 
 #appimage
-appimage/obyte/*
+appimage/obyte-tn/*
 appimage/out/*
 appimage/pkg2appimage
 viewkv.js

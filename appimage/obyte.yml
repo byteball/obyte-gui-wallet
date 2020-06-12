@@ -1,4 +1,4 @@
-app: obyte
+app: obyte-tn
 
 ingredients:
   packages: 
@@ -7,14 +7,14 @@ ingredients:
   dist: bionic
   sources: deb https://packages.ubuntu.com/ bionic main universe
 script:
-  - cp -r ../../../../obytebuilds/Obyte/linux64/* usr/bin/
-  - cp ../../../../obytebuilds/Obyte/linux64/public/img/icons/logo-circle-256.png obyte.png
+  - cp -r ../../../../obytebuilds/Obyte-TN/linux64/* usr/bin/
+  - cp ../../../../obytebuilds/Obyte-TN/linux64/public/img/icons/logo-circle-256.png obyte.png
   - cat > obyte.desktop << EOF
   - [Desktop Entry]
   - Type=Application
-  - Name=obyte
+  - Name=obyte-tn
   - Icon=obyte
-  - Exec=Obyte %u
+  - Exec=Obyte-TN %u
   - Categories=Office;Finance;
   - Comment=Smart payments
   - MimeType=x-scheme-handler/byteball;x-scheme-handler/obyte
