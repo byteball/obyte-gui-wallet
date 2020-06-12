@@ -2,6 +2,7 @@
 
 angular.module('copayApp.services')
 .factory('fileSystemService', function($log, isCordova) {
+	var async = require('async');
 	var root = {},
 		bFsInitialized = false;
 	
@@ -62,7 +63,26 @@ angular.module('copayApp.services')
 			});
 		}
 	};
-	
+
+	root.deleteFile = function(path, cb) {
+		if (isCordova) {
+			root.init(function() {
+				window.resolveLocalFileSystemURL(path, function(fileEntry) {
+					fileEntry.remove(function() {
+						cb();
+					}, function() {
+						cb('error deleting file');
+					});
+				}, function(e) {
+					cb(JSON.stringify(e));
+				});
+			});
+		}
+		else {
+			root.nwUnlink(path, cb);
+		}
+	};
+
 	root.getPath = function(path, cb) {
 		return cb(null, path.replace(/\\/g, '/'));
 	};
@@ -155,7 +175,65 @@ angular.module('copayApp.services')
 			});
 		}
 	};
-	
+
+	root.deleteDirFiles = function(path, cb) {
+		if (isCordova) {
+			root.init(function() {
+				window.resolveLocalFileSystemURL(path,
+					function(fileSystem) {
+						var reader = fileSystem.createReader();
+						reader.readEntries(
+							function(entries) {
+								async.forEach(entries, function(entry, callback) {
+									if (entry.isFile) {
+										entry.remove(function(){
+											callback();
+										}, function() {
+											callback('failed to delete: '+ entry.name);
+										});
+									}
+									else
+										callback(); // skip folders
+								}, function(err) {
+									if(err) return cb(err);
+									cb();
+								});
+							},
+							function(err) {
+								cb(err);
+							}
+						);
+					}, function(err) {
+						cb(err);
+					}
+				);
+			});
+		}
+		else {
+			fs.readdir(path, function(err, entries) {
+				if (err) return cb(err);
+				async.forEach(entries, function(name, callback) {
+					try {
+						if (fs.lstatSync(path + name).isFile())
+							root.nwUnlink(path + name, callback);
+						else
+							callback(); // skip folders
+					}
+					catch(e) {
+						callback(e.message);
+					}
+				}, function(err) {
+					if(err) return cb(err);
+					cb();
+				});
+			});
+		}
+	};
+
+	root.nwRename = function(oldPath, newPath, cb) {
+		fs.rename(oldPath, newPath, cb);
+	};
+
 	root.nwMoveFile = function(oldPath, newPath, cb){
 		var read = fs.createReadStream(oldPath);
 		var write = fs.createWriteStream(newPath);

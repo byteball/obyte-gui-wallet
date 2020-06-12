@@ -9,20 +9,21 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
     var oldWitnesses = $scope.delWitnesses;
     var newWitnesses = $scope.addWitnesses;
 
-    var n = 0, l = newWitnesses.length;
+    var l = newWitnesses.length;
 
     function replaceWitness(n, oldWitnesses, newWitnesses){
       var myWitnesses = require('ocore/my_witnesses.js');
       myWitnesses.replaceWitness(oldWitnesses[n], newWitnesses[n], function (err) {
-        if (l < n) {
-          replaceWitness(n++, oldWitnesses, newWitnesses)
+        n++;
+        if (n < l) {
+          replaceWitness(n, oldWitnesses, newWitnesses)
         } else {
           $modalInstance.close('closed result');
         }
       });
     }
 
-    replaceWitness(n, oldWitnesses, newWitnesses);
+    replaceWitness(0, oldWitnesses, newWitnesses);
   };
 
   $scope.later = function(){

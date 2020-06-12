@@ -151,33 +151,32 @@ angular.module('copayApp.services')
         });
     }
 
-    function unlockWalletAndInitDevice(){
-        // wait till the wallet fully loads
-		breadcrumbs.add('unlockWalletAndInitDevice');
-		//Hide the mainSection
-		var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
-		mainSectionElement.css('visibility','hidden');
+		function unlockWalletAndInitDevice(){
+			// wait till the wallet fully loads
+			breadcrumbs.add('unlockWalletAndInitDevice');
+			//Hide the mainSection
+			var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+			mainSectionElement.css('visibility','hidden');
 
-        var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
-            removeListener();
-			breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
-            root.insistUnlockFC(null, function(){
-				breadcrumbs.add('unlockWalletAndInitDevice unlocked');
+			var removeListener = $rootScope.$on('Local/BalanceUpdated', function(){
+				removeListener();
+				breadcrumbs.add('unlockWalletAndInitDevice BalanceUpdated');
+				root.insistUnlockFC(null, function(){
+					breadcrumbs.add('unlockWalletAndInitDevice unlocked');
 
-				//After unlock, make mainSection visible again
-				var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
-				mainSectionElement.css('visibility','visible');
+					//After unlock, make mainSection visible again
+					var mainSectionElement = angular.element( document.querySelector( '#mainSection' ) );
+					mainSectionElement.css('visibility','visible');
 
-                if (!root.focusedClient.credentials.xPrivKey)
-                    throw Error("xPrivKey still not set after unlock");
-                console.log('unlocked: '+root.focusedClient.credentials.xPrivKey);
-                var config = configService.getSync();
-                root.focusedClient.initDeviceProperties(
-                    root.focusedClient.credentials.xPrivKey, root.profile.my_device_address, config.hub, config.deviceName);
-				$rootScope.$emit('Local/BalanceUpdatedAndWalletUnlocked');
-            });
-        });
-    }
+					if (!root.focusedClient.credentials.xPrivKey)
+							throw Error("xPrivKey still not set after unlock");
+					var config = configService.getSync();
+					root.focusedClient.initDeviceProperties(
+					root.focusedClient.credentials.xPrivKey, root.profile.my_device_address, config.hub, config.deviceName);
+					$rootScope.$emit('Local/BalanceUpdatedAndWalletUnlocked');
+				});
+			});
+		}
     
     root.bindProfile = function(profile, cb) {
 		breadcrumbs.add('bindProfile');
@@ -758,6 +757,8 @@ angular.module('copayApp.services')
 		root.profile.credentials = [];
 		root.profile.xPrivKey = xPrivKey;
 		root.profile.mnemonic = mnemonic;
+    delete root.profile.xPrivKeyEncrypted;
+    delete root.profile.mnemonicEncrypted;
 		root.profile.my_device_address = myDeviceAddress;
 		device.setNewDeviceAddress(myDeviceAddress);
 		

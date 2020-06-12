@@ -339,7 +339,8 @@ input.datafeed_input {
                     <span translate>What to send</span>:
                 </span>
                 <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.forceAmountRevalidation(); home.switchForms(); home.onChanged()">
-                	<option ng-repeat="balance in index.arrBalances" ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.stableStr ? balance.stableStr : (balance.stable.toLocaleString())) + (balance.pending ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
+                	<option ng-repeat="balance in index.arrBalances"
+                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.totalStr ? balance.totalStr : (balance.total.toLocaleString())) + (balance.pending && 0 ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
                 	<option ng-value="-1" translate>Data into datafeed (searchable)</option>
                 	<option ng-value="-2" translate>Attestation of any address</option>
                 	<option ng-value="-3" translate>Profile of my address</option>
@@ -381,6 +382,11 @@ input.datafeed_input {
                   </label>
                   <div class="input">
                     <input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="decimal" id="amount" ng-disabled="home.blockUx || home.lockAmount || home.bSendAll" name="amount" ng-attr-placeholder="{{(home.bSendAll ? (index.arrBalances[index.assetIndex].asset === 'base' ? 'All minus fees' : 'All') : 'Amount')|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="_amount" valid-amount="{{index.arrBalances[index.assetIndex].asset}}" ng-required="!home.bSendAll && !home.send_multiple" autocomplete="off" ng-focus="home.formFocus('amount')" ng-blur="home.formFocus(false)" ng-change="home.onChanged()">
+                    <div class="dollar-value"
+						 ng-if="index.arrBalances[index.assetIndex].asset && !sendPaymentForm.amount.$invalid"
+						 ng-class="{'send-all': home.bSendAll}">
+                      <span>{{home.getDollarValue(_amount, index.arrBalances[index.assetIndex])}}</span>
+                    </div>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
                       <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
@@ -399,6 +405,10 @@ input.datafeed_input {
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
+                    <div ng-if="home.from_address && !index.isSingleAddress">
+                        <span translate>From Obyte address</span>
+                        <span class="enable_text_select">{{home.from_address}}</span>
+                    </div>
 	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
@@ -539,7 +549,7 @@ input.datafeed_input {
                     </div>
                     <div ng-if="home.aa_homepage_url"><span style="font-weight: bold" translate>Home page:</span style="font-weight: bold"> <a ng-click="$root.openExternalLink(home.aa_homepage_url)">{{home.aa_homepage_url.substr(8)}}</a></div>
                     <div ng-if="home.aa_source_url"><span style="font-weight: bold" translate>Source code:</span> <a ng-click="$root.openExternalLink(home.aa_source_url)">{{home.aa_source_url.substr(8)}}</a></div>
-                    <h4 style="font-weight: bold" translate>The expected result:</h4>
+                    <h4 ng-if="home.aa_dry_run_error || home.aa_message_results.length || home.aa_state_changes.length || home.responseVars.length" style="font-weight: bold" translate>The expected result:</h4>
                   </div>
                   <div ng-if="home.aa_dry_run_error" class="text-warning size-12 enable_text_select">
                     {{home.aa_dry_run_error}}<br>

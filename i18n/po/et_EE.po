@@ -4,14 +4,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: byteball\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
 "X-Crowdin-Project: byteball\n"
 "X-Crowdin-Language: et\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
-"Last-Translator: testz\n"
 "Language-Team: Estonian\n"
 "Language: et_EE\n"
-"PO-Revision-Date: 2019-09-24 20:41\n"
+"PO-Revision-Date: 2020-02-29 23:00\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -29,7 +27,7 @@ msgstr "(hetkel valitud rahakott)"
 msgid "(my other wallet)"
 msgstr "(hetkel mitte valitud rahakott)"
 
-#: public/views/walletHome.html:717
+#: public/views/walletHome.html:777
 msgid "(possible double spend)"
 msgstr "(tõenäoline topelt-kulutamine)"
 
@@ -41,13 +39,17 @@ msgstr "-- Vali kaasallkirjastaja --"
 msgid "12 words separated by dashes"
 msgstr "12 kriipsudega eraldatud sõna"
 
+#: public/views/walletHome.html:418
+msgid "AAs not allowed in multi-send"
+msgstr "Autonoomne Agent ei saa olla üks mitmest saajatest"
+
 #: public/views/preferencesGlobal.html:143
 msgid "About Obyte"
 msgstr "Info Obyte kohta"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:137
+#: src/js/controllers/walletHome.js:144
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Nõustun"
@@ -81,12 +83,12 @@ msgstr "Lisa uus kirje"
 msgid "Add address"
 msgstr "Lisa aadress"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Add answer"
 msgstr "Lisa vastus"
 
-#: public/views/walletHome.html:517
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:522
+#: public/views/walletHome.html:677
 msgid "Add fields"
 msgstr "Lisa väljad"
 
@@ -104,7 +106,7 @@ msgstr "Lisatud"
 msgid "Address"
 msgstr "Aadress"
 
-#: public/views/walletHome.html:589
+#: public/views/walletHome.html:633
 msgid "Address to attest"
 msgstr "Tõendatav aadress"
 
@@ -126,7 +128,7 @@ msgstr "Aadressid"
 msgid "Advanced"
 msgstr "Lisavalikud"
 
-#: public/views/modals/view-prosaic-contract.html:136
+#: public/views/modals/view-prosaic-contract.html:134
 msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
 msgstr "Pärast lepinguga nõustumist küsitakse sul allkirjastada tehing, mis sisaldab lepingu räsi. See etapp toimub kohe pärast seda kui lepingu esitaja saab kätte sinu vastuse."
 
@@ -154,7 +156,7 @@ msgstr "Kõik panused O<sub>byte</sub> tõlkimisel on teretulnud. Registreeru cr
 msgid "Already Paid"
 msgstr "Juba Makstud"
 
-#: src/js/controllers/correspondentDevice.js:1384
+#: src/js/controllers/correspondentDevice.js:1410
 msgid "Already saved"
 msgstr "Juba salvestatud"
 
@@ -166,7 +168,7 @@ msgstr "Lisaks"
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr "Lisaks leiad Seaded menüüst turvalisuse seadeid nagu salasõna seadistamine."
 
-#: public/views/walletHome.html:501
+#: public/views/walletHome.html:485
 msgid "Also send data..."
 msgstr "Lisa ka andmeid..."
 
@@ -179,11 +181,11 @@ msgstr "Ära unusta kustutada lähtesõnu"
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:376
+#: public/views/walletHome.html:378
 msgid "Amount"
 msgstr "Summa"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Answer"
 msgstr "Vastus"
 
@@ -208,13 +210,13 @@ msgstr "Kas oled kindel, et soovid kustutada seda rahakotti?"
 msgid "Asset"
 msgstr "Vara"
 
-#: public/views/walletHome.html:575
+#: public/views/walletHome.html:619
 msgid "Attest profile data linked to any Obyte address."
 msgstr "Tõenda konto andmeid, mis on seotud mõne Obyte aadressiga."
 
-#: public/views/walletHome.html:345
-msgid "Attestation"
-msgstr "Vastavuse tõendamine"
+#: public/views/walletHome.html:344
+msgid "Attestation of any address"
+msgstr "Mõne aadressi tõendus"
 
 #: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
@@ -231,12 +233,12 @@ msgid "Attestor addresses"
 msgstr "Tõendaja aadress"
 
 #: public/views/preferencesWitnesses.html:11
-msgid "Auto-update the witness list from the hub"
-msgstr "Automaatne tunnistajate nimekirja uuendamine jaotuspunktist"
+msgid "Auto-update the Order Provider (witness) list from the hub"
+msgstr "Automaatne Järjekorra Pakkujate nimekirja uuendamine jaotuspunktist"
 
 #: public/views/preferencesHub.html:16
-msgid "Auto-update the witness list from this hub"
-msgstr "Automaatne tunnistajate nimekirja uuendamine sellest jaotuspunktist"
+msgid "Auto-update the Order Provider (witness) list from this hub"
+msgstr "Automaatne Järjekorra Pakkujate nimekirja uuendamine sellest jaotuspunktist"
 
 #: public/views/includes/available-balance.html:7
 msgid "Available Balance"
@@ -274,7 +276,7 @@ msgstr "Varukoopia lähtesõnad on kustutatud"
 msgid "Backups"
 msgstr "Varukoopiad"
 
-#: src/js/controllers/correspondentDevice.js:1367
+#: src/js/controllers/correspondentDevice.js:1393
 msgid "Bad profile"
 msgstr "Vigane konto"
 
@@ -295,11 +297,11 @@ msgstr "Pigem kasuta mitme allkirjaga rahakotte,"
 msgid "Bind payment"
 msgstr "Sõlmi makse leping"
 
-#: public/views/walletHome.html:469
+#: public/views/walletHome.html:453
 msgid "Bind the payment to a condition"
 msgstr "Sõlmi tingimusega makse"
 
-#: public/views/walletHome.html:456
+#: public/views/walletHome.html:440
 msgid "Bind the payment to a condition..."
 msgstr "Sõlmi tingimusega makse..."
 
@@ -315,6 +317,14 @@ msgstr "Vestlusrobotid"
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr "Sinul ja {{correspondent.name}} on mõlemil vestluse salvestamine lubatud."
 
+#: src/js/controllers/walletHome.js:1164
+msgid "Bounce the request"
+msgstr "Põrka päring tagasi"
+
+#: public/views/modals/tx-details.html:173
+msgid "Bounced?"
+msgstr "Põrkas tagasi?"
+
 #: public/views/unsupported.html:6
 msgid "Browser unsupported"
 msgstr "Seda brauserit ei toeta"
@@ -329,10 +339,10 @@ msgid "CONTINUE"
 msgstr "JÄTKA"
 
 #: public/views/modals/destination-address.html:128
-#: public/views/walletHome.html:534
+#: public/views/walletHome.html:578
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:138
+#: src/js/controllers/walletHome.js:145
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Katkesta"
@@ -345,7 +355,7 @@ msgstr "Muuda jaotuspunkti:"
 msgid "Changing wallet alias only affects the local wallet name."
 msgstr "Rahakoti nime muutmine muudab ainult lokaalse rahakoti nime."
 
-#: src/js/controllers/index.js:822
+#: src/js/controllers/index.js:823
 msgid "Chat"
 msgstr "Vestlus"
 
@@ -365,7 +375,7 @@ msgstr "Vali seade kuhu saata"
 msgid "Choose which fields to send:"
 msgstr "Vali väljad mida saata:"
 
-#: src/js/controllers/walletHome.js:509
+#: src/js/controllers/walletHome.js:516
 msgid "Claim funds"
 msgstr "Võta vahendid omaks"
 
@@ -385,11 +395,11 @@ msgstr "Omaksvõtmine..."
 msgid "Click the button to"
 msgstr "Klõpsa nupul, et saata"
 
-#: public/views/walletHome.html:556
+#: public/views/walletHome.html:600
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr "Klõpsa seda nuppu, et luua maksefail, mida saab saata makse vastuvõtjale."
 
-#: public/views/walletHome.html:555
+#: public/views/walletHome.html:599
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr "Klõpsa seda nuppu, et luua makse, mida jagada privaatvestluses või kirjutada paberile."
 
@@ -412,7 +422,7 @@ msgstr "Klõpsa seda nuppu, et luua makse, mida jagada privaatvestluses või kir
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
-#: public/views/modals/signed-message.html:39
+#: public/views/modals/signed-message.html:38
 #: public/views/modals/signed-message.html:4
 #: public/views/modals/view-prosaic-contract.html:53
 #: public/views/modals/vote.html:4
@@ -441,14 +451,14 @@ msgstr "GitHub räsi"
 
 #: public/views/export.html:45
 msgid "Compress the file? (Slower)"
-msgstr "Paki faili kokku? (Aeglasem)"
+msgstr "Paki fail kokku? (Aeglasem)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:661
+#: src/js/controllers/index.js:662
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:139
-#: src/js/controllers/walletHome.js:1867
-#: src/js/controllers/walletHome.js:1871
+#: src/js/controllers/walletHome.js:146
+#: src/js/controllers/walletHome.js:2382
+#: src/js/controllers/walletHome.js:2386
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Kinnita"
@@ -473,10 +483,10 @@ msgstr "Kinnitatud"
 msgid "Contacts"
 msgstr "Kontaktid"
 
-#: src/js/controllers/correspondentDevice.js:1752
+#: src/js/controllers/correspondentDevice.js:1778
 #: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:410
+#: src/js/controllers/walletHome.js:417
 msgid "Copied to clipboard"
 msgstr "Kopeeritud lõikelauale"
 
@@ -488,12 +498,12 @@ msgstr "Kopeeri"
 msgid "Correspondents and chats are not restored."
 msgstr "Kontaktid ja vestlused ei ole taastatavad."
 
-#: public/views/modals/offer-prosaic-contract.html:75
-#: public/views/modals/view-prosaic-contract.html:111
+#: public/views/modals/offer-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:109
 msgid "Cosigners"
 msgstr "Kaasallkirjastajad"
 
-#: src/js/controllers/walletHome.js:715
+#: src/js/controllers/walletHome.js:722
 msgid "Could not create payment proposal"
 msgstr "Makse ettepaneku loomine ebaõnnestus"
 
@@ -513,7 +523,7 @@ msgstr "Ei õnnestu luua: Valed rahakoti lähtesõnad"
 msgid "Could not decrypt"
 msgstr "Lahti krüpteerimine ebaõnnestus"
 
-#: public/views/walletHome.html:672
+#: public/views/walletHome.html:732
 msgid "Could not fetch transaction history"
 msgstr "Tehingute ajaloo kätte saamine ebaõnnestus"
 
@@ -527,11 +537,11 @@ msgstr "Import ebaõnnestus"
 msgid "Could not import. Check input file and password"
 msgstr "Import ebaõnnestus. Kontrolli sisendfaili ja salasõna"
 
-#: src/js/controllers/walletHome.js:715
+#: src/js/controllers/walletHome.js:722
 msgid "Could not send payment"
 msgstr "Makse saatmine ebaõnnestus"
 
-#: src/js/controllers/correspondentDevice.js:1333
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Country"
 msgstr "Riik"
 
@@ -545,7 +555,7 @@ msgstr "Loo uus rahakott"
 
 #: public/views/add.html:15
 #: public/views/create.html:175
-#: src/js/controllers/index.js:371
+#: src/js/controllers/index.js:372
 msgid "Create new wallet"
 msgstr "Loo uus rahakott"
 
@@ -569,23 +579,19 @@ msgstr "Rahakoti loomine..."
 msgid "DELETE WORDS"
 msgstr "KUSTUTA LÄHTESÕNAD"
 
-#: public/views/walletHome.html:347
-msgid "Data"
-msgstr "Andmed"
+#: public/views/walletHome.html:343
+msgid "Data into datafeed (searchable)"
+msgstr "Andmeid andmevoogu (otsitav)"
 
-#: public/views/walletHome.html:344
-msgid "Data into datafeed"
-msgstr "Informatsiooni lisamine andmevoogu"
-
-#: public/views/walletHome.html:507
+#: public/views/walletHome.html:491
 msgid "Data to be posted with the payment:"
 msgstr "Maksega postitatavad andmed:"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Datafeed name"
 msgstr "Andmevoo nimi"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Datafeed value"
 msgstr "Andmevoo väärtus"
 
@@ -593,17 +599,29 @@ msgstr "Andmevoo väärtus"
 msgid "Date"
 msgstr "Kuupäev"
 
-#: src/js/controllers/correspondentDevice.js:1332
+#: src/js/controllers/correspondentDevice.js:1358
 msgid "Date of birth"
 msgstr "Sünnikuupäev"
 
-#: src/js/controllers/index.js:337
+#: src/js/controllers/index.js:338
 msgid "Declined"
 msgstr "Katkestatud"
+
+#: src/js/controllers/walletHome.js:1211
+msgid "Define a new asset with cap"
+msgstr "Defineeri uus vara piiratud koguses"
 
 #: public/views/walletHome.html:197
 msgid "Definition"
 msgstr "Kirjeldus"
+
+#: public/views/walletHome.html:348
+msgid "Definition of autonomous agent"
+msgstr "Autonoomse Agendi kirjeldus"
+
+#: public/views/walletHome.html:654
+msgid "Definition of autonomous agent:"
+msgstr "Autonoomse Agendi kirjeldus:"
 
 #: public/views/modals/address-definition.html:8
 msgid "Definition of smart address"
@@ -621,7 +639,7 @@ msgstr "Kustuta Rahakott"
 msgid "Delete wallet"
 msgstr "Kustuta rahakott"
 
-#: src/js/controllers/walletHome.js:1864
+#: src/js/controllers/walletHome.js:2379
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr "Tekstiliste vahendite kustutamine kaotab võimaluse neid tagasi võtta või edasi saata"
 
@@ -665,7 +683,7 @@ msgstr "Kas ei näe oma keelt Crowdin lehel? Võta ühendust Crowdin projekti ha
 msgid "Done"
 msgstr "Valmis"
 
-#: public/views/walletHome.html:774
+#: public/views/walletHome.html:842
 msgid "Download CSV file"
 msgstr "Lae alla CSV fail"
 
@@ -694,6 +712,10 @@ msgstr "Sisesta teiselt seadmelt saadud sidumiskood või kasuta oma kaamerat (nu
 msgid "Enter your password"
 msgstr "Sisesta oma salasõna"
 
+#: public/views/modals/tx-details.html:179
+msgid "Error"
+msgstr "Viga"
+
 #: src/js/services/profileService.js:341
 #: src/js/services/profileService.js:393
 msgid "Error creating wallet"
@@ -707,8 +729,8 @@ msgstr "Aegub"
 msgid "Export"
 msgstr "Ekspordi"
 
-#: src/js/controllers/export.js:141
-#: src/js/controllers/export.js:166
+#: src/js/controllers/export.js:142
+#: src/js/controllers/export.js:167
 msgid "Export completed successfully"
 msgstr "Eksportimine õnnestus"
 
@@ -728,12 +750,12 @@ msgstr "Eksportimine ebaõnnestus"
 msgid "Fee"
 msgstr "Teenustasu"
 
-#: public/views/walletHome.html:510
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:499
+#: public/views/walletHome.html:677
 msgid "Field"
 msgstr "Väli"
 
-#: src/js/controllers/export.js:88
+#: src/js/controllers/export.js:89
 msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
 msgstr "Fail salvestatud /Obyte/ kataloogi. Nüüd saad seda saata mujale kasutades vestlusrakendusi või e-kirja teel, et sellest oleks ka mujal varukoopiaid"
 
@@ -741,13 +763,13 @@ msgstr "Fail salvestatud /Obyte/ kataloogi. Nüüd saad seda saata mujale kasuta
 msgid "Finality"
 msgstr "Lõplik seisund"
 
-#: src/js/controllers/correspondentDevice.js:1330
-msgid "First name"
-msgstr "Eesnimi"
-
 #: public/views/modals/tx-details.html:69
 msgid "From"
 msgstr "Kellelt"
+
+#: public/views/walletHome.html:800
+msgid "From AA"
+msgstr "AAlt"
 
 #: public/views/editCorrespondentDevice.html:27
 msgid "Full address:"
@@ -757,7 +779,7 @@ msgstr "Täisaadress:"
 msgid "GET STARTED"
 msgstr "ALUSTA"
 
-#: src/js/controllers/walletHome.js:439
+#: src/js/controllers/walletHome.js:446
 msgid "Generate QR Code"
 msgstr "Loo skaneeritav QR kood"
 
@@ -772,6 +794,10 @@ msgstr "CSV faili loomine..."
 #: public/views/modals/destination-address.html:61
 msgid "Getting address for wallet"
 msgstr "Aadressi otsimine rahakotile"
+
+#: src/js/controllers/correspondentDevice.js:1356
+msgid "Given name"
+msgstr "Eesnimi"
 
 #: public/views/includes/sidebar.html:45
 msgid "Global preferences"
@@ -794,13 +820,17 @@ msgid "Hide the Wallet Seed"
 msgstr "Peida Rahakoti Lähtesõnad"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:818
+#: src/js/controllers/index.js:819
 msgid "History"
 msgstr "Ajalugu"
 
-#: src/js/controllers/index.js:806
+#: src/js/controllers/index.js:807
 msgid "Home"
 msgstr "Avaleht"
+
+#: public/views/walletHome.html:540
+msgid "Home page:"
+msgstr "Koduleht:"
 
 #: public/views/preferencesTor.html:14
 msgid "Host"
@@ -830,23 +860,23 @@ msgstr "Mina maksan"
 msgid "I receive another payment of"
 msgstr "mina saan makse summas"
 
-#: src/js/controllers/correspondentDevice.js:1339
+#: src/js/controllers/correspondentDevice.js:1365
 msgid "ID expires at"
 msgstr "ID aegub"
 
-#: src/js/controllers/correspondentDevice.js:1340
+#: src/js/controllers/correspondentDevice.js:1366
 msgid "ID issued at"
 msgstr "ID välja antud"
 
-#: src/js/controllers/correspondentDevice.js:1336
+#: src/js/controllers/correspondentDevice.js:1362
 msgid "ID number"
 msgstr "ID number"
 
-#: src/js/controllers/correspondentDevice.js:1338
+#: src/js/controllers/correspondentDevice.js:1364
 msgid "ID subtype"
 msgstr "ID alamtüüp"
 
-#: src/js/controllers/correspondentDevice.js:1337
+#: src/js/controllers/correspondentDevice.js:1363
 msgid "ID type"
 msgstr "ID tüüp"
 
@@ -891,7 +921,7 @@ msgstr "Rahakoti importimine..."
 msgid "Including pending confirmation"
 msgstr "Sellest kinnitamisel"
 
-#: public/views/walletHome.html:691
+#: public/views/walletHome.html:751
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Paljude tehingutega rahakottide esialgse ajaloo sünkroniseerimine võib aega võtta mõned minutid.<br>\n"
@@ -905,17 +935,25 @@ msgstr "Sisesta minu aadress"
 msgid "Insert private profile"
 msgstr "Sisesta privaatse konto andmed"
 
-#: public/views/walletHome.html:710
+#: public/views/walletHome.html:770
 msgid "Invalid"
 msgstr "Sobimatu"
 
-#: src/js/controllers/index.js:1791
+#: src/js/controllers/index.js:1792
 msgid "Invalid Touch ID"
 msgstr "Sobimatu sõrmejälg"
 
 #: public/views/addCorrespondentDevice.html:15
 msgid "Invite the other device"
 msgstr "Saada kutse teisele seadmele"
+
+#: src/js/controllers/walletHome.js:1330
+msgid "It is not allowed to bind conditions to payments to autonomous agents"
+msgstr "Autonoomsete Agentidega pole lubatud sõlmida tingimustega makseid"
+
+#: src/js/controllers/walletHome.js:1328
+msgid "It is not allowed to send private assets to autonomous agents"
+msgstr "Autonoomsete Agentidele pole lubatud saata privaatset vara"
 
 #: public/views/backup.html:22
 msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
@@ -933,10 +971,6 @@ msgstr "Nimetus"
 msgid "Language"
 msgstr "Keel"
 
-#: src/js/controllers/correspondentDevice.js:1331
-msgid "Last name"
-msgstr "Perekonnanimi"
-
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
 msgstr "Mitte praegu"
@@ -944,6 +978,10 @@ msgstr "Mitte praegu"
 #: src/js/controllers/disclaimer.js:13
 msgid "Loading..."
 msgstr "Laadimine..."
+
+#: public/views/walletHome.html:658
+msgid "Looks OK"
+msgstr "Sobib"
 
 #: public/views/paymentUri.html:13
 msgid "Make a payment to"
@@ -965,7 +1003,7 @@ msgstr "Mina"
 msgid "Merchant message"
 msgstr "Kaupmehe sõnum"
 
-#: public/views/walletHome.html:476
+#: public/views/walletHome.html:460
 msgid "Merkle proof"
 msgstr "Räsipuu tõend"
 
@@ -978,11 +1016,15 @@ msgstr "Sõnum"
 msgid "Message:"
 msgstr "Sõnum:"
 
+#: src/js/controllers/walletHome.js:1124
+msgid "Minimum amount"
+msgstr "Minimaalne kogus"
+
 #: public/views/correspondentDevice.html:26
 msgid "More"
 msgstr "Rohkem"
 
-#: public/views/walletHome.html:709
+#: public/views/walletHome.html:769
 msgid "Moved"
 msgstr "Liigutus"
 
@@ -1015,17 +1057,18 @@ msgstr "Võrk"
 msgid "New Random Seed"
 msgstr "Uued Juhuslikud Lähtesõnad"
 
+#: public/views/modals/approveNewWitnesses.html:9
+msgid "New order providers"
+msgstr "Uued Järjekorra Pakkujad"
+
 #: public/views/modals/newVersionIsAvailable.html:3
 msgid "New version is available!"
 msgstr "Uus versioon on saadaval!"
 
-#: public/views/modals/approveNewWitnesses.html:9
-msgid "New witnesses"
-msgstr "Uued tunnistajad"
-
 #: public/views/authConfirmation.html:22
-#: src/js/controllers/index.js:660
-#: src/js/controllers/walletHome.js:1879
+#: public/views/modals/tx-details.html:175
+#: src/js/controllers/index.js:661
+#: src/js/controllers/walletHome.js:2394
 msgid "No"
 msgstr "Ei"
 
@@ -1041,29 +1084,33 @@ msgstr "Ükski konto ei vasta nõutud kriteeriumitele."
 msgid "No profiles yet."
 msgstr "Pole veel ühtegi kontot."
 
-#: public/views/walletHome.html:675
+#: public/views/walletHome.html:735
 msgid "No transactions yet"
 msgstr "Veel ei ole ühtegi tehingut"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:113
-#: public/views/walletHome.html:371
-#: public/views/walletHome.html:424
-#: public/views/walletHome.html:433
-#: public/views/walletHome.html:594
+#: public/views/walletHome.html:369
+#: public/views/walletHome.html:407
+#: public/views/walletHome.html:416
+#: public/views/walletHome.html:638
 msgid "Not valid"
 msgstr "Vigane"
 
 #: public/views/includes/output.html:12
 #: public/views/modals/tx-details.html:109
 #: public/views/modals/tx-details.html:84
-#: public/views/walletHome.html:487
-#: public/views/walletHome.html:739
+#: public/views/walletHome.html:471
+#: public/views/walletHome.html:804
 msgid "Note"
 msgstr "Märkused"
 
-#: src/js/controllers/export.js:88
+#: public/views/modals/tx-details.html:184
+msgid "Notice"
+msgstr "Teade"
+
+#: src/js/controllers/export.js:89
 msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
 msgstr "Nüüd peaksid saatma selle faili kuhugi mujale, et saaksid sellest hiljem taastada (\"Salvesta\" ja saada see endale näiteks vestlusrakenduse kaudu)"
 
@@ -1075,21 +1122,21 @@ msgstr "Obyte &mdash; nutimaksed"
 msgid "Obyte address"
 msgstr "Obyte aadress"
 
-#: public/views/modals/offer-prosaic-contract.html:88
+#: public/views/modals/offer-prosaic-contract.html:86
 msgid "Offer Contract"
 msgstr "Esita Leping"
 
 #: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:150
+#: src/js/services/correspondentListService.js:134
 msgid "Offer a contract"
 msgstr "Esita nutilleping"
 
-#: public/views/modals/offer-prosaic-contract.html:72
+#: public/views/modals/offer-prosaic-contract.html:70
 msgid "Offer is valid for"
 msgstr "Pakkumine kehtib kuni"
 
 #: public/views/modals/offer-prosaic-contract.html:42
-#: src/js/services/correspondentListService.js:150
+#: src/js/services/correspondentListService.js:134
 msgid "Offer prosaic contract"
 msgstr "Esita tavaline leping"
 
@@ -1105,13 +1152,21 @@ msgstr "Ainult ühe allkirjaga rahakotte saab taastada."
 msgid "Open chat"
 msgstr "Ava vestlus"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Options for answering"
 msgstr "Valikvastused"
 
 #: public/views/modals/share.html:39
 msgid "Or copy"
 msgstr "Või kopeeri"
+
+#: public/views/preferencesEditWitness.html:12
+msgid "Order Provider (witness) address"
+msgstr "Järjekorra Pakkuja aadress"
+
+#: public/views/preferencesGlobal.html:71
+msgid "Order Providers (Witnesses)"
+msgstr "Järjekorra Pakkujad"
 
 #: public/views/acceptCorrespondentInvitation.html:54
 msgid "Pair"
@@ -1149,7 +1204,7 @@ msgstr "Sisesta siia paberile kirjutatud salajane võti"
 msgid "Pay and offer"
 msgstr "Maksa ja esita leping"
 
-#: src/js/services/correspondentListService.js:150
+#: src/js/services/correspondentListService.js:134
 msgid "Pay to this address"
 msgstr "Maksa sellele aadressile"
 
@@ -1173,8 +1228,8 @@ msgstr "Makse Tagasilükatud"
 msgid "Payment Sent"
 msgstr "Makse Saadetud"
 
-#: public/views/modals/offer-prosaic-contract.html:58
-#: public/views/modals/view-prosaic-contract.html:77
+#: public/views/modals/offer-prosaic-contract.html:57
+#: public/views/modals/view-prosaic-contract.html:76
 msgid "Peer"
 msgstr "Teine osapool"
 
@@ -1186,7 +1241,7 @@ msgstr "Teine osapool:"
 msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
 msgstr "Rahakoti jäädav kustutamine. SEDA TEGEVUST EI OLE VÕIMALIK TAGASI PÖÖRATA"
 
-#: src/js/controllers/correspondentDevice.js:1334
+#: src/js/controllers/correspondentDevice.js:1360
 msgid "Personal code"
 msgstr "Isikukood"
 
@@ -1194,11 +1249,11 @@ msgstr "Isikukood"
 msgid "Plain Wallet"
 msgstr "Tavaline Rahakott"
 
-#: src/js/controllers/index.js:276
+#: src/js/controllers/index.js:277
 msgid "Please approve contract fees deposit on the other devices."
 msgstr "Palun kinnita lepingu lepingutasu kandmine teistel seadmetel."
 
-#: src/js/controllers/index.js:281
+#: src/js/controllers/index.js:282
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr "Palun kinnita lepingu räsi postitamine teistel seadmetel."
 
@@ -1222,7 +1277,7 @@ msgstr "Palun muuda ühe aadressiga rahakoti peale ja tõenäoliselt pead sa sis
 msgid "Please visit the Backups section in"
 msgstr "Palun leia Varundamine menüüst"
 
-#: public/views/walletHome.html:348
+#: public/views/walletHome.html:347
 msgid "Poll"
 msgstr "Küsitlus"
 
@@ -1230,19 +1285,31 @@ msgstr "Küsitlus"
 msgid "Port"
 msgstr "Port"
 
-#: public/views/walletHome.html:584
+#: src/js/controllers/walletHome.js:1215
+msgid "Post a"
+msgstr "Postita"
+
+#: src/js/controllers/walletHome.js:1206
+msgid "Post a data feed"
+msgstr "Postita andmevoogu"
+
+#: public/views/walletHome.html:628
 msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr "Postita küsitlus Obyte andmebaasi selleks, et kasutajad saaksid Poll vestlusroboti kaudu hääletada."
 
-#: public/views/walletHome.html:581
+#: public/views/walletHome.html:625
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr "Postita võti-väärtus andmepaare Obyte võrku."
 
-#: public/views/walletHome.html:572
+#: src/js/controllers/walletHome.js:1209
+msgid "Post data"
+msgstr "Postita andmeid"
+
+#: public/views/walletHome.html:616
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "Postita väärtusi käsitsi andmevoogu, ole tõe teataja."
 
-#: public/views/walletHome.html:578
+#: public/views/walletHome.html:622
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "Postita oma konto andmeid, ükskõik mida soovid enda kohta öelda."
 
@@ -1259,8 +1326,8 @@ msgstr "Väljumiseks vajuta uuesti"
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr "Privaatne vara (nagu blackbytes) ja nutilepingud ei ole taastatavad."
 
-#: src/js/controllers/walletHome.js:1933
-#: src/js/controllers/walletHome.js:2009
+#: src/js/controllers/walletHome.js:2448
+#: src/js/controllers/walletHome.js:2524
 msgid "Private payloads sent"
 msgstr "Privaatsed makseandmed saadetud"
 
@@ -1268,19 +1335,19 @@ msgstr "Privaatsed makseandmed saadetud"
 msgid "Private profile"
 msgstr "Privaatse konto andmed"
 
-#: public/views/walletHome.html:346
-msgid "Profile"
-msgstr "Konto"
-
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Profile field"
 msgstr "Konto väli"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Profile field value"
 msgstr "Konto välja väärtus"
 
-#: public/views/modals/view-prosaic-contract.html:91
+#: public/views/walletHome.html:345
+msgid "Profile of my address"
+msgstr "Konto aadress"
+
+#: public/views/modals/view-prosaic-contract.html:89
 msgid "Proof of contract signing"
 msgstr "Sõlmitud lepingu tõend"
 
@@ -1296,7 +1363,7 @@ msgstr "QR kood"
 msgid "QR-Scanner"
 msgstr "QR koodi skaneerija"
 
-#: public/views/walletHome.html:604
+#: public/views/walletHome.html:648
 msgid "Question to be voted on"
 msgstr "Küsimus hääletamiseks"
 
@@ -1304,15 +1371,19 @@ msgstr "Küsimus hääletamiseks"
 msgid "Question:"
 msgstr "Küsimus:"
 
+#: public/views/walletHome.html:346
+msgid "Raw data"
+msgstr "Struktrureerimata andmed"
+
 #: public/views/preferencesAttestorAddresses.html:16
 msgid "Real name attestors"
 msgstr "Pärisnime tõendajad"
 
-#: src/js/controllers/index.js:810
+#: src/js/controllers/index.js:811
 msgid "Receive"
 msgstr "Võta vastu"
 
-#: public/views/walletHome.html:706
+#: public/views/walletHome.html:766
 msgid "Received"
 msgstr "Sisse"
 
@@ -1337,7 +1408,7 @@ msgstr "Taasta lähtesõnadega"
 msgid "Recreating Wallet..."
 msgstr "Rahakoti Taastamine..."
 
-#: src/js/controllers/index.js:289
+#: src/js/controllers/index.js:290
 msgid "Refused"
 msgstr "Keeldutud"
 
@@ -1391,6 +1462,18 @@ msgstr "Esita maksenõue"
 msgid "Required number of signatures"
 msgstr "Nõutav allkirjade arv"
 
+#: public/views/walletHome.html:556
+msgid "Response"
+msgstr "Vastus"
+
+#: public/views/modals/tx-details.html:167
+msgid "Response unit"
+msgstr "Vastuse tehing"
+
+#: public/views/modals/tx-details.html:189
+msgid "Response variables"
+msgstr "Vastuse muutujad"
+
 #: public/views/preferencesGlobal.html:114
 msgid "Restore all wallet data"
 msgstr "Taasta kogu rahakott"
@@ -1399,7 +1482,7 @@ msgstr "Taasta kogu rahakott"
 msgid "Retrying..."
 msgstr "Uuesti proovimine..."
 
-#: public/views/modals/view-prosaic-contract.html:144
+#: public/views/modals/view-prosaic-contract.html:142
 msgid "Revoke"
 msgstr "Võta tagasi"
 
@@ -1436,7 +1519,7 @@ msgstr "Otsing lõppes vealise tulemusega"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Skaneeri ülevalolev QR kood teise seadmega või saada see sidumiskood teisele seadmele:"
 
-#: src/js/controllers/index.js:1784
+#: src/js/controllers/index.js:1785
 msgid "Scan your fingerprint please"
 msgstr "Palun skaneeri oma sõrmejälge"
 
@@ -1465,9 +1548,10 @@ msgid "Select your identity"
 msgstr "Vali oma identiteet"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:537
-#: public/views/walletHome.html:636
-#: src/js/controllers/index.js:814
+#: public/views/walletHome.html:581
+#: public/views/walletHome.html:696
+#: src/js/controllers/index.js:815
+#: src/js/controllers/walletHome.js:1199
 msgid "Send"
 msgstr "Saada"
 
@@ -1479,7 +1563,7 @@ msgstr "Saada Makse"
 msgid "Send addresses by email"
 msgstr "Saada aadresse e-kirjaga"
 
-#: public/views/walletHome.html:378
+#: public/views/walletHome.html:380
 msgid "Send all"
 msgstr "Saada kõik"
 
@@ -1495,7 +1579,7 @@ msgstr "Saada need konto andmed"
 msgid "Sending..."
 msgstr "Saatmine..."
 
-#: public/views/walletHome.html:708
+#: public/views/walletHome.html:768
 msgid "Sent"
 msgstr "Välja"
 
@@ -1533,12 +1617,12 @@ msgstr "Jaga koodi"
 msgid "Share this wallet address to receive payments."
 msgstr "Jaga seda rahakoti aadressi maksete saamiseks."
 
-#: public/views/walletHome.html:412
-#: public/views/walletHome.html:557
+#: public/views/walletHome.html:395
+#: public/views/walletHome.html:601
 msgid "Share via message"
 msgstr "Sõnumiga jagamiseks"
 
-#: public/views/walletHome.html:766
+#: public/views/walletHome.html:834
 msgid "Show all"
 msgstr "Näita kõiki"
 
@@ -1546,12 +1630,12 @@ msgstr "Näita kõiki"
 msgid "Show the Wallet Seed Anyway"
 msgstr "Näita Rahakoti Lähtesõnu"
 
-#: public/views/modals/sign-message.html:46
+#: public/views/modals/sign-message.html:45
 msgid "Sign"
 msgstr "Allkirjasta"
 
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:468
+#: src/js/controllers/index.js:469
 msgid "Sign message"
 msgstr "Allkirjasta sõnum"
 
@@ -1563,8 +1647,8 @@ msgstr "Allkirjastatud lepingud:"
 msgid "Signed message"
 msgstr "Allkirjastatud sõnum"
 
-#: public/views/modals/sign-message.html:22
-#: public/views/modals/signed-message.html:22
+#: public/views/modals/sign-message.html:21
+#: public/views/modals/signed-message.html:21
 msgid "Signing address:"
 msgstr "Allkirjastatav aadress:"
 
@@ -1581,6 +1665,10 @@ msgstr "Ühe aadressiga rahakotid ei tekita iga tehinguga uut aadressi, tehingus
 #: src/js/services/profileService.js:335
 msgid "Small Expenses Wallet"
 msgstr "Rahakott Väikestele Kuludele"
+
+#: public/views/walletHome.html:541
+msgid "Source code:"
+msgstr "Lähtekood:"
 
 #: src/js/controllers/create.js:32
 msgid "Specify Seed..."
@@ -1603,20 +1691,24 @@ msgstr "Staatus"
 msgid "Still not done"
 msgstr "Endiselt pole tehtud"
 
-#: src/js/controllers/correspondentDevice.js:1386
+#: src/js/controllers/correspondentDevice.js:1412
 msgid "Store"
 msgstr "Salvesta"
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:141
-#: src/js/controllers/export.js:166
-#: src/js/controllers/index.js:326
-#: src/js/controllers/index.js:354
+#: src/js/controllers/export.js:142
+#: src/js/controllers/export.js:167
+#: src/js/controllers/index.js:327
+#: src/js/controllers/index.js:355
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:1933
-#: src/js/controllers/walletHome.js:2009
+#: src/js/controllers/walletHome.js:2448
+#: src/js/controllers/walletHome.js:2524
 msgid "Success"
 msgstr "Õnnestus"
+
+#: src/js/controllers/correspondentDevice.js:1357
+msgid "Surname"
+msgstr "Perekonnanimi"
 
 #: public/views/preferencesAdvanced.html:19
 msgid "Sweep paper wallet"
@@ -1640,7 +1732,7 @@ msgstr "TOR kasutamine"
 
 #: public/views/walletHome.html:117
 #: public/views/walletHome.html:122
-#: public/views/walletHome.html:673
+#: public/views/walletHome.html:733
 msgid "Tap to retry"
 msgstr "Puuduta, et proovida uuesti"
 
@@ -1649,14 +1741,19 @@ msgstr "Puuduta, et proovida uuesti"
 msgid "Terms of Use"
 msgstr "Kasutustingimused"
 
-#: public/views/modals/offer-prosaic-contract.html:69
-#: public/views/modals/view-prosaic-contract.html:88
+#: public/views/modals/offer-prosaic-contract.html:67
+#: public/views/modals/view-prosaic-contract.html:86
+#: public/views/walletHome.html:349
 msgid "Text"
 msgstr "Tekst"
 
 #: public/views/correspondentDevice.html:350
 msgid "Text message to"
 msgstr "Kirjuta sõnum:"
+
+#: public/views/walletHome.html:662
+msgid "Text to be forever saved on the DAG:"
+msgstr "Tekst, mis salvestatakse igaveseks avalikku andmebaasi:"
 
 #: public/views/modals/claim-textcoin.html:29
 msgid "Textcoin"
@@ -1666,13 +1763,17 @@ msgstr "Tekstiliste vahendite sõnad"
 msgid "The attested address belongs to:"
 msgstr "Tõendatud aadress kuulub:"
 
+#: public/views/walletHome.html:542
+msgid "The expected result:"
+msgstr "Eeldatav tulemus:"
+
 #: public/views/preferencesHub.html:20
 msgid "The hub for receiving messages from other devices."
 msgstr "Teadete jaotuspunkti kasutatakse sõnumite saamiseks teistelt seadmetelt."
 
 #: public/views/modals/approveNewWitnesses.html:11
-msgid "The hub suggests replacing the following witnesses:"
-msgstr "Jaotuspunkt soovitab vahetada järgmised tunnistajad:"
+msgid "The hub suggests replacing the following Order Providers (also known as witnesses):"
+msgstr "Jaotuspunkt soovitab vahetada järgmised Järjekorra Pakkujad:"
 
 #: public/views/modals/share.html:27
 msgid "The money is stored on this textcoin:"
@@ -1682,7 +1783,7 @@ msgstr "Vahendid on salvestatud sellesse teksti:"
 msgid "The peer receives this payment if"
 msgstr "Teine osapool saab selle makse kui"
 
-#: public/views/modals/signed-message.html:28
+#: public/views/modals/signed-message.html:27
 msgid "The signature is"
 msgstr "Allkiri on"
 
@@ -1723,7 +1824,7 @@ msgstr "Seda valikut ei ole võimalik hiljem muuta"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "See valik on parem privaatsuse säilitamiseks, aga võtab mitu gigabaiti ruumi ja esialgne sünkroniseerimine võtab aega mitu päeva. CPU kasutus on ka kõrge sellel ajal."
 
-#: public/views/walletHome.html:457
+#: public/views/walletHome.html:441
 msgid "This payment is bound to a condition..."
 msgstr "See makse on seotud tingimusega..."
 
@@ -1734,6 +1835,10 @@ msgstr "Seda makset saab maksta ainult ühe aadressiga rahakotist"
 #: public/views/modals/tx-details.html:89
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "See tehing on muutunud kehtetuks; tõenäoliselt topelt-kulutamise katse tõttu."
+
+#: public/views/modals/tx-details.html:162
+msgid "This transaction was sent to an autonomous agent"
+msgstr "See tehing saadeti Autonoomsele Agendile"
 
 #: public/views/preferences.html:46
 msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
@@ -1756,8 +1861,8 @@ msgstr "Seda rahakotti ei saa muuta ühe aadressiga rahakotiks, sest see on mitm
 msgid "This will permanently delete all your existing wallets!"
 msgstr "See kustutaks jäädavalt kõik sinu rahakotid!"
 
-#: public/views/modals/offer-prosaic-contract.html:66
-#: public/views/modals/view-prosaic-contract.html:85
+#: public/views/modals/offer-prosaic-contract.html:64
+#: public/views/modals/view-prosaic-contract.html:83
 msgid "Title of contract"
 msgstr "Lepingu pealkiri"
 
@@ -1765,12 +1870,16 @@ msgstr "Lepingu pealkiri"
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
 #: public/views/modals/tx-details.html:74
-#: public/views/walletHome.html:741
-#: src/js/controllers/index.js:1596
+#: public/views/walletHome.html:806
+#: src/js/controllers/index.js:1597
 msgid "To"
 msgstr "Kellele"
 
-#: public/views/walletHome.html:419
+#: public/views/walletHome.html:815
+msgid "To AA"
+msgstr "AAle"
+
+#: public/views/walletHome.html:402
 msgid "To Obyte address"
 msgstr "Obyte aadressile"
 
@@ -1778,15 +1887,15 @@ msgstr "Obyte aadressile"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "Selleks, et saaks taastada kõike, tee täielik varukoopia (leiad selle valiku menüüst)"
 
-#: public/views/walletHome.html:647
+#: public/views/walletHome.html:707
 msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
 msgstr "Selleks, et saata andmeid O<sub>byte</sub> võrku, palun vali kõigepealt ühekordse aadressiga rahakott või loo selline."
 
-#: public/views/walletHome.html:466
+#: public/views/walletHome.html:450
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Selleks, et siduda makse tingimusega, palun klõpsa vestluses mõnel aadressil ja vali 'Maksa sellele aadressile'"
 
-#: src/js/controllers/index.js:1599
+#: src/js/controllers/index.js:1600
 msgid "To email"
 msgstr "E-kirjale"
 
@@ -1794,15 +1903,19 @@ msgstr "E-kirjale"
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Sinu privaatsuse kaitsmiseks luuakse automaatselt pärast igat kasutamist uus aadress."
 
-#: public/views/modals/view-prosaic-contract.html:95
+#: public/views/modals/view-prosaic-contract.html:93
 msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
 msgstr "Lepingu terviklikkuse kinnitamiseks arvutatakse SHA256 räsi kolmest kokku pandud osast ja kodeeritakse BASE64 formaati: base64(sha256(pealkiri+tekst+loomise aeg)). Pärast lepingu aksepteerimist, tehing räsiga postitakse avalikku andmebaasi. Avalikus andmebaasi oleva räsi ja arvutatud räsi võrdlemisel saab veenduda, et lepingu teksti pole muudetud."
+
+#: public/views/walletHome.html:665
+msgid "Too long text"
+msgstr "Liiga pikk tekst"
 
 #: public/views/walletHome.html:222
 msgid "Total Locked Balance"
 msgstr "Lukustatud kontojääk kokku"
 
-#: public/views/walletHome.html:377
+#: public/views/walletHome.html:379
 msgid "Total amount"
 msgstr "Summa kokku"
 
@@ -1814,13 +1927,13 @@ msgstr "Kaasallkirjastajaid kokku"
 msgid "Transaction"
 msgstr "Tehing"
 
-#: src/js/controllers/index.js:271
+#: src/js/controllers/index.js:272
 msgid "Transaction created.\n"
 "Please approve it on the other devices."
 msgstr "Tehing loodud.\n"
 "Palun kinnita see teistel seadmetel."
 
-#: public/views/walletHome.html:697
+#: public/views/walletHome.html:757
 msgid "Transactions<br> Downloaded"
 msgstr "Tehingud<br> Allalaetud"
 
@@ -1836,16 +1949,20 @@ msgstr "Tõlkijad"
 msgid "Trusted nodes"
 msgstr "Usaldusväärsed sõlmed"
 
-#: src/js/controllers/correspondentDevice.js:1335
+#: public/views/walletHome.html:546
+msgid "Try again"
+msgstr "Proovi uuesti"
+
+#: src/js/controllers/correspondentDevice.js:1361
 msgid "US state"
 msgstr "USA ühendriik"
 
-#: src/js/controllers/walletHome.js:864
+#: src/js/controllers/walletHome.js:1276
 msgid "Unable to send transaction proposal"
 msgstr "Ei õnnestud saata tehingu ettepanekut"
 
 #: public/views/modals/tx-details.html:121
-#: public/views/walletHome.html:728
+#: public/views/walletHome.html:788
 msgid "Unconfirmed"
 msgstr "Kinnitamata"
 
@@ -1870,23 +1987,27 @@ msgid "Upgrade to {{version}}"
 msgstr "Uuenda versioonini {{version}}"
 
 #: public/views/includes/upgrading_db.html:8
-msgid "Upgrading the database, please wait.  Sometimes it takes several minutes."
-msgstr "Andmebaasi uuendamine, palun oota. Mõnikord võtab see mõned minutid."
+msgid "Upgrading the database, please wait."
+msgstr "Uuendatakse andmebaasi, palun oota."
 
 #: public/views/modals/view-prosaic-contract.html:67
 msgid "Valid till"
 msgstr "Kehtib kuni"
 
-#: public/views/walletHome.html:511
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:515
+#: public/views/walletHome.html:677
 msgid "Value"
 msgstr "Väärtus"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "Values"
 msgstr "Väärtused"
 
-#: src/js/controllers/correspondentDevice.js:1359
+#: public/views/walletHome.html:553
+msgid "Variable"
+msgstr "Muutuja"
+
+#: src/js/controllers/correspondentDevice.js:1385
 msgid "Verifying the profile..."
 msgstr "Konto kinnitamine..."
 
@@ -1979,21 +2100,13 @@ msgstr "Mida saadetakse"
 
 #: public/views/modals/multi-payment.html:35
 #: public/views/modals/offer-contract.html:112
-#: public/views/modals/sign-message.html:28
+#: public/views/modals/sign-message.html:27
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:526
-#: public/views/walletHome.html:550
-#: public/views/walletHome.html:628
+#: public/views/walletHome.html:570
+#: public/views/walletHome.html:594
+#: public/views/walletHome.html:688
 msgid "Who signs:"
 msgstr "Kes allkirjastab:"
-
-#: public/views/preferencesEditWitness.html:12
-msgid "Witness address"
-msgstr "Tunnistaja aadress"
-
-#: public/views/preferencesGlobal.html:71
-msgid "Witnesses"
-msgstr "Tunnistajad"
 
 #: public/views/modals/share.html:43
 msgid "Write down this textcoin on paper and store it securely. Claim it back anytime in the future using"
@@ -2008,9 +2121,18 @@ msgid "Wrong password"
 msgstr "Vale salasõna"
 
 #: public/views/authConfirmation.html:17
-#: src/js/controllers/index.js:659
+#: public/views/modals/tx-details.html:174
+#: src/js/controllers/index.js:660
 msgid "Yes"
 msgstr "Jah"
+
+#: public/views/walletHome.html:530
+msgid "You are sending to an autonomous agent, the expected result:"
+msgstr "Tehing saadetakse Autonoomsele Agendile, eeldatav tulemus:"
+
+#: public/views/walletHome.html:532
+msgid "You are sending to an autonomous agent:"
+msgstr "Tehing saadetakse Autonoomsele Agendile:"
 
 #: public/views/modals/tx-details.html:151
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
@@ -2028,7 +2150,7 @@ msgstr "Sul ei ole rahakotti"
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr "Konto andmete saamiseks pead läbima vastavuse tõendamise. Seda saab teha \"Real Name Attestation\" vestlusrobotiga."
 
-#: public/views/modals/offer-prosaic-contract.html:92
+#: public/views/modals/offer-prosaic-contract.html:90
 msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
 msgstr "Allkirja tõendi postitamise tasu on {{CHARGE_AMOUNT}} bytes."
 
@@ -2061,10 +2183,10 @@ msgstr "Sinu rahakott luuakse sellele seadmele, hoia seda turvaliselt. Varundami
 msgid "[ Add new co-signer device ]"
 msgstr "[ Lisa uus kaasallkirjastaja seade ]"
 
-#: public/views/modals/offer-prosaic-contract.html:56
-#: public/views/modals/offer-prosaic-contract.html:63
-#: public/views/modals/view-prosaic-contract.html:75
-#: public/views/modals/view-prosaic-contract.html:82
+#: public/views/modals/offer-prosaic-contract.html:55
+#: public/views/modals/offer-prosaic-contract.html:61
+#: public/views/modals/view-prosaic-contract.html:74
+#: public/views/modals/view-prosaic-contract.html:80
 msgid "address"
 msgstr "aadress"
 
@@ -2091,37 +2213,37 @@ msgid "and it is recommended you back it up."
 msgstr "ja selle varundamine on soovitatav."
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:62
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/offer-prosaic-contract.html:54
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:79
 msgid "attested by trusted attestor"
 msgstr "tõendatud usaldatud tõendaja pool"
 
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:62
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/offer-prosaic-contract.html:54
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:79
 msgid "attested by:"
 msgstr "tõendaja:"
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:62
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/offer-prosaic-contract.html:54
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:79
 msgid "attestor is not trusted by you"
 msgstr "tõendaja pole sinu poolt usaldatud"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "available"
 msgstr "saadaval"
 
-#: src/js/controllers/index.js:468
+#: src/js/controllers/index.js:469
 msgid "by address"
 msgstr "aadressiga"
 
-#: public/views/modals/view-prosaic-contract.html:106
+#: public/views/modals/view-prosaic-contract.html:104
 msgid "calculated hash:"
 msgstr "arvutatud räsi:"
 
@@ -2142,6 +2264,10 @@ msgstr "lukustan/lukustab lahti selle lepingu kui see aegub pärast"
 msgid "cancel wallet creation"
 msgstr "tühista rahakoti loomine"
 
+#: public/views/walletHome.html:666
+msgid "character(s)"
+msgstr "tähemärk(i)"
+
 #: public/views/modals/tx-details.html:140
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr "võeti omaks {{btx.claimedByMe?'minu poolt':'vastuvõtja poolt'|translate}}"
@@ -2150,7 +2276,7 @@ msgstr "võeti omaks {{btx.claimedByMe?'minu poolt':'vastuvõtja poolt'|translat
 msgid "clear chat history"
 msgstr "kustuta vestluse ajalugu"
 
-#: public/views/walletHome.html:617
+#: public/views/walletHome.html:677
 msgid "confirmed"
 msgstr "kinnitatud"
 
@@ -2158,13 +2284,17 @@ msgstr "kinnitatud"
 msgid "created"
 msgstr "loodud"
 
-#: public/views/modals/view-prosaic-contract.html:96
+#: public/views/modals/view-prosaic-contract.html:94
 msgid "creation date:"
 msgstr "loomise kuupäev:"
 
 #: public/views/modals/offer-contract.html:109
 msgid "days"
 msgstr "päeva"
+
+#: src/js/controllers/walletHome.js:1174
+msgid "decreased by"
+msgstr "väheneb"
 
 #: public/views/modals/bind.html:82
 #: public/views/modals/offer-contract.html:99
@@ -2191,17 +2321,17 @@ msgstr "kustuta tekstilised vahendid"
 msgid "explicitly"
 msgstr "selgesõnaliselt"
 
-#: public/views/modals/view-prosaic-contract.html:107
+#: public/views/modals/view-prosaic-contract.html:105
 msgid "hash published in DAG:"
 msgstr "avaldatud räsi:"
 
-#: public/views/modals/view-prosaic-contract.html:97
+#: public/views/modals/view-prosaic-contract.html:95
 msgid "hash source string:"
 msgstr "lähtetekst:"
 
 #: public/views/modals/bind.html:87
 #: public/views/modals/offer-contract.html:69
-#: public/views/modals/offer-prosaic-contract.html:72
+#: public/views/modals/offer-prosaic-contract.html:70
 msgid "hours"
 msgstr "tundi"
 
@@ -2217,7 +2347,11 @@ msgstr "räsipuus"
 msgid "in smart wallets"
 msgstr "nutilepingutes"
 
-#: public/views/modals/signed-message.html:29
+#: src/js/controllers/walletHome.js:1170
+msgid "increased by"
+msgstr "suureneb"
+
+#: public/views/modals/signed-message.html:28
 msgid "invalid"
 msgstr "sobimatu"
 
@@ -2225,15 +2359,28 @@ msgstr "sobimatu"
 msgid "keep for myself"
 msgstr "endale hoidmiseks"
 
+#: public/views/walletHome.html:537
+msgid "less"
+msgstr "vähem"
+
 #: public/views/includes/available-balance.html:12
 msgid "locked by pending payments"
 msgstr "lukus ootel maksete tõttu"
+
+#: public/views/walletHome.html:536
+msgid "more"
+msgstr "rohkem"
+
+#: public/views/modals/tx-details.html:169
+#: src/js/controllers/walletHome.js:1220
+msgid "none"
+msgstr "pole ühtegi"
 
 #: public/views/modals/tx-details.html:134
 msgid "not claimed"
 msgstr "pole omaks võetud"
 
-#: public/views/modals/view-prosaic-contract.html:103
+#: public/views/modals/view-prosaic-contract.html:101
 msgid "not valid"
 msgstr "ei ole kehtiv"
 
@@ -2254,8 +2401,8 @@ msgstr "kuupäeval"
 msgid "on feed name"
 msgstr "poolt nimega"
 
-#: public/views/walletHome.html:477
-#: public/views/walletHome.html:488
+#: public/views/walletHome.html:461
+#: public/views/walletHome.html:472
 msgid "optional"
 msgstr "valikuline"
 
@@ -2300,35 +2447,40 @@ msgid "send"
 msgstr "saatmiseks"
 
 #: public/views/modals/share.html:30
-#: src/js/controllers/walletHome.js:795
+#: src/js/controllers/walletHome.js:802
 msgid "send email"
 msgstr "e-kiri"
 
-#: src/js/controllers/walletHome.js:1034
-#: src/js/controllers/walletHome.js:1047
-#: src/js/controllers/walletHome.js:1147
-#: src/js/controllers/walletHome.js:1206
-#: src/js/controllers/walletHome.js:1357
-#: src/js/controllers/walletHome.js:1394
-#: src/js/controllers/walletHome.js:1403
-#: src/js/controllers/walletHome.js:964
-#: src/js/controllers/walletHome.js:999
+#: src/js/controllers/walletHome.js:1370
+#: src/js/controllers/walletHome.js:1405
+#: src/js/controllers/walletHome.js:1440
+#: src/js/controllers/walletHome.js:1453
+#: src/js/controllers/walletHome.js:1553
+#: src/js/controllers/walletHome.js:1605
+#: src/js/controllers/walletHome.js:1632
+#: src/js/controllers/walletHome.js:1807
+#: src/js/controllers/walletHome.js:1869
+#: src/js/controllers/walletHome.js:1878
 msgid "sending"
 msgstr "saatmine"
+
+#: src/js/controllers/walletHome.js:1178
+msgid "set to"
+msgstr "määra"
 
 #: public/views/modals/tx-details.html:148
 msgid "share again"
 msgstr "jagada uuesti"
 
-#: public/views/walletHome.html:463
+#: public/views/walletHome.html:447
 msgid "switch to multi-address"
 msgstr "aktiveeri mitmele aadressile saatmine"
 
-#: public/views/walletHome.html:462
+#: public/views/walletHome.html:446
 msgid "switch to single address"
 msgstr "aktiveeri ühele aadressile saatmine"
 
-#: public/views/modals/view-prosaic-contract.html:91
+#: public/views/modals/view-prosaic-contract.html:89
 msgid "the contract is not signed yet"
 msgstr "leping ei ole veel allkirjastatud"
 
@@ -2337,39 +2489,48 @@ msgid "the text below and send it to the recipient via any messaging app"
 msgstr "see alumine tekst ja saada see kellelegi läbi mõne sõnumirakenduse"
 
 #: public/views/modals/approveNewWitnesses.html:26
+#: src/js/controllers/walletHome.js:1199
 msgid "to"
 msgstr "asemele"
 
-#: src/js/controllers/index.js:371
+#: src/js/controllers/index.js:372
 msgid "together with"
 msgstr "koos"
 
-#: public/views/walletHome.html:478
-#: public/views/walletHome.html:489
+#: public/views/walletHome.html:462
+#: public/views/walletHome.html:473
 msgid "too long!"
 msgstr "liiga pikk!"
 
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:62
+#: public/views/modals/offer-prosaic-contract.html:54
+#: public/views/modals/offer-prosaic-contract.html:60
 msgid "trusted"
 msgstr "usaldatud"
 
-#: public/views/modals/view-prosaic-contract.html:94
+#: public/views/modals/view-prosaic-contract.html:92
 msgid "unit in DAG:"
 msgstr "tehing andmebaasis:"
 
-#: public/views/modals/signed-message.html:30
-#: public/views/modals/view-prosaic-contract.html:102
+#: src/js/controllers/walletHome.js:1211
+msgid "unlimited"
+msgstr "piiramatu"
+
+#: public/views/modals/signed-message.html:29
+#: public/views/modals/view-prosaic-contract.html:100
 msgid "valid"
 msgstr "sobiv"
 
-#: public/views/modals/view-prosaic-contract.html:100
+#: public/views/modals/view-prosaic-contract.html:98
 msgid "validate contract integrity"
 msgstr "kinnita lepingu terviklikkus"
 
-#: src/js/controllers/walletHome.js:916
+#: src/js/controllers/walletHome.js:1333
 msgid "wait for sync to complete before sending payments"
 msgstr "enne maksete saatmist oota sünkroniseerimise lõpuni"
+
+#: public/views/walletHome.html:561
+msgid "were added as it is the minimum amount for this AA"
+msgstr "lisatud, sest see on minimaalne kogus selle Autonoomse Agendi jaoks"
 
 #: public/views/modals/select-subwallet.html:37
 msgid "with"
@@ -2379,4 +2540,12 @@ msgstr "koos"
 #: public/views/modals/offer-contract.html:91
 msgid "with expected value"
 msgstr "eeldades väärtuseks"
+
+#: src/js/controllers/walletHome.js:1197
+msgid "you"
+msgstr "sina"
+
+#: public/views/walletHome.html:370
+msgid "{{home.custom_amount_error}}"
+msgstr "{{home.custom_amount_error}}"
 
