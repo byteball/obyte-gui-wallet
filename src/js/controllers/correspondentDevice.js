@@ -116,7 +116,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			},
 			ifError: function(error){
 				setOngoingProcess();
-				setError(error);
+				if (conf.socksHost && conf.socksPort && error == 'Error: Socket Closed')
+					setError('Connection lost with Tor network, please check that Tor service is running.');
+				else
+					setError(error);
 			}
 		});
 	};
