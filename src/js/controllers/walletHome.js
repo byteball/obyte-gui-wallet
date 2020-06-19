@@ -2126,13 +2126,13 @@ angular.module('copayApp.controllers')
 						if (amount) {
 							//	form.amount.$setViewValue("" + amount);
 							//	form.amount.$isValid = true;
-							this.lockAmount = true;
+							self.lockAmount = true;
 							form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
 							form.amount.$isValid = true;
 							form.amount.$render();
 						}
 						else  {
-							this.lockAmount = false;
+							self.lockAmount = false;
 							form.amount.$setViewValue("");
 							form.amount.$pristine = true;
 							form.amount.$render();
