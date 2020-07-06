@@ -659,10 +659,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						str += ' after MCI '+min_mci;
 					return str;
 				case 'has':
-					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
-						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
-					if (args.what === 'output' && args.asset && args.amount && args.address)
-						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
+					if (args.what === 'output' && args.asset && args.address) {
+						if (args.amount_at_least)
+							return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
+						if (args.amount_at_most)
+							return 'sends at most ' + getAmountText(args.amount_at_most, args.asset) + ' to ' + getDisplayAddress(args.address);
+						if (args.amount)
+							return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
+						return 'sends ' + escapeHtml(profileService.getUnitName(args.asset)) + ' to ' + getDisplayAddress(args.address);
+					}
+					return escapeHtml(JSON.stringify(arrSubdefinition));
+				case 'has one':
+					if (args.what === 'output' && Object.keys(args).length === 1)
+						return 'has only one output';
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){

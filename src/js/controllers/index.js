@@ -174,7 +174,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   function readLastTimestamp(cb) {
     var db = require('ocore/db.js');
     var data_feeds = require('ocore/data_feeds.js');
-    db.query("SELECT timestamp FROM units WHERE is_free=1 ORDER BY timestamp DESC LIMIT 1", function (rows) {
+    db.query("SELECT timestamp FROM units WHERE is_free=1 AND is_on_main_chain=1 ORDER BY timestamp DESC LIMIT 1", function (rows) {
       if (rows.length === 0)
         return cb(0);
       var timestamp = rows[0].timestamp;

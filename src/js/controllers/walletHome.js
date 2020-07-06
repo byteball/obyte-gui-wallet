@@ -956,8 +956,8 @@ angular.module('copayApp.controllers')
 			if (!doc_url)
 				return;
 			// allow other protocols, e.g. ipfs
-			if (doc_url.indexOf(':') === -1)
-				doc_url = 'https://' + doc_url;
+		//	if (doc_url.indexOf(':') === -1)
+		//		doc_url = 'https://' + doc_url;
 			doc_url = doc_url.replace(/{{aa_address}}/g, aa_address);
 			require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
 				if (err)
@@ -2062,6 +2062,7 @@ angular.module('copayApp.controllers')
 						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
 						paymentData = paymentData ? JSON.parse(paymentData) : null;
 						if (paymentData) {
+							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
 								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
 							}
@@ -2125,13 +2126,13 @@ angular.module('copayApp.controllers')
 						if (amount) {
 							//	form.amount.$setViewValue("" + amount);
 							//	form.amount.$isValid = true;
-							this.lockAmount = true;
+							self.lockAmount = true;
 							form.amount.$setViewValue("" + profileService.getAmountInDisplayUnits(amount, asset));
 							form.amount.$isValid = true;
 							form.amount.$render();
 						}
 						else  {
-							this.lockAmount = false;
+							self.lockAmount = false;
 							form.amount.$setViewValue("");
 							form.amount.$pristine = true;
 							form.amount.$render();
