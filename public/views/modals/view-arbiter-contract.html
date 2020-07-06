@@ -138,8 +138,8 @@ form[name="prosaicContractForm"] {
 			{{error}}
 		</span>
 	</div>
-	
-	<div class="row m20t" ng-if="status == 'pending' && isIncoming && index.isEnoughSignersSelected()">
+
+	<div class="row m20t" ng-if="(status == 'pending' || (status === 'accepted' && !unit)) && isIncoming && index.isEnoughSignersSelected()">
 		<div class="large-6 medium-6 small-6 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
 				<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
@@ -157,29 +157,37 @@ form[name="prosaicContractForm"] {
 		</div>
 	</div>
 
-	<div class="row columns m20t">
+	<div class="row columns m20t" ng-show="status === 'pending' && !isIncoming">
 		<div class="large-12 medium-12 small-12 columns">
-			<button class="button expand round" ng-show="status === 'pending' && !isIncoming" ng-class="cancel_button_class" ng-click="revoke()">
+			<button class="button expand round" ng-class="cancel_button_class" ng-click="revoke()">
 				<i class="fi-x"></i> <span class="tu" translate>Revoke</span>
 			</button>
 		</div>
 	</div>
 
-	<div class="row columns m20t">
+	<div class="row columns m20t" ng-show="status === 'accepted' && !!me_is_payer && !!unit">
 		<div class="large-12 medium-12 small-12 columns">
-			<button class="button expand round" ng-show="status === 'accepted' && !!me_is_payer && !!unit" ng-class="yes_button_class" ng-click="pay()">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="pay()">
 				<i class="yes_icon"></i> <span class="tu" translate>Pay</span>
 			</button>
 		</div>
 	</div>
 
-	<div class="row columns m20t">
-		<div class="large-12 medium-12 small-12 columns center" ng-show="status === 'paid' && !!unit">
+	<div class="row columns m20t" ng-show="status === 'paid' && !!unit">
+		<div class="large-12 medium-12 small-12 columns center">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Cancel'}}</span>
 			</button>
 
 			<span ng-click="dispute()" translate class="validation_check">open dispute</span>
+		</div>
+	</div>
+
+	<div class="row columns m20t" ng-show="status === 'resolved' && me_is_winner">
+		<div class="large-12 medium-12 small-12 columns center">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="claim()">
+				<i class="yes_icon"></i> <span class="tu" translate>Claim funds</span>
+			</button>
 		</div>
 	</div>
 </div>

@@ -577,7 +577,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	                            }
 	                        });
 						}
-						// prosaic contract related requests
+						// prosaic/arbiter contracts related requests
 						var db = require('ocore/db.js');
 						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var arbiter_contract = require('ocore/arbiter_contract.js');
