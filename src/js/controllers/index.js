@@ -581,21 +581,21 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						var db = require('ocore/db.js');
 						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var arbiter_contract = require('ocore/arbiter_contract.js');
-						function isContractSignRequest(cb3) {
+						function isContractSignRequest(cb) {
 							var matches = question.match(/contract_text_hash: (.{44})/m);
 							if (matches && matches.length) {
 								var contract_hash = matches[1];
 								var contract;
-								async.series([function(cb4){
+								async.series([function(cb){
 									prosaic_contract.getByHash(contract_hash, function(objContract) {
 										if (!objContract)
-											return cb4();
+											return cb();
 										contract = objContract;
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
 										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
-											return cb3(false);
+											return cb();
 										var shared_address;
-										async.series([function(cb2){
+										async.series([function(cb){
 											var shared_author = lodash.find(objUnit.authors, function(author){
 												try {
 													return author.definition[0] === "and" && author.definition[1][0][0] === "address" && author.definition[1][1][0] === "address";
@@ -605,38 +605,38 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											});
 											if (shared_author)
 												shared_address = shared_author.address;
-											cb2();
-										}, function(cb2){
+											cb();
+										}, function(cb){
 											if (shared_address)
-												return cb2();
+												return cb();
 											db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
 												if (!rows || !rows.length)
-													return cb2();
+													return cb();
 												var definition = JSON.parse(rows[0].definition);
 												try {
 													if (definition[0] === "and" && definition[1][0][0] === "address" && definition[1][1][0] === "address")
 														shared_address = arrPaymentMessages[0].payload.outputs[0].address;
-													cb2();
+													cb();
 												} catch (e) {
-													cb2();
+													cb();
 												}
 											});
 										}], function() {
 											if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
-												return cb3(false);
-											return cb3(true, contract);
+												return cb();
+											return cb('prosaic', contract);
 										});
 									});
-								}, function(cb4) {
+								}, function(cb) {
 									arbiter_contract.getByHash(contract_hash, function(objContract) {
 										if (!objContract)
-											return cb4();
+											return cb();
 										contract = objContract;
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
-										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 1)
-											return cb3(false);
+										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 2)
+											return cb();
 										var shared_address;
-										async.series([function(cb2){
+										async.series([function(cb){
 											var shared_author = lodash.find(objUnit.authors, function(author){
 												try {
 													return author.definition[1][0][0] === "and" && author.definition[1][0][1][0][0] === "address" && author.definition[1][0][1][1][0] === "address";
@@ -646,33 +646,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											});
 											if (shared_author)
 												shared_address = shared_author.address;
-											cb2();
-										}, function(cb2){
+											cb();
+										}, function(cb){
 											if (shared_address)
-												return cb2();
+												return cb();
 											db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
 												if (!rows || !rows.length)
-													return cb2();
+													return cb();
 												var definition = JSON.parse(rows[0].definition);
 												try {
 													if (definition[1][0][0] === "and" && definition[1][0][1][0][0] === "address" && definition[1][0][1][1][0] === "address")
 														shared_address = arrPaymentMessages[0].payload.outputs[0].address;
-													cb2();
+													cb();
 												} catch (e) {
-													cb2();
+													cb();
 												}
 											});
 										}], function() {
 											if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
-												return cb3(false);
-											return cb3(true, contract);
+												return cb();
+											return cb('arbiter', contract);
 										});
 									});
-								}], function() {
-									return cb3(false);
+								}], function(type, results) {
+									if (!type)
+										return cb(false);
+									for (var i = 0; i < results.length; i++)
+										if (results[i])
+											return cb(true, type, contract);
 								});
 							} else {
-								return cb3(false);
+								return cb(false);
 							}
 						}
 						function isContractDepositRequest(cb) {
@@ -702,9 +706,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									cb(true);
 							});
 						}
-					 	isContractSignRequest(function(isContract, objContract){
+					 	isContractSignRequest(function(isContract, type, objContract){
 						 	if (isContract) {
-						 		question = 'Sign '+objContract.title+' from wallet '+credentials.walletName+'?';
+						 		question = 'Sign '+type+' contract '+objContract.title+' from wallet '+credentials.walletName+'?';
 						 		return ask();
 						 	}
 						 	isContractDepositRequest(function(isContract, objContract){

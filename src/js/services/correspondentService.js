@@ -899,11 +899,19 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						}
 						profileService.bKeepUnlocked = true;
 
+						cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
+						if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
+							indexScope.copayers.forEach(function(copayer) {
+								if (!copayer.me)
+									cosigners.push(copayer.device_address);
+							});
+						}
+
 						var opts = {
 							asset: objContract.asset,
 							to_address: objContract.shared_address,
 							amount: objContract.amount,
-							arrSigningDeviceAddresses: objContract.cosigners
+							arrSigningDeviceAddresses: cosigners
 						};
 						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
@@ -1031,12 +1039,19 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.claim = function() {
 						var claim = function() {
 							profileService.bKeepUnlocked = true;
+							cosigners = [device.getMyDeviceAddress()];
+							if (profileService.focusedClient.credentials.m > 1) {
+								indexScope.copayers.forEach(function(copayer) {
+									if (!copayer.me)
+										cosigners.push(copayer.device_address);
+								});
+							}
 							var opts = {
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
 								amount: objContract.amount,
-								arrSigningDeviceAddresses: objContract.cosigners
+								arrSigningDeviceAddresses: cosigners
 							};
 							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 								profileService.bKeepUnlocked = false;
