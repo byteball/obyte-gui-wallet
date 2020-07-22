@@ -2608,6 +2608,56 @@ angular.module('copayApp.controllers')
 			}
 		};
 
+		this.resend = function(btx) {
+			$rootScope.$emit('Local/SetTab', 'send');
+			this.lockAsset = false;
+			this.lockAddress = false;
+			this.lockAmount = false;
+			this.hideAdvSend = true;
+			this.send_multiple = false;
+			$scope.home.feedvaluespairs = [];
+			var assetIndex = lodash.findIndex($scope.index.arrBalances, {
+				asset: btx.asset
+			});
+			var assetInfo = $scope.index.arrBalances[assetIndex];
+			if (assetInfo.is_private)
+				return self.setSendError(gettext("It is not allowed to resend private assets"));
+			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('form is gone');
+			if (self.bSendAll) {
+				form.amount.$setValidity('validAmount', true);
+			} else {
+				form.amount.$setValidity('validAmount', false);
+			}
+			form.amount.$setViewValue("" + btx.amount);
+			form.amount.$isValid = true;
+			form.amount.$render();
+			form.address.$setViewValue(btx.addressTo);
+			form.address.$isValid = true;
+			form.address.$render();
+			var storage = require('ocore/storage.js');
+			var db = require('ocore/db.js');
+			function ifFound(params) {
+				if (params && params.unit) {
+					var tempMessages = params.unit.messages;
+					var messageIndex = lodash.findIndex(tempMessages || [], {
+						app: 'data'
+					});
+					if (messageIndex >= 0) {
+						var payload_data = tempMessages[messageIndex].payload;
+						for (var key in payload_data) {
+							$scope.home.feedvaluespairs.push({name: key, value: payload_data[key], readonly: false});
+						}
+					}
+				}
+			};
+			function ifNotFound() {
+				//
+			}
+			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
+		};
+
 		/* Start setup */
 
 		this.bindTouchDown();

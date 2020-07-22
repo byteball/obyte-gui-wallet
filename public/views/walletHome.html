@@ -825,6 +825,11 @@ input.datafeed_input {
               <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
+          <span ng-show="btx.action !== 'received' && !btx.isTextcoin" ng-click="home.resend(btx); $event.stopPropagation();" class="small-2 right">
+            <div class="label tu light-gray radius" translate>
+              Resend
+            </div>
+          </span>
         </div>
 
         <div class="row m20t text-center" ng-show="index.historyRendering">
