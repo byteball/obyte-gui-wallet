@@ -212,7 +212,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			contracts.forEach(function(contract){
 				console.log("listening for arbiter contract response " + contract.hash);
 
-				// sendUnit can bbe called multiple times, as we now allow "accepting" the same contract multiple times in case previous tries fail
+				// sendUnit can be called multiple times, as we now allow "accepting" the same contract multiple times in case previous tries fail
 				var sendUnit = function(accepted, authors){
 					if (!accepted) {
 						return;
@@ -311,9 +311,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					
 					// create shared address and deposit some bytes to cover fees
 					function composeAndSend(shared_address){
-						contract.cosigners.forEach(function(cosigner){
-							if (cosigner != device.getMyDeviceAddress())
-								arbiter_contract.share(contract.hash, cosigner);
+						
+						arbiter_contract.setField(contract.hash, "shared_address", shared_address);
+
+						var allCosigners = [];
+						require('ocore/wallet_defined_by_keys.js').readCosigners(profileService.focusedClient.credentials.walletId, function(arrCosignerInfos){
+							allCosigners = arrCosignerInfos;
+							allCosigners.forEach(function(cosigner){
+								if (cosigner.device_address != device.getMyDeviceAddress())
+									arbiter_contract.share(contract.hash, cosigner.device_address);
+							});
 						});
 
 						profileService.bKeepUnlocked = true;
@@ -358,7 +365,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									return;
 								}
 								// shared address
-								arbiter_contract.setField(contract.hash, "shared_address", shared_address);
+								//arbiter_contract.setField(contract.hash, "shared_address", shared_address);
 								device.sendMessageToDevice(contract.peer_device_address, "arbiter_contract_update", {
 									hash: contract.hash,
 									field: "shared_address",
@@ -376,6 +383,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
+
+								allCosigners.forEach(function(cosigner){
+									if (cosigner.device_address != device.getMyDeviceAddress()) {
+										device.sendMessageToDevice(cosigner.device_address, "arbiter_contract_update", {
+											hash: contract.hash,
+											field: "unit",
+											value: unit
+										});
+									}
+								});
 							});
 						});
 					}
@@ -412,7 +429,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					var testnet = constants.version.match(/t$/) ? "testnet" : "";
 					var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 					var text = "Arbiter resolved contract dispute " + (winner == contract.my_address ? "in your favor." : "in favor of your peer."); 
-					text += " Unit with the resolution for \""+ contract.title +"\" was posted into DAG " + url + "\n";
+					text += " Unit with the resolution for \""+ contract.title +"\" was posted into DAG " + url + "\n. Please wait for this unit to be confirmed.";
 					correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 				};
 				db.query("SELECT DISTINCT unit FROM unit_authors WHERE address=?", [contract.arbiter_address], function(rows){
@@ -595,8 +612,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						// save cosigners here as respond() can be called
 						cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
 						if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
-							indexScope.copayers.forEach(function(copayer) {
-								if (!copayer.me)
+							$scope.index.copayers.forEach(function(copayer) {
+								if (!copayer.me && copayer.signs)
 									cosigners.push(copayer.device_address);
 							});
 						}
@@ -836,8 +853,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						// save cosigners here as respond() can be called
 						cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
 						if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
-							indexScope.copayers.forEach(function(copayer) {
-								if (!copayer.me)
+							$scope.index.copayers.forEach(function(copayer) {
+								if (!copayer.me && copayer.signs)
 									cosigners.push(copayer.device_address);
 							});
 						}
@@ -901,8 +918,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 						cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
 						if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
-							indexScope.copayers.forEach(function(copayer) {
-								if (!copayer.me)
+							$scope.index.copayers.forEach(function(copayer) {
+								if (!copayer.me && copayer.signs)
 									cosigners.push(copayer.device_address);
 							});
 						}
@@ -1041,8 +1058,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							profileService.bKeepUnlocked = true;
 							cosigners = [device.getMyDeviceAddress()];
 							if (profileService.focusedClient.credentials.m > 1) {
-								indexScope.copayers.forEach(function(copayer) {
-									if (!copayer.me)
+								$scope.index.copayers.forEach(function(copayer) {
+									if (!copayer.me && copayer.signs)
 										cosigners.push(copayer.device_address);
 								});
 							}

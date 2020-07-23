@@ -679,7 +679,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								return cb(false);
 							}
 						}
-						function isContractDepositRequest(cb) {
+						function isContractFeeDepositRequest(cb) {
 							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
 							if (!payment_msg)
 								return cb(false);
@@ -706,15 +706,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									cb(true);
 							});
 						}
+						function isContractDepositRequest(cb) {
+							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
+							if (!payment_msg)
+								return cb(false);
+							payment_msg.payload.outputs.forEach(function(o){
+								db.query("SELECT hash FROM arbiter_contracts WHERE shared_address=? AND status='accepted' AND amount=?", [o.address, o.amount], function(rows) {
+									if (!rows.length)
+										return cb(false);
+									arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+										cb(true, objContract);
+									});
+								});
+							});
+						}
 					 	isContractSignRequest(function(isContract, type, objContract){
 						 	if (isContract) {
 						 		question = 'Sign '+type+' contract '+objContract.title+' from wallet '+credentials.walletName+'?';
 						 		return ask();
 						 	}
-						 	isContractDepositRequest(function(isContract, objContract){
-								if (isContract)
-							 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
-							 	ask();
+						 	isContractFeeDepositRequest(function(isContract, objContract){
+								if (isContract) {
+							 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'fee deposit from wallet '+credentials.walletName+'?';
+							 		return ask();
+								}
+								isContractDepositRequest(function(isContract, objContract){
+									if (isContract) {
+								 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
+								 		return ask();
+									}
+									ask();
+								});
 							});
 						});
                     }
