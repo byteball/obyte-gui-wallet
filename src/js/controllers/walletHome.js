@@ -2610,19 +2610,41 @@ angular.module('copayApp.controllers')
 
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
+			this.resetError();
+			delete this.binding;
+
 			this.lockAsset = false;
 			this.lockAddress = false;
 			this.lockAmount = false;
 			this.hideAdvSend = true;
 			this.send_multiple = false;
-			$scope.home.feedvaluespairs = [];
+			this.from_address = null;
+
+			this._amount = this._address = null;
+			this.bSendAll = false;
+			if (!bKeepData)
+				$scope.home.feedvaluespairs = [];
+			resetAAFields();
 			var form = $scope.sendPaymentForm;
 			if (!form)
 				return console.log('form is gone');
-			form.amount.$setViewValue("" + btx.amount);
-			form.amount.$render();
-			form.address.$setViewValue(btx.addressTo);
-			form.address.$render();
+			if (!$scope.$root) $scope.$root = {};
+			if (form.amount) {
+				form.amount.$setViewValue("" + btx.amount);
+				form.amount.$render();
+			}
+			if (form.address) {
+				form.address.$setViewValue(btx.addressTo);
+				form.address.$render();
+			}
+			if (form.merkle_proof) {
+				form.merkle_proof.$setViewValue('');
+				form.merkle_proof.$render();
+			}
+			if (form.comment) {
+				form.comment.$setViewValue('');
+				form.comment.$render();
+			}
 			var storage = require('ocore/storage.js');
 			var db = require('ocore/db.js');
 			function ifFound(objJoint) {
