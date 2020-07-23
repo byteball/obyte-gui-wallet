@@ -2608,6 +2608,47 @@ angular.module('copayApp.controllers')
 			}
 		};
 
+		this.resend = function(btx) {
+			$rootScope.$emit('Local/SetTab', 'send');
+			this.lockAsset = false;
+			this.lockAddress = false;
+			this.lockAmount = false;
+			this.hideAdvSend = true;
+			this.send_multiple = false;
+			$scope.home.feedvaluespairs = [];
+			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('form is gone');
+			form.amount.$setViewValue("" + btx.amount);
+			form.amount.$render();
+			form.address.$setViewValue(btx.addressTo);
+			form.address.$render();
+			var storage = require('ocore/storage.js');
+			var db = require('ocore/db.js');
+			function ifFound(objJoint) {
+				if (objJoint && objJoint.unit) {
+					var tempMessages = objJoint.unit.messages;
+					var messageIndex = lodash.findIndex(tempMessages || [], {
+						app: 'data'
+					});
+					if (messageIndex >= 0) {
+						var payload_data = tempMessages[messageIndex].payload;
+						var tempFeedValuePairs = [];
+						for (var key in payload_data) {
+							tempFeedValuePairs.push({name: key, value: payload_data[key], readonly: false});
+						}
+						$timeout(function() {
+							$scope.home.feedvaluespairs = tempFeedValuePairs;
+						});
+					}
+				}
+			};
+			function ifNotFound() {
+				//
+			}
+			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
+		};
+
 		/* Start setup */
 
 		this.bindTouchDown();
