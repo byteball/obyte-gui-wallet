@@ -2360,6 +2360,7 @@ angular.module('copayApp.controllers')
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
+				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
 				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
