@@ -44,7 +44,8 @@
       </span>
       <span ng-if="!btx.merchant">
         <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-        <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}"></contact>
+        <contact ng-show="!btx.labelTo" class="enable_text_select"
+          address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}" />
       </span>
     </span>
     </li>
