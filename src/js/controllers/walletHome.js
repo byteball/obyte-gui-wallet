@@ -2622,8 +2622,7 @@ angular.module('copayApp.controllers')
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
-			if (!bKeepData)
-				$scope.home.feedvaluespairs = [];
+			$scope.home.feedvaluespairs = [];
 			resetAAFields();
 			var form = $scope.sendPaymentForm;
 			if (!form)
