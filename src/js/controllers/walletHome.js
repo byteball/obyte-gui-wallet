@@ -2608,6 +2608,68 @@ angular.module('copayApp.controllers')
 			}
 		};
 
+		this.resend = function(btx) {
+			$rootScope.$emit('Local/SetTab', 'send');
+			this.resetError();
+			delete this.binding;
+
+			this.lockAsset = false;
+			this.lockAddress = false;
+			this.lockAmount = false;
+			this.hideAdvSend = true;
+			this.send_multiple = false;
+			this.from_address = null;
+
+			this._amount = this._address = null;
+			this.bSendAll = false;
+			$scope.home.feedvaluespairs = [];
+			resetAAFields();
+			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('form is gone');
+			if (!$scope.$root) $scope.$root = {};
+			if (form.amount) {
+				form.amount.$setViewValue("" + btx.amount);
+				form.amount.$render();
+			}
+			if (form.address) {
+				form.address.$setViewValue(btx.addressTo);
+				form.address.$render();
+			}
+			if (form.merkle_proof) {
+				form.merkle_proof.$setViewValue('');
+				form.merkle_proof.$render();
+			}
+			if (form.comment) {
+				form.comment.$setViewValue('');
+				form.comment.$render();
+			}
+			var storage = require('ocore/storage.js');
+			var db = require('ocore/db.js');
+			function ifFound(objJoint) {
+				if (objJoint && objJoint.unit) {
+					var tempMessages = objJoint.unit.messages;
+					var messageIndex = lodash.findIndex(tempMessages || [], {
+						app: 'data'
+					});
+					if (messageIndex >= 0) {
+						var payload_data = tempMessages[messageIndex].payload;
+						var tempFeedValuePairs = [];
+						for (var key in payload_data) {
+							tempFeedValuePairs.push({name: key, value: payload_data[key], readonly: false});
+						}
+						$timeout(function() {
+							$scope.home.feedvaluespairs = tempFeedValuePairs;
+						});
+					}
+				}
+			};
+			function ifNotFound() {
+				//
+			}
+			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
+		};
+
 		/* Start setup */
 
 		this.bindTouchDown();
