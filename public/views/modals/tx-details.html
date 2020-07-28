@@ -66,9 +66,15 @@
       </span>
     </li>
 	  
-    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
+    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse flex_container">
       <div class="text-gray small-2 columns"><span translate>From</span>:</div>
-	  <div class="right small-10 columns enable_text_select ellipsis"><div ng-repeat="address in btx.arrPayerAddresses" class="right">{{address}}</div></div>
+      <div class="right small-10 columns enable_text_select">
+        <div ng-repeat="address in btx.arrPayerAddresses" class="right ml_auto">
+          <span class="enable_text_select wrap_address_section">
+            {{!!addressbook[address] ? addressbook[address] + ' (' + address + ')' : address}}
+          </span>
+        </div>
+      </div>
     </li>
 
     <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
