@@ -1056,13 +1056,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.claim = function() {
 						var claim = function() {
 							profileService.bKeepUnlocked = true;
-							cosigners = [device.getMyDeviceAddress()];
-							if (profileService.focusedClient.credentials.m > 1) {
-								$scope.index.copayers.forEach(function(copayer) {
-									if (!copayer.me && copayer.signs)
-										cosigners.push(copayer.device_address);
-								});
-							}
+							var cosigners = [];
+							$scope.index.copayers.forEach(function(copayer) {
+								if (profileService.focusedClient.credentials.n > profileService.focusedClient.credentials.m) { // only selected
+									if (copayer.signs) cosigners.push(copayer.device_address);
+								} else {
+									cosigners.push(copayer.device_address); // all my cosigners (2-of-2)
+								}
+							});
 							var opts = {
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
@@ -1159,28 +1160,25 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			var oldWalletId;
 			var oldCorrespondent;
 			var cosigners;
-			if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
-				db.query(
-					"SELECT wallet FROM my_addresses \n\
-					LEFT JOIN shared_address_signing_paths ON \n\
-							shared_address_signing_paths.address=my_addresses.address AND shared_address_signing_paths.device_address=? \n\
-						WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
-					[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
-					function(rows) {
-						if (rows.length === 0)
-							return notification.error("not my prosaic contract");
-						if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
-							return showModal();
-						oldWalletId = profileService.focusedClient.credentials.walletId;
-						oldCorrespondent = correspondentListService.currentCorrespondent;
-						profileService._setFocus(rows[0].wallet, function(){
-							showModal();
-						});
-					}	
-				);
-			} else {
-				showModal();
-			}
+			// switch to the wallet containing the address which the contract is offered to
+			db.query(
+				"SELECT wallet FROM my_addresses \n\
+				LEFT JOIN shared_address_signing_paths ON \n\
+						shared_address_signing_paths.address=my_addresses.address AND shared_address_signing_paths.device_address=? \n\
+					WHERE my_addresses.address=? OR shared_address_signing_paths.shared_address=?",
+				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
+				function(rows) {
+					if (rows.length === 0)
+						return notification.error("not my arbiter contract");
+					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
+						return showModal();
+					oldWalletId = profileService.focusedClient.credentials.walletId;
+					oldCorrespondent = correspondentListService.currentCorrespondent;
+					profileService._setFocus(rows[0].wallet, function(){
+						showModal();
+					});
+				}	
+			);
 		});
 	};
 
