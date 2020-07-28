@@ -35,19 +35,19 @@
 
   <ul class="no-bullet size-14 m0 tx-details"> 
 
-    <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
-    <span class="text-gray" translate>To</span>:
-    <span class="right">
-      <span ng-if="btx.merchant">
-        <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-        <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+    <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh flex_container" ng-click="copyAddress(btx.addressTo)">
+      <span class="text-gray" translate>To</span>:
+      <span class="right ml_auto">
+        <span ng-if="btx.merchant">
+          <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+          <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+        </span>
+        <span ng-if="!btx.merchant">
+          <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
+          <contact ng-show="!btx.labelTo" class="enable_text_select wrap_address_section"
+            address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}" />
+        </span>
       </span>
-      <span ng-if="!btx.merchant">
-        <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-        <contact ng-show="!btx.labelTo" class="enable_text_select"
-          address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}" />
-      </span>
-    </span>
     </li>
 
     <li ng-if="btx.textAddress || btx.original_address" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress || btx.original_address)">

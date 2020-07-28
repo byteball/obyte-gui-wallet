@@ -812,8 +812,11 @@ input.datafeed_input {
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
-            <div ng-show="!btx.message">
-              <span translate>To</span>: {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
+            <div ng-show="!btx.message" class="flex_container">
+              <span translate>To</span>:
+              <span class="wrap_address_section ml_auto">
+                {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
+              </span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}

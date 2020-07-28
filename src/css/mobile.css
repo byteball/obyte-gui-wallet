@@ -39,6 +39,21 @@ input {
   -ms-user-select: text;
   user-select: text;
 }
+
+.wrap_address_section {
+  float: right;
+  text-align: right;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.flex_container {
+  display: flex;
+}
+
+.ml_auto {
+  margin-left: auto;
+}
 /* END disabling text selection */
 
 .inner-wrap {
