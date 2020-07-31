@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
+  function($scope, $rootScope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
 	var constants = require('ocore/constants.js');
     var fc = profileService.focusedClient;
     var c = fc.credentials;
@@ -62,7 +62,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     
     $scope.hasListOfBalances = function() {
     	return !!Object.keys($scope.assocListOfBalances || {}).length;
-	};
+    };
+
+    $scope.useAsFromAddress = function(from_address, asset) {
+      go.send(function () {
+        $rootScope.$emit('paymentRequest', null, null, asset, null, null, from_address);
+      });
+    };
 
     this.sendAddrs = function() {
       var self = this;
