@@ -396,19 +396,20 @@ input.datafeed_input {
               </div>
             </div>
 
-            <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-		    	<div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
-		    	<div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
-		    </div>
+            <label class="left" ng-if="home.from_address && !index.isSingleAddress">
+              <span translate>From Obyte address</span>
+              <span class="enable_text_select">{{home.from_address}}</span>
+            </label>
 
-		    <div class="mtab" ng-class="{'active': mtab === 1}" ng-init="mtab = 1; home.send_multiple = false;">
+            <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
+              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
+              <div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
+            </div>
+
+            <div class="mtab" ng-class="{'active': mtab === 1}" ng-init="mtab = 1; home.send_multiple = false;">
 	            <div ng-hide="home.hideAddress">
 	              <div class="row collapse" style="padding-top: 5px;min-height: 24px;">
 	              	<label for="address" class="left" ng-if="home.lockAddress">
-                    <div ng-if="home.from_address && !index.isSingleAddress">
-                        <span translate>From Obyte address</span>
-                        <span class="enable_text_select">{{home.from_address}}</span>
-                    </div>
 	                  <span translate>To Obyte address</span>
 	                </label>
 	                <span ng-if="!home.send_multiple">
@@ -451,7 +452,7 @@ input.datafeed_input {
 						  <span ng-if="home.binding" translate>This payment is bound to a condition...</span>
 					  </a>
 				  </div>
-				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem; float: right;">
+				  <div ng-if="!index.arrBalances[index.assetIndex].is_private && !home.blockUx && !home.lockAsset && !home.lockAddress && home.canSendExternalPayment()" style="font-size: 11px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem; float: right;">
 					  <a ng-click="home.lockAmount = home.send_multiple = !home.send_multiple" class="text-gray" style="border-bottom: 1px dashed grey;">
 						  <span ng-if="home.send_multiple" translate>switch to single address</span>
 						  <span ng-if="!home.send_multiple" translate ng-click="home.resetForm(true)">switch to multi-address</span>
@@ -584,10 +585,10 @@ input.datafeed_input {
 	            </div>
 
 	            <div class="row" ng-show="!home.onGoingProcess">
-	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)">
+	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAsset || home.lockAddress || home.lockAmount || home.bSendAll)">
 	                <a ng-click="home.resetForm()" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
-	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAddress || home.lockAmount || home.bSendAll)}">
+	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAsset || home.lockAddress || home.lockAmount || home.bSendAll)}">
 	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
@@ -812,8 +813,11 @@ input.datafeed_input {
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.message || btx.addressTo">
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
-            <div ng-show="!btx.message">
-              <span translate>To</span>: {{index.addressbook[btx.addressTo] || btx.addressTo}} 
+            <div ng-show="!btx.message" class="flex_container">
+              <span translate>To</span>:
+              <span class="wrap_address_section ml_auto">
+                {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
+              </span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}
@@ -825,6 +829,11 @@ input.datafeed_input {
               <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
+          <span ng-show="btx.action !== 'received' && !btx.isTextcoin && !index.arrBalances[index.assetIndex].is_private" ng-click="home.resend(btx); $event.stopPropagation();" class="small-2 right">
+            <div class="label tu light-gray radius" translate>
+              Resend
+            </div>
+          </span>
         </div>
 
         <div class="row m20t text-center" ng-show="index.historyRendering">

@@ -2099,12 +2099,12 @@ angular.module('copayApp.controllers')
 				else
 					this.lockAsset = false;
 
+				$scope.mtab = 1;
 				if (to) {
 					form.address.$setViewValue(to);
 					form.address.$isValid = true;
 					form.address.$render();
 					this.lockAddress = true;
-					$scope.mtab = 1;
 					if (recipient_device_address) // must be already paired
 						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
 					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
@@ -2360,6 +2360,7 @@ angular.module('copayApp.controllers')
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
+				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
 				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
@@ -2612,7 +2613,7 @@ angular.module('copayApp.controllers')
 				return getResult(balanceObject.asset + '_USD');
 			}
 		};
-
+  
 		this.calculateAmount = function(amount, asset) {
 			var assetInfo = indexScope.arrBalances[indexScope.assetIndex];
 			if (asset === "base")
@@ -2622,7 +2623,7 @@ angular.module('copayApp.controllers')
 			else if (assetInfo.decimals)
 				return '' + amount / Math.pow(10, assetInfo.decimals);
 		};
-
+  
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
 			this.resetError();
