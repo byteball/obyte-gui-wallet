@@ -163,7 +163,7 @@
     <li ng-if="n > 1 && isPrivate" class="line-b p10 oh">
 		<span translate>If any of your cosigner devices doesn't see this payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="reSendPrivateMultiSigPayment()" translate>re-send private payloads to cosigners</a>
     </li>
-    <li ng-if="btx.action !== 'received' && !btx.isTextcoin && !index.arrBalances[index.assetIndex].is_private" class="p10 oh">
+    <li ng-if="btx.action !== 'received' && !btx.isTextcoin && !isPrivate" class="p10 oh">
       <a href="#" ng-click="resend(btx); $event.stopPropagation();" class="right button-pointer flex align-items-center" translate>
         <i class="fi-refresh size-18 m5r"></i>
         Resend
