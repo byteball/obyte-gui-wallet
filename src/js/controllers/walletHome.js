@@ -2099,12 +2099,12 @@ angular.module('copayApp.controllers')
 				else
 					this.lockAsset = false;
 
+				$scope.mtab = 1;
 				if (to) {
 					form.address.$setViewValue(to);
 					form.address.$isValid = true;
 					form.address.$render();
 					this.lockAddress = true;
-					$scope.mtab = 1;
 					if (recipient_device_address) // must be already paired
 						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
 					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
