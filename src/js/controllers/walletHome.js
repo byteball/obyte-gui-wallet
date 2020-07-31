@@ -2426,6 +2426,11 @@ angular.module('copayApp.controllers')
 					})();
 				}
 
+				$scope.resend = function(btx) {
+					if (!btx) return;
+					$scope.cancel();
+					self.resend(btx);
+				};
 
 				$scope.getAmount = function(amount) {
 					return self.getAmount(amount);
@@ -2608,7 +2613,17 @@ angular.module('copayApp.controllers')
 				return getResult(balanceObject.asset + '_USD');
 			}
 		};
-
+  
+		this.calculateAmount = function(amount, asset) {
+			var assetInfo = indexScope.arrBalances[indexScope.assetIndex];
+			if (asset === "base")
+				return '' + amount / self.unitValue;
+			else if (asset === constants.BLACKBYTES_ASSET)
+				return '' + amount / self.bbUnitValue;
+			else if (assetInfo.decimals)
+				return '' + amount / Math.pow(10, assetInfo.decimals);
+		};
+  
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
 			this.resetError();
@@ -2630,7 +2645,7 @@ angular.module('copayApp.controllers')
 				return console.log('form is gone');
 			if (!$scope.$root) $scope.$root = {};
 			if (form.amount) {
-				form.amount.$setViewValue("" + btx.amount);
+				form.amount.$setViewValue("" + this.calculateAmount(btx.amount, btx.asset));
 				form.amount.$render();
 			}
 			if (form.address) {
