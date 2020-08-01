@@ -2,7 +2,6 @@
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $rootScope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
-    var constants = require('ocore/constants.js');
     var fc = profileService.focusedClient;
     var indexScope = $scope.index;
     var c = fc.credentials;
