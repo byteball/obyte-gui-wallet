@@ -2,7 +2,7 @@
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $rootScope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
-	var constants = require('ocore/constants.js');
+    var constants = require('ocore/constants.js');
     var fc = profileService.focusedClient;
     var indexScope = $scope.index;
     var c = fc.credentials;
@@ -44,14 +44,14 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       });
       
       fc.getListOfBalancesOnAddresses(function(listOfBalances) {
-		var hiddenAssets = indexScope.getCurrentWalletHiddenAssets();
-		listOfBalances = listOfBalances.filter(function(row) {
-			if (indexScope.isAssetHidden(row.asset, hiddenAssets)) return false;
-			return true;
-		}).map(function(row) {
-			row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
-			return row;
-		});
+        var hiddenAssets = indexScope.getCurrentWalletHiddenAssets();
+        listOfBalances = listOfBalances.filter(function(row) {
+          if (indexScope.isAssetHidden(row.asset, hiddenAssets)) return false;
+          return true;
+        }).map(function(row) {
+          row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
+          return row;
+        });
       	//groupBy address
       	var assocListOfBalances = {};
       	listOfBalances.forEach(function(row) {
