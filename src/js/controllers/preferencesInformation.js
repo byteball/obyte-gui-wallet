@@ -3,8 +3,8 @@
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $rootScope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
     var fc = profileService.focusedClient;
-    var indexScope = $scope.index;
     var c = fc.credentials;
+    var indexScope = $scope.index;
 
     this.init = function() {
       var basePath = c.getBaseAddressDerivationPath();
