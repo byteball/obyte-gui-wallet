@@ -902,6 +902,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				$rootScope.newPaymentsCount[unit]++;
 		});
 		delete $rootScope.newPaymentsCount[$rootScope.sentUnit];
+		profileService.getAllAssets();
 	});
 	
 	eventBus.on('paired', function(device_address){
