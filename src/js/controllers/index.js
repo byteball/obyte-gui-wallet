@@ -743,7 +743,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			arrSharedWallets.push(objSharedWallet);
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
-
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		async.eachSeries(
 			arrSharedWallets,
@@ -765,7 +764,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.cancel = function() {
 			breadcrumbs.add('openSubwalletModal cancel');
 			$modalInstance.dismiss('cancel');
-		};
+    };
+    
+    $scope.getSubwalletBadge = function(shared_address) {
+      var totalCounts = 0;
+      if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
+        return 0;
+      }
+      for(var index in $rootScope.newPaymentsDetails) {
+        if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].walletAddress === shared_address) {
+          if ($rootScope.newPaymentsCount[index]) {
+            totalCounts += $rootScope.newPaymentsCount[index];
+          }
+        }
+      }
+    	return totalCounts;
+    }
 
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
@@ -1213,24 +1227,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (balanceInfo.name)
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
         if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
-			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
-			balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
-			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-			balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
-			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
-			if (!balanceInfo.name){
-				if (!Math.log10) // android 4.4
-					Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
-				if (asset === "base"){
-					balanceInfo.name = self.unitName;
-					balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
-				}
-				else if (asset === self.BLACKBYTES_ASSET){
-					balanceInfo.name = self.bbUnitName;
-					balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
-				}
-			}
+          balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+          balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
+          balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
+          balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
+          if (typeof balanceInfo.shared === 'number')
+            balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+          if (!balanceInfo.name){
+            if (!Math.log10) // android 4.4
+              Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
+            if (asset === "base"){
+              balanceInfo.name = self.unitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
+            }
+            else if (asset === self.BLACKBYTES_ASSET){
+              balanceInfo.name = self.bbUnitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
+            }
+          }
         }
         self.assetsSet[asset] = balanceInfo;
         if (self.isAssetHidden(asset, hiddenAssets)) {

@@ -830,6 +830,29 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			cordova.InAppBrowser.open(url, '_system');
 	};
 
+	root.checkSubWalletAddress = function (jointUnit, walletId, targetAddress) {
+		var Wallet = require('ocore/wallet.js');
+		Wallet.readSharedBalance(walletId, function(assocSharedBalances){
+			$timeout(function(){
+				if (Object.keys(assocSharedBalances).length > 0) {
+					for (var assocKey in assocSharedBalances) {
+						if (Object.keys(assocSharedBalances[assocKey]).includes(targetAddress)) {
+							$rootScope.newPaymentsDetails[jointUnit.unit] =
+								angular.merge(
+									jointUnit,
+									{
+										walletAddress: targetAddress,
+										walletId: walletId
+									}
+								);
+							$rootScope.$emit('Local/BadgeUpdated');
+						}
+					}
+				}
+			});
+		});
+	}
+
 	root.checkWalletAddress = function (jointUnit, walletId, targetAddress) {
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.readAddresses(walletId, {}, function(arrAddressInfos){
@@ -851,6 +874,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				}
 			});
 		});
+		root.checkSubWalletAddress(jointUnit, walletId, targetAddress);
 	}
 
 	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
