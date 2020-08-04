@@ -15,6 +15,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
+	$rootScope.newPaymentsDetails = {};
 
 	if (typeof nw !== 'undefined') {
 		var messagesCount;
@@ -829,6 +830,29 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			cordova.InAppBrowser.open(url, '_system');
 	};
 
+	root.checkWalletAddress = function (jointUnit, walletId, targetAddress) {
+		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		walletDefinedByKeys.readAddresses(walletId, {}, function(arrAddressInfos){
+			$timeout(function(){
+				if (arrAddressInfos.filter(item => item.address === targetAddress).length > 0) {
+					try {
+						$rootScope.newPaymentsDetails[jointUnit.unit] =
+							angular.merge(
+								jointUnit,
+								{
+									walletAddress: targetAddress,
+									walletId: walletId
+								}
+							);
+						$rootScope.$emit('Local/BadgeUpdated');
+					} catch (error) {
+						// 
+					}
+				}
+			});
+		});
+	}
+
 	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
 		signMessageFromAddress(message, address, signingDeviceAddresses, function(err, signedMessageBase64){
 			if (signedMessageBase64)
@@ -895,14 +919,38 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
+		var storage = require('ocore/storage.js');
+		var db = require('ocore/db.js');
+			
 		arrNewUnits.forEach((unit) => {
-			if (!$rootScope.newPaymentsCount[unit])
+			if (!$rootScope.newPaymentsCount[unit]) {
 				$rootScope.newPaymentsCount[unit] = 1;
+				function ifFound(objJoint) {
+					$timeout(function(){
+						var wallets = profileService.walletClients;
+						if (objJoint && objJoint.unit) {
+							var outputs = objJoint.unit.messages[0].payload.outputs;
+							var senderOutputs = outputs.filter(item => item.address !== objJoint.unit.authors[0].address);
+							if (senderOutputs.length > 0) {
+								var tempJoint = objJoint.unit;
+								for (var subWallet in wallets) {
+									root.checkWalletAddress(tempJoint, subWallet, senderOutputs[0].address);
+								}
+							}
+						}
+					});
+				};
+				function ifNotFound() {
+					//
+				}
+				if (unit !== $rootScope.sentUnit && db) {
+					storage.readJoint(db, unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
+				}
+			}
 			else
 				$rootScope.newPaymentsCount[unit]++;
 		});
 		delete $rootScope.newPaymentsCount[$rootScope.sentUnit];
-		profileService.getAllAssets();
 	});
 	
 	eventBus.on('paired', function(device_address){

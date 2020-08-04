@@ -2,8 +2,6 @@
 
 var breadcrumbs = require('ocore/breadcrumbs.js');
 var constants = require('ocore/constants.js');
-var balances = require('ocore/balances');
-var Wallet = require('ocore/wallet.js');
 
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, pushNotificationsService, isCordova, gettext, gettextCatalog, nodeWebkit, uxLanguage) {
@@ -13,7 +11,6 @@ angular.module('copayApp.services')
     root.profile = null;
     root.focusedClient = null;
     root.walletClients = {};
-    root.totalUnits = {};
     
 	root.assetMetadata = {};
 
@@ -34,49 +31,7 @@ angular.module('copayApp.services')
 		else
 		    return amount;
     };
-
-    root.getAllAssets = function() {
-      debugger;
-      for (var wid in root.walletClients) {
-        var currentWallet = root.walletClients[wid];
-        console.log('wallet-current', currentWallet);
-        balances.readBalance(currentWallet.credentials.walletId, function(assocBalances) {
-          $timeout(function(){
-            if (!assocBalances[constants.BLACKBYTES_ASSET])
-              assocBalances[constants.BLACKBYTES_ASSET] = {is_private: 1, stable: 0, pending: 0};
-            balances.readSharedBalance(currentWallet.credentials.walletId, function(assocSharedBalances) {
-              $timeout(function(){
-                for (var asset in assocSharedBalances)
-                  if (!assocBalances[asset])
-                    assocBalances[asset] = {stable: 0, pending: 0};
-                for (var asset in assocBalances) {
-                  var opts = {asset: asset};
-                  if (assocBalances[asset].shared_address)
-                    opts.address = assocBalances[asset].shared_address;
-                  else
-                    opts.wallet = currentWallet.credentials.walletId;
-                  console.log('wallet-opts', opts);
-                  Wallet.readTransactionHistory(opts, function(arrTransactions){
-                    $timeout(function(){
-                      if (!root.totalUnits[currentWallet.credentials.walletId]) {
-                        root.totalUnits[currentWallet.credentials.walletId] = {
-                          [opts.asset]: arrTransactions,
-                        }
-                      } else {
-                        root.totalUnits[currentWallet.credentials.walletId][opts.asset] = arrTransactions;
-                      }
-                      console.log('wallet-balances', root.totalUnits[currentWallet.credentials.walletId]);
-                      console.log('wallet-arrTransactions', arrTransactions);
-                    });
-                  });
-                }
-              });
-            });
-          });
-        });
-      }
-    };
-
+  
     root.formatAmountWithUnit = function(amount, asset, opts) {
 		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
     };
@@ -181,7 +136,6 @@ angular.module('copayApp.services')
         root.setWalletClient(credentials);
       });
       $rootScope.$emit('Local/WalletListUpdated');
-      root.getAllAssets();
     };
     
     
