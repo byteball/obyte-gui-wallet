@@ -945,6 +945,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
 		var storage = require('ocore/storage.js');
 		var db = require('ocore/db.js');
+
+		var walletGeneral = require('ocore/wallet_general.js');
+		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 			
 		arrNewUnits.forEach((unit) => {
 			if (!$rootScope.newPaymentsCount[unit]) {
@@ -955,6 +958,67 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						if (objJoint && objJoint.unit) {
 							var outputs = objJoint.unit.messages[0].payload.outputs;
 							var senderOutputs = outputs.filter(item => item.address !== objJoint.unit.authors[0].address);
+							db.query("SELECT * FROM my_addresses",
+								function(rows){
+									debugger;
+									var assocBalances = {};
+									for (var i=0; i<rows.length; i++){
+										var row = rows[i];
+										var asset = row.asset || "base";
+										if (!assocBalances[asset])
+											assocBalances[asset] = {};
+										if (!assocBalances[asset][row.address])
+											assocBalances[asset][row.address] = {stable: 0, pending: 0};
+										assocBalances[asset][row.address][row.is_stable ? 'stable' : 'pending'] += row.balance;
+									}
+								}
+							);
+							db.query("SELECT * FROM shared_addresses",
+								function(rows){
+									debugger;
+									var assocBalances = {};
+									for (var i=0; i<rows.length; i++){
+										var row = rows[i];
+										var asset = row.asset || "base";
+										if (!assocBalances[asset])
+											assocBalances[asset] = {};
+										if (!assocBalances[asset][row.address])
+											assocBalances[asset][row.address] = {stable: 0, pending: 0};
+										assocBalances[asset][row.address][row.is_stable ? 'stable' : 'pending'] += row.balance;
+									}
+								}
+							);
+							db.query("SELECT * FROM sent_mnemonics",
+								function(rows){
+									debugger;
+									var assocBalances = {};
+									for (var i=0; i<rows.length; i++){
+										var row = rows[i];
+										var asset = row.asset || "base";
+										if (!assocBalances[asset])
+											assocBalances[asset] = {};
+										if (!assocBalances[asset][row.address])
+											assocBalances[asset][row.address] = {stable: 0, pending: 0};
+										assocBalances[asset][row.address][row.is_stable ? 'stable' : 'pending'] += row.balance;
+									}
+								}
+							);
+							
+							db.query("SELECT * FROM my_watched_addresses",
+								function(rows){
+									debugger;
+									var assocBalances = {};
+									for (var i=0; i<rows.length; i++){
+										var row = rows[i];
+										var asset = row.asset || "base";
+										if (!assocBalances[asset])
+											assocBalances[asset] = {};
+										if (!assocBalances[asset][row.address])
+											assocBalances[asset][row.address] = {stable: 0, pending: 0};
+										assocBalances[asset][row.address][row.is_stable ? 'stable' : 'pending'] += row.balance;
+									}
+								}
+							);
 							if (senderOutputs.length > 0) {
 								var tempJoint = objJoint.unit;
 								for (var subWallet in wallets) {
