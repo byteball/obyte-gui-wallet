@@ -2644,7 +2644,7 @@ angular.module('copayApp.controllers')
 			if (!form)
 				return console.log('form is gone');
 			if (!$scope.$root) $scope.$root = {};
-			if (form.amount) {
+			if (form.amount && btx.action === 'sent') {
 				form.amount.$setViewValue("" + this.calculateAmount(btx.amount, btx.asset));
 				form.amount.$render();
 			}
@@ -2664,20 +2664,58 @@ angular.module('copayApp.controllers')
 			var db = require('ocore/db.js');
 			function ifFound(objJoint) {
 				if (objJoint && objJoint.unit) {
-					var tempMessages = objJoint.unit.messages;
-					var messageIndex = lodash.findIndex(tempMessages || [], {
-						app: 'data'
-					});
-					if (messageIndex >= 0) {
-						var payload_data = tempMessages[messageIndex].payload;
-						var tempFeedValuePairs = [];
-						for (var key in payload_data) {
-							tempFeedValuePairs.push({name: key, value: payload_data[key], readonly: false});
+					$timeout(function() {
+						var dataMessages = objJoint.unit.messages.filter(item => item.app !== 'payment');
+						if (dataMessages.length > 0) {
+							var dataPrompt = dataMessages[0].payload;
+							switch (dataMessages[0].app) {
+								case 'data_feed':
+									$scope.assetIndexSelectorValue = -1;
+									break;
+								case 'attestation':
+									$scope.assetIndexSelectorValue = -2;
+									$scope.home.attested_address = dataPrompt.address;
+									dataPrompt = dataPrompt.profile;
+									break;
+								case 'profile':
+									$scope.assetIndexSelectorValue = -3;
+									break;
+								case 'data':
+									$scope.assetIndexSelectorValue = -4;
+									break;
+								case 'poll':
+									$scope.assetIndexSelectorValue = -5;
+									$scope.home.poll_question = dataPrompt.question;
+									delete dataPrompt.question;
+									dataPrompt = Object.assign({}, dataPrompt.choices);
+									break;
+								case 'vote':
+									$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
+									return self.resetForm();
+								case 'definition':
+									var stringUtils = require('ocore/string_utils.js');
+									$scope.assetIndexSelectorValue = -6;
+									var jsonDefinition = stringUtils.getJsonSourceString(dataPrompt.definition[1], false);
+									$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+									dataPrompt = {};
+									break;
+								case 'text':
+									$scope.assetIndexSelectorValue = -7;
+									$scope.home.content = dataPrompt;
+									dataPrompt = {};
+									break;
+							}
+							$scope.home.feedvaluespairs = [];
+							for (var key in dataPrompt) {
+								var value = dataPrompt[key];
+								$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
+							}
 						}
-						$timeout(function() {
-							$scope.home.feedvaluespairs = tempFeedValuePairs;
-						});
-					}
+						if (dataMessages.length === 0 || btx.action === 'sent')
+							$scope.assetIndexSelectorValue = 0;
+							
+						self.switchForms();
+					});
 				}
 			};
 			function ifNotFound() {
