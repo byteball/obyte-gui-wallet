@@ -2667,15 +2667,15 @@ angular.module('copayApp.controllers')
 					$timeout(function() {
 						var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
 						if (dataMessages.length > 0) {
-							var dataPrompt = dataMessages[0].payload;
+							var payload = dataMessages[0].payload;
 							switch (dataMessages[0].app) {
 								case 'data_feed':
 									$scope.assetIndexSelectorValue = -1;
 									break;
 								case 'attestation':
 									$scope.assetIndexSelectorValue = -2;
-									$scope.home.attested_address = dataPrompt.address;
-									dataPrompt = dataPrompt.profile;
+									$scope.home.attested_address = payload.address;
+									payload = payload.profile;
 									break;
 								case 'profile':
 									$scope.assetIndexSelectorValue = -3;
@@ -2685,9 +2685,9 @@ angular.module('copayApp.controllers')
 									break;
 								case 'poll':
 									$scope.assetIndexSelectorValue = -5;
-									$scope.home.poll_question = dataPrompt.question;
-									delete dataPrompt.question;
-									dataPrompt = Object.assign({}, dataPrompt.choices);
+									$scope.home.poll_question = payload.question;
+									delete payload.question;
+									payload = Object.assign({}, payload.choices);
 									break;
 								case 'vote':
 									$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
@@ -2695,19 +2695,19 @@ angular.module('copayApp.controllers')
 								case 'definition':
 									var stringUtils = require('ocore/string_utils.js');
 									$scope.assetIndexSelectorValue = -6;
-									var jsonDefinition = stringUtils.getJsonSourceString(dataPrompt.definition[1], false);
+									var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
 									$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
-									dataPrompt = {};
+									payload = {};
 									break;
 								case 'text':
 									$scope.assetIndexSelectorValue = -7;
-									$scope.home.content = dataPrompt;
-									dataPrompt = {};
+									$scope.home.content = payload;
+									payload = {};
 									break;
 							}
 							$scope.home.feedvaluespairs = [];
-							for (var key in dataPrompt) {
-								var value = dataPrompt[key];
+							for (var key in payload) {
+								var value = payload[key];
 								$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
 							}
 						}
