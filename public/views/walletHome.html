@@ -356,7 +356,7 @@ input.datafeed_input {
         <div class="large-12 large-centered columns">
           <form name="sendPaymentForm" ng-submit="home.submitPayment()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate>
             <div class="box-notification enable_text_select" ng-show="home.error">
-              <span class="text-warning">
+              <span class="text-warning" style="word-wrap: break-word">
                 {{home.error|translate}}
               </span> 
               <a class="close-notification text-warning" ng-click="home.resetError()">&#215;</a>
