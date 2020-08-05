@@ -2665,7 +2665,7 @@ angular.module('copayApp.controllers')
 			function ifFound(objJoint) {
 				if (objJoint && objJoint.unit) {
 					$timeout(function() {
-						var dataMessages = objJoint.unit.messages.filter(item => item.app !== 'payment');
+						var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
 						if (dataMessages.length > 0) {
 							var dataPrompt = dataMessages[0].payload;
 							switch (dataMessages[0].app) {
