@@ -771,10 +771,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
         return 0;
       }
-      for(var index in $rootScope.newPaymentsDetails) {
-        if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].walletAddress === shared_address) {
-          if ($rootScope.newPaymentsCount[index]) {
-            totalCounts += $rootScope.newPaymentsCount[index];
+      if (shared_address) {
+        for(var index in $rootScope.newPaymentsDetails) {
+          if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].receivedAddress === shared_address) {
+            if ($rootScope.newPaymentsCount[index]) {
+              totalCounts += $rootScope.newPaymentsCount[index];
+            }
+          }
+        }
+      } else {
+        for(var index in $rootScope.newPaymentsDetails) {
+          if ($rootScope.newPaymentsDetails[index]
+            && $rootScope.newPaymentsDetails[index].walletId === self.walletId
+            && $rootScope.newPaymentsDetails[index].walletAddress === $rootScope.newPaymentsDetails[index].receivedAddress) {
+            if ($rootScope.newPaymentsCount[index]) {
+              totalCounts += $rootScope.newPaymentsCount[index];
+            }
           }
         }
       }

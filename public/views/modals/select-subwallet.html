@@ -23,6 +23,9 @@
 					<span ng-if="mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.totalStr}}</span>
 					<span ng-if="!mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
 				</div>
+				<div class="correspondentlist_badge" ng-if="getSubwalletBadge(sw.shared_address) > 0" style="position: absolute; top: 1rem; right: 0.7rem;">
+				  {{getSubwalletBadge()}}
+				</div>
 			</a>
 		</li>
 		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px">
