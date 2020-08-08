@@ -12,7 +12,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return /^bitcointalk\/[\w\-.]{1,25}$/i.test(value);
 			},
 			transformToAccount: function (value) {
-				return value.replace(/^bitcointalk\//i, '');
+				return value.replace(/^bitcointalk\//i, '').toLowerCase();
 			}
 		},
 		email: {
