@@ -895,24 +895,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	function addPaymentDetails(wallets, received_address, unit) {
-		for (var walletIndex in wallets) {
-			if (wallets[walletIndex].address === received_address || wallets[walletIndex].shared_address === received_address) {
-				$rootScope.newPaymentsDetails[unit.unit] =
-					angular.merge(
-						unit,
-						{
-							receivedAddress: received_address,
-							walletAddress: wallets[walletIndex].address,
-							walletId: wallets[walletIndex].wallet
-						}
-					);
-				$rootScope.$emit('Local/BadgeUpdated');
-				break;
-			}
-		}
-	}
-
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
 		var storage = require('ocore/storage.js');
 		var db = require('ocore/db.js');
@@ -922,32 +904,47 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				$rootScope.newPaymentsCount[unit] = 1;
 				function ifFound(objJoint) {
 					$timeout(function(){
-						if (objJoint && objJoint.unit) {
-							db.query(`SELECT adr.*, shr.shared_address FROM my_addresses adr 
-							LEFT JOIN shared_address_signing_paths sgn ON adr.address=sgn.address
-							LEFT JOIN shared_addresses shr ON shr.shared_address=sgn.shared_address
-							`,
-								function(rows){
-									var my_addresses = [];
-									for (var walletIndex in rows) {
-										if (rows[walletIndex].address
-											&& my_addresses.includes(rows[walletIndex].address) === false) {
-											my_addresses.push(rows[walletIndex].address);
+						
+						var all_addresses = [];
+						for (var messageIndex in objJoint.unit.messages) {
+							var outputs = objJoint.unit.messages[messageIndex].payload.outputs;
+							outputs.every(output => output.address && !all_addresses.includes(output.address) && all_addresses.push(output.address));
+
+							if (objJoint && objJoint.unit) {
+								db.query(`SELECT my_addresses.*, shared_addresses.shared_address FROM my_addresses
+								LEFT JOIN shared_address_signing_paths ON my_addresses.address=shared_address_signing_paths.address
+								LEFT JOIN shared_addresses ON shared_addresses.shared_address=shared_address_signing_paths.shared_address 
+								WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN(?)
+								`, [all_addresses, all_addresses],
+									function(rows){
+										var my_addresses = {};
+										for (var walletIndex in rows) {
+											if (rows[walletIndex].address
+												&& !my_addresses[rows[walletIndex].address]) {
+												my_addresses[rows[walletIndex].address] = walletIndex;
+											}
+											if (rows[walletIndex].shared_address
+												&& !my_addresses[rows[walletIndex].shared_address]) {
+												my_addresses[rows[walletIndex].shared_address] = walletIndex;
+											}
 										}
-										if (rows[walletIndex].shared_address
-											&& my_addresses.includes(rows[walletIndex].shared_address) === false) {
-											my_addresses.push(rows[walletIndex].shared_address);
+										for (var addressIndex in all_addresses) {
+											if (!!my_addresses[all_addresses[addressIndex]]) {
+												$rootScope.newPaymentsDetails[objJoint.unit.unit] =
+													angular.merge(
+														objJoint.unit,
+														{
+															receivedAddress: all_addresses[addressIndex],
+															walletAddress: rows[my_addresses[all_addresses[addressIndex]]].address,
+															walletId: rows[my_addresses[all_addresses[addressIndex]]].wallet
+														}
+													);
+											}
 										}
+										$rootScope.$emit('Local/BadgeUpdated');
 									}
-									for (var messageIndex in objJoint.unit.messages) {
-										var outputs = objJoint.unit.messages[messageIndex].payload.outputs;
-										var received_addresses = outputs.filter(output => my_addresses.includes(output.address));
-										if (received_addresses.length > 0) {
-											addPaymentDetails(rows, received_addresses[0].address, objJoint.unit)
-										}
-									}
-								}
-							);
+								);
+							}
 						}
 					});
 				};
