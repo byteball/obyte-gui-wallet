@@ -117,9 +117,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	attestorAddresses: {
 		// bitcointalk: '',
 		email: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
-		// github: '',
+		// reddit: '',
 		// phone: '',
-		reddit: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
+		github: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
