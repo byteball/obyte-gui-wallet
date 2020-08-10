@@ -906,45 +906,52 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					$timeout(function(){
 						
 						var all_addresses = [];
-						for (var messageIndex in objJoint.unit.messages) {
-							var outputs = objJoint.unit.messages[messageIndex].payload.outputs;
-							outputs.every(output => output.address && !all_addresses.includes(output.address) && all_addresses.push(output.address));
-
-							if (objJoint && objJoint.unit) {
-								db.query(`SELECT my_addresses.*, shared_addresses.shared_address FROM my_addresses
-								LEFT JOIN shared_address_signing_paths ON my_addresses.address=shared_address_signing_paths.address
-								LEFT JOIN shared_addresses ON shared_addresses.shared_address=shared_address_signing_paths.shared_address 
-								WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN(?)
-								`, [all_addresses, all_addresses],
-									function(rows){
-										var my_addresses = {};
-										for (var walletIndex in rows) {
-											if (rows[walletIndex].address
-												&& !my_addresses[rows[walletIndex].address]) {
-												my_addresses[rows[walletIndex].address] = walletIndex;
-											}
-											if (rows[walletIndex].shared_address
-												&& !my_addresses[rows[walletIndex].shared_address]) {
-												my_addresses[rows[walletIndex].shared_address] = walletIndex;
-											}
+						debugger;
+						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
+						for (var messageIndex in paymentMessages) {
+							var outputs = paymentMessages[messageIndex].payload.outputs;
+							outputs.forEach(output =>
+								output.address
+								&& !all_addresses.includes(address => address.address === output.address)
+								&& all_addresses.push({address: output.address, asset: paymentMessages[messageIndex].payload.asset || 'base'})
+							);
+						}
+						debugger;
+						if (objJoint && objJoint.unit) {
+							db.query(`SELECT my_addresses.*, shared_addresses.shared_address FROM my_addresses
+							LEFT JOIN shared_address_signing_paths ON my_addresses.address=shared_address_signing_paths.address
+							LEFT JOIN shared_addresses ON shared_addresses.shared_address=shared_address_signing_paths.shared_address 
+							WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN(?)
+							`, [all_addresses.map(address => address.address), all_addresses.map(address => address.address)],
+								function(rows){
+									var my_addresses = {};
+									for (var walletIndex in rows) {
+										if (rows[walletIndex].address
+											&& !my_addresses[rows[walletIndex].address]) {
+											my_addresses[rows[walletIndex].address] = walletIndex;
 										}
-										for (var addressIndex in all_addresses) {
-											if (!!my_addresses[all_addresses[addressIndex]]) {
-												$rootScope.newPaymentsDetails[objJoint.unit.unit] =
-													angular.merge(
-														objJoint.unit,
-														{
-															receivedAddress: all_addresses[addressIndex],
-															walletAddress: rows[my_addresses[all_addresses[addressIndex]]].address,
-															walletId: rows[my_addresses[all_addresses[addressIndex]]].wallet
-														}
-													);
-											}
+										if (rows[walletIndex].shared_address
+											&& !my_addresses[rows[walletIndex].shared_address]) {
+											my_addresses[rows[walletIndex].shared_address] = walletIndex;
 										}
-										$rootScope.$emit('Local/BadgeUpdated');
 									}
-								);
-							}
+									for (var addressIndex in all_addresses) {
+										if (!!my_addresses[all_addresses[addressIndex].address]) {
+											$rootScope.newPaymentsDetails[objJoint.unit.unit] =
+												angular.merge(
+													objJoint.unit,
+													{
+														receivedAddress: all_addresses[addressIndex].address,
+														walletAddress: rows[my_addresses[all_addresses[addressIndex].address]].address,
+														walletId: rows[my_addresses[all_addresses[addressIndex].address]].wallet,
+														asset: all_addresses[addressIndex].asset
+													}
+												);
+										}
+									}
+									$rootScope.$emit('Local/BadgeUpdated');
+								}
+							);
 						}
 					});
 				};

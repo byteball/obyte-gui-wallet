@@ -997,6 +997,37 @@ angular.module('copayApp.controllers')
 				});
 		};
 
+		this.getSubwalletBadge = function(asset) {
+			var totalCounts = 0;
+			debugger;
+			if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
+			  	return 0;
+			}
+			if (indexScope.shared_address) {
+			  for(var index in $rootScope.newPaymentsDetails) {
+				if ($rootScope.newPaymentsDetails[index]
+					&& $rootScope.newPaymentsDetails[index].receivedAddress === indexScope.shared_address
+					&& $rootScope.newPaymentsDetails[index].asset === asset) {
+				  	if ($rootScope.newPaymentsCount[index]) {
+						totalCounts += $rootScope.newPaymentsCount[index];
+				  	}
+				}
+			  }
+			} else {
+			  	for(var index in $rootScope.newPaymentsDetails) {
+					if ($rootScope.newPaymentsDetails[index]
+						&& $rootScope.newPaymentsDetails[index].walletId === indexScope.walletId
+						&& $rootScope.newPaymentsDetails[index].walletAddress === $rootScope.newPaymentsDetails[index].receivedAddress
+						&& $rootScope.newPaymentsDetails[index].asset === asset) {
+						if ($rootScope.newPaymentsCount[index]) {
+							totalCounts += $rootScope.newPaymentsCount[index];
+						}
+					}
+			  	}
+			}
+			return totalCounts;
+		};
+
 		this.onChanged = function () {
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {

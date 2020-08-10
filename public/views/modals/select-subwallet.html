@@ -23,7 +23,7 @@
 					<span ng-if="mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.totalStr}}</span>
 					<span ng-if="!mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
 				</div>
-				<div class="correspondentlist_badge" ng-if="getSubwalletBadge(sw.shared_address) > 0" style="position: absolute; top: 1rem; right: 0.7rem;">
+				<div class="correspondentlist_badge" ng-if="getSubwalletBadge() > 0" style="position: absolute; top: 1rem; right: 0.7rem;">
 				  {{getSubwalletBadge()}}
 				</div>
 			</a>
