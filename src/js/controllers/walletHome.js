@@ -2614,7 +2614,7 @@ angular.module('copayApp.controllers')
 			}
 		};
   
-		this.calculateAmount = function(amount, asset) {
+		$scope.calculateAmount = function(amount, asset) {
 			var assetInfo = indexScope.arrBalances[indexScope.assetIndex];
 			if (asset === "base")
 				return '' + amount / self.unitValue;
@@ -2622,6 +2622,7 @@ angular.module('copayApp.controllers')
 				return '' + amount / self.bbUnitValue;
 			else if (assetInfo.decimals)
 				return '' + amount / Math.pow(10, assetInfo.decimals);
+			return amount;
 		};
   
 		this.resend = function(btx) {
@@ -2644,10 +2645,6 @@ angular.module('copayApp.controllers')
 			if (!form)
 				return console.log('form is gone');
 			if (!$scope.$root) $scope.$root = {};
-			if (form.amount && btx.action === 'sent') {
-				form.amount.$setViewValue("" + this.calculateAmount(btx.amount, btx.asset));
-				form.amount.$render();
-			}
 			if (form.address) {
 				form.address.$setViewValue(btx.addressTo);
 				form.address.$render();
@@ -2666,6 +2663,11 @@ angular.module('copayApp.controllers')
 				if (objJoint && objJoint.unit) {
 					$timeout(function() {
 						var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
+						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
+						var isPaymentData = false;
+						if (paymentMessages.findIndex(message => message.payload.outputs.length > 1) >= 0) {
+							isPaymentData = true;
+						}
 						if (dataMessages.length > 0) {
 							var payload = dataMessages[0].payload;
 							switch (dataMessages[0].app) {
@@ -2681,7 +2683,15 @@ angular.module('copayApp.controllers')
 									$scope.assetIndexSelectorValue = -3;
 									break;
 								case 'data':
-									$scope.assetIndexSelectorValue = -4;
+									if (isPaymentData) {
+										var assetIndex = indexScope.arrBalances.findIndex(balance => balance.asset === btx.asset);
+										if (assetIndex < 0) {
+											assetIndex = 0;
+										}
+										$scope.assetIndexSelectorValue = assetIndex;
+									} else {
+										$scope.assetIndexSelectorValue = -4;
+									}
 									break;
 								case 'poll':
 									$scope.assetIndexSelectorValue = -5;
@@ -2711,15 +2721,25 @@ angular.module('copayApp.controllers')
 								$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
 							}
 						}
-						if (dataMessages.length === 0 || btx.action === 'sent')
-							$scope.assetIndexSelectorValue = 0;
+						if ($scope.assetIndexSelectorValue >= 0) {
+							if (form.amount) {
+								form.amount.$setViewValue("" + $scope.calculateAmount(
+									isPaymentData && $scope.assetIndexSelectorValue === 0 ? paymentMessages[0].payload.outputs[0].amount : btx.amount,
+									btx.asset
+								));
+								form.amount.$render();
+							}
+						}
 							
 						self.switchForms();
 					});
 				}
 			};
 			function ifNotFound() {
-				//
+				if (form.amount) {
+					form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
+					form.amount.$render();
+				}
 			}
 			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
 		};
