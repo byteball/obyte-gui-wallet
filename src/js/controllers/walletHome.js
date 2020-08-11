@@ -2582,6 +2582,8 @@ angular.module('copayApp.controllers')
 
 		this.getDollarValue = function(amount, balanceObject) {
 			function getResult(exchangePair) {
+				if (home.bSendAll && home.from_address)
+					return; // TEMP fix: don't show value if from specific address and "All minus fee" shown
 				var result = 0;
 				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
