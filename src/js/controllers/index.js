@@ -54,6 +54,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.isBackupReminderShown = !configService.getSync().isBackupReminderShutUp;
   }, 60 * 1000);
 
+  self.changeWalletAssetIndex = function (assetIndex) {
+    self.assetIndex = assetIndex;
+    self.updateHistory();
+  }
+
   self.dismissBackupReminder = function () {
     self.isBackupReminderShown = false;
     $timeout(function () {
@@ -1451,7 +1456,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, 100);
     }, 100);
   };
-
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
