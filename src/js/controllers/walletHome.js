@@ -2660,80 +2660,78 @@ angular.module('copayApp.controllers')
 			var storage = require('ocore/storage.js');
 			var db = require('ocore/db.js');
 			function ifFound(objJoint) {
-				if (objJoint && objJoint.unit) {
-					$timeout(function() {
-						var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
-						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
-						var isPaymentData = false;
-						if (paymentMessages.findIndex(message => message.payload.outputs.length > 1) >= 0) {
-							isPaymentData = true;
-						}
-						if (dataMessages.length > 0) {
-							var payload = dataMessages[0].payload;
-							switch (dataMessages[0].app) {
-								case 'data_feed':
-									$scope.assetIndexSelectorValue = -1;
-									break;
-								case 'attestation':
-									$scope.assetIndexSelectorValue = -2;
-									$scope.home.attested_address = payload.address;
-									payload = payload.profile;
-									break;
-								case 'profile':
-									$scope.assetIndexSelectorValue = -3;
-									break;
-								case 'data':
-									if (isPaymentData) {
-										var assetIndex = indexScope.arrBalances.findIndex(balance => balance.asset === btx.asset);
-										if (assetIndex < 0) {
-											assetIndex = 0;
-										}
-										$scope.assetIndexSelectorValue = assetIndex;
-									} else {
-										$scope.assetIndexSelectorValue = -4;
+				$timeout(function() {
+					var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
+					var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
+					var isPaymentWithData = false;
+					if (paymentMessages.findIndex(message => message.payload.outputs.length > 1) >= 0) {
+						isPaymentWithData = true;
+					}
+					if (dataMessages.length > 0) {
+						var payload = dataMessages[0].payload;
+						switch (dataMessages[0].app) {
+							case 'data_feed':
+								$scope.assetIndexSelectorValue = -1;
+								break;
+							case 'attestation':
+								$scope.assetIndexSelectorValue = -2;
+								$scope.home.attested_address = payload.address;
+								payload = payload.profile;
+								break;
+							case 'profile':
+								$scope.assetIndexSelectorValue = -3;
+								break;
+							case 'data':
+								if (isPaymentWithData) {
+									var assetIndex = indexScope.arrBalances.findIndex(balance => balance.asset === btx.asset);
+									if (assetIndex < 0) {
+										assetIndex = 0;
 									}
-									break;
-								case 'poll':
-									$scope.assetIndexSelectorValue = -5;
-									$scope.home.poll_question = payload.question;
-									delete payload.question;
-									payload = Object.assign({}, payload.choices);
-									break;
-								case 'vote':
-									$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
-									return self.resetForm();
-								case 'definition':
-									var stringUtils = require('ocore/string_utils.js');
-									$scope.assetIndexSelectorValue = -6;
-									var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
-									$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
-									payload = {};
-									break;
-								case 'text':
-									$scope.assetIndexSelectorValue = -7;
-									$scope.home.content = payload;
-									payload = {};
-									break;
-							}
-							$scope.home.feedvaluespairs = [];
-							for (var key in payload) {
-								var value = payload[key];
-								$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
-							}
+									$scope.assetIndexSelectorValue = assetIndex;
+								} else {
+									$scope.assetIndexSelectorValue = -4;
+								}
+								break;
+							case 'poll':
+								$scope.assetIndexSelectorValue = -5;
+								$scope.home.poll_question = payload.question;
+								delete payload.question;
+								payload = Object.assign({}, payload.choices);
+								break;
+							case 'vote':
+								$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
+								return self.resetForm();
+							case 'definition':
+								var stringUtils = require('ocore/string_utils.js');
+								$scope.assetIndexSelectorValue = -6;
+								var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
+								$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+								payload = {};
+								break;
+							case 'text':
+								$scope.assetIndexSelectorValue = -7;
+								$scope.home.content = payload;
+								payload = {};
+								break;
 						}
-						if ($scope.assetIndexSelectorValue >= 0) {
-							if (form.amount) {
-								form.amount.$setViewValue("" + $scope.calculateAmount(
-									isPaymentData && $scope.assetIndexSelectorValue === 0 ? paymentMessages[0].payload.outputs[0].amount : btx.amount,
-									btx.asset
-								));
-								form.amount.$render();
-							}
+						$scope.home.feedvaluespairs = [];
+						for (var key in payload) {
+							var value = payload[key];
+							$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
 						}
-							
-						self.switchForms();
-					});
-				}
+					}
+					if ($scope.assetIndexSelectorValue >= 0) {
+						if (form.amount) {
+							form.amount.$setViewValue("" + $scope.calculateAmount(
+								isPaymentWithData && $scope.assetIndexSelectorValue === 0 ? paymentMessages[0].payload.outputs[0].amount : btx.amount,
+								btx.asset
+							));
+							form.amount.$render();
+						}
+					}
+						
+					self.switchForms();
+				});
 			};
 			function ifNotFound() {
 				if (form.amount) {
