@@ -1819,7 +1819,6 @@ a.suggest-command {
 .custom-dropdown .custom-option .custom-badge {
   position: absolute;
   top: 0.1rem;
-  right: 10px;
   height: 1rem;
   padding: 0.2rem 0.4rem;
   border-radius: 0.5rem;
@@ -1830,4 +1829,6 @@ a.suggest-command {
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  left: calc((100% - 10px));
+  transform: translateX(-100%);
 }
