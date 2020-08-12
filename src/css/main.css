@@ -1818,9 +1818,14 @@ a.suggest-command {
   position: absolute;
   top: 0.1rem;
   right: 10px;
+  height: 1rem;
   padding: 0.2rem 0.4rem;
   border-radius: 0.5rem;
-	font-size: 0.6em;
+	font-size: 0.6rem;
 	background-color: red;
-	color: white;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
 }
