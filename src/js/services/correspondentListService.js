@@ -905,15 +905,15 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				function ifFound(objJoint) {
 					$timeout(function(){
 						
-						var all_addresses = [];
+						var allAddressWithAssets = [];
 						debugger;
 						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
 						for (var messageIndex in paymentMessages) {
 							var outputs = paymentMessages[messageIndex].payload.outputs;
 							outputs.forEach(output =>
 								output.address
-								&& all_addresses.findIndex(address => address.address === output.address) < 0
-								&& all_addresses.push({address: output.address, asset: paymentMessages[messageIndex].payload.asset || 'base'})
+								&& allAddressWithAssets.findIndex(address => address.address === output.address) < 0
+								&& allAddressWithAssets.push({address: output.address, asset: paymentMessages[messageIndex].payload.asset || 'base'})
 							);
 						}
 						debugger;
@@ -922,7 +922,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							LEFT JOIN shared_address_signing_paths ON my_addresses.address=shared_address_signing_paths.address
 							LEFT JOIN shared_addresses ON shared_addresses.shared_address=shared_address_signing_paths.shared_address 
 							WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN(?)
-							`, [all_addresses.map(address => address.address), all_addresses.map(address => address.address)],
+							`, [allAddressWithAssets.map(address => address.address), allAddressWithAssets.map(address => address.address)],
 								function(rows){
 									var my_addresses = {};
 									for (var walletIndex in rows) {
@@ -935,16 +935,16 @@ angular.module('copayApp.services').factory('correspondentListService', function
 											my_addresses[rows[walletIndex].shared_address] = walletIndex;
 										}
 									}
-									for (var addressIndex in all_addresses) {
-										if (!!my_addresses[all_addresses[addressIndex].address]) {
+									for (var addressIndex in allAddressWithAssets) {
+										if (!!my_addresses[allAddressWithAssets[addressIndex].address]) {
 											$rootScope.newPaymentsDetails[objJoint.unit.unit] =
 												angular.merge(
 													objJoint.unit,
 													{
-														receivedAddress: all_addresses[addressIndex].address,
-														walletAddress: rows[my_addresses[all_addresses[addressIndex].address]].address,
-														walletId: rows[my_addresses[all_addresses[addressIndex].address]].wallet,
-														asset: all_addresses[addressIndex].asset
+														receivedAddress: allAddressWithAssets[addressIndex].address,
+														walletAddress: rows[my_addresses[allAddressWithAssets[addressIndex].address]].address,
+														walletId: rows[my_addresses[allAddressWithAssets[addressIndex].address]].wallet,
+														asset: allAddressWithAssets[addressIndex].asset
 													}
 												);
 										}
