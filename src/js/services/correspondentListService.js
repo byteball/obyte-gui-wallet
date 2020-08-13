@@ -912,7 +912,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							var outputs = paymentMessages[messageIndex].payload.outputs;
 							outputs.forEach(output =>
 								output.address
-								&& !all_addresses.includes(address => address.address === output.address)
+								&& all_addresses.findIndex(address => address.address === output.address) < 0
 								&& all_addresses.push({address: output.address, asset: paymentMessages[messageIndex].payload.asset || 'base'})
 							);
 						}

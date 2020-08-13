@@ -1819,8 +1819,9 @@ a.suggest-command {
 .custom-dropdown .custom-option .custom-badge {
   position: absolute;
   top: 0.1rem;
+  right: 10px;
   height: 1rem;
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.4rem calc(0.2rem - 1px) 0.4rem;
   border-radius: 0.5rem;
 	font-size: 0.6rem;
 	background-color: red;
@@ -1829,6 +1830,5 @@ a.suggest-command {
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  left: calc((100% - 10px));
-  transform: translateX(-100%);
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
