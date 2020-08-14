@@ -2682,7 +2682,7 @@ angular.module('copayApp.controllers')
 								$scope.assetIndexSelectorValue = -3;
 								break;
 							case 'data':
-								if (isPaymentWithData) {
+								if (isPaymentWithData || paymentMessages.length > 1) {
 									var assetIndex = indexScope.arrBalances.findIndex(balance => balance.asset === btx.asset);
 									if (assetIndex < 0) {
 										assetIndex = 0;
