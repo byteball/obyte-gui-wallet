@@ -2350,6 +2350,10 @@ angular.module('copayApp.controllers')
 				cordova.InAppBrowser.open(url, '_system');
 		};
 
+		this.showAttachFileLabel = () => {
+			return home.attachedFile ? ("Posting hash of file " + home.attachedFile.name) : "Post hash of a file";
+		}
+
 		this.sendAttachedFile = function ($ev) {
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
