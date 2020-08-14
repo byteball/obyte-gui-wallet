@@ -1750,3 +1750,46 @@ a.suggest-command {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+.post-hash-file + label {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px 40px;
+  -webkit-font-smoothing: antialiased;
+  border-radius: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 200ms !important;
+  overflow: hidden;
+  letter-spacing: 0.8px;
+  font-weight: 300;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #E2E2E2;
+  text-transform: uppercase;
+  background: #ECECEC;
+  color: #777777;
+}
+
+.post-hash-file + label:hover {
+  background: #E2E2E2;
+  border: 1px solid transparent;
+}
+
+.post-hash-file + label.active {
+  background: #C0E0F9;
+  color: #0E75C5;
+  border: 1px solid transparent;
+}
+
+.post-hash-file + label.active:hover {
+  background: #D8E8F5;
+  border: 1px solid transparent;
+}
+
+.post-hash-file {
+  display: none;
+  position: absolute;
+  z-index: -1;
+}

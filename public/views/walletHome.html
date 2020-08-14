@@ -691,10 +691,8 @@ input.datafeed_input {
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
 						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
 					</a>
-          <div class="clear" ng-show="assetIndexSelectorValue == -4" style="margin-top:10px">
-            Post a hash of a file:
-            <input type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-          </div>
+          <input class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+          <label for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r" ng-show="!home.attachedFile"></i> {{home.attachedFile.path || "Post hash of a file" }}</label>
 				</div>
 
             <div class="" ng-show="index.m < index.n && index.m > 1">
@@ -719,7 +717,7 @@ input.datafeed_input {
         </div>
       </div>
       <div ng-show="home.shownForm=='data' && !index.isSingleAddress">
-      	<div class="large-12 large-centered columns" style="padding-top: 10px" translate>
+        <div class="large-12 large-centered columns" style="padding.triggerHandler('cli-top: 10px" translate>
       		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one.
       	</div>
       </div>
