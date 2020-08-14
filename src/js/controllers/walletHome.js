@@ -2349,6 +2349,25 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
+		this.sendAttachedFile = function ($ev) {
+			home.attachedFile = $ev.target.files[0];
+			if (!home.attachedFile) return;
+			fileSystemService.readFile(home.attachedFile.path, function (
+				err,
+				data
+			) {
+				if (err) throw Error(err);
+				const hash = require("crypto")
+					.createHash("sha256")
+					.update(data)
+					.digest("hex");
+				home.feedvaluespairs.push({
+					name: home.attachedFile.name,
+					value: hash,
+				});
+				$scope.$apply();
+			});
+		};
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			delete $rootScope.newPaymentsCount[btx.unit];
