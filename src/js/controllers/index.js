@@ -773,25 +773,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
     $scope.getSubwalletBadge = function(shared_address) {
       var totalCounts = 0;
-      if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
-        return 0;
-      }
       if (shared_address) {
-        for(var index in $rootScope.newPaymentsDetails) {
-          if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].receivedAddress === shared_address) {
-            if ($rootScope.newPaymentsCount[index]) {
-              totalCounts += $rootScope.newPaymentsCount[index];
-            }
+        for(var unit in $rootScope.newPaymentsDetails) {
+          if ($rootScope.newPaymentsDetails[unit].receivedAddress === shared_address) {
+            totalCounts += $rootScope.newPaymentsCount[unit] || 0;
           }
         }
       } else {
-        for(var index in $rootScope.newPaymentsDetails) {
-          if ($rootScope.newPaymentsDetails[index]
-            && $rootScope.newPaymentsDetails[index].walletId === self.walletId
-            && $rootScope.newPaymentsDetails[index].walletAddress === $rootScope.newPaymentsDetails[index].receivedAddress) {
-            if ($rootScope.newPaymentsCount[index]) {
-              totalCounts += $rootScope.newPaymentsCount[index];
-            }
+        for (var unit in $rootScope.newPaymentsDetails) {
+          var details = $rootScope.newPaymentsDetails[unit];
+          if (details.walletId === self.walletId && details.walletAddress === details.receivedAddress) {
+            totalCounts += $rootScope.newPaymentsCount[unit] || 0;
           }
         }
       }
@@ -1909,5 +1901,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				go.handleUri(e.dataTransfer.files[i].path);
 			}
 		}, false);
-	})();
+  })();
+  
+  document.addEventListener('click', function(e){
+    let inside = e.target.closest('.custom-dropdown');
+    if (!inside)
+      $rootScope.$emit("closeAssetDropDown");
+  });
+
 });

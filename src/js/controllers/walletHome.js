@@ -120,9 +120,12 @@ angular.module('copayApp.controllers')
 			//self.bindTouchDown();
 		});
 
-		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function() {
+		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function () {
 			if (self.assetDropDownVisible) {
 				self.toggleAssetDropwDown();
+				$timeout(function() {
+					$scope.$digest();
+				});
 			}
 		});
 
@@ -1047,30 +1050,22 @@ angular.module('copayApp.controllers')
 				});
 		};
 
-		this.getSubwalletBadge = function(asset) {
+		this.getAssetBadge = function(asset) {
 			var totalCounts = 0;
-			if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
-			  	return 0;
-			}
 			if (indexScope.shared_address) {
-			  for(var index in $rootScope.newPaymentsDetails) {
-				if ($rootScope.newPaymentsDetails[index]
-					&& $rootScope.newPaymentsDetails[index].receivedAddress === indexScope.shared_address
-					&& $rootScope.newPaymentsDetails[index].asset === asset) {
-				  	if ($rootScope.newPaymentsCount[index]) {
-						totalCounts += $rootScope.newPaymentsCount[index];
-				  	}
+				for (var unit in $rootScope.newPaymentsDetails) {
+					var details = $rootScope.newPaymentsDetails[unit];
+					if (details.receivedAddress === indexScope.shared_address && details.asset === asset) {
+						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
+					}
 				}
-			  }
 			} else {
-			  	for(var index in $rootScope.newPaymentsDetails) {
-					if ($rootScope.newPaymentsDetails[index]
-						&& $rootScope.newPaymentsDetails[index].walletId === indexScope.walletId
-						&& $rootScope.newPaymentsDetails[index].walletAddress === $rootScope.newPaymentsDetails[index].receivedAddress
-						&& $rootScope.newPaymentsDetails[index].asset === asset) {
-						if ($rootScope.newPaymentsCount[index]) {
-							totalCounts += $rootScope.newPaymentsCount[index];
-						}
+			  	for(var unit in $rootScope.newPaymentsDetails) {
+					var details = $rootScope.newPaymentsDetails[unit];
+					if (details.walletId === indexScope.walletId
+						&& details.walletAddress === details.receivedAddress
+						&& details.asset === asset) {
+						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
 			  	}
 			}
@@ -2432,6 +2427,7 @@ angular.module('copayApp.controllers')
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			delete $rootScope.newPaymentsCount[btx.unit];
+			delete $rootScope.newPaymentsDetails[btx.unit];
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -2850,10 +2846,4 @@ angular.module('copayApp.controllers')
 				}
 			}, function(){}, "referrer");
 		}
-		document.addEventListener('click', function(e){
-		  	let inside = (e.target.closest('.custom-dropdown'));
-		  	if(!inside){
-				$rootScope.$emit("closeAssetDropDown");
-		  	}
-		});
 	});

@@ -367,8 +367,8 @@ input.datafeed_input {
                               : (balance.name || balance.asset))) + ' (' + (balance.totalStr ? balance.totalStr : (balance.total.toLocaleString())) + (balance.pending && 0 ? ' ' + ('confirmed' | translate) : ' '
                             + ('available' | translate) ) + ')'
                         }}
-                        <div class="custom-badge" ng-if="home.getSubwalletBadge(balance.asset) > 0">
-                          {{home.getSubwalletBadge(balance.asset)}}
+                        <div class="custom-badge" ng-if="home.getAssetBadge(balance.asset) > 0">
+                          {{home.getAssetBadge(balance.asset)}}
                         </div>
                       </li>
                       <li
@@ -780,8 +780,8 @@ input.datafeed_input {
                 ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
-                <div class="custom-badge" ng-if="home.getSubwalletBadge(balance.asset) > 0">
-                  {{home.getSubwalletBadge(balance.asset)}}
+                <div class="custom-badge" ng-if="home.getAssetBadge(balance.asset) > 0">
+                  {{home.getAssetBadge(balance.asset)}}
                 </div>
               </li>
             </ul>

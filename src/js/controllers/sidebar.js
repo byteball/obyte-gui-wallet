@@ -29,16 +29,11 @@ angular.module('copayApp.controllers').controller('sidebarController',
       profileService.signout();
     };
 
-    self.getBadgeCount = function(selectedWallet) {
+    self.getBadgeCount = function(wallet) {
       var totalCounts = 0;
-      if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
-        return 0;
-      }
-      for(var index in $rootScope.newPaymentsDetails) {
-        if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].walletId === selectedWallet.id) {
-          if ($rootScope.newPaymentsCount[index]) {
-            totalCounts += $rootScope.newPaymentsCount[index];
-          }
+      for(var unit in $rootScope.newPaymentsDetails) {
+        if ($rootScope.newPaymentsDetails[unit].walletId === wallet.id) {
+          totalCounts += $rootScope.newPaymentsCount[unit] || 0;
         }
       }
     	return totalCounts;
