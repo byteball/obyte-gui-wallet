@@ -2362,7 +2362,10 @@ angular.module('copayApp.controllers')
 				err,
 				data
 			) {
-				if (err) throw Error(err);
+				if (err) {
+					self.setSendError("cannot read the file whose hash is going to be posted");
+					return;
+				}
 				const hash = require("crypto")
 					.createHash("sha256")
 					.update(data)
