@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
 
 		var self = this;
 		var home = this;
@@ -2424,6 +2424,31 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
+
+		this.sendAttachedFile = function ($ev) {
+			home.attachedFile = $ev.target.files[0];
+			if (!home.attachedFile) 
+				return;
+			fileSystemService.readFile(home.attachedFile.path, function (
+				err,
+				data
+			) {
+				if (err) {
+					self.setSendError("cannot read the file whose hash is going to be posted");
+					return;
+				}
+				const hash = require("crypto")
+					.createHash("sha256")
+					.update(data)
+					.digest("hex");
+				home.feedvaluespairs.push({
+					name: home.attachedFile.name,
+					value: hash,
+				});
+				$scope.$apply();
+			});
+		};
+
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			delete $rootScope.newPaymentsCount[btx.unit];
