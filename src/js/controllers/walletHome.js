@@ -37,9 +37,40 @@ angular.module('copayApp.controllers')
 		this.blockUx = false;
 		this.showScanner = false;
 		this.addr = {};
+		this.assetDropDownVisible = false;
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		this.exchangeRates = network.exchangeRates;
+		this.dataAssets = [
+			{
+				index: -1,
+				asset: 'Data into datafeed (searchable)'
+			},
+			{
+				index: -2,
+				asset: 'Attestation of any address'
+			},
+			{
+				index: -3,
+				asset: 'Profile of my address'
+			},
+			{
+				index: -4,
+				asset: 'Raw data'
+			},
+			{
+				index: -5,
+				asset: 'Poll'
+			},
+			{
+				index: -6,
+				asset: 'Definition of autonomous agent'
+			},
+			{
+				index: -7,
+				asset: 'Text'
+			},
+		]
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
@@ -89,6 +120,12 @@ angular.module('copayApp.controllers')
 			//self.bindTouchDown();
 		});
 
+		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function() {
+			if (self.assetDropDownVisible) {
+				self.toggleAssetDropwDown();
+			}
+		});
+
 		var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
 			// This will slow down switch, do not add things here!
 			console.log("tab changed " + tab);
@@ -135,6 +172,7 @@ angular.module('copayApp.controllers')
 			disableResumeListener();
 			disableOngoingProcessListener();
 			disableClaimTextcoinListener();
+			disableAssetDropDownListener();
 			$rootScope.hideMenuBar = false;
 			eventBus.removeListener("new_wallet_address", onNewWalletAddress);
 		});
@@ -369,6 +407,18 @@ angular.module('copayApp.controllers')
 			});
 
 		};
+		
+		this.toggleAssetDropwDown = function() {
+			self.assetDropDownVisible = !self.assetDropDownVisible;
+		}
+
+		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
+			$scope.assetIndexSelectorValue = assetIndexSelectorValue;
+			self.toggleAssetDropwDown();
+			self.forceAmountRevalidation();
+			self.switchForms();
+			self.onChanged();
+		}
 
 		this.openTxpModal = function(tx, copayers) {
 			// deleted, maybe restore from copay sometime later
@@ -995,6 +1045,36 @@ angular.module('copayApp.controllers')
 						form.amount.$setViewValue(val + '');
 					}
 				});
+		};
+
+		this.getSubwalletBadge = function(asset) {
+			var totalCounts = 0;
+			if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
+			  	return 0;
+			}
+			if (indexScope.shared_address) {
+			  for(var index in $rootScope.newPaymentsDetails) {
+				if ($rootScope.newPaymentsDetails[index]
+					&& $rootScope.newPaymentsDetails[index].receivedAddress === indexScope.shared_address
+					&& $rootScope.newPaymentsDetails[index].asset === asset) {
+				  	if ($rootScope.newPaymentsCount[index]) {
+						totalCounts += $rootScope.newPaymentsCount[index];
+				  	}
+				}
+			  }
+			} else {
+			  	for(var index in $rootScope.newPaymentsDetails) {
+					if ($rootScope.newPaymentsDetails[index]
+						&& $rootScope.newPaymentsDetails[index].walletId === indexScope.walletId
+						&& $rootScope.newPaymentsDetails[index].walletAddress === $rootScope.newPaymentsDetails[index].receivedAddress
+						&& $rootScope.newPaymentsDetails[index].asset === asset) {
+						if ($rootScope.newPaymentsCount[index]) {
+							totalCounts += $rootScope.newPaymentsCount[index];
+						}
+					}
+			  	}
+			}
+			return totalCounts;
 		};
 
 		this.onChanged = function () {
@@ -2770,4 +2850,10 @@ angular.module('copayApp.controllers')
 				}
 			}, function(){}, "referrer");
 		}
+		document.addEventListener('click', function(e){
+		  	let inside = (e.target.closest('.custom-dropdown'));
+		  	if(!inside){
+				$rootScope.$emit("closeAssetDropDown");
+		  	}
+		});
 	});

@@ -31,7 +31,7 @@ angular.module('copayApp.services')
 		else
 		    return amount;
     };
-
+  
     root.formatAmountWithUnit = function(amount, asset, opts) {
 		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
     };

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('sidebarController',
-  function($rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova, backButton) {
+  function($scope, $rootScope, $timeout, lodash, profileService, configService, go, isMobile, isCordova, backButton) {
     var self = this;
     self.isWindowsPhoneApp = isMobile.Windows() && isCordova;
     self.walletSelection = false;
@@ -20,9 +20,28 @@ angular.module('copayApp.controllers').controller('sidebarController',
       self.setWallets();
     });
 
+    $rootScope.$on('Local/BadgeUpdated', function(event) {
+      self.setWallets();
+    });
+
 
     self.signout = function() {
       profileService.signout();
+    };
+
+    self.getBadgeCount = function(selectedWallet) {
+      var totalCounts = 0;
+      if (Object.keys($rootScope.newPaymentsDetails).length === 0) {
+        return 0;
+      }
+      for(var index in $rootScope.newPaymentsDetails) {
+        if ($rootScope.newPaymentsDetails[index] && $rootScope.newPaymentsDetails[index].walletId === selectedWallet.id) {
+          if ($rootScope.newPaymentsCount[index]) {
+            totalCounts += $rootScope.newPaymentsCount[index];
+          }
+        }
+      }
+    	return totalCounts;
     };
 
     self.switchWallet = function(selectedWalletId, currentWalletId) {

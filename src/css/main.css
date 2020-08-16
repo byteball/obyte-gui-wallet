@@ -1750,3 +1750,85 @@ a.suggest-command {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.custom-dropdown {
+  margin: 0;
+  height: 2.3125rem;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-dropdown .down-button {
+  flex: 1;
+  overflow: hidden;
+  line-height: 1.3125rem;
+  white-space: nowrap;
+  height: 2.3125rem;
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
+  background: transparent;
+  border: 1px solid #A5B2BF;
+  text-transform: none;
+  margin: 0;
+  text-align: left;
+  color: #7A8C9E;
+  font-family: inherit;
+  font-size: 0.875rem;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeD0iMTJweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIzcHgiIHZpZXdCb3g9IjAgMCA2IDMiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDYgMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBvbHlnb24gcG9pbnRzPSI1Ljk5MiwwIDIuOTkyLDMgLTAuMDA4LDAgIi8+PC9zdmc+');
+  background-repeat: no-repeat;
+  background-position: 100% center;
+}
+
+.custom-dropdown .custom-option-container {
+  margin: 0;
+  background-color: #F1F3F5;
+  position: absolute;
+  top: 2.3125rem;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  border: 1px solid #A5B2BF;
+  border-width: 0 1px 1px 1px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.custom-dropdown .custom-option {
+  font-weight: normal;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.2rem;
+  min-height: 1.2rem;
+  padding: 0px 30px 0 0.5rem;
+  box-sizing: border-box;
+  text-transform: none;
+  color: #7A8C9E;
+  position: relative;
+  list-style-type: none;
+  overflow: hidden;
+  margin: 5px 0;
+}
+
+.custom-dropdown .custom-option:hover {
+  background-color: #1E90FF;
+  cursor: pointer;
+  color: white;
+}
+
+.custom-dropdown .custom-option .custom-badge {
+  position: absolute;
+  top: 0.1rem;
+  right: 10px;
+  height: 1rem;
+  padding: 0.2rem 0.4rem calc(0.2rem - 1px) 0.4rem;
+  border-radius: 0.5rem;
+	font-size: 0.6rem;
+	background-color: red;
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

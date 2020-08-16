@@ -338,17 +338,51 @@ input.datafeed_input {
                 <span class="db text-bold">
                     <span translate>What to send</span>:
                 </span>
-                <select class="m10t" ng-model="assetIndexSelectorValue" ng-disabled="home.blockUx || home.lockAsset" ng-change="home.forceAmountRevalidation(); home.switchForms(); home.onChanged()">
-                	<option ng-repeat="balance in index.arrBalances"
-                      ng-value="index.arrBalances.indexOf(balance)">{{(balance.asset === 'base' ? 'Bytes' : (balance.asset == index.BLACKBYTES_ASSET ? 'Blackbytes' : (balance.name || balance.asset))) + ' (' + (balance.totalStr ? balance.totalStr : (balance.total.toLocaleString())) + (balance.pending && 0 ? ' ' + ('confirmed' | translate) : ' ' + ('available' | translate) ) + ')'}}</option>
-                	<option ng-value="-1" translate>Data into datafeed (searchable)</option>
-                	<option ng-value="-2" translate>Attestation of any address</option>
-                	<option ng-value="-3" translate>Profile of my address</option>
-                	<option ng-value="-4" translate>Raw data</option>
-                	<option ng-value="-5" translate>Poll</option>
-                	<option ng-value="-6" translate>Definition of autonomous agent</option>
-                	<option ng-value="-7" translate>Text</option>
-                </select>
+                <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
+                  <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
+                    <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
+                      <div style="overflow: hidden;">
+                        {{assetIndexSelectorValue >= 0
+                          ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
+                            ? 'Bytes'
+                            : (index.arrBalances[assetIndexSelectorValue].asset == index.BLACKBYTES_ASSET
+                              ? 'Blackbytes'
+                              : (index.arrBalances[assetIndexSelectorValue].name || index.arrBalances[assetIndexSelectorValue].asset))) + ' (' + (index.arrBalances[assetIndexSelectorValue].totalStr ? index.arrBalances[assetIndexSelectorValue].totalStr : (index.arrBalances[assetIndexSelectorValue].total.toLocaleString())) + (index.arrBalances[assetIndexSelectorValue].pending && 0 ? ' ' + ('confirmed' | translate) : ' '
+                            + ('available' | translate) ) + ')'
+                          : home.dataAssets[assetIndexSelectorValue * -1 - 1].asset
+                        }}
+                      </div>
+                    </button>
+                    <ul class="custom-option-container" ng-if="home.assetDropDownVisible">
+                      <li
+                        class="custom-option"
+                        ng-repeat="balance in index.arrBalances"
+                        ng-click="home.changeAssetIndexSelectorValue(index.arrBalances.indexOf(balance))"
+                      >
+                        {{
+                          (balance.asset === 'base'
+                            ? 'Bytes'
+                            : (balance.asset == index.BLACKBYTES_ASSET
+                              ? 'Blackbytes'
+                              : (balance.name || balance.asset))) + ' (' + (balance.totalStr ? balance.totalStr : (balance.total.toLocaleString())) + (balance.pending && 0 ? ' ' + ('confirmed' | translate) : ' '
+                            + ('available' | translate) ) + ')'
+                        }}
+                        <div class="custom-badge" ng-if="home.getSubwalletBadge(balance.asset) > 0">
+                          {{home.getSubwalletBadge(balance.asset)}}
+                        </div>
+                      </li>
+                      <li
+                        class="custom-option"
+                        ng-repeat="balance in home.dataAssets"
+                        ng-click="home.changeAssetIndexSelectorValue(balance.index)"
+                      >
+                        {{
+                          balance.asset
+                        }}
+                      </li>
+                    </ul>
+                  </div>
+                </h4>
             </div>
         </h4>
       </div>
@@ -732,8 +766,26 @@ input.datafeed_input {
     -->
     <div id="history" class="history tab-view">
       <div ng-show="index.arrBalances.length > 1">
-        <h4 class="title m0" style="padding:0 10px;">
-            <select class="m10t" ng-model="index.assetIndex" ng-options="index.arrBalances.indexOf(balance) as (balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset) for balance in index.arrBalances" ng-disabled="home.blockUx || home.lockAsset" ng-change="index.updateHistory()"></select>
+        <h4 class="title m0" style="padding:10px 10px; background-color: #F1F3F5;">
+          <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
+            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
+              <div style="overflow: hidden;">
+                {{index.assetIndex >= 0 ? (index.arrBalances[index.assetIndex].totalStr ? index.arrBalances[index.assetIndex].totalStr : index.arrBalances[index.assetIndex].total.toLocaleString() + ' of ' + index.arrBalances[index.assetIndex].asset) : ''}}
+              </div>
+            </button>
+            <ul class="custom-option-container" ng-if="home.assetDropDownVisible">
+              <li
+                class="custom-option"
+                ng-repeat="balance in index.arrBalances"
+                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
+              >
+                {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
+                <div class="custom-badge" ng-if="home.getSubwalletBadge(balance.asset) > 0">
+                  {{home.getSubwalletBadge(balance.asset)}}
+                </div>
+              </li>
+            </ul>
+          </div>
         </h4>
       </div>
       <div class="row m20t" ng-show="!index.txHistory[0] && !index.updatingTxHistory[index.walletId]">
