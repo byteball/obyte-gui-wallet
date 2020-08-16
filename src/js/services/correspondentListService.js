@@ -918,10 +918,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						}
 						debugger;
 						if (objJoint && objJoint.unit) {
-							db.query(`SELECT my_addresses.*, shared_addresses.shared_address FROM my_addresses
-							LEFT JOIN shared_address_signing_paths ON my_addresses.address=shared_address_signing_paths.address
-							LEFT JOIN shared_addresses ON shared_addresses.shared_address=shared_address_signing_paths.shared_address 
-							WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN(?)
+							db.query(`SELECT my_addresses.address, my_addresses.wallet, shared_addresses.shared_address FROM my_addresses 
+							LEFT JOIN shared_address_signing_paths ON shared_address_signing_paths.address = my_addresses.address 
+							LEFT JOIN shared_addresses ON shared_addresses.shared_address = shared_address_signing_paths.shared_address
+							WHERE my_addresses.address IN(?) OR shared_addresses.shared_address IN (?)
 							`, [allAddressWithAssets.map(address => address.address), allAddressWithAssets.map(address => address.address)],
 								function(rows){
 									var my_addresses = {};
