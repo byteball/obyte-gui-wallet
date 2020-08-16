@@ -2665,40 +2665,50 @@ angular.module('copayApp.controllers')
 				$timeout(function() {
 					var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
 					var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
-					var isPaymentWithData = false;
-					if (paymentMessages.findIndex(message => message.payload.outputs.length > 1) >= 0) {
-						isPaymentWithData = true;
-					}
+					var getTxType = function () {
+						if (dataMessages.length === 0)
+							return 'payment';
+						var fc = profileService.focusedClient;
+						if (!fc.isSingleAddress)
+							return 'payment_with_data';
+						if (paymentMessages.length > 1)
+							return 'payment_with_data';
+						var outputs = paymentMessages[0].payload.outputs;
+						if (outputs.length > 1)
+							return 'payment_with_data';
+						if (btx.addressTo === self.addr[fc.credentials.walletId])
+							return 'data';
+						return 'payment_with_data';
+					};
+					var txType = getTxType();
+					if (txType !== 'data')
+						$scope.assetIndexSelectorValue = $scope.index.assetIndex;
 					if (dataMessages.length > 0) {
 						var payload = dataMessages[0].payload;
+						var data;
 						switch (dataMessages[0].app) {
 							case 'data_feed':
 								$scope.assetIndexSelectorValue = -1;
+								data = payload;
 								break;
 							case 'attestation':
 								$scope.assetIndexSelectorValue = -2;
 								$scope.home.attested_address = payload.address;
-								payload = payload.profile;
+								data = payload.profile;
 								break;
 							case 'profile':
 								$scope.assetIndexSelectorValue = -3;
+								data = payload;
 								break;
 							case 'data':
-								if (isPaymentWithData || paymentMessages.length > 1) {
-									var assetIndex = indexScope.arrBalances.findIndex(balance => balance.asset === btx.asset);
-									if (assetIndex < 0) {
-										assetIndex = 0;
-									}
-									$scope.assetIndexSelectorValue = assetIndex;
-								} else {
+								if (txType === 'data')
 									$scope.assetIndexSelectorValue = -4;
-								}
+								data = payload;
 								break;
 							case 'poll':
 								$scope.assetIndexSelectorValue = -5;
 								$scope.home.poll_question = payload.question;
-								delete payload.question;
-								payload = Object.assign({}, payload.choices);
+								data = payload.choices;
 								break;
 							case 'vote':
 								$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
@@ -2708,26 +2718,23 @@ angular.module('copayApp.controllers')
 								$scope.assetIndexSelectorValue = -6;
 								var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
 								$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
-								payload = {};
+								data = {};
 								break;
 							case 'text':
 								$scope.assetIndexSelectorValue = -7;
 								$scope.home.content = payload;
-								payload = {};
+								data = {};
 								break;
 						}
 						$scope.home.feedvaluespairs = [];
-						for (var key in payload) {
-							var value = payload[key];
+						for (var key in data) {
+							var value = data[key];
 							$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
 						}
 					}
 					if ($scope.assetIndexSelectorValue >= 0) {
 						if (form.amount) {
-							form.amount.$setViewValue("" + $scope.calculateAmount(
-								isPaymentWithData && $scope.assetIndexSelectorValue === 0 ? paymentMessages[0].payload.outputs[0].amount : btx.amount,
-								btx.asset
-							));
+							form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
 							form.amount.$render();
 						}
 					}
@@ -2736,10 +2743,7 @@ angular.module('copayApp.controllers')
 				});
 			};
 			function ifNotFound() {
-				if (form.amount) {
-					form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
-					form.amount.$render();
-				}
+				throw Error("tx " + btx.unit + " not found");
 			}
 			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
 		};
