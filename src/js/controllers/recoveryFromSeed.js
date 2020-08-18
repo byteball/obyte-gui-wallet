@@ -106,6 +106,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			db.addQuery(arrQueries, "DELETE FROM wallet_signing_paths");
 			db.addQuery(arrQueries, "DELETE FROM extended_pubkeys");
 			db.addQuery(arrQueries, "DELETE FROM pairing_secrets");
+			db.addQuery(arrQueries, "DELETE FROM chat_messages");
 			db.addQuery(arrQueries, "DELETE FROM correspondent_devices");
 			db.addQuery(arrQueries, "DELETE FROM device_messages");
 			db.addQuery(arrQueries, "DELETE FROM devices");
@@ -118,7 +119,6 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			db.addQuery(arrQueries, "DELETE FROM unhandled_private_payments");
 			db.addQuery(arrQueries, "DELETE FROM unhandled_joints");
 			db.addQuery(arrQueries, "DELETE FROM dependencies");
-			db.addQuery(arrQueries, "DELETE FROM chat_messages");
 			db.addQuery(arrQueries, "DELETE FROM private_profile_fields");
 			db.addQuery(arrQueries, "DELETE FROM private_profiles");
 
