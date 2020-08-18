@@ -11,13 +11,12 @@ input.datafeed_input {
 	display: inline-block;
 }
 #send .mtab-title, .modal-content .mtab-title {
-	padding: 5px;
-	font-weight: bold;
-	font-size: 11px;
-	text-transform: uppercase;
+	padding: 11px;
+	font-size: 13px;
+	text-transform: initial;
 }
 #send .mtab-title.active, .modal-content .mtab-title.active {
-	color: #34495E;
+	/*color: #34495E;*/
 }
 .hor-link {
 	max-width: 45%;
@@ -436,7 +435,7 @@ input.datafeed_input {
             </label>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address or email or username')|translate}}</div>
+              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address / Email / Username')|translate}}</div>
               <div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
             </div>
 
