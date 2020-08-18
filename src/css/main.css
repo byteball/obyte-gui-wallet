@@ -481,12 +481,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .box-notification {
-  position: relative;
-  font-size: 12px;
-  padding: 0.5rem 2rem 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 12px;
   border-radius: 2px;
-  background: #F2F5F8;
+  background: #F7E2E2;
   margin: 0 auto;
+  font-family: Inter;
   margin-bottom: 1.6rem;
 }
 
@@ -517,10 +519,20 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 a.close-notification {
-  position: absolute;
-  top: -4px;
-  right: 10px;
-  font-size: 24px;
+  font-size: 22px;
+  display: block;
+  margin-right: 4px;
+  text-align: center;
+  transition: all .2s;
+  width: 24px;
+}
+
+a.close-notification:hover {
+  color: #DC8D8D;
+}
+
+a.close-notification:hover {
+
 }
 
 ul.tx-copayers {
@@ -1231,7 +1243,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
-.text-warning {color: #ED4A43;}
+.text-warning {color: #A40000;}
 .text-alert {color: red;}
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
@@ -1377,13 +1389,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #e5e5ea;
-  color: #7A8594;
+  background: #E0EAF5;
+  color: #73859A;
   border: 0px solid #e5e5ea;
   cursor: pointer;
   flex: 1 1 0;
   border-radius: 0px;
-  border-top-width: 2px;
+  border-top: 3px solid transparent;
   text-transform: inherit;
   font-weight: 600;
 	font-family: 'Inter';
@@ -1394,9 +1406,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 .mtab-title.active {
   background: #FFF;
-  color: #34495E;
+  color: #1560BD;
   padding: 11px;
-  border-top: 2px solid #2C3E50;
+  border-top: 3px solid #1560bd;
 }
 
 .mtab {
