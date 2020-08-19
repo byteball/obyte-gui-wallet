@@ -66,6 +66,8 @@
 }
 
  body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -360,12 +362,14 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 .box-notification {
-  position: relative;
-  font-size: 12px;
-  padding: 0.5rem 2rem 0.5rem 0.7rem;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 12px;
   border-radius: 2px;
-  background: #F2F5F8;
+  background: #F7E2E2;
   margin: 0 auto;
+  font-family: Roboto;
   margin-bottom: 1.6rem;
 }
 
@@ -396,10 +400,20 @@ input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, inpu
 }
 
 a.close-notification {
-  position: absolute;
-  top: -4px;
-  right: 10px;
-  font-size: 24px;
+  font-size: 22px;
+  display: block;
+  margin-right: 4px;
+  text-align: center;
+  transition: all .2s;
+  width: 24px;
+}
+
+a.close-notification:hover {
+  color: #DC8D8D;
+}
+
+a.close-notification:hover {
+
 }
 
 ul.tx-copayers {
@@ -1110,7 +1124,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-primary {color: #1ABC9C;}
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
-.text-warning {color: #ED4A43;}
+.text-warning {color: #A40000;}
 .text-alert {color: red;}
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
@@ -1246,27 +1260,36 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 }
 
 .mtab-title {
-	color: #A5B7C7;
-	border: 1px solid #A5B7C7;
-	border-bottom-color: #8C9EB0;
-  	border-width: 1px;
-  	flex: 1 1 0;
-  	background: #f7f7f7;
-  	cursor: pointer;
-  	border-radius: 3px 3px 0 0;
-	font-size: 14px;
-	font-weight: 500;
-	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif
+
+  padding: 11px;
+  display: flex;
+  font-size: 11px;
+  transition: all 200ms;
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #E0EAF5;
+  color: #73859A;
+  border: 0px solid #e5e5ea;
+  cursor: pointer;
+  flex: 1 1 0;
+  border-radius: 0px;
+  border-top: 3px solid transparent;
+  text-transform: inherit;
+  font-weight: 600;
+	font-family: Roboto;
 }
 .mtab-title.disabled {
 	cursor: not-allowed;
 	color: #C7C7C7;
 }
 .mtab-title.active {
-	color: #8C9EB0;
-	border-color: #8C9EB0;
-	background-color: #FFF;
-	border-bottom-width: 0px;
+  background: #FFF;
+  color: #1560BD;
+  padding: 11px;
+  border-top: 3px solid #1560bd;
 }
 
 .mtab {
