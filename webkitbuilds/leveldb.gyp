@@ -1,4 +1,10 @@
-# cp webkitbuilds/leveldb.gyp ./node_modules/rocksdb/deps/leveldb/
+# you should compile rocksdb (https://github.com/Level/rocksdb) using this .gyp file instead of default one
+# to make it runnable on older macs with Intel CPUs
+# 
+# 1. pull https://github.com/Level/rocksdb
+# 2. replace ./deps/leveldb/leveldb.gyp with this file
+# 3. npm i
+# 4. copy compiled binary (build/Release/leveldown.node) into obyte-gui-wallet/node_modules/rocksdb/build/Release/
 
 {'targets': [{
     'target_name': 'leveldb'
