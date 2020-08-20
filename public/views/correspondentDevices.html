@@ -86,12 +86,12 @@
 		</section>
 
 		<section class="middle tab-bar-section">
-			<div class="mtabset">
-				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+			<div class="mtabset mtabs-underline" ng-class="{'mtab-second': mtab == 2}">
+				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" 
 				translate>
 					Contacts
 				</div>
-				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" 
 				donttranslate>
 					Bot Store
 				</div>
