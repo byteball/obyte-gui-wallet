@@ -156,6 +156,8 @@ _:-ms-fullscreen, :root .main {
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 49px;
+  color: #5478B3;
+  font-weight: 500;
 }
 
 .bottom-bar {
