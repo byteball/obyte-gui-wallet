@@ -848,7 +848,7 @@ input.datafeed_input {
           </div>
           <div class="large-4 medium-4 small-4 columns text-right">
             <div class="m5t size-12 text-gray time-block">
-              <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
+              <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
               <span translate class="text-warning"
                 ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
                 Unconfirmed
