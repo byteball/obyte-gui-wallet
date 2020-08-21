@@ -45,6 +45,7 @@ input {
   text-align: right;
   word-wrap: break-word;
   word-break: break-word;
+  font-weight: 500;
 }
 
 .flex_container {
@@ -295,6 +296,7 @@ ul.copayer-list img {
 .time-block {
   margin-right: 16px;
   margin-top: 4px; /* 1px up */
+  font-weight: 400;
 }
 
 .history-badge {
@@ -409,7 +411,7 @@ a.missing-copayers {
 
 .sidebar ul.off-canvas-list li a,  .modal-content ul:not(.f-dropdown):not(.private-profile):not(.tx-details) li a {
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
   border-bottom: transparent;
   color: #A5B2BF;
   padding: 1rem 0.7rem;
@@ -959,8 +961,19 @@ textarea:focus
   pointer-events: none;
 }
 span[selectable] {
-	border-bottom: 1px dashed black;
-	cursor: pointer;
+	border: 1px solid #ABC2E0;
+  padding: 8px 13px;
+  cursor: pointer;
+  color: #002F6D;
+  background: #E4EDF9;
+  border-radius: 20px;
+  text-transform: capitalize;
+  transition: all .3s;
+}
+span[selectable]:hover {
+  color: #002F6D;
+  background: #E8F2FF;
+  border: 1px solid #4986D2;
 }
 input.inline {
 	width: auto;
