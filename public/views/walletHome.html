@@ -827,9 +827,8 @@ input.datafeed_input {
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-3 medium-3 small-3 columns">
-            <span class="label tu radius" ng-show="btx.action == 'received'"
-              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
+            <span class="label tu radius green" ng-show="btx.action == 'received'" translate>Received</span>
+            <span class="label tu radius blue" ng-show="btx.action == 'sent'" translate>Sent</span>
             <span class="label tu light-gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>

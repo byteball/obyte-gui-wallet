@@ -45,7 +45,6 @@ input {
   text-align: right;
   word-wrap: break-word;
   word-break: break-word;
-  font-weight: 500;
 }
 
 .flex_container {
@@ -962,18 +961,21 @@ textarea:focus
 }
 span[selectable] {
 	border: 1px solid #ABC2E0;
-  padding: 8px 13px;
+  padding: 5px 13px;
   cursor: pointer;
   color: #002F6D;
-  background: #E4EDF9;
+  display: block;
+  font-size: 13px;
+  background: #FFF;
   border-radius: 20px;
   text-transform: capitalize;
   transition: all .3s;
 }
-span[selectable]:hover {
-  color: #002F6D;
-  background: #E8F2FF;
-  border: 1px solid #4986D2;
+span[selectable]:active {
+  border: 1px solid #6BADFF;
+}
+span[selectable] i {
+  margin-left: 5px;
 }
 input.inline {
 	width: auto;

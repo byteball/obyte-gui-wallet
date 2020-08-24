@@ -68,8 +68,6 @@
 
 
  body {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
@@ -710,13 +708,17 @@ input[type=number]::-webkit-outer-spin-button {
 .label.success {background-color: #1ABC9C;}
 .label.alert {background-color: #ED4A43;}
 .label.gray {background-color: #4B6178;}
-.label.light-gray {background-color: #7A8C9E;;}
+.label.light-gray {background-color: #7A8C9E;}
+.label.blue{ background-color: #28AAF9; box-shadow: 0px 0px 10px rgba(43, 170, 249, 0.7);}
+.label.green{ background-color: #2FB798; box-shadow: 0px 0px 10px rgba(47, 183, 152, 0.7);}
 
 .history .label  {
-  width: 57px;
+  width: 64px;
+  padding: 8px 6px;
   text-align: center;
   font-size: 65%;
   overflow: hidden;
+  border-radius: 20px; 
   text-overflow: ellipsis;
 }
 
@@ -1946,4 +1948,46 @@ form#contacts-order {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.f-dropdown#drop-contacts,
+.f-dropdown#drop-bots {
+  background: #fff;
+  padding: 8px;
+  border: 1px solid rgb(233, 233, 233);
+  box-shadow: 0px 5px 17.2px rgba(0, 0, 0, 0.17);
+  border-radius: 6px;
+}
+
+.f-dropdown#drop-contacts li,
+.f-dropdown#drop-bots li {
+  padding-left: 0px;
+  transition: all .3s;
+  border-bottom: 1px solid #DADADA;
+}
+
+.f-dropdown#drop-contacts li:hover,
+.f-dropdown#drop-bots li:hover 
+{
+  background: #E8F3FF;
+  border-radius: 6px;
+  padding-left: 0px;
+}
+
+.f-dropdown#drop-contacts li:first-child,
+.f-dropdown#drop-bots li:first-child {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.f-dropdown#drop-contacts li:last-child,
+.f-dropdown#drop-bots li:last-child {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom: 1px solid transparent;
+}
+
+.f-dropdown#drop-contacts li a,
+.f-dropdown#drop-bots li a {
+  text-transform: capitalize;
 }
