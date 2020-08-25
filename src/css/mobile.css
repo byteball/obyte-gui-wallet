@@ -847,6 +847,32 @@ textarea:focus
   padding-bottom: 30px;
 }
 
+.tab-view#chat {
+  background: #D9E9FE;
+}
+
+.tab-view#chat .line-b {
+  border: 1px solid #EDF5FF;
+  box-shadow: 0px 2px 7px rgba(171, 194, 224, 0.38);
+  border-radius: 6px;
+  background: #FFFFFF;
+  margin-bottom: 6px;
+  transition: all 0.2s;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.tab-view#chat .line-b:hover {
+  box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
+  border: 1px solid #ABC2E0;
+  transform: translateY(-3px);
+}
+
+.tab-view#chat .line-b:hover .bot_name {
+  color: #002F6D;
+}
+
+
 .tab-in {
   -webkit-transform: translate3d(0, 0, 0) !important;
   transform: translate3d(0, 0, 0) !important;
