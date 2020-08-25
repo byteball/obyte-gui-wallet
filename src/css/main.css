@@ -128,7 +128,7 @@ h4.title a {
 }
 
 .preferences {
-  background: #f1f3f5;
+  background: #F8F8F8;
 }
 
 .preferences form {
@@ -143,7 +143,7 @@ h4.title a {
 
 
 .preferences h4 {
-  background: #F1F3F5;
+  background: #F8F8F8;
   padding: 25px 0px 5px 20px;
   text-transform: uppercase;
   color: #555;
@@ -711,6 +711,14 @@ input[type=number]::-webkit-outer-spin-button {
 .label.light-gray {background-color: #7A8C9E;}
 .label.blue{ background-color: #28AAF9; box-shadow: 0px 0px 10px rgba(43, 170, 249, 0.7);}
 .label.green{ background-color: #2FB798; box-shadow: 0px 0px 10px rgba(47, 183, 152, 0.7);}
+.label.added-bot-store {
+  background-color: #1560BD;
+  border: 1px solid #9BC4F7;
+  border-radius: 20px;
+  padding: 5px;
+  font-family: roboto;
+  box-shadow: 0px 0px 8px 3px rgba(21, 96, 189, 0.25);
+}
 
 .history .label  {
   width: 64px;
@@ -751,7 +759,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   height: 35px;
   border: none;
   font-size: 13px;
-  background: #F7F8FF;
+  background: #F9FAFF;
   border-radius: 3px;
   padding: 3px 12px;
   color: #2F2F2F;
@@ -761,7 +769,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
 input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="week"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="color"]:focus, textarea:focus {
   color: #2F2F2F;
   border: 1px solid #6BADFF;
-  background: #F7F8FF;
+  background: #FFF;
 }
 
 input[type="text"][disabled], input[type="text"][readonly], fieldset[disabled] input[type="text"], input[type="password"][disabled], input[type="password"][readonly], fieldset[disabled] input[type="password"], input[type="date"][disabled], input[type="date"][readonly], fieldset[disabled] input[type="date"], input[type="datetime"][disabled], input[type="datetime"][readonly], fieldset[disabled] input[type="datetime"], input[type="datetime-local"][disabled], input[type="datetime-local"][readonly], fieldset[disabled] input[type="datetime-local"], input[type="month"][disabled], input[type="month"][readonly], fieldset[disabled] input[type="month"], input[type="week"][disabled], input[type="week"][readonly], fieldset[disabled] input[type="week"], input[type="email"][disabled], input[type="email"][readonly], fieldset[disabled] input[type="email"], input[type="number"][disabled], input[type="number"][readonly], fieldset[disabled] input[type="number"], input[type="search"][disabled], input[type="search"][readonly], fieldset[disabled] input[type="search"], input[type="tel"][disabled], input[type="tel"][readonly], fieldset[disabled] input[type="tel"], input[type="time"][disabled], input[type="time"][readonly], fieldset[disabled] input[type="time"], input[type="url"][disabled], input[type="url"][readonly], fieldset[disabled] input[type="url"], input[type="color"][disabled], input[type="color"][readonly], fieldset[disabled] input[type="color"], textarea[disabled], textarea[readonly], fieldset[disabled] textarea {
@@ -1132,7 +1140,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .text-secondary {color: #3498DB;}
 .text-white {color: #fff;}
 .text-warning {color: #A40000;}
-.text-alert {color: red;}
+.text-alert {color: #8C2020;}
 .text-success {color: #1ABC9C;}
 .text-spacing {letter-spacing:2px;}
 .text-capitalize {text-transform: capitalize;}
@@ -1687,12 +1695,21 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .preferences ul.warnings{
 	margin-left: 0px;
-	background-color: transparent;
+  background-color: rgb(255, 237, 237);
+  border: 1px solid #E6C7C6;
+  border-radius: 7px;
+  box-shadow: 0px 0px 21px rgba(150, 150, 150, 0.38);
 }
+
 .preferences ul.warnings li{
 	cursor: auto !important;
 	overflow: auto;
 	white-space: normal;
+  border-bottom: 1px solid #F1D0CF;
+}
+
+.preferences ul.warnings li:last-child {
+  border-bottom: 0px;
 }
 
 form[name="chatForm"] .f-dropdown.drop-top > *:last-child {
@@ -1855,6 +1872,52 @@ a.suggest-command {
 }
 
 
+
+.choose-wallet-file + label {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px 11px;
+  -webkit-font-smoothing: antialiased;
+  border-radius: 4px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 200ms !important;
+  overflow: hidden;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #BBD8FD;
+  text-transform: capitalize;
+  background: #E7F2FF;
+  color: #3779C7;
+  margin-bottom: 10px;
+}
+
+.choose-wallet-file + label:hover {
+  background: #CEE1F9;
+  border: 1px solid transparent;
+}
+
+.choose-wallet-file + label.active {
+  background: #C0E0F9;
+  color: #0E75C5;
+  border: 1px solid transparent;
+}
+
+.choose-wallet-file + label.active:hover {
+  background: #D8E8F5;
+  border: 1px solid transparent;
+}
+
+.choose-wallet-file {
+  display: none;
+  position: absolute;
+  z-index: -1;
+}
+
+
+
 .custom-dropdown {
   margin: 0;
   height: 2.3125rem;
@@ -1990,4 +2053,13 @@ form#contacts-order {
 .f-dropdown#drop-contacts li a,
 .f-dropdown#drop-bots li a {
   text-transform: capitalize;
+}
+
+.switch.checked {
+  background: rgb(53, 139, 234);
+  border-color: rgb(53, 139, 234);
+}
+
+.content.preferences .text-alert > span {
+  display: none;
 }
