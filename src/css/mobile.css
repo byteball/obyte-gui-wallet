@@ -140,6 +140,7 @@ _:-ms-fullscreen, :root .main {
   position: absolute;
   line-height: 50px;
   left: -5px;
+  color: #5478B3;
   height: 45px;
   top: 0px;
 }
@@ -148,6 +149,7 @@ _:-ms-fullscreen, :root .main {
   margin-left: 26px;
   font-size: 0.9rem;
   font-weight: 400;
+  color: #5478B3;
   padding: 10px 0;
   visibility: middle;
 }
