@@ -109,7 +109,7 @@
             <div class="enable_text_select ellipsis">
               {{key}}
             </div>
-            <div class="text-gray text-right" ng-repeat="row in value">
+            <div class="text-gray text-right" style="clear:both;" ng-repeat="row in value">
               <span class="m5r">{{row.amount}}</span>
               <a ng-click="useAsFromAddress(key, row.asset);" style="float:right">
                   <i class="icon-paperplane"></i> <span translate>Send this</span>
