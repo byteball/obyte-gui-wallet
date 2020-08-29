@@ -110,7 +110,10 @@
               {{key}}
             </div>
             <div class="text-gray text-right" ng-repeat="row in value">
-              {{row.amount}}
+              <span class="m5r">{{row.amount}}</span>
+              <a ng-click="useAsFromAddress(key, row.asset);" style="float:right">
+                  <i class="icon-paperplane"></i> <span translate>Send this</span>
+              </a>
             </div>
           </li>
         </div>

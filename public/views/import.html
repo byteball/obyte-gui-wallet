@@ -33,7 +33,8 @@
 				<button ng-click="import.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
 				{{import.oldAndroidFileName}}
 			</div>
-			<input ng-show="!import.android || import.androidVersion>=5" type="file" ng-file-select>
+			<input ng-show="!import.android || import.androidVersion>=5" onchange="angular.element(this).scope().import.setWalletFileName(event)" class="choose-wallet-file" type="file" id="choose-wallet-file" ng-file-select>
+			<label ng-show="!import.android || import.androidVersion>=5" for="choose-wallet-file">{{ import.walletFile ? import.walletFile.name : "Choose File ..." }}</label>
 			<input type="password" placeholder="Password" ng-model="import.password">
 			<input ng-disabled="import.importing || import.password == '' || (!file && !import.oldAndroidFilePath)" type="submit"
 				   class="button expand black round"

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
-	var constants = require('ocore/constants.js');
+  function($scope, $rootScope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
+    var indexScope = $scope.index;
 
     this.init = function() {
       var basePath = c.getBaseAddressDerivationPath();
@@ -43,10 +43,14 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       });
       
       fc.getListOfBalancesOnAddresses(function(listOfBalances) {
-      	listOfBalances = listOfBalances.map(function(row) {
-			row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
-			return row;
-		});
+        var hiddenAssets = indexScope.getCurrentWalletHiddenAssets();
+        listOfBalances = listOfBalances.filter(function(row) {
+          if (indexScope.isAssetHidden(row.asset, hiddenAssets)) return false;
+          return true;
+        }).map(function(row) {
+          row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
+          return row;
+        });
       	//groupBy address
       	var assocListOfBalances = {};
       	listOfBalances.forEach(function(row) {
@@ -62,7 +66,13 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
     
     $scope.hasListOfBalances = function() {
     	return !!Object.keys($scope.assocListOfBalances || {}).length;
-	};
+    };
+
+    $scope.useAsFromAddress = function(from_address, asset) {
+      go.send(function () {
+        $rootScope.$emit('paymentRequest', null, null, asset, null, null, from_address);
+      });
+    };
 
     this.sendAddrs = function() {
       var self = this;

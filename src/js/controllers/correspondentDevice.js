@@ -742,17 +742,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								assocOutputsByAsset[asset] = [];
 							assocOutputsByAsset[asset].push({address: objPayment.address, amount: objPayment.amount});
 						});
-						var arrNonBaseAssets = Object.keys(assocOutputsByAsset).filter(function(asset){ return (asset !== 'base'); });
-						if (arrNonBaseAssets.length > 1){
-							$scope.error = 'more than 1 non-base asset not supported';
-							$timeout(function(){
-								$scope.$apply();
-							});
-							return;
-						}
-						var asset = (arrNonBaseAssets.length > 0) ? arrNonBaseAssets[0] : null;
-						var arrBaseOutputs = assocOutputsByAsset['base'] || [];
-						var arrAssetOutputs = asset ? assocOutputsByAsset[asset] : null;
 						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
@@ -763,11 +752,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
 							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
-							asset: asset,
 							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
-							base_outputs: arrBaseOutputs,
-							asset_outputs: arrAssetOutputs
+							outputs_by_asset: assocOutputsByAsset,
 						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_multi_payment_key;
 							$rootScope.sentUnit = unit;
