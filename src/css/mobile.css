@@ -113,7 +113,18 @@ _:-ms-fullscreen, :root .main {
 .tab-bar {
   background: #FFFFFF;
   z-index: 5;
-  border-bottom: 1px solid #E9E9EC;
+}
+
+nav.tab-bar:after {
+  position: absolute;
+  bottom: 0px;
+  z-index: 99;
+  left: 0px;
+  width: 100%;
+  bottom: -4px;
+  height: 4px;
+  content: "";
+  background: linear-gradient(90deg, #aaa, #fff);
 }
 
 .tab-bar h1 {
