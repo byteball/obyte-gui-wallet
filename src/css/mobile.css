@@ -51,6 +51,12 @@ input {
   display: flex;
 }
 
+#history.history .flex_container 
+{
+  display: flex;
+  justify-content: space-between;
+}
+
 .ml_auto {
   margin-left: auto;
 }

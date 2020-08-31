@@ -238,6 +238,7 @@ ul.button-group li.selected {
   border-left: 4px solid #D6D6D6;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  margin-bottom: 3px;
 }
 .modal-content ul.subwallets li.line-b a {
   color: #454648 !important;
@@ -251,6 +252,7 @@ ul.button-group li.selected {
   border-left: 3px solid #97B7E8;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  margin-bottom: 3px;
 }
 .modal-content ul.subwallets li.line-b.selected a {
   color: #454648 !important;
@@ -1680,13 +1682,13 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .indent{
   text-align: center;
-  margin: 10px -1px 5px 9px;
-  padding: 5px 12px 5px 0px;
+  margin: 10px 5px 5px 10px;
+  padding: 8px 12px 12px 8px;
   overflow: hidden;
+  background: #fff;
   text-overflow: ellipsis;
-  border: 1px solid #C0D4F5;
-  border-left: 3px solid #4D6FA7;
-  border-radius: 2px 8px 8px 2px;
+  border: 1px solid #AFAFAF;
+  border-radius: 8px 8px 8px 8px;
   box-shadow: 0px 0px 0px 4px rgba(77, 111, 167, 0.06);
   word-wrap: break-word;
   transition: all .3s;
@@ -1694,6 +1696,8 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 
 .indent:hover {
   box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.12);
+  border: 1px solid #696969;
+  color: #000;
   transform: translateY(-4px);
 }
 
