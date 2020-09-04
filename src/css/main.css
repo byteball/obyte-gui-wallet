@@ -737,7 +737,7 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: #1560BD;
   border: 1px solid #9BC4F7;
   border-radius: 20px;
-  padding: 5px;
+  padding: 3px 6px;
   font-family: roboto;
 }
 
@@ -1704,10 +1704,22 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .arrow-down{
     width: 0;
     height: 0;
-    margin: 23px 0 0 4px;
+    margin: 2px 0px 0px 7px;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 5px solid #f00;
+}
+
+.topbar-avatar {
+  width: 36px;
+  height: 36px;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  margin-right: 9px;
 }
 
 .gray-13{

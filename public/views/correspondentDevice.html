@@ -16,7 +16,8 @@
     </section>
 
     <section class="middle tab-bar-section" style="overflow: hidden;">
-	    <h1 class="title ellipsis" style="color: #4E4E4E !important">
+	    <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px">
+        <span class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 	      {{correspondent.name}}
 	    </h1>
     </section>
@@ -317,13 +318,12 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
 .chat-message .bubble.system > b {
   background-color: white;
-  color: #808080;
+  color: #6E6E6E;
   transition: all .3s;
   margin-left: -5px;
-  border-radius: 11px;
   margin-right: 2px;
   padding: 5px 10px;
-  border: 1px solid #B9B9B9;
+  border-bottom: 1px dashed #6E6E6E;
   letter-spacing: 1px;
 }
 
