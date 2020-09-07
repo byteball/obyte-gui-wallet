@@ -10,18 +10,20 @@
   top: 0px;
   left: 0px;
   right: 0px;
-  bottom: 0px;
+  min-height: 542px;
   background-color: #D9E9FE;
 }
 
 .bot-description-widget {
   background: #F5F5F5;
   margin: 20px;
+  margin-bottom: 30px;
   box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.1);
   padding: 21px;
   width: calc(100% - 40px);
   border-radius: 25px;
   position: relative;
+  word-break: break-word;
 }
 
 .bot-related-bottom-row {
@@ -37,6 +39,12 @@
   border-radius: 20px;
   letter-spacing: 1.73px;
   box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35) !important;
+}
+
+@media only screen and (max-width: 320px) {
+  .bot-description-widget {
+    margin-bottom: 130px;
+  }
 }
 
 </style>

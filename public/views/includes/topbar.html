@@ -1,4 +1,16 @@
 <style>
+.topbar-wrapper {
+  width: 224px;
+  height: 43px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media only screen and (max-width: 320px) {
+  .topbar-wrapper {
+    width: 145px;
+  }
+}
 </style>
 <nav ng-controller="topbarController as topbar" class="tab-bar">
   <section class="left-small">
@@ -22,10 +34,10 @@
 
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px;">
-      <span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome'" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
+      <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || (titleSection === 'Preferences' || titleSection === 'Wallet Alias' || titleSection === 'Color' || titleSection === 'Hidden assets' || titleSection === 'Hidden subwallets' || titleSection === 'Hidden subwallets' || titleSection === 'Advanced' || titleSection === 'Wallet Information' || titleSection === 'Sweep paper wallet' || titleSection === 'Delete Wallet')" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
-			<a ng-click="index.openSubwalletModal()" ng-style="{'display':'flex', 'justify-content': 'center', 'align-items': 'center', 'justify-content': 'center', 'width': '224px', 'height': '43px'}" style="color: #4E4E4E !important">
+			<a ng-click="index.openSubwalletModal()" class="topbar-wrapper" style="color: #4E4E4E !important">
         <span class="topbar-avatar" ng-if="index.tab !== 'walletHome'" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 				<span class="ellipsis" style="float: left;">
 					{{(index.shared_address || index.alias || index.walletName)}}

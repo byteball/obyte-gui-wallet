@@ -2060,10 +2060,10 @@ form#contacts-order {
 .f-dropdown#drop-contacts,
 .f-dropdown#drop-bots {
   background: #fff;
-  padding: 8px;
+  padding: 5px 0px;
   border: 1px solid rgb(233, 233, 233);
   box-shadow: 0px 5px 17.2px rgba(0, 0, 0, 0.17);
-  border-radius: 6px;
+  border-radius: 9px;
 }
 
 .f-dropdown#drop-contacts li,
@@ -2077,20 +2077,11 @@ form#contacts-order {
 .f-dropdown#drop-bots li:hover 
 {
   background: #E8F3FF;
-  border-radius: 6px;
   padding-left: 0px;
-}
-
-.f-dropdown#drop-contacts li:first-child,
-.f-dropdown#drop-bots li:first-child {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
 }
 
 .f-dropdown#drop-contacts li:last-child,
 .f-dropdown#drop-bots li:last-child {
-  border-top-left-radius: 0px;
-  border-top-right-radius: 0px;
   border-bottom: 1px solid transparent;
 }
 
@@ -2106,10 +2097,6 @@ form#contacts-order {
 
 .content.preferences .text-alert > span {
   display: none;
-}
-
-.send-form[name=chatForm] {
-  box-shadow: 0px -3px 0px 2px rgba(181, 181, 181, 0.1);
 }
 
 .send-form[name=chatForm] textarea#message {

@@ -868,7 +868,7 @@ input.datafeed_input {
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
             <div ng-show="!btx.message" class="flex_container">
               <span translate>To</span>:
-              <span class="wrap_address_section ml_auto">
+              <span class="wrap_address_section ml_auto" style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                 {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
               </span>
             </div>

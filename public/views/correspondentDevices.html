@@ -87,6 +87,19 @@
 	.flex-width {
 		flex-grow: 1;
 	}
+
+	@media only screen and (max-width: 320px) {
+	  .tab-bar-section.middle {
+	    left: 3.7em;
+	    right: 3.7em;
+	  }
+	  .order-button-right{
+	    padding: 13px 10px 0 4px;
+	  }
+	  .bot_name {
+	  	max-width: 65%;
+	  }
+	}
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -217,7 +230,7 @@
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-						<div class="right label tu radius added-bot-store" ng-if="bot.isPaired" translate style="margin-top: 4px">Added</div>
+						<div class="right label tu radius blue" ng-if="bot.isPaired" translate style="margin-top: 4px">Added</div>
 					</div>
 				</li>
 			</ul>
