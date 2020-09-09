@@ -20,7 +20,7 @@ angular.module('copayApp.controllers').controller('botController',
 	})
 
 	$scope.pair = function(bot) {
-		var matches = bot.pairing_code.match(/^([\w\/+]+)@([\w.:\/-]+)#([\w\/+-]+)$/);
+		var matches = bot.pairing_code.match(/^([\w\/+]{44})@([\w.:\/-]+)#(.+)$/);
 		var pubkey = matches[1];
 		var hub = matches[2];
 		var pairing_secret = matches[3];

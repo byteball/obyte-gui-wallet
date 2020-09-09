@@ -5,14 +5,44 @@ var ValidationUtils = require('ocore/validation_utils.js');
 angular.module('copayApp.services').factory('aliasValidationService', function($timeout, configService, gettextCatalog) {
 
 	var listOfAliases = {
+		bitcointalk: {
+			dbKey: 'bitcointalk_username',
+			title: 'bitcointalk account',
+			isValid: function (value) {
+				return /^bitcointalk\/[\w\-.]{1,25}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^bitcointalk\//i, '').toLowerCase();
+			}
+		},
 		email: {
 			dbKey: 'email',
-			title: 'email',
+			title: 'email address',
 			isValid: function (value) {
 				return ValidationUtils.isValidEmail(value);
 			},
 			transformToAccount: function (value) {
 				return value.replace(/^textcoin:/, '').toLowerCase();
+			}
+		},
+		github: {
+			dbKey: 'github_username',
+			title: 'github account',
+			isValid: function (value) {
+				return /^github\/[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^github\//i, '').toLowerCase();
+			}
+		},
+		phone: {
+			dbKey: 'phone',
+			title: 'phone number',
+			isValid: function (value) {
+				return /^\+?\d{9,14}$/.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace('+', '');
 			}
 		},
 		reddit: {
@@ -45,16 +75,6 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return value.substr(1).toLowerCase();
 			}
 		},
-		phone: {
-			dbKey: 'phone',
-			title: 'phone number',
-			isValid: function (value) {
-				return /^\+?\d{9,14}$/.test(value);
-			},
-			transformToAccount: function (value) {
-				return value.replace('+', '');
-			}
-		}
 	};
 	var assocBbAddresses = {};
 	var root = {};

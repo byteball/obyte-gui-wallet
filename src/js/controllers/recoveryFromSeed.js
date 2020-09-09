@@ -98,15 +98,29 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 
 		function removeAddressesAndWallets(cb) {
 			var arrQueries = [];
-			db.addQuery(arrQueries, "DELETE FROM pending_shared_address_signing_paths");
+			db.addQuery(arrQueries, "DELETE FROM outbox");
 			db.addQuery(arrQueries, "DELETE FROM shared_address_signing_paths");
+			db.addQuery(arrQueries, "DELETE FROM pending_shared_address_signing_paths");
 			db.addQuery(arrQueries, "DELETE FROM pending_shared_addresses");
 			db.addQuery(arrQueries, "DELETE FROM shared_addresses");
-			db.addQuery(arrQueries, "DELETE FROM my_addresses");
 			db.addQuery(arrQueries, "DELETE FROM wallet_signing_paths");
 			db.addQuery(arrQueries, "DELETE FROM extended_pubkeys");
-			db.addQuery(arrQueries, "DELETE FROM wallets");
+			db.addQuery(arrQueries, "DELETE FROM pairing_secrets");
+			db.addQuery(arrQueries, "DELETE FROM chat_messages");
 			db.addQuery(arrQueries, "DELETE FROM correspondent_devices");
+			db.addQuery(arrQueries, "DELETE FROM device_messages");
+			db.addQuery(arrQueries, "DELETE FROM devices");
+			db.addQuery(arrQueries, "DELETE FROM my_addresses");
+			db.addQuery(arrQueries, "DELETE FROM wallets");
+			db.addQuery(arrQueries, "DELETE FROM peer_host_urls");
+			db.addQuery(arrQueries, "DELETE FROM peer_events");
+			db.addQuery(arrQueries, "DELETE FROM peers");
+			db.addQuery(arrQueries, "DELETE FROM peer_hosts");
+			db.addQuery(arrQueries, "DELETE FROM unhandled_private_payments");
+			db.addQuery(arrQueries, "DELETE FROM unhandled_joints");
+			db.addQuery(arrQueries, "DELETE FROM dependencies");
+			db.addQuery(arrQueries, "DELETE FROM private_profile_fields");
+			db.addQuery(arrQueries, "DELETE FROM private_profiles");
 
 			async.series(arrQueries, cb);
 		}
@@ -283,7 +297,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 						scanForAddressesAndWallets(self.inputMnemonic, cleanAndAddWalletsAndAddresses);
 					}
 				} else {
-					self.error = 'Seed is not valid';
+					self.error = self.inputMnemonic.split('-').length > 1 ? 'It looks like textcoin, don\'t use textcoins as seeds. Navigate to Receive → Claim funds using textcoin and paste it there.' : 'Seed is not valid';
 				}
 			}
 		}

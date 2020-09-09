@@ -31,7 +31,7 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 		code = code.replace(re, '');
 		re = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
 		code = code.replace(re, '');
-		var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#(.+)$/);
+		var matches = code.match(/^([\w\/+]{44})@([\w.:\/-]+)#(.+)$/);
 		if (!matches)
 			return setError("Invalid pairing code");
 		var pubkey = matches[1];
