@@ -324,7 +324,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						});
 
 						profileService.bKeepUnlocked = true;
-						var opts = {
+						/*var opts = {
 							asset: "base",
 							to_address: shared_address,
 							amount: arbiter_contract.CHARGE_AMOUNT,
@@ -343,7 +343,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								showError(err);
 								return;
 							}
-							$rootScope.$emit("NewOutgoingTx");
+							$rootScope.$emit("NewOutgoingTx");*/
 
 							// post a unit with contract text hash and send it for signing to correspondent
 							var value = {"contract_text_hash": contract.hash, "arbiter": contract.arbiter_address};
@@ -356,7 +356,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 							profileService.focusedClient.sendMultiPayment({
 								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
-								shared_address: shared_address,
+								signing_addresses: [shared_address],
 								messages: [objMessage]
 							}, function(err, unit) { // can take long if multisig
 								$rootScope.sentUnit = unit;
@@ -394,7 +394,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 								});
 							});
-						});
+						/*});*/
 					}
 				};
 				eventBus.on("arbiter_contract_response_received" + contract.hash, sendUnit);
@@ -803,10 +803,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
 						require("ocore/arbiters.js").getInfo(objContract.arbiter_address, function(info){
-							$scope.arbiter_name = info.real_name;
-						});
-						$timeout(function() {
-							$rootScope.$apply();
+							if (info)
+								$scope.arbiter_name = info.real_name;
+							$timeout(function() {
+								$rootScope.$apply();
+							});
 						});
 					});
 
@@ -1065,6 +1066,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								}
 							});
 							var opts = {
+								fee_paying_wallet: profileService.focusedClient.credentials.walletId,
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
