@@ -1063,3 +1063,20 @@ i.validation-icon {
 .keyboard-open .send-form {
 	padding-bottom: 0px;
 }
+
+.color-round-block {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+li.dropup-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+li.dropup-item a {
+  width: 100%;
+}
