@@ -147,7 +147,7 @@ _:-ms-fullscreen, :root .main {
   position: absolute;
   line-height: 50px;
   left: -5px;
-  color: #5478B3;
+  color: #1560BD;
   height: 45px;
   top: 0px;
 }
@@ -156,7 +156,7 @@ _:-ms-fullscreen, :root .main {
   margin-left: 26px;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #5478B3;
+  color: #1560BD;
   padding: 10px 0;
   visibility: middle;
 }
@@ -165,7 +165,7 @@ _:-ms-fullscreen, :root .main {
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 49px;
-  color: #5478B3;
+  color: #1560BD;
   font-weight: 500;
 }
 
@@ -857,7 +857,7 @@ textarea:focus
 }
 
 .tab-view#chat {
-  background: #D9E9FE;
+  background: #f0f4f9;
 }
 
 .tab-view#chat .line-b {
@@ -873,12 +873,13 @@ textarea:focus
 
 .tab-view#chat .line-b:hover {
   box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
-  border: 1px solid #ABC2E0;
+  border: 1px solid #4A90E2;
   transform: translateY(-3px);
 }
 
-.tab-view#chat .line-b:hover .bot_name {
-  color: #002F6D;
+.tab-view#chat .line-b:hover .bot_name,
+.tab-view#chat .line-b:hover .icon-arrow-right3 {
+  color: #1560BD;
 }
 
 

@@ -12,7 +12,7 @@
   }
 }
 </style>
-<nav ng-controller="topbarController as topbar" class="tab-bar">
+<nav ng-controller="topbarController as topbar" class="tab-bar" ng-init="topbar.init()">
   <section class="left-small">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
@@ -34,7 +34,7 @@
 
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px;">
-      <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || topbar.showableWalletAvatar(titleSection)" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
+      <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || topbar.showableWalletAvatar()" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
 			<a ng-click="index.openSubwalletModal()" class="topbar-wrapper" style="color: #4E4E4E !important">
