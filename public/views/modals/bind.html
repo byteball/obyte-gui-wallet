@@ -8,8 +8,9 @@ form[name=bindForm] span[selectable] {
     border-radius: 0px;
     border: 1px solid transparent;
     border-bottom: 1px dashed #000;
-    text-transform: capitalize;
+    text-transform: none;
     padding: 0px 3px;
+    height: 26px;
     transition: all .3s;
 }
 
@@ -31,6 +32,10 @@ form[name=bindForm] input.inline {
 form[name=bindForm] input.inline:focus {
 	border: 1px solid #4A90E2;
 	border-radius: 3px;
+}
+
+form[name=bindForm] .f-dropdown li a {
+  text-transform: none;
 }
 </style>
 

@@ -778,7 +778,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   border-radius: 3px;
   padding: 3px 12px;
   color: #2F2F2F;
-  border: 1px solid #4A90E2;
+  border: 1px solid #C3C3C3;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="week"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="color"]:focus, textarea:focus {
