@@ -347,7 +347,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 							// post a unit with contract text hash and send it for signing to correspondent
 							var value = {"contract_text_hash": contract.hash, "arbiter": contract.arbiter_address};
-							var objMessage = {
+							var objContractMessage = {
 								app: "data",
 								payload_location: "inline",
 								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
@@ -355,9 +355,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							};
 
 							profileService.focusedClient.sendMultiPayment({
+								asset: "base",
+								to_address: shared_address,
+								amount: arbiter_contract.CHARGE_AMOUNT,
 								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
 								signing_addresses: [shared_address],
-								messages: [objMessage]
+								messages: [objContractMessage]
 							}, function(err, unit) { // can take long if multisig
 								$rootScope.sentUnit = unit;
 								if (err) {
@@ -976,7 +979,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							asset: objContract.asset,
 							to_address: objContract.peer_address,
 							amount: objContract.amount,
-							arrSigningDeviceAddresses: objContract.cosigners
+							arrSigningDeviceAddresses: objContract.cosigners.length ? objContract.cosigners : [device.getMyDeviceAddress()]
 						};
 						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
@@ -1084,6 +1087,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									return setError(err);
 								}
 								$rootScope.$emit("NewOutgoingTx");
+								
+								$modalInstance.dismiss();
 							});
 						}
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {

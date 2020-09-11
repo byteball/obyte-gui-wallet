@@ -587,9 +587,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var arbiter_contract = require('ocore/arbiter_contract.js');
 						function isContractSignRequest(cb) {
-							var matches = question.match(/contract_text_hash: (.{44})/m);
-							if (matches && matches.length) {
-								var contract_hash = matches[1];
+							var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "data");});
+							if (arrDataMessages.length > 0 && arrDataMessages[0].payload["contract_text_hash"]){
+								var contract_hash = arrDataMessages[0].payload["contract_text_hash"];
 								var contract;
 								async.series([function(cb){
 									prosaic_contract.getByHash(contract_hash, function(objContract) {
@@ -638,7 +638,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											return cb();
 										contract = objContract;
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
-										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 1 || Object.keys(arrDataMessages[0].payload).length > 2)
+										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || Object.keys(arrDataMessages[0].payload).length > 2)
 											return cb();
 										var shared_address;
 										async.series([function(cb){
