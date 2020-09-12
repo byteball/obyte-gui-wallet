@@ -1260,7 +1260,7 @@ angular.module('copayApp.controllers')
 							}
 							else {
 								state_change.action = gettext('set to');
-								state_change.value = varInfo.value;
+								state_change.value = (typeof varInfo.value === 'object') ? JSON.stringify(varInfo.value) : varInfo.value;
 							}
 							state_changes.push(state_change);
 						}
