@@ -303,7 +303,11 @@ body, html{
 }
 
 a {
-  color: #3498DB;
+  color: #1560BD;
+}
+
+a:hover {
+  color: #4A90E2;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
@@ -741,16 +745,6 @@ input[type=number]::-webkit-outer-spin-button {
   font-family: roboto;
 }
 
-.history .label  {
-  width: 56px;
-  padding: 5px 5px;
-  text-align: center;
-  font-size: 65%;
-  overflow: hidden;
-  border-radius: 20px;
-  text-overflow: ellipsis;
-}
-
 .bg-alert {
   background-color: #ED4A43;
 }
@@ -780,16 +774,16 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   height: 35px;
   border: none;
   font-size: 13px;
-  background: #F9FAFF;
+  background: #FFF;
   border-radius: 3px;
   padding: 3px 12px;
   color: #2F2F2F;
-  border: 1px solid #6BADFF;
+  border: 1px solid #4A90E2;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="week"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="color"]:focus, textarea:focus {
   color: #2F2F2F;
-  border: 1px solid #6BADFF;
+  border: 1px solid #1560BD;
   background: #FFF;
 }
 
@@ -1306,7 +1300,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #E0EAF5;
+  background: #e5e5ea;
   color: #73859A;
   border: 0px solid #e5e5ea;
   cursor: pointer;
@@ -2057,36 +2051,30 @@ form#contacts-order {
   justify-content: center;
 }
 
-.f-dropdown#drop-contacts,
-.f-dropdown#drop-bots {
+.f-dropdown {
   background: #fff;
   padding: 5px 0px;
   border: 1px solid rgb(233, 233, 233);
-  box-shadow: 0px 5px 17.2px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 1px 2.6px rgba(181, 181, 181, 0.37);
   border-radius: 9px;
 }
 
-.f-dropdown#drop-contacts li,
-.f-dropdown#drop-bots li {
-  padding-left: 0px;
+.f-dropdown li {
   transition: all .3s;
   border-bottom: 1px solid #DADADA;
 }
 
-.f-dropdown#drop-contacts li:hover,
-.f-dropdown#drop-bots li:hover 
+.f-dropdown li:hover,
 {
   background: #E8F3FF;
   padding-left: 0px;
 }
 
-.f-dropdown#drop-contacts li:last-child,
-.f-dropdown#drop-bots li:last-child {
+.f-dropdown li:last-child {
   border-bottom: 1px solid transparent;
 }
 
-.f-dropdown#drop-contacts li a,
-.f-dropdown#drop-bots li a {
+.f-dropdown li a {
   text-transform: capitalize;
 }
 

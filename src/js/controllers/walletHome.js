@@ -18,6 +18,7 @@ angular.module('copayApp.controllers')
 		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
+		$rootScope.showableWalletAvatar = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
