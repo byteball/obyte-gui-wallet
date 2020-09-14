@@ -20,7 +20,7 @@
     "visible": true,
     "resizable": false,
     "frame": true,
-    "width": 320,
+    "width": 400,
     "height": 600,
     "position": "center",
     "fullscreen": false
