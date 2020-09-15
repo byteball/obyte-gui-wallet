@@ -201,9 +201,9 @@
 
     <h4 ng-show="btx.response.responseVars" class="title m0" translate>Response variables</h4>
     <ul ng-show="btx.response.responseVars" class="no-bullet size-14 m0 tx-details">
-      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse">
-        <div class="text-gray small-4 columns enable_text_select" style="word-wrap: break-word; width: 100%"><span>{{key}}</span></div>
-        <div class="right small-8 columns text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
+      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse" style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:flex-end;">
+        <div class="text-gray enable_text_select" style="word-wrap: break-word; flex: 1; width: 100%"><span>{{key}}</span></div>
+        <div class="right text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
       </li>
     </ul>
   </div>
