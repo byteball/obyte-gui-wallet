@@ -1,16 +1,16 @@
 <style>
 form[name=bindForm] span[selectable] {
 	display: inline-block;
-	cursor: pointer;
+    cursor: pointer;
     color: #000000;
-    font-size: 15px;
+    font-size: 16px;
     background: #FFF;
+    text-transform: none;
     border-radius: 0px;
     border: 1px solid transparent;
     border-bottom: 1px dashed #000;
-    text-transform: none;
     padding: 0px 3px;
-    height: 26px;
+    line-height: 22px;
     transition: all .3s;
 }
 
@@ -18,7 +18,7 @@ form[name=bindForm] input.inline {
     display: inline;
     margin-bottom: 0;
     padding-bottom: 0;
-    height: 28px;
+    height: 25px;
     border: 1px solid transparent;
     border-bottom: 1px solid #aaa;
     font-size: 16px;
@@ -97,7 +97,7 @@ form[name=bindForm] .f-dropdown li a {
 		<br ng-if="binding.type == 'data'">
 		<span ng-if="binding.type == 'data'" translate>with expected value</span>
 		<br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 28px"></span>
+		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 24px"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
 			<a><span >{{relation}}</span></a>
