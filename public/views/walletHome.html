@@ -34,6 +34,17 @@ input.datafeed_input {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+#history .history-list-details {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+}
+
+#history .history-list-details > section {
+  margin-left: 10px;
+  text-align: right;
+}
 </style>
 
 
@@ -841,30 +852,32 @@ input.datafeed_input {
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>
 
-          <div class="large-4 medium-4 small-4 columns">
-            <span class="size-16">
-              <span ng-if="btx.action == 'received'">+</span>
-              <span ng-if="btx.action == 'sent'">-</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
-              (possible double spend)
+          <div class="large-9 medium-9 small-9 columns history-list-details">
+            <section>
+              <span class="size-16">
+                <span ng-if="btx.action == 'received'">+</span>
+                <span ng-if="btx.action == 'sent'">-</span>
+                <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+                (possible double spend)
+                </span>
+                <span  ng-if="btx.action != 'invalid'">
+                {{btx.amountStr}}
+                </span>
               </span>
-              <span  ng-if="btx.action != 'invalid'">
-              {{btx.amountStr}}
-              </span>
-            </span>
-          </div>
-          <div class="large-4 medium-4 small-4 columns text-right">
-            <div class="m5t size-12 text-gray time-block">
-              <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
-              <span translate class="text-warning"
-                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                Unconfirmed
-              </span>
-            </div>
-            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
-          </div>
-          <div class="large-1 medium-1 small-1 columns text-right">
-            <i class="icon-arrow-right3 size-18"></i>
+            </section>
+            <section>
+              <div class="m5t size-12 text-gray time-block">
+                <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
+                <span translate class="text-warning"
+                  ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                  Unconfirmed
+                </span>
+              </div>
+              <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
+            </section>
+            <section>
+              <i class="icon-arrow-right3 size-18"></i>
+            </section>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
             <span ng-show="btx.from_aa" class="small-2 right">

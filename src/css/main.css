@@ -775,7 +775,7 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   border: 1px solid transparent;
   font-size: 13px;
   background: #FFF;
-  padding: 3px 12px;
+  padding: 3px 3px;
   color: #2F2F2F;
   border-radius: 0px;
   border-bottom: 1px solid #C3C3C3;
@@ -2094,4 +2094,6 @@ form#contacts-order {
   padding: 9px 16px;
   min-height: 36px !important;
   margin-bottom: 8px;
+  vertical-align: middle;
+  line-height: 17px;
 }

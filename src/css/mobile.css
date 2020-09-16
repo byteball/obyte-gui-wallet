@@ -147,26 +147,39 @@ _:-ms-fullscreen, :root .main {
   position: absolute;
   line-height: 50px;
   left: -5px;
-  color: #1560BD;
+  width: 75px;
+  color: #656565;
   height: 45px;
   top: 0px;
+  transition: all .3s;
+}
+
+.tab-bar .icon-back:hover,
+.tab-bar .icon-back:hover ~ .text-back {
+  color: #1560BD;
 }
 
 .tab-bar .text-back {
   margin-left: 26px;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #1560BD;
+  color: #656565;
   padding: 10px 0;
   visibility: middle;
+  transition: all .3s;
 }
 
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 49px;
-  color: #1560BD;
+  color: #656565;
   font-weight: 500;
+  transition: all .3s;
+}
+
+.tab-bar .text-close:hover {
+  color: #1560BD;
 }
 
 .bottom-bar {
@@ -244,7 +257,7 @@ _:-ms-fullscreen, :root .main {
   color: #FFF;
   font-weight: 700;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .walletHome .wallet-info {
@@ -389,7 +402,10 @@ a.missing-copayers {
   float: left;
   width: 35px;
   height: 35px;
-  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
   padding: 2px;
 }
 
