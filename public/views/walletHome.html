@@ -876,11 +876,11 @@ input.datafeed_input {
               <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
             </section>
             <section>
-              <i class="icon-arrow-right3 size-18"></i>
+              <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
             </section>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
-            <span ng-show="btx.from_aa" class="small-2 right">
+            <span ng-show="btx.from_aa" class="right">
               <span class="label tu light-gray radius" translate>From AA</span>
             </span>
           </div>
@@ -895,10 +895,10 @@ input.datafeed_input {
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}
             </span>
-            <span ng-show="btx.isTextcoin" class="small-2 right">
+            <span ng-show="btx.isTextcoin" class="right">
               <span class="label tu light-gray radius">textcoin</span>
             </span>
-            <span ng-show="btx.to_aa" class="small-2 right">
+            <span ng-show="btx.to_aa" class="right">
               <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
