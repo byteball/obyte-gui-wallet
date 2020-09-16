@@ -229,16 +229,21 @@ ul.button-group li.selected {
   background-color: #1560BD;
 }
 
+.modal-content ul.subwallets {
+  padding-top: 6px;
+}
+
 .modal-content ul.subwallets li.line-b {
   border-bottom: 1px solid #E9E9EC;
   background: #EFEFEF;
   margin: 0px 10px;
   box-sizing: border-box;
   border: 0px solid transparent;
-  border-left: 4px solid #D6D6D6;
+  border-radius: 5px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   margin-bottom: 3px;
+  box-shadow: -3px 2px 5px rgb(208, 208, 208);
 }
 .modal-content ul.subwallets li.line-b a {
   color: #454648 !important;
@@ -249,10 +254,11 @@ ul.button-group li.selected {
   background-color: #DBE9FF;
   border-radius: 0px;
   margin: 0px 10px;
-  border-left: 3px solid #97B7E8;
+  border-radius: 5px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   margin-bottom: 3px;
+  box-shadow: -3px 2px 5px rgba(134, 174, 236, 0.72);
 }
 .modal-content ul.subwallets li.line-b.selected a {
   color: #454648 !important;
