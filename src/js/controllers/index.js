@@ -831,6 +831,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
     
+  self.getSigningDeviceAddresses = function(fc, exclude_self){
+    var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+    if (fc.credentials.m < fc.credentials.n)
+      self.copayers.forEach(function(copayer){
+        if ((copayer.me && !exclude_self) || copayer.signs)
+          arrSigningDeviceAddresses.push(copayer.device_address);
+      });
+    else if (self.shared_address)
+      arrSigningDeviceAddresses = self.copayers.map(function(copayer){ return copayer.device_address; });
+    return arrSigningDeviceAddresses;
+  }
+
   self.goHome = function() {
     go.walletHome();
   };
