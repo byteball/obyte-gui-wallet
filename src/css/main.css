@@ -308,12 +308,8 @@ body, html{
   background: #7A8C9E;
 }
 
-a {
+a, a:hover, a:focus {
   color: #1560BD;
-}
-
-a:hover {
-  color: #4A90E2;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
