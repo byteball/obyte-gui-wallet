@@ -138,6 +138,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
+	$scope.requestToSignMessage = function(message){
+		if (!message || !String(message).trim())
+			return $rootScope.$emit('Local/ShowErrorAlert', "Enter a text message first");
+		chatScope.message = '[...](sign-message-request:'+ message.trim() +')';
+		chatScope.send();
+	};
+	
 	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
