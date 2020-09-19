@@ -59,7 +59,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function addIncomingMessageEvent(from_address, in_body, message_counter){
 		var walletGeneral = require('ocore/wallet_general.js');
-		walletGeneral.readMyAddresses(function(arrMyAddresses){
+		walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 			var body = highlightActions(escapeHtml(in_body), arrMyAddresses);
 			body.text = text2html(body.text);
 			console.log("body with markup: "+body.text);
@@ -156,8 +156,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
 				return str;
-		//	if (arrMyAddresses.indexOf(address) >= 0)
-		//		return address;
+			if (arrMyAddresses.indexOf(address) >= 0)
+				return str;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
 			index++;
 			var key = '{' + index + '}';
@@ -692,7 +692,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				messages[i] = parseMessage(messages[i]);
 			}
 			var walletGeneral = require('ocore/wallet_general.js');
-			walletGeneral.readMyAddresses(function(arrMyAddresses){
+			walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;
 				for (var i in messages) {
