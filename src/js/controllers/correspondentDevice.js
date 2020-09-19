@@ -138,24 +138,43 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset, device_address, single_address, base64data){
+	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
 		readMyPaymentAddress(profileService.focusedClient, function(my_address){
-			if (single_address && single_address !== '0'){
-				var bSpecificSingleAddress = (single_address.length === 32);
-				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
-				var fc = profileService.focusedClient;
-				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
-					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+			var emitPaymentRequest = function () {
+				backButton.dontDeletePath = true;
+				go.send(function () {
+					//$rootScope.$emit('Local/SetTab', 'send', true);
+					$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data, from_address, single_address);
+				});
 			}
-			backButton.dontDeletePath = true;
-			go.send(function(){
-				//$rootScope.$emit('Local/SetTab', 'send', true);
-				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data);
+			var fc = profileService.focusedClient;
+			if (!from_address) {
+				if (single_address && single_address !== '0'){
+					var displayed_single_address = from_address ? ' '+from_address : '';
+					if (!fc.isSingleAddress || from_address && from_address !== my_address)
+						return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+". "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+				}
+				return emitPaymentRequest();
+			}
+			db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [from_address], function (rows) {
+				$timeout(function () {
+					if (rows.length === 0)
+						return $rootScope.$emit('Local/ShowErrorAlert', "Payment cannot be sent from address " + from_address + " as this address doesn't belong to this wallet");
+					var row = rows[0];
+					// same wallet
+					if (row.wallet === fc.credentials.walletId)
+						return emitPaymentRequest();
+					// switch to another wallet first
+					console.log("will switch to another wallet where from_address is member of");
+					profileService.setAndStoreFocus(row.wallet, function () {
+						emitPaymentRequest();	
+					});
+				});
 			});
 		});
 	};
