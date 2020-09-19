@@ -280,6 +280,10 @@ angular.module('copayApp.controllers').controller('importController',
 				});
 			}
 		};
+
+		self.setWalletFileName = function($ev) {
+			self.walletFile = $ev.target.files[0];
+		}
 		
 		self.walletImport = function() {
 			self.error = '';

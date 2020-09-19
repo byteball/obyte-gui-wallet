@@ -54,6 +54,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.isBackupReminderShown = !configService.getSync().isBackupReminderShutUp;
   }, 60 * 1000);
 
+  self.changeWalletAssetIndex = function (assetIndex) {
+    self.assetIndex = assetIndex;
+    self.updateHistory();
+  }
+
   self.dismissBackupReminder = function () {
     self.isBackupReminderShown = false;
     $timeout(function () {
@@ -743,7 +748,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			arrSharedWallets.push(objSharedWallet);
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
-
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		async.eachSeries(
 			arrSharedWallets,
@@ -765,7 +769,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		$scope.cancel = function() {
 			breadcrumbs.add('openSubwalletModal cancel');
 			$modalInstance.dismiss('cancel');
-		};
+    };
+    
+    $scope.getSubwalletBadge = function(shared_address) {
+      var totalCounts = 0;
+      if (shared_address) {
+        for(var unit in $rootScope.newPaymentsDetails) {
+          if ($rootScope.newPaymentsDetails[unit].receivedAddress === shared_address) {
+            totalCounts += $rootScope.newPaymentsCount[unit] || 0;
+          }
+        }
+      } else {
+        for (var unit in $rootScope.newPaymentsDetails) {
+          var details = $rootScope.newPaymentsDetails[unit];
+          if (details.walletId === self.walletId && details.walletAddress === details.receivedAddress) {
+            totalCounts += $rootScope.newPaymentsCount[unit] || 0;
+          }
+        }
+      }
+    	return totalCounts;
+    }
 
 		$scope.selectSubwallet = function(shared_address) {
 			self.shared_address = shared_address;
@@ -808,6 +831,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
     
+  self.getSigningDeviceAddresses = function(fc, exclude_self){
+    var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+    if (fc.credentials.m < fc.credentials.n)
+      self.copayers.forEach(function(copayer){
+        if ((copayer.me && !exclude_self) || copayer.signs)
+          arrSigningDeviceAddresses.push(copayer.device_address);
+      });
+    else if (self.shared_address)
+      arrSigningDeviceAddresses = self.copayers.map(function(copayer){ return copayer.device_address; });
+    return arrSigningDeviceAddresses;
+  }
+
   self.goHome = function() {
     go.walletHome();
   };
@@ -1213,24 +1248,24 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (balanceInfo.name)
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
         if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
-			balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
-			balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
-			balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-			balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
-			if (typeof balanceInfo.shared === 'number')
-				balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
-			if (!balanceInfo.name){
-				if (!Math.log10) // android 4.4
-					Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
-				if (asset === "base"){
-					balanceInfo.name = self.unitName;
-					balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
-				}
-				else if (asset === self.BLACKBYTES_ASSET){
-					balanceInfo.name = self.bbUnitName;
-					balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
-				}
-			}
+          balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+          balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
+          balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
+          balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
+          if (typeof balanceInfo.shared === 'number')
+            balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+          if (!balanceInfo.name){
+            if (!Math.log10) // android 4.4
+              Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
+            if (asset === "base"){
+              balanceInfo.name = self.unitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
+            }
+            else if (asset === self.BLACKBYTES_ASSET){
+              balanceInfo.name = self.bbUnitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
+            }
+          }
         }
         self.assetsSet[asset] = balanceInfo;
         if (self.isAssetHidden(asset, hiddenAssets)) {
@@ -1425,7 +1460,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       }, 100);
     }, 100);
   };
-
 
   self.updateHistory = function() {
     var fc = profileService.focusedClient;
@@ -1879,5 +1913,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				go.handleUri(e.dataTransfer.files[i].path);
 			}
 		}, false);
-	})();
+  })();
+  
+  document.addEventListener('click', function(e){
+    let inside = e.target.closest('.custom-dropdown');
+    if (!inside)
+      $rootScope.$emit("closeAssetDropDown");
+  });
+
 });

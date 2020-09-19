@@ -41,6 +41,7 @@ angular.module('copayApp.controllers')
 				});
 				// TODO externalAccount
 				//this.externalIndex = fc.getExternalIndex();
+				$rootScope.showableWalletAvatar = true;
 			};
 	
 			var unwatchRequestTouchid = $scope.$watch('touchid', function(newVal, oldVal) {

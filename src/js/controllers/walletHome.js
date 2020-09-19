@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
 
 		var self = this;
 		var home = this;
@@ -18,6 +18,7 @@ angular.module('copayApp.controllers')
 		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
+		$rootScope.showableWalletAvatar = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
@@ -37,9 +38,40 @@ angular.module('copayApp.controllers')
 		this.blockUx = false;
 		this.showScanner = false;
 		this.addr = {};
+		this.assetDropDownVisible = false;
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		this.exchangeRates = network.exchangeRates;
+		this.dataAssets = [
+			{
+				index: -1,
+				asset: 'Data into datafeed (searchable)'
+			},
+			{
+				index: -2,
+				asset: 'Attestation of any address'
+			},
+			{
+				index: -3,
+				asset: 'Profile of my address'
+			},
+			{
+				index: -4,
+				asset: 'Raw data'
+			},
+			{
+				index: -5,
+				asset: 'Poll'
+			},
+			{
+				index: -6,
+				asset: 'Definition of autonomous agent'
+			},
+			{
+				index: -7,
+				asset: 'Text'
+			},
+		]
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
@@ -89,6 +121,15 @@ angular.module('copayApp.controllers')
 			//self.bindTouchDown();
 		});
 
+		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function () {
+			if (self.assetDropDownVisible) {
+				self.toggleAssetDropwDown();
+				$timeout(function() {
+					$scope.$digest();
+				});
+			}
+		});
+
 		var disableTabListener = $rootScope.$on('Local/TabChanged', function(e, tab) {
 			// This will slow down switch, do not add things here!
 			console.log("tab changed " + tab);
@@ -135,6 +176,7 @@ angular.module('copayApp.controllers')
 			disableResumeListener();
 			disableOngoingProcessListener();
 			disableClaimTextcoinListener();
+			disableAssetDropDownListener();
 			$rootScope.hideMenuBar = false;
 			eventBus.removeListener("new_wallet_address", onNewWalletAddress);
 		});
@@ -369,6 +411,18 @@ angular.module('copayApp.controllers')
 			});
 
 		};
+		
+		this.toggleAssetDropwDown = function() {
+			self.assetDropDownVisible = !self.assetDropDownVisible;
+		}
+
+		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
+			$scope.assetIndexSelectorValue = assetIndexSelectorValue;
+			self.toggleAssetDropwDown();
+			self.forceAmountRevalidation();
+			self.switchForms();
+			self.onChanged();
+		}
 
 		this.openTxpModal = function(tx, copayers) {
 			// deleted, maybe restore from copay sometime later
@@ -997,6 +1051,28 @@ angular.module('copayApp.controllers')
 				});
 		};
 
+		this.getAssetBadge = function(asset) {
+			var totalCounts = 0;
+			if (indexScope.shared_address) {
+				for (var unit in $rootScope.newPaymentsDetails) {
+					var details = $rootScope.newPaymentsDetails[unit];
+					if (details.receivedAddress === indexScope.shared_address && details.asset === asset) {
+						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
+					}
+				}
+			} else {
+			  	for(var unit in $rootScope.newPaymentsDetails) {
+					var details = $rootScope.newPaymentsDetails[unit];
+					if (details.walletId === indexScope.walletId
+						&& details.walletAddress === details.receivedAddress
+						&& details.asset === asset) {
+						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
+					}
+			  	}
+			}
+			return totalCounts;
+		};
+
 		this.onChanged = function () {
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {
@@ -1184,7 +1260,7 @@ angular.module('copayApp.controllers')
 							}
 							else {
 								state_change.action = gettext('set to');
-								state_change.value = varInfo.value;
+								state_change.value = (typeof varInfo.value === 'object') ? JSON.stringify(varInfo.value) : varInfo.value;
 							}
 							state_changes.push(state_change);
 						}
@@ -2099,12 +2175,12 @@ angular.module('copayApp.controllers')
 				else
 					this.lockAsset = false;
 
+				$scope.mtab = 1;
 				if (to) {
 					form.address.$setViewValue(to);
 					form.address.$isValid = true;
 					form.address.$render();
 					this.lockAddress = true;
-					$scope.mtab = 1;
 					if (recipient_device_address) // must be already paired
 						assocDeviceAddressesByPaymentAddress[to] = recipient_device_address;
 					if ($scope.assetIndexSelectorValue < 0 && !asset) // a data form was selected
@@ -2349,9 +2425,35 @@ angular.module('copayApp.controllers')
 			else if (isCordova)
 				cordova.InAppBrowser.open(url, '_system');
 		};
+
+		this.sendAttachedFile = function ($ev) {
+			home.attachedFile = $ev.target.files[0];
+			if (!home.attachedFile) 
+				return;
+			fileSystemService.readFile(home.attachedFile.path, function (
+				err,
+				data
+			) {
+				if (err) {
+					self.setSendError("cannot read the file whose hash is going to be posted");
+					return;
+				}
+				const hash = require("crypto")
+					.createHash("sha256")
+					.update(data)
+					.digest("hex");
+				home.feedvaluespairs.push({
+					name: home.attachedFile.name,
+					value: hash,
+				});
+				$scope.$apply();
+			});
+		};
+
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
 			delete $rootScope.newPaymentsCount[btx.unit];
+			delete $rootScope.newPaymentsDetails[btx.unit];
 			var self = this;
 			var fc = profileService.focusedClient;
 			var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -2360,6 +2462,7 @@ angular.module('copayApp.controllers')
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
+				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
 				$scope.assetDecimals = indexScope.arrBalances[assetIndex].decimals;
@@ -2425,6 +2528,11 @@ angular.module('copayApp.controllers')
 					})();
 				}
 
+				$scope.resend = function(btx) {
+					if (!btx) return;
+					$scope.cancel();
+					self.resend(btx);
+				};
 
 				$scope.getAmount = function(amount) {
 					return self.getAmount(amount);
@@ -2576,6 +2684,8 @@ angular.module('copayApp.controllers')
 
 		this.getDollarValue = function(amount, balanceObject) {
 			function getResult(exchangePair) {
+				if (home.bSendAll && home.from_address)
+					return; // TEMP fix: don't show value if from specific address and "All minus fee" shown
 				var result = 0;
 				if (exchangePair === 'GBYTE_USD' || exchangePair === 'GBB_USD') {
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset);
@@ -2607,7 +2717,18 @@ angular.module('copayApp.controllers')
 				return getResult(balanceObject.asset + '_USD');
 			}
 		};
-
+  
+		$scope.calculateAmount = function(amount, asset) {
+			var assetInfo = indexScope.arrBalances[indexScope.assetIndex];
+			if (asset === "base")
+				return '' + amount / self.unitValue;
+			else if (asset === constants.BLACKBYTES_ASSET)
+				return '' + amount / self.bbUnitValue;
+			else if (assetInfo.decimals)
+				return '' + amount / Math.pow(10, assetInfo.decimals);
+			return amount;
+		};
+  
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
 			this.resetError();
@@ -2628,10 +2749,6 @@ angular.module('copayApp.controllers')
 			if (!form)
 				return console.log('form is gone');
 			if (!$scope.$root) $scope.$root = {};
-			if (form.amount) {
-				form.amount.$setViewValue("" + btx.amount);
-				form.amount.$render();
-			}
 			if (form.address) {
 				form.address.$setViewValue(btx.addressTo);
 				form.address.$render();
@@ -2647,25 +2764,88 @@ angular.module('copayApp.controllers')
 			var storage = require('ocore/storage.js');
 			var db = require('ocore/db.js');
 			function ifFound(objJoint) {
-				if (objJoint && objJoint.unit) {
-					var tempMessages = objJoint.unit.messages;
-					var messageIndex = lodash.findIndex(tempMessages || [], {
-						app: 'data'
-					});
-					if (messageIndex >= 0) {
-						var payload_data = tempMessages[messageIndex].payload;
-						var tempFeedValuePairs = [];
-						for (var key in payload_data) {
-							tempFeedValuePairs.push({name: key, value: payload_data[key], readonly: false});
+				$timeout(function() {
+					var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
+					var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
+					var getTxType = function () {
+						if (dataMessages.length === 0)
+							return 'payment';
+						var fc = profileService.focusedClient;
+						if (!fc.isSingleAddress)
+							return 'payment_with_data';
+						if (paymentMessages.length > 1)
+							return 'payment_with_data';
+						var outputs = paymentMessages[0].payload.outputs;
+						if (outputs.length > 1)
+							return 'payment_with_data';
+						if (btx.addressTo === self.addr[fc.credentials.walletId])
+							return 'data';
+						return 'payment_with_data';
+					};
+					var txType = getTxType();
+					if (txType !== 'data')
+						$scope.assetIndexSelectorValue = $scope.index.assetIndex;
+					if (dataMessages.length > 0) {
+						var payload = dataMessages[0].payload;
+						var data;
+						switch (dataMessages[0].app) {
+							case 'data_feed':
+								$scope.assetIndexSelectorValue = -1;
+								data = payload;
+								break;
+							case 'attestation':
+								$scope.assetIndexSelectorValue = -2;
+								$scope.home.attested_address = payload.address;
+								data = payload.profile;
+								break;
+							case 'profile':
+								$scope.assetIndexSelectorValue = -3;
+								data = payload;
+								break;
+							case 'data':
+								if (txType === 'data')
+									$scope.assetIndexSelectorValue = -4;
+								data = payload;
+								break;
+							case 'poll':
+								$scope.assetIndexSelectorValue = -5;
+								$scope.home.poll_question = payload.question;
+								data = payload.choices;
+								break;
+							case 'vote':
+								$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
+								return self.resetForm();
+							case 'definition':
+								var stringUtils = require('ocore/string_utils.js');
+								$scope.assetIndexSelectorValue = -6;
+								var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
+								$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+								data = {};
+								break;
+							case 'text':
+								$scope.assetIndexSelectorValue = -7;
+								$scope.home.content = payload;
+								data = {};
+								break;
 						}
-						$timeout(function() {
-							$scope.home.feedvaluespairs = tempFeedValuePairs;
-						});
+						$scope.home.feedvaluespairs = [];
+						for (var key in data) {
+							var value = data[key];
+							$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
+						}
 					}
-				}
+					if ($scope.assetIndexSelectorValue >= 0) {
+						if (form.amount) {
+							form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
+							form.amount.$render();
+						}
+					}
+						
+					self.switchForms();
+				});
 			};
 			function ifNotFound() {
-				//
+				throw Error("tx " + btx.unit + " not found");
 			}
 			storage.readJoint(db, btx.unit, ({ifFound: ifFound, ifNotFound: ifNotFound}), false);
 		};

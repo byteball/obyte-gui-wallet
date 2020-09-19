@@ -115,8 +115,11 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
 	hub: (constants.alt === '2' && isTestnet) ? 'obyte.org/bb-test' : 'obyte.org/bb',
 	attestorAddresses: {
+		// bitcointalk: '',
 		email: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
-		reddit: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
+		// reddit: '',
+		// phone: '',
+		github: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
