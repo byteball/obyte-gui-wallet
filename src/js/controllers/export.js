@@ -85,7 +85,10 @@ angular.module('copayApp.controllers').controller('exportController',
 					fileSystemService.readdir(dbDirPath + 'rocksdb/', function(err, listRocksDB) {
 						if (err) return cb(err);
 						listRocksDB.forEach(function(filename) {
-							if (filename !== 'LOCK') listFilenames.push('rocksdb/' + filename);
+							// exclude LOCK file and old LOG files, list everything else
+							if (filename !== 'LOCK' && filename.substring(0, 8) !== 'LOG.old.') {
+								listFilenames.push('rocksdb/' + filename);
+							}
 						});
 						cb(null, listFilenames);
 					});

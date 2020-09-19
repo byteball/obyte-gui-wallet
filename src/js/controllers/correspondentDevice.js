@@ -116,7 +116,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			},
 			ifError: function(error){
 				setOngoingProcess();
-				setError(error);
+				if (conf.socksHost && conf.socksPort && error == 'Error: Socket Closed')
+					setError('Connection lost with Tor network, please check that Tor service is running.');
+				else
+					setError(error);
 			}
 		});
 	};
@@ -190,21 +193,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.index.assetIndex = assetIndex;
 		go.history();
 	};
-	
 
-	function getSigningDeviceAddresses(fc, exclude_self){
-		var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-		if (fc.credentials.m < fc.credentials.n)
-			indexScope.copayers.forEach(function(copayer){
-				if ((copayer.me && !exclude_self) || copayer.signs)
-					arrSigningDeviceAddresses.push(copayer.device_address);
-			});
-		else if (indexScope.shared_address)
-			arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
-		return arrSigningDeviceAddresses;
-	}
-	
-	
 	$scope.offerContract = function(address){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
@@ -407,7 +396,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							asset: contract.myAsset,
 							to_address: shared_address,
 							amount: my_amount,
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
 						fc.sendMultiPayment(opts, function(err, unit){
@@ -531,7 +520,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 					readMyPaymentAddress(fc, function(my_address) {
-						var cosigners = getSigningDeviceAddresses(fc);
+						var cosigners = indexScope.getSigningDeviceAddresses(fc);
 						if (!cosigners.length && fc.credentials.m > 1) {
 							indexScope.copayers.forEach(function(copayer) {
 								cosigners.push(copayer.device_address);
@@ -758,17 +747,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								assocOutputsByAsset[asset] = [];
 							assocOutputsByAsset[asset].push({address: objPayment.address, amount: objPayment.amount});
 						});
-						var arrNonBaseAssets = Object.keys(assocOutputsByAsset).filter(function(asset){ return (asset !== 'base'); });
-						if (arrNonBaseAssets.length > 1){
-							$scope.error = 'more than 1 non-base asset not supported';
-							$timeout(function(){
-								$scope.$apply();
-							});
-							return;
-						}
-						var asset = (arrNonBaseAssets.length > 0) ? arrNonBaseAssets[0] : null;
-						var arrBaseOutputs = assocOutputsByAsset['base'] || [];
-						var arrAssetOutputs = asset ? assocOutputsByAsset[asset] : null;
 						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
@@ -779,11 +757,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
 							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
-							asset: asset,
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
-							base_outputs: arrBaseOutputs,
-							asset_outputs: arrAssetOutputs
+							outputs_by_asset: assocOutputsByAsset,
 						}, function(err, unit){ // can take long if multisig
 							delete indexScope.current_multi_payment_key;
 							$rootScope.sentUnit = unit;
@@ -967,7 +943,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
 							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
 							shared_address: indexScope.shared_address,
@@ -1085,7 +1061,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
+				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, indexScope.getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
 					if (err) {
 						$scope.error = err;
 						return scopeApply();
@@ -1135,6 +1111,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
 			$scope.address = objSignedMessage.authors[0].address;
+			$scope.signature = signedMessageBase64;
 			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
@@ -1193,6 +1170,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.openExternalLink = function(url){
+		url = url.replace(/&amp;/g, '&');
 		if (typeof nw !== 'undefined')
 			nw.Shell.openExternal(url);
 		else if (isCordova)
@@ -1731,7 +1709,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 				$scope.accept = function() {
 					// save cosigners here as respond() can be called
-					cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
+					cosigners = indexScope.getSigningDeviceAddresses(profileService.focusedClient, true);
 					if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
 						indexScope.copayers.forEach(function(copayer) {
 							if (!copayer.me)
@@ -1741,7 +1719,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 					$modalInstance.dismiss();
 
-					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
+					correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, indexScope.getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
 						if (err)
 							return setError(err);
 						respond('accepted', signedMessageBase64);

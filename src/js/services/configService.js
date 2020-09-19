@@ -115,14 +115,18 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
 	hub: (constants.alt === '2' && isTestnet) ? 'obyte.org/bb-test' : 'obyte.org/bb',
 	attestorAddresses: {
+		// bitcointalk: '',
 		email: 'H5EZTQE7ABFH27AUDTQFMZIALANK6RBG',
-		reddit: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
+		// reddit: '',
+		// phone: '',
+		github: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
 	realNameAttestorAddresses: [
-		{ address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot (Jumio)' },
-		{ address: 'OHVQ2R5B6TUR5U7WJNYLP3FIOSR7VCED', name: 'Real name attestation bot (Smart card, Mobile ID, Smart ID)' }
+		{ address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot (Jumio Netverify)' },
+		{ address: 'JFKWGRMXP3KHUAFMF4SJZVDXFL6ACC6P', name: 'Real name attestation bot (Veriff)' },
+		{ address: 'OHVQ2R5B6TUR5U7WJNYLP3FIOSR7VCED', name: 'Real name attestation bot (eID Easy)' }
 	],
 
 	// requires bluetooth permission on android
@@ -156,6 +160,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 
 	// hidden assets: key = wallet id, value = set of assets (string: boolean)
 	hiddenAssets: {},
+  
+  // hidden sub wallets: key = wallet id, value = set of sub wallet addresses (string: boolean)
+  hiddenSubWallets: {},
 
 	rates: {
 	  url: 'https://insight.bitpay.com:443/api/rates',
@@ -287,6 +294,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		}
 		if (!_config.hiddenAssets) {
 			_config.hiddenAssets = defaultConfig.hiddenAssets;
+		}
+		if (!_config.hiddenSubWallets) {
+			_config.hiddenSubWallets = defaultConfig.hiddenSubWallets;
 		}
 		if (!_config.deviceName)
 			_config.deviceName = defaultConfig.getDeviceName();

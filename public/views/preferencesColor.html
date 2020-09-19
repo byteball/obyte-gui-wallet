@@ -1,3 +1,12 @@
+<style>
+li.color-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 47px;
+}
+</style>
+
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
@@ -9,8 +18,8 @@
 <div class="content preferences" ng-controller="preferencesColorController as p">
   <h4></h4>
   <ul class="no-bullet m0">
-  <li ng-repeat="c in p.colorOpts" ng-click="p.save(c)">
-    <span ng-style="{'color': c}" class="size-16">&block;</span>
+  <li ng-repeat="c in p.colorOpts" ng-click="p.save(c)" class="color-list-item">
+    <span ng-style="{'background': c}" class="size-16 color-round-block"></span>
     <i class="fi-check size-16 right" ng-show="p.color == c"></i>
   </li>
   </ul>
