@@ -908,7 +908,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					$timeout(function(){
 						
 						var allAddressWithAssets = [];
-						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment');
+						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment' && message.payload); // public payments only
 						paymentMessages.forEach(message => {
 							var outputs = message.payload.outputs;
 							outputs.forEach(output =>
