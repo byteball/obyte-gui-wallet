@@ -5,7 +5,6 @@
   ng-init="titleSection='Preferences'; closeToHome = true">
 </div>
 
-
 <div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
   <h4></h4>
@@ -26,8 +25,8 @@
 
 
     <li ng-click="$root.go('preferences.preferencesColor')">
-      <div class="right text-gray">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+      <div class="right text-gray" style="display:flex;align-items:center;">
+        <span ng-style="{'background':index.backgroundColor}" class="color-round-block"></span>
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Color</div>

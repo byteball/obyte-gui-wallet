@@ -5,7 +5,7 @@
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" style="color: #4E4E4E !important" translate>
       Signed message
     </h1>
   </section>
@@ -15,12 +15,17 @@
 <div class="modal-content fix-modals-touch">
 	
 	<h4 class="title m0 row columns" translate>Message:</h4>
-	<div class="m10b m10t row columns size-14" style="overflow-wrap: break-word;" dynamic="signed_message">
+	<div class="m10b m10t row columns size-14 enable_text_select" style="overflow-wrap: break-word;" dynamic="signed_message">
 	</div>
 	
 	<h4 class="title m0 row columns" translate>Signing address:</h4>
-	<div class="m10b m10t row columns size-14" >
+	<div class="m10b m10t row columns size-14 enable_text_select">
 		{{address}}
+	</div>
+	
+	<h4 class="title m0 row columns" translate>Signature:</h4>
+	<div class="m10b m10t row columns size-14 enable_text_select" style="word-break: break-all;">
+		{{signature}}
 	</div>
 	
 	<div class="m10b m10t row columns size-14" >

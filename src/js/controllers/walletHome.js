@@ -18,6 +18,7 @@ angular.module('copayApp.controllers')
 		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
 		$rootScope.wpInputFocused = false;
+		$rootScope.showableWalletAvatar = false;
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
@@ -1259,7 +1260,7 @@ angular.module('copayApp.controllers')
 							}
 							else {
 								state_change.action = gettext('set to');
-								state_change.value = varInfo.value;
+								state_change.value = (typeof varInfo.value === 'object') ? JSON.stringify(varInfo.value) : varInfo.value;
 							}
 							state_changes.push(state_change);
 						}

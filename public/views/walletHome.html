@@ -27,6 +27,24 @@ input.datafeed_input {
 .hor-link:nth-child(2) {
 	border-left: 1px solid #E9E9EC;
 }
+
+#history .label {
+  width: 56px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#history .history-list-details {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+}
+
+#history .history-list-details > section {
+  margin-left: 10px;
+  text-align: right;
+}
 </style>
 
 
@@ -192,7 +210,8 @@ input.datafeed_input {
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
             <a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
-              <i class="fi-eye size-24 vm wallet-settings"></i>
+              <!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
+              <img src="./img/eye.svg">
               <span class="show-for-medium-up" translate>Definition</span>
             </a>
           </div>
@@ -831,40 +850,41 @@ input.datafeed_input {
           ng-click="home.openTxModal(btx)"
           class="row collapse last-transactions-content">
           <div class="large-3 medium-3 small-3 columns">
-            <span class="label tu radius" ng-show="btx.action == 'received'"
-              ng-style="{'background-color':index.backgroundColor}" translate>Received</span>
-            <span class="label tu gray radius" ng-show="btx.action == 'sent'" translate>Sent</span>
+            <span class="label tu radius green" ng-show="btx.action == 'received'" translate>Received</span>
+            <span class="label tu radius blue" ng-show="btx.action == 'sent'" translate>Sent</span>
             <span class="label tu light-gray radius" ng-show="btx.action == 'moved'" translate>Moved</span>
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>
 
-          <div class="large-4 medium-4 small-4 columns">
-            <span class="size-16">
-              <span ng-if="btx.action == 'received'">+</span>
-              <span ng-if="btx.action == 'sent'">-</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
-              (possible double spend)
+          <div class="large-9 medium-9 small-9 columns history-list-details">
+            <section>
+              <span class="size-16">
+                <span ng-if="btx.action == 'received'">+</span>
+                <span ng-if="btx.action == 'sent'">-</span>
+                <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+                (possible double spend)
+                </span>
+                <span  ng-if="btx.action != 'invalid'">
+                {{btx.amountStr}}
+                </span>
               </span>
-              <span  ng-if="btx.action != 'invalid'">
-              {{btx.amountStr}}
-              </span>
-            </span>
-          </div>
-          <div class="large-4 medium-4 small-4 columns text-right">
-            <div class="m5t size-12 text-gray time-block">
-              <time ng-if="btx.time">{{btx.time * 1000 | amTimeAgo}}</time>
-              <span translate class="text-warning"
-                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                Unconfirmed
-              </span>
-            </div>
-            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
-          </div>
-          <div class="large-1 medium-1 small-1 columns text-right">
-            <i class="icon-arrow-right3 size-18"></i>
+            </section>
+            <section>
+              <div class="m5t size-12 text-gray time-block">
+                <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
+                <span translate class="text-warning"
+                  ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                  Unconfirmed
+                </span>
+              </div>
+              <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
+            </section>
+            <section>
+              <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
+            </section>
           </div>
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
-            <span ng-show="btx.from_aa" class="small-2 right">
+            <span ng-show="btx.from_aa" class="right">
               <span class="label tu light-gray radius" translate>From AA</span>
             </span>
           </div>
@@ -872,17 +892,17 @@ input.datafeed_input {
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
             <div ng-show="!btx.message" class="flex_container">
               <span translate>To</span>:
-              <span class="wrap_address_section ml_auto">
+              <span class="wrap_address_section ml_auto" style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                 {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
               </span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}
             </span>
-            <span ng-show="btx.isTextcoin" class="small-2 right">
+            <span ng-show="btx.isTextcoin" class="right">
               <span class="label tu light-gray radius">textcoin</span>
             </span>
-            <span ng-show="btx.to_aa" class="small-2 right">
+            <span ng-show="btx.to_aa" class="right">
               <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
