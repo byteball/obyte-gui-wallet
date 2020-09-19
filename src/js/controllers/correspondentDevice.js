@@ -1151,6 +1151,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.openExternalLink = function(url){
+		url = url.replace(/&amp;/g, '&');
 		if (typeof nw !== 'undefined')
 			nw.Shell.openExternal(url);
 		else if (isCordova)
