@@ -225,8 +225,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
+			var text = 'Message signed by '+objSignedMessage.authors[0].address;
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -379,7 +378,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return str; // it is already escapeHtml'd
 		}
-		return escapeHtml(JSON.stringify(obj, null, '\t'));
+		//return escapeHtml(JSON.stringify(obj, null, '\t'));
+		return escapeHtml(JSON.stringify(obj));
 	}
 	
 	function getPaymentsByAsset(objMultiPaymentRequest){
@@ -449,8 +449,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
+			var text = 'Message signed by '+objSignedMessage.authors[0].address;
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
