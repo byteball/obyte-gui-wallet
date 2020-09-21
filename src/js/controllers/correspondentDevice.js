@@ -151,7 +151,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			return $rootScope.$emit('Local/ShowErrorAlert', "Enter a text message first");
 		try{
 			var object_to_sign = JSON.parse(message_to_sign);
-			if (typeof object_to_sign !== 'object') throw Error("not object");
+			if (typeof object_to_sign !== 'object') throw Error("value is number or boolean");
 			message_to_sign = Buffer.from(JSON.stringify(object_to_sign), 'utf8').toString('base64');
 			console.log("signing object", object_to_sign);
 		}
