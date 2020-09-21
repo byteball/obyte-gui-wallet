@@ -443,7 +443,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
-			return toDelayedReplacement('<i>[Request to sign message: '+message_to_sign+']</i>');
+			return toDelayedReplacement('<i>[Request to sign message: '+tryParseBase64(message_to_sign)+']</i>');
 		}).replace(/\[(.+?)\]\(signed-message:([\w\/+=]+?)\)/g, function(str, description, signedMessageBase64){
 			var info = getSignedMessageInfoFromJsonBase64(signedMessageBase64);
 			if (!info)

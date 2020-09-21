@@ -146,10 +146,19 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.requestToSignMessage = function(message){
-		if (!message || !String(message).trim())
+	$scope.requestToSignMessage = function(message_to_sign){
+		if (!message_to_sign || !String(message_to_sign).trim())
 			return $rootScope.$emit('Local/ShowErrorAlert', "Enter a text message first");
-		chatScope.message = '[...](sign-message-request:'+ String(message).replace(/\n/g, ' ').trim() +')';
+		try{
+			var object_to_sign = JSON.parse(message_to_sign);
+			if (typeof object_to_sign !== 'object') throw Error("not object");
+			message_to_sign = Buffer.from(JSON.stringify(object_to_sign), 'utf8').toString('base64');
+			console.log("signing object", object_to_sign);
+		}
+		catch(e){
+			console.log("signing a string");
+		}
+		chatScope.message = '[message](sign-message-request:'+ String(message_to_sign).replace(/\n/g, ' ').trim() +')';
 		chatScope.send();
 	};
 	
