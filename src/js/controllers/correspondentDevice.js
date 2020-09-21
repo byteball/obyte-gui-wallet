@@ -149,7 +149,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.requestToSignMessage = function(message){
 		if (!message || !String(message).trim())
 			return $rootScope.$emit('Local/ShowErrorAlert', "Enter a text message first");
-		chatScope.message = '[...](sign-message-request:'+ String(message).trim() +')';
+		chatScope.message = '[...](sign-message-request:'+ String(message).replace(/\n/g, ' ').trim() +')';
 		chatScope.send();
 	};
 	
