@@ -1847,7 +1847,10 @@ a.suggest-command {
 
 
 .name-outer-wrap {
-  width: calc(100% - 80px);
+  width: 100%;
+  margin-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .flex {
@@ -2075,10 +2078,6 @@ form#contacts-order {
 
 .f-dropdown li:last-child {
   border-bottom: 1px solid transparent;
-}
-
-.f-dropdown li a {
-  text-transform: capitalize;
 }
 
 .switch.checked {

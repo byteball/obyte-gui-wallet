@@ -83,7 +83,7 @@
     <h4 class="title m0" translate>Extended Public Keys</h4>
       <li  ng-repeat="copayer in index.copayers">
         <div class="row collapse">
-          <div class="small-4 columns">{{copayer.name||'Me'|translate}}</div>
+          <div class="ellipsis small-4 columns">{{copayer.name||'Me'|translate}}</div>
           <div class="small-8 columns oh text-gray">
             <div class="ellipsis enable_text_select">{{copayer.extended_pubkey}}</div>
           </div>
