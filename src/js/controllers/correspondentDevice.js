@@ -158,8 +158,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		catch(e){
 			console.log("signing a string");
 		}
-		// remove space-padding, remove new-lines and trim
-		chatScope.message = '[message](sign-message-request:'+ String(message_to_sign).replace(/\s\s/g, '').replace(/\n/g, ' ').trim() +')';
+		// remove new-lines and trim
+		chatScope.message = '[message](sign-message-request:'+ String(message_to_sign).replace(/\n/g, ' ').trim() +')';
 		chatScope.send();
 	};
 	
