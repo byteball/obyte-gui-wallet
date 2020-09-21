@@ -16,7 +16,7 @@
 	
 	<h4 class="title m0 row columns" translate>Message:</h4>
   <div class="m10b m10t row columns size-14 enable_text_select" style="overflow-wrap: break-word;">
-    <span ng-if="isString(message_to_sign)" style="white-space: pre-wrap;">{{message_to_sign}}</span>
+    <span ng-if="isString(message_to_sign)">{{message_to_sign}}</span>
     <ul ng-if="!isString(message_to_sign)">
       <li ng-repeat="(key, value) in message_to_sign">
         <b>{{key}}:</b> <i style="white-space: pre-wrap;">{{prettyPrint(value)}}</i><br>
