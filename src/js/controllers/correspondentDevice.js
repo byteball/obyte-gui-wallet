@@ -93,7 +93,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		return typeof variable === 'string';
 	};
 
-	$scope.escapeHtmlAndInsertBr = function(variable) {
+	$scope.escapeJSONAndInsertBr = function(variable) {
 		return correspondentListService.escapeHtmlAndInsertBr($scope.isString(variable) ? variable : JSON.stringify(variable, null, '\t'));
 	};
 
