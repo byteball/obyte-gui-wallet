@@ -2570,7 +2570,7 @@ angular.module('copayApp.controllers')
 
 					function success() {
 						$timeout(function() {
-							$rootScope.$emit('Local/ShowAlert', gettextCatalog.getString('Private payloads sent', {}), 'fi-check');
+							notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
 						});
 					}
 
@@ -2643,9 +2643,10 @@ angular.module('copayApp.controllers')
 					var wallet_general = require('ocore/wallet_general');
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						wallet_general.sendPrivatePayments(correspondent.device_address, arrRecipientChains, true, null, function() {
-							$rootScope.$emit('Local/ShowAlert', gettextCatalog.getString('Private payloads sent', {}), 'fi-check', function() {
-								modalInstance.dismiss('cancel');
-								go.history();
+							modalInstance.dismiss('cancel');
+							go.history();
+							$timeout(function() {
+								notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Private payloads sent', {}));
 							});
 						});
 					});
