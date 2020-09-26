@@ -1829,7 +1829,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				[device.getMyDeviceAddress(), objContract.my_address, objContract.my_address],
 				function(rows) {
 					if (rows.length === 0)
-						return notification.error('not my prosaic contract');
+						return $rootScope.$emit('Local/ShowErrorAlert', 'not my prosaic contract');
 					if (profileService.focusedClient.credentials.walletId === rows[0].wallet)
 						return showModal();
 					oldWalletId = profileService.focusedClient.credentials.walletId;
