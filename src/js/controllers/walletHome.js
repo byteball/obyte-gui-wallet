@@ -2695,8 +2695,7 @@ angular.module('copayApp.controllers')
 						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 					}
 				} else {
-					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
-					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
+					result = amount * home.exchangeRates[exchangePair];
 				}
 				if (!isNaN(result) && result !== 0) {
 					if(result >= 0.1) {
