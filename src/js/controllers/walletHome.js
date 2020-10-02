@@ -1305,7 +1305,7 @@ angular.module('copayApp.controllers')
 					}
 					if (objResponse.response.responseVars) {
 						for (var variable in objResponse.response.responseVars)
-							responseVars.push({variable: variable, value: objResponse.response.responseVars[variable]});
+							responseVars.push({variable: variable, value: objResponse.response.responseVars[variable].replace(/\\n/g, '\n')});
 					}
 					if (!objResponse.objResponseUnit)
 						return;
