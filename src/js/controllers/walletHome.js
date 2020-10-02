@@ -98,10 +98,23 @@ angular.module('copayApp.controllers')
 							.createHash("sha256")
 							.update(data)
 							.digest("hex");
-						home.feedvaluespairs.push({
-							name: home.attachedFile.name,
-							value: hash,
+						let added = false;
+						home.feedvaluespairs.forEach(function(pair, i) {
+							if (added) return;
+							if ((typeof pair.name === 'undefined' && typeof pair.value === 'undefined') || (pair.name === '' && pair.value === '')) {
+								home.feedvaluespairs[i] = {
+									name: home.attachedFile.name,
+									value: hash,
+								};
+								added = true;
+							}
 						});
+						if (!added) {
+							home.feedvaluespairs.push({
+								name: home.attachedFile.name,
+								value: hash,
+							});
+						}
 						$scope.$apply();
 					})
 				}, function(error) {
