@@ -616,7 +616,7 @@ input.datafeed_input {
                       <span translate>Variable</span> <i>{{state_change.variable}}</i> {{state_change.action}} <b>{{state_change.value}}</b><br>
                     </li>
                     <li ng-repeat="responseVar in home.responseVars">
-                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b>{{responseVar.value}}</b><br>
+                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b style="word-wrap: break-word; white-space: pre-line">{{responseVar.value}}</b><br>
                     </li>
                   </ul>
                   <div>
