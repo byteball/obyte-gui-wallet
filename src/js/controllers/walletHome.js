@@ -76,13 +76,13 @@ angular.module('copayApp.controllers')
 		self.android = isMobile.Android() && window.cordova;
 		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
-		self.oldAndroidFileName = '';
+		self.previousFileHashName = '';
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
 				window.plugins.mfilechooser.open([], function(uri) {
 					self.oldAndroidFilePath = 'file://' + uri;
-					self.oldAndroidFileName = uri.split('/').pop();
+					self.previousFileHashName = uri.split('/').pop();
 					$timeout(function() {
 						$rootScope.$apply();
 					});
@@ -2024,6 +2024,7 @@ angular.module('copayApp.controllers')
 
 		this.resetDataForm = function() {
 			this.resetError();
+			self.previousFileHashName = '';
 			$scope.home.feedvaluespairs = [{}];
 			$timeout(function() {
 				$rootScope.$digest();
@@ -2189,6 +2190,7 @@ angular.module('copayApp.controllers')
 						var paymentData = Buffer.from(base64data, 'base64').toString('utf8');
 						paymentData = paymentData ? JSON.parse(paymentData) : null;
 						if (paymentData) {
+							self.previousFileHashName = '';
 							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
 								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
@@ -2308,6 +2310,7 @@ angular.module('copayApp.controllers')
 						delete dataPrompt.content;
 						break;
 				}
+				self.previousFileHashName = '';
 				$scope.home.feedvaluespairs = [];
 				for (var key in dataPrompt) {
 					var value = dataPrompt[key];
@@ -2776,6 +2779,7 @@ angular.module('copayApp.controllers')
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
+			self.previousFileHashName = '';
 			$scope.home.feedvaluespairs = [];
 			resetAAFields();
 			var form = $scope.sendPaymentForm;
@@ -2861,6 +2865,7 @@ angular.module('copayApp.controllers')
 								data = {};
 								break;
 						}
+						self.previousFileHashName = '';
 						$scope.home.feedvaluespairs = [];
 						for (var key in data) {
 							var value = data[key];
