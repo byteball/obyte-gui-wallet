@@ -124,8 +124,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		require('ocore/uri.js').parseUri(uri, {
 			ifError: function (err) {
 				console.log(err);
-				notification.error(err);
-				//notification.success(gettextCatalog.getString('Success'), err);
+				$rootScope.$emit('Local/ShowErrorAlert', err);
 			},
 			ifOk: function (objRequest) {
 				console.log("request: " + JSON.stringify(objRequest));
@@ -142,7 +141,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 						db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [objRequest.from_address], function (rows) {
 							$timeout(function () {
 								if (rows.length === 0)
-									return notification.error("Payment cannot be sent from address " + objRequest.from_address + " as this address doesn't belong to this wallet");
+									return $rootScope.$emit('Local/ShowErrorAlert', "Payment cannot be sent from address " + objRequest.from_address + " as this address doesn't belong to this wallet");
 								var row = rows[0];
 								// same wallet
 								if (row.wallet === profileService.focusedClient.credentials.walletId)
@@ -199,7 +198,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			breadcrumbs.add("callback from handlePrivatePaymentFile");
 			if (err) {
 				$rootScope.$emit('process_status_change', 'claiming', false);
-				return notification.error(err);
+				return $rootScope.$emit('Local/ShowErrorAlert', err);
 			}
 			$rootScope.$emit('claimTextcoin', data.mnemonic);
 		}

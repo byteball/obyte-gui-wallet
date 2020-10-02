@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Create new wallet';  closeToHome = true; noColor = true">
+  ng-init="titleSection='Create new account';  closeToHome = true; noColor = true">
 </div>
 
 
@@ -17,7 +17,7 @@
       <div class="rect4"></div>
       <div class="rect5"></div>
     </div>
-    <span translate>Creating Wallet...</span>
+    <span translate>Creating new account...</span>
     </div>
   </div>
 
@@ -26,11 +26,11 @@
     <div class="row">
     <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCosigners == 1}">
     <a href
-      ng-click="create.setTotalCosigners(1)" translate>Plain Wallet</a>
+      ng-click="create.setTotalCosigners(1)" translate>Plain Account</a>
     </div>
     <div class="tab-container small-6 medium-3 large-2" ng-class="{'selected': totalCosigners != 1}">
     <a href
-      ng-click="create.setMultisig()" translate>Multidevice Wallet</a>
+      ng-click="create.setMultisig()" translate>Multidevice Account</a>
     </div>
     </div>
   </div>
@@ -45,19 +45,19 @@
         </div>
 
         <div ng-hide="create.hideWalletName">
-          <label><span translate>Wallet name</span>
+          <label><span translate>Account name</span>
             <div class="input">
-              <input type="text" placeholder="{{( (totalCosigners > 1) ? ('Laptop + phone + tablet') : 'New wallet')|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
+              <input type="text" placeholder="{{( (totalCosigners > 1) ? ('Laptop + phone + tablet') : 'New account')|translate}}" class="form-control" name="walletName" ng-model="walletName" ng-required="true" ng-focus="create.formFocus('wallet-name')" ng-blur="create.formFocus(false)">
             </div>
           </label>
         </div>
 
         <div ng-hide="create.hideWalletName">
-          <label><span translate class="left m10t">Single address wallet</span>
+          <label><span translate class="left m10t">Single address account</span>
             <switch name="isSingleAddress" ng-model="isSingleAddress" class="green right m10b"></switch>
           </label>
           <div class="description m10b" translate>
-          	Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains.
+          	Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains.
           </div>
         </div>
 
@@ -168,11 +168,11 @@
         </div--> <!-- advanced -->
 
         <button type="submit" class="button round black expand m0" ng-show="totalCosigners != 1" ng-disabled="setupForm.$invalid || create.loading">
-          <span translate>Create {{requiredCosigners}}-of-{{totalCosigners}} wallet</span>
+          <span translate>Create {{requiredCosigners}}-of-{{totalCosigners}} account</span>
         </button>
 
         <button type="submit" class="button round black expand m0" ng-show="totalCosigners == 1" ng-disabled="setupForm.$invalid || create.loading">
-          <span translate>Create new wallet</span>
+          <span translate>Create new account</span>
         </button>
 
       </div> <!-- large-12 columns -->

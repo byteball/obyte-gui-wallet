@@ -56,7 +56,7 @@ input.datafeed_input {
 <div ng-controller="walletHomeController as home">
   <div class="row columns m20tp" ng-show="index.noFocusedWallet">
     <div class="text-center text-warning m20b">
-      <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
+      <i class="fi-alert"></i> <span translate>You do not have an account</span>
     </div>
     <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
 
@@ -217,7 +217,7 @@ input.datafeed_input {
           </div>
           <div class="wallet-info">
               <p class="m0">
-              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
+              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart contract: {{index.shared_address | limitTo: 6}}...</span>
               </p>
               <div class="size-12 text-gray" ng-if="!index.shared_address">
                 <span ng-include="'views/includes/walletInfo.html'"></span>
@@ -454,7 +454,7 @@ input.datafeed_input {
             </label>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address / Email / Username')|translate}}</div>
+              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other account' : 'To Obyte address / Email / Username')|translate}}</div>
               <div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
             </div>
 
@@ -487,7 +487,7 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)" ng-change="home.onAddressChanged()">
+	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other account &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)" ng-change="home.onAddressChanged()">
 	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Obyte address' : 'Obyte address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
 	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join(''); home.onMultiAddressesChanged()"></textarea>
 
@@ -782,7 +782,7 @@ input.datafeed_input {
       </div>
       <div ng-show="home.shownForm=='data' && !index.isSingleAddress">
         <div class="large-12 large-centered columns" style="padding-top: 10px" translate>
-      		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one.
+      		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one.
       	</div>
       </div>
       <br><br>
@@ -864,9 +864,8 @@ input.datafeed_input {
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>
 
-          <div class="large-9 medium-9 small-9 columns history-list-details">
-            <section>
-              <span class="size-16">
+          <div class="large-4 medium-4 small-4 columns">
+            <span class="size-16">
                 <span ng-if="btx.action == 'received'">+</span>
                 <span ng-if="btx.action == 'sent'">-</span>
                 <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
@@ -876,9 +875,10 @@ input.datafeed_input {
                 {{btx.amountStr}}
                 </span>
               </span>
-            </section>
-            <section>
-              <div class="m5t size-12 text-gray time-block">
+          </div>
+
+          <div class="large-4 medium-4 small-4 columns" style="text-align: right">
+            <div class="m5t size-12 text-gray time-block">
                 <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
                 <span translate class="text-warning"
                   ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
@@ -886,11 +886,12 @@ input.datafeed_input {
                 </span>
               </div>
               <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
-            </section>
-            <section>
-              <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
-            </section>
           </div>
+
+          <div class="large-1 medium-1 small-1 columns" style="text-align: right">
+            <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
+          </div>
+
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
             <span ng-show="btx.from_aa" class="right">
               <span class="label tu light-gray radius" translate>From AA</span>

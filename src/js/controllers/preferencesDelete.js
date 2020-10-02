@@ -5,7 +5,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
     this.isCordova = isCordova;
     this.error = null;
 
-    var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
+    var delete_msg = gettextCatalog.getString('Are you sure you want to delete this account?');
     var accept_msg = gettextCatalog.getString('Accept');
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
@@ -53,7 +53,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
         if (err) {
           self.error = err.message || err;
         } else {
-          notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {
+          notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The account "{{walletName}}" has been deleted', {
             walletName: walletName
           }));
         }
@@ -62,7 +62,7 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
 
     this.deleteWallet = function() {
 	  if (profileService.profile.credentials.length === 1 || profileService.getWallets().length === 1)
-		  return $rootScope.$emit('Local/ShowErrorAlert', "Can't delete the last remaining wallet");
+		  return $rootScope.$emit('Local/ShowErrorAlert', "Can't delete the last remaining account");
       if (isCordova) {
         navigator.notification.confirm(
           delete_msg,
