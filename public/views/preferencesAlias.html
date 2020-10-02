@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Wallet Alias'; goBackToState = true">
+  ng-init="titleSection='Account Alias'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesAliasController as prefAlias">
@@ -13,7 +13,7 @@
     <input type="text" id="alias2" type="text" name="alias2" ng-model="prefAlias.alias">
     <input type="submit" class="button expand black round" value="{{'Save'|translate}}" ng-style="{'background-color':index.backgroundColor}">
   </form>
-    <div class="text-gray size-12 text-center" translate>Changing wallet alias only affects the local wallet name.
+    <div class="text-gray size-12 text-center" translate>Changing account alias only affects the local account name.
   </div>
 </div>
 <div class="extra-margin-bottom"></div>

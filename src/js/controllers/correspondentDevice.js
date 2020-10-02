@@ -126,14 +126,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	$scope.insertMyAddress = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
-			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
+			return $rootScope.$emit('Local/ShowErrorAlert', "The account is not approved yet");
 		readMyPaymentAddress(profileService.focusedClient, appendMyPaymentAddress);
 	//	issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
-			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
+			return $rootScope.$emit('Local/ShowErrorAlert', "The account is not approved yet");
 		readMyPaymentAddress(profileService.focusedClient, showRequestPaymentModal);
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
@@ -157,7 +157,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				if (single_address && single_address !== '0'){
 					var displayed_single_address = from_address ? ' '+from_address : '';
 					if (!fc.isSingleAddress || from_address && from_address !== my_address)
-						return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+". "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+						return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address account")+displayed_single_address+". "+gettext("Please switch to a single-address account and you probably need to insert your address again."));
 				}
 				return emitPaymentRequest();
 			}
@@ -170,7 +170,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					if (row.wallet === fc.credentials.walletId)
 						return emitPaymentRequest();
 					// switch to another wallet first
-					console.log("will switch to another wallet where from_address is member of");
+					console.log("will switch to another account where from_address is member of");
 					profileService.setAndStoreFocus(row.wallet, function () {
 						emitPaymentRequest();	
 					});
@@ -1226,7 +1226,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	function issueNextAddress(fc, cb){
 		if (fc.isSingleAddress)
-			throw Error("trying to issue a new address on a single-address wallet");
+			throw Error("trying to issue a new address on a single-address account");
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
@@ -1820,7 +1820,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var oldWalletId;
 		var oldCorrespondent;
 		var cosigners;
-		if (isIncoming) { // switch to the wallet containing the address which the contract is offered to
+		if (isIncoming) { // switch to the account (wallet) containing the address which the contract is offered to
 			db.query(
 				"SELECT wallet FROM my_addresses \n\
 				LEFT JOIN shared_address_signing_paths ON \n\

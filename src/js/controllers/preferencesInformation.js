@@ -167,7 +167,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
             return;
           };
 
-          var body = 'Obyte Wallet "' + $scope.walletName + '" Addresses.\n\n';
+          var body = 'Obyte Account "' + $scope.walletName + '" Addresses.\n\n';
           body += "\n";
           body += addrs.map(function(v) {
             return ('* ' + v.address + ' ' + v.path + ' ' + formatDate(v.createdOn));
