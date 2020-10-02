@@ -2,7 +2,7 @@
   "name": "byteball",
   "description": "Smart payments made simple",
   "author": "Obyte",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "keywords": [
     "wallet",
     "obyte",
@@ -49,10 +49,10 @@
     "bip38": "^1.4.0",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
-    "ocore": "git+https://github.com/byteball/ocore.git",
     "jszip": "^3.1.3",
     "lodash": "^4.6.1",
-    "moment": "^2.18.1",
+    "moment": "^2.28.0",
+    "ocore": "git+https://github.com/byteball/ocore.git",
     "preconditions": "^1.0.8",
     "secp256k1": "^3.6.1",
     "shelljs": "^0.3.0",
@@ -65,19 +65,19 @@
     "test": "./node_modules/.bin/grunt test-coveralls"
   },
   "devDependencies": {
-    "innosetup-compiler": "^5.5.9",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
-    "grunt-browserify": "=5.0.0",
     "grunt-babel": "^8.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "grunt-browserify": "=5.0.0",
     "grunt-contrib-compress": "^1.3.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-exec": "^1.0.0",
-    "grunt-nw-builder": "^2.0.0"
+    "grunt-nw-builder": "^2.0.0",
+    "innosetup-compiler": "^5.5.9"
   }
 }

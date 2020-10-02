@@ -3,10 +3,16 @@
 
 	.bot_name {
 		text-overflow: ellipsis;
-		max-width: 75%;
+		max-width: 68%;
 		display: inline-block;
 		white-space: nowrap;
 		overflow: hidden;
+	}
+
+	.bot_added {
+		max-width: 25%;
+		overflow: hidden;
+    	text-overflow: ellipsis;
 	}
 
 	/*
@@ -25,10 +31,38 @@
 
 	.order-columns {
 		padding: 0;
-		margin-top: 10px;
+		margin-top: 7px;
 		text-align: left;
 
 		border: none;
+	}
+
+	.order-columns input {
+		border: 1px solid #AEC4E1;
+	    border-radius: 20px;
+	    padding: 5px 16px;
+	    background: #fff;
+	    color: #083571 !important;
+	}
+
+	.order-columns input:focus {
+		border-radius: 20px;
+		border: 1px solid #1560BD;
+	}
+
+	.order-columns input::-webkit-input-placeholder { 
+	  color: #96ABC7;
+	  text-transform: capitalize;
+	}
+
+	.order-columns input:-ms-input-placeholder {
+	  color: #96ABC7;
+	  text-transform: capitalize;
+	}
+
+	.order-columns input::placeholder {
+	  color: #96ABC7;
+	  text-transform: capitalize;
 	}
 
 	.order-button {
@@ -64,6 +98,19 @@
 	.flex-width {
 		flex-grow: 1;
 	}
+
+	@media only screen and (max-width: 320px) {
+	  .tab-bar-section.middle {
+	    left: 3.7em;
+	    right: 3.7em;
+	  }
+	  .order-button-right{
+	    padding: 13px 10px 0 4px;
+	  }
+	  .bot_name {
+	  	max-width: 65%;
+	  }
+	}
 </style>
 <div ng-controller="correspondentDevicesController">
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
@@ -86,12 +133,12 @@
 		</section>
 
 		<section class="middle tab-bar-section">
-			<div class="mtabset">
-				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+			<div class="mtabset mtabs-underline" ng-class="{'mtab-second': mtab == 2}">
+				<div class="mtab-title" ng-click="$parent.mtab = 1" ng-class="{'active': mtab == 1}" 
 				translate>
 					Contacts
 				</div>
-				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}"
+				<div class="mtab-title" ng-click="$parent.mtab = 2" ng-class="{'active': mtab == 2}" 
 				donttranslate>
 					Bot Store
 				</div>
@@ -112,14 +159,16 @@
 						placeholder="{{'search by contact name'|translate}}"
 					>
 				</fieldset>
+
 				<fieldset class="order-columns order-button-right">
 					<span selectable="#drop-contacts" dropdown-toggle="#drop-contacts" data-options="align:left" data-model="self" data-prop="contactsSortOrderLabel">
 						{{contactsSortOrderLabel|translate}}
+						<i class="icon-arrow-down2"></i>
 					</span>
 
 					<ul id="drop-contacts" class="contacts-orders-list f-dropdown drop-bottom drop-down pos-at-cursor right" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="order in contactsSortOrderList" data-value="{{order.label}}">
-							<a class="ellipsis dropup-item-link" ng-click="changeOrder('contacts', order)">
+							<a class="ellipsis dropup-item-link" ng-click="changeOrder('contacts', order)" style="display: flex;align-items: flex-end;">
 								{{order.label|translate}}
 							</a>
 						</li>
@@ -174,11 +223,12 @@
 				<fieldset class="order-columns order-button-right">
 					<span selectable="#drop-bots" dropdown-toggle="#drop-bots" data-options="align:left" data-model="self" data-prop="botsSortOrderLabel">
 						{{botsSortOrderLabel|translate}}
+						<i class="icon-arrow-down2"></i>
 					</span>
 
 					<ul id="drop-bots" class="bots-orders-list f-dropdown drop-bottom drop-down pos-at-cursor right" data-dropdown-content>
 						<li class="dropup-item" ng-repeat="order in botsSortOrderList" data-value="{{order.label}}">
-							<a class="ellipsis dropup-item-link" ng-click="changeOrder('bots', order)">
+							<a class="ellipsis dropup-item-link" ng-click="changeOrder('bots', order)" style="display: flex;align-items: flex-end;">
 								{{order.label|translate}}
 							</a>
 						</li>
@@ -191,7 +241,7 @@
 					<div ng-click="showBot(bot)" class="pointer">
 						<span class="bot_name">{{bot.name}}</span>
 						<div class="right text-gray"><i class="icon-arrow-right3 size-24" ng-show="!editCorrespondentList && hideRemove"></i></div>
-						<div class="right label tu radius light-gray" ng-if="bot.isPaired" translate style="margin-top: 5px">Added</div>
+						<div class="right label tu radius blue bot_added" ng-if="bot.isPaired" translate style="margin-top: 4px">Added</div>
 					</div>
 				</li>
 			</ul>

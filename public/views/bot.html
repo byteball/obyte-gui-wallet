@@ -4,42 +4,89 @@
   ng-init="titleSection='Accept invitation'; goBackToState = true; showCamera = true">
 </div-->
 
+<style>
+.bot-background-wrapper {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  min-height: 542px;
+  background-color: #f0f4f9;
+}
+
+.bot-description-widget {
+  background: #fff;
+  margin: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.1);
+  padding: 21px;
+  width: calc(100% - 40px);
+  border-radius: 25px;
+  position: relative;
+  word-break: break-word;
+}
+
+.bot-related-bottom-row {
+  position: absolute;
+  width: calc(100% - 40px);
+  bottom: -50px;
+  padding-top: 20px;
+  height: 100px;
+}
+
+.bot-related-bottom-row input[type=button] {
+  width: 60%;
+  max-width: 88%;
+  border-radius: 32px;
+  letter-spacing: 1.73px;
+  box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 320px) {
+  .bot-description-widget {
+    margin-bottom: 130px;
+  }
+}
+
+</style>
+
 <div ng-controller="botController">
 
-<nav class="tab-bar">
-  <section class="left-small">
-    <a
-      ng-click="$root.go('correspondentDevices', 'correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
-      <span class="text-back">{{'Back'|translate}}</span>
-    </a>
-  </section>
+  <div class="bot-background-wrapper">
+    <nav class="tab-bar">
+      <section class="left-small">
+        <a
+          ng-click="$root.go('correspondentDevices', 'correspondentDevices')"><i class="icon-arrow-left3 icon-back"></i>
+          <span class="text-back">{{'Back'|translate}}</span>
+        </a>
+      </section>
 
-  <section class="right-small">
-    <qr-scanner on-scan="onQrCodeScanned(data)" before-scan="beforeQrCodeScan()"></qr-scanner>
-  </section>
+      <section class="right-small">
+        <qr-scanner on-scan="onQrCodeScanned(data)" before-scan="beforeQrCodeScan()"></qr-scanner>
+      </section>
 
-  <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
-      {{'Bot Store'|translate}}
-    </h1>
-  </section>
-</nav>
+      <section class="middle tab-bar-section">
+        <h1 class="title ellipsis" style="color: #4E4E4E !important">
+          {{'Bot Store'|translate}}
+        </h1>
+      </section>
+    </nav>
 
 
-<div class="columns m20t" style="position: absolute; padding-bottom: 60px;">
-	<h1 style="font-weight: 200; margin-bottom: 25px">{{bot.name}}</h1>
-  	<div class="m30b" translate dynamic="bot.description" style="-webkit-user-select: text;"></div>
-  
-  <div class="row">
-    <div>
-      <input ng-if="bot.isPaired" type="button" class="button expand round" value="{{'Open chat'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="open(bot)" ng-disabled="!bot">
-      <input ng-if="!bot.isPaired" type="button" class="button expand round" value="{{'Add Bot'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="pair(bot)" ng-disabled="!bot">
+    <div class="columns m20t bot-description-widget">
+      <h1 style="font-weight: 200; margin-bottom: 25px">{{bot.name}}</h1>
+        <div class="m30b" translate dynamic="bot.description" style="-webkit-user-select: text;"></div>
+        <div class="extra-margin-bottom bot-related-bottom-row">
+           <div class="row" style="text-align: center;">
+            <div>
+              <input ng-if="bot.isPaired" type="button" class="button expand round" value="{{'Open chat'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="open(bot)" ng-disabled="!bot">
+              <input ng-if="!bot.isPaired" type="button" class="button expand round" value="{{'Add Bot'|translate}}" ng-style="{'background-color':backgroundColor}" ng-click="pair(bot)" ng-disabled="!bot">
+            </div>
+          </div>
+        </div>
     </div>
   </div>
-</div>
-      
-
-
-    <div class="extra-margin-bottom"></div>
 </div>
 <div ng-include="'views/includes/menu.html'" ng-show="!index.noFocusedWallet"></div>

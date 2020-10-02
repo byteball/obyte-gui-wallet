@@ -31,7 +31,7 @@ angular.module('copayApp.services')
 		else
 		    return amount;
     };
-
+  
     root.formatAmountWithUnit = function(amount, asset, opts) {
 		return root.formatAmount(amount, asset, opts) + ' ' + root.getUnitName(asset);
     };
@@ -331,7 +331,7 @@ angular.module('copayApp.services')
             require('ocore/light_wallet.js').setLightVendorHost(config.hub);
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
-            var walletName = gettextCatalog.getString('Small Expenses Wallet');
+            var walletName = gettextCatalog.getString('Small Expenses Account');
             walletClient.createWallet(walletName, 1, 1, {
 			//	isSingleAddress: true,
                 network: 'livenet'
@@ -452,7 +452,7 @@ angular.module('copayApp.services')
         // check if exists
         var w = lodash.find(root.profile.credentials, { 'walletId': walletId });
         if (w)
-            return cb(gettext('Wallet already in Obyte' + ": ") + w.walletName);
+            return cb(gettext('Account already in Obyte' + ": ") + w.walletName);
 
         root.profile.credentials.push(JSON.parse(walletClient.export()));
         root.setWalletClients();

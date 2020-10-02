@@ -4,7 +4,7 @@ angular.module('copayApp.controllers').controller('copayersController',
   function($scope, $rootScope, $timeout, $log, $modal, profileService, go, notification, isCordova, gettext, gettextCatalog, animationService) {
     var self = this;
 
-    var delete_msg = gettextCatalog.getString('Are you sure you want to delete this wallet?');
+    var delete_msg = gettextCatalog.getString('Are you sure you want to delete this account?');
     var accept_msg = gettextCatalog.getString('Accept');
     var cancel_msg = gettextCatalog.getString('Cancel');
     var confirm_msg = gettextCatalog.getString('Confirm');
@@ -12,7 +12,7 @@ angular.module('copayApp.controllers').controller('copayersController',
     self.init = function() {
       var fc = profileService.focusedClient;
       if (fc.isComplete()) {
-        $log.debug('Wallet Complete...redirecting')
+        $log.debug('Account creation complete...redirecting')
         go.walletHome();
         return;
       }
@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('copayersController',
           } else {
             go.walletHome();
             $timeout(function() {
-              notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The wallet "{{walletName}}" was deleted', {walletName: walletName}));
+              notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('The account "{{walletName}}" was deleted', {walletName: walletName}));
             });
           }
         });

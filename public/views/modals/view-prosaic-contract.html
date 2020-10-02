@@ -46,6 +46,13 @@ form[name="prosaicContractForm"] {
 	position: absolute;
 	right: 10px;
 }
+
+.modal-content#prosaic_contract {
+	padding: 25px;
+	padding-bottom: 33px;
+	color: #7C858E;
+}
+
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -54,14 +61,14 @@ form[name="prosaicContractForm"] {
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
+    <h1 class="title ellipsis" translate style="color: #4E4E4E !important">
       Prosaic contract
     </h1>
   </section>
 </nav>
 
 
-<div class="modal-content fix-modals-touch p10">
+<div class="modal-content fix-modals-touch p10" id="prosaic_contract">
 	<h3><span translate>Status</span>: <b>{{status}}</b></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>

@@ -5,8 +5,8 @@
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
-      Select subwallet
+    <h1 class="title ellipsis" style="color: #4E4E4E !important" translate>
+      Select Smart Contract
     </h1>
   </section>
 </nav>
@@ -23,13 +23,21 @@
 					<span ng-if="mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.totalStr}}</span>
 					<span ng-if="!mainWalletBalanceInfo.totalStr">{{mainWalletBalanceInfo.total.toLocaleString()}}</span>
 				</div>
+				<div class="correspondentlist_badge" ng-if="getSubwalletBadge() > 0" style="position: absolute; top: 1rem; right: 0.7rem;">
+				  {{getSubwalletBadge()}}
+				</div>
 			</a>
 		</li>
 		<li class="line-b" ng-repeat="sw in arrSharedWallets" ng-class="{'selected': sw.shared_address == indexCtl.shared_address}" style="margin-left: 20px">
 			<a ng-click="selectSubwallet(sw.shared_address)" class="db oh">
 				<div class="avatar-wallet" style="margin-top:5px">{{sw.shared_address | limitTo: 1}}</div>
-				<div style="display: inline-block; width: calc(100% - 50px)">
-					<div class="ellipsis name-wallet text-bold">{{sw.shared_address}}</div>
+				<div style="display: inline-block; width: calc(100% - 50px); position: relative">
+					<div class="ellipsis name-wallet text-bold" style="margin-right: 2rem;">
+						{{sw.shared_address}}
+					</div>
+					<div class="correspondentlist_badge" ng-if="getSubwalletBadge(sw.shared_address) > 0" style="position: absolute; top: 0; right: 0;">
+					  {{getSubwalletBadge(sw.shared_address)}}
+					</div>
 					<div class="size-12">
 						<span ng-if="sw.totalStr">{{sw.totalStr}}</span>
 						<span ng-if="!sw.totalStr">{{sw.total.toLocaleString()}}</span>

@@ -16,7 +16,8 @@
     </section>
 
     <section class="middle tab-bar-section" style="overflow: hidden;">
-	    <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+	    <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px">
+        <span class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 	      {{correspondent.name}}
 	    </h1>
     </section>
@@ -63,9 +64,42 @@
     	padding: 6px 8px 4px 8px;
     	border-radius: 40px;
     	margin: 8px auto;
+      width: 36px;
+      height: 36px;
+      box-sizing: border-box;
     }
     .send-form .chatbutton i {
     	vertical-align: baseline;
+    }
+    .send-form .chatbutton.left
+    {
+      background-color: #FEFFFF;
+      color: #7B7B7B;
+      border: 1px solid #7B7B7B;
+      transition: all .3s !important;
+    }
+    .send-form .chatbutton.left:hover
+    {
+      background-color: #616161;
+      border: 1px solid #616161;
+      color: #fff;
+    }
+    .send-form .chatbutton.right {
+      background-color: rgb(11, 147, 246);
+      box-shadow: 0px 0px 0px 5px rgba(176, 222, 255, 0.26);
+      transition: all .3s !important;
+    }
+    .send-form .chatbutton.right:hover {
+      background-color: rgb(11, 147, 246);
+      box-shadow: 0px 0px 0px 6px rgba(176, 222, 255, 0.53);
+    }
+    .send-form .chatbutton.right[disabled=disabled] {
+      box-shadow: none;
+    }
+    form.send-form textarea.textinput {
+      background: white;
+      border: 0px;
+      resize: none;
     }
     #drop {
     	max-width: 300px;
@@ -87,7 +121,7 @@
         overflow-x: hidden;
         overflow-y: auto;
         /*margin-top: 10px;*/
-        margin-bottom: 20px;
+        /*margin-bottom: 20px;*/
         padding-bottom: 10px;
         font-size: 13px;
     }
@@ -95,6 +129,7 @@
         width:100%;
         margin-top: 10px;
     }
+
     /*.chat-message:last-child{
         margin-bottom: 10px;
     }*/
@@ -158,12 +193,17 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .from-me a {
     color: white;
+    font-weight: 500;
+    text-decoration: none;
 }
 .bubble a.payment, .bubble a.external-link {
     text-decoration: underline;
+    font-weight: 500;
 }
 .bubble a.command {
     line-height: 2;
+    font-weight: 500;
+    text-decoration: none;
 }
 
 .from-them {
@@ -171,6 +211,13 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
   color: black;
   float: left;
 }
+
+.from-them > a {
+  color: #1560BD;
+  text-decoration: none;
+  font-weight: 500;
+}
+
 .from-them:before {
   content: "";
   position: absolute;
@@ -196,6 +243,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
   -webkit-transform: translate(-30px, -2px);
   transform: translate(-30px, -2px);
 }
+
 .system {
 	position: relative;
 	z-index: 1;
@@ -263,6 +311,42 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 	width: 10px;
 	padding: 8px 0;
 	color: #555555;
+}
+
+.chat-message .bubble.system:before {
+  border-top: 1px solid #D6D6D6;
+}
+
+.chat-message .bubble.system > .system-span {
+  color: #7D7D7D;
+  text-transform: capitalize;
+}
+
+.chat-message .bubble.system > b {
+  background-color: white;
+  color: #6E6E6E;
+  transition: all .3s;
+  margin-left: -5px;
+  margin-right: 2px;
+  padding: 5px 10px;
+  padding-bottom: 2px;
+  border-bottom: 1px dashed #6E6E6E;
+  letter-spacing: 1px;
+}
+
+
+@media only screen and (max-width: 320px) {
+  .send-form .textinput {
+    width: 70%;
+  }
+  
+  .send-form .chatbutton.left {
+    margin-right: 7px;
+  }
+  
+  .send-form .chatbutton.right {
+    margin-left: 7px;
+  }
 }
 </style>
 
@@ -351,7 +435,6 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
           <button type="submit" 
           	class="chatbutton right"
                      ng-disabled="!chatForm.$valid"
-                     ng-style="{'background-color':index.backgroundColor}" 
                      ng-click="send()"><i class="size-18 icon-paperplane"></i></button>
           <!--<div class="row">
             <div class="large-4 medium-4 small-4 columns adaptive">

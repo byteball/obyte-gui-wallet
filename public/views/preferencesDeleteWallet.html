@@ -1,7 +1,7 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Delete Wallet'; goBackToState = true">
+  ng-init="titleSection='Delete Account'; goBackToState = true">
 </div>
 
 
@@ -9,7 +9,7 @@
 
   <h4></h4>
   <div class="text-center text-gray">
-    <span translate>Wallet</span>: {{index.walletName}}
+    <span translate>Account</span>: {{index.walletName}}
     <span ng-show="index.alias">({{index.alias}})</span>
   </div>
   <h4 class="text-warning text-center m0" style="padding-left: 0px" translate>Warning!</h4>
@@ -19,9 +19,9 @@
     </span>
   </div>
   <div class="columns text-center">
-    <p translate class="size-14 text-gray">Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED</p>
+    <p translate class="size-14 text-gray">Permanently delete this account. THIS ACTION CANNOT BE REVERSED</p>
     <button class="button round expand warning" ng-click="preferences.deleteWallet()" translate>
-      Delete wallet
+      Delete account
     </button>
   </div>
 </div>

@@ -6,7 +6,7 @@
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" style="color: #4E4E4E !important" translate>
       Transaction
     </h1>
   </section>
@@ -35,18 +35,19 @@
 
   <ul class="no-bullet size-14 m0 tx-details"> 
 
-    <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh" ng-click="copyAddress(btx.addressTo)">
-    <span class="text-gray" translate>To</span>:
-    <span class="right">
-      <span ng-if="btx.merchant">
-        <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
-        <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+    <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh flex_container" ng-click="copyAddress(btx.addressTo)">
+      <span class="text-gray" translate>To</span>:
+      <span class="right ml_auto">
+        <span ng-if="btx.merchant">
+          <span ng-show="btx.merchant.pr.ca"><i class="fi-lock color-greeni"></i> {{btx.merchant.domain}}</span>
+          <span ng-show="!btx.merchant.pr.ca"><i class="fi-unlock color-yellowi"></i> {{btx.merchant.domain}}</span>
+        </span>
+        <span ng-if="!btx.merchant">
+          <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
+          <contact ng-show="!btx.labelTo" class="enable_text_select wrap_address_section"
+            address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}" />
+        </span>
       </span>
-      <span ng-if="!btx.merchant">
-        <span ng-show="btx.labelTo">{{btx.labelTo}}</span>
-        <contact ng-show="!btx.labelTo" class="enable_text_select" address="{{btx.addressTo}}"></contact>
-      </span>
-    </span>
     </li>
 
     <li ng-if="btx.textAddress || btx.original_address" class="line-b p10 oh" ng-click="copyAddress(btx.textAddress || btx.original_address)">
@@ -65,9 +66,15 @@
       </span>
     </li>
 	  
-    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
+    <li ng-if="btx.action == 'received'" class="line-b p10 row collapse flex_container">
       <div class="text-gray small-2 columns"><span translate>From</span>:</div>
-	  <div class="right small-10 columns enable_text_select ellipsis"><div ng-repeat="address in btx.arrPayerAddresses" class="right">{{address}}</div></div>
+      <div class="right small-10 columns enable_text_select">
+        <div ng-repeat="address in btx.arrPayerAddresses" class="right ml_auto">
+          <span class="enable_text_select wrap_address_section">
+            {{!!addressbook[address] ? addressbook[address] + ' (' + address + ')' : address}}
+          </span>
+        </div>
+      </div>
     </li>
 
     <li ng-if="btx.action == 'received'" class="line-b p10 row collapse">
@@ -156,6 +163,12 @@
     <li ng-if="n > 1 && isPrivate" class="line-b p10 oh">
 		<span translate>If any of your cosigner devices doesn't see this payment, you can</span> <a class="blue-link" style="padding: 0" ng-click="reSendPrivateMultiSigPayment()" translate>re-send private payloads to cosigners</a>
     </li>
+    <li ng-if="btx.action !== 'received' && !btx.isTextcoin && !isPrivate" class="p10 oh">
+      <a href="#" ng-click="resend(btx); $event.stopPropagation();" class="right button-pointer flex align-items-center" translate>
+        <i class="fi-refresh size-18 m5r"></i>
+        Resend
+      </a>
+    </li>
   </ul>
 
   <div ng-if="btx.to_aa" style="margin-top: 40px">
@@ -188,9 +201,9 @@
 
     <h4 ng-show="btx.response.responseVars" class="title m0" translate>Response variables</h4>
     <ul ng-show="btx.response.responseVars" class="no-bullet size-14 m0 tx-details">
-      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse">
-        <div class="text-gray small-4 columns enable_text_select"><span>{{key}}</span></div>
-        <div class="right small-8 columns text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
+      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse" style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:flex-end;">
+        <div class="text-gray enable_text_select" style="word-wrap: break-word; flex: 1; width: 100%"><span>{{key}}</span></div>
+        <div class="right text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
       </li>
     </ul>
   </div>

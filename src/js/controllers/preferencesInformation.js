@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesInformation',
-  function($scope, $log, $timeout, isMobile, gettextCatalog, lodash, profileService, storageService, go, configService) {
-	var constants = require('ocore/constants.js');
+  function($scope, $rootScope, $log, $timeout, $modal, isMobile, gettextCatalog, lodash, profileService, storageService, animationService, go, configService, correspondentListService) {
     var fc = profileService.focusedClient;
     var c = fc.credentials;
+    var indexScope = $scope.index;
 
     this.init = function() {
       var basePath = c.getBaseAddressDerivationPath();
@@ -43,26 +43,98 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
       });
       
       fc.getListOfBalancesOnAddresses(function(listOfBalances) {
-      	listOfBalances = listOfBalances.map(function(row) {
-			row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
-			return row;
-		});
-      	//groupBy address
-      	var assocListOfBalances = {};
-      	listOfBalances.forEach(function(row) {
-			if (assocListOfBalances[row.address] === undefined) assocListOfBalances[row.address] = [];
-			assocListOfBalances[row.address].push(row);
-		});
-      	$scope.assocListOfBalances = assocListOfBalances;
-      	$timeout(function() {
-      		$scope.$apply();
-		});
-      });			
+        var hiddenAssets = indexScope.getCurrentWalletHiddenAssets();
+        listOfBalances = listOfBalances.filter(function(row) {
+          if (indexScope.isAssetHidden(row.asset, hiddenAssets)) return false;
+          return true;
+        }).map(function(row) {
+          row.amount = profileService.formatAmountWithUnit(row.amount, row.asset, {dontRound: true});
+          return row;
+        });
+        //groupBy address
+        var assocListOfBalances = {};
+        listOfBalances.forEach(function(row) {
+          if (assocListOfBalances[row.address] === undefined) assocListOfBalances[row.address] = [];
+          assocListOfBalances[row.address].push(row);
+        });
+        $scope.assocListOfBalances = assocListOfBalances;
+        $timeout(function() {
+          $scope.$apply();
+        });
+      });
     };
-    
+
+    $scope.signMessageFromAddress = function(address) {
+      correspondentListService.signMessageFromAddress('This is my wallet address', address, indexScope.getSigningDeviceAddresses(fc), false, function(err, signedMessageBase64){
+        if (err) {
+          return $rootScope.$emit('Local/ShowErrorAlert', err);
+        }
+        console.log(signedMessageBase64);
+        $scope.verifySignedMessage(signedMessageBase64);
+      });
+    };
+
+    $scope.verifySignedMessage = function(signedMessageBase64){
+      $rootScope.modalOpened = true;
+      var self = this;
+      var fc = profileService.focusedClient;
+      var signedMessageJson = Buffer.from(signedMessageBase64, 'base64').toString('utf8');
+      var objSignedMessage = JSON.parse(signedMessageJson);
+      
+      var ModalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.color = fc.backgroundColor;
+        $scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
+        $scope.address = objSignedMessage.authors[0].address;
+        $scope.signature = signedMessageBase64;
+        var validation = require('ocore/validation.js');
+        validation.validateSignedMessage(objSignedMessage, function(err){
+          $scope.bValid = !err;
+          if (err)
+            console.log("validateSignedMessage: "+err);
+          scopeApply();
+        });
+        
+        function scopeApply(){
+          $timeout(function(){
+            $scope.$apply();
+          });
+        }
+  
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+      };
+      
+      
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/signed-message.html',
+        windowClass: animationService.modalAnimated.slideUp,
+        controller: ModalInstanceCtrl,
+        scope: $scope
+      });
+  
+      var disableCloseModal = $rootScope.$on('closeModal', function() {
+        modalInstance.dismiss('cancel');
+      });
+  
+      modalInstance.result.finally(function() {
+        $rootScope.modalOpened = false;
+        disableCloseModal();
+        var m = angular.element(document.getElementsByClassName('reveal-modal'));
+        m.addClass(animationService.modalAnimated.slideOutDown);
+      });
+      
+    }; // verifySignedMessage
+
     $scope.hasListOfBalances = function() {
-    	return !!Object.keys($scope.assocListOfBalances || {}).length;
-	};
+      return !!Object.keys($scope.assocListOfBalances || {}).length;
+    };
+
+    $scope.useAsFromAddress = function(from_address, asset) {
+      go.send(function () {
+        $rootScope.$emit('paymentRequest', null, null, asset, null, null, from_address);
+      });
+    };
 
     this.sendAddrs = function() {
       var self = this;
@@ -95,7 +167,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
             return;
           };
 
-          var body = 'Obyte Wallet "' + $scope.walletName + '" Addresses.\n\n';
+          var body = 'Obyte Account "' + $scope.walletName + '" Addresses.\n\n';
           body += "\n";
           body += addrs.map(function(v) {
             return ('* ' + v.address + ' ' + v.path + ' ' + formatDate(v.createdOn));

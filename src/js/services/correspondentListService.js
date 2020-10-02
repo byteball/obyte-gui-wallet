@@ -15,6 +15,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
 	$rootScope.newPaymentsCount = {};
+	$rootScope.newPaymentsDetails = {};
 
 	if (typeof nw !== 'undefined') {
 		var messagesCount;
@@ -58,7 +59,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	
 	function addIncomingMessageEvent(from_address, in_body, message_counter){
 		var walletGeneral = require('ocore/wallet_general.js');
-		walletGeneral.readMyAddresses(function(arrMyAddresses){
+		walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 			var body = highlightActions(escapeHtml(in_body), arrMyAddresses);
 			body.text = text2html(body.text);
 			console.log("body with markup: "+body.text);
@@ -132,12 +133,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var url_regexp = /\bhttps?:\/\/[\w+&@#/%?=~|!:,.;-]+[\w+&@#/%=~|-]/g;
 
 	function paymentDropdown(address) {
-		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
 	}
 
 	function highlightActions(text, arrMyAddresses){
 		var URI = require('ocore/uri.js');
-	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|single_address)|"))/g, function(address){
+	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|base64data|from_address|single_address)|"))/g, function(address){
 		var params = [];
 		var param_index = -1;
 		var assocReplacements = {};
@@ -155,8 +156,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			if (post.indexOf('](') < post.indexOf('[') || (post.indexOf('](') > -1) && (post.indexOf('[') == -1))
 				return str;
-		//	if (arrMyAddresses.indexOf(address) >= 0)
-		//		return address;
+			if (arrMyAddresses.indexOf(address) >= 0)
+				return str;
 			//return '<a send-payment address="'+address+'">'+address+'</a>';
 			index++;
 			var key = '{' + index + '}';
@@ -175,7 +176,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest) {
 				return toDelayedReplacement(paymentDropdown(address));
 			}
-			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.single_address+'\', \''+objPaymentRequest.base64data+'\')">'+objPaymentRequest.amountStr+'</a>');
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			param_index++;
 			params[param_index] = uri;
@@ -494,22 +495,26 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var device_address = assocParams['device_address'] || '';
 		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
 			return null;
-		var single_address = assocParams['single_address'] || 0;
-		if (single_address)
-			single_address = single_address.replace(/^single/, '');
-		if (single_address && !ValidationUtils.isValidAddress(single_address))
-			single_address = 1;
 		var base64data = assocParams['base64data'] || '';
 		if (base64data && !ValidationUtils.isValidBase64(base64data))
 			return null;
-		var amountStr = 'Payment request'+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
+		var from_address = from_address = assocParams['from_address'] || '';
+		var single_address = assocParams['single_address'] || 0;
+		if (single_address)
+			single_address = single_address.replace(/^single/, ''); // backward compatibility
+		if (single_address && ValidationUtils.isValidAddress(single_address)) {
+			from_address = String(single_address);
+			single_address = 1;
+		}
+		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address wallet': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
 			device_address: device_address,
-			amountStr: amountStr,
+			base64data: base64data,
+			from_address: from_address,
 			single_address: single_address,
-			base64data: base64data
+			amountStr: amountStr
 		};
 	}
 	
@@ -633,10 +638,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						str += ' after MCI '+min_mci;
 					return str;
 				case 'has':
-					if (args.what === 'output' && args.asset && args.amount_at_least && args.address)
-						return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
-					if (args.what === 'output' && args.asset && args.amount && args.address)
-						return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
+					if (args.what === 'output' && args.asset && args.address) {
+						if (args.amount_at_least)
+							return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
+						if (args.amount_at_most)
+							return 'sends at most ' + getAmountText(args.amount_at_most, args.asset) + ' to ' + getDisplayAddress(args.address);
+						if (args.amount)
+							return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
+						return 'sends ' + escapeHtml(profileService.getUnitName(args.asset)) + ' to ' + getDisplayAddress(args.address);
+					}
+					return escapeHtml(JSON.stringify(arrSubdefinition));
+				case 'has one':
+					if (args.what === 'output' && Object.keys(args).length === 1)
+						return 'has only one output';
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
@@ -682,7 +696,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				messages[i] = parseMessage(messages[i]);
 			}
 			var walletGeneral = require('ocore/wallet_general.js');
-			walletGeneral.readMyAddresses(function(arrMyAddresses){
+			walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;
 				for (var i in messages) {
@@ -886,9 +900,68 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
+		var storage = require('ocore/storage.js');
+		var db = require('ocore/db.js');
+			
 		arrNewUnits.forEach((unit) => {
-			if (!$rootScope.newPaymentsCount[unit])
+			if (unit === $rootScope.sentUnit)
+				return;
+			if (!$rootScope.newPaymentsCount[unit]) {
 				$rootScope.newPaymentsCount[unit] = 1;
+				function ifFound(objJoint) {
+					$timeout(function(){
+						
+						var allAddressWithAssets = [];
+						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment' && message.payload); // public payments only
+						paymentMessages.forEach(message => {
+							var outputs = message.payload.outputs;
+							outputs.forEach(output =>
+								allAddressWithAssets.findIndex(awa => awa.address === output.address) < 0
+								&& allAddressWithAssets.push({ address: output.address, asset: message.payload.asset || 'base' })
+							);
+						});
+						var addresses = allAddressWithAssets.map(awa => awa.address);
+						var getAssetByAddress = address => allAddressWithAssets.find(awa => awa.address === address).asset;
+						db.query(`SELECT address, wallet FROM my_addresses WHERE address IN(?)`, [addresses], rows => {
+							var row = rows[0];
+							if (row) {
+								$rootScope.newPaymentsDetails[unit] = {
+									receivedAddress: row.address,
+									walletAddress: row.address,
+									walletId: row.wallet,
+									asset: getAssetByAddress(row.address),
+								};
+								return $rootScope.$emit('Local/BadgeUpdated');
+							}
+							// else received payment to a shared address
+							db.query(
+								`SELECT shared_address, address, wallet 
+								FROM shared_addresses
+								CROSS JOIN shared_address_signing_paths USING(shared_address)
+								CROSS JOIN my_addresses USING(address) 
+								WHERE shared_address IN(?)`,
+								[addresses],
+								rows => {
+									var row = rows[0];
+									if (!row)
+										return console.log("failed to find our wallet for payment in unit " + unit);
+									$rootScope.newPaymentsDetails[unit] = {
+										receivedAddress: row.shared_address,
+										walletAddress: row.address,
+										walletId: row.wallet,
+										asset: getAssetByAddress(row.shared_address),
+									};
+									$rootScope.$emit('Local/BadgeUpdated');
+								}
+							);
+						});
+					});
+				};
+				function ifNotFound() {
+					throw Error("failed to load unit " + unit + " where a payment was received");
+				}
+				storage.readJoint(db, unit, { ifFound: ifFound, ifNotFound: ifNotFound });
+			}
 			else
 				$rootScope.newPaymentsCount[unit]++;
 		});
