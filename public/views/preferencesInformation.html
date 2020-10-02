@@ -100,7 +100,7 @@
           <div class="text-gray size-12 right enable_text_select">
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
           </div>
-          <a ng-click="signMessageFromAddress(a.address);" class="right">
+          <a ng-if="M == 1" ng-click="signMessageFromAddress(a.address);" class="right">
             <i class="icon-pricetags"></i> <span translate>Sign a message with this address</span>
           </a>
       </li>

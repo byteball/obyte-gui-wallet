@@ -2468,7 +2468,10 @@ angular.module('copayApp.controllers')
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
 				return;
-			fileSystemService.readFile(home.attachedFile.path, function (
+			var read = isCordova
+				? (file, cb) => fileSystemService.readFileFromForm(file, cb)
+				: (file, cb) => fileSystemService.readFile(file.path, cb);
+			read(home.attachedFile, function (
 				err,
 				data
 			) {
@@ -2480,6 +2483,12 @@ angular.module('copayApp.controllers')
 					.createHash("sha256")
 					.update(data)
 					.digest("hex");
+				// if the last element is empty, remove it
+				if (home.feedvaluespairs.length > 0) {
+					var last_pair = home.feedvaluespairs[home.feedvaluespairs.length - 1];
+					if (!last_pair.name && !last_pair.value)
+						home.feedvaluespairs.pop();
+				}
 				home.feedvaluespairs.push({
 					name: home.attachedFile.name,
 					value: hash,
