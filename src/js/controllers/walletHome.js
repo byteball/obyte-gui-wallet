@@ -89,34 +89,7 @@ angular.module('copayApp.controllers')
 					if (!self.oldAndroidFilePath)
 						return;
 					self.importing = true;
-					fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
-						if (err) {
-							self.setSendError("cannot read the file whose hash is going to be posted");
-							return;
-						}
-						const hash = require("crypto")
-							.createHash("sha256")
-							.update(data)
-							.digest("hex");
-						let added = false;
-						home.feedvaluespairs.forEach(function(pair, i) {
-							if (added) return;
-							if ((typeof pair.name === 'undefined' && typeof pair.value === 'undefined') || (pair.name === '' && pair.value === '')) {
-								home.feedvaluespairs[i] = {
-									name: home.attachedFile.name,
-									value: hash,
-								};
-								added = true;
-							}
-						});
-						if (!added) {
-							home.feedvaluespairs.push({
-								name: home.attachedFile.name,
-								value: hash,
-							});
-						}
-						$scope.$apply();
-					})
+					this.addHashToFeedValues(self.oldAndroidFilePath);
 				}, function(error) {
 					alert(error);
 				});
@@ -197,6 +170,37 @@ angular.module('copayApp.controllers')
 					self.resetError();
 			}
 		});
+
+		this.addHashToFeedValues = function(filePath) {
+			fileSystemService.readFile(filePath, function(err, data) {
+				if (err) {
+					self.setSendError("cannot read the file whose hash is going to be posted");
+					return;
+				}
+				const hash = require("crypto")
+					.createHash("sha256")
+					.update(data)
+					.digest("hex");
+				let added = false;
+				home.feedvaluespairs.forEach(function(pair, i) {
+					if (added) return;
+					if ((typeof pair.name === 'undefined' && typeof pair.value === 'undefined') || (pair.name === '' && pair.value === '')) {
+						home.feedvaluespairs[i] = {
+							name: home.attachedFile.name,
+							value: hash,
+						};
+						added = true;
+					}
+				});
+				if (!added) {
+					home.feedvaluespairs.push({
+						name: home.attachedFile.name,
+						value: hash,
+					});
+				}
+				$scope.$apply();
+			});
+		};
 
 		this.countChecker = function() {
 			self.newPaymentsCount = $rootScope.newPaymentsCount;
@@ -2481,37 +2485,7 @@ angular.module('copayApp.controllers')
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
 				return;
-			fileSystemService.readFile(home.attachedFile.path, function (
-				err,
-				data
-			) {
-				if (err) {
-					self.setSendError("cannot read the file whose hash is going to be posted");
-					return;
-				}
-				const hash = require("crypto")
-					.createHash("sha256")
-					.update(data)
-					.digest("hex");
-				let added = false;
-				home.feedvaluespairs.forEach(function(pair, i) {
-					if (added) return;
-					if ((typeof pair.name === 'undefined' && typeof pair.value === 'undefined') || (pair.name === '' && pair.value === '')) {
-						home.feedvaluespairs[i] = {
-							name: home.attachedFile.name,
-							value: hash,
-						};
-						added = true;
-					}
-				});
-				if (!added) {
-					home.feedvaluespairs.push({
-						name: home.attachedFile.name,
-						value: hash,
-					});
-				}
-				$scope.$apply();
-			});
+			this.addHashToFeedValues(home.attachedFile.path);
 		};
 
 		this.openTxModal = function(btx) {
