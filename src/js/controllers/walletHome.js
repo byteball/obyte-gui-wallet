@@ -73,14 +73,12 @@ angular.module('copayApp.controllers')
 			},
 		]
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
-		$scope.home.iOs = isMobile.iOS();
-		$scope.home.android = isMobile.Android() && window.cordova;
-		$scope.home.arrBackupFiles = [];
-		$scope.home.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
-		$scope.home.oldAndroidFilePath = null;
-		$scope.home.oldAndroidFileName = '';
+		self.android = isMobile.Android() && window.cordova;
+		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
+		self.oldAndroidFilePath = null;
+		self.oldAndroidFileName = '';
 
-		$scope.home.oldAndroidInputFileClick = function() {
+		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
 				window.plugins.mfilechooser.open([], function(uri) {
 					self.oldAndroidFilePath = 'file://' + uri;
