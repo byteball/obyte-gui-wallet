@@ -2483,6 +2483,12 @@ angular.module('copayApp.controllers')
 					.createHash("sha256")
 					.update(data)
 					.digest("hex");
+				// if the last element is empty, remove it
+				if (home.feedvaluespairs.length > 0) {
+					var last_pair = home.feedvaluespairs[home.feedvaluespairs.length - 1];
+					if (!last_pair.name && !last_pair.value)
+						home.feedvaluespairs.pop();
+				}
 				home.feedvaluespairs.push({
 					name: home.attachedFile.name,
 					value: hash,
