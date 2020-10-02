@@ -76,7 +76,7 @@ angular.module('copayApp.controllers')
 		$scope.home.iOs = isMobile.iOS();
 		$scope.home.android = isMobile.Android() && window.cordova;
 		$scope.home.arrBackupFiles = [];
-		$scope.home.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
+		$scope.home.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
 		$scope.home.oldAndroidFilePath = null;
 		$scope.home.oldAndroidFileName = '';
 
