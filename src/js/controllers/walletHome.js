@@ -2488,7 +2488,7 @@ angular.module('copayApp.controllers')
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
 				return;
-			this.addHashToFeedValues(home.attachedFile.path);
+			this.addHashToFeedValues(home.attachedFile);
 		};
 
 		this.openTxModal = function(btx) {
