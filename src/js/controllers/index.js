@@ -1916,7 +1916,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   })();
   
   document.addEventListener('click', function(e){
-    var inside = e.target.closest('.custom-dropdown');
+    let inside = e.target.closest('.custom-dropdown');
     if (!inside)
       $rootScope.$emit("closeAssetDropDown");
   });

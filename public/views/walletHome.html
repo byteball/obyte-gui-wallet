@@ -584,8 +584,12 @@ input.datafeed_input {
                       <i class="fi-plus size-18 m10r"></i>
                       <span class="text-close size-12" translate>Add fields</span>
                     </a>
-                    <input class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-                    <label for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+                    <div ng-show="home.android && home.androidVersion < 5">
+                      <button ng-click="home.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
+                      {{home.oldAndroidFileName}}
+                    </div>
+                    <input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+                    <label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
                   </div>
                 </div>
 	            </div>
@@ -745,10 +749,14 @@ input.datafeed_input {
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
 						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
 					</a>
-					<div ng-if="[-4].includes(assetIndexSelectorValue)">
-						<input class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-						<label for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
-					</div>
+          <div ng-if="[-4].includes(assetIndexSelectorValue)"></div>
+            <div ng-show="home.android && home.androidVersion < 5">
+              <button ng-click="home.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
+              {{home.oldAndroidFileName}}
+            </div>
+            <input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+            <label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+          </div>
 				</div>
 
             <div class="" ng-show="index.m < index.n && index.m > 1">

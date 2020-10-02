@@ -2438,11 +2438,11 @@ angular.module('copayApp.controllers')
 					self.setSendError("cannot read the file whose hash is going to be posted");
 					return;
 				}
-				var hash = require("crypto")
+				const hash = require("crypto")
 					.createHash("sha256")
 					.update(data)
 					.digest("hex");
-				var added = false;
+				let added = false;
 				home.feedvaluespairs.forEach(function(pair, i) {
 					if (added) return;
 					if ((typeof pair.name === 'undefined' && typeof pair.value === 'undefined') || (pair.name === '' && pair.value === '')) {

@@ -122,7 +122,7 @@ angular.module('copayApp.services')
 	//on mobile, big files can crash the application, we write data by chunk to prevent this issue
 	function writeByChunks(writer, data, handle) {
 		var written = 0;
-		var BLOCK_SIZE = 1*1024*1024; // write 1M every time of write
+		const BLOCK_SIZE = 1*1024*1024; // write 1M every time of write
 		function writeNext(cbFinish) {
 			var chunkSize = Math.min(BLOCK_SIZE, data.byteLength - written);
 			var dataChunk = data.slice(written, written + chunkSize);
