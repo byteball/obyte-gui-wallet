@@ -73,6 +73,42 @@ angular.module('copayApp.controllers')
 			},
 		]
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
+		self.android = isMobile.Android() && window.cordova;
+		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
+		self.oldAndroidFilePath = null;
+		self.oldAndroidFileName = '';
+
+		self.oldAndroidInputFileClick = function() {
+			if(isMobile.Android() && self.androidVersion < 5) {
+				window.plugins.mfilechooser.open([], function(uri) {
+					self.oldAndroidFilePath = 'file://' + uri;
+					self.oldAndroidFileName = uri.split('/').pop();
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+					if (!self.oldAndroidFilePath)
+						return;
+					self.importing = true;
+					fileSystemService.readFile(self.oldAndroidFilePath, function(err, data) {
+						if (err) {
+							self.setSendError("cannot read the file whose hash is going to be posted");
+							return;
+						}
+						const hash = require("crypto")
+							.createHash("sha256")
+							.update(data)
+							.digest("hex");
+						home.feedvaluespairs.push({
+							name: home.attachedFile.name,
+							value: hash,
+						});
+						$scope.$apply();
+					})
+				}, function(error) {
+					alert(error);
+				});
+			}
+		};
 
 		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
@@ -1163,6 +1199,8 @@ angular.module('copayApp.controllers')
 				});
 				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
 			}
+			if (self.aa_field_descriptions && Object.keys(self.aa_field_descriptions).length)
+				self.aa_data_fields_defined = lodash.union(self.aa_data_fields_defined, Object.keys(self.aa_field_descriptions));
 
 			var row = self.aa_destinations[0];
 			var aa_address = row.address;
@@ -2695,8 +2733,7 @@ angular.module('copayApp.controllers')
 						result = amountInSmallestUnits / 1e9 * home.exchangeRates[exchangePair];
 					}
 				} else {
-					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, balanceObject.asset + '_USD');
-					result = amountInSmallestUnits  * home.exchangeRates[exchangePair];
+					result = amount * home.exchangeRates[exchangePair];
 				}
 				if (!isNaN(result) && result !== 0) {
 					if(result >= 0.1) {
