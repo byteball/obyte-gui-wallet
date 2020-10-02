@@ -2468,7 +2468,10 @@ angular.module('copayApp.controllers')
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
 				return;
-			fileSystemService.readFile(home.attachedFile.path, function (
+			var read = isCordova
+				? (file, cb) => fileSystemService.readFileFromForm(file, cb)
+				: (file, cb) => fileSystemService.readFile(file.path, cb);
+			read(home.attachedFile, function (
 				err,
 				data
 			) {
