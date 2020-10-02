@@ -2484,6 +2484,7 @@ angular.module('copayApp.controllers')
 			home.attachedFile = $ev.target.files[0];
 			if (!home.attachedFile) 
 				return;
+			self.previousFileHashName = home.attachedFile.name;
 			this.addHashToFeedValues(home.attachedFile);
 		};
 
