@@ -172,7 +172,10 @@ angular.module('copayApp.controllers')
 		});
 
 		this.addHashToFeedValues = function(filePath) {
-			fileSystemService.readFile(filePath, function(err, data) {
+			var read = isCordova
+				? (file, cb) => fileSystemService.readFileFromForm(file, cb)
+				: (file, cb) => fileSystemService.readFile(file.path, cb);
+			read(filePath, function (err, data) {
 				if (err) {
 					self.setSendError("cannot read the file whose hash is going to be posted");
 					return;
