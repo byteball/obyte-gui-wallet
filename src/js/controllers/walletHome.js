@@ -1201,6 +1201,8 @@ angular.module('copayApp.controllers')
 				});
 				self.aa_data_fields_defined = lodash.difference(threeEntriesArray, moreEntriesArray); // filter 3 entry words with filter words;
 			}
+			if (self.aa_field_descriptions && Object.keys(self.aa_field_descriptions).length)
+				self.aa_data_fields_defined = lodash.union(self.aa_data_fields_defined, Object.keys(self.aa_field_descriptions));
 
 			var row = self.aa_destinations[0];
 			var aa_address = row.address;
