@@ -743,8 +743,12 @@ input.datafeed_input {
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
 						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
 					</a>
-          <input class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-          <label for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+          <div ng-show="home.android && home.androidVersion < 5">
+            <button ng-click="home.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
+            {{home.oldAndroidFileName}}
+          </div>
+          <input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+          <label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
 				</div>
 
             <div class="" ng-show="index.m < index.n && index.m > 1">
@@ -852,9 +856,8 @@ input.datafeed_input {
             <span class="label tu warning radius" ng-show="btx.action == 'invalid'" translate>Invalid</span>
           </div>
 
-          <div class="large-9 medium-9 small-9 columns history-list-details">
-            <section>
-              <span class="size-16">
+          <div class="large-4 medium-4 small-4 columns">
+            <span class="size-16">
                 <span ng-if="btx.action == 'received'">+</span>
                 <span ng-if="btx.action == 'sent'">-</span>
                 <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
@@ -864,9 +867,10 @@ input.datafeed_input {
                 {{btx.amountStr}}
                 </span>
               </span>
-            </section>
-            <section>
-              <div class="m5t size-12 text-gray time-block">
+          </div>
+
+          <div class="large-4 medium-4 small-4 columns" style="text-align: right">
+            <div class="m5t size-12 text-gray time-block">
                 <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
                 <span translate class="text-warning"
                   ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
@@ -874,11 +878,12 @@ input.datafeed_input {
                 </span>
               </div>
               <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
-            </section>
-            <section>
-              <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
-            </section>
           </div>
+
+          <div class="large-1 medium-1 small-1 columns" style="text-align: right">
+            <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
+          </div>
+
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
             <span ng-show="btx.from_aa" class="right">
               <span class="label tu light-gray radius" translate>From AA</span>
