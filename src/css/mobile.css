@@ -150,7 +150,7 @@ _:-ms-fullscreen, :root .main {
   width: 75px;
   color: #656565;
   height: 45px;
-  top: 0px;
+  top: -1px;
   transition: all .3s;
 }
 
@@ -987,10 +987,7 @@ textarea:focus
 }
 .f-dropdown li a .check {
 	display: none;
-	position: absolute;
-	top: 50%;
-	right: -5px;
-	margin-top: -10px;
+	margin-left: 10px;
 }
 .f-dropdown li.selected a .check {
 	display: inline;
