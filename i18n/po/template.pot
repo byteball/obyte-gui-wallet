@@ -20,7 +20,7 @@ msgstr ""
 msgid "(my other account)"
 msgstr ""
 
-#: public/views/walletHome.html:863
+#: public/views/walletHome.html:867
 msgid "(possible double spend)"
 msgstr ""
 
@@ -30,12 +30,6 @@ msgstr ""
 
 #: public/views/modals/claim-textcoin.html:32
 msgid "12 words separated by dashes"
-msgstr ""
-
-#: public/views/modals/tx-details.html:167
-msgid ""
-"<i class=\"fi-refresh size-18 m5r\"></i>\n"
-"        Resend"
 msgstr ""
 
 #: public/views/walletHome.html:481
@@ -100,7 +94,7 @@ msgstr ""
 msgid "Accounts"
 msgstr ""
 
-#: public/views/bot.html:85
+#: public/views/bot.html:89
 msgid "Add Bot"
 msgstr ""
 
@@ -275,7 +269,7 @@ msgid "Available Balance"
 msgstr ""
 
 #: public/views/acceptCorrespondentInvitation.html:13
-#: public/views/bot.html:62
+#: public/views/bot.html:66
 #: public/views/correspondentDevice.html:14
 #: public/views/correspondentDevices.html:122
 #: public/views/editCorrespondentDevice.html:14
@@ -339,7 +333,7 @@ msgstr ""
 msgid "Bitcoin URI is NOT valid!"
 msgstr ""
 
-#: public/views/bot.html:72
+#: public/views/bot.html:76
 msgid "Bot Store"
 msgstr ""
 
@@ -390,7 +384,7 @@ msgid "Chat"
 msgstr ""
 
 #: public/views/import.html:33
-#: public/views/walletHome.html:747
+#: public/views/walletHome.html:749
 msgid "Choose File"
 msgstr ""
 
@@ -488,8 +482,8 @@ msgstr ""
 #: src/js/controllers/index.js:673
 #: src/js/controllers/preferencesDelete.js:11
 #: src/js/controllers/walletHome.js:224
-#: src/js/controllers/walletHome.js:2540
-#: src/js/controllers/walletHome.js:2544
+#: src/js/controllers/walletHome.js:2553
+#: src/js/controllers/walletHome.js:2557
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr ""
@@ -554,7 +548,7 @@ msgstr ""
 msgid "Could not decrypt"
 msgstr ""
 
-#: public/views/walletHome.html:819
+#: public/views/walletHome.html:823
 msgid "Could not fetch transaction history"
 msgstr ""
 
@@ -637,7 +631,7 @@ msgstr ""
 msgid "Declined"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1333
+#: src/js/controllers/walletHome.js:1337
 msgid "Define a new asset with cap"
 msgstr ""
 
@@ -665,7 +659,7 @@ msgstr ""
 msgid "Delete account"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:2537
+#: src/js/controllers/walletHome.js:2550
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr ""
 
@@ -709,7 +703,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: public/views/walletHome.html:934
+#: public/views/walletHome.html:938
 msgid "Download CSV file"
 msgstr ""
 
@@ -793,7 +787,7 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-#: public/views/walletHome.html:889
+#: public/views/walletHome.html:893
 msgid "From AA"
 msgstr ""
 
@@ -955,7 +949,7 @@ msgstr ""
 msgid "Including pending confirmation"
 msgstr ""
 
-#: public/views/walletHome.html:838
+#: public/views/walletHome.html:842
 msgid ""
 "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
@@ -969,7 +963,7 @@ msgstr ""
 msgid "Insert private profile"
 msgstr ""
 
-#: public/views/walletHome.html:856
+#: public/views/walletHome.html:860
 msgid "Invalid"
 msgstr ""
 
@@ -981,11 +975,11 @@ msgstr ""
 msgid "Invite the other device"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1452
+#: src/js/controllers/walletHome.js:1456
 msgid "It is not allowed to bind conditions to payments to autonomous agents"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1450
+#: src/js/controllers/walletHome.js:1454
 msgid "It is not allowed to send private assets to autonomous agents"
 msgstr ""
 
@@ -1058,7 +1052,7 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: public/views/walletHome.html:855
+#: public/views/walletHome.html:859
 msgid "Moved"
 msgstr ""
 
@@ -1102,7 +1096,7 @@ msgstr ""
 #: public/views/authConfirmation.html:22
 #: public/views/modals/tx-details.html:188
 #: src/js/controllers/index.js:672
-#: src/js/controllers/walletHome.js:2552
+#: src/js/controllers/walletHome.js:2565
 msgid "No"
 msgstr ""
 
@@ -1118,7 +1112,7 @@ msgstr ""
 msgid "No profiles yet."
 msgstr ""
 
-#: public/views/walletHome.html:822
+#: public/views/walletHome.html:826
 msgid "No transactions yet"
 msgstr ""
 
@@ -1136,7 +1130,7 @@ msgstr ""
 #: public/views/modals/tx-details.html:116
 #: public/views/modals/tx-details.html:91
 #: public/views/walletHome.html:534
-#: public/views/walletHome.html:893
+#: public/views/walletHome.html:897
 msgid "Note"
 msgstr ""
 
@@ -1182,7 +1176,7 @@ msgstr ""
 msgid "Only single-sig accounts can be recovered."
 msgstr ""
 
-#: public/views/bot.html:84
+#: public/views/bot.html:88
 msgid "Open chat"
 msgstr ""
 
@@ -1315,11 +1309,11 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1337
+#: src/js/controllers/walletHome.js:1341
 msgid "Post a"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1328
+#: src/js/controllers/walletHome.js:1332
 msgid "Post a data feed"
 msgstr ""
 
@@ -1331,7 +1325,7 @@ msgstr ""
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1331
+#: src/js/controllers/walletHome.js:1335
 msgid "Post data"
 msgstr ""
 
@@ -1356,8 +1350,8 @@ msgstr ""
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:2611
-#: src/js/controllers/walletHome.js:2687
+#: src/js/controllers/walletHome.js:2624
+#: src/js/controllers/walletHome.js:2700
 msgid "Private payloads sent"
 msgstr ""
 
@@ -1405,7 +1399,7 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: public/views/walletHome.html:853
+#: public/views/walletHome.html:857
 msgid "Received"
 msgstr ""
 
@@ -1482,6 +1476,10 @@ msgstr ""
 
 #: public/views/create.html:74
 msgid "Required number of signatures"
+msgstr ""
+
+#: public/views/modals/tx-details.html:169
+msgid "Resend"
 msgstr ""
 
 #: public/views/walletHome.html:619
@@ -1561,12 +1559,12 @@ msgstr ""
 msgid "Select a wallet"
 msgstr ""
 
-#: public/views/preferencesHiddenAssets.html:29
+#: public/views/preferencesHiddenAssets.html:30
 msgid "Select the assets to hide in the account"
 msgstr ""
 
-#: public/views/preferencesHiddenSubWallets.html:29
-msgid "Select the subaccounts to hide in the account"
+#: public/views/preferencesHiddenSubWallets.html:30
+msgid "Select the smart contracts to hide in the account"
 msgstr ""
 
 #: public/views/authConfirmation.html:10
@@ -1575,9 +1573,9 @@ msgstr ""
 
 #: public/views/includes/transaction.html:10
 #: public/views/walletHome.html:644
-#: public/views/walletHome.html:765
+#: public/views/walletHome.html:769
 #: src/js/controllers/index.js:859
-#: src/js/controllers/walletHome.js:1321
+#: src/js/controllers/walletHome.js:1325
 msgid "Send"
 msgstr ""
 
@@ -1609,7 +1607,7 @@ msgstr ""
 msgid "Sending..."
 msgstr ""
 
-#: public/views/walletHome.html:854
+#: public/views/walletHome.html:858
 msgid "Sent"
 msgstr ""
 
@@ -1652,7 +1650,7 @@ msgstr ""
 msgid "Share via message"
 msgstr ""
 
-#: public/views/walletHome.html:926
+#: public/views/walletHome.html:930
 msgid "Show all"
 msgstr ""
 
@@ -1739,8 +1737,8 @@ msgstr ""
 #: src/js/controllers/index.js:338
 #: src/js/controllers/index.js:366
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:2611
-#: src/js/controllers/walletHome.js:2687
+#: src/js/controllers/walletHome.js:2624
+#: src/js/controllers/walletHome.js:2700
 msgid "Success"
 msgstr ""
 
@@ -1770,7 +1768,7 @@ msgstr ""
 
 #: public/views/walletHome.html:134
 #: public/views/walletHome.html:139
-#: public/views/walletHome.html:820
+#: public/views/walletHome.html:824
 msgid "Tap to retry"
 msgstr ""
 
@@ -1888,7 +1886,7 @@ msgstr ""
 msgid "This payment must be paid only from single-address account"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:2235
+#: src/js/controllers/walletHome.js:2239
 msgid "This payment must be paid only from single-address wallet"
 msgstr ""
 
@@ -1914,12 +1912,12 @@ msgstr ""
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
 #: public/views/modals/tx-details.html:81
-#: public/views/walletHome.html:895
+#: public/views/walletHome.html:899
 #: src/js/controllers/index.js:1656
 msgid "To"
 msgstr ""
 
-#: public/views/walletHome.html:907
+#: public/views/walletHome.html:911
 msgid "To AA"
 msgstr ""
 
@@ -1931,7 +1929,7 @@ msgstr ""
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr ""
 
-#: public/views/walletHome.html:776
+#: public/views/walletHome.html:780
 msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one."
 msgstr ""
 
@@ -1977,7 +1975,7 @@ msgid ""
 "Please approve it on the other devices."
 msgstr ""
 
-#: public/views/walletHome.html:844
+#: public/views/walletHome.html:848
 msgid "Transactions<br> Downloaded"
 msgstr ""
 
@@ -2001,12 +1999,12 @@ msgstr ""
 msgid "US state"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1398
+#: src/js/controllers/walletHome.js:1402
 msgid "Unable to send transaction proposal"
 msgstr ""
 
 #: public/views/modals/tx-details.html:128
-#: public/views/walletHome.html:875
+#: public/views/walletHome.html:879
 msgid "Unconfirmed"
 msgstr ""
 
@@ -2111,7 +2109,7 @@ msgstr ""
 #: public/views/modals/vote.html:28
 #: public/views/walletHome.html:633
 #: public/views/walletHome.html:657
-#: public/views/walletHome.html:757
+#: public/views/walletHome.html:761
 msgid "Who signs:"
 msgstr ""
 
@@ -2383,7 +2381,7 @@ msgid "more"
 msgstr ""
 
 #: public/views/modals/tx-details.html:182
-#: src/js/controllers/walletHome.js:1342
+#: src/js/controllers/walletHome.js:1346
 msgid "none"
 msgstr ""
 
@@ -2462,16 +2460,16 @@ msgstr ""
 msgid "send email"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1492
-#: src/js/controllers/walletHome.js:1527
-#: src/js/controllers/walletHome.js:1562
-#: src/js/controllers/walletHome.js:1575
-#: src/js/controllers/walletHome.js:1673
-#: src/js/controllers/walletHome.js:1725
-#: src/js/controllers/walletHome.js:1752
-#: src/js/controllers/walletHome.js:1927
-#: src/js/controllers/walletHome.js:1989
-#: src/js/controllers/walletHome.js:1998
+#: src/js/controllers/walletHome.js:1496
+#: src/js/controllers/walletHome.js:1531
+#: src/js/controllers/walletHome.js:1566
+#: src/js/controllers/walletHome.js:1579
+#: src/js/controllers/walletHome.js:1677
+#: src/js/controllers/walletHome.js:1729
+#: src/js/controllers/walletHome.js:1756
+#: src/js/controllers/walletHome.js:1931
+#: src/js/controllers/walletHome.js:1993
+#: src/js/controllers/walletHome.js:2002
 msgid "sending"
 msgstr ""
 
@@ -2500,7 +2498,7 @@ msgid "the text below and send it to the recipient via any messaging app"
 msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:26
-#: src/js/controllers/walletHome.js:1321
+#: src/js/controllers/walletHome.js:1325
 msgid "to"
 msgstr ""
 
@@ -2522,7 +2520,7 @@ msgstr ""
 msgid "unit in DAG:"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1333
+#: src/js/controllers/walletHome.js:1337
 msgid "unlimited"
 msgstr ""
 
@@ -2535,7 +2533,7 @@ msgstr ""
 msgid "validate contract integrity"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1455
+#: src/js/controllers/walletHome.js:1459
 msgid "wait for sync to complete before sending payments"
 msgstr ""
 
@@ -2544,7 +2542,7 @@ msgid "were added as it is the minimum amount for this AA"
 msgstr ""
 
 #: public/views/modals/select-subwallet.html:45
-#: public/views/preferencesHiddenSubWallets.html:36
+#: public/views/preferencesHiddenSubWallets.html:37
 msgid "with"
 msgstr ""
 
@@ -2553,7 +2551,7 @@ msgstr ""
 msgid "with expected value"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1319
+#: src/js/controllers/walletHome.js:1323
 msgid "you"
 msgstr ""
 
