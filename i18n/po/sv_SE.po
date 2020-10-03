@@ -5,11 +5,13 @@ msgstr ""
 "Project-Id-Version: byteball\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: byteball\n"
+"X-Crowdin-Project-ID: 270960\n"
 "X-Crowdin-Language: sv-SE\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
+"X-Crowdin-File-ID: 222\n"
 "Language-Team: Swedish\n"
 "Language: sv_SE\n"
-"PO-Revision-Date: 2020-06-11 17:31\n"
+"PO-Revision-Date: 2020-10-02 19:31\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -20,14 +22,14 @@ msgid "(The site won't see your balance and no money will be spent)"
 msgstr "(Siten kommer inte se ding behållning och inga pengar spenderas)"
 
 #: public/views/modals/choose-profile.html:44
-msgid "(current wallet)"
-msgstr "(nuvarande plånbok)"
+msgid "(current account)"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:47
-msgid "(my other wallet)"
-msgstr "(min andra plånbok)"
+msgid "(my other account)"
+msgstr ""
 
-#: public/views/walletHome.html:787
+#: public/views/walletHome.html:867
 msgid "(possible double spend)"
 msgstr "(möjlig dublett-spendering)"
 
@@ -39,7 +41,12 @@ msgstr ""
 msgid "12 words separated by dashes"
 msgstr "12 ord åtskilda av bindestreck"
 
-#: public/views/walletHome.html:428
+#: public/views/modals/tx-details.html:167
+msgid "<i class=\"fi-refresh size-18 m5r\"></i>\n"
+"        Resend"
+msgstr ""
+
+#: public/views/walletHome.html:481
 msgid "AAs not allowed in multi-send"
 msgstr ""
 
@@ -49,7 +56,7 @@ msgstr "Om Obyte"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:144
+#: src/js/controllers/walletHome.js:222
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Godkänn"
@@ -62,15 +69,50 @@ msgstr "Godkänn inbjudan"
 msgid "Accept invitation from the other device"
 msgstr "Godkänn inbjudan från annan enhet"
 
+#: public/views/preferencesDeleteWallet.html:12
 #: public/views/preferencesInformation.html:65
 msgid "Account"
 msgstr "Konto"
 
-#: public/views/bot.html:36
+#: public/views/preferences.html:15
+msgid "Account Alias"
+msgstr ""
+
+#: public/views/preferencesInformation.html:27
+msgid "Account Configuration (m-n)"
+msgstr ""
+
+#: public/views/preferencesInformation.html:20
+msgid "Account Id"
+msgstr ""
+
+#: public/views/preferencesAdvanced.html:14
+#: public/views/preferencesInformation.html:8
+msgid "Account Information"
+msgstr ""
+
+#: public/views/preferencesInformation.html:12
+msgid "Account Name (at creation)"
+msgstr ""
+
+#: src/js/services/profileService.js:455
+msgid "Account already in Obyte:"
+msgstr ""
+
+#: public/views/create.html:48
+msgid "Account name"
+msgstr ""
+
+#: public/views/modals/destination-address.html:15
+#: public/views/modals/destination-address.html:29
+msgid "Accounts"
+msgstr ""
+
+#: public/views/bot.html:85
 msgid "Add Bot"
 msgstr "Lägg till bot"
 
-#: public/views/correspondentDevices.html:153
+#: public/views/correspondentDevices.html:202
 msgid "Add a new device"
 msgstr "Lägg till ny enhet"
 
@@ -79,24 +121,24 @@ msgstr "Lägg till ny enhet"
 msgid "Add a new entry"
 msgstr "Lägg till ny post"
 
+#: public/views/includes/sidebar.html:26
+msgid "Add account"
+msgstr ""
+
 #: public/views/preferencesEditRealNameAttestors.html:25
 msgid "Add address"
 msgstr "Lägg till adress"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Add answer"
 msgstr "Lägg till svar"
 
-#: public/views/walletHome.html:532
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:585
+#: public/views/walletHome.html:740
 msgid "Add fields"
 msgstr "Lägg till fält"
 
-#: public/views/includes/sidebar.html:23
-msgid "Add wallet"
-msgstr "Lägg till plånbok"
-
-#: public/views/correspondentDevices.html:194
+#: public/views/correspondentDevices.html:244
 msgid "Added"
 msgstr "Tillagd"
 
@@ -106,7 +148,7 @@ msgstr "Tillagd"
 msgid "Address"
 msgstr "Adress"
 
-#: public/views/walletHome.html:643
+#: public/views/walletHome.html:696
 msgid "Address to attest"
 msgstr "Adress att attestera"
 
@@ -124,11 +166,11 @@ msgstr "Addressbok"
 msgid "Addresses"
 msgstr "Adresser"
 
-#: public/views/preferences.html:77
+#: public/views/preferences.html:76
 msgid "Advanced"
 msgstr "Avancerat"
 
-#: public/views/modals/view-prosaic-contract.html:134
+#: public/views/modals/view-prosaic-contract.html:141
 msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
 msgstr ""
 
@@ -145,8 +187,8 @@ msgid "Alias for"
 msgstr "Alias för"
 
 #: public/views/preferencesInformation.html:95
-msgid "All Wallet Addresses"
-msgstr "Alla plånboksaddresser"
+msgid "All Account Addresses"
+msgstr ""
 
 #: public/views/translators.html:52
 msgid "All contributions to Obyte's translation are welcome. Sign up at crowdin.com and join the O<sub>byte</sub> project at"
@@ -156,11 +198,11 @@ msgstr ""
 msgid "Already Paid"
 msgstr "Redan betald"
 
-#: src/js/controllers/correspondentDevice.js:1419
+#: src/js/controllers/correspondentDevice.js:1416
 msgid "Already saved"
 msgstr "Redan sparad"
 
-#: public/views/walletHome.html:168
+#: public/views/walletHome.html:185
 msgid "Also"
 msgstr "Även"
 
@@ -168,7 +210,7 @@ msgstr "Även"
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr ""
 
-#: public/views/walletHome.html:495
+#: public/views/walletHome.html:548
 msgid "Also send data..."
 msgstr "Skicka även data..."
 
@@ -181,11 +223,11 @@ msgstr ""
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:379
+#: public/views/walletHome.html:431
 msgid "Amount"
 msgstr "Antal"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Answer"
 msgstr "Svar"
 
@@ -194,8 +236,8 @@ msgid "Answer:"
 msgstr "Svar:"
 
 #: public/views/copayers.html:19
-msgid "Approve wallet creation on other devices"
-msgstr "Godkänn skapande av plånbok på annan enhet"
+msgid "Approve the account creation on other devices"
+msgstr ""
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -203,20 +245,16 @@ msgstr "Är du säker på att ta bort ord-frön för säkerhetskopia?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
-msgid "Are you sure you want to delete this wallet?"
-msgstr "Är du säker på att du vill ta bort plånboken?"
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 #: public/views/modals/customized-amount.html:72
 msgid "Asset"
 msgstr "Tillgång"
 
-#: public/views/walletHome.html:629
+#: public/views/walletHome.html:682
 msgid "Attest profile data linked to any Obyte address."
 msgstr ""
-
-#: public/views/walletHome.html:345
-msgid "Attestation of any address"
-msgstr "Attestering av valfri adress"
 
 #: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
@@ -245,11 +283,11 @@ msgid "Available Balance"
 msgstr "Tillgängligt Saldo"
 
 #: public/views/acceptCorrespondentInvitation.html:13
-#: public/views/bot.html:13
+#: public/views/bot.html:62
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:75
+#: public/views/correspondentDevices.html:122
 #: public/views/editCorrespondentDevice.html:14
-#: public/views/includes/topbar.html:8
+#: public/views/includes/topbar.html:22
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/destination-address.html:9
 #: public/views/modals/tx-details.html:5
@@ -260,7 +298,7 @@ msgstr "Bakåt"
 msgid "Backup all wallet data"
 msgstr "Säkerhetskopiera all plånboksdata"
 
-#: public/views/walletHome.html:250
+#: public/views/walletHome.html:268
 msgid "Backup now"
 msgstr "Säkerhetshopiera nu"
 
@@ -276,32 +314,32 @@ msgstr "Säkerhets-frön borttagna"
 msgid "Backups"
 msgstr "Säkerhetskopior"
 
-#: src/js/controllers/correspondentDevice.js:1399
+#: src/js/controllers/correspondentDevice.js:1396
 msgid "Bad profile"
 msgstr "Felaktig profil"
 
-#: public/views/preferencesInformation.html:107
+#: public/views/preferencesInformation.html:110
 msgid "Balance By Address"
 msgstr "Saldo enligt address"
 
-#: public/views/walletHome.html:244
+#: public/views/walletHome.html:262
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Före mottagande av medel, är det högst rekommenderat att ta en säkerhetskopia på plånbokens nycklar."
 
 #: public/views/backup.html:26
-msgid "Better yet, use multisig wallets with redundancy,"
+msgid "Better yet, use multisig accounts with redundancy,"
 msgstr ""
 
-#: public/views/modals/bind.html:8
-#: public/views/modals/bind.html:94
+#: public/views/modals/bind.html:134
+#: public/views/modals/bind.html:49
 msgid "Bind payment"
 msgstr "Förplikta betalning"
 
-#: public/views/walletHome.html:463
+#: public/views/walletHome.html:516
 msgid "Bind the payment to a condition"
 msgstr "Förplikta betalning mot tillstånd"
 
-#: public/views/walletHome.html:450
+#: public/views/walletHome.html:503
 msgid "Bind the payment to a condition..."
 msgstr ""
 
@@ -309,19 +347,19 @@ msgstr ""
 msgid "Bitcoin URI is NOT valid!"
 msgstr "Bitcoin URI är INTE giltigt!"
 
-#: public/views/bot.html:23
+#: public/views/bot.html:72
 msgid "Bot Store"
 msgstr "Bot Store"
 
-#: public/views/correspondentDevice.html:291
+#: public/views/correspondentDevice.html:375
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1172
+#: src/js/controllers/walletHome.js:1286
 msgid "Bounce the request"
 msgstr ""
 
-#: public/views/modals/tx-details.html:173
+#: public/views/modals/tx-details.html:186
 msgid "Bounced?"
 msgstr ""
 
@@ -339,10 +377,10 @@ msgid "CONTINUE"
 msgstr "FORTSÄTT"
 
 #: public/views/modals/destination-address.html:128
-#: public/views/walletHome.html:588
+#: public/views/walletHome.html:641
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:145
+#: src/js/controllers/walletHome.js:223
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Avbryt"
@@ -352,14 +390,15 @@ msgid "Change hub:"
 msgstr "Ändra hub:"
 
 #: public/views/preferencesAlias.html:16
-msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Byte av plånbokens alias påverkar endast lokala namnet"
+msgid "Changing account alias only affects the local account name."
+msgstr ""
 
-#: src/js/controllers/index.js:832
+#: src/js/controllers/index.js:867
 msgid "Chat"
 msgstr "Chatt"
 
 #: public/views/import.html:33
+#: public/views/walletHome.html:749
 msgid "Choose File"
 msgstr "Välj fil"
 
@@ -375,7 +414,7 @@ msgstr "Välj enheten att skicka till"
 msgid "Choose which fields to send:"
 msgstr "Välj vilka fält att skicka:"
 
-#: src/js/controllers/walletHome.js:519
+#: src/js/controllers/walletHome.js:609
 msgid "Claim funds"
 msgstr ""
 
@@ -383,11 +422,11 @@ msgstr ""
 msgid "Claim funds by textcoin"
 msgstr ""
 
-#: public/views/walletHome.html:320
+#: public/views/walletHome.html:338
 msgid "Claim funds using textcoin"
 msgstr ""
 
-#: public/views/walletHome.html:85
+#: public/views/walletHome.html:102
 msgid "Claiming..."
 msgstr ""
 
@@ -395,36 +434,36 @@ msgstr ""
 msgid "Click the button to"
 msgstr "Klicka på knappen för att"
 
-#: public/views/walletHome.html:610
+#: public/views/walletHome.html:663
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr ""
 
-#: public/views/walletHome.html:609
+#: public/views/walletHome.html:662
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr ""
 
-#: public/views/correspondentDevices.html:80
-#: public/views/includes/topbar.html:13
+#: public/views/correspondentDevices.html:127
+#: public/views/includes/topbar.html:27
 #: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
-#: public/views/modals/bind.html:4
+#: public/views/modals/bind.html:45
 #: public/views/modals/choose-profile.html:4
 #: public/views/modals/choose-profile.html:71
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
-#: public/views/modals/offer-contract.html:29
-#: public/views/modals/offer-prosaic-contract.html:38
+#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-prosaic-contract.html:47
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
-#: public/views/modals/signed-message.html:38
 #: public/views/modals/signed-message.html:4
-#: public/views/modals/view-prosaic-contract.html:53
+#: public/views/modals/signed-message.html:43
+#: public/views/modals/view-prosaic-contract.html:60
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Stäng"
@@ -437,11 +476,11 @@ msgstr ""
 msgid "Co-signers"
 msgstr "Co-signatur"
 
-#: public/views/includes/sidebar.html:35
+#: public/views/includes/sidebar.html:38
 msgid "Co-signers for multisig"
 msgstr "Co-signature för multisig"
 
-#: public/views/preferences.html:33
+#: public/views/preferences.html:32
 msgid "Color"
 msgstr "Färg"
 
@@ -454,11 +493,11 @@ msgid "Compress the file? (Slower)"
 msgstr "Komprimera filen? (Långsammare)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:668
+#: src/js/controllers/index.js:673
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:146
-#: src/js/controllers/walletHome.js:2399
-#: src/js/controllers/walletHome.js:2403
+#: src/js/controllers/walletHome.js:224
+#: src/js/controllers/walletHome.js:2549
+#: src/js/controllers/walletHome.js:2553
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Bekräfta"
@@ -475,18 +514,18 @@ msgstr "Bekräfta betalning"
 msgid "Confirm vote"
 msgstr "Bekräfta röst"
 
-#: public/views/modals/tx-details.html:124
+#: public/views/modals/tx-details.html:131
 msgid "Confirmed"
 msgstr "Bekräftat"
 
-#: public/views/correspondentDevices.html:90
+#: public/views/correspondentDevices.html:137
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: src/js/controllers/correspondentDevice.js:1787
+#: src/js/controllers/correspondentDevice.js:1784
 #: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:510
 msgid "Copied to clipboard"
 msgstr "Kopierat till clipboard"
 
@@ -498,12 +537,12 @@ msgstr "Kopiera"
 msgid "Correspondents and chats are not restored."
 msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:109
+#: public/views/modals/offer-prosaic-contract.html:82
+#: public/views/modals/view-prosaic-contract.html:116
 msgid "Cosigners"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not create payment proposal"
 msgstr "Kunde inte skapa betalnings-förslag"
 
@@ -523,7 +562,7 @@ msgstr "Kunde inte skapa: Ogiltiga ord-frön"
 msgid "Could not decrypt"
 msgstr "Kunde inte dekryptera"
 
-#: public/views/walletHome.html:742
+#: public/views/walletHome.html:823
 msgid "Could not fetch transaction history"
 msgstr "Kunde inte hämta transaktions-historik"
 
@@ -537,31 +576,34 @@ msgstr "Kunde inte importera"
 msgid "Could not import. Check input file and password"
 msgstr "Kunde inte importera. Kontrollera indatafil och lösenord"
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not send payment"
 msgstr "Kunde inte skicka betalning"
 
-#: src/js/controllers/correspondentDevice.js:1365
+#: src/js/controllers/correspondentDevice.js:1362
 msgid "Country"
 msgstr "Land"
 
-#: public/views/walletHome.html:44
+#: public/views/walletHome.html:61
 msgid "Create"
 msgstr "Skapa"
 
-#: public/views/includes/sidebar.html:25
-msgid "Create a new wallet"
-msgstr "Skapa ny plånbok"
+#: public/views/includes/sidebar.html:28
+msgid "Create a new account"
+msgstr ""
+
+#: public/views/create.html:175
+#: src/js/controllers/index.js:383
+msgid "Create new account"
+msgstr ""
 
 #: public/views/add.html:15
-#: public/views/create.html:175
-#: src/js/controllers/index.js:378
 msgid "Create new wallet"
 msgstr "Skapa ny plånbok"
 
 #: public/views/create.html:171
-msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Skapa {{requiredCosigners}}-av-{{totalCosigners}} plånbok"
+msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} account"
+msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -572,54 +614,46 @@ msgid "Creating Profile..."
 msgstr "Skapar profil..."
 
 #: public/views/create.html:20
-msgid "Creating Wallet..."
-msgstr "Skapar plånbok..."
+msgid "Creating new account..."
+msgstr ""
 
 #: public/views/backup.html:93
 msgid "DELETE WORDS"
 msgstr "TA BORT ORD"
 
-#: public/views/walletHome.html:344
-msgid "Data into datafeed (searchable)"
-msgstr ""
-
-#: public/views/walletHome.html:501
+#: public/views/walletHome.html:554
 msgid "Data to be posted with the payment:"
 msgstr ""
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed name"
 msgstr "Datafeed-namn"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed value"
 msgstr "Datafeed-värde"
 
-#: public/views/modals/tx-details.html:94
+#: public/views/modals/tx-details.html:101
 msgid "Date"
 msgstr "Datum"
 
-#: src/js/controllers/correspondentDevice.js:1364
+#: src/js/controllers/correspondentDevice.js:1361
 msgid "Date of birth"
 msgstr "Födelsedatum"
 
-#: src/js/controllers/index.js:344
+#: src/js/controllers/index.js:349
 msgid "Declined"
 msgstr "Avslagen"
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "Define a new asset with cap"
 msgstr ""
 
-#: public/views/walletHome.html:197
+#: public/views/walletHome.html:215
 msgid "Definition"
 msgstr "Definition"
 
-#: public/views/walletHome.html:349
-msgid "Definition of autonomous agent"
-msgstr "Definition av autonom agent"
-
-#: public/views/walletHome.html:664
+#: public/views/walletHome.html:717
 msgid "Definition of autonomous agent:"
 msgstr "Definition av autonom agent:"
 
@@ -632,14 +666,14 @@ msgid "Definitions of addresses"
 msgstr "Definitioner av addresser"
 
 #: public/views/preferencesAdvanced.html:31
-msgid "Delete Wallet"
-msgstr "Ta bort plånbok"
+msgid "Delete Account"
+msgstr ""
 
 #: public/views/preferencesDeleteWallet.html:23
-msgid "Delete wallet"
-msgstr "Ta bort plånbok"
+msgid "Delete account"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:2396
+#: src/js/controllers/walletHome.js:2546
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr ""
 
@@ -683,7 +717,7 @@ msgstr "Hittar du inte ditt språk på Crowdin? Kontakta ägaren på Crowdin! Vi
 msgid "Done"
 msgstr "Klart"
 
-#: public/views/walletHome.html:852
+#: public/views/walletHome.html:938
 msgid "Download CSV file"
 msgstr "Ladda ner CSV-fil"
 
@@ -695,7 +729,7 @@ msgstr "Ladda ner hela Obyte-databasen"
 msgid "Edit"
 msgstr "Redigera"
 
-#: public/views/correspondentDevice.html:294
+#: public/views/correspondentDevice.html:378
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr ""
 
@@ -712,7 +746,7 @@ msgstr "Skriv in pairing-koden från den andra enheten, eller använd kameran (i
 msgid "Enter your password"
 msgstr "Skriv in ditt lösenord"
 
-#: public/views/modals/tx-details.html:179
+#: public/views/modals/tx-details.html:192
 msgid "Error"
 msgstr "Fel"
 
@@ -721,7 +755,7 @@ msgstr "Fel"
 msgid "Error creating wallet"
 msgstr "Fel vid skapande av plånbok"
 
-#: public/views/modals/view-prosaic-contract.html:68
+#: public/views/modals/view-prosaic-contract.html:75
 msgid "Expired on"
 msgstr ""
 
@@ -729,8 +763,8 @@ msgstr ""
 msgid "Export"
 msgstr "Exportera"
 
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
 msgid "Export completed successfully"
 msgstr "Export slutfört"
 
@@ -746,32 +780,32 @@ msgstr "Utökade publika nycklar"
 msgid "Failed to export"
 msgstr "Kunde inte exportera"
 
-#: public/views/modals/tx-details.html:101
+#: public/views/modals/tx-details.html:108
 msgid "Fee"
 msgstr "Avgift"
 
-#: public/views/walletHome.html:509
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:562
+#: public/views/walletHome.html:740
 msgid "Field"
 msgstr "Fält"
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
 msgstr ""
 
-#: public/views/modals/tx-details.html:119
+#: public/views/modals/tx-details.html:126
 msgid "Finality"
 msgstr "Slutgiltighet"
 
-#: public/views/modals/tx-details.html:69
+#: public/views/modals/tx-details.html:70
 msgid "From"
 msgstr "Från"
 
-#: public/views/walletHome.html:810
+#: public/views/walletHome.html:893
 msgid "From AA"
 msgstr "Från AA"
 
-#: public/views/walletHome.html:409
+#: public/views/walletHome.html:452
 msgid "From Obyte address"
 msgstr ""
 
@@ -783,15 +817,15 @@ msgstr "Hel address:"
 msgid "GET STARTED"
 msgstr "BÖRJA"
 
-#: src/js/controllers/walletHome.js:449
+#: src/js/controllers/walletHome.js:539
 msgid "Generate QR Code"
 msgstr "Skapa QR-kod"
 
-#: public/views/walletHome.html:306
+#: public/views/walletHome.html:324
 msgid "Generate new address"
 msgstr "Skapa ny address"
 
-#: public/views/walletHome.html:81
+#: public/views/walletHome.html:98
 msgid "Generating .csv file..."
 msgstr "Generarar ny .csv fil..."
 
@@ -799,11 +833,11 @@ msgstr "Generarar ny .csv fil..."
 msgid "Getting address for wallet"
 msgstr "Hämtar adress för plånbok"
 
-#: src/js/controllers/correspondentDevice.js:1362
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Given name"
 msgstr "Förnamn"
 
-#: public/views/includes/sidebar.html:45
+#: public/views/includes/sidebar.html:48
 msgid "Global preferences"
 msgstr "Globala inställningar"
 
@@ -811,16 +845,16 @@ msgstr "Globala inställningar"
 msgid "Go back"
 msgstr "Bakåt"
 
-#: public/views/preferences.html:55
+#: public/views/preferences.html:54
 msgid "Hardware wallet"
 msgstr "Hårdvaru-plånbok"
 
-#: public/views/preferences.html:63
+#: public/views/preferences.html:62
 msgid "Hidden assets"
 msgstr "Dolda tillgångar"
 
-#: public/views/preferences.html:70
-msgid "Hidden subwallets"
+#: public/views/preferences.html:69
+msgid "Hidden smart contracts"
 msgstr ""
 
 #: public/views/backup.html:45
@@ -828,15 +862,15 @@ msgid "Hide the Wallet Seed"
 msgstr "Göm plånbokens ord-frön"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:828
+#: src/js/controllers/index.js:863
 msgid "History"
 msgstr "Historia"
 
-#: src/js/controllers/index.js:816
+#: src/js/controllers/index.js:851
 msgid "Home"
 msgstr "Hem"
 
-#: public/views/walletHome.html:550
+#: public/views/walletHome.html:603
 msgid "Home page:"
 msgstr "Hemsida:"
 
@@ -860,52 +894,52 @@ msgstr "Jag intygar att jag har läst, förstått och håller med om dessa villk
 msgid "I created a backup"
 msgstr "Jag skapade en säkerhetskopia"
 
-#: public/views/modals/offer-contract.html:43
+#: public/views/modals/offer-contract.html:81
 msgid "I pay"
 msgstr "Jag betalar"
 
-#: public/views/modals/bind.html:27
+#: public/views/modals/bind.html:67
 msgid "I receive another payment of"
 msgstr "Jag får en annan betalning av"
 
-#: src/js/controllers/correspondentDevice.js:1371
+#: src/js/controllers/correspondentDevice.js:1368
 msgid "ID expires at"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1372
+#: src/js/controllers/correspondentDevice.js:1369
 msgid "ID issued at"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1368
+#: src/js/controllers/correspondentDevice.js:1365
 msgid "ID number"
 msgstr "ID-nummer"
 
-#: src/js/controllers/correspondentDevice.js:1370
+#: src/js/controllers/correspondentDevice.js:1367
 msgid "ID subtype"
 msgstr "ID-subtyp"
 
-#: src/js/controllers/correspondentDevice.js:1369
+#: src/js/controllers/correspondentDevice.js:1366
 msgid "ID type"
 msgstr "ID-typ"
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr ""
 
-#: public/views/modals/bind.html:85
+#: public/views/modals/bind.html:125
 msgid "If the condition is not met, I can take this money back after"
 msgstr ""
 
-#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-contract.html:105
 msgid "If the peer doesn't pay, I can take my money back after"
 msgstr ""
 
-#: public/views/modals/tx-details.html:148
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:155
+#: public/views/modals/tx-details.html:161
 msgid "If the recipient doesn't see your payment, you can"
 msgstr ""
 
-#: public/views/import.html:47
+#: public/views/import.html:48
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr ""
 
@@ -913,7 +947,7 @@ msgstr ""
 msgid "If you plan to restore the wallet on another device, stop using it on the current one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr ""
 
-#: public/views/import.html:40
+#: public/views/import.html:41
 msgid "Import"
 msgstr "Importera"
 
@@ -925,29 +959,29 @@ msgstr "Importera plånbok"
 msgid "Importing wallet..."
 msgstr "Importerar plånbok..."
 
-#: public/views/walletHome.html:138
+#: public/views/walletHome.html:155
 msgid "Including pending confirmation"
 msgstr "Inklusive i avvaktan på bekräftelse"
 
-#: public/views/walletHome.html:761
+#: public/views/walletHome.html:842
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Initial transaktionshistorik synkronisering kan ta några minuter för plånböcker med många transaktioner. <br>\n"
 "           Vänligen vänta."
 
-#: public/views/correspondentDevice.html:330
+#: public/views/correspondentDevice.html:414
 msgid "Insert my address"
 msgstr "Infoga min address"
 
-#: public/views/correspondentDevice.html:346
+#: public/views/correspondentDevice.html:430
 msgid "Insert private profile"
 msgstr "Infoga privat profil"
 
-#: public/views/walletHome.html:780
+#: public/views/walletHome.html:860
 msgid "Invalid"
 msgstr "Ogiltig"
 
-#: src/js/controllers/index.js:1817
+#: src/js/controllers/index.js:1851
 msgid "Invalid Touch ID"
 msgstr "Ogiltig Touch ID"
 
@@ -955,16 +989,16 @@ msgstr "Ogiltig Touch ID"
 msgid "Invite the other device"
 msgstr "Bjud in den andra enheten"
 
-#: src/js/controllers/walletHome.js:1338
+#: src/js/controllers/walletHome.js:1452
 msgid "It is not allowed to bind conditions to payments to autonomous agents"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1336
+#: src/js/controllers/walletHome.js:1450
 msgid "It is not allowed to send private assets to autonomous agents"
 msgstr ""
 
 #: public/views/backup.html:22
-msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig accounts, smart contracts, contacts, chat history, and private assets such as blackbytes."
 msgstr ""
 
 #: public/views/splash.html:36
@@ -987,7 +1021,7 @@ msgstr "Senare"
 msgid "Loading..."
 msgstr "Laddar..."
 
-#: public/views/walletHome.html:668
+#: public/views/walletHome.html:721
 msgid "Looks OK"
 msgstr "Ser OK ut"
 
@@ -1000,18 +1034,18 @@ msgid "Maybe later"
 msgstr "Kanske senare"
 
 #: public/views/includes/copayers.html:4
-#: public/views/modals/offer-contract.html:117
-#: public/views/modals/offer-prosaic-contract.html:51
-#: public/views/modals/view-prosaic-contract.html:70
+#: public/views/modals/offer-contract.html:155
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:77
 #: public/views/preferencesInformation.html:76
 msgid "Me"
 msgstr "Jag"
 
-#: public/views/modals/tx-details.html:113
+#: public/views/modals/tx-details.html:120
 msgid "Merchant message"
 msgstr "Köpmans-meddelande"
 
-#: public/views/walletHome.html:470
+#: public/views/walletHome.html:523
 msgid "Merkle proof"
 msgstr ""
 
@@ -1024,27 +1058,27 @@ msgstr "Meddelande"
 msgid "Message:"
 msgstr "Meddelande:"
 
-#: src/js/controllers/walletHome.js:1132
+#: src/js/controllers/walletHome.js:1246
 msgid "Minimum amount"
 msgstr "Minsta belopp"
 
-#: public/views/correspondentDevice.html:26
+#: public/views/correspondentDevice.html:27
 msgid "More"
 msgstr "Mer"
 
-#: public/views/walletHome.html:779
+#: public/views/walletHome.html:859
 msgid "Moved"
 msgstr "Flyttad"
 
 #: public/views/create.html:32
-msgid "Multidevice Wallet"
-msgstr "Multienhets-plånbok"
+msgid "Multidevice Account"
+msgstr ""
 
-#: public/views/walletHome.html:258
+#: public/views/walletHome.html:276
 msgid "My Obyte address"
 msgstr "Min Obyte-adress"
 
-#: public/views/correspondentDevice.html:300
+#: public/views/correspondentDevice.html:384
 msgid "My recording preference"
 msgstr ""
 
@@ -1074,9 +1108,9 @@ msgid "New version is available!"
 msgstr "Ny version finns tillgänglig!"
 
 #: public/views/authConfirmation.html:22
-#: public/views/modals/tx-details.html:175
-#: src/js/controllers/index.js:667
-#: src/js/controllers/walletHome.js:2411
+#: public/views/modals/tx-details.html:188
+#: src/js/controllers/index.js:672
+#: src/js/controllers/walletHome.js:2561
 msgid "No"
 msgstr "Nej"
 
@@ -1092,33 +1126,33 @@ msgstr ""
 msgid "No profiles yet."
 msgstr "Inga profiler än."
 
-#: public/views/walletHome.html:745
+#: public/views/walletHome.html:826
 msgid "No transactions yet"
 msgstr "Inga transaktioner ännu"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:113
-#: public/views/walletHome.html:370
-#: public/views/walletHome.html:417
-#: public/views/walletHome.html:426
-#: public/views/walletHome.html:648
+#: public/views/walletHome.html:422
+#: public/views/walletHome.html:470
+#: public/views/walletHome.html:479
+#: public/views/walletHome.html:701
 msgid "Not valid"
 msgstr "Ogiltig"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:109
-#: public/views/modals/tx-details.html:84
-#: public/views/walletHome.html:481
-#: public/views/walletHome.html:814
+#: public/views/modals/tx-details.html:116
+#: public/views/modals/tx-details.html:91
+#: public/views/walletHome.html:534
+#: public/views/walletHome.html:897
 msgid "Note"
 msgstr "Observera"
 
-#: public/views/modals/tx-details.html:184
+#: public/views/modals/tx-details.html:197
 msgid "Notice"
 msgstr ""
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
 msgstr ""
 
@@ -1130,21 +1164,21 @@ msgstr "Obyte &mdash; smarta betalningar"
 msgid "Obyte address"
 msgstr "Obyte-adress"
 
-#: public/views/modals/offer-prosaic-contract.html:86
+#: public/views/modals/offer-prosaic-contract.html:95
 msgid "Offer Contract"
 msgstr "Erbjud kontrakt"
 
-#: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-contract.html:71
+#: src/js/services/correspondentListService.js:136
 msgid "Offer a contract"
 msgstr "Erbjud ett kontrakt"
 
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "Offer is valid for"
 msgstr "Erbjudandet är giltigt för"
 
-#: public/views/modals/offer-prosaic-contract.html:42
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-prosaic-contract.html:51
+#: src/js/services/correspondentListService.js:136
 msgid "Offer prosaic contract"
 msgstr "Erbjud prosaiskt kontrakt"
 
@@ -1153,14 +1187,14 @@ msgid "Once you have written your wallet seed down, it is recommended to delete 
 msgstr "När du har skrivit din plånbok frö ner, är det rekommenderat att ta bort den från den här enheten."
 
 #: public/views/recoveryFromSeed.html:41
-msgid "Only single-sig wallets can be recovered."
-msgstr "Endast en-signatures plånböcker kan återställas."
+msgid "Only single-sig accounts can be recovered."
+msgstr ""
 
-#: public/views/bot.html:35
+#: public/views/bot.html:84
 msgid "Open chat"
 msgstr "Öppna chatt"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Options for answering"
 msgstr "Alternativ för att svara"
 
@@ -1180,7 +1214,7 @@ msgstr ""
 msgid "Pair"
 msgstr "Para"
 
-#: public/views/includes/sidebar.html:33
+#: public/views/includes/sidebar.html:36
 msgid "Paired devices"
 msgstr "Parade-enheter"
 
@@ -1208,11 +1242,11 @@ msgstr "Lösenord matchar inte"
 msgid "Paste your paper wallet private key here"
 msgstr "Klistra in din pappers-plånboks nyckel här"
 
-#: public/views/modals/offer-contract.html:138
+#: public/views/modals/offer-contract.html:176
 msgid "Pay and offer"
 msgstr "Betala och erbjud"
 
-#: src/js/services/correspondentListService.js:135
+#: src/js/services/correspondentListService.js:136
 msgid "Pay to this address"
 msgstr "Betala till denna adress"
 
@@ -1224,7 +1258,7 @@ msgstr "Betalning godkänd"
 msgid "Payment Proposal Created"
 msgstr "Betalnings förslag skapad"
 
-#: public/views/walletHome.html:214
+#: public/views/walletHome.html:232
 msgid "Payment Proposals"
 msgstr "Betalningsförslag"
 
@@ -1236,8 +1270,8 @@ msgstr "Betalning avslås"
 msgid "Payment Sent"
 msgstr "Betalning skickad"
 
-#: public/views/modals/offer-prosaic-contract.html:57
-#: public/views/modals/view-prosaic-contract.html:76
+#: public/views/modals/offer-prosaic-contract.html:66
+#: public/views/modals/view-prosaic-contract.html:83
 msgid "Peer"
 msgstr ""
 
@@ -1246,22 +1280,22 @@ msgid "Peer:"
 msgstr "Jämlike"
 
 #: public/views/preferencesDeleteWallet.html:22
-msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr "Ta bort plånboken för alltid. DENNA ÅTGÄRD KAN INTE ÅNGRAS"
+msgid "Permanently delete this account. THIS ACTION CANNOT BE REVERSED"
+msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1366
+#: src/js/controllers/correspondentDevice.js:1363
 msgid "Personal code"
 msgstr "Personlig kod"
 
 #: public/views/create.html:28
-msgid "Plain Wallet"
-msgstr "Vanlig plånbok"
-
-#: src/js/controllers/index.js:283
-msgid "Please approve contract fees deposit on the other devices."
+msgid "Plain Account"
 msgstr ""
 
 #: src/js/controllers/index.js:288
+msgid "Please approve contract fees deposit on the other devices."
+msgstr ""
+
+#: src/js/controllers/index.js:293
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr ""
 
@@ -1277,52 +1311,48 @@ msgstr "Vänligen fyll i nödvändiga fält"
 msgid "Please name this device"
 msgstr "Vänligen namnge denna enhet"
 
-#: src/js/controllers/correspondentDevice.js:150
-msgid "Please switch to a single-address wallet and you probably need to insert your address again."
+#: src/js/controllers/correspondentDevice.js:160
+msgid "Please switch to a single-address account and you probably need to insert your address again."
 msgstr ""
 
 #: public/views/includes/backup-reminder.html:8
 msgid "Please visit the Backups section in"
 msgstr ""
 
-#: public/views/walletHome.html:348
-msgid "Poll"
-msgstr "Poll"
-
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Port"
 
-#: src/js/controllers/walletHome.js:1223
+#: src/js/controllers/walletHome.js:1337
 msgid "Post a"
 msgstr "Posta en"
 
-#: src/js/controllers/walletHome.js:1214
+#: src/js/controllers/walletHome.js:1328
 msgid "Post a data feed"
 msgstr ""
 
-#: public/views/walletHome.html:638
+#: public/views/walletHome.html:691
 msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr ""
 
-#: public/views/walletHome.html:635
+#: public/views/walletHome.html:688
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1217
+#: src/js/controllers/walletHome.js:1331
 msgid "Post data"
 msgstr "Posta data"
 
-#: public/views/walletHome.html:626
+#: public/views/walletHome.html:679
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr ""
 
-#: public/views/walletHome.html:632
+#: public/views/walletHome.html:685
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr ""
 
-#: public/views/walletHome.html:193
-#: public/views/walletHome.html:47
+#: public/views/walletHome.html:210
+#: public/views/walletHome.html:64
 msgid "Preferences"
 msgstr "Preferenser"
 
@@ -1334,8 +1364,8 @@ msgstr "Tryck igen för att avsluta"
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr ""
 
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Private payloads sent"
 msgstr "Privata tillgångar skickade."
 
@@ -1343,23 +1373,19 @@ msgstr "Privata tillgångar skickade."
 msgid "Private profile"
 msgstr "Privat profil"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field"
 msgstr "Profilfält"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field value"
 msgstr "Profilfältsvärde"
 
-#: public/views/walletHome.html:346
-msgid "Profile of my address"
-msgstr "Profil för min adress"
-
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "Proof of contract signing"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:57
+#: public/views/modals/view-prosaic-contract.html:64
 msgid "Prosaic contract"
 msgstr "Prosaiskt kontrakt"
 
@@ -1371,7 +1397,7 @@ msgstr "QR Kod"
 msgid "QR-Scanner"
 msgstr "QR-skanner"
 
-#: public/views/walletHome.html:658
+#: public/views/walletHome.html:711
 msgid "Question to be voted on"
 msgstr "Fråga att rösta om"
 
@@ -1379,28 +1405,24 @@ msgstr "Fråga att rösta om"
 msgid "Question:"
 msgstr "Fråga:"
 
-#: public/views/walletHome.html:347
-msgid "Raw data"
-msgstr "Rådata"
-
 #: public/views/preferencesAttestorAddresses.html:16
 msgid "Real name attestors"
 msgstr ""
 
-#: src/js/controllers/index.js:820
+#: src/js/controllers/index.js:855
 msgid "Receive"
 msgstr "Motta"
 
-#: public/views/walletHome.html:776
+#: public/views/walletHome.html:857
 msgid "Received"
 msgstr "Mottagen"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:61
+#: public/views/modals/tx-details.html:62
 msgid "Recipients"
 msgstr "Mottagare"
 
-#: public/views/walletHome.html:60
+#: public/views/walletHome.html:77
 msgid "Reconnecting to Wallet Service..."
 msgstr "Återansluter till plånboks-service..."
 
@@ -1412,11 +1434,11 @@ msgstr "Återställ"
 msgid "Recover with seed words"
 msgstr ""
 
-#: public/views/walletHome.html:80
+#: public/views/walletHome.html:97
 msgid "Recreating Wallet..."
 msgstr "Återskapa plånbok..."
 
-#: src/js/controllers/index.js:296
+#: src/js/controllers/index.js:301
 msgid "Refused"
 msgstr "Vägrade"
 
@@ -1432,7 +1454,7 @@ msgstr "Påminn senare"
 msgid "Remove"
 msgstr "Ta bort"
 
-#: public/views/correspondentDevices.html:159
+#: public/views/correspondentDevices.html:208
 msgid "Remove a device"
 msgstr "Ta bort en enhet"
 
@@ -1458,11 +1480,11 @@ msgid "Request Password"
 msgstr "Begär lösenord"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:315
+#: public/views/walletHome.html:333
 msgid "Request a specific amount"
 msgstr "Begär betalning med specifik summa"
 
-#: public/views/correspondentDevice.html:339
+#: public/views/correspondentDevice.html:423
 msgid "Request payment"
 msgstr "Begär betalning"
 
@@ -1470,15 +1492,15 @@ msgstr "Begär betalning"
 msgid "Required number of signatures"
 msgstr "Nödvändigt antal signaturer"
 
-#: public/views/walletHome.html:566
+#: public/views/walletHome.html:619
 msgid "Response"
 msgstr "Svar"
 
-#: public/views/modals/tx-details.html:167
+#: public/views/modals/tx-details.html:180
 msgid "Response unit"
 msgstr ""
 
-#: public/views/modals/tx-details.html:189
+#: public/views/modals/tx-details.html:202
 msgid "Response variables"
 msgstr "Svarsvariabler"
 
@@ -1490,7 +1512,7 @@ msgstr "Återställ all plånboksdata"
 msgid "Retrying..."
 msgstr "Försöker igen..."
 
-#: public/views/modals/view-prosaic-contract.html:142
+#: public/views/modals/view-prosaic-contract.html:149
 msgid "Revoke"
 msgstr "Återkalla"
 
@@ -1515,11 +1537,11 @@ msgstr "Spara"
 msgid "Saving preferences..."
 msgstr "Sparar inställningar..."
 
-#: public/views/preferences.html:87
+#: public/views/preferences.html:86
 msgid "Scan Fingerprint/FaceID"
 msgstr "Skanna fingeravtryck/FaceID"
 
-#: public/views/walletHome.html:121
+#: public/views/walletHome.html:138
 msgid "Scan status finished with error"
 msgstr ""
 
@@ -1527,11 +1549,11 @@ msgstr ""
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Scana ovanstående QR-kod med andra enheten, eller skicka denna pairing-kod till andra enheten:"
 
-#: src/js/controllers/index.js:1810
+#: src/js/controllers/index.js:1844
 msgid "Scan your fingerprint please"
 msgstr "Skanna ditt fingeravtryck"
 
-#: public/views/walletHome.html:79
+#: public/views/walletHome.html:96
 msgid "Scanning Wallet funds..."
 msgstr ""
 
@@ -1539,20 +1561,20 @@ msgstr ""
 msgid "Scanning for addresses..."
 msgstr "Skannar efter adresser..."
 
+#: public/views/modals/select-subwallet.html:8
+msgid "Select Smart Contract"
+msgstr ""
+
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "Välj en plånbok"
 
-#: public/views/modals/select-subwallet.html:8
-msgid "Select subwallet"
-msgstr "Välj sub-plånbok"
-
 #: public/views/preferencesHiddenAssets.html:29
-msgid "Select the assets to hide in the wallet"
-msgstr "Välj de tillgångar som ska döljas i plånboken"
+msgid "Select the assets to hide in the account"
+msgstr ""
 
 #: public/views/preferencesHiddenSubWallets.html:29
-msgid "Select the subwallets to hide in the wallet"
+msgid "Select the smart contracts to hide in the account"
 msgstr ""
 
 #: public/views/authConfirmation.html:10
@@ -1560,10 +1582,10 @@ msgid "Select your identity"
 msgstr "Välj din identitet"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:591
-#: public/views/walletHome.html:706
-#: src/js/controllers/index.js:824
-#: src/js/controllers/walletHome.js:1207
+#: public/views/walletHome.html:644
+#: public/views/walletHome.html:769
+#: src/js/controllers/index.js:859
+#: src/js/controllers/walletHome.js:1321
 msgid "Send"
 msgstr "Skicka"
 
@@ -1571,11 +1593,11 @@ msgstr "Skicka"
 msgid "Send Payment"
 msgstr "Skicka betalning"
 
-#: public/views/preferencesInformation.html:125
+#: public/views/preferencesInformation.html:131
 msgid "Send addresses by email"
 msgstr "Skicka address med email"
 
-#: public/views/walletHome.html:381
+#: public/views/walletHome.html:433
 msgid "Send all"
 msgstr "Skicka allt"
 
@@ -1583,15 +1605,19 @@ msgstr "Skicka allt"
 msgid "Send by email"
 msgstr "Skicka med email"
 
+#: public/views/preferencesInformation.html:118
+msgid "Send this"
+msgstr ""
+
 #: public/views/modals/choose-profile.html:63
 msgid "Send this profile"
 msgstr "Skicka denna profil"
 
-#: public/views/walletHome.html:84
+#: public/views/walletHome.html:101
 msgid "Sending..."
 msgstr "Skickar..."
 
-#: public/views/walletHome.html:778
+#: public/views/walletHome.html:858
 msgid "Sent"
 msgstr "Skickat"
 
@@ -1608,7 +1634,7 @@ msgid "Set up a password"
 msgstr "Ställ in ett lösenord"
 
 #: public/views/includes/backup-reminder.html:8
-#: public/views/includes/sidebar.html:43
+#: public/views/includes/sidebar.html:46
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -1617,7 +1643,7 @@ msgid "Share"
 msgstr "Dela"
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:293
+#: public/views/walletHome.html:311
 msgid "Share address"
 msgstr "Dela address"
 
@@ -1625,16 +1651,16 @@ msgstr "Dela address"
 msgid "Share the code"
 msgstr "Dela koden"
 
-#: public/views/walletHome.html:298
+#: public/views/walletHome.html:316
 msgid "Share this wallet address to receive payments."
 msgstr "Dela denna plånboksadress för att ta emot betalningar."
 
-#: public/views/walletHome.html:401
-#: public/views/walletHome.html:611
+#: public/views/walletHome.html:458
+#: public/views/walletHome.html:664
 msgid "Share via message"
 msgstr "Dela via meddelande"
 
-#: public/views/walletHome.html:844
+#: public/views/walletHome.html:930
 msgid "Show all"
 msgstr "Visa allt"
 
@@ -1646,10 +1672,18 @@ msgstr "Visa plånbokens ord-frön ändå"
 msgid "Sign"
 msgstr "Signera"
 
+#: public/views/preferencesInformation.html:104
+msgid "Sign a message with this address"
+msgstr ""
+
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "Sign message"
 msgstr "Signera meddelande"
+
+#: public/views/modals/signed-message.html:26
+msgid "Signature:"
+msgstr ""
 
 #: public/views/editCorrespondentDevice.html:57
 msgid "Signed contracts:"
@@ -1665,20 +1699,20 @@ msgid "Signing address:"
 msgstr "Signeringsadress:"
 
 #: public/views/create.html:56
-#: public/views/preferences.html:40
-msgid "Single address wallet"
+#: public/views/preferences.html:39
+msgid "Single address account"
 msgstr ""
 
 #: public/views/create.html:59
-#: public/views/preferences.html:42
-msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
+#: public/views/preferences.html:41
+msgid "Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains."
 msgstr ""
 
 #: src/js/services/profileService.js:334
-msgid "Small Expenses Wallet"
-msgstr "Småutläggs plånbok"
+msgid "Small Expenses Account"
+msgstr ""
 
-#: public/views/walletHome.html:551
+#: public/views/walletHome.html:604
 msgid "Source code:"
 msgstr "Källkod:"
 
@@ -1690,12 +1724,12 @@ msgstr ""
 msgid "Spend unconfirmed funds"
 msgstr ""
 
-#: public/views/preferences.html:81
+#: public/views/preferences.html:80
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:65
+#: public/views/modals/view-prosaic-contract.html:72
 msgid "Status"
 msgstr "Status"
 
@@ -1703,22 +1737,22 @@ msgstr "Status"
 msgid "Still not done"
 msgstr "Fortfarande inte klart"
 
-#: src/js/controllers/correspondentDevice.js:1421
+#: src/js/controllers/correspondentDevice.js:1418
 msgid "Store"
 msgstr "Butik"
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
-#: src/js/controllers/index.js:333
-#: src/js/controllers/index.js:361
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
+#: src/js/controllers/index.js:338
+#: src/js/controllers/index.js:366
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Success"
 msgstr "Klart"
 
-#: src/js/controllers/correspondentDevice.js:1363
+#: src/js/controllers/correspondentDevice.js:1360
 msgid "Surname"
 msgstr "Efternamn"
 
@@ -1726,11 +1760,11 @@ msgstr "Efternamn"
 msgid "Sweep paper wallet"
 msgstr ""
 
-#: public/views/walletHome.html:83
+#: public/views/walletHome.html:100
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
 msgstr ""
 
-#: public/views/walletHome.html:82
+#: public/views/walletHome.html:99
 msgid "Syncing... {{index.syncProgress}}"
 msgstr "Synkroniserar... {{index.syncProgress}}"
 
@@ -1742,9 +1776,9 @@ msgstr "TOR"
 msgid "TOR enabled"
 msgstr "TOR aktiverat"
 
-#: public/views/walletHome.html:117
-#: public/views/walletHome.html:122
-#: public/views/walletHome.html:743
+#: public/views/walletHome.html:134
+#: public/views/walletHome.html:139
+#: public/views/walletHome.html:824
 msgid "Tap to retry"
 msgstr "Tryck för att försöka igen"
 
@@ -1753,17 +1787,16 @@ msgstr "Tryck för att försöka igen"
 msgid "Terms of Use"
 msgstr "Villkor"
 
-#: public/views/modals/offer-prosaic-contract.html:67
-#: public/views/modals/view-prosaic-contract.html:86
-#: public/views/walletHome.html:350
+#: public/views/modals/offer-prosaic-contract.html:76
+#: public/views/modals/view-prosaic-contract.html:93
 msgid "Text"
 msgstr "Text"
 
-#: public/views/correspondentDevice.html:350
+#: public/views/correspondentDevice.html:434
 msgid "Text message to"
 msgstr "Textmeddelande till"
 
-#: public/views/walletHome.html:672
+#: public/views/walletHome.html:725
 msgid "Text to be forever saved on the DAG:"
 msgstr ""
 
@@ -1771,11 +1804,19 @@ msgstr ""
 msgid "Textcoin"
 msgstr "Textcoin"
 
+#: src/js/controllers/preferencesDelete.js:56
+msgid "The account \"{{walletName}}\" has been deleted"
+msgstr ""
+
+#: src/js/controllers/copayers.js:76
+msgid "The account \"{{walletName}}\" was deleted"
+msgstr ""
+
 #: public/views/modals/accept-profile.html:38
 msgid "The attested address belongs to:"
 msgstr ""
 
-#: public/views/walletHome.html:552
+#: public/views/walletHome.html:605
 msgid "The expected result:"
 msgstr "Det förväntade resultatet:"
 
@@ -1791,11 +1832,11 @@ msgstr ""
 msgid "The money is stored on this textcoin:"
 msgstr "Pengarna lagras på denna textcoin:"
 
-#: public/views/modals/bind.html:23
+#: public/views/modals/bind.html:63
 msgid "The peer receives this payment if"
 msgstr ""
 
-#: public/views/modals/signed-message.html:27
+#: public/views/modals/signed-message.html:32
 msgid "The signature is"
 msgstr "Signaturen är"
 
@@ -1807,16 +1848,11 @@ msgstr "Det totala beloppet i din plånbok är"
 msgid "The vote will be signed by all your funded addresses"
 msgstr ""
 
-#: src/js/controllers/copayers.js:76
-#: src/js/controllers/preferencesDelete.js:56
-msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "Plånboken \"{{walletName}}\" har tagits bort"
-
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr ""
 
-#: public/views/correspondentDevice.html:305
+#: public/views/correspondentDevice.html:389
 msgid "Their recording preference"
 msgstr ""
 
@@ -1824,7 +1860,23 @@ msgstr ""
 msgid "There are no wallets to make this payment"
 msgstr "Det finns inga plånböcker att göra denna betalning"
 
-#: public/views/walletHome.html:297
+#: public/views/preferences.html:45
+msgid "This account cannot be converted to multi address account as it already has attestations"
+msgstr ""
+
+#: public/views/preferences.html:44
+msgid "This account cannot be converted to multi address account as it is multidevice"
+msgstr ""
+
+#: public/views/preferences.html:42
+msgid "This account cannot be converted to single address account as it already consists of multiple addresses"
+msgstr ""
+
+#: public/views/preferences.html:43
+msgid "This account cannot be converted to single address account as it is multidevice"
+msgstr ""
+
+#: public/views/walletHome.html:315
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr ""
 
@@ -1836,63 +1888,50 @@ msgstr "Detta val kan inte ändras senare"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr ""
 
-#: public/views/walletHome.html:451
+#: public/views/walletHome.html:504
 msgid "This payment is bound to a condition..."
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:150
-#: src/js/controllers/walletHome.js:2121
+#: src/js/controllers/correspondentDevice.js:160
+msgid "This payment must be paid only from single-address account"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:2235
 msgid "This payment must be paid only from single-address wallet"
 msgstr ""
 
-#: public/views/modals/tx-details.html:89
+#: public/views/modals/tx-details.html:96
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Denna transaktion har blivit ogiltig; möjligen på grund av dubbel-spenderings försök."
 
-#: public/views/modals/tx-details.html:162
+#: public/views/modals/tx-details.html:175
 msgid "This transaction was sent to an autonomous agent"
 msgstr ""
 
-#: public/views/preferences.html:46
-msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
-msgstr ""
-
-#: public/views/preferences.html:45
-msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
-msgstr ""
-
-#: public/views/preferences.html:43
-msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
-msgstr ""
-
-#: public/views/preferences.html:44
-msgid "This wallet cannot be converted to single address wallet as it is multidevice"
-msgstr ""
-
-#: public/views/import.html:46
+#: public/views/import.html:47
 #: public/views/recoveryFromSeed.html:39
-msgid "This will permanently delete all your existing wallets!"
-msgstr "Detta kommer att permanent ta bort alla dina befintliga plånböcker!"
+msgid "This will permanently delete all your existing accounts!"
+msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:64
-#: public/views/modals/view-prosaic-contract.html:83
+#: public/views/modals/offer-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:90
 msgid "Title of contract"
 msgstr "Kontraktets titel"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
-#: public/views/modals/tx-details.html:74
-#: public/views/walletHome.html:816
-#: src/js/controllers/index.js:1622
+#: public/views/modals/tx-details.html:81
+#: public/views/walletHome.html:899
+#: src/js/controllers/index.js:1656
 msgid "To"
 msgstr "Till"
 
-#: public/views/walletHome.html:825
+#: public/views/walletHome.html:911
 msgid "To AA"
 msgstr "Till AA"
 
-#: public/views/walletHome.html:412
+#: public/views/walletHome.html:465
 msgid "To Obyte address"
 msgstr "Till Obyte-adress"
 
@@ -1900,35 +1939,35 @@ msgstr "Till Obyte-adress"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr ""
 
-#: public/views/walletHome.html:717
-msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
+#: public/views/walletHome.html:780
+msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one."
 msgstr ""
 
-#: public/views/walletHome.html:460
+#: public/views/walletHome.html:513
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr ""
 
-#: src/js/controllers/index.js:1625
+#: src/js/controllers/index.js:1659
 msgid "To email"
 msgstr "Till e-post"
 
-#: public/views/walletHome.html:299
+#: public/views/walletHome.html:317
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:93
+#: public/views/modals/view-prosaic-contract.html:100
 msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
 msgstr ""
 
-#: public/views/walletHome.html:675
+#: public/views/walletHome.html:728
 msgid "Too long text"
 msgstr "För lång text"
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:240
 msgid "Total Locked Balance"
 msgstr ""
 
-#: public/views/walletHome.html:380
+#: public/views/walletHome.html:432
 msgid "Total amount"
 msgstr "Totalt belopp"
 
@@ -1940,12 +1979,12 @@ msgstr ""
 msgid "Transaction"
 msgstr "Transaktion"
 
-#: src/js/controllers/index.js:278
+#: src/js/controllers/index.js:283
 msgid "Transaction created.\n"
 "Please approve it on the other devices."
 msgstr ""
 
-#: public/views/walletHome.html:767
+#: public/views/walletHome.html:848
 msgid "Transactions<br> Downloaded"
 msgstr "Transaktioner<br> Nedladdade"
 
@@ -1961,20 +2000,20 @@ msgstr "Översättare"
 msgid "Trusted nodes"
 msgstr "Betrodda noder"
 
-#: public/views/walletHome.html:556
+#: public/views/walletHome.html:609
 msgid "Try again"
 msgstr "Försök igen"
 
-#: src/js/controllers/correspondentDevice.js:1367
+#: src/js/controllers/correspondentDevice.js:1364
 msgid "US state"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1284
+#: src/js/controllers/walletHome.js:1398
 msgid "Unable to send transaction proposal"
 msgstr ""
 
-#: public/views/modals/tx-details.html:121
-#: public/views/walletHome.html:798
+#: public/views/modals/tx-details.html:128
+#: public/views/walletHome.html:879
 msgid "Unconfirmed"
 msgstr "Obekräftat"
 
@@ -1986,11 +2025,11 @@ msgstr "Enhet för blackbytes"
 msgid "Unit for bytes"
 msgstr "Enhet för bytes"
 
-#: public/views/walletHome.html:215
+#: public/views/walletHome.html:233
 msgid "Unsent transactions"
 msgstr "Oskickade transaktioner"
 
-#: public/views/walletHome.html:73
+#: public/views/walletHome.html:90
 msgid "Updating Wallet..."
 msgstr "Uppdaterar plånbok..."
 
@@ -2002,24 +2041,24 @@ msgstr "Uppgradera till {{version}}"
 msgid "Upgrading the database, please wait."
 msgstr "Uppgraderar databasen, vänligen vänta."
 
-#: public/views/modals/view-prosaic-contract.html:67
+#: public/views/modals/view-prosaic-contract.html:74
 msgid "Valid till"
 msgstr "Giltig till"
 
-#: public/views/walletHome.html:525
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:578
+#: public/views/walletHome.html:740
 msgid "Value"
 msgstr "Värde"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Values"
 msgstr "Värden"
 
-#: public/views/walletHome.html:563
+#: public/views/walletHome.html:616
 msgid "Variable"
 msgstr "Variabel"
 
-#: src/js/controllers/correspondentDevice.js:1391
+#: src/js/controllers/correspondentDevice.js:1388
 msgid "Verifying the profile..."
 msgstr "Verifierar profilen..."
 
@@ -2031,7 +2070,7 @@ msgstr "Version"
 msgid "WARNING:"
 msgstr "VARNING:"
 
-#: public/views/walletHome.html:240
+#: public/views/walletHome.html:258
 msgid "WARNING: Backup needed"
 msgstr "VARNING: Säkerhetskopiering behövs"
 
@@ -2039,7 +2078,8 @@ msgstr "VARNING: Säkerhetskopiering behövs"
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "VARNING: Denna ordfrö skapades med lösenordsfras. För att återställa krävs både ordfröet och lösenordsfrasen."
 
-#: public/views/import.html:44
+#: public/views/import.html:45
+#: public/views/preferencesTor.html:23
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr "VARNINGAR:"
@@ -2056,67 +2096,29 @@ msgstr ""
 msgid "Waiting..."
 msgstr "Väntar..."
 
-#: public/views/preferencesDeleteWallet.html:12
-msgid "Wallet"
-msgstr "Plånbok"
-
-#: public/views/preferences.html:24
-msgid "Wallet Alias"
-msgstr "Plånboksalias"
-
-#: public/views/preferencesInformation.html:27
-msgid "Wallet Configuration (m-n)"
-msgstr ""
-
-#: public/views/preferencesInformation.html:20
-msgid "Wallet Id"
-msgstr "Plånboks-ID"
-
-#: public/views/preferencesAdvanced.html:14
-#: public/views/preferencesInformation.html:8
-msgid "Wallet Information"
-msgstr "Plånboksinformation"
-
-#: public/views/preferencesInformation.html:12
-msgid "Wallet Name (at creation)"
-msgstr "Plånboksnamn (vid skapandet)"
-
-#: src/js/services/profileService.js:455
-msgid "Wallet already in Obyte:"
-msgstr "Plånbok finns redan i Obyte:"
-
-#: public/views/create.html:48
-msgid "Wallet name"
-msgstr "Plånboks namn"
-
 #: public/views/backup.html:34
 msgid "Wallet seed not available."
 msgstr ""
-
-#: public/views/modals/destination-address.html:15
-#: public/views/modals/destination-address.html:29
-msgid "Wallets"
-msgstr "Plånböcker"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
 msgstr "Varning!"
 
-#: public/views/modals/tx-details.html:132
+#: public/views/modals/tx-details.html:139
 msgid "Was claimed?"
 msgstr ""
 
-#: public/views/walletHome.html:339
+#: public/views/walletHome.html:357
 msgid "What to send"
 msgstr "Vad att skicka"
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:112
+#: public/views/modals/offer-contract.html:150
 #: public/views/modals/sign-message.html:27
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:580
-#: public/views/walletHome.html:604
-#: public/views/walletHome.html:698
+#: public/views/walletHome.html:633
+#: public/views/walletHome.html:657
+#: public/views/walletHome.html:761
 msgid "Who signs:"
 msgstr "Vem signerar:"
 
@@ -2133,36 +2135,40 @@ msgid "Wrong password"
 msgstr "Fel lösenord"
 
 #: public/views/authConfirmation.html:17
-#: public/views/modals/tx-details.html:174
-#: src/js/controllers/index.js:666
+#: public/views/modals/tx-details.html:187
+#: src/js/controllers/index.js:671
 msgid "Yes"
 msgstr "Ja"
 
-#: public/views/walletHome.html:540
+#: public/views/walletHome.html:593
 msgid "You are sending to an autonomous agent, the expected result:"
 msgstr ""
 
-#: public/views/walletHome.html:542
+#: public/views/walletHome.html:595
 msgid "You are sending to an autonomous agent:"
 msgstr ""
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
 msgstr ""
 
-#: public/views/modals/bind.html:99
-msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
+#: public/views/modals/bind.html:139
+msgid "You cannot bind your transaction to reverse payment as you are in a single address account.  Use a non-single address account and then transfer the money to that account."
 msgstr ""
 
-#: public/views/walletHome.html:42
-msgid "You do not have a wallet"
-msgstr "Du har ingen plånbok"
+#: public/views/walletHome.html:59
+msgid "You do not have an account"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:70
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:90
+#: public/views/preferencesTor.html:25
+msgid "You need to have Tor service or Tor Browser running to use this feature!"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:99
 msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
 msgstr ""
 
@@ -2195,10 +2201,10 @@ msgstr ""
 msgid "[ Add new co-signer device ]"
 msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:61
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/offer-prosaic-contract.html:64
+#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/view-prosaic-contract.html:87
 msgid "address"
 msgstr "adress"
 
@@ -2206,13 +2212,13 @@ msgstr "adress"
 msgid "addresses"
 msgstr "adresser"
 
-#: public/views/modals/bind.html:37
-#: public/views/modals/offer-contract.html:44
-#: public/views/modals/offer-contract.html:52
+#: public/views/modals/bind.html:77
+#: public/views/modals/offer-contract.html:82
+#: public/views/modals/offer-contract.html:90
 msgid "amount"
 msgstr "belopp"
 
-#: public/views/modals/bind.html:31
+#: public/views/modals/bind.html:71
 msgid "an event is posted by an oracle"
 msgstr ""
 
@@ -2225,37 +2231,37 @@ msgid "and it is recommended you back it up."
 msgstr ""
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by trusted attestor"
 msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by:"
 msgstr "attesterad av:"
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attestor is not trusted by you"
 msgstr ""
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "available"
 msgstr "tillgänglig"
 
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "by address"
 msgstr "efter adress"
 
-#: public/views/modals/view-prosaic-contract.html:104
+#: public/views/modals/view-prosaic-contract.html:111
 msgid "calculated hash:"
 msgstr ""
 
@@ -2264,23 +2270,23 @@ msgstr ""
 msgid "can be spent if:"
 msgstr "kan spenderas om:"
 
-#: public/views/modals/offer-contract.html:77
+#: public/views/modals/offer-contract.html:115
 msgid "can unlock the contract"
 msgstr "kan låsa upp kontraktet"
 
-#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-contract.html:145
 msgid "can unlock the contract after it expires in"
 msgstr ""
 
 #: public/views/copayers.html:38
-msgid "cancel wallet creation"
-msgstr "avbryt skapandet av plånbok"
+msgid "cancel the account creation"
+msgstr ""
 
-#: public/views/walletHome.html:676
+#: public/views/walletHome.html:729
 msgid "character(s)"
 msgstr "tecken"
 
-#: public/views/modals/tx-details.html:140
+#: public/views/modals/tx-details.html:147
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr ""
 
@@ -2288,82 +2294,82 @@ msgstr ""
 msgid "clear chat history"
 msgstr "rensa chatthistorik"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "confirmed"
 msgstr "bekräftad"
 
-#: public/views/modals/select-subwallet.html:39
+#: public/views/modals/select-subwallet.html:47
 msgid "created"
 msgstr "skapad"
 
-#: public/views/modals/view-prosaic-contract.html:94
+#: public/views/modals/view-prosaic-contract.html:101
 msgid "creation date:"
 msgstr "skapad den:"
 
-#: public/views/modals/offer-contract.html:109
+#: public/views/modals/offer-contract.html:147
 msgid "days"
 msgstr "dagar"
 
-#: src/js/controllers/walletHome.js:1182
+#: src/js/controllers/walletHome.js:1296
 msgid "decreased by"
 msgstr "minskad med"
 
-#: public/views/modals/bind.html:82
-#: public/views/modals/offer-contract.html:99
+#: public/views/modals/bind.html:122
+#: public/views/modals/offer-contract.html:137
 msgid "detailed instructions about using"
 msgstr ""
 
 #: public/views/backup.html:28
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your laptop computer."
 msgstr ""
 
 #: public/views/backup.html:27
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your smartphone."
 msgstr ""
 
-#: public/views/modals/bind.html:79
+#: public/views/modals/bind.html:119
 msgid "either way"
 msgstr "endera vägen"
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "erase textcoin"
 msgstr "radera textcoin"
 
-#: public/views/modals/bind.html:71
+#: public/views/modals/bind.html:111
 msgid "explicitly"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:105
+#: public/views/modals/view-prosaic-contract.html:112
 msgid "hash published in DAG:"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:95
+#: public/views/modals/view-prosaic-contract.html:102
 msgid "hash source string:"
 msgstr ""
 
-#: public/views/modals/bind.html:87
-#: public/views/modals/offer-contract.html:69
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/bind.html:127
+#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "hours"
 msgstr "timmar"
 
-#: public/views/modals/offer-contract.html:78
+#: public/views/modals/offer-contract.html:116
 msgid "if an event is posted by an oracle"
 msgstr ""
 
-#: public/views/modals/bind.html:75
+#: public/views/modals/bind.html:115
 msgid "in merkle tree"
 msgstr "i merkle-träd"
 
-#: public/views/walletHome.html:171
-msgid "in smart wallets"
-msgstr "i smarta plånböcker"
+#: public/views/walletHome.html:188
+msgid "in smart contracts"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:1178
+#: src/js/controllers/walletHome.js:1292
 msgid "increased by"
 msgstr "ökad med"
 
-#: public/views/modals/signed-message.html:28
+#: public/views/modals/signed-message.html:33
 msgid "invalid"
 msgstr "ogiltig"
 
@@ -2371,7 +2377,7 @@ msgstr "ogiltig"
 msgid "keep for myself"
 msgstr "behåll för mig själv"
 
-#: public/views/walletHome.html:547
+#: public/views/walletHome.html:600
 msgid "less"
 msgstr "mindre"
 
@@ -2379,20 +2385,20 @@ msgstr "mindre"
 msgid "locked by pending payments"
 msgstr "låst av väntande betalningar"
 
-#: public/views/walletHome.html:546
+#: public/views/walletHome.html:599
 msgid "more"
 msgstr "mer"
 
-#: public/views/modals/tx-details.html:169
-#: src/js/controllers/walletHome.js:1228
+#: public/views/modals/tx-details.html:182
+#: src/js/controllers/walletHome.js:1342
 msgid "none"
 msgstr "ingen"
 
-#: public/views/modals/tx-details.html:134
+#: public/views/modals/tx-details.html:141
 msgid "not claimed"
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:101
+#: public/views/modals/view-prosaic-contract.html:108
 msgid "not valid"
 msgstr "inte giltigt"
 
@@ -2408,17 +2414,17 @@ msgstr "av"
 msgid "on"
 msgstr "på"
 
-#: public/views/modals/bind.html:55
-#: public/views/modals/offer-contract.html:88
+#: public/views/modals/bind.html:95
+#: public/views/modals/offer-contract.html:126
 msgid "on feed name"
 msgstr ""
 
-#: public/views/walletHome.html:471
-#: public/views/walletHome.html:482
+#: public/views/walletHome.html:524
+#: public/views/walletHome.html:535
 msgid "optional"
 msgstr "frivilligt"
 
-#: public/views/modals/offer-contract.html:100
+#: public/views/modals/offer-contract.html:138
 msgid "or"
 msgstr "eller"
 
@@ -2426,11 +2432,11 @@ msgstr "eller"
 msgid "or backup all Obyte data at"
 msgstr "eller säkerhetskopiera alla Obyte-data på"
 
-#: public/views/modals/offer-contract.html:51
+#: public/views/modals/offer-contract.html:89
 msgid "peer pays"
 msgstr ""
 
-#: public/views/modals/bind.html:67
+#: public/views/modals/bind.html:107
 msgid "posted"
 msgstr ""
 
@@ -2438,19 +2444,19 @@ msgstr ""
 msgid "re"
 msgstr ""
 
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:161
 msgid "re-send private payloads"
 msgstr ""
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "re-send private payloads to cosigners"
 msgstr ""
 
-#: public/views/correspondentDevices.html:171
+#: public/views/correspondentDevices.html:220
 msgid "search by bot name"
 msgstr "sök efter botnamn"
 
-#: public/views/correspondentDevices.html:112
+#: public/views/correspondentDevices.html:159
 msgid "search by contact name"
 msgstr "sök efter kontaktnamn"
 
@@ -2459,40 +2465,40 @@ msgid "send"
 msgstr "skicka"
 
 #: public/views/modals/share.html:30
-#: src/js/controllers/walletHome.js:805
+#: src/js/controllers/walletHome.js:895
 msgid "send email"
 msgstr "skicka e-post"
 
-#: src/js/controllers/walletHome.js:1378
-#: src/js/controllers/walletHome.js:1413
-#: src/js/controllers/walletHome.js:1448
-#: src/js/controllers/walletHome.js:1461
-#: src/js/controllers/walletHome.js:1559
-#: src/js/controllers/walletHome.js:1611
-#: src/js/controllers/walletHome.js:1638
-#: src/js/controllers/walletHome.js:1813
-#: src/js/controllers/walletHome.js:1875
-#: src/js/controllers/walletHome.js:1884
+#: src/js/controllers/walletHome.js:1492
+#: src/js/controllers/walletHome.js:1527
+#: src/js/controllers/walletHome.js:1562
+#: src/js/controllers/walletHome.js:1575
+#: src/js/controllers/walletHome.js:1673
+#: src/js/controllers/walletHome.js:1725
+#: src/js/controllers/walletHome.js:1752
+#: src/js/controllers/walletHome.js:1927
+#: src/js/controllers/walletHome.js:1989
+#: src/js/controllers/walletHome.js:1998
 msgid "sending"
 msgstr "skickar"
 
-#: src/js/controllers/walletHome.js:1186
+#: src/js/controllers/walletHome.js:1300
 msgid "set to"
 msgstr "sätt till"
 
-#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:155
 msgid "share again"
 msgstr "dela igen"
 
-#: public/views/walletHome.html:457
+#: public/views/walletHome.html:510
 msgid "switch to multi-address"
 msgstr "växla till multi-adress"
 
-#: public/views/walletHome.html:456
+#: public/views/walletHome.html:509
 msgid "switch to single address"
 msgstr "växla till enkel adress"
 
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "the contract is not signed yet"
 msgstr "kontraktet är inte signerat ännu"
 
@@ -2501,64 +2507,64 @@ msgid "the text below and send it to the recipient via any messaging app"
 msgstr ""
 
 #: public/views/modals/approveNewWitnesses.html:26
-#: src/js/controllers/walletHome.js:1207
+#: src/js/controllers/walletHome.js:1321
 msgid "to"
 msgstr "till"
 
-#: src/js/controllers/index.js:378
+#: src/js/controllers/index.js:383
 msgid "together with"
 msgstr "tillsammans med"
 
-#: public/views/walletHome.html:472
-#: public/views/walletHome.html:483
+#: public/views/walletHome.html:525
+#: public/views/walletHome.html:536
 msgid "too long!"
 msgstr "för lång!"
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
 msgid "trusted"
 msgstr "betrodd"
 
-#: public/views/modals/view-prosaic-contract.html:92
+#: public/views/modals/view-prosaic-contract.html:99
 msgid "unit in DAG:"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "unlimited"
 msgstr "obegränsad"
 
-#: public/views/modals/signed-message.html:29
-#: public/views/modals/view-prosaic-contract.html:100
+#: public/views/modals/signed-message.html:34
+#: public/views/modals/view-prosaic-contract.html:107
 msgid "valid"
 msgstr "giltig"
 
-#: public/views/modals/view-prosaic-contract.html:98
+#: public/views/modals/view-prosaic-contract.html:105
 msgid "validate contract integrity"
 msgstr "validera kontraktets integritet"
 
-#: src/js/controllers/walletHome.js:1341
+#: src/js/controllers/walletHome.js:1455
 msgid "wait for sync to complete before sending payments"
 msgstr ""
 
-#: public/views/walletHome.html:571
+#: public/views/walletHome.html:624
 msgid "were added as it is the minimum amount for this AA"
 msgstr ""
 
-#: public/views/modals/select-subwallet.html:37
+#: public/views/modals/select-subwallet.html:45
 #: public/views/preferencesHiddenSubWallets.html:36
 msgid "with"
 msgstr "med"
 
-#: public/views/modals/bind.html:58
-#: public/views/modals/offer-contract.html:91
+#: public/views/modals/bind.html:98
+#: public/views/modals/offer-contract.html:129
 msgid "with expected value"
 msgstr "med förväntat värde"
 
-#: src/js/controllers/walletHome.js:1205
+#: src/js/controllers/walletHome.js:1319
 msgid "you"
 msgstr "du"
 
-#: public/views/walletHome.html:371
+#: public/views/walletHome.html:423
 msgid "{{home.custom_amount_error}}"
 msgstr "{{home.custom_amount_error}}"
 
