@@ -1304,8 +1304,12 @@ angular.module('copayApp.controllers')
 						}
 					}
 					if (objResponse.response.responseVars) {
-						for (var variable in objResponse.response.responseVars)
-							responseVars.push({variable: variable, value: objResponse.response.responseVars[variable].replace(/\\n/g, '\n')});
+						for (var variable in objResponse.response.responseVars) {
+							var value = objResponse.response.responseVars[variable];
+							if (typeof value === 'string')
+								value = value.replace(/\\n/g, '\n');
+							responseVars.push({ variable: variable, value: value });
+						}
 					}
 					if (!objResponse.objResponseUnit)
 						return;
