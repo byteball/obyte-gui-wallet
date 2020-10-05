@@ -6,9 +6,18 @@
   justify-content: center;
   align-items: center;
 }
+
+.topbar-title-maxwidth {
+  max-width: 160px;
+}
+
 @media only screen and (max-width: 320px) {
   .topbar-wrapper {
     width: 145px;
+  }
+
+  .topbar-title-maxwidth {
+    width: 120px;
   }
 }
 </style>
@@ -35,11 +44,11 @@
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px;">
       <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || topbar.showableWalletAvatar()" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
-		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important" class="ellipsis">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
+		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important;" class="ellipsis topbar-title-maxwidth">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
 			<a ng-click="index.openSubwalletModal()" class="topbar-wrapper" style="color: #4E4E4E !important">
         <span class="topbar-avatar" ng-if="index.tab !== 'walletHome'" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
-				<span class="ellipsis" style="float: left;">
+				<span class="ellipsis topbar-title-maxwidth" style="float: left;">
 					{{(index.shared_address || index.alias || index.walletName)}}
 				</span>
 				<span class="arrow-down" style="border-top-color: #4E4E4E !important"></span>
