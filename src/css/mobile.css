@@ -131,14 +131,14 @@ _:-ms-fullscreen, :root .main {
 
 .left-small {
   width: 4.7rem;
-  line-height: 2.95rem;
+/*  line-height: 2.95rem;*/
   border-right: none;
 }
 
 .right-small {
   width: 4.7rem;
   text-align: right;
-  line-height: 2.7rem;
+/*  line-height: 2.7rem;*/
   border-left: none;
 }
 
@@ -150,7 +150,7 @@ _:-ms-fullscreen, :root .main {
   width: 75px;
   color: #656565;
   height: 45px;
-  top: 0px;
+  top: -1px;
   transition: all .3s;
 }
 
@@ -172,7 +172,7 @@ _:-ms-fullscreen, :root .main {
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 49px;
+/*  line-height: 49px;*/
   color: #656565;
   font-weight: 500;
   transition: all .3s;
@@ -987,10 +987,7 @@ textarea:focus
 }
 .f-dropdown li a .check {
 	display: none;
-	position: absolute;
-	top: 50%;
-	right: -5px;
-	margin-top: -10px;
+	margin-left: 10px;
 }
 .f-dropdown li.selected a .check {
 	display: inline;

@@ -63,13 +63,13 @@ if [ ! -d $PROJECT ]; then
 
 	if [ $CURRENT_OS == "ANDROID" ]; then
 		echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
-		cordova platforms add android
+		cordova platforms add android@8.1.0
 		checkOK
 	fi
 
 	if [ $CURRENT_OS == "IOS" ]; then
 		echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
-		cordova platforms add ios
+		cordova platforms add ios@5.1.1
 		checkOK
 	fi
 
@@ -124,6 +124,13 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-splashscreen
 	checkOK
+	if [ $CURRENT_OS == "ANDROID" ]; then # fixes androidx errors
+		cordova plugin add cordova-plugin-androidx
+		checkOK
+		cordova plugin add cordova-plugin-androidx-adapter
+		checkOK
+	fi
+
 	if [ $CURRENT_OS == "IOS" ]; then # fixes weird keyboard webview resizing bug https://github.com/apache/cordova-ios/issues/417
 		cordova plugin add cordova-plugin-ionic-webview
 		checkOK
