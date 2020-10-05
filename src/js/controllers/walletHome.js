@@ -86,7 +86,7 @@ angular.module('copayApp.controllers')
 					$timeout(function() {
 						$rootScope.$apply();
 					});
-					if (!self.oldAndroidFilePath)
+					if (!self.previousFileHashName)
 						return;
 					self.importing = true;
 					this.addHashToFeedValues(self.oldAndroidFilePath);
