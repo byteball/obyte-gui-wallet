@@ -18,7 +18,7 @@
     <section class="middle tab-bar-section" style="overflow: hidden;">
 	    <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px">
         <span class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
-	      {{correspondent.name}}
+	      <span class="ellipsis">{{correspondent.name}}</span>
 	    </h1>
     </section>
       

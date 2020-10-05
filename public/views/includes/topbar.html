@@ -13,7 +13,7 @@
 }
 </style>
 <nav ng-controller="topbarController as topbar" class="tab-bar" ng-init="topbar.init()">
-  <section class="left-small">
+  <section class="left-small" style="align-items: center; display: flex;">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
       ng-click="index.openMenu()"><i class="fi-list size-24"></i>
     </a>
