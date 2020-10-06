@@ -8,6 +8,8 @@
 }
 
 .topbar-title-maxwidth {
+  height: 45px;
+  line-height: 45px;
   max-width: 160px;
 }
 
@@ -24,7 +26,7 @@
 <nav ng-controller="topbarController as topbar" class="tab-bar" ng-init="topbar.init()">
   <section class="left-small" style="align-items: center; display: flex;">
     <a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet"
-      ng-click="index.openMenu()"><i class="fi-list size-24"></i>
+      ng-click="index.openMenu()"><i class="fi-list size-24" style="display: flex"></i>
     </a>
     <a ng-show="goBackToState"
       ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>

@@ -1713,6 +1713,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   color: white;
   border-radius: 50%;
   display: flex;
+  line-height: 36px;
   align-items: center;
   justify-content: center;
   min-width: 36px;
