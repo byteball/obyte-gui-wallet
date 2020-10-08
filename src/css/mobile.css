@@ -343,6 +343,15 @@ ul.copayer-list img {
 
 .right-small a, .left-small a {
   color: #A5B2BF;
+  height: 45px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.right-small a {
+  justify-content: flex-end;
 }
 
 a.missing-copayers {
@@ -1087,9 +1096,8 @@ i.validation-icon {
 li.dropup-item {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
 
 li.dropup-item a {
-  width: 100%;
+  /*width: 100%;*/
 }

@@ -302,7 +302,8 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .dropup-item-link {
 	padding: 8px 0 !important;
-	display: inline-block !important;
+  display: flex !important;
+  flex-direction: row;
 	max-width: calc(100% - 10px);
 	float: left;
 }
@@ -410,19 +411,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
             <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content >
 			  <li class="dropup-item">
-			    <a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
+			    <a class="dropup-item-link" ng-click="insertMyAddress()">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+				  	</span>&nbsp;<span class="ellipsis" style="max-width: 132px">({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}</span>
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
-			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+			  	<a ng-click="requestPayment()" class="dropup-item-link">
+			  		<span translate>
+              Request payment
+            </span>&nbsp;<span class="ellipsis" style="max-width: 132px">({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}</span>
 			  	</a>
-			  	<span class="ellipsis-end">)</span>
+          <span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">

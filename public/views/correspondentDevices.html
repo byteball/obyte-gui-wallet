@@ -99,7 +99,7 @@
 		flex-grow: 1;
 	}
 
-	@media only screen and (max-width: 320px) {
+	@media only screen and (max-width: 350px) {
 	  .tab-bar-section.middle {
 	    left: 3.7em;
 	    right: 3.7em;
@@ -116,9 +116,9 @@
 	<nav ng-controller="topbarController as topbar" class="tab-bar" ng-show="state.is('correspondentDevices')" style="border-bottom: 1px solid #8C9EB0">
 		<section class="left-small">
 			<a id="hamburger" class="p10" ng-show="!goBackToState && !closeToHome  && !index.noFocusedWallet" ng-click="index.openMenu()"><i
-				class="fi-list size-24"></i>
+				class="fi-list size-24" style="display: flex"></i>
 			</a>
-			<a ng-show="goBackToState" ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back"></i>
+			<a ng-show="goBackToState" ng-click="$root.go('^', true); goBackToState = null"><i class="icon-arrow-left3 icon-back" style="display: flex"></i>
 				<span class="text-back" translate>Back</span>
 			</a>
 
