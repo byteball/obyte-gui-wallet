@@ -120,13 +120,19 @@ _:-ms-fullscreen, :root .main {
 .tab-bar h1 {
   color: #7A8C9E;
   font-weight: 500;
+  display: flex;
   font-size: 14px;
-  display: inline-block;
+  height: 45px;
+  align-items: center;
 }
 
 .tab-bar-section.middle {
   left: 4.7rem;
+  display: flex;
   right: 4.7rem;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
 }
 
 .left-small {
@@ -150,6 +156,8 @@ _:-ms-fullscreen, :root .main {
   width: 75px;
   color: #656565;
   height: 45px;
+  display: flex;
+  align-items: center;
   top: -1px;
   transition: all .3s;
 }
@@ -165,6 +173,9 @@ _:-ms-fullscreen, :root .main {
   font-weight: 400;
   color: #656565;
   padding: 10px 0;
+  display: flex;
+  height: 45px;
+  align-items: center;
   visibility: middle;
   transition: all .3s;
 }
@@ -174,6 +185,9 @@ _:-ms-fullscreen, :root .main {
   font-weight: 400;
 /*  line-height: 49px;*/
   color: #656565;
+  height: 45px;
+  display: flex;
+  align-items: center;
   font-weight: 500;
   transition: all .3s;
 }
