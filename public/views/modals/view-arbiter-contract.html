@@ -107,7 +107,7 @@ form[name="prosaicContractForm"] {
 	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >My contacts: {{my_contact_info}}</span>
 	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info"></div>
 
-	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'accepted' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'accepted' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
@@ -126,7 +126,7 @@ form[name="prosaicContractForm"] {
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 
-	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'accepted' && !!me_is_payer && !!unit) || (status === 'resolved' && me_is_winner))">
+	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'accepted' && !!me_is_payer && !!unit) || (status === 'dispute_resolved' && me_is_winner))">
 		<span class="title" translate>Cosigners</span>
 		<div class="row columns large-12 medium-12">
 			<cosigners></cosigners>
@@ -183,10 +183,15 @@ form[name="prosaicContractForm"] {
 		</div>
 	</div>
 
-	<div class="row columns m20t" ng-show="status === 'resolved' && me_is_winner">
-		<div class="large-12 medium-12 small-12 columns center">
+	<div class="row columns m20t" ng-show="status === 'dispute_resolved'">
+		<div class="large-6 medium-6 small-6 columns" ng-show="me_is_winner">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="claim()">
 				<i class="yes_icon"></i> <span class="tu" translate>Claim funds</span>
+			</button>
+		</div>
+		<div class="large-6 medium-6 small-6 columns">
+			<button class="button expand outline dark-gray round" ng-click="appeal()">
+				<span class="tu" translate>Appeal to moderator</span>
 			</button>
 		</div>
 	</div>

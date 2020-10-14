@@ -57,7 +57,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
 	var arbiter_contract = require('ocore/arbiter_contract.js');
 	var db = require('ocore/db.js');
-	arbiter_contract.getAllByStatus(["accepted", "paid", "in_dispute", "resolved", "completed", "cancelled"], function(contracts){
+	arbiter_contract.getAllByStatus(["accepted", "paid", "in_dispute", "dispute_resolved", "in_appeal", "appeal_resolved", "completed", "cancelled"], function(contracts){
 		$scope.arbiterContracts = [];
 		contracts.forEach(function(contract){
 			if (contract.peer_device_address === correspondent.device_address)

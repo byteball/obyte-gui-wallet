@@ -426,7 +426,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		var start_listening = function(contracts) {
 			contracts.forEach(function(contract){
 				var setResolved = function(winner, unit) {
-					arbiter_contract.setField(contract.hash, "status", "resolved");
+					arbiter_contract.setField(contract.hash, "status", "dispute_resolved");
 					arbiter_contract.setField(contract.hash, "resolution_unit", unit);
 
 					var testnet = constants.version.match(/t$/) ? "testnet" : "";
@@ -1101,6 +1101,35 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							});
 							return;
 						} else claim();
+					}
+
+					$scope.appeal = function() {
+						if (objContract.status !== "dispute_resolved") {
+							return setError("contract can't be appealed");
+						}
+
+						arbiter_contract.appeal(objContract.hash, function(err, res) {
+							if (err) {
+								setError(err);
+								return;
+							}
+							if (err) {
+								setError(err);
+								return;
+							}
+							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
+								var text = "\"" + objContract.title +"\" contract is in appeal now. Moderator is notified. Wait for him to get online and pair with both contract parties.";
+								correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+								device.sendMessageToDevice(objContract.peer_device_address, "text", text);
+								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
+									hash: objContract.hash,
+									field: "status",
+									value: "in_appeal"
+								});
+
+								$modalInstance.dismiss();
+							});	
+						});
 					}
 
 					$scope.decline = function() {
