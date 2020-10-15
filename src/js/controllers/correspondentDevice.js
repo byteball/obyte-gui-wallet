@@ -126,36 +126,55 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	$scope.insertMyAddress = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
-			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
+			return $rootScope.$emit('Local/ShowErrorAlert', "The account is not approved yet");
 		readMyPaymentAddress(profileService.focusedClient, appendMyPaymentAddress);
 	//	issueNextAddressIfNecessary(appendMyPaymentAddress);
 	};
 	
 	$scope.requestPayment = function(){
 		if (!profileService.focusedClient.credentials.isComplete())
-			return $rootScope.$emit('Local/ShowErrorAlert', "The wallet is not approved yet");
+			return $rootScope.$emit('Local/ShowErrorAlert', "The account is not approved yet");
 		readMyPaymentAddress(profileService.focusedClient, showRequestPaymentModal);
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset, device_address, single_address, base64data){
+	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
 			return;
 		}
 		readMyPaymentAddress(profileService.focusedClient, function(my_address){
-			if (single_address && single_address !== '0'){
-				var bSpecificSingleAddress = (single_address.length === 32);
-				var displayed_single_address = bSpecificSingleAddress ? ' '+single_address : '';
-				var fc = profileService.focusedClient;
-				if (!fc.isSingleAddress || bSpecificSingleAddress && single_address !== my_address)
-					return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".  "+gettext("Please switch to a single-address wallet and you probably need to insert your address again."));
+			var emitPaymentRequest = function () {
+				backButton.dontDeletePath = true;
+				go.send(function () {
+					//$rootScope.$emit('Local/SetTab', 'send', true);
+					$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data, from_address, single_address);
+				});
 			}
-			backButton.dontDeletePath = true;
-			go.send(function(){
-				//$rootScope.$emit('Local/SetTab', 'send', true);
-				$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data);
+			var fc = profileService.focusedClient;
+			if (!from_address) {
+				if (single_address && single_address !== '0'){
+					var displayed_single_address = from_address ? ' '+from_address : '';
+					if (!fc.isSingleAddress || from_address && from_address !== my_address)
+						return $rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address account")+displayed_single_address+". "+gettext("Please switch to a single-address account and you probably need to insert your address again."));
+				}
+				return emitPaymentRequest();
+			}
+			db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [from_address], function (rows) {
+				$timeout(function () {
+					if (rows.length === 0)
+						return $rootScope.$emit('Local/ShowErrorAlert', "Payment cannot be sent from address " + from_address + " as this address doesn't belong to this wallet");
+					var row = rows[0];
+					// same wallet
+					if (row.wallet === fc.credentials.walletId)
+						return emitPaymentRequest();
+					// switch to another wallet first
+					console.log("will switch to another account where from_address is member of");
+					profileService.setAndStoreFocus(row.wallet, function () {
+						emitPaymentRequest();	
+					});
+				});
 			});
 		});
 	};
@@ -174,21 +193,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		$scope.index.assetIndex = assetIndex;
 		go.history();
 	};
-	
 
-	function getSigningDeviceAddresses(fc, exclude_self){
-		var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
-		if (fc.credentials.m < fc.credentials.n)
-			indexScope.copayers.forEach(function(copayer){
-				if ((copayer.me && !exclude_self) || copayer.signs)
-					arrSigningDeviceAddresses.push(copayer.device_address);
-			});
-		else if (indexScope.shared_address)
-			arrSigningDeviceAddresses = indexScope.copayers.map(function(copayer){ return copayer.device_address; });
-		return arrSigningDeviceAddresses;
-	}
-	
-	
 	$scope.offerContract = function(address){
 		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
@@ -391,7 +396,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							asset: contract.myAsset,
 							to_address: shared_address,
 							amount: my_amount,
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							recipient_device_address: correspondent.device_address
 						};
 						fc.sendMultiPayment(opts, function(err, unit){
@@ -515,7 +520,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var hash = prosaic_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date});
 
 					readMyPaymentAddress(fc, function(my_address) {
-						var cosigners = getSigningDeviceAddresses(fc);
+						var cosigners = indexScope.getSigningDeviceAddresses(fc);
 						if (!cosigners.length && fc.credentials.m > 1) {
 							indexScope.copayers.forEach(function(copayer) {
 								cosigners.push(copayer.device_address);
@@ -883,7 +888,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var recipient_device_address = lodash.clone(correspondent.device_address);
 						fc.sendMultiPayment({
 							spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							recipient_device_address: recipient_device_address,
 							outputs_by_asset: assocOutputsByAsset,
 						}, function(err, unit){ // can take long if multisig
@@ -1069,7 +1074,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						indexScope.current_vote_key = current_vote_key;
 						fc.sendMultiPayment({
 							spend_unconfirmed: configService.getSync().wallet.spendUnconfirmed ? 'all' : 'own',
-							arrSigningDeviceAddresses: getSigningDeviceAddresses(fc),
+							arrSigningDeviceAddresses: indexScope.getSigningDeviceAddresses(fc),
 							paying_addresses: arrAddresses,
 							signing_addresses: arrAddresses,
 							shared_address: indexScope.shared_address,
@@ -1187,7 +1192,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signMessage = function() {
 				console.log('signMessage');
 				
-				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
+				correspondentListService.signMessageFromAddress(object_to_sign || message_to_sign, $scope.address, indexScope.getSigningDeviceAddresses(fc), bNetworkAware, function(err, signedMessageBase64){
 					if (err) {
 						$scope.error = err;
 						return scopeApply();
@@ -1245,6 +1250,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
 			$scope.address = objSignedMessage.authors[0].address;
+			$scope.signature = signedMessageBase64;
 			var validation = require('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
@@ -1303,6 +1309,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 	
 	$scope.openExternalLink = function(url){
+		url = url.replace(/&amp;/g, '&');
 		if (typeof nw !== 'undefined')
 			nw.Shell.openExternal(url);
 		else if (isCordova)
@@ -1358,7 +1365,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	function issueNextAddress(fc, cb){
 		if (fc.isSingleAddress)
-			throw Error("trying to issue a new address on a single-address wallet");
+			throw Error("trying to issue a new address on a single-address account");
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
@@ -1755,14 +1762,14 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
 		if (!objContract)
 			throw Error('failed to parse the already validated base64 prosaic contract '+contractJsonBase64);
-		correspondentService.showProsaicContractOfferModal($scope, objContract.hash, isIncoming, getSigningDeviceAddresses);
+		correspondentService.showProsaicContractOfferModal($scope, objContract.hash, isIncoming, indexScope.getSigningDeviceAddresses);
 	};
 
 	$scope.showArbiterContractOffer = function(contractJsonBase64, isIncoming){
 		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
 		if (!objContract)
 			throw Error('failed to parse the already validated base64 arbiter contract '+contractJsonBase64);
-		correspondentService.showArbiterContractOfferModal($scope, objContract.hash, isIncoming, getSigningDeviceAddresses);
+		correspondentService.showArbiterContractOfferModal($scope, objContract.hash, isIncoming, indexScope.getSigningDeviceAddresses);
 	};
 
 	$scope.showDisputeRequest = function(disputeJsonBase64) {

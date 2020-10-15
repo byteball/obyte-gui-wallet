@@ -229,16 +229,21 @@ ul.button-group li.selected {
   background-color: #1560BD;
 }
 
+.modal-content ul.subwallets {
+  padding-top: 6px;
+}
+
 .modal-content ul.subwallets li.line-b {
   border-bottom: 1px solid #E9E9EC;
   background: #EFEFEF;
   margin: 0px 10px;
   box-sizing: border-box;
   border: 0px solid transparent;
-  border-left: 4px solid #D6D6D6;
+  border-radius: 5px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   margin-bottom: 3px;
+  box-shadow: -3px 2px 5px rgb(208, 208, 208);
 }
 .modal-content ul.subwallets li.line-b a {
   color: #454648 !important;
@@ -249,10 +254,11 @@ ul.button-group li.selected {
   background-color: #DBE9FF;
   border-radius: 0px;
   margin: 0px 10px;
-  border-left: 3px solid #97B7E8;
+  border-radius: 5px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   margin-bottom: 3px;
+  box-shadow: -3px 2px 5px rgba(134, 174, 236, 0.72);
 }
 .modal-content ul.subwallets li.line-b.selected a {
   color: #454648 !important;
@@ -302,12 +308,8 @@ body, html{
   background: #7A8C9E;
 }
 
-a {
+a, a:hover, a:focus {
   color: #1560BD;
-}
-
-a:hover {
-  color: #4A90E2;
 }
 
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill, input:-webkit-autofill:focus, textarea:-webkit-autofill:focus, select:-webkit-autofill:focus {
@@ -649,7 +651,7 @@ ul.manage li {
 
 .tab-bar h1, .tab-bar h2, .tab-bar h3, .tab-bar h4, .tab-bar h5, .tab-bar h6 {
   /*line-height: 2.7rem;*/
-  line-height: 3rem; /* tested on mac and win */
+  line-height: 2.9rem; /* tested on mac and win */
 }
 
 .wallet-settings{
@@ -775,15 +777,16 @@ input[type="color"], input[type="date"], input[type="datetime-local"], input[typ
   border: none;
   font-size: 13px;
   background: #FFF;
-  border-radius: 3px;
-  padding: 3px 12px;
+  padding: 3px 0px;
   color: #2F2F2F;
-  border: 1px solid #4A90E2;
+  border-radius: 0px;
+  border-bottom: 1px solid #C3C3C3;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="month"]:focus, input[type="week"]:focus, input[type="email"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="color"]:focus, textarea:focus {
   color: #2F2F2F;
-  border: 1px solid #1560BD;
+  border-radius: 0px;
+  border-bottom: 1px solid #1560BD;
   background: #FFF;
 }
 
@@ -1708,8 +1711,9 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   width: 36px;
   height: 36px;
   color: white;
-  border-radius: 4px;
+  border-radius: 50%;
   display: flex;
+  line-height: 36px;
   align-items: center;
   justify-content: center;
   min-width: 36px;
@@ -1844,7 +1848,10 @@ a.suggest-command {
 
 
 .name-outer-wrap {
-  width: calc(100% - 80px);
+  width: 100%;
+  margin-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .flex {
@@ -2074,10 +2081,6 @@ form#contacts-order {
   border-bottom: 1px solid transparent;
 }
 
-.f-dropdown li a {
-  text-transform: capitalize;
-}
-
 .switch.checked {
   background: rgb(53, 139, 234);
   border-color: rgb(53, 139, 234);
@@ -2093,4 +2096,6 @@ form#contacts-order {
   padding: 9px 16px;
   min-height: 36px !important;
   margin-bottom: 8px;
+  vertical-align: middle;
+  line-height: 17px;
 }

@@ -335,7 +335,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         updatePublicKeyRing(client);
 		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" approved by "+correspondent.name);
+            notification.success(gettextCatalog.getString('Success'), "Account "+walletName+" approved by "+correspondent.name);
         });
     });
 
@@ -346,7 +346,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var walletName = client.credentials.walletName;
 		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
+            notification.info(gettextCatalog.getString('Declined'), "Account "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
         });
 		profileService.deleteWallet({client: client}, function(err) {
 			if (err)
@@ -363,7 +363,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         updatePublicKeyRing(client, function(){
             if (!client.isComplete())
                 throw Error("not complete");
-            notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" is ready");
+            notification.success(gettextCatalog.getString('Success'), "Account "+walletName+" is ready");
             $rootScope.$emit('Local/WalletCompleted');
         });
     });
@@ -380,7 +380,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
             var name_list = arrNames.join(", ");
-            var question = gettextCatalog.getString('Create new wallet') + ' ' + walletName + ' ' + gettextCatalog.getString('together with') + ' ' + name_list + ' ?';
+            var question = gettextCatalog.getString('Create new account') + ' ' + walletName + ' ' + gettextCatalog.getString('together with') + ' ' + name_list + ' ?';
             requestApproval(question, {
                 ifYes: function(){
                     console.log("===== YES CLICKED")
@@ -404,7 +404,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										if (isSingleAddress) {
 											profileService.setSingleAddressFlag(true);
 										}
-										console.log("switched to newly approved wallet "+walletId);
+										console.log("switched to newly approved account "+walletId);
 									});
 								}
 							);
@@ -557,13 +557,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									var nl = "\n";
 									var list = arrPairs.join(nl)+nl;
 									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
-										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from account '+credentials.walletName+'?';
 									if (message.app === 'attestation')
-										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from account '+credentials.walletName+'?';
 								}
 							}
 							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
-							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
+							return 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
 						var ask = function() {
@@ -727,17 +727,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						}
 					 	isContractSignRequest(function(isContract, type, objContract){
 						 	if (isContract) {
-						 		question = 'Sign '+type+' contract '+objContract.title+' from wallet '+credentials.walletName+'?';
+						 		question = 'Sign '+type+' contract '+objContract.title+' from account '+credentials.walletName+'?';
 						 		return ask();
 						 	}
 						 	isContractFeeDepositRequest(function(isContract, objContract){
 								if (isContract) {
-							 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'fee deposit from wallet '+credentials.walletName+'?';
+							 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'fee deposit from account '+credentials.walletName+'?';
 							 		return ask();
 								}
 								isContractDepositRequest(function(isContract, objContract){
 									if (isContract) {
-								 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
+								 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'deposit from account '+credentials.walletName+'?';
 								 		return ask();
 									}
 									ask();
@@ -913,6 +913,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
     
+  self.getSigningDeviceAddresses = function(fc, exclude_self){
+    var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+    if (fc.credentials.m < fc.credentials.n)
+      self.copayers.forEach(function(copayer){
+        if ((copayer.me && !exclude_self) || copayer.signs)
+          arrSigningDeviceAddresses.push(copayer.device_address);
+      });
+    else if (self.shared_address)
+      arrSigningDeviceAddresses = self.copayers.map(function(copayer){ return copayer.device_address; });
+    return arrSigningDeviceAddresses;
+  }
+
   self.goHome = function() {
     go.walletHome();
   };

@@ -1,15 +1,16 @@
 <style>
 form[name=bindForm] span[selectable] {
 	display: inline-block;
-	cursor: pointer;
+    cursor: pointer;
     color: #000000;
-    font-size: 15px;
+    font-size: 16px;
     background: #FFF;
+    text-transform: none;
     border-radius: 0px;
     border: 1px solid transparent;
     border-bottom: 1px dashed #000;
-    text-transform: capitalize;
     padding: 0px 3px;
+    line-height: 22px;
     transition: all .3s;
 }
 
@@ -17,8 +18,8 @@ form[name=bindForm] input.inline {
     display: inline;
     margin-bottom: 0;
     padding-bottom: 0;
-    height: 28px;
-    border: 1px solid transparent;
+    height: 25px;
+    border: none;
     border-bottom: 1px solid #aaa;
     font-size: 16px;
     background: transparent;
@@ -29,8 +30,12 @@ form[name=bindForm] input.inline {
 }
 
 form[name=bindForm] input.inline:focus {
-	border: 1px solid #4A90E2;
-	border-radius: 3px;
+	border-bottom: 1px solid #4A90E2;
+	border-radius: 0px;
+}
+
+form[name=bindForm] .f-dropdown li a {
+  text-transform: none;
 }
 </style>
 
@@ -92,7 +97,7 @@ form[name=bindForm] input.inline:focus {
 		<br ng-if="binding.type == 'data'">
 		<span ng-if="binding.type == 'data'" translate>with expected value</span>
 		<br ng-if="binding.type == 'data'">
-		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 28px"></span>
+		<span ng-if="binding.type == 'data'" selectable="#relation" dropdown-toggle="#relation" data-model="binding" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 24px"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
 			<a><span >{{relation}}</span></a>
@@ -132,7 +137,7 @@ form[name=bindForm] input.inline:focus {
 		</div>
 	</div>
 	<div ng-if="binding.type == 'reverse_payment' && isSingleAddress" style="color: #900" translate>
-		You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet.
+		You cannot bind your transaction to reverse payment as you are in a single address account.  Use a non-single address account and then transfer the money to that account.
 	</div>
 
 
