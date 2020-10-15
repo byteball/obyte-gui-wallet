@@ -150,15 +150,13 @@ _:-ms-fullscreen, :root .main {
 
 .tab-bar .icon-back {
   font-size: 2.5rem;
-  position: absolute;
   line-height: 50px;
-  left: -5px;
-  width: 75px;
-  color: #656565;
-  height: 45px;
+  width: 5px;
+  margin-left: -6px;
+  color: #656565 !important;
+  height: 20px;
   display: flex;
   align-items: center;
-  top: -1px;
   transition: all .3s;
 }
 
@@ -171,7 +169,7 @@ _:-ms-fullscreen, :root .main {
   margin-left: 26px;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #656565;
+  color: #656565 !important;
   padding: 10px 0;
   display: flex;
   height: 45px;
@@ -905,7 +903,6 @@ textarea:focus
   border-radius: 6px;
   background: #FFFFFF;
   margin-bottom: 6px;
-  transition: all 0.2s;
   margin-left: 8px;
   margin-right: 8px;
 }
@@ -913,7 +910,6 @@ textarea:focus
 .tab-view#chat .line-b:hover {
   box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
   border: 1px solid #4A90E2;
-  transform: translateY(-3px);
 }
 
 .tab-view#chat .line-b:hover .bot_name,
