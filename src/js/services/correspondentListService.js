@@ -506,7 +506,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			from_address = String(single_address);
 			single_address = 1;
 		}
-		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address wallet': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
+		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address account': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
 		return {
 			amount: amount,
 			asset: asset,
