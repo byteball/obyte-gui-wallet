@@ -640,17 +640,33 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						amount = Math.round(amount);
 						if (asset == 'base') asset = null;
 
-						var hash = arbiter_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date, arbiter_address: arbiter_address, amount: amount});
+						var hash = arbiter_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date, arbiter_address: arbiter_address, amount: amount, asset: asset});
 						var contactInfo = $scope.form.contactInfo;
 
 						readMyPaymentAddress(fc, function(my_address) {
-							var cosigners = getSigningDeviceAddresses(fc);
+							var cosigners = indexScope.getSigningDeviceAddresses(fc);
 							if (!cosigners.length && fc.credentials.m > 1) {
 								indexScope.copayers.forEach(function(copayer) {
 									cosigners.push(copayer.device_address);
 								});
 							}
-							arbiter_contract.createAndSend(hash, address, correspondent.device_address, my_address, arbiter_address, (payer == 'me'), amount, asset, creation_date, ttl, contract_title, contract_text, cosigners, pairing_code, contactInfo, function(objContract) {
+							arbiter_contract.createAndSend({
+								hash: hash,
+								peer_address: address,
+								peer_device_address: correspondent.device_address,
+								my_address: my_address,
+								arbiter_address: arbiter_address,
+								me_is_payer: (payer == 'me'),
+								amount: amount,
+								asset: asset,
+								creation_date: creation_date,
+								ttl: ttl,
+								title: contract_title,
+								text: contract_text,
+								cosigners: cosigners,
+								my_pairing_code: pairing_code,
+								my_contact_info: contactInfo
+							}, function(objContract) {
 								correspondentService.listenForArbiterContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners,
 									arbiter_address: arbiter_address, amount: amount, asset: asset, me_is_payer: (payer == 'me')}]);
 								var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";

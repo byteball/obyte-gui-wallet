@@ -446,7 +446,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						});	
 					});
 				});
-				network.requestHistoryFor([], {addresses: [contract.arbiter_address], mci: contract.dispute_mci}, function(){});
+				network.requestHistoryAfterMCI([], [contract.arbiter_address], contract.dispute_mci, function(){});
 				eventBus.on("saved_unit", function(objJoint) {
 					var winner = parseWinnerFromUnit(contract, objJoint.unit);
 					if (!winner) {
@@ -1033,6 +1033,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									setError(err);
 									return;
 								}
+								objContract.dispute_mci = last_mci;
 								arbiter_contract.setField(objContract.hash, "dispute_mci", last_mci);
 								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
 									var text = "\"" + objContract.title +"\" contract is in disput now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
@@ -1069,7 +1070,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								}
 							});
 							var opts = {
-								fee_paying_wallet: profileService.focusedClient.credentials.walletId,
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
@@ -1237,8 +1237,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			$scope.unit = objDispute.unit;
 			$scope.isMobile = isMobile.any();
 			$scope.amount = objDispute.amount;
-			$scope.calculated_hash = arbiter_contract.getHash($scope);
 			$scope.asset = objDispute.asset;
+			$scope.calculated_hash = arbiter_contract.getHash($scope);
 			$scope.amountStr = txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : "base");
 			$scope.plaintiff_contact_info = objDispute.my_contact_info;
 			$scope.peer_contact_info = objDispute.peer_contact_info;
