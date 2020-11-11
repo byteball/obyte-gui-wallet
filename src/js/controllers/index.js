@@ -692,7 +692,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							if (!possible_contract_output) 
 								return cb(false);
 							db.query("SELECT hash FROM prosaic_contracts WHERE prosaic_contracts.shared_address=? AND prosaic_contracts.status='accepted'\n\
-								UNION SELECT hash FROM arbiter_contracts WHERE arbiter_contracts.shared_address=? AND arbiter_contracts.status='accepted'", [possible_contract_output.address, possible_contract_output.address], function(rows) {
+								UNION SELECT hash FROM wallet_arbiter_contracts WHERE wallet_arbiter_contracts.shared_address=? AND wallet_arbiter_contracts.status='accepted'", [possible_contract_output.address, possible_contract_output.address], function(rows) {
 								if (!rows.length)
 									return cb(false);
 								if (rows.length === 1) {
@@ -716,7 +716,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							if (!payment_msg)
 								return cb(false);
 							payment_msg.payload.outputs.forEach(function(o){
-								db.query("SELECT hash FROM arbiter_contracts WHERE shared_address=? AND status='accepted' AND amount=?", [o.address, o.amount], function(rows) {
+								db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=? AND status='accepted' AND amount=?", [o.address, o.amount], function(rows) {
 									if (!rows.length)
 										return cb(false);
 									arbiter_contract.getByHash(rows[0].hash, function(objContract) {

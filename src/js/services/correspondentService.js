@@ -498,11 +498,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	var arbiter_contract = require("ocore/arbiter_contract.js");
 	eventBus.on("new_my_transactions", function(arrNewUnits) {
 		// arb contract payment
-		db.query("SELECT hash, outputs.unit FROM arbiter_contracts\n\
-			JOIN outputs ON outputs.address=arbiter_contracts.shared_address\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS arbiter_contracts.asset AND arbiter_contracts.status='accepted'\n\
+		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
+			JOIN outputs ON outputs.address=wallet_arbiter_contracts.shared_address\n\
+			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='accepted'\n\
 			GROUP BY outputs.address\n\
-			HAVING SUM(outputs.amount) >= arbiter_contracts.amount", [arrNewUnits], function(rows) {
+			HAVING SUM(outputs.amount) >= wallet_arbiter_contracts.amount", [arrNewUnits], function(rows) {
 				rows.forEach(function(row) {
 					arbiter_contract.getByHash(row.hash, function(contract){
 						arbiter_contract.setField(contract.hash, "status", "paid");
@@ -515,11 +515,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				});
 		});
 		// arb contract completion
-		db.query("SELECT hash, outputs.unit FROM arbiter_contracts\n\
-			JOIN outputs ON outputs.address=arbiter_contracts.my_address\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS arbiter_contracts.asset AND arbiter_contracts.status='paid'\n\
-			GROUP BY arbiter_contracts.hash\n\
-			HAVING SUM(outputs.amount) = arbiter_contracts.amount", [arrNewUnits], function(rows) {
+		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
+			JOIN outputs ON outputs.address=wallet_arbiter_contracts.my_address\n\
+			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='paid'\n\
+			GROUP BY wallet_arbiter_contracts.hash\n\
+			HAVING SUM(outputs.amount) = wallet_arbiter_contracts.amount", [arrNewUnits], function(rows) {
 				rows.forEach(function(row) {
 					arbiter_contract.getByHash(row.hash, function(contract){
 						var status = contract.me_is_payer ? "cancelled" : "completed";
