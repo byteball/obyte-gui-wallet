@@ -385,6 +385,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+								device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+								});
+
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 
 								allCosigners.forEach(function(cosigner){
@@ -434,6 +438,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					var text = "Arbiter resolved contract dispute " + (winner == contract.my_address ? "in your favor." : "in favor of your peer."); 
 					text += " Unit with the resolution for \""+ contract.title +"\" was posted into DAG " + url + "\n. Please wait for this unit to be confirmed.";
 					correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+					device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+					});
 				};
 				db.query("SELECT DISTINCT unit FROM unit_authors WHERE address=?", [contract.arbiter_address], function(rows){
 					rows.forEach(function(row){
@@ -461,6 +468,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			return start_listening(contracts);
 		arbiter_contract.getAllByStatus("in_dispute", function(contracts){
 			start_listening(contracts);
+		});
+		eventBus.on("arbiter_contract_update", function(objContract, field, value) {
+			if (field === "dispute_mci")
+				start_listening([objContract]);
 		});
 	}
 
@@ -497,6 +508,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						arbiter_contract.setField(contract.hash, "status", "paid");
 						var text = "Contract " + contract.title + " was paid. Unit: https://explorer.obyte.org/#" + row.unit;
 						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+						});
 					});
 				});
 		});
@@ -512,6 +526,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						arbiter_contract.setField(contract.hash, "status", status);
 						var text = "Contract " + contract.title + " was "+ status +". Unit: https://explorer.obyte.org/#" + row.unit;
 						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+						});
 					});
 				});
 		});
@@ -954,6 +971,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 							var text = "\"" + objContract.title +"\" contract was paid, unit: " + url;
 							correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+							device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+							});
 							// peer will handle payment on his side by his own, checking incoming transactions
 							$modalInstance.dismiss();
 						});
@@ -1002,6 +1022,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 							var text = "\"" + objContract.title +"\" contract is " + status + ", unit: " + url;
 							correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+							device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+							});
 							// peer will handle completion on his side by his own, checking incoming transactions
 							$modalInstance.dismiss();
 						});
@@ -1038,6 +1061,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
 									var text = "\"" + objContract.title +"\" contract is in disput now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
 									correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+									device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
+										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+									});
 									device.sendMessageToDevice(objContract.peer_device_address, "text", text);
 									device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
 										hash: objContract.hash,
@@ -1078,7 +1104,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							};
 							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 								profileService.bKeepUnlocked = false;
-								$rootScope.sentUnit = unit;
+								//$rootScope.sentUnit = unit;
 								if (err){
 									if (err.match(/device address/))
 										err = "This is a private asset, please send it only by clicking links from chat";
@@ -1120,6 +1146,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
 								var text = "\"" + objContract.title +"\" contract is in appeal now. Moderator is notified. Wait for him to get online and pair with both contract parties.";
 								correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
+								device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
+									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+								});
 								device.sendMessageToDevice(objContract.peer_device_address, "text", text);
 								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
 									hash: objContract.hash,
@@ -1345,6 +1374,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 					var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.my_address ? "plaintiff" : "peer") + " ["+address+"], unit: " + url;
 					correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
+					device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+					});
 					// peer will handle completion on his side by his own, checking incoming transactions
 					$modalInstance.dismiss();
 				});

@@ -618,7 +618,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						$scope.error = err;
 						return;
 					}
-					console.log('offerProsaicContract');
+					console.log('offerArbiterContract');
 					$scope.error = '';
 
 					device.getOrGeneratePermanentPairingInfo(function(pairingInfo){

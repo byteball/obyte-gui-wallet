@@ -461,8 +461,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPrivateProfile)
 				return '[invalid profile]';
 			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
-		}).replace(/stay_anonymous/g, function(str, description){
-			return toDelayedReplacement('[Staying anonymous]');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('[Request for profile fields '+fields_list+']');
 		}).replace(/\[(.+?)\]\(sign-message-request:(.+?)\)/g, function(str, description, message_to_sign){
