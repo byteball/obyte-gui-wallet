@@ -727,17 +727,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						}
 					 	isContractSignRequest(function(isContract, type, objContract){
 						 	if (isContract) {
-						 		question = 'Sign '+type+' contract '+objContract.title+' from account '+credentials.walletName+'?';
+						 		question = 'Sign '+type+' contract "'+objContract.title+'" from account '+credentials.walletName+'?';
 						 		return ask();
 						 	}
 						 	isContractFeeDepositRequest(function(isContract, objContract){
 								if (isContract) {
-							 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'fee deposit from account '+credentials.walletName+'?';
+							 		question = 'Approve contract '+(objContract ? '"' + objContract.title + '" ' : '')+'fee deposit from account '+credentials.walletName+'?';
 							 		return ask();
 								}
 								isContractDepositRequest(function(isContract, objContract){
 									if (isContract) {
-								 		question = 'Approve contract '+(objContract ? objContract.title + ' ' : '')+'deposit from account '+credentials.walletName+'?';
+								 		question = 'Approve contract '+(objContract ? '"' + objContract.title + '" ' : '')+'deposit from account '+credentials.walletName+'?';
 								 		return ask();
 									}
 									ask();

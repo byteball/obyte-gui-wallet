@@ -384,12 +384,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								var testnet = constants.version.match(/t$/) ? "testnet" : "";
 								var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
+
+								device.sendMessageToDevice(contract.peer_device_address, "text", text);
+
+								if (contract.me_is_payer) {
+									text += "\n\nNow you can pay to the contract for seller services.";
+								}
 								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.readCorrespondent(contract.peer_device_address, function(correspondent) {
 									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
 								});
-
-								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 
 								allCosigners.forEach(function(cosigner){
 									if (cosigner.device_address != device.getMyDeviceAddress()) {
@@ -506,7 +510,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				rows.forEach(function(row) {
 					arbiter_contract.getByHash(row.hash, function(contract){
 						arbiter_contract.setField(contract.hash, "status", "paid");
-						var text = "Contract " + contract.title + " was paid. Unit: https://explorer.obyte.org/#" + row.unit;
+						var text = "Contract " + contract.title + " was paid. Unit: https://explorer.obyte.org/#" + row.unit + ".\n\nThe seller can start fulfilling his contract obligations now.";
 						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
@@ -838,10 +842,18 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					var setError = function(err) {
 						$scope.error = err;
+						stop_loading();
 						$timeout(function() {
 							$rootScope.$apply();
 						});
-					}
+					};
+					var start_loading = function() {
+						$scope.error = null;
+						$scope.loading = true;
+					};
+					var stop_loading = function() {
+						$scope.loading = false;	
+					};
 
 					var respond = function(status, signedMessageBase64) {
 						// read again, as we might already updated contract status by network in background
@@ -853,7 +865,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							arbiter_contract.respond(objContract, status, signedMessageBase64, pairing_code, objContract.my_contact_info, require("ocore/wallet.js").getSigner());
 						});
 						objContract.status = status;
-						var chat_message = "contract " + objContract.title + " " + status;
+						var chat_message = "contract \"" + objContract.title + "\" " + status;
 						var body = correspondentListService.formatOutgoingMessage(chat_message);
 						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
 						if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, "text");
@@ -1031,6 +1043,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.dispute = function() {
+						if ($scope.loading)
+							return;
+						start_loading();
+
 						if (objContract.status !== "paid") {
 							return setError("contract can't be disputed");
 						}
@@ -1078,6 +1094,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 									listenForArbiterResponse([objContract]);
 
+									stop_loading();
 									$modalInstance.dismiss();
 								});	
 							});

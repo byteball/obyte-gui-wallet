@@ -578,7 +578,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.form = {
 				ttl: 24*7,
 				payer: 'me',
-				amount: 0,
+				amount: null,
 				asset: 'base'
 			};
 			$scope.index = indexScope;

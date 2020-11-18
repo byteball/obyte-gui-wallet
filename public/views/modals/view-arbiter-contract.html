@@ -42,6 +42,11 @@ form[name="prosaicContractForm"] {
 	cursor: pointer;
 	margin-right: 10px;
 }
+.disabled {
+	cursor: progress;
+	color: #666666;
+	border-bottom: 1px dashed #666666;
+}
 .copy_button {
 	position: absolute;
 	right: 10px;
@@ -174,12 +179,27 @@ form[name="prosaicContractForm"] {
 	</div>
 
 	<div class="row columns m20t" ng-show="status === 'paid' && !!unit">
-		<div class="large-12 medium-12 small-12 columns center">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
-				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Cancel'}}</span>
+		<div class="large-12 medium-12 small-12 columns description m10b">
+			<span ng-show="me_is_payer" translate>releases the funds locked on contract to seller and completes the contract</span>
+			<span ng-show="!me_is_payer" translate>sends money back to buyer and completes the contract</span>
+		</div>
+		<div class="large-12 medium-12 small-12 columns center" ng-show="!confirm_complete">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="confirm_complete=true">
+				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Refund'}}</span>
 			</button>
-
-			<span ng-click="dispute()" translate class="validation_check">open dispute</span>
+		</div>
+		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_complete">
+			<button class="button expand outline dark-gray round" ng-class="cancel_button_class" ng-click="confirm_complete=false">
+				<i class="fi-x"></i> <span class="tu" translate>Cancel</span>
+			</button>
+		</div>
+		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_complete">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
+				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Refund'}}</span>
+			</button>
+		</div>
+		<div class="large-12 medium-12 small-12 columns center">
+			<span ng-click="dispute()" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
 		</div>
 	</div>
 
