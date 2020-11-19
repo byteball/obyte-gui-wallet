@@ -227,6 +227,7 @@ ul.button-group li {
 ul.button-group li.selected {
   color: #fff;
   background-color: #1560BD;
+  box-shadow: inset 0 0 5px black;
 }
 
 .modal-content ul.subwallets {

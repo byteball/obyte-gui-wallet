@@ -521,7 +521,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		// arb contract completion
 		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
 			JOIN outputs ON outputs.address=wallet_arbiter_contracts.my_address\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='paid'\n\
+			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND (wallet_arbiter_contracts.status='paid' OR wallet_arbiter_contracts.status='in_dispute')\n\
 			GROUP BY wallet_arbiter_contracts.hash\n\
 			HAVING SUM(outputs.amount) = wallet_arbiter_contracts.amount", [arrNewUnits], function(rows) {
 				rows.forEach(function(row) {
@@ -991,8 +991,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						});
 					};
 
+					$scope.confirmcomplete = function(val) {
+						$timeout(function(){
+							$scope.confirm_complete = val;
+						}, 50);
+					}
+
 					$scope.complete = function() {
-						if (objContract.status !== "paid")
+						if (objContract.status !== "paid" && objContract.status !== "in_dispute")
 							return setError("contract can't be completed");
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
@@ -1011,7 +1017,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							asset: objContract.asset,
 							to_address: objContract.peer_address,
 							amount: objContract.amount,
-							arrSigningDeviceAddresses: objContract.cosigners.length ? objContract.cosigners : [device.getMyDeviceAddress()]
+							arrSigningDeviceAddresses: objContract.cosigners && objContract.cosigners.length ? objContract.cosigners : [device.getMyDeviceAddress()]
 						};
 						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 							// if multisig, it might take very long before the callback is called
