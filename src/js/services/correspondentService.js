@@ -385,10 +385,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 
-								device.sendMessageToDevice(contract.peer_device_address, "text", text);
-
+								var payer_guidance_text = "\n\nNow you can pay to the contract for seller services.";
+								device.sendMessageToDevice(contract.peer_device_address, "text", text + (contract.me_is_payer ? '' : payer_guidance_text));
 								if (contract.me_is_payer) {
-									text += "\n\nNow you can pay to the contract for seller services.";
+									text += payer_guidance_text;
 								}
 								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.readCorrespondent(contract.peer_device_address, function(correspondent) {
@@ -832,6 +832,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							$timeout(function() {
 								$rootScope.$apply();
 							});
+						});
+					});
+
+					device.readCorrespondent(objContract.peer_device_address, function(corr) {
+						$scope.peer_device_name = corr.name;
+						$timeout(function() {
+							$rootScope.$apply();
 						});
 					});
 

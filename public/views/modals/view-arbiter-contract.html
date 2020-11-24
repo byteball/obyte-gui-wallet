@@ -51,6 +51,10 @@ form[name="prosaicContractForm"] {
 	position: absolute;
 	right: 10px;
 }
+.description.center {
+	display: inline-block;
+	width: 100%;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -77,14 +81,13 @@ form[name="prosaicContractForm"] {
 			<span class="person_name">{{my_name}}</span>
 			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
-			<ul class="button-group round even-2">
-				<li class="ellipsis" ng-class="{'selected': !!!me_is_payer}" translate>
-					Seller
-				</li>
-				<li class="ellipsis" ng-class="{'selected': !!me_is_payer}"  translate>
-					Buyer
-				</li>
-			</ul>
+			<li class="tumbler m15t">
+				<span translate class="m10r">Seller</span>
+		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
+		        <span translate class="m10l">Buyer</span>
+		    </li>
+		    <span class="description center" ng-show="me_is_payer" translate>You will pay {{peer_device_name}} for his services.</span>
+		    <span class="description center" ng-show="!me_is_payer" translate>{{peer_device_name}} will pay for your services.</span>
 		</div>
 	<h3 class="person title" translate>Peer</h3>
 		<div class="name p10l">

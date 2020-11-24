@@ -85,6 +85,10 @@ form[name="arbiterContractForm"] input.inline:focus {
 form[name="arbiterContractForm"] .f-dropdown li a {
   text-transform: none;
 }
+.description.center {
+	display: inline-block;
+	width: 100%;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -108,14 +112,13 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 			<span class="last_name">{{my_last_name}}</span>
 			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
-			<ul class="button-group round even-2">
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" ng-click="form.payer = 'peer'" translate>
-					Seller
-				</li>
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" ng-click="form.payer = 'me'" translate>
-					Buyer
-				</li>
-			</ul>
+			<li class="tumbler m15t">
+				<span translate class="m10r">Seller</span>
+		        <switch ng-model="form.me_is_payer" class="blue"></switch>
+		        <span translate class="m10l">Buyer</span>
+		    </li>
+		    <span class="description center" ng-show="form.me_is_payer" translate>You will pay {{peer_device_name}} for his services.</span>
+		    <span class="description center" ng-show="!form.me_is_payer" translate>{{peer_device_name}} will pay for your services.</span>
 		</div>
 		<span class="person title" translate>Peer</span>
 		<div class="name p10l">
@@ -123,18 +126,10 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 			<span class="last_name">{{peer_last_name}}</span>
 			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
-			<ul class="button-group round even-2">
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'me'}" ng-click="form.payer = 'me'" translate>
-					Seller
-				</li>
-				<li class="ellipsis" ng-class="{'selected': form.payer == 'peer'}" ng-click="form.payer = 'peer'" translate>
-					Buyer
-				</li>
-			</ul>
 		</div>
 		<br>
 		<div class="person title" translate>Amount</div>
-		<div class="help-text">Amount buyer paying to seller for his services, money will be locked on contract untill buyer releases them. Can be in any asset.</div>
+		<div class="help-text">Amount the buyer is paying to the seller for his services, money will be locked on the contract untill buyer releases it. Can be in any asset.</div>
 		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 		<span selectable="#myasset" dropdown-toggle="#myasset" data-model="form" data-prop="asset"></span>
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>

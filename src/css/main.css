@@ -2100,3 +2100,15 @@ form#contacts-order {
   vertical-align: middle;
   line-height: 17px;
 }
+.m10l {
+	margin-left: 10px;
+}
+.tumbler {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+}
+.tumbler .switch {
+	background: rgb(53, 139, 234);
+	border-color: rgb(53, 139, 234);
+}

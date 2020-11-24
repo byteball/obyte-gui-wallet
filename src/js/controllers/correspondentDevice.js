@@ -577,10 +577,11 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 			$scope.form = {
 				ttl: 24*7,
-				payer: 'me',
+				me_is_payer: true,
 				amount: null,
 				asset: 'base'
 			};
+			$scope.peer_device_name = correspondent.name;
 			$scope.index = indexScope;
 			$scope.isMobile = isMobile.any();
 			var config = configService.getSync();
@@ -602,7 +603,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			readMyPaymentAddress(fc, function(my_address) {
 				$scope.my_address = my_address;
 				$scope.peer_address = address;
-				correspondentService.populateScopeWithAttestedFields($scope, my_address, address, function() {
+				correspondentService.populateScopeWithAttestedFields($scope, $scope.my_address, $scope.peer_address, function() {
 					$timeout(function() {
 						$rootScope.$apply();
 					});
@@ -628,7 +629,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						var ttl = $scope.form.ttl;
 						var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 						var arbiter_address = $scope.form.arbiterAddress;
-						var payer = $scope.form.payer;
+						var me_is_payer = $scope.form.me_is_payer;
 						var amount = $scope.form.amount;
 						var asset = $scope.form.asset;
 						if (asset === 'base')
@@ -656,7 +657,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								peer_device_address: correspondent.device_address,
 								my_address: my_address,
 								arbiter_address: arbiter_address,
-								me_is_payer: (payer == 'me'),
+								me_is_payer: me_is_payer,
 								amount: amount,
 								asset: asset,
 								creation_date: creation_date,
@@ -668,7 +669,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								my_contact_info: contactInfo
 							}, function(objContract) {
 								correspondentService.listenForArbiterContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners,
-									arbiter_address: arbiter_address, amount: amount, asset: asset, me_is_payer: (payer == 'me')}]);
+									arbiter_address: arbiter_address, amount: amount, asset: asset, me_is_payer: me_is_payer}]);
 								var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 								var body = correspondentListService.formatOutgoingMessage(chat_message);
 								correspondentListService.addMessageEvent(false, correspondent.device_address, body);
