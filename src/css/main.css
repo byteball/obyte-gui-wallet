@@ -2112,3 +2112,10 @@ form#contacts-order {
 	background: rgb(53, 139, 234);
 	border-color: rgb(53, 139, 234);
 }
+.tumbler .side {
+	color: #74889C;
+	line-height: 30px;
+}
+.tumbler .side.active {
+	color: #2C3E50;
+}

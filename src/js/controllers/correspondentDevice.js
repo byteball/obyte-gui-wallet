@@ -688,10 +688,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				$modalInstance.dismiss('cancel');
 			};
 
-			$scope.expandContactBlock = function() {
-				$scope.contactBlockExpanded = !$scope.contactBlockExpanded;
-			}
-
 			$scope.openInExplorer = correspondentListService.openInExplorer;
 		};
 		

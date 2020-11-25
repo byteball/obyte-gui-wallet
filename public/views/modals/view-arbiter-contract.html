@@ -82,11 +82,11 @@ form[name="prosaicContractForm"] {
 			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
 			<li class="tumbler m15t">
-				<span translate class="m10r">Seller</span>
+				<span translate class="m10r side" ng-class="{active: !me_is_payer}">Seller</span>
 		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
-		        <span translate class="m10l">Buyer</span>
+				<span translate class="m10l side" ng-class="{active: me_is_payer}">Buyer</span>
 		    </li>
-		    <span class="description center" ng-show="me_is_payer" translate>You will pay {{peer_device_name}} for his services.</span>
+		    <span class="description center" ng-show="me_is_payer" translate>You will pay {{peer_device_name}} for their services.</span>
 		    <span class="description center" ng-show="!me_is_payer" translate>{{peer_device_name}} will pay for your services.</span>
 		</div>
 	<h3 class="person title" translate>Peer</h3>
@@ -113,7 +113,7 @@ form[name="prosaicContractForm"] {
 	<h3 class="title" translate>Contact Info</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Peer contacts: {{peer_contact_info}}</span><br>
 	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >My contacts: {{my_contact_info}}</span>
-	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info"></div>
+	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info" placeholder="email, whatsapp, telegram, phone number, etc."></div>
 
 	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'accepted' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
