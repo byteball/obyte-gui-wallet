@@ -133,7 +133,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		</div>
 		<br>
 		<div class="person title" translate>Amount:</div><br>
-		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'10000'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="{{form.asset == 'base' ? (10000 / unitValue) : 0}}" ng-attr-placeholder="{{'10000'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 		<span selectable="#myasset" dropdown-toggle="#myasset" data-model="form" data-prop="asset"></span>
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
@@ -142,7 +142,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		</ul>
 		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset.</div>
 
-		<div class="title" translate>Arbiter Address</div>
+		<div class="title" translate>Arbiter address</div>
 		<div class="help-text"><a class="help-link" ng-click="openExternalLink('https://obyte.org/where-to-get-arbiters')">Where to get arbiter address?</a></div>
 		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress"/>
 

@@ -798,6 +798,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
 					$scope.my_contact_info = objContract.my_contact_info;
 					$scope.peer_contact_info = objContract.peer_contact_info;
+					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 
 					if (objContract.unit) {
 						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
@@ -902,6 +903,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if ($scope.form.my_contact_info) {
 							objContract.my_contact_info = $scope.form.my_contact_info;
 							arbiter_contract.setField(objContract.hash, "my_contact_info", $scope.form.my_contact_info);
+							configService.set({my_contact_info: objContract.my_contact_info}, function(){});
 						}
 
 						$modalInstance.dismiss();

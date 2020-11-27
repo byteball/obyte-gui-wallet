@@ -587,6 +587,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			var config = configService.getSync();
 			var configWallet = config.wallet;
 			var walletSettings = configWallet.settings;
+			$scope.unitValue = walletSettings.unitValue;
+			$scope.form.contactInfo = config.my_contact_info;
 			$scope.arrAssetInfos = indexScope.arrBalances.map(function(b){
 				var info = {asset: b.asset, is_private: b.is_private};
 				if (b.asset === 'base')
@@ -613,10 +615,16 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.CHARGE_AMOUNT = arbiter_contract.CHARGE_AMOUNT;
 			
 			$scope.payAndOffer = function() {
+				var setError = function(err) {
+					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				};
 				profileService.requestTouchid(function(err) {
 					if (err) {
 						profileService.lockFC();
-						$scope.error = err;
+						setError(err);
 						return;
 					}
 					console.log('offerArbiterContract');
@@ -639,10 +647,17 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						if (profileService.assetMetadata[asset])
 							amount *= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
 						amount = Math.round(amount);
+						if (asset == 'base' && amount < 10000) {
+							setError('Minimum amount of bytes for contract is 10000 bytes');
+							return;
+						}
 						if (asset == 'base') asset = null;
 
 						var hash = arbiter_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date, arbiter_address: arbiter_address, amount: amount, asset: asset});
 						var contactInfo = $scope.form.contactInfo;
+						if (contactInfo) {
+							configService.set({my_contact_info: contactInfo}, function(){});
+						}
 
 						readMyPaymentAddress(fc, function(my_address) {
 							var cosigners = indexScope.getSigningDeviceAddresses(fc);

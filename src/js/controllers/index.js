@@ -668,7 +668,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												}
 											});
 										}], function() {
-											if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
+											var possible_contract_output = lodash.find(arrPaymentMessages[0].payload.outputs, function(o){return o.amount==arbiter_contract.CHARGE_AMOUNT});
+											if (!possible_contract_output) 
+												return cb();
+											if (!shared_address || shared_address !== possible_contract_output.address || !lodash.includes(arrAuthorAddresses, shared_address))
 												return cb();
 											return cb('arbiter', contract);
 										});

@@ -110,10 +110,14 @@ form[name="prosaicContractForm"] {
 	<h3 class="title" translate>Text</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
-	<h3 class="title" translate>Contact Info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Peer contacts: {{peer_contact_info}}</span><br>
-	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >My contacts: {{my_contact_info}}</span>
-	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info" placeholder="email, whatsapp, telegram, phone number, etc."></div>
+	<h3 class="title" translate>Contact info</h3>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap; line-height: 30px;" >Peer contacts: {{peer_contact_info}}</span><br>
+	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" >My contacts: {{my_contact_info}}</span>
+	<div ng-if="!my_contact_info && status == 'pending' && isIncoming">
+		My contacts: 
+		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.my_contact_info" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
+		<div class="help-text">It will be shared with peer and arbiter as a backup method to reach you.</div>
+	</div>
 
 	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'accepted' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
