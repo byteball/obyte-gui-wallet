@@ -46,7 +46,7 @@
   </section>
 
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px;">
+    <h1 class="title ellipsis" style="color: #4E4E4E !important; line-height: 45px; display: flex;align-items: center;justify-content: center;">
       <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || topbar.showableWalletAvatar()" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
 		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important;" class="ellipsis topbar-title-maxwidth">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">

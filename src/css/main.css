@@ -2100,6 +2100,7 @@ form#contacts-order {
   vertical-align: middle;
   line-height: 17px;
 }
+
 .m10l {
 	margin-left: 10px;
 }
@@ -2118,4 +2119,41 @@ form#contacts-order {
 }
 .tumbler .side.active {
 	color: #2C3E50;
+}
+
+.tab-view#chat {
+  background: #f0f4f9;
+}
+
+.tab-view#chat .line-b {
+  border: 1px solid #EDF5FF;
+  box-shadow: 0px 2px 7px rgba(171, 194, 224, 0.38);
+  border-radius: 6px;
+  background: #FFFFFF;
+  margin-bottom: 6px;
+  /*transition: all 0.2s;*/
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+
+.tab-view#chat .line-b:hover {
+  box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
+  border: 1px solid #4A90E2;
+  /*transform: translateY(-3px);*/
+}
+
+.tab-view#chat .line-b:hover .bot_name,
+.tab-view#chat .line-b:hover .icon-arrow-right3 {
+  color: #1560BD;
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* CSS specific to iOS devices */ 
+
+  .tab-view#chat .line-b:hover {
+    box-shadow: 0px 2px 7px rgba(171, 194, 224, 0.38);
+    border: 1px solid #4A90E2;
+    transform: none;
+  }
 }

@@ -2236,7 +2236,7 @@ angular.module('copayApp.controllers')
 						var displayed_single_address = from_address ? ' '+from_address : '';
 						var fc = profileService.focusedClient;
 						if (!fc.isSingleAddress || from_address && from_address !== my_address) {
-							$rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address wallet")+displayed_single_address+".");
+							$rootScope.$emit('Local/ShowErrorAlert', gettext("This payment must be paid only from single-address account")+displayed_single_address+".");
 							return self.resetForm();
 						}
 					}
