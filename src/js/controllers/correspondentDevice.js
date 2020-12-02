@@ -683,8 +683,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								my_pairing_code: pairing_code,
 								my_contact_info: contactInfo
 							}, function(objContract) {
-								correspondentService.listenForArbiterContractResponse([{hash: hash, title: contract_title, my_address: my_address, peer_address: address, peer_device_address: correspondent.device_address, cosigners: cosigners,
-									arbiter_address: arbiter_address, amount: amount, asset: asset, me_is_payer: me_is_payer}]);
+								correspondentService.listenForArbiterContractResponse();
 								var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
 								var body = correspondentListService.formatOutgoingMessage(chat_message);
 								correspondentListService.addMessageEvent(false, correspondent.device_address, body);

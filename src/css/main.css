@@ -2110,8 +2110,14 @@ form#contacts-order {
 	justify-content: center;
 }
 .tumbler .switch {
-	background: rgb(53, 139, 234);
-	border-color: rgb(53, 139, 234);
+	background: #F5F5F5;
+}
+.tumbler .switch.checked {
+	background: #F5F5F5;
+	border-color: #dfdfdf;
+}
+.tumbler .switch small {
+	background: #358BEA;
 }
 .tumbler .side {
 	color: #74889C;

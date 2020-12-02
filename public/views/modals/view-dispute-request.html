@@ -62,18 +62,18 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
+	<h3 class="person title" translate>Contract hash</h3>
+		<div class="attestor">{{contract_hash}}</div>
+
 	<h3 class="person title" translate>Plaintiff</h3>
 		<div class="name p10l">
 			<div class="attestor"><span translate>address</span>: {{plaintiff_address}}</div>
 			<div class="attestor"><a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> | <a ng-click="resolve(plaintiff_address)" class="text-warning" translate>Resolve with this side as a winner</a></div>
-			<ul class="button-group round even-2">
-				<li class="ellipsis" ng-class="{'selected': payer == 'peer'}" translate>
-					Seller
-				</li>
-				<li class="ellipsis" ng-class="{'selected': payer == 'plaintiff'}"  translate>
-					Buyer
-				</li>
-			</ul>
+			<li class="tumbler m15t">
+				<span translate class="m10r side" ng-class="{active: payer == 'peer'}">Seller</span>
+		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
+				<span translate class="m10l side" ng-class="{active: payer == 'plaintiff'}">Buyer</span>
+		    </li>
 		</div>
 	<h3 class="person title" translate>Peer</h3>
 		<div class="name p10l">

@@ -180,16 +180,12 @@ form[name="prosaicContractForm"] {
 	<div class="row columns m20t" ng-show="status === 'accepted' && !!me_is_payer && !!unit">
 		<div class="large-12 medium-12 small-12 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="pay()">
-				<i class="yes_icon"></i> <span class="tu" translate>Pay</span>
+				<i class="yes_icon"></i> <span class="tu" translate>Pay {{amountStr}} {{asset}}</span>
 			</button>
 		</div>
 	</div>
 
 	<div class="row columns m20t" ng-show="(status === 'paid' || status === 'in_dispute') && !!unit">
-		<div class="large-12 medium-12 small-12 columns description m10b">
-			<span ng-show="me_is_payer" translate>releases the funds locked on contract to seller and completes the contract</span>
-			<span ng-show="!me_is_payer" translate>sends money back to buyer and completes the contract</span>
-		</div>
 		<div class="large-12 medium-12 small-12 columns center" ng-show="!confirm_complete">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="confirmcomplete(true)">
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Refund'}}</span>
@@ -205,8 +201,21 @@ form[name="prosaicContractForm"] {
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Refund'}}</span>
 			</button>
 		</div>
-		<div class="large-12 medium-12 small-12 columns center">
+		<div class="large-12 medium-12 small-12 columns description m10b">
+			<span ng-show="me_is_payer" translate>releases the funds locked on contract to seller and completes the contract</span>
+			<span ng-show="!me_is_payer" translate>sends money back to buyer and completes the contract</span>
+		</div>
+		<div class="large-12 medium-12 small-12 columns center" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal' || confirm_dispute">
+			<span ng-click="confirm_dispute=true" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
+		</div>
+		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_dispute">
+			<span ng-click="confirm_dispute=false" translate class="validation_check" ng-class="{disabled: loading}">cancel</span>
+		</div>
+		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_dispute">
 			<span ng-click="dispute()" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
+		</div>
+		<div class="large-12 medium-12 small-12 columns description m10t" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal'">
+			<span translate>Call arbiter {{arbiter_name}} to resolve any problems with the contract. This reveals contract text to the arbiter and he will ask you to pay some fee for his services.</span>
 		</div>
 	</div>
 

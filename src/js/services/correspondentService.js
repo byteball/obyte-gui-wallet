@@ -200,7 +200,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	}
 
-	function listenForArbiterContractResponse(contracts) {
+	function listenForArbiterContractResponse() {
 		var arbiter_contract = require("ocore/arbiter_contract.js");
 		var storage = require("ocore/storage.js");
 
@@ -386,7 +386,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 
 								var payer_guidance_text = "\n\nNow you can pay to the contract for seller services.";
-								device.sendMessageToDevice(contract.peer_device_address, "text", text + (contract.me_is_payer ? '' : payer_guidance_text));
+								var payee_guidance_text = "\n\nNow wait for buyer to pay to the contract.";
+								device.sendMessageToDevice(contract.peer_device_address, "text", text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 								if (contract.me_is_payer) {
 									text += payer_guidance_text;
 								}
@@ -411,9 +412,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				eventBus.on("arbiter_contract_response_received" + contract.hash, sendUnit);
 			});
 		}
-
-		if (contracts)
-			return start_listening(contracts);
 		arbiter_contract.getAllByStatus("pending", function(contracts){
 			start_listening(contracts);
 		});
@@ -510,7 +508,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				rows.forEach(function(row) {
 					arbiter_contract.getByHash(row.hash, function(contract){
 						arbiter_contract.setField(contract.hash, "status", "paid");
-						var text = "Contract " + contract.title + " was paid. Unit: https://explorer.obyte.org/#" + row.unit + ".\n\nThe seller can start fulfilling his contract obligations now.";
+						var text = "Contract " + contract.title + " was paid. Unit: https://explorer.obyte.org/#" + row.unit + ".\n\nYou can start fulfilling your contract obligations.";
 						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
@@ -990,7 +988,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							
 							var testnet = constants.version.match(/t$/) ? "testnet" : "";
 							var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-							var text = "\"" + objContract.title +"\" contract was paid, unit: " + url;
+							var text = "\"" + objContract.title +"\" contract was paid, unit: " + url  + ".\n\nThe seller can now start fulfilling his contract obligations.";
 							correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 							device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
 								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
@@ -1090,7 +1088,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								objContract.dispute_mci = last_mci;
 								arbiter_contract.setField(objContract.hash, "dispute_mci", last_mci);
 								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-									var text = "\"" + objContract.title +"\" contract is in disput now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
+									var text = "\"" + objContract.title +"\" contract is in dispute now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
 									correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 									device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
 										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
