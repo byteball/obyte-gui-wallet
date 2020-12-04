@@ -231,6 +231,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				text += " (valid)";
 			else if (info.bValid === false)
 				text += " (invalid)";
+			else
+				text += ' (verify)';
 			return toDelayedReplacement('<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')"><i>['+text+']</i></a>');
 		}).replace(url_regexp, function(str){
 			param_index++;
@@ -456,6 +458,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				text += " (valid)";
 			else if (info.bValid === false)
 				text += " (invalid)";
+			else
+				text += ' (verify)';
 			return toDelayedReplacement('<a ng-click="verifySignedMessage(\''+signedMessageBase64+'\')"><i>['+text+']</i></a>');
 		}).replace(url_regexp, function(str){
 			param_index++;
