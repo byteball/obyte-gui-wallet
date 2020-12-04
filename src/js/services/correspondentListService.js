@@ -225,7 +225,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message);
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -449,7 +450,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
-			var text = 'Message signed by '+objSignedMessage.authors[0].address;
+			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message);
+			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
