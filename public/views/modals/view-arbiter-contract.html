@@ -42,7 +42,7 @@ form[name="prosaicContractForm"] {
 	cursor: pointer;
 	margin-right: 10px;
 }
-.disabled {
+.validation_check.disabled {
 	cursor: progress;
 	color: #666666;
 	border-bottom: 1px dashed #666666;
@@ -54,6 +54,9 @@ form[name="prosaicContractForm"] {
 .description.center {
 	display: inline-block;
 	width: 100%;
+}
+.spinner > div {
+	background-color: #008CBA;
 }
 </style>
 <nav class="tab-bar">
@@ -98,7 +101,7 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Arbiter</h3>
 		<div class="name p10l">
 			<span class="person_name" ng-if="arbiter_name">{{arbiter_name}}</span>
-			<div class="attestor"><span translate>address</span>: {{arbiter_address}}</div>
+			<div class="attestor"><span translate>address</span>: <a ng-href="{{arbstore_address}}/arbiter/{{arbiter_address}}" ng-click="openLink($event.target.getAttribute('href'))">{{arbiter_address}}</a></div>
 		</div>
 
 	<h3 class="title" translate>Amount</h3>
@@ -202,20 +205,27 @@ form[name="prosaicContractForm"] {
 			</button>
 		</div>
 		<div class="large-12 medium-12 small-12 columns description m10b">
-			<span ng-show="me_is_payer" translate>releases the funds locked on contract to seller and completes the contract</span>
-			<span ng-show="!me_is_payer" translate>sends money back to buyer and completes the contract</span>
+			<span ng-show="me_is_payer" translate>Releases the funds locked on the contract to the seller and completes the contract.</span>
+			<span ng-show="!me_is_payer" translate>Sends money back to the buyer and completes the contract.</span>
 		</div>
 		<div class="large-12 medium-12 small-12 columns center" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal' || confirm_dispute">
 			<span ng-click="confirm_dispute=true" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
 		</div>
-		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_dispute">
+		<div class="large-5 medium-5 small-5 columns center" ng-show="confirm_dispute">
 			<span ng-click="confirm_dispute=false" translate class="validation_check" ng-class="{disabled: loading}">cancel</span>
 		</div>
-		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_dispute">
+		<div class="spinner" ng-show="loading">
+			<div class="rect1"></div>
+			<div class="rect2"></div>
+			<div class="rect3"></div>
+			<div class="rect4"></div>
+			<div class="rect5"></div>
+		</div>
+		<div class="large-5 medium-5 small-5 columns right" ng-show="confirm_dispute">
 			<span ng-click="dispute()" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
 		</div>
 		<div class="large-12 medium-12 small-12 columns description m10t" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal'">
-			<span translate>Call arbiter {{arbiter_name}} to resolve any problems with the contract. This reveals contract text to the arbiter and he will ask you to pay some fee for his services.</span>
+			<span translate>{{ me_is_payer ? 'If the counterparty refuses to fulfil their obligations' : 'If you have completed your work and the counterparty refuses to release the funds' }}, you can call the arbiter {{arbiter_name}} to resolve dispute. This reveals the contract text to the arbiter who will ask you to pay a fee for their services. Be prepared to provide evidence to prove your point. The arbiter will contact the other party to hear their point of view and evidence. The arbitration process might take a long time.</span>
 		</div>
 	</div>
 

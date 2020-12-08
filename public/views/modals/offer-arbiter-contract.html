@@ -9,7 +9,6 @@
 	width: 80px !important;
 }
 .help-link {
-	font-size: 11px;
 	margin-bottom: 15px;
 }
 .expand-link {
@@ -139,8 +138,8 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
 			<a><span >{{info.displayName|translate}}</span></a>
 		  </li>
-		</ul>
-		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset. Min amount is 10 kB.</div>
+		</ul>  <span class="min_error has-error size-12" ng-show="arbiterContractForm.amount.$error.min">Min amount is 10 kB.</span>
+		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset.</div>
 
 		<div class="title" translate>Arbiter address</div>
 		<div class="help-text"><a class="help-link" ng-click="openExternalLink('https://obyte.org/where-to-get-arbiters')">Where to get arbiter address?</a></div>

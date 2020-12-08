@@ -181,7 +181,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								});
 								var testnet = constants.version.match(/t$/) ? "testnet" : "";
 								var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
+								var text = "Unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 								correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 								device.sendMessageToDevice(contract.peer_device_address, "text", text);
 							});
@@ -383,7 +383,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								});
 								var testnet = constants.version.match(/t$/) ? "testnet" : "";
 								var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
+								var text = "Unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
 
 								var payer_guidance_text = "\n\nNow you can pay to the contract for seller services.";
 								var payee_guidance_text = "\n\nNow wait for buyer to pay to the contract.";
@@ -832,6 +832,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								$rootScope.$apply();
 							});
 						});
+						device.requestFromHub("hub/get_arbstore_address", objContract.arbiter_address, function(err, arbstore_address){
+							if (arbstore_address)
+								$scope.arbstore_address = arbstore_address;
+							$timeout(function() {
+								$rootScope.$apply();
+							});
+						});
 					});
 
 					device.readCorrespondent(objContract.peer_device_address, function(corr) {
@@ -1088,7 +1095,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								objContract.dispute_mci = last_mci;
 								arbiter_contract.setField(objContract.hash, "dispute_mci", last_mci);
 								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-									var text = "\"" + objContract.title +"\" contract is in dispute now. Arbiter " + objArbiter.real_name + " is notified. Wait for him to get online and pair with both contract parties.";
+									var text = "\"" + objContract.title +"\" contract is in dispute now. Arbiter " + objArbiter.real_name + " is notified. Wait for them to get online and pair with both contract parties.";
 									correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 									device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
 										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
@@ -1200,6 +1207,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.openInExplorer = correspondentListService.openInExplorer;
+					$scope.openLink = openLink;
 
 					$scope.expandProofBlock = function() {
 						$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
@@ -1430,6 +1438,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			var m = angular.element(document.getElementsByClassName("reveal-modal"));
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
+	};
+
+	function openLink(url) {
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
 	};
 
 	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
