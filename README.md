@@ -62,7 +62,7 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 
 ### Android
 - Install jdk1.8 (9 and higher won't work)
-- Install Android SDK (from Android Studio)
+- Install Android SDK (install Android Studio and use its setup wizard to install latest SDK), then put `export ANDROID_HOME=~/Library/Android/sdk` inside your `~/.zshrc` or `~/.bash_profile`, then `yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses`
 - Install Cordova `npm install cordova -g`
 - Install [Gradle](https://gradle.org/install/) (macOS: `brew install gradle`)
 - Run `make android-debug`
