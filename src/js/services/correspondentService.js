@@ -387,7 +387,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 								var payer_guidance_text = "\n\nNow you can pay to the contract for seller services.";
 								var payee_guidance_text = "\n\nNow wait for buyer to pay to the contract.";
-								device.sendMessageToDevice(contract.peer_device_address, "text", text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
+								device.sendMessageToDevice(contract.peer_device_address, "text", text + (!contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 								if (contract.me_is_payer) {
 									text += payer_guidance_text;
 								}
@@ -420,7 +420,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	}
 
-	function listenForArbiterResponse(contracts) {
+	function listenForArbiterResponse() {
 		var arbiter_contract = require("ocore/arbiter_contract.js");
 		var network = require("ocore/network.js");
 		var storage = require("ocore/storage.js");
@@ -438,7 +438,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					var testnet = constants.version.match(/t$/) ? "testnet" : "";
 					var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
 					var text = "Arbiter resolved contract dispute " + (winner == contract.my_address ? "in your favor." : "in favor of your peer."); 
-					text += " Unit with the resolution for \""+ contract.title +"\" was posted into DAG " + url + "\n. Please wait for this unit to be confirmed.";
+					text += " Unit with the resolution for \""+ contract.title +"\" was posted into DAG " + url + "\n\n" + 
+						(winner === contract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
+							"You can appeal to arbiter's decision from the contract view.");
 					correspondentListService.addMessageEvent(false, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 					device.readCorrespondent(contract.peer_device_address, function(correspondent) {
 						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
@@ -466,14 +468,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			});
 		};
 
-		if (contracts)
-			return start_listening(contracts);
 		arbiter_contract.getAllByStatus("in_dispute", function(contracts){
 			start_listening(contracts);
 		});
 		eventBus.on("arbiter_contract_update", function(objContract, field, value) {
 			if (field === "dispute_mci")
-				start_listening([objContract]);
+				listenForArbiterResponse();
 		});
 	}
 
@@ -1112,7 +1112,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										value: last_mci
 									});
 
-									listenForArbiterResponse([objContract]);
+									listenForArbiterResponse();
 
 									stop_loading();
 									$modalInstance.dismiss();
