@@ -149,7 +149,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			assocReplacements[key] = new_text;
 			return key;
 		}
-		var text = text.replace(/(.*?\s|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
+		var text = text.replace(/(.*?\b|^)([2-7A-Z]{32})([\s.,;!:].*?|$)/g, function(str, pre, address, post){
 			if (!ValidationUtils.isValidAddress(address))
 				return str;
 			if (pre.lastIndexOf(')') < pre.lastIndexOf(']('))
