@@ -526,7 +526,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					arbiter_contract.getByHash(row.hash, function(contract){
 						var status = contract.me_is_payer ? "cancelled" : "completed";
 						arbiter_contract.setField(contract.hash, "status", status);
-						var text = "Contract " + contract.title + " was "+ status +". Unit: https://explorer.obyte.org/#" + row.unit;
+						var text = "Contract " + contract.title + " was "+ status +". Unit: https://explorer.obyte.org/#" + row.unit + "\nFunds locked on contract were sent to you.";
 						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
 						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
