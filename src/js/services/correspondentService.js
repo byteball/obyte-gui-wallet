@@ -473,10 +473,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		arbiter_contract.getAllByStatus("in_dispute", function(contracts){
 			start_listening(contracts);
 		});
-		eventBus.on("arbiter_contract_update", function(objContract, field, value) {
-			if (field === "dispute_mci")
-				listenForArbiterResponse();
-		});
 	}
 
 	eventBus.on("arbiter_contract_update", function(objContract, field, value) {
@@ -487,7 +483,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
 		if (field === "dispute_mci") {
+			listenForArbiterResponse();
 			addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
+		}
+		if (field === 'status' && value === 'revoked') {
+			addContractEventIntoChat(objContract, "event", true);	
 		}
 	});
 
@@ -878,27 +878,29 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					var respond = function(status, signedMessageBase64) {
 						// read again, as we might already updated contract status by network in background
-						if (objContract.status !== "pending" && (objContract.status !== "accepted" && !objContract.unit))
-							return setError("contract status was changed, reopen it");
-						arbiter_contract.setField(objContract.hash, "status", status);
-						device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
-							var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
-							arbiter_contract.respond(objContract, status, signedMessageBase64, pairing_code, objContract.my_contact_info, require("ocore/wallet.js").getSigner());
-						});
-						objContract.status = status;
-						addContractEventIntoChat(objContract, 'event', false);
+						arbiter_contract.getByHash(objContract.hash, function(objContract){
+							if (objContract.status !== "pending" && !(objContract.status === "accepted" && !objContract.unit))
+								return setError("contract status was changed, reopen it");
+							arbiter_contract.setField(objContract.hash, "status", status, function(objContract) {
+								addContractEventIntoChat(objContract, 'event', false);
 
-						// share accepted contract to previously selected cosigners
-						if (status === "accepted") {
-							cosigners.forEach(function(cosigner){
-								arbiter_contract.share(objContract.hash, cosigner);
+								// share accepted contract to previously selected cosigners
+								if (status === "accepted") {
+									cosigners.forEach(function(cosigner){
+										arbiter_contract.share(objContract.hash, cosigner);
+									});
+								}
+
+								device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
+									var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
+									arbiter_contract.respond(objContract, status, signedMessageBase64, pairing_code, objContract.my_contact_info, require("ocore/wallet.js").getSigner());
+								});
+
+								$timeout(function() {
+									$modalInstance.dismiss(status);
+								});
 							});
-						}
-						if (status !== "accepted") {
-							$timeout(function() {
-								$modalInstance.dismiss(status);
-							});
-						}
+						});
 					};
 
 					$scope.accept = function() {
@@ -917,8 +919,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							configService.set({my_contact_info: objContract.my_contact_info}, function(){});
 						}
 
-						$modalInstance.dismiss();
-
 						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
 							if (err)
 								return setError(err);
@@ -930,24 +930,18 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if (objContract.status !== "pending")
 							return setError("contract status was changed, reopen it");
 
-						objContract.status = "revoked";
-						arbiter_contract.setField(objContract.hash, "status", objContract.status);
-						device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
-							hash: objContract.hash,
-							field: "status",
-							value: objContract.status
-						});
+						arbiter_contract.setField(objContract.hash, "status", "revoked", function(objContract) {
+							device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
+								hash: objContract.hash,
+								field: "status",
+								value: objContract.status
+							});
 
-						addContractEventIntoChat(objContract, 'event', false);
+							addContractEventIntoChat(objContract, 'event', false);
 
-						// swap addresses for peer chat message
-						objContract.peer_address = [objContract.my_address, objContract.my_address = objContract.peer_address][0];
-						delete objContract.peer_device_address;
-						chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), "utf8").toString("base64") + ")";
-						device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "text", chat_message);
-
-						$timeout(function() {
-							$modalInstance.dismiss("revoke");
+							$timeout(function() {
+								$modalInstance.dismiss("revoke");
+							});
 						});
 					};
 

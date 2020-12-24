@@ -253,7 +253,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbiter '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
 			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
 				return null;
@@ -495,7 +495,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbiter '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
