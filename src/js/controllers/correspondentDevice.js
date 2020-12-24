@@ -684,12 +684,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								my_contact_info: contactInfo
 							}, function(objContract) {
 								correspondentService.listenForArbiterContractResponse();
-								var chat_message = "(arbiter-contract:" + Buffer.from(JSON.stringify(objContract), 'utf8').toString('base64') + ")";
-								var body = correspondentListService.formatOutgoingMessage(chat_message);
-								correspondentListService.addMessageEvent(false, correspondent.device_address, body);
-								device.readCorrespondent(correspondent.device_address, function(correspondent) {
-									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
-								});
+								correspondentService.addContractEventIntoChat(objContract, 'offer', false);
 								$modalInstance.dismiss('sent');
 							});
 							arbiters.getInfo(arbiter_address);
@@ -1792,11 +1787,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		correspondentService.showProsaicContractOfferModal($scope, objContract.hash, isIncoming, indexScope.getSigningDeviceAddresses);
 	};
 
-	$scope.showArbiterContractOffer = function(contractJsonBase64, isIncoming){
-		var objContract = correspondentListService.getProsaicContractFromJsonBase64(contractJsonBase64);
-		if (!objContract)
-			throw Error('failed to parse the already validated base64 arbiter contract '+contractJsonBase64);
-		correspondentService.showArbiterContractOfferModal($scope, objContract.hash, isIncoming, indexScope.getSigningDeviceAddresses);
+	$scope.showArbiterContractOffer = function(hash){
+		correspondentService.showArbiterContractOfferModal($scope, hash, indexScope.getSigningDeviceAddresses);
 	};
 
 	$scope.showDisputeRequest = function(disputeJsonBase64) {

@@ -2142,6 +2142,35 @@ form#contacts-order {
   margin-right: 8px;
 }
 
+.prosaic_contract_offer {
+	font-style: italic;
+}
+
+.arbiter_contract_offer {
+	font-style: italic;
+}
+.bubble a.arbiter_contract_event, .bubble.event a {
+	font-style: italic;
+	color: #008CBA;
+}
+.bubble.event {
+	background: transparent;
+	border: 1px solid #0B93F6;
+	color: #2C3E50;
+}
+.bubble.event:before {
+	display: none;
+}
+.bubble.event:after{
+	content: "system";
+	right: -20px;
+	background: transparent;
+	left: initial;
+	font-size: 8px;
+	color: grey;
+	width: 32px;
+	bottom: -10px;
+}
 
 .tab-view#chat .line-b:hover {
   box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);

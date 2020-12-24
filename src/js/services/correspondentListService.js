@@ -67,10 +67,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load){
+	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type){
 		if (!root.messageEventsByCorrespondent[peer_address] && !skip_history_load) {
 			return loadMoreHistory({device_address: peer_address}, function() {
-				addMessageEvent(bIncoming, peer_address, body, message_counter, true);
+				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type);
 			});
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -94,7 +94,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			bIncoming: bIncoming,
 			message: body,
 			timestamp: Math.floor(Date.now() / 1000),
-			message_counter: message_counter
+			message_counter: message_counter,
+			type: type
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
@@ -116,7 +117,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function insertMsg(messages, msg_obj) {
 		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
 			var message = messages[i];
-			if (message.message_counter === undefined || message.message_counter && msg_obj.message_counter > message.message_counter) {
+			if (!message.message_counter || message.message_counter && msg_obj.message_counter > message.message_counter) {
 				messages.splice(i+1, 0, msg_obj);
 				return;
 			}
@@ -246,11 +247,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
-		}).replace(/\(arbiter-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(/\(arbiter-contract-offer:(.+?)\)|\(arbiter-contract-event:(.+?)\)/g, function(str, contractJsonBase64offer, contractJsonBase64event){
+			var type = contractJsonBase64offer ? 'offer' : 'event';
+			var contractJsonBase64 = contractJsonBase64offer || contractJsonBase64event;
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Arbiter contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbiter '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
 			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
 				return null;
@@ -361,8 +364,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
-		if (!ValidationUtils.isValidAddress(objProsaicContract.my_address) || !objProsaicContract.text.length)
-			return null;
 		return objProsaicContract;
 	}
 	
@@ -488,11 +489,13 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
-		}).replace(/\(arbiter-contract:(.+?)\)/g, function(str, contractJsonBase64){
+		}).replace(/\(arbiter-contract-offer:(.+?)\)|\(arbiter-contract-event:(.+?)\)/g, function(str, contractJsonBase64offer, contractJsonBase64event){
+			var type = contractJsonBase64offer ? 'offer' : 'event';
+			var contractJsonBase64 = contractJsonBase64offer || contractJsonBase64event;
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+contractJsonBase64+'\', false)" class="arbiter_contract_offer">[Contract with arbiter '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+objContract.hash+'\')" class="arbiter_contract_'+type+'">[Contract with arbiter '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -730,7 +733,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						messageEvents.unshift({type: 'system', bIncoming: false, message: "<span class=\"system-span\">" + last_msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
 					last_msg_ts = msg_ts;
-					if (message.type == "text") {
+					if (message.type == "text" || message.type == "event") {
 						if (message.is_incoming) {
 							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
 							message.message.text = text2html(message.message.text);

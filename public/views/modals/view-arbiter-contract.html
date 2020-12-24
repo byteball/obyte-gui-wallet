@@ -157,11 +157,11 @@ form[name="prosaicContractForm"] {
 	<div class="row m20t" ng-if="(status == 'pending' || (status === 'accepted' && !unit)) && isIncoming && index.isEnoughSignersSelected()">
 		<div class="large-6 medium-6 small-6 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
-				<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
+				<i ng-class="yes_icon"></i> <span>{{(confirm_label || (status == 'pending' ? 'Accept' : 'Retry signing'))|translate}}</span>
 			</button>
 		</div>
 
-		<div class="large-6 medium-6 small-6 columns">
+		<div class="large-6 medium-6 small-6 columns" ng-if="status == 'pending'">
 			<button class="button expand round" ng-class="cancel_button_class" ng-click="decline()">
 				<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
 			</button>
