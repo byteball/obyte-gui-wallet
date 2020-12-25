@@ -617,7 +617,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						// read again, as we might already updated contract status by network in background
 						prosaic_contract.getByHash(objContract.hash, function(objContract){
 							if (objContract.status !== "pending")
-								return setError("contract status was changed, reopen it");
+								return setError("contract status has changed, reopen it");
 							prosaic_contract.setField(objContract.hash, "status", status);
 							prosaic_contract.respond(objContract, status, signedMessageBase64, require("ocore/wallet.js").getSigner());
 							objContract.status = status;
@@ -927,20 +927,23 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.revoke = function() {
-						if (objContract.status !== "pending")
-							return setError("contract status was changed, reopen it");
+						// read again, as we might already updated contract status by network in background
+						arbiter_contract.getByHash(objContract.hash, function(objContract){
+							if (objContract.status !== "pending")
+								return setError("contract status was changed, reopen it");
 
-						arbiter_contract.setField(objContract.hash, "status", "revoked", function(objContract) {
-							device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
-								hash: objContract.hash,
-								field: "status",
-								value: objContract.status
-							});
+							arbiter_contract.setField(objContract.hash, "status", "revoked", function(objContract) {
+								device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
+									hash: objContract.hash,
+									field: "status",
+									value: objContract.status
+								});
 
-							addContractEventIntoChat(objContract, 'event', false);
+								addContractEventIntoChat(objContract, 'event', false);
 
-							$timeout(function() {
-								$modalInstance.dismiss("revoke");
+								$timeout(function() {
+									$modalInstance.dismiss("revoke");
+								});
 							});
 						});
 					};
