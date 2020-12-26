@@ -140,7 +140,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	wallet: {
 	  requiredCosigners: 2,
 	  totalCosigners: 3,
-	  spendUnconfirmed: false,
+	  spendUnconfirmed: true,
 	  reconnectDelay: 5000,
 	  idleDurationMin: 4,
 	  singleAddress: false,
