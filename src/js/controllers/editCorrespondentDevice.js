@@ -73,7 +73,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	};
 
 	$scope.showArbiterContract = function(hash){
-		correspondentService.showArbiterContractOfferModal($scope, hash, false, function(){});
+		correspondentService.showArbiterContractOfferModal($scope, hash, indexScope.getSigningDeviceAddresses);
 	};
 
 	$scope.save = function() {

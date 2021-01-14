@@ -70,9 +70,9 @@ form[name="prosaicContractForm"] {
 			<div class="attestor"><span translate>address</span>: {{plaintiff_address}}</div>
 			<div class="attestor"><a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> | <a ng-click="resolve(plaintiff_address)" class="text-warning" translate>Resolve with this side as a winner</a></div>
 			<li class="tumbler m15t">
-				<span translate class="m10r side" ng-class="{active: payer == 'peer'}">Seller</span>
+				<span translate class="m10r side">Seller</span>
 		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
-				<span translate class="m10l side" ng-class="{active: payer == 'plaintiff'}">Buyer</span>
+				<span translate class="m10l side">Buyer</span>
 		    </li>
 		</div>
 	<h3 class="person title" translate>Peer</h3>
@@ -118,49 +118,5 @@ form[name="prosaicContractForm"] {
 			<span class="has-error size-12">
 			{{error}}
 		</span>
-	</div>
-	
-	<div class="row m20t" ng-if="status == 'pending' && isIncoming && index.isEnoughSignersSelected()">
-		<div class="large-6 medium-6 small-6 columns">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
-				<i ng-class="yes_icon"></i> <span>{{(confirm_label || 'Accept')|translate}}</span>
-			</button>
-		</div>
-
-		<div class="large-6 medium-6 small-6 columns">
-			<button class="button expand round" ng-class="cancel_button_class" ng-click="decline()">
-				<i class="fi-x"></i> <span class="tu">{{(cancel_label || 'Decline')|translate}}</span>
-			</button>
-		</div> 
-
-		<div class="small-12 columns size-14" translate>
-			After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response.
-		</div>
-	</div>
-
-	<div class="row columns m20t">
-		<div class="large-12 medium-12 small-12 columns">
-			<button class="button expand round" ng-show="status === 'pending' && !isIncoming" ng-class="cancel_button_class" ng-click="revoke()">
-				<i class="fi-x"></i> <span class="tu" translate>Revoke</span>
-			</button>
-		</div>
-	</div>
-
-	<div class="row columns m20t">
-		<div class="large-12 medium-12 small-12 columns">
-			<button class="button expand round" ng-show="status === 'accepted' && !!me_is_payer && !!unit" ng-class="yes_button_class" ng-click="pay()">
-				<i class="yes_icon"></i> <span class="tu" translate>Pay</span>
-			</button>
-		</div>
-	</div>
-
-	<div class="row columns m20t">
-		<div class="large-12 medium-12 small-12 columns center" ng-show="status === 'paid' && !!unit">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
-				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Complete':'Cancel'}}</span>
-			</button>
-
-			<span ng-click="dispute()" translate class="validation_check">open dispute</span>
-		</div>
 	</div>
 </div>

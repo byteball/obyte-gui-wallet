@@ -666,6 +666,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 									cosigners.push(copayer.device_address);
 								});
 							}
+							lodash.remove(cosigners, function(c){return c == device.getMyDeviceAddress()});
 							arbiter_contract.createAndSend({
 								hash: hash,
 								peer_address: address,
