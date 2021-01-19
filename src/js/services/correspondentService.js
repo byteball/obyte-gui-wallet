@@ -415,6 +415,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							(winner === contract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 								"You can appeal to arbiter's decision from the contract view.");
 						addContractEventIntoChat(objContract, "event", true, text);
+						eventBus.on("not_my_stable-"+unit, function(){
+							addContractEventIntoChat(objContract, "event", true, "You can now claim your funds from the contract");
+						});
 					});
 				};
 				db.query("SELECT DISTINCT unit FROM unit_authors WHERE address=?", [contract.arbiter_address], function(rows){
@@ -457,6 +460,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		}
 		if (field === 'status' && value === 'revoked') {
 			addContractEventIntoChat(objContract, "event", true);	
+		}
+		if (field === 'status' && value === 'in_appeal') {
+			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
 		}
 	});
 
@@ -1141,12 +1147,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								return;
 							}
 							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-								var text = "\"" + objContract.title +"\" contract is in appeal now. Moderator is notified. Wait for him to get online and pair with both contract parties.";
-								correspondentListService.addMessageEvent(false, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(text));
-								device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
-									if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
-								});
-								device.sendMessageToDevice(objContract.peer_device_address, "text", text);
+								addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for him to get online and pair with both contract parties.");
 								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
 									hash: objContract.hash,
 									field: "status",
