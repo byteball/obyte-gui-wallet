@@ -4,6 +4,9 @@ var constants = require("ocore/constants.js");
 var eventBus = require("ocore/event_bus.js");
 var ValidationUtils = require("ocore/validation_utils.js");
 var objectHash = require("ocore/object_hash.js");
+var wallet_general = require('ocore/wallet_general.js');
+var arbiter_contract = require("ocore/arbiter_contract.js");
+var storage = require("ocore/storage.js");
 
 angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService) {
 	var root = {};
@@ -61,7 +64,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function listenForProsaicContractResponse(contracts) {
 		var prosaic_contract = require("ocore/prosaic_contract.js");
-		var storage = require("ocore/storage.js");
 
 		var showError = function(msg) {
 			$rootScope.$emit("Local/ShowErrorAlert", msg);
@@ -201,9 +203,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	}
 
 	function listenForArbiterContractResponse() {
-		var arbiter_contract = require("ocore/arbiter_contract.js");
-		var storage = require("ocore/storage.js");
-
 		var showError = function(msg) {
 			$rootScope.$emit("Local/ShowErrorAlert", msg);
 		}
@@ -396,57 +395,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		})
 	});
 
-	function listenForArbiterResponse() {
-		var arbiter_contract = require("ocore/arbiter_contract.js");
-		var network = require("ocore/network.js");
-		var storage = require("ocore/storage.js");
-		
-		var showError = function(msg) {
-			$rootScope.$emit("Local/ShowErrorAlert", msg);
-		};
-
-		var start_listening = function(contracts) {
-			contracts.forEach(function(contract){
-				var setResolved = function(winner, unit) {
-					arbiter_contract.setField(contract.hash, "resolution_unit", unit);
-					arbiter_contract.setField(contract.hash, "status", "dispute_resolved", function(objContract) {
-						var text = "Arbiter resolved contract dispute " + (winner == contract.my_address ? "in your favor." : "in favor of your peer."); 
-						text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
-							(winner === contract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
-								"You can appeal to arbiter's decision from the contract view.");
-						addContractEventIntoChat(objContract, "event", true, text);
-						eventBus.on("not_my_stable-"+unit, function(){
-							addContractEventIntoChat(objContract, "event", true, "You can now claim your funds from the contract");
-						});
-					});
-				};
-				db.query("SELECT DISTINCT unit FROM unit_authors WHERE address=?", [contract.arbiter_address], function(rows){
-					rows.forEach(function(row){
-						storage.readUnit(row.unit, function(objUnit) {
-							var winner = parseWinnerFromUnit(contract, objUnit);
-							if (!winner) {
-								return;
-							}
-							setResolved(winner, objUnit.unit);
-						});	
-					});
-				});
-				network.requestHistoryAfterMCI([], [contract.arbiter_address], contract.dispute_mci, function(){});
-				eventBus.on("saved_unit", function(objJoint) {
-					var winner = parseWinnerFromUnit(contract, objJoint.unit);
-					if (!winner) {
-						return;
-					}
-					setResolved(winner, objJoint.unit.unit);
-				});
-			});
-		};
-
-		arbiter_contract.getAllByStatus("in_dispute", function(contracts){
-			start_listening(contracts);
-		});
-	}
-
 	eventBus.on("arbiter_contract_update", function(objContract, field, value) {
 		if (field === "unit") {
 			var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + value;
@@ -454,16 +402,63 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
-		if (field === "dispute_mci") {
-			listenForArbiterResponse();
-			addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
-		}
 		if (field === 'status' && value === 'revoked') {
 			addContractEventIntoChat(objContract, "event", true);	
+		}
+		if (field === 'status' && value === 'in_dispute') {
+			wallet_general.addWatchedAddress(objContract.arbiter_address); // listen for arbiter response
+			addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
 		}
 		if (field === 'status' && value === 'in_appeal') {
 			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
 		}
+	});
+
+	// listen for arbiter response
+	eventBus.on("saved_unit", function(objJoint) {
+		var objUnit = objJoint.unit;
+		var address = objUnit.authors[0].address;
+		arbiter_contract.getAllByArbiterAddress(address, function(contracts) {
+			contracts.forEach(function(objContract) {
+				if (objContract.status !== "in_dispute")
+					return;
+				var winner = parseWinnerFromUnit(objContract, objUnit);
+				if (!winner) {
+					return;
+				}
+				var unit = objJoint.unit.unit;
+				arbiter_contract.setField(objContract.hash, "resolution_unit", unit);
+				arbiter_contract.setField(objContract.hash, "status", "dispute_resolved", function(objContract) {
+					var text = "Arbiter resolved contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
+					text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
+						(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
+							"You can appeal to arbiter's decision from the contract view.");
+					addContractEventIntoChat(objContract, "event", true, text);
+				});
+			});
+		});
+	});
+
+	// arbiter response stabilized
+	eventBus.on("my_transactions_became_stable", function(units) {
+		db.query("SELECT * FROM wallet_arbiter_contracts WHERE resolution_unit IN (?)", [units], function(rows) {
+			rows.forEach(function(objContract) {
+				storage.readUnit(objContract.resolution_unit, function(objUnit) {
+					var winner = parseWinnerFromUnit(objContract, objUnit);
+					if (winner == objContract.my_address)
+						addContractEventIntoChat(objContract, "event", true, "You can now claim your funds from the contract");
+					var count = 0;
+					arbiter_contract.getAllByArbiterAddress(objContract.arbiter_address, function(contracts) {
+						contracts.forEach(function(objContract) {
+							if (objContract.status === "in_dispute")
+								count++;
+						});
+						if (count == 0)
+							wallet_general.removeWatchedAddress(objContract.arbiter_address);
+					});
+				});
+			});
+		})
 	});
 
 	function parseWinnerFromUnit(contract, objUnit) {
@@ -486,7 +481,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	// check if its an arbiter_contract deposit
 	var db = require("ocore/db.js");
-	var arbiter_contract = require("ocore/arbiter_contract.js");
 	eventBus.on("new_my_transactions", function(arrNewUnits) {
 		// arb contract payment
 		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
@@ -526,7 +520,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			});
 		}
 		else
-			require("ocore/storage.js").readLastMainChainIndex(function(last_mci){
+			storage.readLastMainChainIndex(function(last_mci){
 				cb(null, last_mci);
 			})
 	}
@@ -753,7 +747,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function showArbiterContractOfferModal($scope, hash, getSigningDeviceAddresses){
 		$rootScope.modalOpened = true;
-		var arbiter_contract = require("ocore/arbiter_contract.js");
 		arbiter_contract.getByHash(hash, function(objContract){
 			if (!objContract)
 				throw Error("no contract found in database");
@@ -795,7 +788,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						})
 					}
 					if (objContract.resolution_unit) {
-						require("ocore/storage.js").readUnit(objContract.resolution_unit, function(objUnit) {
+						storage.readUnit(objContract.resolution_unit, function(objUnit) {
 							$scope.me_is_winner = parseWinnerFromUnit(objContract, objUnit) === objContract.my_address;
 							$timeout(function() {
 								$rootScope.$apply();
@@ -1053,37 +1046,25 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						}
 						profileService.bKeepUnlocked = true;
 
-						arbiter_contract.openDispute(objContract.hash, function(err, res) {
+						arbiter_contract.openDispute(objContract.hash, function(err, re, objContract) {
 							if (err) {
 								setError(err);
 								return;
 							}
-							root.readLastMainChainIndex(function(err, last_mci){
-								if (err) {
-									setError(err);
-									return;
-								}
-								arbiter_contract.setField(objContract.hash, "dispute_mci", last_mci, function(objContract) {
-									require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-										addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
-										device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
-											hash: objContract.hash,
-											field: "status",
-											value: "in_dispute"
-										});
-										device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
-											hash: objContract.hash,
-											field: "dispute_mci",
-											value: last_mci
-										});
-
-										listenForArbiterResponse();
-
-										stop_loading();
-										$modalInstance.dismiss();
-									});	
+							
+							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
+								addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
+									hash: objContract.hash,
+									field: "status",
+									value: "in_dispute"
 								});
-							});
+								
+								wallet_general.addWatchedAddress(objContract.arbiter_address); // listen for arbiter response
+
+								stop_loading();
+								$modalInstance.dismiss();
+							});	
 						});
 					}
 
@@ -1247,7 +1228,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	};	
 
 	function addContractEventIntoChat(objContract, type, isIncoming, description) {
-		var arbiter_contract = require("ocore/arbiter_contract.js");
 		device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
 			arbiter_contract.meIsCosigner(objContract, function(res) {
 				if (!correspondent || res) // we are a cosigner
@@ -1261,7 +1241,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function showDisputeRequestModal($scope, disputeJsonBase64){
 		$rootScope.modalOpened = true;
-		var arbiter_contract = require("ocore/arbiter_contract.js");
 		var strJSON = Buffer.from(disputeJsonBase64, "base64").toString("utf8");
 		var objDispute = JSON.parse(strJSON);
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
@@ -1365,7 +1344,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						{
 							app: "data_feed",
 							payload_location: "inline",
-							payload_hash: objectHash.getBase64Hash(data_payload, require("ocore/storage.js").getMinRetrievableMci() >= constants.timestampUpgradeMci),
+							payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
 							payload: data_payload
 						}
 					]
@@ -1424,7 +1403,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
 	root.listenForProsaicContractResponse = listenForProsaicContractResponse;
 	root.listenForArbiterContractResponse = listenForArbiterContractResponse;
-	root.listenForArbiterResponse = listenForArbiterResponse;
 	root.readLastMainChainIndex = readLastMainChainIndex;
 	root.showProsaicContractOfferModal = showProsaicContractOfferModal;
 	root.showArbiterContractOfferModal = showArbiterContractOfferModal;
@@ -1433,7 +1411,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	root.listenForProsaicContractResponse();
 	root.listenForArbiterContractResponse();
-	root.listenForArbiterResponse();
 
 	return root;
 });
