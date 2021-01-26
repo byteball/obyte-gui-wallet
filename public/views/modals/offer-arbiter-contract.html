@@ -113,8 +113,8 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		<div class="name p10l">
 			<span class="first_name">{{my_first_name}}</span>
 			<span class="last_name">{{my_last_name}}</span>
-			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
+			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<li class="tumbler m15t">
 				<span translate class="m10r side" ng-class="{active: !form.me_is_payer}">Seller</span>
 		        <switch ng-model="form.me_is_payer" class="blue"></switch>
@@ -127,8 +127,8 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		<div class="name p10l">
 			<span class="first_name">{{peer_first_name}}</span>
 			<span class="last_name">{{peer_last_name}}</span>
-			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 		</div>
 		<br>
 		<div class="person title" translate>Amount:</div><br>
@@ -156,7 +156,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		<br>
 		<div class="contact_info title" translate>My contacts: <span class="description">(optional)</span></div>
 		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.contactInfo" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
-		<div class="help-text">It will be shared with peer and arbiter as a backup method to reach you.</div>
+		<div class="help-text">They will be shared with peer and arbiter as a backup method to reach you.</div>
 
 		<div ng-if="index.m < index.n && index.m > 1">
 			<h3 class="title" translate>Cosigners</h3>

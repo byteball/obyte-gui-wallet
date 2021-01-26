@@ -4,14 +4,14 @@ var constants = require("ocore/constants.js");
 var eventBus = require("ocore/event_bus.js");
 var ValidationUtils = require("ocore/validation_utils.js");
 var objectHash = require("ocore/object_hash.js");
-var wallet_general = require('ocore/wallet_general.js');
-var arbiter_contract = require("ocore/arbiter_contract.js");
-var storage = require("ocore/storage.js");
 
 angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService) {
 	var root = {};
 	var device = require("ocore/device.js");
 	var chatStorage = require("ocore/chat_storage.js");
+	var wallet_general = require('ocore/wallet_general.js');
+	var arbiter_contract = require("ocore/arbiter_contract.js");
+	var storage = require("ocore/storage.js");
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
 		var privateProfile = require("ocore/private_profile.js");
@@ -352,23 +352,24 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 							// set contract's unit field
 							arbiter_contract.setField(contract.hash, "unit", unit);
+							arbiter_contract.setField(contract.hash, "status", "signed", function(contract) {
+								var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + unit;
+								var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
+								var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+								addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 
-							var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + unit;
-							var payer_guidance_text = '\n\nNow you can pay to the contract for seller services by opening the contract window.';
-							var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
-							addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
-
-							// share new contract fields (shared address and unit) to peer & my cosigners
-							contract.cosigners.concat([contract.peer_device_address]).forEach(function(cosigner) {
-								device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
-									hash: contract.hash,
-									field: "shared_address",
-									value: shared_address
-								});
-								device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
-									hash: contract.hash,
-									field: "unit",
-									value: unit
+								// share new contract fields (shared address and unit) to peer & my cosigners
+								contract.cosigners.concat([contract.peer_device_address]).forEach(function(cosigner) {
+									device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
+										hash: contract.hash,
+										field: "shared_address",
+										value: shared_address
+									});
+									device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
+										hash: contract.hash,
+										field: "unit",
+										value: unit
+									});
 								});
 							});
 						});
@@ -385,7 +386,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			start_listening(contracts);
 		});
 		arbiter_contract.getAllByStatus("accepted", function(contracts){ // this is for accepted contracts which were not signed (multisig wait failed)
-			start_listening(lodash.filter(contracts, function(c) {return !c.unit}));
+			start_listening(contracts);
 		});
 	}
 
@@ -406,7 +407,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			addContractEventIntoChat(objContract, "event", true);	
 		}
 		if (field === 'status' && value === 'in_dispute') {
-			wallet_general.addWatchedAddress(objContract.arbiter_address); // listen for arbiter response
+			db.query("INSERT INTO my_watched_addresses (address) VALUES (?)", [objContract.arbiter_address]); // listen for arbiter response
 			addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
 		}
 		if (field === 'status' && value === 'in_appeal') {
@@ -485,13 +486,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		// arb contract payment
 		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
 			JOIN outputs ON outputs.address=wallet_arbiter_contracts.shared_address\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='accepted'\n\
+			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='signed'\n\
 			GROUP BY outputs.address\n\
 			HAVING SUM(outputs.amount) >= wallet_arbiter_contracts.amount", [arrNewUnits], function(rows) {
 				rows.forEach(function(row) {
 					arbiter_contract.getByHash(row.hash, function(contract){
 						arbiter_contract.setField(contract.hash, "status", "paid", function(objContract) {
-							addContractEventIntoChat(objContract, 'event', true, 'contract was paid, unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nYou can start fulfilling your contract obligations.');	
+							addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nYou can start fulfilling your contract obligations.');	
 						});
 					});
 				});
@@ -506,7 +507,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					arbiter_contract.getByHash(row.hash, function(contract){
 						var status = contract.me_is_payer ? "cancelled" : "completed";
 						arbiter_contract.setField(contract.hash, "status", status, function(objContract) {
-							addContractEventIntoChat(objContract, 'event', true, 'contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nFunds locked on contract were sent to you.');	
+							addContractEventIntoChat(objContract, 'event', true, 'Contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nFunds locked on contract were sent to you.');	
 						});
 					});
 				});
@@ -594,7 +595,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
 							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, body);
 							if (correspondentListService.currentCorrespondent.my_record_pref && correspondentListService.currentCorrespondent.peer_record_pref) chatStorage.store(correspondentListService.currentCorrespondent.device_address, chat_message, 0, "text");
-							// share accepted contract to previously saced cosigners
+							// share accepted contract to previously saved cosigners
 							if (status == "accepted") {
 								cosigners.forEach(function(cosigner){
 									prosaic_contract.share(objContract.hash, cosigner);
@@ -790,8 +791,15 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					if (objContract.resolution_unit) {
 						storage.readUnit(objContract.resolution_unit, function(objUnit) {
 							$scope.me_is_winner = parseWinnerFromUnit(objContract, objUnit) === objContract.my_address;
-							$timeout(function() {
-								$rootScope.$apply();
+
+							// hide "claim funds" button if not enough balance on the contract (already claimed)
+							require("ocore/wallet.js").readBalance(objContract.shared_address, function(balances) {
+								var asset = objContract.asset || 'base';
+								if (!balances[asset] || balances[asset].total < objContract.amount)
+									$scope.funds_claimed = true;
+								$timeout(function() {
+									$rootScope.$apply();
+								});
 							});
 						});
 					}
@@ -847,7 +855,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					var respond = function(status, signedMessageBase64) {
 						// read again, as we might already updated contract status by network in background
 						arbiter_contract.getByHash(objContract.hash, function(objContract){
-							if (objContract.status !== "pending" && !(objContract.status === "accepted" && !objContract.unit))
+							if (objContract.status !== "pending" && objContract.status !== "accepted")
 								return setError("contract status was changed, reopen it");
 							arbiter_contract.setField(objContract.hash, "status", status, function(objContract) {
 								addContractEventIntoChat(objContract, 'event', false);
@@ -917,7 +925,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.pay = function() {
-						if (!objContract.shared_address || objContract.status !== "accepted")
+						if (!objContract.shared_address || objContract.status !== "signed")
 							return setError("contract can't be paid");
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
@@ -961,7 +969,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							$rootScope.$emit("NewOutgoingTx");
 
 							arbiter_contract.setField(objContract.hash, "status", "paid", function(objContract){
-								addContractEventIntoChat(objContract, 'event', false, 'contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
+								addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
 								// peer will handle payment on his side by his own, checking incoming transactions
 								$modalInstance.dismiss();
 							});
@@ -1018,7 +1026,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 							var status = objContract.me_is_payer ? "completed" : "cancelled";
 							arbiter_contract.setField(objContract.hash, "status", status, function(objContract){
-								addContractEventIntoChat(objContract, 'event', false, 'contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFund were sent to the peer.');
+								addContractEventIntoChat(objContract, 'event', false, 'Contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
 							});
 							
 							// peer will handle completion on his side by his own, checking incoming transactions
@@ -1060,7 +1068,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									value: "in_dispute"
 								});
 								
-								wallet_general.addWatchedAddress(objContract.arbiter_address); // listen for arbiter response
+								db.query("INSERT INTO my_watched_addresses (address) VALUES (?)", [objContract.arbiter_address]); // listen for arbiter response
 
 								stop_loading();
 								$modalInstance.dismiss();
@@ -1097,6 +1105,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									return setError(err);
 								}
 								$rootScope.$emit("NewOutgoingTx");
+
+								addContractEventIntoChat(objContract, "event", false, "Funds from the contract were sent to your address: " + objContract.my_address);
 								
 								$modalInstance.dismiss();
 							});

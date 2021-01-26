@@ -264,7 +264,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			catch(e){
 				return '[invalid dispute request]';
 			}	
-			return toDelayedReplacement('<a ng-click="showDisputeRequest(\''+disputeJsonBase64+'\')" class="prosaic_contract_offer">Dispute request for contract "'+objDispute.contract_content.title+'" on ' + objDispute.contract_content.creation_date + ' [' + objDispute.contract_hash.substr(0, 8) + '...]</a><br><br><a ng-click="suggestCommand(\''+objDispute.contract_hash+' 10000 [optional comment]\')" class="suggest-command">Set my service fee for this contract with a comment</a>');
+			return toDelayedReplacement('<a ng-click="showDisputeRequest(\''+disputeJsonBase64+'\')" class="prosaic_contract_offer">Dispute request for contract "'+objDispute.contract_content.title+'" on ' + objDispute.contract_content.creation_date + ' [' + objDispute.contract_hash.substr(0, 8) + '...]</a><br><br><a ng-click="suggestCommand(\''+objDispute.contract_hash+' 10000 [Contract '+lodash.escape('"' + objDispute.contract_content.title + '"')+': optional comment]\')" class="suggest-command">Set my service fee for this contract with a comment</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -925,8 +925,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								[addresses],
 								rows => {
 									var row = rows[0];
-									if (!row)
+									if (!row) {
+										delete $rootScope.newPaymentsCount[unit];
 										return console.log("failed to find our wallet for payment in unit " + unit);
+									}
 									$rootScope.newPaymentsDetails[unit] = {
 										receivedAddress: row.shared_address,
 										walletAddress: row.address,
