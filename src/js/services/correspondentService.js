@@ -430,7 +430,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				var unit = objJoint.unit.unit;
 				arbiter_contract.setField(objContract.hash, "resolution_unit", unit);
 				arbiter_contract.setField(objContract.hash, "status", "dispute_resolved", function(objContract) {
-					var text = "Arbiter resolved contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
+					var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
 					text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
 						(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 							"You can appeal to arbiter's decision from the contract view.");
@@ -1128,7 +1128,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							return setError("contract can't be appealed");
 						}
 
-						arbiter_contract.appeal(objContract.hash, function(err, res) {
+						arbiter_contract.appeal(objContract.hash, function(err, res, objContract) {
 							if (err) {
 								setError(err);
 								return;
