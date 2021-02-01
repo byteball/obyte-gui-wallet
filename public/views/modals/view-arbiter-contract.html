@@ -58,6 +58,11 @@ form[name="prosaicContractForm"] {
 .spinner > div {
 	background-color: #008CBA;
 }
+.ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -183,7 +188,7 @@ form[name="prosaicContractForm"] {
 	<div class="row columns m20t" ng-show="status === 'signed' && !!me_is_payer">
 		<div class="large-12 medium-12 small-12 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="pay()">
-				<i class="yes_icon"></i> <span class="tu" translate>Pay {{amountStr}} {{asset}}</span>
+				<span class="ellipsis"><i class="yes_icon"></i> <span class="tu" translate>Pay</span> {{amountStr}} {{asset}}</span>
 			</button>
 		</div>
 	</div>
@@ -230,12 +235,12 @@ form[name="prosaicContractForm"] {
 	</div>
 
 	<div class="row columns m20t" ng-show="status === 'dispute_resolved' || (status === 'in_appeal' && me_is_winner)">
-		<div ng-class="{'small-6': !me_is_winner, 'small-12':me_is_winner}" class="columns" ng-show="me_is_winner && !funds_claimed">
+		<div class="small-12 columns" ng-show="me_is_winner && !funds_claimed">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="claim()">
 				<i class="yes_icon"></i> <span class="tu" translate>Claim funds</span>
 			</button>
 		</div>
-		<div class="large-6 medium-6 small-6 columns" ng-show="!me_is_winner">
+		<div class="small-12 columns" ng-show="!me_is_winner">
 			<button class="button expand outline dark-gray round" ng-click="appeal()">
 				<span class="tu" translate>Appeal to moderator</span>
 			</button>

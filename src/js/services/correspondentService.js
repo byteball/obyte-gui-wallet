@@ -81,7 +81,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					if (profileService.focusedClient.isPrivKeyEncrypted()) {
 						profileService.unlockFC(null, function(err) {
 							if (err){
-								showError(err);
+								showError(err.message);
 								return;
 							}
 							sendUnit(accepted, authors);
@@ -213,12 +213,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 				// sendUnit can be called multiple times, as we now allow "accepting" the same contract multiple times in case previous tries fail
 				var sendUnit = function(contract){
-					var chat_message = "(arbiter-contract-event:" + Buffer.from(JSON.stringify({hash: contract.hash, title: contract.title, status: contract.status}), 'utf8').toString('base64') + ")";
-					correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, 'event');
-					device.readCorrespondent(contract.peer_device_address, function(correspondent) {
-						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(contract.peer_device_address, chat_message, 1, "event");
-					});
-
 					if (contract.status != 'accepted') {
 						return;
 					}
@@ -226,13 +220,19 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					if (profileService.focusedClient.isPrivKeyEncrypted()) {
 						profileService.unlockFC(null, function(err) {
 							if (err){
-								showError(err);
+								showError(err.message);
 								return;
 							}
 							sendUnit(contract);
 						});
 						return;
 					}
+
+					var chat_message = "(arbiter-contract-event:" + Buffer.from(JSON.stringify({hash: contract.hash, title: contract.title, status: contract.status}), 'utf8').toString('base64') + ")";
+					correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, 'event');
+					device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+						if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(contract.peer_device_address, chat_message, 1, "event");
+					});
 					
 					root.readLastMainChainIndex(function(err, last_mci){
 						if (err){
@@ -930,7 +930,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
-									setError(err);
+									setError(err.message);
 									return;
 								}
 								$scope.pay();
@@ -994,7 +994,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
-									setError(err);
+									setError(err.message);
 									return;
 								}
 								$scope.complete();
@@ -1045,7 +1045,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
-									setError(err);
+									setError(err.message);
 									return;
 								}
 								$scope.complete();
@@ -1114,7 +1114,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
-									setError(err);
+									setError(err.message);
 									return;
 								}
 								claim();
@@ -1335,7 +1335,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				if (profileService.focusedClient.isPrivKeyEncrypted()) {
 					profileService.unlockFC(null, function(err) {
 						if (err){
-							setError(err);
+							setError(err.message);
 							return;
 						}
 						$scope.complete();
