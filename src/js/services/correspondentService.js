@@ -1055,7 +1055,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									setError(err.message);
 									return;
 								}
-								$scope.complete();
+								$scope.dispute();
 							});
 							return;
 						}
