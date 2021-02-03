@@ -58,7 +58,7 @@ form[name="prosaicContractForm"] {
 .spinner > div {
 	background-color: #008CBA;
 }
-.ellipsis {
+.textellipsis {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: inline-block;
@@ -189,7 +189,7 @@ form[name="prosaicContractForm"] {
 	<div class="row columns m20t" ng-show="status === 'signed' && !!me_is_payer">
 		<div class="large-12 medium-12 small-12 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="pay()">
-				<span class="ellipsis"><i class="yes_icon"></i> <span class="tu" translate>Pay</span> {{amountStr}} {{assetMetadata ? '' : asset}}</span>
+				<span class="textellipsis"><i class="yes_icon"></i> <span class="tu" translate>Pay</span> {{amountStr}} {{assetMetadata ? '' : asset}}</span>
 			</button>
 		</div>
 	</div>
