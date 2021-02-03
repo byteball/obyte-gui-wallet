@@ -111,7 +111,7 @@ form[name="prosaicContractForm"] {
 		</div>
 
 	<h3 class="title" translate>Amount</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">of {{assetMetadata ? assetMetadata.name : asset}}</i></span>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
 
 	<h3 class="title" translate>Title of contract</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{title}}</span>
@@ -189,7 +189,7 @@ form[name="prosaicContractForm"] {
 	<div class="row columns m20t" ng-show="status === 'signed' && !!me_is_payer">
 		<div class="large-12 medium-12 small-12 columns">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="pay()">
-				<span class="ellipsis"><i class="yes_icon"></i> <span class="tu" translate>Pay</span> {{amountStr}} {{assetMetadata ? assetMetadata.name : asset}}</span>
+				<span class="ellipsis"><i class="yes_icon"></i> <span class="tu" translate>Pay</span> {{amountStr}} {{assetMetadata ? '' : asset}}</span>
 			</button>
 		</div>
 	</div>
