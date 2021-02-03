@@ -1044,7 +1044,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.dispute = function() {
 						if ($scope.loading)
 							return;
-						start_loading();
 
 						if (objContract.status !== "paid") {
 							return setError("contract can't be disputed");
@@ -1060,6 +1059,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							return;
 						}
 						profileService.bKeepUnlocked = true;
+
+						start_loading();
 
 						arbiter_contract.openDispute(objContract.hash, function(err, re, objContract) {
 							if (err) {
