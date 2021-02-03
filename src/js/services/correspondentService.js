@@ -775,12 +775,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 
-					require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
-						$scope.assetMetadata = assetMetadata[$scope.asset];
-						$timeout(function() {
-							$rootScope.$apply();
+					if ($scope.asset) {
+						require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+							$scope.assetMetadata = assetMetadata[$scope.asset];
+							$timeout(function() {
+								$rootScope.$apply();
+							});
 						});
-					});
+					}
 
 					if (objContract.unit) {
 						db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objContract.unit], function(rows) {
