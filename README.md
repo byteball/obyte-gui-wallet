@@ -10,7 +10,12 @@ TBD
 
 ## Installation
 
-Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7) and [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/).  These versions are recommended for easiest install but newer versions will work too.  If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both.
+Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7) and [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/).  These versions are recommended for easiest install but newer versions will work too.  If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Update npm to version >= 3.10.10, older version won't work anymore:
+```
+nvm install 5.12
+nvm use 5
+nvm install-latest-npm
+```
 
 Clone the source:
 
@@ -40,7 +45,7 @@ grunt
 ```
 If you are on Windows or using NW.js and Node.js versions other than recommended, see [NW.js instructions about building native modules](http://docs.nwjs.io/en/latest/For%20Users/Advanced/Use%20Native%20Node%20Modules/).
 
-After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again (e.g. from `obyte-gui-wallet/node_modules/sqlite3/lib/binding/node-v47-darwin-x64` to `obyte-gui-wallet/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`). If that didn't work, copy node_sqlite3.node from node_modules folder, which is got installed with installer file from obyte.org website.
+After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again (e.g. `cp -r node_modules/sqlite3/lib/binding/node-v47-darwin-x64 node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`). If that didn't work, copy node_sqlite3.node from node_modules folder, which is got installed with installer file from obyte.org website.
 
 Then run O<sub>byte</sub> desktop client:
 
@@ -57,7 +62,7 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 
 ### Android
 - Install jdk1.8 (9 and higher won't work)
-- Install Android SDK (from Android Studio)
+- Install Android SDK (install Android Studio and use its setup wizard to install latest SDK), then put `export ANDROID_HOME=~/Library/Android/sdk` inside your `~/.zshrc` or `~/.bash_profile`, then `yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses`
 - Install Cordova `npm install cordova -g`
 - Install [Gradle](https://gradle.org/install/) (macOS: `brew install gradle`)
 - Run `make android-debug`

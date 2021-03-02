@@ -5,7 +5,7 @@
 		</a>
 	</section>
 	<section class="middle tab-bar-section">
-		<h1 class="title ellipsis" ng-style="{'color':color}" translate>
+		<h1 class="title ellipsis" style="color: #4E4E4E !important" translate>
 			Choose private profile
 		</h1>
 	</section>
@@ -41,10 +41,10 @@
 						<span class="text-gray" translate>Attested address:</span><br>
 						<span class="enable_text_select">{{vars.selected_profile.address}}</span>
 						<div ng-if="vars.selected_profile.bCurrentAddress">
-							<span class="text-gray" translate>(current wallet)</span>
+							<span class="text-gray" translate>(current account)</span>
 						</div>
 						<div ng-if="!vars.selected_profile.bCurrentAddress">
-							<span class="text-gray" translate>(my other wallet)</span>
+							<span class="text-gray" translate>(my other account)</span>
 						</div>
 					</li>
 					<li class="m10b">

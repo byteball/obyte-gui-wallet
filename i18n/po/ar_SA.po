@@ -5,11 +5,13 @@ msgstr ""
 "Project-Id-Version: byteball\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Crowdin-Project: byteball\n"
+"X-Crowdin-Project-ID: 270960\n"
 "X-Crowdin-Language: ar\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
+"X-Crowdin-File-ID: 222\n"
 "Language-Team: Arabic\n"
 "Language: ar_SA\n"
-"PO-Revision-Date: 2020-06-11 17:32\n"
+"PO-Revision-Date: 2020-10-02 19:32\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -20,14 +22,14 @@ msgid "(The site won't see your balance and no money will be spent)"
 msgstr "(الموقع لن يرى رصيدك الحالي و لن يكون بإمكانه إنفاق أي من أموالك)"
 
 #: public/views/modals/choose-profile.html:44
-msgid "(current wallet)"
-msgstr "(المحفظة الحالية)"
+msgid "(current account)"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:47
-msgid "(my other wallet)"
-msgstr "(محفظتي الأخرى)"
+msgid "(my other account)"
+msgstr ""
 
-#: public/views/walletHome.html:787
+#: public/views/walletHome.html:867
 msgid "(possible double spend)"
 msgstr "(إنفاق مزدوج محتمل)"
 
@@ -39,7 +41,12 @@ msgstr "-- قم بإختيار المشارك--"
 msgid "12 words separated by dashes"
 msgstr "12 كلمة مفصولة بوصلات"
 
-#: public/views/walletHome.html:428
+#: public/views/modals/tx-details.html:167
+msgid "<i class=\"fi-refresh size-18 m5r\"></i>\n"
+"        Resend"
+msgstr ""
+
+#: public/views/walletHome.html:481
 msgid "AAs not allowed in multi-send"
 msgstr ""
 
@@ -49,7 +56,7 @@ msgstr "حول Obyte"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:144
+#: src/js/controllers/walletHome.js:222
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "الموافقة"
@@ -62,15 +69,50 @@ msgstr "قبول الدعوة"
 msgid "Accept invitation from the other device"
 msgstr "قبول الدعوة من جهاز أخر"
 
+#: public/views/preferencesDeleteWallet.html:12
 #: public/views/preferencesInformation.html:65
 msgid "Account"
 msgstr "الحساب"
 
-#: public/views/bot.html:36
+#: public/views/preferences.html:15
+msgid "Account Alias"
+msgstr ""
+
+#: public/views/preferencesInformation.html:27
+msgid "Account Configuration (m-n)"
+msgstr ""
+
+#: public/views/preferencesInformation.html:20
+msgid "Account Id"
+msgstr ""
+
+#: public/views/preferencesAdvanced.html:14
+#: public/views/preferencesInformation.html:8
+msgid "Account Information"
+msgstr ""
+
+#: public/views/preferencesInformation.html:12
+msgid "Account Name (at creation)"
+msgstr ""
+
+#: src/js/services/profileService.js:455
+msgid "Account already in Obyte:"
+msgstr ""
+
+#: public/views/create.html:48
+msgid "Account name"
+msgstr ""
+
+#: public/views/modals/destination-address.html:15
+#: public/views/modals/destination-address.html:29
+msgid "Accounts"
+msgstr ""
+
+#: public/views/bot.html:85
 msgid "Add Bot"
 msgstr "إضافة بوت"
 
-#: public/views/correspondentDevices.html:153
+#: public/views/correspondentDevices.html:202
 msgid "Add a new device"
 msgstr "أضف جهاز أخر"
 
@@ -79,24 +121,24 @@ msgstr "أضف جهاز أخر"
 msgid "Add a new entry"
 msgstr "أضف جهة إتصال جديدة"
 
+#: public/views/includes/sidebar.html:26
+msgid "Add account"
+msgstr ""
+
 #: public/views/preferencesEditRealNameAttestors.html:25
 msgid "Add address"
 msgstr "إضافة عنوان"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Add answer"
 msgstr "إضافة جواب"
 
-#: public/views/walletHome.html:532
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:585
+#: public/views/walletHome.html:740
 msgid "Add fields"
 msgstr "إضافة نطاق جديد"
 
-#: public/views/includes/sidebar.html:23
-msgid "Add wallet"
-msgstr "أضف محفظة جديدة"
-
-#: public/views/correspondentDevices.html:194
+#: public/views/correspondentDevices.html:244
 msgid "Added"
 msgstr "تمت الإضافة"
 
@@ -106,7 +148,7 @@ msgstr "تمت الإضافة"
 msgid "Address"
 msgstr "العنوان"
 
-#: public/views/walletHome.html:643
+#: public/views/walletHome.html:696
 msgid "Address to attest"
 msgstr "العناوين التي يجب تأكيدها"
 
@@ -124,11 +166,11 @@ msgstr "لائحة العناوين"
 msgid "Addresses"
 msgstr "العناوين"
 
-#: public/views/preferences.html:77
+#: public/views/preferences.html:76
 msgid "Advanced"
 msgstr "خيارات متقدمة"
 
-#: public/views/modals/view-prosaic-contract.html:134
+#: public/views/modals/view-prosaic-contract.html:141
 msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
 msgstr "بعد قبول العقد ، سيُطلب منك التوقيع على معاملة تحتوي على تجزئة هذا العقد. تحدث هذه الخطوة الثانية بمجرد تلقي مقدم العرض ردك."
 
@@ -145,8 +187,8 @@ msgid "Alias for"
 msgstr "الاسم المستعار ل"
 
 #: public/views/preferencesInformation.html:95
-msgid "All Wallet Addresses"
-msgstr "جميع عناوين المحافظ"
+msgid "All Account Addresses"
+msgstr ""
 
 #: public/views/translators.html:52
 msgid "All contributions to Obyte's translation are welcome. Sign up at crowdin.com and join the O<sub>byte</sub> project at"
@@ -156,11 +198,11 @@ msgstr "جميع المساهمات في ترجمة Obyte هي موضع ترحي
 msgid "Already Paid"
 msgstr "تم الدفع"
 
-#: src/js/controllers/correspondentDevice.js:1419
+#: src/js/controllers/correspondentDevice.js:1416
 msgid "Already saved"
 msgstr "تم الحفظ من قبل"
 
-#: public/views/walletHome.html:168
+#: public/views/walletHome.html:185
 msgid "Also"
 msgstr "أيضا"
 
@@ -168,7 +210,7 @@ msgstr "أيضا"
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr "كما ستجد في قائمة الإعدادات خيارات أمان مثل إنشاء كلمة المرور."
 
-#: public/views/walletHome.html:495
+#: public/views/walletHome.html:548
 msgid "Also send data..."
 msgstr "إرسال البيانات أيضًا..."
 
@@ -181,11 +223,11 @@ msgstr "و لا تنسى أن تقوم بحذف الـ seed الخاص بك"
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:379
+#: public/views/walletHome.html:431
 msgid "Amount"
 msgstr "المبلغ"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Answer"
 msgstr "إجابة"
 
@@ -194,8 +236,8 @@ msgid "Answer:"
 msgstr "الجواب:"
 
 #: public/views/copayers.html:19
-msgid "Approve wallet creation on other devices"
-msgstr "قبول إنشاء محفظة على أجهزة أخرى"
+msgid "Approve the account creation on other devices"
+msgstr ""
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -203,20 +245,16 @@ msgstr "هل أنت متأكد من أنك تريد حذف النسخ الإحت
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
-msgid "Are you sure you want to delete this wallet?"
-msgstr "هل ترغب فعلا في حذف هذه المحفظة؟"
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 #: public/views/modals/customized-amount.html:72
 msgid "Asset"
 msgstr "الممتلكات"
 
-#: public/views/walletHome.html:629
+#: public/views/walletHome.html:682
 msgid "Attest profile data linked to any Obyte address."
 msgstr "قم بالتحقق من بيانات بروفايل جميع عناوين Obyte."
-
-#: public/views/walletHome.html:345
-msgid "Attestation of any address"
-msgstr ""
 
 #: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
@@ -245,11 +283,11 @@ msgid "Available Balance"
 msgstr "الرصيد الحالي"
 
 #: public/views/acceptCorrespondentInvitation.html:13
-#: public/views/bot.html:13
+#: public/views/bot.html:62
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:75
+#: public/views/correspondentDevices.html:122
 #: public/views/editCorrespondentDevice.html:14
-#: public/views/includes/topbar.html:8
+#: public/views/includes/topbar.html:22
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/destination-address.html:9
 #: public/views/modals/tx-details.html:5
@@ -260,7 +298,7 @@ msgstr "الرجوع"
 msgid "Backup all wallet data"
 msgstr "النسخ الاحتياطي لجميع بيانات المحفظة"
 
-#: public/views/walletHome.html:250
+#: public/views/walletHome.html:268
 msgid "Backup now"
 msgstr "قم بحفض نسخة احتياطية"
 
@@ -276,32 +314,32 @@ msgstr "تم حذف كلمات النسخة الإحتياطية"
 msgid "Backups"
 msgstr "النسخة الإحتياطية"
 
-#: src/js/controllers/correspondentDevice.js:1399
+#: src/js/controllers/correspondentDevice.js:1396
 msgid "Bad profile"
 msgstr "بروفيل سيئ"
 
-#: public/views/preferencesInformation.html:107
+#: public/views/preferencesInformation.html:110
 msgid "Balance By Address"
 msgstr "الرصيد حسب العنوان"
 
-#: public/views/walletHome.html:244
+#: public/views/walletHome.html:262
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "قبل أن تقوم بإستقبال المال, يفضل أن تقوم بعمل نسخة إحتياطية لمفاتيح محفظتك."
 
 #: public/views/backup.html:26
-msgid "Better yet, use multisig wallets with redundancy,"
-msgstr "أفضل من ذلك، إستعمال محافظ multisig بكثرة،"
+msgid "Better yet, use multisig accounts with redundancy,"
+msgstr ""
 
-#: public/views/modals/bind.html:8
-#: public/views/modals/bind.html:94
+#: public/views/modals/bind.html:134
+#: public/views/modals/bind.html:49
 msgid "Bind payment"
 msgstr "ربط الدفع"
 
-#: public/views/walletHome.html:463
+#: public/views/walletHome.html:516
 msgid "Bind the payment to a condition"
 msgstr "ربط عملية الدفع بشرط"
 
-#: public/views/walletHome.html:450
+#: public/views/walletHome.html:503
 msgid "Bind the payment to a condition..."
 msgstr "ربط عملية الدفع بشرط..."
 
@@ -309,19 +347,19 @@ msgstr "ربط عملية الدفع بشرط..."
 msgid "Bitcoin URI is NOT valid!"
 msgstr "عنوان(URI) البتكوين خاطئ!"
 
-#: public/views/bot.html:23
+#: public/views/bot.html:72
 msgid "Bot Store"
 msgstr "متجر البوتات"
 
-#: public/views/correspondentDevice.html:291
+#: public/views/correspondentDevice.html:375
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr "قمت مع {{correspondent.name}} بالسماح بتسجيل سجل المحادثات."
 
-#: src/js/controllers/walletHome.js:1172
+#: src/js/controllers/walletHome.js:1286
 msgid "Bounce the request"
 msgstr ""
 
-#: public/views/modals/tx-details.html:173
+#: public/views/modals/tx-details.html:186
 msgid "Bounced?"
 msgstr ""
 
@@ -339,10 +377,10 @@ msgid "CONTINUE"
 msgstr "المواصلة"
 
 #: public/views/modals/destination-address.html:128
-#: public/views/walletHome.html:588
+#: public/views/walletHome.html:641
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:145
+#: src/js/controllers/walletHome.js:223
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "إلغاء"
@@ -352,14 +390,15 @@ msgid "Change hub:"
 msgstr "تغيير المرجع:"
 
 #: public/views/preferencesAlias.html:16
-msgid "Changing wallet alias only affects the local wallet name."
-msgstr "تغيير الإسم المستعار للمحفظة سوف يؤثر فقط على إسم المحفظة المحلي."
+msgid "Changing account alias only affects the local account name."
+msgstr ""
 
-#: src/js/controllers/index.js:832
+#: src/js/controllers/index.js:867
 msgid "Chat"
 msgstr "الدردشة"
 
 #: public/views/import.html:33
+#: public/views/walletHome.html:749
 msgid "Choose File"
 msgstr "إختيار الملف"
 
@@ -375,7 +414,7 @@ msgstr "إختيار الجهاز الذي تود الإرسال إليه"
 msgid "Choose which fields to send:"
 msgstr "إختيار النطاق الذي ترغب في إرساله:"
 
-#: src/js/controllers/walletHome.js:519
+#: src/js/controllers/walletHome.js:609
 msgid "Claim funds"
 msgstr "المطالبة بالرصيد"
 
@@ -383,11 +422,11 @@ msgstr "المطالبة بالرصيد"
 msgid "Claim funds by textcoin"
 msgstr "المطالبة بالرصيد عن طريق textcoin"
 
-#: public/views/walletHome.html:320
+#: public/views/walletHome.html:338
 msgid "Claim funds using textcoin"
 msgstr "المطالبة بالرصيد بمساعدة textcoin"
 
-#: public/views/walletHome.html:85
+#: public/views/walletHome.html:102
 msgid "Claiming..."
 msgstr "جاري المطالبة..."
 
@@ -395,36 +434,36 @@ msgstr "جاري المطالبة..."
 msgid "Click the button to"
 msgstr "انقر فوق الزر ل"
 
-#: public/views/walletHome.html:610
+#: public/views/walletHome.html:663
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr "إضغط على هذا الزر لإنشاء ملف الدفع و إرساله إلى المستقبل."
 
-#: public/views/walletHome.html:609
+#: public/views/walletHome.html:662
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr "إضغط على هذا الزر لإنشاء الدفع و مشاركته عن طريق رسالة خاصة على تطبيق للمراسلة أو إنشاء محفظة ورقية."
 
-#: public/views/correspondentDevices.html:80
-#: public/views/includes/topbar.html:13
+#: public/views/correspondentDevices.html:127
+#: public/views/includes/topbar.html:27
 #: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
-#: public/views/modals/bind.html:4
+#: public/views/modals/bind.html:45
 #: public/views/modals/choose-profile.html:4
 #: public/views/modals/choose-profile.html:71
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
-#: public/views/modals/offer-contract.html:29
-#: public/views/modals/offer-prosaic-contract.html:38
+#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-prosaic-contract.html:47
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
-#: public/views/modals/signed-message.html:38
 #: public/views/modals/signed-message.html:4
-#: public/views/modals/view-prosaic-contract.html:53
+#: public/views/modals/signed-message.html:43
+#: public/views/modals/view-prosaic-contract.html:60
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "إغلاق"
@@ -437,11 +476,11 @@ msgstr "المشارك"
 msgid "Co-signers"
 msgstr "المشاركين"
 
-#: public/views/includes/sidebar.html:35
+#: public/views/includes/sidebar.html:38
 msgid "Co-signers for multisig"
 msgstr "المشاركين في الـ multisig"
 
-#: public/views/preferences.html:33
+#: public/views/preferences.html:32
 msgid "Color"
 msgstr "اللون"
 
@@ -454,11 +493,11 @@ msgid "Compress the file? (Slower)"
 msgstr "ضغط الملف؟ (يتطلب وقتا أطول)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:668
+#: src/js/controllers/index.js:673
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:146
-#: src/js/controllers/walletHome.js:2399
-#: src/js/controllers/walletHome.js:2403
+#: src/js/controllers/walletHome.js:224
+#: src/js/controllers/walletHome.js:2549
+#: src/js/controllers/walletHome.js:2553
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "تأكيد"
@@ -475,18 +514,18 @@ msgstr "تأكيد الدفع"
 msgid "Confirm vote"
 msgstr "قم بالتأكيد على تصويتك"
 
-#: public/views/modals/tx-details.html:124
+#: public/views/modals/tx-details.html:131
 msgid "Confirmed"
 msgstr "تم التأكيد"
 
-#: public/views/correspondentDevices.html:90
+#: public/views/correspondentDevices.html:137
 msgid "Contacts"
 msgstr "جهات الإتصال"
 
-#: src/js/controllers/correspondentDevice.js:1787
+#: src/js/controllers/correspondentDevice.js:1784
 #: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:510
 msgid "Copied to clipboard"
 msgstr "تم النسخ على الحافظة"
 
@@ -498,12 +537,12 @@ msgstr "نسخ"
 msgid "Correspondents and chats are not restored."
 msgstr "تعذر إسترجاع المراسلين والمحادثات."
 
-#: public/views/modals/offer-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:109
+#: public/views/modals/offer-prosaic-contract.html:82
+#: public/views/modals/view-prosaic-contract.html:116
 msgid "Cosigners"
 msgstr "المشاركين"
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not create payment proposal"
 msgstr "تعذر إنشاء مقترح الدفع"
 
@@ -523,7 +562,7 @@ msgstr "تعذر الإنشاء: seed المحفظة غير صحيح"
 msgid "Could not decrypt"
 msgstr "مشكل في فك التشفير"
 
-#: public/views/walletHome.html:742
+#: public/views/walletHome.html:823
 msgid "Could not fetch transaction history"
 msgstr "تعذر إستيراد سجل المعاملات"
 
@@ -537,31 +576,34 @@ msgstr "مشكل في الإستيراد"
 msgid "Could not import. Check input file and password"
 msgstr "مشكل في الإستيراد. قم بالتحقق من الملف وكلمة السر"
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not send payment"
 msgstr "لم يتم إرسال الدفع"
 
-#: src/js/controllers/correspondentDevice.js:1365
+#: src/js/controllers/correspondentDevice.js:1362
 msgid "Country"
 msgstr "البلد"
 
-#: public/views/walletHome.html:44
+#: public/views/walletHome.html:61
 msgid "Create"
 msgstr "إنشاء"
 
-#: public/views/includes/sidebar.html:25
-msgid "Create a new wallet"
-msgstr "إنشاء محفظة جديدة"
+#: public/views/includes/sidebar.html:28
+msgid "Create a new account"
+msgstr ""
+
+#: public/views/create.html:175
+#: src/js/controllers/index.js:383
+msgid "Create new account"
+msgstr ""
 
 #: public/views/add.html:15
-#: public/views/create.html:175
-#: src/js/controllers/index.js:378
 msgid "Create new wallet"
 msgstr "إنشاء محفظة جديدة"
 
 #: public/views/create.html:171
-msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "إنشاء {{requiredCosigners}} من {{totalCosigners}} محافظ"
+msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} account"
+msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -572,54 +614,46 @@ msgid "Creating Profile..."
 msgstr "إنشاء الملف الشخصي..."
 
 #: public/views/create.html:20
-msgid "Creating Wallet..."
-msgstr "إنشاء المحفظة..."
+msgid "Creating new account..."
+msgstr ""
 
 #: public/views/backup.html:93
 msgid "DELETE WORDS"
 msgstr "حذف الكلمات"
 
-#: public/views/walletHome.html:344
-msgid "Data into datafeed (searchable)"
-msgstr ""
-
-#: public/views/walletHome.html:501
+#: public/views/walletHome.html:554
 msgid "Data to be posted with the payment:"
 msgstr "البيانات التي سيتم نشرها عند الدفع:"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed name"
 msgstr "إسم عملية التحديث"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed value"
 msgstr "قيم عملية التحديث"
 
-#: public/views/modals/tx-details.html:94
+#: public/views/modals/tx-details.html:101
 msgid "Date"
 msgstr "التاريخ"
 
-#: src/js/controllers/correspondentDevice.js:1364
+#: src/js/controllers/correspondentDevice.js:1361
 msgid "Date of birth"
 msgstr "تاريخ الميلاد"
 
-#: src/js/controllers/index.js:344
+#: src/js/controllers/index.js:349
 msgid "Declined"
 msgstr "تم الرفض"
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "Define a new asset with cap"
 msgstr ""
 
-#: public/views/walletHome.html:197
+#: public/views/walletHome.html:215
 msgid "Definition"
 msgstr "التعريف"
 
-#: public/views/walletHome.html:349
-msgid "Definition of autonomous agent"
-msgstr ""
-
-#: public/views/walletHome.html:664
+#: public/views/walletHome.html:717
 msgid "Definition of autonomous agent:"
 msgstr ""
 
@@ -632,14 +666,14 @@ msgid "Definitions of addresses"
 msgstr "تعاريف العناوين"
 
 #: public/views/preferencesAdvanced.html:31
-msgid "Delete Wallet"
-msgstr "حذف المحفظة"
+msgid "Delete Account"
+msgstr ""
 
 #: public/views/preferencesDeleteWallet.html:23
-msgid "Delete wallet"
-msgstr "حذف المحفظة"
+msgid "Delete account"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:2396
+#: src/js/controllers/walletHome.js:2546
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr "إن قمت بحذف الـ textcoin فلن تتمكن من المطالبة به من جديد أو إعادة إرساله"
 
@@ -683,7 +717,7 @@ msgstr "لا ترى لغتك موجودة على كرودن؟ قم بالتوا�
 msgid "Done"
 msgstr "إنهاء"
 
-#: public/views/walletHome.html:852
+#: public/views/walletHome.html:938
 msgid "Download CSV file"
 msgstr "تنزيل الملف بصيغة CSV"
 
@@ -695,7 +729,7 @@ msgstr "تحميل قاعدة بيانات Obyte بأكملها"
 msgid "Edit"
 msgstr "تعديل"
 
-#: public/views/correspondentDevice.html:294
+#: public/views/correspondentDevice.html:378
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "يبدو أن تسجيل سجل المحادثات لديك أو لدى {{correspondent.name}} معطل. التسجيل غير محفوظ لدى كلاكما."
 
@@ -712,7 +746,7 @@ msgstr "قم بإدخال كود الإقتران الذي تلقيته من ا�
 msgid "Enter your password"
 msgstr "قم بإدخال كلمة السر"
 
-#: public/views/modals/tx-details.html:179
+#: public/views/modals/tx-details.html:192
 msgid "Error"
 msgstr ""
 
@@ -721,7 +755,7 @@ msgstr ""
 msgid "Error creating wallet"
 msgstr "تعذر إنشاء المحفظة"
 
-#: public/views/modals/view-prosaic-contract.html:68
+#: public/views/modals/view-prosaic-contract.html:75
 msgid "Expired on"
 msgstr "انتهت مدة الصلاحية في"
 
@@ -729,8 +763,8 @@ msgstr "انتهت مدة الصلاحية في"
 msgid "Export"
 msgstr "حفظ"
 
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
 msgid "Export completed successfully"
 msgstr "تم الحفظ بنجاح"
 
@@ -746,32 +780,32 @@ msgstr "المفاتيح العامة كاملة"
 msgid "Failed to export"
 msgstr "تعذر الحفظ"
 
-#: public/views/modals/tx-details.html:101
+#: public/views/modals/tx-details.html:108
 msgid "Fee"
 msgstr "الرسوم"
 
-#: public/views/walletHome.html:509
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:562
+#: public/views/walletHome.html:740
 msgid "Field"
 msgstr "النطاق"
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
 msgstr "تم حفظ الملف في / Obyte /. يمكنك الآن أيضًا إرساله إلى مكان ما باستخدام تطبيقات الدردشة أو البريد الإلكتروني للحصول على المزيد من النّسخ الاحتياطية"
 
-#: public/views/modals/tx-details.html:119
+#: public/views/modals/tx-details.html:126
 msgid "Finality"
 msgstr "النهائي"
 
-#: public/views/modals/tx-details.html:69
+#: public/views/modals/tx-details.html:70
 msgid "From"
 msgstr "من"
 
-#: public/views/walletHome.html:810
+#: public/views/walletHome.html:893
 msgid "From AA"
 msgstr ""
 
-#: public/views/walletHome.html:409
+#: public/views/walletHome.html:452
 msgid "From Obyte address"
 msgstr ""
 
@@ -783,15 +817,15 @@ msgstr "العنوان الكامل:"
 msgid "GET STARTED"
 msgstr "البدئ"
 
-#: src/js/controllers/walletHome.js:449
+#: src/js/controllers/walletHome.js:539
 msgid "Generate QR Code"
 msgstr "إحداث رمز الإستجابة السريع"
 
-#: public/views/walletHome.html:306
+#: public/views/walletHome.html:324
 msgid "Generate new address"
 msgstr "إحداث عنوان جديد"
 
-#: public/views/walletHome.html:81
+#: public/views/walletHome.html:98
 msgid "Generating .csv file..."
 msgstr "إحداث ملف بصيغة csv..."
 
@@ -799,11 +833,11 @@ msgstr "إحداث ملف بصيغة csv..."
 msgid "Getting address for wallet"
 msgstr "الحصول على عنوان للمحفظة"
 
-#: src/js/controllers/correspondentDevice.js:1362
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Given name"
 msgstr ""
 
-#: public/views/includes/sidebar.html:45
+#: public/views/includes/sidebar.html:48
 msgid "Global preferences"
 msgstr "الإعدادت العامة"
 
@@ -811,16 +845,16 @@ msgstr "الإعدادت العامة"
 msgid "Go back"
 msgstr "الرجوع"
 
-#: public/views/preferences.html:55
+#: public/views/preferences.html:54
 msgid "Hardware wallet"
 msgstr "المحفظة المادية"
 
-#: public/views/preferences.html:63
+#: public/views/preferences.html:62
 msgid "Hidden assets"
 msgstr "الأصول الخفية"
 
-#: public/views/preferences.html:70
-msgid "Hidden subwallets"
+#: public/views/preferences.html:69
+msgid "Hidden smart contracts"
 msgstr ""
 
 #: public/views/backup.html:45
@@ -828,15 +862,15 @@ msgid "Hide the Wallet Seed"
 msgstr "إخفاء seed المحفظة"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:828
+#: src/js/controllers/index.js:863
 msgid "History"
 msgstr "السجل"
 
-#: src/js/controllers/index.js:816
+#: src/js/controllers/index.js:851
 msgid "Home"
 msgstr "الرئيسية"
 
-#: public/views/walletHome.html:550
+#: public/views/walletHome.html:603
 msgid "Home page:"
 msgstr ""
 
@@ -860,52 +894,52 @@ msgstr "أشهد على أنني قمت بالإطلاع و فهم و الموا
 msgid "I created a backup"
 msgstr "أنا أنشأت نسخة احتياطية"
 
-#: public/views/modals/offer-contract.html:43
+#: public/views/modals/offer-contract.html:81
 msgid "I pay"
 msgstr "أنا أدفع"
 
-#: public/views/modals/bind.html:27
+#: public/views/modals/bind.html:67
 msgid "I receive another payment of"
 msgstr "أتلقى دفعا أخر من"
 
-#: src/js/controllers/correspondentDevice.js:1371
+#: src/js/controllers/correspondentDevice.js:1368
 msgid "ID expires at"
 msgstr "تنتهي صلاحيّة المعرّف في"
 
-#: src/js/controllers/correspondentDevice.js:1372
+#: src/js/controllers/correspondentDevice.js:1369
 msgid "ID issued at"
 msgstr "المعرّف صادر في"
 
-#: src/js/controllers/correspondentDevice.js:1368
+#: src/js/controllers/correspondentDevice.js:1365
 msgid "ID number"
 msgstr "رقم التعريف"
 
-#: src/js/controllers/correspondentDevice.js:1370
+#: src/js/controllers/correspondentDevice.js:1367
 msgid "ID subtype"
 msgstr "النوع الفرعي للتعريف"
 
-#: src/js/controllers/correspondentDevice.js:1369
+#: src/js/controllers/correspondentDevice.js:1366
 msgid "ID type"
 msgstr "نوع التعريف"
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr "إن لم يكن بإمكان أي جهاز مشترك رؤية هذا الدفع, فأنت بإمكانك"
 
-#: public/views/modals/bind.html:85
+#: public/views/modals/bind.html:125
 msgid "If the condition is not met, I can take this money back after"
 msgstr "إن لم يتحقق الشرط, يمكنني سحب مالي فيما بعد"
 
-#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-contract.html:105
 msgid "If the peer doesn't pay, I can take my money back after"
 msgstr "إن لم يقم الشخص الأخر بالدفع فبإمكاني سحب مالي فيما بعد"
 
-#: public/views/modals/tx-details.html:148
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:155
+#: public/views/modals/tx-details.html:161
 msgid "If the recipient doesn't see your payment, you can"
 msgstr "إن لم يكن بإمكان المستقبل مشاهدة الدفع, فأنت بإستطاعتك"
 
-#: public/views/import.html:47
+#: public/views/import.html:48
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr "إن كنت قد نقلت هته النسخة الإحتياطية من جهاز أخر, توقف عن إستعمالها على الجهاز الأول حالا بعد إنشاء النسخة الإحتياطية. لا تقم بإستنساخ المحافظ. إن كنت تريد الدخول من عدة أجهزة, قم بإستعمال multisig."
 
@@ -913,7 +947,7 @@ msgstr "إن كنت قد نقلت هته النسخة الإحتياطية من 
 msgid "If you plan to restore the wallet on another device, stop using it on the current one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr "إن كنت تريد إستعادة المحفظة على جهاز أخر, توقف عن إستعمالها على المحفظة الحالية بعد إنشاء النسخة الإحتياطية. لا تقم بإستنساخ المحافظ. إن كنت تريد الدخول من عدة أجهزة, قم بإستعمال multisig."
 
-#: public/views/import.html:40
+#: public/views/import.html:41
 msgid "Import"
 msgstr "استيراد"
 
@@ -925,29 +959,29 @@ msgstr "استيراد المحفظة"
 msgid "Importing wallet..."
 msgstr "استيراد المحفظة..."
 
-#: public/views/walletHome.html:138
+#: public/views/walletHome.html:155
 msgid "Including pending confirmation"
 msgstr "بالإضافة إلى التأكيد المنتظر"
 
-#: public/views/walletHome.html:761
+#: public/views/walletHome.html:842
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "إن مزامنة تاريخ المعاملات الأولي قد يتطلب بعضا من الوقت بالنسبة للمحافظ ذات العدد الكبير من المعاملات.<br>\n"
 "المرجو الإنتضار."
 
-#: public/views/correspondentDevice.html:330
+#: public/views/correspondentDevice.html:414
 msgid "Insert my address"
 msgstr "إدخال عنواني"
 
-#: public/views/correspondentDevice.html:346
+#: public/views/correspondentDevice.html:430
 msgid "Insert private profile"
 msgstr "إدخال البروفايل الخاص"
 
-#: public/views/walletHome.html:780
+#: public/views/walletHome.html:860
 msgid "Invalid"
 msgstr "غير صحيحة"
 
-#: src/js/controllers/index.js:1817
+#: src/js/controllers/index.js:1851
 msgid "Invalid Touch ID"
 msgstr "Touch ID غير صالح"
 
@@ -955,17 +989,17 @@ msgstr "Touch ID غير صالح"
 msgid "Invite the other device"
 msgstr "قم بدعوة الجهاز الأخر"
 
-#: src/js/controllers/walletHome.js:1338
+#: src/js/controllers/walletHome.js:1452
 msgid "It is not allowed to bind conditions to payments to autonomous agents"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1336
+#: src/js/controllers/walletHome.js:1450
 msgid "It is not allowed to send private assets to autonomous agents"
 msgstr ""
 
 #: public/views/backup.html:22
-msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
-msgstr "إن seed المحفظة(كلمات الأمان) لوحدها لا تكفي. فـ seed وحدها, لن تتمكن من إسترجاع المحفظة multisig ، والعقود الذكية ، وجهات الاتصال ، ومحفوظات الدردشة ،و المدخرات الخاصة مثل blackbytes."
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig accounts, smart contracts, contacts, chat history, and private assets such as blackbytes."
+msgstr ""
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
@@ -987,7 +1021,7 @@ msgstr "فيما بعد"
 msgid "Loading..."
 msgstr "جاري التحميل..."
 
-#: public/views/walletHome.html:668
+#: public/views/walletHome.html:721
 msgid "Looks OK"
 msgstr ""
 
@@ -1000,18 +1034,18 @@ msgid "Maybe later"
 msgstr "ربما في وقت لاحق"
 
 #: public/views/includes/copayers.html:4
-#: public/views/modals/offer-contract.html:117
-#: public/views/modals/offer-prosaic-contract.html:51
-#: public/views/modals/view-prosaic-contract.html:70
+#: public/views/modals/offer-contract.html:155
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:77
 #: public/views/preferencesInformation.html:76
 msgid "Me"
 msgstr "أنا"
 
-#: public/views/modals/tx-details.html:113
+#: public/views/modals/tx-details.html:120
 msgid "Merchant message"
 msgstr "رسالة التاجر"
 
-#: public/views/walletHome.html:470
+#: public/views/walletHome.html:523
 msgid "Merkle proof"
 msgstr "دليل ميركيل"
 
@@ -1024,27 +1058,27 @@ msgstr "الرسالة"
 msgid "Message:"
 msgstr "الرسالة:"
 
-#: src/js/controllers/walletHome.js:1132
+#: src/js/controllers/walletHome.js:1246
 msgid "Minimum amount"
 msgstr ""
 
-#: public/views/correspondentDevice.html:26
+#: public/views/correspondentDevice.html:27
 msgid "More"
 msgstr "أكثر"
 
-#: public/views/walletHome.html:779
+#: public/views/walletHome.html:859
 msgid "Moved"
 msgstr "تم النقل"
 
 #: public/views/create.html:32
-msgid "Multidevice Wallet"
-msgstr "محفظة متعددة الأجهزة"
+msgid "Multidevice Account"
+msgstr ""
 
-#: public/views/walletHome.html:258
+#: public/views/walletHome.html:276
 msgid "My Obyte address"
 msgstr "عنوان Obyte الخاصّ بي"
 
-#: public/views/correspondentDevice.html:300
+#: public/views/correspondentDevice.html:384
 msgid "My recording preference"
 msgstr "إعدادات التسجيل"
 
@@ -1074,9 +1108,9 @@ msgid "New version is available!"
 msgstr "هناك إصدار جديد متوفر!"
 
 #: public/views/authConfirmation.html:22
-#: public/views/modals/tx-details.html:175
-#: src/js/controllers/index.js:667
-#: src/js/controllers/walletHome.js:2411
+#: public/views/modals/tx-details.html:188
+#: src/js/controllers/index.js:672
+#: src/js/controllers/walletHome.js:2561
 msgid "No"
 msgstr "لا"
 
@@ -1092,33 +1126,33 @@ msgstr "ليس هناك بروفايل يطابق المعايير المطلو�
 msgid "No profiles yet."
 msgstr "ليس هناك بروفايل بعد."
 
-#: public/views/walletHome.html:745
+#: public/views/walletHome.html:826
 msgid "No transactions yet"
 msgstr "ليس هناك أي معاملة بعد"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:113
-#: public/views/walletHome.html:370
-#: public/views/walletHome.html:417
-#: public/views/walletHome.html:426
-#: public/views/walletHome.html:648
+#: public/views/walletHome.html:422
+#: public/views/walletHome.html:470
+#: public/views/walletHome.html:479
+#: public/views/walletHome.html:701
 msgid "Not valid"
 msgstr "غير صالح"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:109
-#: public/views/modals/tx-details.html:84
-#: public/views/walletHome.html:481
-#: public/views/walletHome.html:814
+#: public/views/modals/tx-details.html:116
+#: public/views/modals/tx-details.html:91
+#: public/views/walletHome.html:534
+#: public/views/walletHome.html:897
 msgid "Note"
 msgstr "ملاحظة"
 
-#: public/views/modals/tx-details.html:184
+#: public/views/modals/tx-details.html:197
 msgid "Notice"
 msgstr ""
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
 msgstr "يجب عليك الآن إرسال هذا الملف إلى مكان ما لاستعادته لاحقًا (\"حفظ إلى الملفات\" ، وإرساله إلى نفسك باستخدام تطبيقات الدردشة ، وما إلى ذلك)"
 
@@ -1130,21 +1164,21 @@ msgstr "Obyte &mdash; الدفع الذكي"
 msgid "Obyte address"
 msgstr "عنوان Obyte"
 
-#: public/views/modals/offer-prosaic-contract.html:86
+#: public/views/modals/offer-prosaic-contract.html:95
 msgid "Offer Contract"
 msgstr "عقد العرض"
 
-#: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-contract.html:71
+#: src/js/services/correspondentListService.js:136
 msgid "Offer a contract"
 msgstr "تقديم عقد"
 
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "Offer is valid for"
 msgstr "العرض صالح ل"
 
-#: public/views/modals/offer-prosaic-contract.html:42
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-prosaic-contract.html:51
+#: src/js/services/correspondentListService.js:136
 msgid "Offer prosaic contract"
 msgstr "تقديم عقد Prosaic"
 
@@ -1153,14 +1187,14 @@ msgid "Once you have written your wallet seed down, it is recommended to delete 
 msgstr "بعد تدوين بذرة(كلمات الأمان) محفظتك, يفضل أن تقوم بحذفها من جهازك."
 
 #: public/views/recoveryFromSeed.html:41
-msgid "Only single-sig wallets can be recovered."
-msgstr "يمكنك فقط إسترجاع المَحَافِظ ذات التوقيع الواحد."
+msgid "Only single-sig accounts can be recovered."
+msgstr ""
 
-#: public/views/bot.html:35
+#: public/views/bot.html:84
 msgid "Open chat"
 msgstr "فتح الدردشة"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Options for answering"
 msgstr "خيارات للرد"
 
@@ -1180,7 +1214,7 @@ msgstr ""
 msgid "Pair"
 msgstr "زوج"
 
-#: public/views/includes/sidebar.html:33
+#: public/views/includes/sidebar.html:36
 msgid "Paired devices"
 msgstr "الأجهزة المقترنة"
 
@@ -1208,11 +1242,11 @@ msgstr "كلمة السر خاطئة"
 msgid "Paste your paper wallet private key here"
 msgstr "قم بلصق المفتاح الخاص للمحفظة الورقية هنا"
 
-#: public/views/modals/offer-contract.html:138
+#: public/views/modals/offer-contract.html:176
 msgid "Pay and offer"
 msgstr "الدفع و العرض"
 
-#: src/js/services/correspondentListService.js:135
+#: src/js/services/correspondentListService.js:136
 msgid "Pay to this address"
 msgstr "قم بالدفع لهذا العنوان"
 
@@ -1224,7 +1258,7 @@ msgstr "تم قبول الدفع"
 msgid "Payment Proposal Created"
 msgstr "تم إنشاء مقترح الدفع"
 
-#: public/views/walletHome.html:214
+#: public/views/walletHome.html:232
 msgid "Payment Proposals"
 msgstr "مقترحات الدفع"
 
@@ -1236,8 +1270,8 @@ msgstr "تم رفض الدفع"
 msgid "Payment Sent"
 msgstr "تم إرسال الدفع"
 
-#: public/views/modals/offer-prosaic-contract.html:57
-#: public/views/modals/view-prosaic-contract.html:76
+#: public/views/modals/offer-prosaic-contract.html:66
+#: public/views/modals/view-prosaic-contract.html:83
 msgid "Peer"
 msgstr "المتلقي"
 
@@ -1246,22 +1280,22 @@ msgid "Peer:"
 msgstr "المتلقي:"
 
 #: public/views/preferencesDeleteWallet.html:22
-msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr "إحذف نهائيا هذه المحفظة. هذا الإجراء لا يمكن عكسه"
+msgid "Permanently delete this account. THIS ACTION CANNOT BE REVERSED"
+msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1366
+#: src/js/controllers/correspondentDevice.js:1363
 msgid "Personal code"
 msgstr "الكود الشّخصي"
 
 #: public/views/create.html:28
-msgid "Plain Wallet"
-msgstr "المحفظة الرسمية"
+msgid "Plain Account"
+msgstr ""
 
-#: src/js/controllers/index.js:283
+#: src/js/controllers/index.js:288
 msgid "Please approve contract fees deposit on the other devices."
 msgstr "يرجى الموافقة على إيداع رسوم العقد على الأجهزة الأخرى."
 
-#: src/js/controllers/index.js:288
+#: src/js/controllers/index.js:293
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr "يرجى الموافقة على نشر تجزئة العقد prosaic على الأجهزة الأخرى."
 
@@ -1277,52 +1311,48 @@ msgstr "المرجو ملئ كافة النطاقات المطلوبة"
 msgid "Please name this device"
 msgstr "قم بستمية هذا الجهاز"
 
-#: src/js/controllers/correspondentDevice.js:150
-msgid "Please switch to a single-address wallet and you probably need to insert your address again."
-msgstr "قم بالتحول إلى المحفظة ذات عنوان واحد و قم بإدخال عنوانك مرة أخرى."
+#: src/js/controllers/correspondentDevice.js:160
+msgid "Please switch to a single-address account and you probably need to insert your address again."
+msgstr ""
 
 #: public/views/includes/backup-reminder.html:8
 msgid "Please visit the Backups section in"
 msgstr "يرجى زيارة قسم النسخ الاحتياطي في"
 
-#: public/views/walletHome.html:348
-msgid "Poll"
-msgstr "الاقتراع"
-
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "المنفذ"
 
-#: src/js/controllers/walletHome.js:1223
+#: src/js/controllers/walletHome.js:1337
 msgid "Post a"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1214
+#: src/js/controllers/walletHome.js:1328
 msgid "Post a data feed"
 msgstr ""
 
-#: public/views/walletHome.html:638
+#: public/views/walletHome.html:691
 msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr "انشر استطلاعًا في شبكة Obyte بحيث يمكن للمستخدمين التصويت باستخدام بوت استطلاع الرأي."
 
-#: public/views/walletHome.html:635
+#: public/views/walletHome.html:688
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr "قم بنشر قيم للمفاتيح بشكل عشوائي على شبكة Obyte."
 
-#: src/js/controllers/walletHome.js:1217
+#: src/js/controllers/walletHome.js:1331
 msgid "Post data"
 msgstr ""
 
-#: public/views/walletHome.html:626
+#: public/views/walletHome.html:679
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "قم بالمساهمة في تقديم الأشياء إلى سجل المستجدات, تحلى بالحكمة."
 
-#: public/views/walletHome.html:632
+#: public/views/walletHome.html:685
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "قم بوضع بيانات حول بروفايلك, أكتب أي شيئ تريد حول نفسك."
 
-#: public/views/walletHome.html:193
-#: public/views/walletHome.html:47
+#: public/views/walletHome.html:210
+#: public/views/walletHome.html:64
 msgid "Preferences"
 msgstr "الإعدادات"
 
@@ -1334,8 +1364,8 @@ msgstr "أعد الضغط للخروج"
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr "لا يتم استرداد الأصول الخاصة (مثل blackbytes) والعقود الذكية."
 
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Private payloads sent"
 msgstr "تم إرسال الحمولات الخاصة"
 
@@ -1343,23 +1373,19 @@ msgstr "تم إرسال الحمولات الخاصة"
 msgid "Private profile"
 msgstr "البروفيل الخاص"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field"
 msgstr "نطاق البروفيل"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field value"
 msgstr "قيمة نطاق البروفيل"
 
-#: public/views/walletHome.html:346
-msgid "Profile of my address"
-msgstr ""
-
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "Proof of contract signing"
 msgstr "إثبات توقيع العقد"
 
-#: public/views/modals/view-prosaic-contract.html:57
+#: public/views/modals/view-prosaic-contract.html:64
 msgid "Prosaic contract"
 msgstr "عقد Prosaic"
 
@@ -1371,7 +1397,7 @@ msgstr "رمز الإستجابة السريع"
 msgid "QR-Scanner"
 msgstr "ماسح رمز الإستجابة السريع"
 
-#: public/views/walletHome.html:658
+#: public/views/walletHome.html:711
 msgid "Question to be voted on"
 msgstr "سؤال للتصويت عليه"
 
@@ -1379,28 +1405,24 @@ msgstr "سؤال للتصويت عليه"
 msgid "Question:"
 msgstr "السؤال:"
 
-#: public/views/walletHome.html:347
-msgid "Raw data"
-msgstr ""
-
 #: public/views/preferencesAttestorAddresses.html:16
 msgid "Real name attestors"
 msgstr "المصادقون على الاسم الحقيقي"
 
-#: src/js/controllers/index.js:820
+#: src/js/controllers/index.js:855
 msgid "Receive"
 msgstr "الإستلام"
 
-#: public/views/walletHome.html:776
+#: public/views/walletHome.html:857
 msgid "Received"
 msgstr "مستلم"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:61
+#: public/views/modals/tx-details.html:62
 msgid "Recipients"
 msgstr "المستلمين"
 
-#: public/views/walletHome.html:60
+#: public/views/walletHome.html:77
 msgid "Reconnecting to Wallet Service..."
 msgstr "إعادة الإتصال بخدمة المحفظة..."
 
@@ -1412,11 +1434,11 @@ msgstr "إسترجاع"
 msgid "Recover with seed words"
 msgstr "استعادة بواسطة الكلمات البذور"
 
-#: public/views/walletHome.html:80
+#: public/views/walletHome.html:97
 msgid "Recreating Wallet..."
 msgstr "إعادة إنشاء المحفظة..."
 
-#: src/js/controllers/index.js:296
+#: src/js/controllers/index.js:301
 msgid "Refused"
 msgstr "تم الرفض"
 
@@ -1432,7 +1454,7 @@ msgstr "التذكير لاحقًا"
 msgid "Remove"
 msgstr "حذف"
 
-#: public/views/correspondentDevices.html:159
+#: public/views/correspondentDevices.html:208
 msgid "Remove a device"
 msgstr "حذف الجهاز"
 
@@ -1458,11 +1480,11 @@ msgid "Request Password"
 msgstr "قم بطلب كلمة المرور"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:315
+#: public/views/walletHome.html:333
 msgid "Request a specific amount"
 msgstr "قم بطلب مبلغ معين"
 
-#: public/views/correspondentDevice.html:339
+#: public/views/correspondentDevice.html:423
 msgid "Request payment"
 msgstr "طلب الدفع"
 
@@ -1470,15 +1492,15 @@ msgstr "طلب الدفع"
 msgid "Required number of signatures"
 msgstr "العدد المطلوب من التوقيعات"
 
-#: public/views/walletHome.html:566
+#: public/views/walletHome.html:619
 msgid "Response"
 msgstr ""
 
-#: public/views/modals/tx-details.html:167
+#: public/views/modals/tx-details.html:180
 msgid "Response unit"
 msgstr ""
 
-#: public/views/modals/tx-details.html:189
+#: public/views/modals/tx-details.html:202
 msgid "Response variables"
 msgstr ""
 
@@ -1490,7 +1512,7 @@ msgstr "استعادة جميع بيانات المحفظة"
 msgid "Retrying..."
 msgstr "إعادة المحاولة..."
 
-#: public/views/modals/view-prosaic-contract.html:142
+#: public/views/modals/view-prosaic-contract.html:149
 msgid "Revoke"
 msgstr "إلغاء"
 
@@ -1515,11 +1537,11 @@ msgstr "حفظ"
 msgid "Saving preferences..."
 msgstr "حفظ الإعدادت..."
 
-#: public/views/preferences.html:87
+#: public/views/preferences.html:86
 msgid "Scan Fingerprint/FaceID"
 msgstr "مسح البصمة/FaceID"
 
-#: public/views/walletHome.html:121
+#: public/views/walletHome.html:138
 msgid "Scan status finished with error"
 msgstr "إنتهى المسح مع وجود مشاكل"
 
@@ -1527,11 +1549,11 @@ msgstr "إنتهى المسح مع وجود مشاكل"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "قم بمسح رمز الإستجابة السريع بإستعمال الجهاز الأخر أو قم بإرسال رمز الإقتران إلى ذاك الجهاز:"
 
-#: src/js/controllers/index.js:1810
+#: src/js/controllers/index.js:1844
 msgid "Scan your fingerprint please"
 msgstr "المرجو مسح بصمة الإصبع"
 
-#: public/views/walletHome.html:79
+#: public/views/walletHome.html:96
 msgid "Scanning Wallet funds..."
 msgstr "الإطلاع على رصيد المحفظة..."
 
@@ -1539,20 +1561,20 @@ msgstr "الإطلاع على رصيد المحفظة..."
 msgid "Scanning for addresses..."
 msgstr "الإطلاع على العناوين..."
 
+#: public/views/modals/select-subwallet.html:8
+msgid "Select Smart Contract"
+msgstr ""
+
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "قم بإختيار محفظة"
 
-#: public/views/modals/select-subwallet.html:8
-msgid "Select subwallet"
-msgstr "قم بإختيار المحفظة الثانوية"
-
 #: public/views/preferencesHiddenAssets.html:29
-msgid "Select the assets to hide in the wallet"
-msgstr "حدد الأصول التي سوف تكون مخفية في المحفظة"
+msgid "Select the assets to hide in the account"
+msgstr ""
 
 #: public/views/preferencesHiddenSubWallets.html:29
-msgid "Select the subwallets to hide in the wallet"
+msgid "Select the smart contracts to hide in the account"
 msgstr ""
 
 #: public/views/authConfirmation.html:10
@@ -1560,10 +1582,10 @@ msgid "Select your identity"
 msgstr "قم بإختيار هويتك"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:591
-#: public/views/walletHome.html:706
-#: src/js/controllers/index.js:824
-#: src/js/controllers/walletHome.js:1207
+#: public/views/walletHome.html:644
+#: public/views/walletHome.html:769
+#: src/js/controllers/index.js:859
+#: src/js/controllers/walletHome.js:1321
 msgid "Send"
 msgstr "إرسال"
 
@@ -1571,11 +1593,11 @@ msgstr "إرسال"
 msgid "Send Payment"
 msgstr "إرسال الدفع"
 
-#: public/views/preferencesInformation.html:125
+#: public/views/preferencesInformation.html:131
 msgid "Send addresses by email"
 msgstr "إرسال العناوين بالبريد الإلكتروني"
 
-#: public/views/walletHome.html:381
+#: public/views/walletHome.html:433
 msgid "Send all"
 msgstr "إرسال الكل"
 
@@ -1583,15 +1605,19 @@ msgstr "إرسال الكل"
 msgid "Send by email"
 msgstr "إرسال عن طريق البريد الإلكتروني"
 
+#: public/views/preferencesInformation.html:118
+msgid "Send this"
+msgstr ""
+
 #: public/views/modals/choose-profile.html:63
 msgid "Send this profile"
 msgstr "إرسال هذا البروفايل"
 
-#: public/views/walletHome.html:84
+#: public/views/walletHome.html:101
 msgid "Sending..."
 msgstr "إرسال..."
 
-#: public/views/walletHome.html:778
+#: public/views/walletHome.html:858
 msgid "Sent"
 msgstr "أرسلت"
 
@@ -1608,7 +1634,7 @@ msgid "Set up a password"
 msgstr "تحديد كلمة السر"
 
 #: public/views/includes/backup-reminder.html:8
-#: public/views/includes/sidebar.html:43
+#: public/views/includes/sidebar.html:46
 msgid "Settings"
 msgstr "الإعدادات"
 
@@ -1617,7 +1643,7 @@ msgid "Share"
 msgstr "مشاركة"
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:293
+#: public/views/walletHome.html:311
 msgid "Share address"
 msgstr "مشاركة العنوان"
 
@@ -1625,16 +1651,16 @@ msgstr "مشاركة العنوان"
 msgid "Share the code"
 msgstr "مشاركة الرمز"
 
-#: public/views/walletHome.html:298
+#: public/views/walletHome.html:316
 msgid "Share this wallet address to receive payments."
 msgstr "مشاركة عنوان هذه المحفظة من أجل إستلام الدفع."
 
-#: public/views/walletHome.html:401
-#: public/views/walletHome.html:611
+#: public/views/walletHome.html:458
+#: public/views/walletHome.html:664
 msgid "Share via message"
 msgstr "مشاركة عن طريق رسالة"
 
-#: public/views/walletHome.html:844
+#: public/views/walletHome.html:930
 msgid "Show all"
 msgstr "إظهار الكل"
 
@@ -1646,10 +1672,18 @@ msgstr "قم بإظهار seed المحفظة في جميع الحالات"
 msgid "Sign"
 msgstr "التوقيع"
 
+#: public/views/preferencesInformation.html:104
+msgid "Sign a message with this address"
+msgstr ""
+
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "Sign message"
 msgstr "توقيع الرسالة"
+
+#: public/views/modals/signed-message.html:26
+msgid "Signature:"
+msgstr ""
 
 #: public/views/editCorrespondentDevice.html:57
 msgid "Signed contracts:"
@@ -1665,20 +1699,20 @@ msgid "Signing address:"
 msgstr "عنوان التوقيع:"
 
 #: public/views/create.html:56
-#: public/views/preferences.html:40
-msgid "Single address wallet"
-msgstr "محفظة ذات عنوان واحد"
+#: public/views/preferences.html:39
+msgid "Single address account"
+msgstr ""
 
 #: public/views/create.html:59
-#: public/views/preferences.html:42
-msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr "المحافظ ذات عنوان واحد لن تقوم بوضع عناوين جديدة لكل معاملة، التغيير سوف يمس فقط العناوين الموجودة في المحفظة."
+#: public/views/preferences.html:41
+msgid "Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains."
+msgstr ""
 
 #: src/js/services/profileService.js:334
-msgid "Small Expenses Wallet"
-msgstr "المحفظة ذات النفقات الصغيرة"
+msgid "Small Expenses Account"
+msgstr ""
 
-#: public/views/walletHome.html:551
+#: public/views/walletHome.html:604
 msgid "Source code:"
 msgstr ""
 
@@ -1690,12 +1724,12 @@ msgstr "تحديد الـ seed..."
 msgid "Spend unconfirmed funds"
 msgstr "انفاق تمويل غير مؤكد"
 
-#: public/views/preferences.html:81
+#: public/views/preferences.html:80
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "القيود على الإنفاق"
 
-#: public/views/modals/view-prosaic-contract.html:65
+#: public/views/modals/view-prosaic-contract.html:72
 msgid "Status"
 msgstr "الحالة"
 
@@ -1703,22 +1737,22 @@ msgstr "الحالة"
 msgid "Still not done"
 msgstr "لم ينجز العمل بعد"
 
-#: src/js/controllers/correspondentDevice.js:1421
+#: src/js/controllers/correspondentDevice.js:1418
 msgid "Store"
 msgstr "المتجر"
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
-#: src/js/controllers/index.js:333
-#: src/js/controllers/index.js:361
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
+#: src/js/controllers/index.js:338
+#: src/js/controllers/index.js:366
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Success"
 msgstr "تم بنجاح"
 
-#: src/js/controllers/correspondentDevice.js:1363
+#: src/js/controllers/correspondentDevice.js:1360
 msgid "Surname"
 msgstr ""
 
@@ -1726,11 +1760,11 @@ msgstr ""
 msgid "Sweep paper wallet"
 msgstr "تطهير المحفظة الورقية"
 
-#: public/views/walletHome.html:83
+#: public/views/walletHome.html:100
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
 msgstr "مزامنة...{{index.count_unhandled_private_payments}} في إنتظار الدفع الخاص"
 
-#: public/views/walletHome.html:82
+#: public/views/walletHome.html:99
 msgid "Syncing... {{index.syncProgress}}"
 msgstr "مزامنة...{{index.syncProgress}}"
 
@@ -1742,9 +1776,9 @@ msgstr "TOR"
 msgid "TOR enabled"
 msgstr "تمكين TOR"
 
-#: public/views/walletHome.html:117
-#: public/views/walletHome.html:122
-#: public/views/walletHome.html:743
+#: public/views/walletHome.html:134
+#: public/views/walletHome.html:139
+#: public/views/walletHome.html:824
 msgid "Tap to retry"
 msgstr "أنقر لإعادة المحاولة"
 
@@ -1753,17 +1787,16 @@ msgstr "أنقر لإعادة المحاولة"
 msgid "Terms of Use"
 msgstr "شروط الإستخدام"
 
-#: public/views/modals/offer-prosaic-contract.html:67
-#: public/views/modals/view-prosaic-contract.html:86
-#: public/views/walletHome.html:350
+#: public/views/modals/offer-prosaic-contract.html:76
+#: public/views/modals/view-prosaic-contract.html:93
 msgid "Text"
 msgstr "النص"
 
-#: public/views/correspondentDevice.html:350
+#: public/views/correspondentDevice.html:434
 msgid "Text message to"
 msgstr "إرسال رسالة إلى"
 
-#: public/views/walletHome.html:672
+#: public/views/walletHome.html:725
 msgid "Text to be forever saved on the DAG:"
 msgstr ""
 
@@ -1771,11 +1804,19 @@ msgstr ""
 msgid "Textcoin"
 msgstr "Textcoin"
 
+#: src/js/controllers/preferencesDelete.js:56
+msgid "The account \"{{walletName}}\" has been deleted"
+msgstr ""
+
+#: src/js/controllers/copayers.js:76
+msgid "The account \"{{walletName}}\" was deleted"
+msgstr ""
+
 #: public/views/modals/accept-profile.html:38
 msgid "The attested address belongs to:"
 msgstr "العنوان المعني ينتمي إلى:"
 
-#: public/views/walletHome.html:552
+#: public/views/walletHome.html:605
 msgid "The expected result:"
 msgstr ""
 
@@ -1791,11 +1832,11 @@ msgstr ""
 msgid "The money is stored on this textcoin:"
 msgstr "إن المال مخزن في هذه الـtextcoin:"
 
-#: public/views/modals/bind.html:23
+#: public/views/modals/bind.html:63
 msgid "The peer receives this payment if"
 msgstr "المتلقي سيتوصل بالمال في حالة"
 
-#: public/views/modals/signed-message.html:27
+#: public/views/modals/signed-message.html:32
 msgid "The signature is"
 msgstr "التوقيع هو"
 
@@ -1807,16 +1848,11 @@ msgstr "المبلغ الإجمالي في محفظتك هو"
 msgid "The vote will be signed by all your funded addresses"
 msgstr "التصويت سوف يوقع عليه من طرف جميع عناوينك الممولة"
 
-#: src/js/controllers/copayers.js:76
-#: src/js/controllers/preferencesDelete.js:56
-msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "إن المحفظة \"{{walletName}}\" قد حذفت"
-
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr "إن محفظة البائع سوف يكون بإمكانها معرفة بعض أرصدتك وأي المعاملات خاصة بك, ولكن يمكك إستعمال المحفظة فورا والمحفظة تعمل بشكل كامل."
 
-#: public/views/correspondentDevice.html:305
+#: public/views/correspondentDevice.html:389
 msgid "Their recording preference"
 msgstr "إعدادت التسجيل"
 
@@ -1824,7 +1860,23 @@ msgstr "إعدادت التسجيل"
 msgid "There are no wallets to make this payment"
 msgstr "ليس هنالك محفظة للقيام بالدفع"
 
-#: public/views/walletHome.html:297
+#: public/views/preferences.html:45
+msgid "This account cannot be converted to multi address account as it already has attestations"
+msgstr ""
+
+#: public/views/preferences.html:44
+msgid "This account cannot be converted to multi address account as it is multidevice"
+msgstr ""
+
+#: public/views/preferences.html:42
+msgid "This account cannot be converted to single address account as it already consists of multiple addresses"
+msgstr ""
+
+#: public/views/preferences.html:43
+msgid "This account cannot be converted to single address account as it is multidevice"
+msgstr ""
+
+#: public/views/walletHome.html:315
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr "هذا العنوان مشارك من قبل {{index.shared_address_cosigners}}."
 
@@ -1836,63 +1888,50 @@ msgstr "هذا الخيار لا يمكن تغييره فيما بعد"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "هذا الخيار هو أحسن لخصوصيتك لكنه يتطلب مساحة كبيرة للتخزين والمزامنة قد تتطلب بضعة أيام. كما أن المعالج سيشتغل بكثرة أثناء عملية المزامنة."
 
-#: public/views/walletHome.html:451
+#: public/views/walletHome.html:504
 msgid "This payment is bound to a condition..."
 msgstr "إن هذا الدفع ملزم بشرط..."
 
-#: src/js/controllers/correspondentDevice.js:150
-#: src/js/controllers/walletHome.js:2121
+#: src/js/controllers/correspondentDevice.js:160
+msgid "This payment must be paid only from single-address account"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:2235
 msgid "This payment must be paid only from single-address wallet"
 msgstr "هذا الدفع يجب أن يتم فقط عن طريق المحفظة ذات عنوان واحد"
 
-#: public/views/modals/tx-details.html:89
+#: public/views/modals/tx-details.html:96
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "هذا الدفع لم يعد ممكنا نظرا لإحتمال وجود إنفاق مزدوج."
 
-#: public/views/modals/tx-details.html:162
+#: public/views/modals/tx-details.html:175
 msgid "This transaction was sent to an autonomous agent"
 msgstr ""
 
-#: public/views/preferences.html:46
-msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
-msgstr "هذه المحفظة لا يمكن أن تتحول إلى محفظة متعددة العناوين لأنها تحتوي على شواهد"
-
-#: public/views/preferences.html:45
-msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
-msgstr "هذه المحفظة لا يمكن أن تتحول إلى محفظة متعددة العناوين لأنها متعددة الأجهزة"
-
-#: public/views/preferences.html:43
-msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
-msgstr "هذه المحفظة لا يمكن أن تتحول إلى محفظة أحادية العنوان لأنها تتوفر على عناوين متعددة"
-
-#: public/views/preferences.html:44
-msgid "This wallet cannot be converted to single address wallet as it is multidevice"
-msgstr "هذه المحفظة لا يمكن أن تتحول إلى محفظة أحادية العنوان نظرا لأنها معدة لعدة أجهزة"
-
-#: public/views/import.html:46
+#: public/views/import.html:47
 #: public/views/recoveryFromSeed.html:39
-msgid "This will permanently delete all your existing wallets!"
-msgstr "هذا سينتج عنه حذف كل المحافظ الموجودة!"
+msgid "This will permanently delete all your existing accounts!"
+msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:64
-#: public/views/modals/view-prosaic-contract.html:83
+#: public/views/modals/offer-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:90
 msgid "Title of contract"
 msgstr "عنوان العقد"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
-#: public/views/modals/tx-details.html:74
-#: public/views/walletHome.html:816
-#: src/js/controllers/index.js:1622
+#: public/views/modals/tx-details.html:81
+#: public/views/walletHome.html:899
+#: src/js/controllers/index.js:1656
 msgid "To"
 msgstr "إلى"
 
-#: public/views/walletHome.html:825
+#: public/views/walletHome.html:911
 msgid "To AA"
 msgstr ""
 
-#: public/views/walletHome.html:412
+#: public/views/walletHome.html:465
 msgid "To Obyte address"
 msgstr "لعنوان Obyte"
 
@@ -1900,35 +1939,35 @@ msgstr "لعنوان Obyte"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "من أجل أن تقوم باسترجاع كل شيئ, قم بإنشاء نسخة إحتياطية كاملة(ستجد هذا الخيار في القائمة)"
 
-#: public/views/walletHome.html:717
-msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
-msgstr "من أجل أن ترسل أية فئة من البيانات إلى شبكة <sub>Obyte</sub>, قم بالإنتقال إلى محفظة أحادية العنوان أو قم بإنشاء واحدة جديدة."
+#: public/views/walletHome.html:780
+msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one."
+msgstr ""
 
-#: public/views/walletHome.html:460
+#: public/views/walletHome.html:513
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "لفرض شرط على الدفع, قم بالنقر على عنوان المتلقي في الدردشة"
 
-#: src/js/controllers/index.js:1625
+#: src/js/controllers/index.js:1659
 msgid "To email"
 msgstr "إلى البريد الإلكتروني"
 
-#: public/views/walletHome.html:299
+#: public/views/walletHome.html:317
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "من أجل حماية خصوصيتك, نحن نقوم بإنشاء عناوين جدد بعد إستعمالك لأي عنوان."
 
-#: public/views/modals/view-prosaic-contract.html:93
+#: public/views/modals/view-prosaic-contract.html:100
 msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
 msgstr "للتحقق من سلامة العقد ، يتم حساب تجزئة SHA256 من ثلاثة مكونات متسلسلة: sha256 (العنوان + النّص+ تاريخ الانشاء) ومشفرة بتنسيق BASE64. بعد قبول العقد ، تم نشر وحدة بتجزئة في DAG. يمكنك التحقق من أن نص العقد لم يتم تعديله من خلال مقارنة التجزئة في DAG وحسابها من هذا العقد."
 
-#: public/views/walletHome.html:675
+#: public/views/walletHome.html:728
 msgid "Too long text"
 msgstr ""
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:240
 msgid "Total Locked Balance"
 msgstr "إجمالي الرصيد المؤمن"
 
-#: public/views/walletHome.html:380
+#: public/views/walletHome.html:432
 msgid "Total amount"
 msgstr "المبلغ الإجمالي"
 
@@ -1940,13 +1979,13 @@ msgstr "إجمالي عدد المشتركين"
 msgid "Transaction"
 msgstr "المعاملة"
 
-#: src/js/controllers/index.js:278
+#: src/js/controllers/index.js:283
 msgid "Transaction created.\n"
 "Please approve it on the other devices."
 msgstr "تم إنشاء المعاملة.\n"
 "يرجى الموافقة عليها على الأجهزة الأخرى."
 
-#: public/views/walletHome.html:767
+#: public/views/walletHome.html:848
 msgid "Transactions<br> Downloaded"
 msgstr "تم تحميل <br> المعاملات"
 
@@ -1962,20 +2001,20 @@ msgstr "المترجمين"
 msgid "Trusted nodes"
 msgstr "العقد الموثوقة"
 
-#: public/views/walletHome.html:556
+#: public/views/walletHome.html:609
 msgid "Try again"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1367
+#: src/js/controllers/correspondentDevice.js:1364
 msgid "US state"
 msgstr "ولاية أمريكية"
 
-#: src/js/controllers/walletHome.js:1284
+#: src/js/controllers/walletHome.js:1398
 msgid "Unable to send transaction proposal"
 msgstr "تعذر إرسال طلب المعاملة"
 
-#: public/views/modals/tx-details.html:121
-#: public/views/walletHome.html:798
+#: public/views/modals/tx-details.html:128
+#: public/views/walletHome.html:879
 msgid "Unconfirmed"
 msgstr "غير مؤكدة"
 
@@ -1987,11 +2026,11 @@ msgstr "وحدة من الـ blackbytes"
 msgid "Unit for bytes"
 msgstr "وحدة من الـ bytes"
 
-#: public/views/walletHome.html:215
+#: public/views/walletHome.html:233
 msgid "Unsent transactions"
 msgstr "المعاملة الغير مرسلة"
 
-#: public/views/walletHome.html:73
+#: public/views/walletHome.html:90
 msgid "Updating Wallet..."
 msgstr "تحديث المحفظة..."
 
@@ -2003,24 +2042,24 @@ msgstr "الترقية إلى {{version}}"
 msgid "Upgrading the database, please wait."
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:67
+#: public/views/modals/view-prosaic-contract.html:74
 msgid "Valid till"
 msgstr "صالحة ل"
 
-#: public/views/walletHome.html:525
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:578
+#: public/views/walletHome.html:740
 msgid "Value"
 msgstr "القيمة"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Values"
 msgstr "القيم"
 
-#: public/views/walletHome.html:563
+#: public/views/walletHome.html:616
 msgid "Variable"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1391
+#: src/js/controllers/correspondentDevice.js:1388
 msgid "Verifying the profile..."
 msgstr "التحقق من البروفيل..."
 
@@ -2032,7 +2071,7 @@ msgstr "الإصدار"
 msgid "WARNING:"
 msgstr "تحذير:"
 
-#: public/views/walletHome.html:240
+#: public/views/walletHome.html:258
 msgid "WARNING: Backup needed"
 msgstr "تحذير: يجب حفظ نسخة احتياطية"
 
@@ -2040,7 +2079,8 @@ msgstr "تحذير: يجب حفظ نسخة احتياطية"
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "تحذير: هذا الseed قد أنشئ باستعمال جملة سرية. من أجل إسترجاع هذه المحفظة يرجى التوفر على كلمة السر و الجملة معا."
 
-#: public/views/import.html:44
+#: public/views/import.html:45
+#: public/views/preferencesTor.html:23
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr "تحذيرات:"
@@ -2057,67 +2097,29 @@ msgstr "جاري إنتظار المشاركين"
 msgid "Waiting..."
 msgstr "جاري الإنتظار..."
 
-#: public/views/preferencesDeleteWallet.html:12
-msgid "Wallet"
-msgstr "المحفظة"
-
-#: public/views/preferences.html:24
-msgid "Wallet Alias"
-msgstr "الإسم المستعار للمحفظة"
-
-#: public/views/preferencesInformation.html:27
-msgid "Wallet Configuration (m-n)"
-msgstr "إعدادات المحفظة (m-n)"
-
-#: public/views/preferencesInformation.html:20
-msgid "Wallet Id"
-msgstr "تعريف المحفظة (id)"
-
-#: public/views/preferencesAdvanced.html:14
-#: public/views/preferencesInformation.html:8
-msgid "Wallet Information"
-msgstr "معلومات المحفظة"
-
-#: public/views/preferencesInformation.html:12
-msgid "Wallet Name (at creation)"
-msgstr "إسم المحفظة (عند الإنشاء)"
-
-#: src/js/services/profileService.js:455
-msgid "Wallet already in Obyte:"
-msgstr "المحفظة موجودة بالفعل على Obyte:"
-
-#: public/views/create.html:48
-msgid "Wallet name"
-msgstr "إسم المحفظة"
-
 #: public/views/backup.html:34
 msgid "Wallet seed not available."
 msgstr "Seed المحفظة غير متوفر."
-
-#: public/views/modals/destination-address.html:15
-#: public/views/modals/destination-address.html:29
-msgid "Wallets"
-msgstr "المحافظ"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
 msgstr "إنتباه!"
 
-#: public/views/modals/tx-details.html:132
+#: public/views/modals/tx-details.html:139
 msgid "Was claimed?"
 msgstr "هل تمت المطالبة به؟"
 
-#: public/views/walletHome.html:339
+#: public/views/walletHome.html:357
 msgid "What to send"
 msgstr "ما الذي يجب إرساله"
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:112
+#: public/views/modals/offer-contract.html:150
 #: public/views/modals/sign-message.html:27
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:580
-#: public/views/walletHome.html:604
-#: public/views/walletHome.html:698
+#: public/views/walletHome.html:633
+#: public/views/walletHome.html:657
+#: public/views/walletHome.html:761
 msgid "Who signs:"
 msgstr "من الذي يجب أن يوقع:"
 
@@ -2134,36 +2136,40 @@ msgid "Wrong password"
 msgstr "كلمة المرور غير صحيحة"
 
 #: public/views/authConfirmation.html:17
-#: public/views/modals/tx-details.html:174
-#: src/js/controllers/index.js:666
+#: public/views/modals/tx-details.html:187
+#: src/js/controllers/index.js:671
 msgid "Yes"
 msgstr "نعم"
 
-#: public/views/walletHome.html:540
+#: public/views/walletHome.html:593
 msgid "You are sending to an autonomous agent, the expected result:"
 msgstr ""
 
-#: public/views/walletHome.html:542
+#: public/views/walletHome.html:595
 msgid "You are sending to an autonomous agent:"
 msgstr ""
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
 msgstr "يمكنك مسح الـ textcoin من على محفظتك إذا كنت قد سجلته في مكان آمن(كورقة على سبيل المثال):"
 
-#: public/views/modals/bind.html:99
-msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr "لا يمكنك ربط معاملتك من أجل عكس الدفع لأن محفظتك تتوفر على عنوان واحد. قم باستعمال محفظة متعددة العناوين ثم قم بإرسال المال إلى تلك المحفظة."
+#: public/views/modals/bind.html:139
+msgid "You cannot bind your transaction to reverse payment as you are in a single address account.  Use a non-single address account and then transfer the money to that account."
+msgstr ""
 
-#: public/views/walletHome.html:42
-msgid "You do not have a wallet"
-msgstr "ليس لديك محفظة"
+#: public/views/walletHome.html:59
+msgid "You do not have an account"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:70
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr "يجب التأكد من هويتك قبل أن تحصل على بروفايل. قم بالبحت عن بوت الإسم الحقيقي في متجر البوتات."
 
-#: public/views/modals/offer-prosaic-contract.html:90
+#: public/views/preferencesTor.html:25
+msgid "You need to have Tor service or Tor Browser running to use this feature!"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:99
 msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
 msgstr "سيتم محاسبتك {{CHARGE_AMOUNT}} بايت للتعويض عن الرسوم عند نشر دليل التوقيع."
 
@@ -2196,10 +2202,10 @@ msgstr "سيتم إنشاء محفظتك على هذا الجهاز ، واحت�
 msgid "[ Add new co-signer device ]"
 msgstr "[أضف جهازًا مشتركًا جديدًا]"
 
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:61
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/offer-prosaic-contract.html:64
+#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/view-prosaic-contract.html:87
 msgid "address"
 msgstr "العنوان"
 
@@ -2207,13 +2213,13 @@ msgstr "العنوان"
 msgid "addresses"
 msgstr "العناوين"
 
-#: public/views/modals/bind.html:37
-#: public/views/modals/offer-contract.html:44
-#: public/views/modals/offer-contract.html:52
+#: public/views/modals/bind.html:77
+#: public/views/modals/offer-contract.html:82
+#: public/views/modals/offer-contract.html:90
 msgid "amount"
 msgstr "المبلغ"
 
-#: public/views/modals/bind.html:31
+#: public/views/modals/bind.html:71
 msgid "an event is posted by an oracle"
 msgstr "تم نشر حدث من قبل أوراكل"
 
@@ -2226,37 +2232,37 @@ msgid "and it is recommended you back it up."
 msgstr "ومن المستحسن أن تقوم بحفظ نسخة احتياطية منه."
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by trusted attestor"
 msgstr "يشهد به موثّق موثوق"
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by:"
 msgstr "مفحوصة من طرف:"
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attestor is not trusted by you"
 msgstr "الموثق غير موثوق به من قبلك"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "available"
 msgstr "متاح"
 
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "by address"
 msgstr "حسب العنوان"
 
-#: public/views/modals/view-prosaic-contract.html:104
+#: public/views/modals/view-prosaic-contract.html:111
 msgid "calculated hash:"
 msgstr "التجزئة المحسوبة:"
 
@@ -2265,23 +2271,23 @@ msgstr "التجزئة المحسوبة:"
 msgid "can be spent if:"
 msgstr "يمكن إنفاقه إذا:"
 
-#: public/views/modals/offer-contract.html:77
+#: public/views/modals/offer-contract.html:115
 msgid "can unlock the contract"
 msgstr "يمكن فتح العقد"
 
-#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-contract.html:145
 msgid "can unlock the contract after it expires in"
 msgstr "يمكنه فتح العقد بعد انتهاء صلاحيته في"
 
 #: public/views/copayers.html:38
-msgid "cancel wallet creation"
-msgstr "إلغاء إنشاء المحفظة"
+msgid "cancel the account creation"
+msgstr ""
 
-#: public/views/walletHome.html:676
+#: public/views/walletHome.html:729
 msgid "character(s)"
 msgstr ""
 
-#: public/views/modals/tx-details.html:140
+#: public/views/modals/tx-details.html:147
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr "تمت المطالبة من طرف {{btx.claimedByMe?'أنا':'المتلقي'|translate}}"
 
@@ -2289,82 +2295,82 @@ msgstr "تمت المطالبة من طرف {{btx.claimedByMe?'أنا':'المت
 msgid "clear chat history"
 msgstr "إزالة سجل المحادثات"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "confirmed"
 msgstr "تم التأكيد"
 
-#: public/views/modals/select-subwallet.html:39
+#: public/views/modals/select-subwallet.html:47
 msgid "created"
 msgstr "تم الإنشاء"
 
-#: public/views/modals/view-prosaic-contract.html:94
+#: public/views/modals/view-prosaic-contract.html:101
 msgid "creation date:"
 msgstr "تاريخ الإنشاء:"
 
-#: public/views/modals/offer-contract.html:109
+#: public/views/modals/offer-contract.html:147
 msgid "days"
 msgstr "أيام"
 
-#: src/js/controllers/walletHome.js:1182
+#: src/js/controllers/walletHome.js:1296
 msgid "decreased by"
 msgstr ""
 
-#: public/views/modals/bind.html:82
-#: public/views/modals/offer-contract.html:99
+#: public/views/modals/bind.html:122
+#: public/views/modals/offer-contract.html:137
 msgid "detailed instructions about using"
 msgstr "تعليمات مفصلة حول الاستخدام"
 
 #: public/views/backup.html:28
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
-msgstr "مثلا 1-من-2 محفظة مع مفتاح واحد على هذا الجهاز ومفتاح آخر على الكمبيوتر المحمول الخاص بك."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your laptop computer."
+msgstr ""
 
 #: public/views/backup.html:27
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
-msgstr "مثلا 1-من-2 محفظة مع مفتاح واحد على هذا الجهاز ومفتاح آخر على الهاتف الذكي الخاص بك."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your smartphone."
+msgstr ""
 
-#: public/views/modals/bind.html:79
+#: public/views/modals/bind.html:119
 msgid "either way"
 msgstr "وفي كلتا الحالتين"
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "erase textcoin"
 msgstr "محو الـ textcoin"
 
-#: public/views/modals/bind.html:71
+#: public/views/modals/bind.html:111
 msgid "explicitly"
 msgstr "صراحة"
 
-#: public/views/modals/view-prosaic-contract.html:105
+#: public/views/modals/view-prosaic-contract.html:112
 msgid "hash published in DAG:"
 msgstr "التجزئة نشرت في DAG:"
 
-#: public/views/modals/view-prosaic-contract.html:95
+#: public/views/modals/view-prosaic-contract.html:102
 msgid "hash source string:"
 msgstr "سلسلة مصدر التجزئة:"
 
-#: public/views/modals/bind.html:87
-#: public/views/modals/offer-contract.html:69
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/bind.html:127
+#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "hours"
 msgstr "الساعات"
 
-#: public/views/modals/offer-contract.html:78
+#: public/views/modals/offer-contract.html:116
 msgid "if an event is posted by an oracle"
 msgstr "إذا تم نشر حدث من قبل أوراكل"
 
-#: public/views/modals/bind.html:75
+#: public/views/modals/bind.html:115
 msgid "in merkle tree"
 msgstr "في شجرة ميركيل"
 
-#: public/views/walletHome.html:171
-msgid "in smart wallets"
-msgstr "في المحافظ الذكية"
+#: public/views/walletHome.html:188
+msgid "in smart contracts"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:1178
+#: src/js/controllers/walletHome.js:1292
 msgid "increased by"
 msgstr ""
 
-#: public/views/modals/signed-message.html:28
+#: public/views/modals/signed-message.html:33
 msgid "invalid"
 msgstr "غير صالح"
 
@@ -2372,7 +2378,7 @@ msgstr "غير صالح"
 msgid "keep for myself"
 msgstr "تبقى لي"
 
-#: public/views/walletHome.html:547
+#: public/views/walletHome.html:600
 msgid "less"
 msgstr ""
 
@@ -2380,20 +2386,20 @@ msgstr ""
 msgid "locked by pending payments"
 msgstr "مغلقة بسبب المدفوعات قيد الإنتظار"
 
-#: public/views/walletHome.html:546
+#: public/views/walletHome.html:599
 msgid "more"
 msgstr ""
 
-#: public/views/modals/tx-details.html:169
-#: src/js/controllers/walletHome.js:1228
+#: public/views/modals/tx-details.html:182
+#: src/js/controllers/walletHome.js:1342
 msgid "none"
 msgstr ""
 
-#: public/views/modals/tx-details.html:134
+#: public/views/modals/tx-details.html:141
 msgid "not claimed"
 msgstr "لم يتم المطالبة بها"
 
-#: public/views/modals/view-prosaic-contract.html:101
+#: public/views/modals/view-prosaic-contract.html:108
 msgid "not valid"
 msgstr "غير صالح"
 
@@ -2409,17 +2415,17 @@ msgstr "من"
 msgid "on"
 msgstr "تشغيل"
 
-#: public/views/modals/bind.html:55
-#: public/views/modals/offer-contract.html:88
+#: public/views/modals/bind.html:95
+#: public/views/modals/offer-contract.html:126
 msgid "on feed name"
 msgstr "إسم التحديث"
 
-#: public/views/walletHome.html:471
-#: public/views/walletHome.html:482
+#: public/views/walletHome.html:524
+#: public/views/walletHome.html:535
 msgid "optional"
 msgstr "إختيارية"
 
-#: public/views/modals/offer-contract.html:100
+#: public/views/modals/offer-contract.html:138
 msgid "or"
 msgstr "أو"
 
@@ -2427,11 +2433,11 @@ msgstr "أو"
 msgid "or backup all Obyte data at"
 msgstr "أو قم بنسخ احتياطي لجميع بيانات الـ Obyte في"
 
-#: public/views/modals/offer-contract.html:51
+#: public/views/modals/offer-contract.html:89
 msgid "peer pays"
 msgstr "مدفوعات الند"
 
-#: public/views/modals/bind.html:67
+#: public/views/modals/bind.html:107
 msgid "posted"
 msgstr "تم النشر"
 
@@ -2439,19 +2445,19 @@ msgstr "تم النشر"
 msgid "re"
 msgstr "إعادة"
 
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:161
 msgid "re-send private payloads"
 msgstr "اعد إرسال حمولات خاصة"
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "re-send private payloads to cosigners"
 msgstr "أعد إرسال الحمولات الخاصة إلى المشاركين"
 
-#: public/views/correspondentDevices.html:171
+#: public/views/correspondentDevices.html:220
 msgid "search by bot name"
 msgstr "البحث بواسطة اسم البوت"
 
-#: public/views/correspondentDevices.html:112
+#: public/views/correspondentDevices.html:159
 msgid "search by contact name"
 msgstr "البحث عن طريق اسم جهة الاتصال"
 
@@ -2460,40 +2466,40 @@ msgid "send"
 msgstr "إرسال"
 
 #: public/views/modals/share.html:30
-#: src/js/controllers/walletHome.js:805
+#: src/js/controllers/walletHome.js:895
 msgid "send email"
 msgstr "ارسل بريد الكتروني"
 
-#: src/js/controllers/walletHome.js:1378
-#: src/js/controllers/walletHome.js:1413
-#: src/js/controllers/walletHome.js:1448
-#: src/js/controllers/walletHome.js:1461
-#: src/js/controllers/walletHome.js:1559
-#: src/js/controllers/walletHome.js:1611
-#: src/js/controllers/walletHome.js:1638
-#: src/js/controllers/walletHome.js:1813
-#: src/js/controllers/walletHome.js:1875
-#: src/js/controllers/walletHome.js:1884
+#: src/js/controllers/walletHome.js:1492
+#: src/js/controllers/walletHome.js:1527
+#: src/js/controllers/walletHome.js:1562
+#: src/js/controllers/walletHome.js:1575
+#: src/js/controllers/walletHome.js:1673
+#: src/js/controllers/walletHome.js:1725
+#: src/js/controllers/walletHome.js:1752
+#: src/js/controllers/walletHome.js:1927
+#: src/js/controllers/walletHome.js:1989
+#: src/js/controllers/walletHome.js:1998
 msgid "sending"
 msgstr "جاري الارسال"
 
-#: src/js/controllers/walletHome.js:1186
+#: src/js/controllers/walletHome.js:1300
 msgid "set to"
 msgstr ""
 
-#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:155
 msgid "share again"
 msgstr "شارك مرة أخرى"
 
-#: public/views/walletHome.html:457
+#: public/views/walletHome.html:510
 msgid "switch to multi-address"
 msgstr "قم بالتغيير إلى متعدد العناوين"
 
-#: public/views/walletHome.html:456
+#: public/views/walletHome.html:509
 msgid "switch to single address"
 msgstr "قم بالتغيير إلى عنوان واحد"
 
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "the contract is not signed yet"
 msgstr "لم يتم توقيع العقد بعد"
 
@@ -2502,64 +2508,64 @@ msgid "the text below and send it to the recipient via any messaging app"
 msgstr "النص أدناه وإرساله إلى المستلم عبر أي تطبيق مراسلاتي"
 
 #: public/views/modals/approveNewWitnesses.html:26
-#: src/js/controllers/walletHome.js:1207
+#: src/js/controllers/walletHome.js:1321
 msgid "to"
 msgstr "الى"
 
-#: src/js/controllers/index.js:378
+#: src/js/controllers/index.js:383
 msgid "together with"
 msgstr "بالتعاون مع"
 
-#: public/views/walletHome.html:472
-#: public/views/walletHome.html:483
+#: public/views/walletHome.html:525
+#: public/views/walletHome.html:536
 msgid "too long!"
 msgstr "طويل جدا!"
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
 msgid "trusted"
 msgstr "موثوق"
 
-#: public/views/modals/view-prosaic-contract.html:92
+#: public/views/modals/view-prosaic-contract.html:99
 msgid "unit in DAG:"
 msgstr "وحدة في DAG:"
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "unlimited"
 msgstr ""
 
-#: public/views/modals/signed-message.html:29
-#: public/views/modals/view-prosaic-contract.html:100
+#: public/views/modals/signed-message.html:34
+#: public/views/modals/view-prosaic-contract.html:107
 msgid "valid"
 msgstr "صالحة"
 
-#: public/views/modals/view-prosaic-contract.html:98
+#: public/views/modals/view-prosaic-contract.html:105
 msgid "validate contract integrity"
 msgstr "التحقق من صحة العقد"
 
-#: src/js/controllers/walletHome.js:1341
+#: src/js/controllers/walletHome.js:1455
 msgid "wait for sync to complete before sending payments"
 msgstr "انتظر المزامنة الكاملة قبل إرسال المدفوعات"
 
-#: public/views/walletHome.html:571
+#: public/views/walletHome.html:624
 msgid "were added as it is the minimum amount for this AA"
 msgstr ""
 
-#: public/views/modals/select-subwallet.html:37
+#: public/views/modals/select-subwallet.html:45
 #: public/views/preferencesHiddenSubWallets.html:36
 msgid "with"
 msgstr "مع"
 
-#: public/views/modals/bind.html:58
-#: public/views/modals/offer-contract.html:91
+#: public/views/modals/bind.html:98
+#: public/views/modals/offer-contract.html:129
 msgid "with expected value"
 msgstr "مع القيمة المتوقعة"
 
-#: src/js/controllers/walletHome.js:1205
+#: src/js/controllers/walletHome.js:1319
 msgid "you"
 msgstr ""
 
-#: public/views/walletHome.html:371
+#: public/views/walletHome.html:423
 msgid "{{home.custom_amount_error}}"
 msgstr ""
 

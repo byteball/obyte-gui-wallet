@@ -1,15 +1,15 @@
 <div 
   class="topbar-container" 
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Wallet Information'; goBackToState = true">
+  ng-init="titleSection='Account Information'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesInformation as info" ng-init="info.init()">
-    <h4 class="title m0" translate>Wallet Information</h4>
+    <h4 class="title m0" translate>Account Information</h4>
 
     <ul class="no-bullet m0 size-14">
       <li class="line-b p20 oh">
-        <span translate>Wallet Name (at creation)</span>
+        <span translate>Account Name (at creation)</span>
         <span class="right text-gray">
           {{walletName}}
         </span>
@@ -17,14 +17,14 @@
 
 
       <li class="line-b p20 oh">
-        <span translate>Wallet Id</span>
-        <span class="right text-gray enable_text_select">
+        <span translate>Account Id</span>
+        <span class="right text-gray enable_text_select" style="word-break: break-all; width: 100%; white-space: initial;">
           {{walletId}}
         </span>
       </li>
 
       <li class="line-b p20 oh">
-        <span translate>Wallet Configuration (m-n)</span>
+        <span translate>Account Configuration (m-n)</span>
         <span class="right text-gray">
           {{M}}-{{N}}
         </span>
@@ -83,7 +83,7 @@
     <h4 class="title m0" translate>Extended Public Keys</h4>
       <li  ng-repeat="copayer in index.copayers">
         <div class="row collapse">
-          <div class="small-4 columns">{{copayer.name||'Me'|translate}}</div>
+          <div class="ellipsis small-4 columns">{{copayer.name||'Me'|translate}}</div>
           <div class="small-8 columns oh text-gray">
             <div class="ellipsis enable_text_select">{{copayer.extended_pubkey}}</div>
           </div>
@@ -92,7 +92,7 @@
     </ul>
     
     <ul class="no-bullet m0 size-14" ng-show="addrs">
-    <h4 class="title m0" translate>All Wallet Addresses</h4>
+    <h4 class="title m0" translate>All Account Addresses</h4>
       <li  ng-repeat="a in addrs" class="oh">
           <div class="enable_text_select ellipsis">
             {{a.address}} 
@@ -100,6 +100,9 @@
           <div class="text-gray size-12 right enable_text_select">
             {{a.path}} &middot;  {{a.createdOn *1000  | amDateFormat:'MMMM Do YYYY, h:mm a' }}
           </div>
+          <a ng-if="M == 1" ng-click="signMessageFromAddress(a.address);" class="right">
+            <i class="icon-pricetags"></i> <span translate>Sign a message with this address</span>
+          </a>
       </li>
 
       <ul class="no-bullet m0 size-14" ng-show="hasListOfBalances()">
@@ -109,9 +112,9 @@
             <div class="enable_text_select ellipsis">
               {{key}}
             </div>
-            <div class="text-gray text-right" ng-repeat="row in value">
-              <span class="m5r">{{row.amount}}</span>
-              <a ng-click="useAsFromAddress(key, row.asset);" style="float:right">
+            <div class="text-gray text-right" ng-repeat="row in value" style="clear:both;">
+              <span class="m5r enable_text_select">{{row.amount}}</span>
+              <a ng-click="useAsFromAddress(key, row.asset);" class="right">
                   <i class="icon-paperplane"></i> <span translate>Send this</span>
               </a>
             </div>

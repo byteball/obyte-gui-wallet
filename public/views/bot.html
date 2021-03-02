@@ -11,17 +11,23 @@
   left: 0px;
   right: 0px;
   bottom: 0px;
-  background-color: #D9E9FE;
+  min-height: 542px;
+  height: 100%;
+  background-color: #f0f4f9;
 }
 
 .bot-description-widget {
-  background: #F5F5F5;
+  background: #fff;
   margin: 20px;
+  margin-bottom: 30px;
   box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.1);
   padding: 21px;
   width: calc(100% - 40px);
   border-radius: 25px;
+  padding-bottom: 11px;
   position: relative;
+  word-break: break-word;
+  margin-bottom: 91px !important;
 }
 
 .bot-related-bottom-row {
@@ -34,9 +40,24 @@
 
 .bot-related-bottom-row input[type=button] {
   width: 60%;
-  border-radius: 20px;
+  max-width: 88%;
+  border-radius: 32px;
+  min-width: 210px;
   letter-spacing: 1.73px;
   box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.35) !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 320px) {
+  .bot-description-widget {
+    margin-bottom: 130px;
+  }
+
+  .bot-related-bottom-row input[type=button] {
+    width: 85%;
+    min-width: 210px;
+  }
 }
 
 </style>
@@ -57,7 +78,7 @@
       </section>
 
       <section class="middle tab-bar-section">
-        <h1 class="title ellipsis" ng-style="{'color': noColor ? '#4A90E2' : index.backgroundColor}">
+        <h1 class="title ellipsis" style="color: #4E4E4E !important">
           {{'Bot Store'|translate}}
         </h1>
       </section>

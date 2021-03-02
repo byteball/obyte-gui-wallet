@@ -16,8 +16,9 @@
     </section>
 
     <section class="middle tab-bar-section" style="overflow: hidden;">
-	    <h1 class="title ellipsis"  ng-style="{'color': noColor ? '#333' : index.backgroundColor}">
-	      {{correspondent.name}}
+	    <h1 class="title ellipsis" style="color: #4E4E4E !important;display: flex;align-items: center;justify-content: center;height:45px">
+        <span class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
+	      <span class="ellipsis">{{correspondent.name}}</span>
 	    </h1>
     </section>
       
@@ -192,23 +193,29 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .from-me a {
     color: white;
+    font-weight: 500;
+    text-decoration: none;
 }
 .bubble a.payment, .bubble a.external-link {
     text-decoration: underline;
+    font-weight: 500;
 }
 .bubble a.command {
     line-height: 2;
+    font-weight: 500;
+    text-decoration: none;
 }
 
 .from-them {
-  background: #C2E4FF;
+  background: #E5E5EA;
   color: black;
   float: left;
 }
 
 .from-them > a {
-  color: #153A56;
-  text-decoration: underline;
+  color: #1560BD;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .from-them:before {
@@ -218,7 +225,7 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
   bottom: -2px;
   left: -7px;
   height: 20px;
-  border-left: 20px solid #C2E4FF;
+  border-left: 20px solid #E5E5EA;
   border-bottom-right-radius: 16px 14px;
   -webkit-transform: translate(0, -2px);
   transform: translate(0, -2px);
@@ -295,7 +302,8 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 }
 .dropup-item-link {
 	padding: 8px 0 !important;
-	display: inline-block !important;
+  display: flex !important;
+  flex-direction: row;
 	max-width: calc(100% - 10px);
 	float: left;
 }
@@ -317,20 +325,29 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
 .chat-message .bubble.system > b {
   background-color: white;
-  color: #424242;
+  color: #6E6E6E;
   transition: all .3s;
   margin-left: -5px;
-  border-radius: 11px;
-  box-shadow: 0px 0px 0px 2px rgb(228, 228, 228);
   margin-right: 2px;
   padding: 5px 10px;
-  border: 1px solid #737373;
+  padding-bottom: 2px;
+  border-bottom: 1px dashed #6E6E6E;
   letter-spacing: 1px;
 }
 
-.chat-message .bubble.system > b:hover {
-  background: #5F5F5F;
-  color: #fff;
+
+@media only screen and (max-width: 320px) {
+  .send-form .textinput {
+    width: 70%;
+  }
+  
+  .send-form .chatbutton.left {
+    margin-right: 7px;
+  }
+  
+  .send-form .chatbutton.right {
+    margin-left: 7px;
+  }
 }
 </style>
 
@@ -394,19 +411,21 @@ Chat bubble CSS credits http://codepen.io/samuelkraft/pen/Farhl
 
             <ul id="drop" class="f-dropdown drop-top drop-up" data-dropdown-content >
 			  <li class="dropup-item">
-			    <a class="ellipsis dropup-item-link" ng-click="insertMyAddress()">
+			    <a class="dropup-item-link" ng-click="insertMyAddress()">
 				  	<span translate>
 				  		Insert my address
-				  	</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+				  	</span>&nbsp;<span class="ellipsis" style="max-width: 132px">({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}</span>
 			  	</a>
 			  	<span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">
-			  	<a ng-click="requestPayment()" class="ellipsis dropup-item-link">
-			  		<span translate>Request payment</span> ({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}
+			  	<a ng-click="requestPayment()" class="dropup-item-link">
+			  		<span translate>
+              Request payment
+            </span>&nbsp;<span class="ellipsis" style="max-width: 132px">({{(index.shared_address00 ? 'Shared address '+index.shared_address : (index.alias || index.walletName))}}</span>
 			  	</a>
-			  	<span class="ellipsis-end">)</span>
+          <span class="ellipsis-end">)</span>
 			  </li>
 			  <div class="clear"></div>
 			  <li class="dropup-item">

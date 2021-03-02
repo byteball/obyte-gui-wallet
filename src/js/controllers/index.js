@@ -335,7 +335,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         updatePublicKeyRing(client);
 		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" approved by "+correspondent.name);
+            notification.success(gettextCatalog.getString('Success'), "Account "+walletName+" approved by "+correspondent.name);
         });
     });
 
@@ -346,7 +346,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         var walletName = client.credentials.walletName;
 		var device = require('ocore/device.js');
         device.readCorrespondent(device_address, function(correspondent){
-            notification.info(gettextCatalog.getString('Declined'), "Wallet "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
+            notification.info(gettextCatalog.getString('Declined'), "Account "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
         });
 		profileService.deleteWallet({client: client}, function(err) {
 			if (err)
@@ -363,7 +363,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
         updatePublicKeyRing(client, function(){
             if (!client.isComplete())
                 throw Error("not complete");
-            notification.success(gettextCatalog.getString('Success'), "Wallet "+walletName+" is ready");
+            notification.success(gettextCatalog.getString('Success'), "Account "+walletName+" is ready");
             $rootScope.$emit('Local/WalletCompleted');
         });
     });
@@ -380,7 +380,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             // my own address is not included in arrCorrespondentInfos because I'm not my correspondent
             var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
             var name_list = arrNames.join(", ");
-            var question = gettextCatalog.getString('Create new wallet') + ' ' + walletName + ' ' + gettextCatalog.getString('together with') + ' ' + name_list + ' ?';
+            var question = gettextCatalog.getString('Create new account') + ' ' + walletName + ' ' + gettextCatalog.getString('together with') + ' ' + name_list + ' ?';
             requestApproval(question, {
                 ifYes: function(){
                     console.log("===== YES CLICKED")
@@ -404,7 +404,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										if (isSingleAddress) {
 											profileService.setSingleAddressFlag(true);
 										}
-										console.log("switched to newly approved wallet "+walletId);
+										console.log("switched to newly approved account "+walletId);
 									});
 								}
 							);
@@ -557,13 +557,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									var nl = "\n";
 									var list = arrPairs.join(nl)+nl;
 									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
-										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from account '+credentials.walletName+'?';
 									if (message.app === 'attestation')
-										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from wallet '+credentials.walletName+'?';
+										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from account '+credentials.walletName+'?';
 								}
 							}
 							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
-							return 'Sign transaction spending '+dest+' from wallet '+credentials.walletName+'?';
+							return 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
 						var ask = function() {
@@ -653,12 +653,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						}
 					 	isProsaicContractSignRequest(function(isContract, objContract){
 						 	if (isContract) {
-						 		question = 'Sign '+objContract.title+' from wallet '+credentials.walletName+'?';
+						 		question = 'Sign '+objContract.title+' from account '+credentials.walletName+'?';
 						 		return ask();
 						 	}
 						 	isProsaicContractDepositRequest(function(isContract, objContract){
 								if (isContract)
-							 		question = 'Approve prosaic contract '+(objContract ? objContract.title + ' ' : '')+'deposit from wallet '+credentials.walletName+'?';
+							 		question = 'Approve prosaic contract '+(objContract ? objContract.title + ' ' : '')+'deposit from account '+credentials.walletName+'?';
 							 	ask();
 							});
 						});
@@ -831,6 +831,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   };
     
+  self.getSigningDeviceAddresses = function(fc, exclude_self){
+    var arrSigningDeviceAddresses = []; // empty list means that all signatures are required (such as 2-of-2)
+    if (fc.credentials.m < fc.credentials.n)
+      self.copayers.forEach(function(copayer){
+        if ((copayer.me && !exclude_self) || copayer.signs)
+          arrSigningDeviceAddresses.push(copayer.device_address);
+      });
+    else if (self.shared_address)
+      arrSigningDeviceAddresses = self.copayers.map(function(copayer){ return copayer.device_address; });
+    return arrSigningDeviceAddresses;
+  }
+
   self.goHome = function() {
     go.walletHome();
   };
@@ -1307,16 +1319,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     
   this.csvHistory = function() {
 
-    function saveFile(name, data) {
+    function saveFile(name, data, filename) {
       var chooser = document.querySelector(name);
-      chooser.addEventListener("change", function(evt) {
+      chooser.setAttribute("nwsaveas", filename);
+      var fileSaveChange = function(evt) {
         var fs = require('fs');
-        fs.writeFile(this.value, data, function(err) {
+        fs.writeFile(evt.target.value, data, function(err) {
           if (err) {
             $log.debug(err);
           }
+          evt.target.removeEventListener("change", fileSaveChange, false);
+          evt.target.value = null;
         });
-      }, false);
+      };
+      chooser.addEventListener("change", fileSaveChange, false);
       chooser.click();
     }
 
@@ -1347,10 +1363,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
       return str;
     }
 
-    var step = 6;
-    var unique = {};
-
-
     if (isCordova) {
       $log.info('CSV generation not available in mobile');
       return;
@@ -1371,7 +1383,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           $log.debug('Wallet Transaction History:', txs);
 
           var data = txs;
-          var filename = 'Obyte-' + (self.alias || self.walletName) + '.csv';
+          var filename = 'Obyte-' + (self.alias || self.walletName) + '-' + (new Date()).getTime() + '.csv';
           var csvContent = '';
 
           if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
@@ -1385,19 +1397,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             if (it.action == 'moved')
               amount = 0;
 
+            _asset = !it.asset || it.asset == 'base' ? 'byte' : it.asset;
             _amount = (it.action == 'sent' ? '-' : '') + amount;
             _note = formatString((it.message ? it.message : '') + ' unit: ' + it.unit);
 
             if (it.action == 'moved')
               _note += ' Moved:' + it.amount
 
-            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',byte,,,,';
+            dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',' + _asset + ',,,,';
             csvContent += dataString + "\n";
 
           });
 
           if (isNode) {
-            saveFile('#export_file', csvContent);
+            saveFile('#export_file', csvContent, filename);
           } else {
             var encodedUri = encodeURI(csvContent);
             var link = document.createElement("a");
@@ -1405,9 +1418,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             link.setAttribute("download", filename);
             link.click();
           }
-		  $timeout(function(){
-			  $rootScope.$apply();
-		  });
+          $timeout(function(){
+            $rootScope.$apply();
+          });
       });
     });
   };

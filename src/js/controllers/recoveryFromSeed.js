@@ -170,7 +170,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 				var opts = {};
 				opts.m = 1;
 				opts.n = 1;
-				opts.name = 'Wallet #' + account;
+				opts.name = 'Account #' + account;
 				opts.network = 'livenet';
 				opts.cosigners = [];
 				opts.extendedPrivateKey = self.xPrivKey;
@@ -266,7 +266,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 						createWallets(arrWalletIndexes, assocMaxAddressIndexes, function () {
 							createAddresses(assocMaxAddressIndexes, function () {
 								self.scanning = false;
-								$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length + " wallets recovered, please restart the application to finish.", 'fi-check', function () {
+								$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length + " accounts recovered, please restart the application to finish.", 'fi-check', function () {
 									if (navigator && navigator.app) // android
 										navigator.app.exitApp();
 									else if (process.exit) // nwjs

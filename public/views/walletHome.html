@@ -27,6 +27,24 @@ input.datafeed_input {
 .hor-link:nth-child(2) {
 	border-left: 1px solid #E9E9EC;
 }
+
+#history .label {
+  width: 56px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#history .history-list-details {
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-end;
+}
+
+#history .history-list-details > section {
+  margin-left: 10px;
+  text-align: right;
+}
 </style>
 
 
@@ -38,7 +56,7 @@ input.datafeed_input {
 <div ng-controller="walletHomeController as home">
   <div class="row columns m20tp" ng-show="index.noFocusedWallet">
     <div class="text-center text-warning m20b">
-      <i class="fi-alert"></i> <span translate>You do not have a wallet</span>
+      <i class="fi-alert"></i> <span translate>You do not have an account</span>
     </div>
     <button class="button black round expand" ng-click="$root.go('add')" translate>Create</button>
 
@@ -192,13 +210,14 @@ input.datafeed_input {
               <span class="show-for-medium-up" translate>Preferences</span>
             </a>
             <a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
-              <i class="fi-eye size-24 vm wallet-settings"></i>
+              <!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
+              <img src="./img/eye.svg">
               <span class="show-for-medium-up" translate>Definition</span>
             </a>
           </div>
           <div class="wallet-info">
               <p class="m0">
-              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart wallet: {{index.shared_address | limitTo: 6}}...</span>
+              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart contract: {{index.shared_address | limitTo: 6}}...</span>
               </p>
               <div class="size-12 text-gray" ng-if="!index.shared_address">
                 <span ng-include="'views/includes/walletInfo.html'"></span>
@@ -435,7 +454,7 @@ input.datafeed_input {
             </label>
 
             <div class="mtabset" ng-show="index.arrBalances.length > 0 && !home.lockAddress">
-              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other wallet' : 'To Obyte address / Email / Username')|translate}}</div>
+              <div class="mtab-title" ng-click="mtab = 1" ng-class="{'active': mtab === 1}">{{(index.arrBalances[index.assetIndex].is_private ? 'To my other account' : 'To Obyte address / Email / Username')|translate}}</div>
               <div class="mtab-title" ng-click="mtab = !home.send_multiple ? 2 : mtab; _address = !home.send_multiple ? null : _address" ng-class="{'active': mtab === 2, 'disabled': home.send_multiple}" translate>Share via message</div>
             </div>
 
@@ -468,7 +487,7 @@ input.datafeed_input {
 	            </div>
 
 	              <div class="input">
-	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other wallet &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)" ng-change="home.onAddressChanged()">
+	                <input ng-if="!home.send_multiple" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || index.arrBalances[index.assetIndex].is_private" ng-attr-placeholder="{{(home.canSendExternalPayment() ? 'Obyte address or email or username' : 'Obyte address of your other account &#8594;')|translate}}" ng-model="_address" ng-required valid-address-or-account ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)" ng-change="home.onAddressChanged()">
 	                <!--<input ng-if="!home.send_multiple && index.arrBalances[index.assetIndex].is_private" class="m0" type="text" id="address" name="address" ng-disabled="home.blockUx || home.lockAddress || !home.canSendExternalPayment()" ng-attr-placeholder="{{home.canSendExternalPayment() ? 'Obyte address' : 'Obyte address of your other wallet &#8594;'}}" ng-model="_address" ng-required valid-address ng-focus="home.formFocus('address')" ng-blur="home.formFocus(false)">-->
 	                <textarea ng-if="home.send_multiple" class="m0" type="text" name="addresses" placeholder="Obyte address, amount {{index.arrBalances[index.assetIndex].asset === 'base' ? 'in ' + home.unitName : 'of ' + (index.arrBalances[index.assetIndex].name || index.arrBalances[index.assetIndex].asset.substr(0,4) | limitTo:16)}}&#10;M7G2CZDBV7FWH2QMWUNXQ4MSLIZPHX3U, {{100000 / home.unitValue}}&#10;5OJ2RQ3AG7RLS6HFDAKOZGBZE6HKUWAZ, {{5000000 / home.unitValue}}&#10;not more than 120 rows" ng-model="_addresses" required valid-addresses="{{index.arrBalances[index.assetIndex].asset}}" style="margin-bottom: 25px" rows="4" msd-elastic="\n" ng-change="_amount=+(_addresses | sumNumbers).toLocaleString(['EN-US'], {maximumFractionDigits: index.arrBalances[index.assetIndex].decimals}).split(',').join(''); home.onMultiAddressesChanged()"></textarea>
 
@@ -597,7 +616,7 @@ input.datafeed_input {
                       <span translate>Variable</span> <i>{{state_change.variable}}</i> {{state_change.action}} <b>{{state_change.value}}</b><br>
                     </li>
                     <li ng-repeat="responseVar in home.responseVars">
-                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b>{{responseVar.value}}</b><br>
+                      <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b style="word-wrap: break-word; white-space: pre-line">{{responseVar.value}}</b><br>
                     </li>
                   </ul>
                   <div>
@@ -691,7 +710,7 @@ input.datafeed_input {
 					<label style="float: left;">
 						<span translate>Question to be voted on</span>
 					</label>
-					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question" ng-required="true">
+					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question" ng-required="true" ng-maxlength="256" maxlength="256">
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -6">
 					<label style="float: left;">
@@ -714,8 +733,8 @@ input.datafeed_input {
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="64" maxlength="64" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
-						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" maxlength="256">
+						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}" maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
+						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}" maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}">
 						<a ng-if="!pair.readonly" ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
 					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
@@ -723,9 +742,17 @@ input.datafeed_input {
 					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
 						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
 						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
-					</a>
-          <input class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-          <label for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+          </a>
+
+          <div ng-if="assetIndexSelectorValue == -4">
+            <div ng-show="home.android && home.androidVersion < 5">
+              <button ng-click="home.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
+              {{home.oldAndroidFileName}}
+            </div>
+            <input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+            <label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+          </div>
+
 				</div>
 
             <div class="" ng-show="index.m < index.n && index.m > 1">
@@ -751,7 +778,7 @@ input.datafeed_input {
       </div>
       <div ng-show="home.shownForm=='data' && !index.isSingleAddress">
         <div class="large-12 large-centered columns" style="padding-top: 10px" translate>
-      		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one.
+      		To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one.
       	</div>
       </div>
       <br><br>
@@ -835,31 +862,34 @@ input.datafeed_input {
 
           <div class="large-4 medium-4 small-4 columns">
             <span class="size-16">
-              <span ng-if="btx.action == 'received'">+</span>
-              <span ng-if="btx.action == 'sent'">-</span>
-              <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
-              (possible double spend)
+                <span ng-if="btx.action == 'received'">+</span>
+                <span ng-if="btx.action == 'sent'">-</span>
+                <span  class="size-12" ng-if="btx.action == 'invalid'" translate>
+                (possible double spend)
+                </span>
+                <span  ng-if="btx.action != 'invalid'">
+                {{btx.amountStr}}
+                </span>
               </span>
-              <span  ng-if="btx.action != 'invalid'">
-              {{btx.amountStr}}
-              </span>
-            </span>
           </div>
-          <div class="large-4 medium-4 small-4 columns text-right">
+
+          <div class="large-4 medium-4 small-4 columns" style="text-align: right">
             <div class="m5t size-12 text-gray time-block">
-              <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
-              <span translate class="text-warning"
-                ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
-                Unconfirmed
-              </span>
-            </div>
-            <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
+                <time ng-if="btx.time" style="font-weight: 500">{{btx.time * 1000 | amTimeAgo}}</time>
+                <span translate class="text-warning"
+                  ng-show="!btx.time && (!btx.confirmations || btx.confirmations == 0)">
+                  Unconfirmed
+                </span>
+              </div>
+              <div class="history-badge" ng-if="newPaymentsCount[btx.unit] > 0">{{ newPaymentsCount[btx.unit] }}</div>
           </div>
-          <div class="large-1 medium-1 small-1 columns text-right">
-            <i class="icon-arrow-right3 size-18"></i>
+
+          <div class="large-1 medium-1 small-1 columns" style="text-align: right">
+            <i class="icon-arrow-right3 size-18" style="margin-right: -5px"></i>
           </div>
+
           <div class="size-14 text-gray columns m5t" ng-if="btx.from_aa">
-            <span ng-show="btx.from_aa" class="small-2 right">
+            <span ng-show="btx.from_aa" class="right">
               <span class="label tu light-gray radius" translate>From AA</span>
             </span>
           </div>
@@ -867,17 +897,17 @@ input.datafeed_input {
             <div ng-show="btx.message"><span translate>Note</span>: {{btx.message}}</div>
             <div ng-show="!btx.message" class="flex_container">
               <span translate>To</span>:
-              <span class="wrap_address_section ml_auto">
+              <span class="wrap_address_section ml_auto" style="white-space:nowrap;text-overflow:ellipsis;overflow: hidden;">
                 {{!!index.addressbook[btx.addressTo] ? index.addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}
               </span>
             </div>
             <span ng-show="btx.textAddress || btx.original_address" class="small-10">
               <span>{{index.getToAddressLabel(btx.textAddress || btx.original_address)}}</span>: {{index.getAddressValue(btx.textAddress || btx.original_address)}}
             </span>
-            <span ng-show="btx.isTextcoin" class="small-2 right">
+            <span ng-show="btx.isTextcoin" class="right">
               <span class="label tu light-gray radius">textcoin</span>
             </span>
-            <span ng-show="btx.to_aa" class="small-2 right">
+            <span ng-show="btx.to_aa" class="right">
               <span class="label tu light-gray radius" translate>To AA</span>
             </span>
           </div>
@@ -902,8 +932,8 @@ input.datafeed_input {
             </button>
           </div>
           <div class="large-6 medium-6 small-6 columns" ng-show="!index.isCordova">
-            <input id="export_file" type="file" nwsaveas="Obyte-{{index.alias || index.walletName}}.csv" accept=".csv" style="display:none">
-            <a class="button outline dark-gray round" ng-click="index.csvHistory();">
+            <input id="export_file" type="file" accept=".csv" style="display:none">
+            <a class="button outline dark-gray round" ng-click="index.csvHistory();" style="width:100%; overflow: hidden; text-overflow: ellipsis;">
               <i class="fi-page-export-csv"></i>
               <span translate>Download CSV file</span>
             </a>

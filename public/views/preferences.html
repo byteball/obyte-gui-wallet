@@ -5,14 +5,14 @@
   ng-init="titleSection='Preferences'; closeToHome = true">
 </div>
 
-
 <div class="content preferences" ng-controller="preferencesController as preferences" ng-init="preferences.init()">
 
   <h4></h4>
   <ul class="no-bullet m0" ng-show="!index.noFocusedWallet">
 
 
-    <li  ng-click="$root.go('preferences.preferencesAlias')">
+    <li ng-click="$root.go('preferences.preferencesAlias')" style="display: flex;">
+      <div translate>Account Alias</div>
       <div class="right name-outer-wrap text-gray">
         <div class="flex">
           <div class="text-overflow-wrapper">
@@ -21,13 +21,12 @@
           <i class="icon-arrow-right3 size-24"></i>
         </div>
       </div>
-      <div translate>Wallet Alias</div>
     </li>
 
 
     <li ng-click="$root.go('preferences.preferencesColor')">
-      <div class="right text-gray">
-        <span ng-style="{'color':index.backgroundColor}">&block;</span>
+      <div class="right text-gray" style="display:flex;align-items:center;">
+        <span ng-style="{'background':index.backgroundColor}" class="color-round-block"></span>
         <i class="icon-arrow-right3 size-24"></i>
       </div>
       <div translate>Color</div>
@@ -37,13 +36,13 @@
 	    <div class="right text-gray">
 	        <switch ng-model="index.isSingleAddress" class="green right" data-disabled="!bEditable"></switch>
 	    </div>
-	    <div translate>Single address wallet</div>
+	    <div translate>Single address account</div>
 	    <div class="description m10b">
-      	<span ng-if="bEditable" translate>Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains.</span>
-      	<span ng-if="numAddresses > 1" translate>This wallet cannot be converted to single address wallet as it already consists of multiple addresses</span>
-      	<span ng-if="!index.isSingleAddress && numAddresses == 1 && numCosigners > 1" translate>This wallet cannot be converted to single address wallet as it is multidevice</span>
-      	<span ng-if="index.isSingleAddress && numCosigners > 1" translate>This wallet cannot be converted to multi address wallet as it is multidevice</span>
-      	<span ng-if="index.isSingleAddress && numCosigners == 1 && bHasAttestations" translate>This wallet cannot be converted to multi address wallet as it already has attestations</span>
+      	<span ng-if="bEditable" translate>Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains.</span>
+      	<span ng-if="numAddresses > 1" translate>This account cannot be converted to single address account as it already consists of multiple addresses</span>
+      	<span ng-if="!index.isSingleAddress && numAddresses == 1 && numCosigners > 1" translate>This account cannot be converted to single address account as it is multidevice</span>
+      	<span ng-if="index.isSingleAddress && numCosigners > 1" translate>This account cannot be converted to multi address account as it is multidevice</span>
+      	<span ng-if="index.isSingleAddress && numCosigners == 1 && bHasAttestations" translate>This account cannot be converted to multi address account as it already has attestations</span>
       </div>
      </li>
 
@@ -67,7 +66,7 @@
 
     <li ng-click="$root.go('preferences.preferencesHiddenSubWallets')">
       <i class="icon-arrow-right3 size-24 right text-gray"></i>
-      <div translate>Hidden subwallets</div>
+      <div translate>Hidden smart contracts</div>
     </li>
 
     <h4></h4>

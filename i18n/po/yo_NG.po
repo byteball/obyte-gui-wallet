@@ -5,11 +5,13 @@ msgstr ""
 "Project-Id-Version: byteball\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Crowdin-Project: byteball\n"
+"X-Crowdin-Project-ID: 270960\n"
 "X-Crowdin-Language: yo\n"
 "X-Crowdin-File: /master/i18n/po/template.pot\n"
+"X-Crowdin-File-ID: 222\n"
 "Language-Team: Yoruba\n"
 "Language: yo_NG\n"
-"PO-Revision-Date: 2020-06-11 17:31\n"
+"PO-Revision-Date: 2020-10-02 19:31\n"
 
 #: public/views/modals/share.html:43
 msgid "'Receive' tab → 'Claim funds using textcoin' button."
@@ -20,14 +22,14 @@ msgid "(The site won't see your balance and no money will be spent)"
 msgstr "(Siti na ko ni ni Aaye naa lati ri iwontunwonsi re ati pe ko si owo ti nina)"
 
 #: public/views/modals/choose-profile.html:44
-msgid "(current wallet)"
-msgstr "(apamowo lowolowo)"
+msgid "(current account)"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:47
-msgid "(my other wallet)"
-msgstr "(Apamowo mi miiran)"
+msgid "(my other account)"
+msgstr ""
 
-#: public/views/walletHome.html:787
+#: public/views/walletHome.html:867
 msgid "(possible double spend)"
 msgstr "(O le se ilopo meji)"
 
@@ -39,7 +41,12 @@ msgstr "Yan ajo-onigbowo"
 msgid "12 words separated by dashes"
 msgstr "Awon oro mejila ti a yato nipase awon apon"
 
-#: public/views/walletHome.html:428
+#: public/views/modals/tx-details.html:167
+msgid "<i class=\"fi-refresh size-18 m5r\"></i>\n"
+"        Resend"
+msgstr ""
+
+#: public/views/walletHome.html:481
 msgid "AAs not allowed in multi-send"
 msgstr ""
 
@@ -49,7 +56,7 @@ msgstr "Nipa Obyte"
 
 #: src/js/controllers/copayers.js:8
 #: src/js/controllers/preferencesDelete.js:9
-#: src/js/controllers/walletHome.js:144
+#: src/js/controllers/walletHome.js:222
 #: src/js/services/confirmDialog.js:8
 msgid "Accept"
 msgstr "Gba"
@@ -62,15 +69,50 @@ msgstr "Gba ipe si"
 msgid "Accept invitation from the other device"
 msgstr "Gba ipe lati ero miiran"
 
+#: public/views/preferencesDeleteWallet.html:12
 #: public/views/preferencesInformation.html:65
 msgid "Account"
 msgstr "Iroyin"
 
-#: public/views/bot.html:36
+#: public/views/preferences.html:15
+msgid "Account Alias"
+msgstr ""
+
+#: public/views/preferencesInformation.html:27
+msgid "Account Configuration (m-n)"
+msgstr ""
+
+#: public/views/preferencesInformation.html:20
+msgid "Account Id"
+msgstr ""
+
+#: public/views/preferencesAdvanced.html:14
+#: public/views/preferencesInformation.html:8
+msgid "Account Information"
+msgstr ""
+
+#: public/views/preferencesInformation.html:12
+msgid "Account Name (at creation)"
+msgstr ""
+
+#: src/js/services/profileService.js:455
+msgid "Account already in Obyte:"
+msgstr ""
+
+#: public/views/create.html:48
+msgid "Account name"
+msgstr ""
+
+#: public/views/modals/destination-address.html:15
+#: public/views/modals/destination-address.html:29
+msgid "Accounts"
+msgstr ""
+
+#: public/views/bot.html:85
 msgid "Add Bot"
 msgstr "Fi botu kun"
 
-#: public/views/correspondentDevices.html:153
+#: public/views/correspondentDevices.html:202
 msgid "Add a new device"
 msgstr "Fi ero titun kun"
 
@@ -79,24 +121,24 @@ msgstr "Fi ero titun kun"
 msgid "Add a new entry"
 msgstr "Fi titewole tuntun sii"
 
+#: public/views/includes/sidebar.html:26
+msgid "Add account"
+msgstr ""
+
 #: public/views/preferencesEditRealNameAttestors.html:25
 msgid "Add address"
 msgstr "Ṣafikun adirẹẹsi"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Add answer"
 msgstr "Fi idahun kun"
 
-#: public/views/walletHome.html:532
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:585
+#: public/views/walletHome.html:740
 msgid "Add fields"
 msgstr "Fi awon aaye kun"
 
-#: public/views/includes/sidebar.html:23
-msgid "Add wallet"
-msgstr "Fi apamowo kun"
-
-#: public/views/correspondentDevices.html:194
+#: public/views/correspondentDevices.html:244
 msgid "Added"
 msgstr "Fi kun"
 
@@ -106,7 +148,7 @@ msgstr "Fi kun"
 msgid "Address"
 msgstr "Adiresi"
 
-#: public/views/walletHome.html:643
+#: public/views/walletHome.html:696
 msgid "Address to attest"
 msgstr "Adiresi kari jeri"
 
@@ -124,11 +166,11 @@ msgstr "Atileyin iwe"
 msgid "Addresses"
 msgstr "Awọn adirẹẹsi"
 
-#: public/views/preferences.html:77
+#: public/views/preferences.html:76
 msgid "Advanced"
 msgstr "Ti ni Ilosiwaju"
 
-#: public/views/modals/view-prosaic-contract.html:134
+#: public/views/modals/view-prosaic-contract.html:141
 msgid "After accepting the contract, you will be asked to sign a transaction containing this contract's hash. This second step happens as soon as the offerer receives your response."
 msgstr "Leyin titẹwọgba adehun naa, iwọ yíò ni lati buwọlu idunadura kan to ko hash adehun yii sinu. Igbesẹ keji yii yio ṣẹlẹ ni gbara ti olupese naa ba gba idahun rẹ."
 
@@ -145,8 +187,8 @@ msgid "Alias for"
 msgstr "Inagijẹ fun"
 
 #: public/views/preferencesInformation.html:95
-msgid "All Wallet Addresses"
-msgstr "Gbogbo Awon Adiresi Apamowo"
+msgid "All Account Addresses"
+msgstr ""
 
 #: public/views/translators.html:52
 msgid "All contributions to Obyte's translation are welcome. Sign up at crowdin.com and join the O<sub>byte</sub> project at"
@@ -156,11 +198,11 @@ msgstr "Gbogbo iranlọwọ si itumọ ti Obyte ni a tẹwọ gba. Forukọ sil�
 msgid "Already Paid"
 msgstr "Ti San Tele"
 
-#: src/js/controllers/correspondentDevice.js:1419
+#: src/js/controllers/correspondentDevice.js:1416
 msgid "Already saved"
 msgstr "Ti o ti fipamo"
 
-#: public/views/walletHome.html:168
+#: public/views/walletHome.html:185
 msgid "Also"
 msgstr "Bakannaa"
 
@@ -168,7 +210,7 @@ msgstr "Bakannaa"
 msgid "Also in the Settings menu, you will find security options such as setting a password."
 msgstr "Bakannaa ni akojo asayan, iwo yoo wa awon asayan aabo bi eto oro igbaniwole."
 
-#: public/views/walletHome.html:495
+#: public/views/walletHome.html:548
 msgid "Also send data..."
 msgstr "Tun fi data ranṣẹ..."
 
@@ -181,11 +223,11 @@ msgstr "Bakannaa, mase gbagbe lati pa irugbin re"
 #: public/views/modals/customized-amount.html:59
 #: public/views/modals/customized-amount.html:62
 #: public/views/paymentUri.html:16
-#: public/views/walletHome.html:379
+#: public/views/walletHome.html:431
 msgid "Amount"
 msgstr "Iye"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Answer"
 msgstr "Idahun"
 
@@ -194,8 +236,8 @@ msgid "Answer:"
 msgstr "Idahun:"
 
 #: public/views/copayers.html:19
-msgid "Approve wallet creation on other devices"
-msgstr "Gba eda apamowo lori awon ero miiran"
+msgid "Approve the account creation on other devices"
+msgstr ""
 
 #: src/js/controllers/backup.js:6
 msgid "Are you sure you want to delete the backup words?"
@@ -203,20 +245,16 @@ msgstr "Se o da o loju pe o fe pa awon oro afeyinti naa?"
 
 #: src/js/controllers/copayers.js:7
 #: src/js/controllers/preferencesDelete.js:8
-msgid "Are you sure you want to delete this wallet?"
-msgstr "Seo da e loju pe o fe pa apamowo yi?"
+msgid "Are you sure you want to delete this account?"
+msgstr ""
 
 #: public/views/modals/customized-amount.html:72
 msgid "Asset"
 msgstr "Dukia"
 
-#: public/views/walletHome.html:629
+#: public/views/walletHome.html:682
 msgid "Attest profile data linked to any Obyte address."
 msgstr "Jẹrisi data apejuwe to sopọ mọ eyikeyii adirẹẹsi Obyte."
-
-#: public/views/walletHome.html:345
-msgid "Attestation of any address"
-msgstr ""
 
 #: public/views/modals/accept-profile.html:34
 #: public/views/modals/choose-profile.html:41
@@ -245,11 +283,11 @@ msgid "Available Balance"
 msgstr "Atunwo to wa"
 
 #: public/views/acceptCorrespondentInvitation.html:13
-#: public/views/bot.html:13
+#: public/views/bot.html:62
 #: public/views/correspondentDevice.html:14
-#: public/views/correspondentDevices.html:75
+#: public/views/correspondentDevices.html:122
 #: public/views/editCorrespondentDevice.html:14
-#: public/views/includes/topbar.html:8
+#: public/views/includes/topbar.html:22
 #: public/views/modals/correspondentListToReSendPrivPayloads.html:6
 #: public/views/modals/destination-address.html:9
 #: public/views/modals/tx-details.html:5
@@ -260,7 +298,7 @@ msgstr "Pada"
 msgid "Backup all wallet data"
 msgstr "Ṣe ẹda abọ-aba gbogbo data apamọwọ"
 
-#: public/views/walletHome.html:250
+#: public/views/walletHome.html:268
 msgid "Backup now"
 msgstr "Afeyinti bayi"
 
@@ -276,32 +314,32 @@ msgstr "Awon oro afeyinti paare"
 msgid "Backups"
 msgstr "Awon afeyinti"
 
-#: src/js/controllers/correspondentDevice.js:1399
+#: src/js/controllers/correspondentDevice.js:1396
 msgid "Bad profile"
 msgstr "Awori buruku"
 
-#: public/views/preferencesInformation.html:107
+#: public/views/preferencesInformation.html:110
 msgid "Balance By Address"
 msgstr "Afeyinti Nipa Adiresi"
 
-#: public/views/walletHome.html:244
+#: public/views/walletHome.html:262
 msgid "Before receiving funds, it is highly recommended you backup your wallet keys."
 msgstr "Saaju gbigba owo, a ni iseduro niyanju lati se afeyinti awon botini apamowo re."
 
 #: public/views/backup.html:26
-msgid "Better yet, use multisig wallets with redundancy,"
-msgstr "Dara sibe, lo awon apamowo multisigi pelu apoju,"
+msgid "Better yet, use multisig accounts with redundancy,"
+msgstr ""
 
-#: public/views/modals/bind.html:8
-#: public/views/modals/bind.html:94
+#: public/views/modals/bind.html:134
+#: public/views/modals/bind.html:49
 msgid "Bind payment"
 msgstr "Fowo owo sisan"
 
-#: public/views/walletHome.html:463
+#: public/views/walletHome.html:516
 msgid "Bind the payment to a condition"
 msgstr "Fi owo si owo ipo kan"
 
-#: public/views/walletHome.html:450
+#: public/views/walletHome.html:503
 msgid "Bind the payment to a condition..."
 msgstr "Ṣe isopọ isanwo naa mọ ipo kan..."
 
@@ -309,19 +347,19 @@ msgstr "Ṣe isopọ isanwo naa mọ ipo kan..."
 msgid "Bitcoin URI is NOT valid!"
 msgstr "URL ti Bitcoinu ko ni wulo!"
 
-#: public/views/bot.html:23
+#: public/views/bot.html:72
 msgid "Bot Store"
 msgstr "Itaja Botu"
 
-#: public/views/correspondentDevice.html:291
+#: public/views/correspondentDevice.html:375
 msgid "Both you and {{correspondent.name}} enabled local chat history recording."
 msgstr "Iwo pelu {{correspondent.name}} sise agbasile itan iwiregbe."
 
-#: src/js/controllers/walletHome.js:1172
+#: src/js/controllers/walletHome.js:1286
 msgid "Bounce the request"
 msgstr ""
 
-#: public/views/modals/tx-details.html:173
+#: public/views/modals/tx-details.html:186
 msgid "Bounced?"
 msgstr ""
 
@@ -339,10 +377,10 @@ msgid "CONTINUE"
 msgstr "TESIWAJU"
 
 #: public/views/modals/destination-address.html:128
-#: public/views/walletHome.html:588
+#: public/views/walletHome.html:641
 #: src/js/controllers/copayers.js:9
 #: src/js/controllers/preferencesDelete.js:10
-#: src/js/controllers/walletHome.js:145
+#: src/js/controllers/walletHome.js:223
 #: src/js/services/confirmDialog.js:9
 msgid "Cancel"
 msgstr "Fagilee"
@@ -352,14 +390,15 @@ msgid "Change hub:"
 msgstr "Paro ibudo:"
 
 #: public/views/preferencesAlias.html:16
-msgid "Changing wallet alias only affects the local wallet name."
-msgstr "Piparo oruko apeje ti apamowo ni ipa lori oruko apamowo ti agbegbe nikan."
+msgid "Changing account alias only affects the local account name."
+msgstr ""
 
-#: src/js/controllers/index.js:832
+#: src/js/controllers/index.js:867
 msgid "Chat"
 msgstr "Iwiregbe"
 
 #: public/views/import.html:33
+#: public/views/walletHome.html:749
 msgid "Choose File"
 msgstr "Yan faili"
 
@@ -375,7 +414,7 @@ msgstr "Yan ero iranse si"
 msgid "Choose which fields to send:"
 msgstr "Yan awon apa to fe firanse:"
 
-#: src/js/controllers/walletHome.js:519
+#: src/js/controllers/walletHome.js:609
 msgid "Claim funds"
 msgstr "Gba awon owo"
 
@@ -383,11 +422,11 @@ msgstr "Gba awon owo"
 msgid "Claim funds by textcoin"
 msgstr "Gba awon owo nipase textcoin"
 
-#: public/views/walletHome.html:320
+#: public/views/walletHome.html:338
 msgid "Claim funds using textcoin"
 msgstr "Gba awon owo nipa lilo textcoin"
 
-#: public/views/walletHome.html:85
+#: public/views/walletHome.html:102
 msgid "Claiming..."
 msgstr "Gbigba..."
 
@@ -395,36 +434,36 @@ msgstr "Gbigba..."
 msgid "Click the button to"
 msgstr "Tẹ bọtinni naa lati"
 
-#: public/views/walletHome.html:610
+#: public/views/walletHome.html:663
 msgid "Click this button to create a payment file and send it to a recipient."
 msgstr "Te botini eleyi lati seda faili apo isanwo ati lati firanse losi odo'lugba."
 
-#: public/views/walletHome.html:609
+#: public/views/walletHome.html:662
 msgid "Click this button to create payment and share it via private message in chat apps or to create a paper wallet."
 msgstr "Te botini yi lati seda apo isanwo ati pipin re latipase awon ifiranse ikoko ninu ohun elo iwiregbe tabi lati seda apamowo oni iwe."
 
-#: public/views/correspondentDevices.html:80
-#: public/views/includes/topbar.html:13
+#: public/views/correspondentDevices.html:127
+#: public/views/includes/topbar.html:27
 #: public/views/modals/accept-profile.html:10
 #: public/views/modals/address-definition.html:30
 #: public/views/modals/address-definition.html:4
 #: public/views/modals/approveNewWitnesses.html:4
-#: public/views/modals/bind.html:4
+#: public/views/modals/bind.html:45
 #: public/views/modals/choose-profile.html:4
 #: public/views/modals/choose-profile.html:71
 #: public/views/modals/claim-textcoin.html:4
 #: public/views/modals/customized-amount.html:4
 #: public/views/modals/destination-address.html:5
 #: public/views/modals/multi-payment.html:4
-#: public/views/modals/offer-contract.html:29
-#: public/views/modals/offer-prosaic-contract.html:38
+#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-prosaic-contract.html:47
 #: public/views/modals/scanner.html:4
 #: public/views/modals/select-subwallet.html:4
 #: public/views/modals/share.html:13
 #: public/views/modals/sign-message.html:4
-#: public/views/modals/signed-message.html:38
 #: public/views/modals/signed-message.html:4
-#: public/views/modals/view-prosaic-contract.html:53
+#: public/views/modals/signed-message.html:43
+#: public/views/modals/view-prosaic-contract.html:60
 #: public/views/modals/vote.html:4
 msgid "Close"
 msgstr "Pade"
@@ -437,11 +476,11 @@ msgstr "Oniduuro"
 msgid "Co-signers"
 msgstr "Awon ti ajo fowo siwe"
 
-#: public/views/includes/sidebar.html:35
+#: public/views/includes/sidebar.html:38
 msgid "Co-signers for multisig"
 msgstr "Awon ti ajo fowo siwe fun multisig"
 
-#: public/views/preferences.html:33
+#: public/views/preferences.html:32
 msgid "Color"
 msgstr "Awo"
 
@@ -454,11 +493,11 @@ msgid "Compress the file? (Slower)"
 msgstr "Sunki faili na? (die die)"
 
 #: src/js/controllers/copayers.js:10
-#: src/js/controllers/index.js:668
+#: src/js/controllers/index.js:673
 #: src/js/controllers/preferencesDelete.js:11
-#: src/js/controllers/walletHome.js:146
-#: src/js/controllers/walletHome.js:2399
-#: src/js/controllers/walletHome.js:2403
+#: src/js/controllers/walletHome.js:224
+#: src/js/controllers/walletHome.js:2549
+#: src/js/controllers/walletHome.js:2553
 #: src/js/services/confirmDialog.js:10
 msgid "Confirm"
 msgstr "Jerisi"
@@ -475,18 +514,18 @@ msgstr "Jerisi isanwo"
 msgid "Confirm vote"
 msgstr "Jerisi ibo"
 
-#: public/views/modals/tx-details.html:124
+#: public/views/modals/tx-details.html:131
 msgid "Confirmed"
 msgstr "Fidimule"
 
-#: public/views/correspondentDevices.html:90
+#: public/views/correspondentDevices.html:137
 msgid "Contacts"
 msgstr "Awon olubasoro"
 
-#: src/js/controllers/correspondentDevice.js:1787
+#: src/js/controllers/correspondentDevice.js:1784
 #: src/js/controllers/editCorrespondentDevice.js:120
 #: src/js/controllers/inviteCorrespondentDevice.js:32
-#: src/js/controllers/walletHome.js:420
+#: src/js/controllers/walletHome.js:510
 msgid "Copied to clipboard"
 msgstr "Daako si ori iwe alabode"
 
@@ -498,12 +537,12 @@ msgstr "Daako"
 msgid "Correspondents and chats are not restored."
 msgstr "Awọn oniroyin ati awọn ọrọ sisọ ko ṣe da pada."
 
-#: public/views/modals/offer-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:109
+#: public/views/modals/offer-prosaic-contract.html:82
+#: public/views/modals/view-prosaic-contract.html:116
 msgid "Cosigners"
 msgstr "Awọn oniduuro"
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not create payment proposal"
 msgstr "A kole se idakale imoran isanwo"
 
@@ -523,7 +562,7 @@ msgstr "Ko le seda: Irugbin apamowo ko dara"
 msgid "Could not decrypt"
 msgstr "Kole gbo gbin"
 
-#: public/views/walletHome.html:742
+#: public/views/walletHome.html:823
 msgid "Could not fetch transaction history"
 msgstr "Ko ri itan idunadura"
 
@@ -537,31 +576,34 @@ msgstr "Kole gbe wole"
 msgid "Could not import. Check input file and password"
 msgstr "Kole gbe wole. Ye faili tite ati oro igbaniwole"
 
-#: src/js/controllers/walletHome.js:725
+#: src/js/controllers/walletHome.js:815
 msgid "Could not send payment"
 msgstr "Kole fi isan owo ranse"
 
-#: src/js/controllers/correspondentDevice.js:1365
+#: src/js/controllers/correspondentDevice.js:1362
 msgid "Country"
 msgstr "Orile ede"
 
-#: public/views/walletHome.html:44
+#: public/views/walletHome.html:61
 msgid "Create"
 msgstr "Seda"
 
-#: public/views/includes/sidebar.html:25
-msgid "Create a new wallet"
-msgstr "Seda apamowo titun"
+#: public/views/includes/sidebar.html:28
+msgid "Create a new account"
+msgstr ""
+
+#: public/views/create.html:175
+#: src/js/controllers/index.js:383
+msgid "Create new account"
+msgstr ""
 
 #: public/views/add.html:15
-#: public/views/create.html:175
-#: src/js/controllers/index.js:378
 msgid "Create new wallet"
 msgstr "Seda apamowo titun"
 
 #: public/views/create.html:171
-msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} wallet"
-msgstr "Seda {{requiredCosigners}}-ti-{{totalCosigners}} apamowo"
+msgid "Create {{requiredCosigners}}-of-{{totalCosigners}} account"
+msgstr ""
 
 #: public/views/modals/address-definition.html:23
 msgid "Created:"
@@ -572,54 +614,46 @@ msgid "Creating Profile..."
 msgstr "Siseda awori..."
 
 #: public/views/create.html:20
-msgid "Creating Wallet..."
-msgstr "Siseda apamowo..."
+msgid "Creating new account..."
+msgstr ""
 
 #: public/views/backup.html:93
 msgid "DELETE WORDS"
 msgstr "PA AWON ORO RE"
 
-#: public/views/walletHome.html:344
-msgid "Data into datafeed (searchable)"
-msgstr ""
-
-#: public/views/walletHome.html:501
+#: public/views/walletHome.html:554
 msgid "Data to be posted with the payment:"
 msgstr "Data lati satẹjade pẹlu isanwo naa:"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed name"
 msgstr "Oruko datafeed"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Datafeed value"
 msgstr "Iye Datafeed"
 
-#: public/views/modals/tx-details.html:94
+#: public/views/modals/tx-details.html:101
 msgid "Date"
 msgstr "Ojo"
 
-#: src/js/controllers/correspondentDevice.js:1364
+#: src/js/controllers/correspondentDevice.js:1361
 msgid "Date of birth"
 msgstr "Ojo ibi"
 
-#: src/js/controllers/index.js:344
+#: src/js/controllers/index.js:349
 msgid "Declined"
 msgstr "Ko sile"
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "Define a new asset with cap"
 msgstr ""
 
-#: public/views/walletHome.html:197
+#: public/views/walletHome.html:215
 msgid "Definition"
 msgstr "Itumo"
 
-#: public/views/walletHome.html:349
-msgid "Definition of autonomous agent"
-msgstr ""
-
-#: public/views/walletHome.html:664
+#: public/views/walletHome.html:717
 msgid "Definition of autonomous agent:"
 msgstr ""
 
@@ -632,14 +666,14 @@ msgid "Definitions of addresses"
 msgstr "Awon itunmo ti awon adiresi"
 
 #: public/views/preferencesAdvanced.html:31
-msgid "Delete Wallet"
-msgstr "Yo Apamowo"
+msgid "Delete Account"
+msgstr ""
 
 #: public/views/preferencesDeleteWallet.html:23
-msgid "Delete wallet"
-msgstr "Yo apamowo"
+msgid "Delete account"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:2396
+#: src/js/controllers/walletHome.js:2546
 msgid "Deleting the textcoin will remove the ability to claim it back or resend"
 msgstr "Yiyo textcoin yio yo anfani lati gba pada tabi tun firanse"
 
@@ -683,7 +717,7 @@ msgstr "Nje o ri ede re lori Crowin? Soro pelu eni toni lori Crowdin! A o nifesi
 msgid "Done"
 msgstr "Oti se"
 
-#: public/views/walletHome.html:852
+#: public/views/walletHome.html:938
 msgid "Download CSV file"
 msgstr "Gba faili CSV lati ayelujara"
 
@@ -695,7 +729,7 @@ msgstr "Gba gbogbo akojọpọ data Obyte naa"
 msgid "Edit"
 msgstr "Se atunse"
 
-#: public/views/correspondentDevice.html:294
+#: public/views/correspondentDevice.html:378
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "Yala iwo tabi {{correspondent.name}} ti pa akosile itan oro. Ko si akosile itan fun enikeni nisin."
 
@@ -712,7 +746,7 @@ msgstr "Te oro sisopo ti o gba lati owo ero keji, tabi ko lo ayaworan (aami to w
 msgid "Enter your password"
 msgstr "Te oro igbawole re"
 
-#: public/views/modals/tx-details.html:179
+#: public/views/modals/tx-details.html:192
 msgid "Error"
 msgstr ""
 
@@ -721,7 +755,7 @@ msgstr ""
 msgid "Error creating wallet"
 msgstr "Asise nigba siseda apamowo"
 
-#: public/views/modals/view-prosaic-contract.html:68
+#: public/views/modals/view-prosaic-contract.html:75
 msgid "Expired on"
 msgstr "Ti dopin ni"
 
@@ -729,8 +763,8 @@ msgstr "Ti dopin ni"
 msgid "Export"
 msgstr "Firanse"
 
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
 msgid "Export completed successfully"
 msgstr "Ifiranse ti pari laseyori"
 
@@ -746,32 +780,32 @@ msgstr "Kokoro gbagba ti a fagun"
 msgid "Failed to export"
 msgstr "Ko le firanse"
 
-#: public/views/modals/tx-details.html:101
+#: public/views/modals/tx-details.html:108
 msgid "Fee"
 msgstr "Owo"
 
-#: public/views/walletHome.html:509
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:562
+#: public/views/walletHome.html:740
 msgid "Field"
 msgstr "Papa"
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "File saved to /Obyte/. You can now also send it somewhere using chat apps or email to have more copies of the backup"
 msgstr "A ti tọju faili si /Obyte/. O tun le fi ranṣẹ si ibomiiran pẹlu lilo awọn eto ọrọ sisọ tabi imeeli lati ni afikun ẹda abọ-aba naa"
 
-#: public/views/modals/tx-details.html:119
+#: public/views/modals/tx-details.html:126
 msgid "Finality"
 msgstr "Ipari"
 
-#: public/views/modals/tx-details.html:69
+#: public/views/modals/tx-details.html:70
 msgid "From"
 msgstr "Lati"
 
-#: public/views/walletHome.html:810
+#: public/views/walletHome.html:893
 msgid "From AA"
 msgstr ""
 
-#: public/views/walletHome.html:409
+#: public/views/walletHome.html:452
 msgid "From Obyte address"
 msgstr ""
 
@@ -783,15 +817,15 @@ msgstr "Adiresi lekun rere:"
 msgid "GET STARTED"
 msgstr "OYA BERE"
 
-#: src/js/controllers/walletHome.js:449
+#: src/js/controllers/walletHome.js:539
 msgid "Generate QR Code"
 msgstr "Pilese koodu QR"
 
-#: public/views/walletHome.html:306
+#: public/views/walletHome.html:324
 msgid "Generate new address"
 msgstr "Pilese adiresi tuntun"
 
-#: public/views/walletHome.html:81
+#: public/views/walletHome.html:98
 msgid "Generating .csv file..."
 msgstr "Pilese faili .csv..."
 
@@ -799,11 +833,11 @@ msgstr "Pilese faili .csv..."
 msgid "Getting address for wallet"
 msgstr "Gbigba adirẹẹsi fun apamọwọ"
 
-#: src/js/controllers/correspondentDevice.js:1362
+#: src/js/controllers/correspondentDevice.js:1359
 msgid "Given name"
 msgstr ""
 
-#: public/views/includes/sidebar.html:45
+#: public/views/includes/sidebar.html:48
 msgid "Global preferences"
 msgstr "Asansile agbaye"
 
@@ -811,16 +845,16 @@ msgstr "Asansile agbaye"
 msgid "Go back"
 msgstr "Pada losehin"
 
-#: public/views/preferences.html:55
+#: public/views/preferences.html:54
 msgid "Hardware wallet"
 msgstr "Apamowo to le gbamu"
 
-#: public/views/preferences.html:63
+#: public/views/preferences.html:62
 msgid "Hidden assets"
 msgstr "Dukia ikoko"
 
-#: public/views/preferences.html:70
-msgid "Hidden subwallets"
+#: public/views/preferences.html:69
+msgid "Hidden smart contracts"
 msgstr ""
 
 #: public/views/backup.html:45
@@ -828,15 +862,15 @@ msgid "Hide the Wallet Seed"
 msgstr "Fi irugbin apamowo pamo"
 
 #: public/views/modals/share.html:43
-#: src/js/controllers/index.js:828
+#: src/js/controllers/index.js:863
 msgid "History"
 msgstr "Itan"
 
-#: src/js/controllers/index.js:816
+#: src/js/controllers/index.js:851
 msgid "Home"
 msgstr "Ile"
 
-#: public/views/walletHome.html:550
+#: public/views/walletHome.html:603
 msgid "Home page:"
 msgstr ""
 
@@ -860,52 +894,52 @@ msgstr "Mo jeri daju pe moti ka, la kaye, mosi faramo awon ofin yi."
 msgid "I created a backup"
 msgstr "Mo ti ṣẹda ẹda abọ-aba kan"
 
-#: public/views/modals/offer-contract.html:43
+#: public/views/modals/offer-contract.html:81
 msgid "I pay"
 msgstr "Mo san owo"
 
-#: public/views/modals/bind.html:27
+#: public/views/modals/bind.html:67
 msgid "I receive another payment of"
 msgstr "Mo gba owo miran ti"
 
-#: src/js/controllers/correspondentDevice.js:1371
+#: src/js/controllers/correspondentDevice.js:1368
 msgid "ID expires at"
 msgstr "ID yio dopin ni"
 
-#: src/js/controllers/correspondentDevice.js:1372
+#: src/js/controllers/correspondentDevice.js:1369
 msgid "ID issued at"
 msgstr "ID gba titẹjade ni"
 
-#: src/js/controllers/correspondentDevice.js:1368
+#: src/js/controllers/correspondentDevice.js:1365
 msgid "ID number"
 msgstr "Nomba idanimo"
 
-#: src/js/controllers/correspondentDevice.js:1370
+#: src/js/controllers/correspondentDevice.js:1367
 msgid "ID subtype"
 msgstr "Omiran Idanimo"
 
-#: src/js/controllers/correspondentDevice.js:1369
+#: src/js/controllers/correspondentDevice.js:1366
 msgid "ID type"
 msgstr "Iru idanimo"
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "If any of your cosigner devices doesn't see this payment, you can"
 msgstr "Ti ikan kan lara ero awon ajofowo bo iwe re o ba ri isan owo yi, o le"
 
-#: public/views/modals/bind.html:85
+#: public/views/modals/bind.html:125
 msgid "If the condition is not met, I can take this money back after"
 msgstr "Ti o ba se imuse ileri, mo le gba owo yi pada leyin"
 
-#: public/views/modals/offer-contract.html:67
+#: public/views/modals/offer-contract.html:105
 msgid "If the peer doesn't pay, I can take my money back after"
 msgstr "Ti elegbe koba san owo, mo le gba owo mi pada leyin"
 
-#: public/views/modals/tx-details.html:148
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:155
+#: public/views/modals/tx-details.html:161
 msgid "If the recipient doesn't see your payment, you can"
 msgstr "Ti olugba o ba ri isanowo re, o le"
 
-#: public/views/import.html:47
+#: public/views/import.html:48
 msgid "If you have moved this backup from another device, stop using it on the original one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr "Ti o ba ti sun ifeyinti lati ero miran, ye ma lo lori ti ojulowo leyin to ba ti seda ifeyinti. Mase seda apamowo omiran. To ba nilo wiwole lato ri ero omiran, lo multisig."
 
@@ -913,7 +947,7 @@ msgstr "Ti o ba ti sun ifeyinti lati ero miran, ye ma lo lori ti ojulowo leyin t
 msgid "If you plan to restore the wallet on another device, stop using it on the current one immediately after creating the backup.  Never clone wallets.  If you need access from several devices, use multisig."
 msgstr "Ti o bafe se idapada apamowo lori ero omiran, jawo kuro lati ma lo lori eleyi toun lo lowolowo lesekese leyin to ba seda ifeyinti. Mase seda apamowo kan na. To ba nilo wiwole lati ori ero to po, lo multisig."
 
-#: public/views/import.html:40
+#: public/views/import.html:41
 msgid "Import"
 msgstr "Gbe wole"
 
@@ -925,29 +959,29 @@ msgstr "Gbe apamowo wole"
 msgid "Importing wallet..."
 msgstr "Gbigbe apamowo wole..."
 
-#: public/views/walletHome.html:138
+#: public/views/walletHome.html:155
 msgid "Including pending confirmation"
 msgstr "Pelu akoko imuduro Imudaju"
 
-#: public/views/walletHome.html:761
+#: public/views/walletHome.html:842
 msgid "Initial transaction history synchronization can take some minutes for wallets with many transactions.<br>\n"
 "          Please stand by."
 msgstr "Isopo itan idunadura akoko le gba iseju die fun apamowo oni idunadura pupo. <br>\n"
 "          Jowo duro."
 
-#: public/views/correspondentDevice.html:330
+#: public/views/correspondentDevice.html:414
 msgid "Insert my address"
 msgstr "Fi adiresi mi si"
 
-#: public/views/correspondentDevice.html:346
+#: public/views/correspondentDevice.html:430
 msgid "Insert private profile"
 msgstr "Fi awori ikoko si"
 
-#: public/views/walletHome.html:780
+#: public/views/walletHome.html:860
 msgid "Invalid"
 msgstr "Aifesemule"
 
-#: src/js/controllers/index.js:1817
+#: src/js/controllers/index.js:1851
 msgid "Invalid Touch ID"
 msgstr "Aifesemule idanimo ifowokan"
 
@@ -955,17 +989,17 @@ msgstr "Aifesemule idanimo ifowokan"
 msgid "Invite the other device"
 msgstr "Pe ero ikeji"
 
-#: src/js/controllers/walletHome.js:1338
+#: src/js/controllers/walletHome.js:1452
 msgid "It is not allowed to bind conditions to payments to autonomous agents"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1336
+#: src/js/controllers/walletHome.js:1450
 msgid "It is not allowed to send private assets to autonomous agents"
 msgstr ""
 
 #: public/views/backup.html:22
-msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig wallets, smart contracts, contacts, chat history, and private assets such as blackbytes."
-msgstr "Irugbin apamọwọ naa nikan ko to. Pẹlu irugbin naa nikan, iwọ ko ni le ṣe idapada awọn apamọwọ to ni ibuwọlu-pupọ, awọn adehun to jafafa, awọn olubasọrọ, akọsilẹ ọrọ sisọ, ati awọn dukia ikọkọ bii blackbytes."
+msgid "Just the wallet seed is not enough.  With the seed alone, you won't be able to restore multisig accounts, smart contracts, contacts, chat history, and private assets such as blackbytes."
+msgstr ""
 
 #: public/views/splash.html:36
 msgid "Keep only data relevant to you"
@@ -987,7 +1021,7 @@ msgstr "Nigbami"
 msgid "Loading..."
 msgstr "O n gbera..."
 
-#: public/views/walletHome.html:668
+#: public/views/walletHome.html:721
 msgid "Looks OK"
 msgstr ""
 
@@ -1000,18 +1034,18 @@ msgid "Maybe later"
 msgstr "Boya nigba omiran"
 
 #: public/views/includes/copayers.html:4
-#: public/views/modals/offer-contract.html:117
-#: public/views/modals/offer-prosaic-contract.html:51
-#: public/views/modals/view-prosaic-contract.html:70
+#: public/views/modals/offer-contract.html:155
+#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/view-prosaic-contract.html:77
 #: public/views/preferencesInformation.html:76
 msgid "Me"
 msgstr "Emi"
 
-#: public/views/modals/tx-details.html:113
+#: public/views/modals/tx-details.html:120
 msgid "Merchant message"
 msgstr "Ifiranse Onisowo"
 
-#: public/views/walletHome.html:470
+#: public/views/walletHome.html:523
 msgid "Merkle proof"
 msgstr "Amudaju Merkle"
 
@@ -1024,27 +1058,27 @@ msgstr "Ifiranse"
 msgid "Message:"
 msgstr "Ifiranse:"
 
-#: src/js/controllers/walletHome.js:1132
+#: src/js/controllers/walletHome.js:1246
 msgid "Minimum amount"
 msgstr ""
 
-#: public/views/correspondentDevice.html:26
+#: public/views/correspondentDevice.html:27
 msgid "More"
 msgstr "Afikun"
 
-#: public/views/walletHome.html:779
+#: public/views/walletHome.html:859
 msgid "Moved"
 msgstr "O tu sun"
 
 #: public/views/create.html:32
-msgid "Multidevice Wallet"
-msgstr "Apamowo ero olona"
+msgid "Multidevice Account"
+msgstr ""
 
-#: public/views/walletHome.html:258
+#: public/views/walletHome.html:276
 msgid "My Obyte address"
 msgstr "Adirẹẹsi Obyte mi"
 
-#: public/views/correspondentDevice.html:300
+#: public/views/correspondentDevice.html:384
 msgid "My recording preference"
 msgstr "Igbasile aayo mi"
 
@@ -1074,9 +1108,9 @@ msgid "New version is available!"
 msgstr "Eya titun ti wa!"
 
 #: public/views/authConfirmation.html:22
-#: public/views/modals/tx-details.html:175
-#: src/js/controllers/index.js:667
-#: src/js/controllers/walletHome.js:2411
+#: public/views/modals/tx-details.html:188
+#: src/js/controllers/index.js:672
+#: src/js/controllers/walletHome.js:2561
 msgid "No"
 msgstr "Rara"
 
@@ -1092,33 +1126,33 @@ msgstr "Ko si awori to papo mo ilano to bere."
 msgid "No profiles yet."
 msgstr "Koti si awori."
 
-#: public/views/walletHome.html:745
+#: public/views/walletHome.html:826
 msgid "No transactions yet"
 msgstr "Ko ti si idunadura"
 
 #: public/views/modals/claim-textcoin.html:21
 #: public/views/modals/customized-amount.html:51
 #: public/views/modals/destination-address.html:113
-#: public/views/walletHome.html:370
-#: public/views/walletHome.html:417
-#: public/views/walletHome.html:426
-#: public/views/walletHome.html:648
+#: public/views/walletHome.html:422
+#: public/views/walletHome.html:470
+#: public/views/walletHome.html:479
+#: public/views/walletHome.html:701
 msgid "Not valid"
 msgstr "Ko wulo"
 
 #: public/views/includes/output.html:12
-#: public/views/modals/tx-details.html:109
-#: public/views/modals/tx-details.html:84
-#: public/views/walletHome.html:481
-#: public/views/walletHome.html:814
+#: public/views/modals/tx-details.html:116
+#: public/views/modals/tx-details.html:91
+#: public/views/walletHome.html:534
+#: public/views/walletHome.html:897
 msgid "Note"
 msgstr "Kiyesi"
 
-#: public/views/modals/tx-details.html:184
+#: public/views/modals/tx-details.html:197
 msgid "Notice"
 msgstr ""
 
-#: src/js/controllers/export.js:128
+#: src/js/controllers/export.js:131
 msgid "Now you have to send this file somewhere to restore from it later (\"Save to Files\", send to yourself using chat apps, etc.)"
 msgstr "Niisin, o nilo lati fi faili yi ranse si ibikan lati se idapada lati oori e nigbami \n"
 "(\"Fipamo si Awon faili\", fi ranse si ara re nipa lilo awon apps iwiregbe, ati bebe lo)"
@@ -1131,21 +1165,21 @@ msgstr "Obyte &mdash; awọn isanwo to jafafa"
 msgid "Obyte address"
 msgstr "Adirẹẹsi Obyte"
 
-#: public/views/modals/offer-prosaic-contract.html:86
+#: public/views/modals/offer-prosaic-contract.html:95
 msgid "Offer Contract"
 msgstr "Pese Adehun"
 
-#: public/views/modals/offer-contract.html:33
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-contract.html:71
+#: src/js/services/correspondentListService.js:136
 msgid "Offer a contract"
 msgstr "Funni adehun"
 
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "Offer is valid for"
 msgstr "Ipese fẹsẹmulẹ fun"
 
-#: public/views/modals/offer-prosaic-contract.html:42
-#: src/js/services/correspondentListService.js:135
+#: public/views/modals/offer-prosaic-contract.html:51
+#: src/js/services/correspondentListService.js:136
 msgid "Offer prosaic contract"
 msgstr "Pese adehun to rọrun"
 
@@ -1154,14 +1188,14 @@ msgid "Once you have written your wallet seed down, it is recommended to delete 
 msgstr "Ti o bati ko ifirugbin apamowo re sile, a gba e niyanniju ko yo kuro lori ero yi."
 
 #: public/views/recoveryFromSeed.html:41
-msgid "Only single-sig wallets can be recovered."
-msgstr "Awon apamowo oni Ibuwolu kan la le rapada."
+msgid "Only single-sig accounts can be recovered."
+msgstr ""
 
-#: public/views/bot.html:35
+#: public/views/bot.html:84
 msgid "Open chat"
 msgstr "Iwiregbe to shi sile"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Options for answering"
 msgstr "Awon asanyan fun didahun"
 
@@ -1181,7 +1215,7 @@ msgstr ""
 msgid "Pair"
 msgstr "Sopo"
 
-#: public/views/includes/sidebar.html:33
+#: public/views/includes/sidebar.html:36
 msgid "Paired devices"
 msgstr "Awon ero to ti sopo"
 
@@ -1209,11 +1243,11 @@ msgstr "Igbaniwole ko baramu"
 msgid "Paste your paper wallet private key here"
 msgstr "Lee kokoro ikoko apamowo oniwe re sihin"
 
-#: public/views/modals/offer-contract.html:138
+#: public/views/modals/offer-contract.html:176
 msgid "Pay and offer"
 msgstr "San ati fun"
 
-#: src/js/services/correspondentListService.js:135
+#: src/js/services/correspondentListService.js:136
 msgid "Pay to this address"
 msgstr "San si adiresi yi"
 
@@ -1225,7 +1259,7 @@ msgstr "Agba isanwo"
 msgid "Payment Proposal Created"
 msgstr "A ti da Imoran isanwo sile"
 
-#: public/views/walletHome.html:214
+#: public/views/walletHome.html:232
 msgid "Payment Proposals"
 msgstr "Awon imoran isanwo"
 
@@ -1237,8 +1271,8 @@ msgstr "Ako isanwo"
 msgid "Payment Sent"
 msgstr "Ati fisanwo ranse"
 
-#: public/views/modals/offer-prosaic-contract.html:57
-#: public/views/modals/view-prosaic-contract.html:76
+#: public/views/modals/offer-prosaic-contract.html:66
+#: public/views/modals/view-prosaic-contract.html:83
 msgid "Peer"
 msgstr "Ẹgbẹ"
 
@@ -1247,22 +1281,22 @@ msgid "Peer:"
 msgstr "Elegbe:"
 
 #: public/views/preferencesDeleteWallet.html:22
-msgid "Permanently delete this wallet. THIS ACTION CANNOT BE REVERSED"
-msgstr "Pa apamowo yi re laitojo. IGBESE YI KO SE DAPADA"
+msgid "Permanently delete this account. THIS ACTION CANNOT BE REVERSED"
+msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1366
+#: src/js/controllers/correspondentDevice.js:1363
 msgid "Personal code"
 msgstr "Koodu aladaani"
 
 #: public/views/create.html:28
-msgid "Plain Wallet"
-msgstr "Apamowo Gbangba"
+msgid "Plain Account"
+msgstr ""
 
-#: src/js/controllers/index.js:283
+#: src/js/controllers/index.js:288
 msgid "Please approve contract fees deposit on the other devices."
 msgstr "Jọwọ fọwọsi sisan awọn owo adehun lori awọn ẹrọ yooku naa."
 
-#: src/js/controllers/index.js:288
+#: src/js/controllers/index.js:293
 msgid "Please approve posting prosaic contract hash on the other devices."
 msgstr "Jọwọ fọwọsi titẹjade hash adehun to rọrun lori awọn ẹrọ yooku naa."
 
@@ -1278,52 +1312,48 @@ msgstr "Jowo fowosi awon apa ti a beere"
 msgid "Please name this device"
 msgstr "Jowo so ero yi loruko"
 
-#: src/js/controllers/correspondentDevice.js:150
-msgid "Please switch to a single-address wallet and you probably need to insert your address again."
-msgstr "Jowo yipada si apamowo oni adireesi kan ati pe o nilo lati tun fi adiresi re sii."
+#: src/js/controllers/correspondentDevice.js:160
+msgid "Please switch to a single-address account and you probably need to insert your address again."
+msgstr ""
 
 #: public/views/includes/backup-reminder.html:8
 msgid "Please visit the Backups section in"
 msgstr "Jọwọ ṣe abẹwo abala Ẹda abọ-aba naa ninu"
 
-#: public/views/walletHome.html:348
-msgid "Poll"
-msgstr "Idibo"
-
 #: public/views/preferencesTor.html:16
 msgid "Port"
 msgstr "Ibudo"
 
-#: src/js/controllers/walletHome.js:1223
+#: src/js/controllers/walletHome.js:1337
 msgid "Post a"
 msgstr ""
 
-#: src/js/controllers/walletHome.js:1214
+#: src/js/controllers/walletHome.js:1328
 msgid "Post a data feed"
 msgstr ""
 
-#: public/views/walletHome.html:638
+#: public/views/walletHome.html:691
 msgid "Post a poll into Obyte network that users can vote on with Poll bot."
 msgstr "Satẹjade idibo kan sinu ikanni Obyte ti awọn aṣamulo le dibo lori pẹlu botu Idibo."
 
-#: public/views/walletHome.html:635
+#: public/views/walletHome.html:688
 msgid "Post arbitrary key-value pairs of data into Obyte network."
 msgstr "Satẹjade awọn isopọ kọkọrọ-iye ti data to wu ọ sinu ikanni Obyte."
 
-#: src/js/controllers/walletHome.js:1217
+#: src/js/controllers/walletHome.js:1331
 msgid "Post data"
 msgstr ""
 
-#: public/views/walletHome.html:626
+#: public/views/walletHome.html:679
 msgid "Post values into datafeeds manually, be an oracle."
 msgstr "Ko awon iye sinu awon datafeeds pelu owo re, je orisha."
 
-#: public/views/walletHome.html:632
+#: public/views/walletHome.html:685
 msgid "Post your profile data, anything you want to say about yourself."
 msgstr "Ko data awori re, ohun ko hun to ba fe so nipa arare."
 
-#: public/views/walletHome.html:193
-#: public/views/walletHome.html:47
+#: public/views/walletHome.html:210
+#: public/views/walletHome.html:64
 msgid "Preferences"
 msgstr "Awon aayo"
 
@@ -1335,8 +1365,8 @@ msgstr "Te lekan si lati jade"
 msgid "Private assets (such as blackbytes) and smart contracts are not recovered."
 msgstr "Awọn dukia ikọkọ (bii blackbytes) ati awọn adehun to jafafa ko ṣe gba pada."
 
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Private payloads sent"
 msgstr "Awon eru sisan ikoko ti lo"
 
@@ -1344,23 +1374,19 @@ msgstr "Awon eru sisan ikoko ti lo"
 msgid "Private profile"
 msgstr "Awori ikoko"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field"
 msgstr "Apa awori"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Profile field value"
 msgstr "Iye apa Awori"
 
-#: public/views/walletHome.html:346
-msgid "Profile of my address"
-msgstr ""
-
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "Proof of contract signing"
 msgstr "Ẹri ibuwọlu adehun"
 
-#: public/views/modals/view-prosaic-contract.html:57
+#: public/views/modals/view-prosaic-contract.html:64
 msgid "Prosaic contract"
 msgstr "Adehun to rọrun"
 
@@ -1372,7 +1398,7 @@ msgstr "Koodu QR"
 msgid "QR-Scanner"
 msgstr "Aseda aworan-QR"
 
-#: public/views/walletHome.html:658
+#: public/views/walletHome.html:711
 msgid "Question to be voted on"
 msgstr "Ibere ti aa dibo lori"
 
@@ -1380,28 +1406,24 @@ msgstr "Ibere ti aa dibo lori"
 msgid "Question:"
 msgstr "Ibere:"
 
-#: public/views/walletHome.html:347
-msgid "Raw data"
-msgstr ""
-
 #: public/views/preferencesAttestorAddresses.html:16
 msgid "Real name attestors"
 msgstr "Awọn olujẹri orukọ gidi"
 
-#: src/js/controllers/index.js:820
+#: src/js/controllers/index.js:855
 msgid "Receive"
 msgstr "Gba"
 
-#: public/views/walletHome.html:776
+#: public/views/walletHome.html:857
 msgid "Received"
 msgstr "Ti gba"
 
 #: public/views/includes/transaction.html:15
-#: public/views/modals/tx-details.html:61
+#: public/views/modals/tx-details.html:62
 msgid "Recipients"
 msgstr "Awon olugba"
 
-#: public/views/walletHome.html:60
+#: public/views/walletHome.html:77
 msgid "Reconnecting to Wallet Service..."
 msgstr "Sisopo si ise apamowo..."
 
@@ -1413,11 +1435,11 @@ msgstr "Gba pada"
 msgid "Recover with seed words"
 msgstr "Ṣe irapada pẹlu awọn ọrọ irugbin"
 
-#: public/views/walletHome.html:80
+#: public/views/walletHome.html:97
 msgid "Recreating Wallet..."
 msgstr "Atunda Apamowo..."
 
-#: src/js/controllers/index.js:296
+#: src/js/controllers/index.js:301
 msgid "Refused"
 msgstr "Ko"
 
@@ -1433,7 +1455,7 @@ msgstr "Ran mi leti nigba miiran"
 msgid "Remove"
 msgstr "Yọ kúrò"
 
-#: public/views/correspondentDevices.html:159
+#: public/views/correspondentDevices.html:208
 msgid "Remove a device"
 msgstr "Yo ero kan kuro"
 
@@ -1459,11 +1481,11 @@ msgid "Request Password"
 msgstr "Bere Oro Igbaniwole"
 
 #: public/views/modals/customized-amount.html:8
-#: public/views/walletHome.html:315
+#: public/views/walletHome.html:333
 msgid "Request a specific amount"
 msgstr "Bere iye pato kan"
 
-#: public/views/correspondentDevice.html:339
+#: public/views/correspondentDevice.html:423
 msgid "Request payment"
 msgstr "Bere owo"
 
@@ -1471,15 +1493,15 @@ msgstr "Bere owo"
 msgid "Required number of signatures"
 msgstr "Iye awon ibuwolu ti a beere"
 
-#: public/views/walletHome.html:566
+#: public/views/walletHome.html:619
 msgid "Response"
 msgstr ""
 
-#: public/views/modals/tx-details.html:167
+#: public/views/modals/tx-details.html:180
 msgid "Response unit"
 msgstr ""
 
-#: public/views/modals/tx-details.html:189
+#: public/views/modals/tx-details.html:202
 msgid "Response variables"
 msgstr ""
 
@@ -1491,7 +1513,7 @@ msgstr "Ṣe idapada gbogbo data apamọwọ"
 msgid "Retrying..."
 msgstr "Tun gbiyanju..."
 
-#: public/views/modals/view-prosaic-contract.html:142
+#: public/views/modals/view-prosaic-contract.html:149
 msgid "Revoke"
 msgstr "Pada sẹyin"
 
@@ -1516,11 +1538,11 @@ msgstr "Fipamo"
 msgid "Saving preferences..."
 msgstr "Fifipamo awon aayo..."
 
-#: public/views/preferences.html:87
+#: public/views/preferences.html:86
 msgid "Scan Fingerprint/FaceID"
 msgstr "Yaworan Ontẹ ika/Idanimọ Oju"
 
-#: public/views/walletHome.html:121
+#: public/views/walletHome.html:138
 msgid "Scan status finished with error"
 msgstr "Yaworan ipo ti pari pelu asise"
 
@@ -1528,11 +1550,11 @@ msgstr "Yaworan ipo ti pari pelu asise"
 msgid "Scan the above QR code using the other device, or send this pairing code to the other device:"
 msgstr "Yaworan koodu QR to wa loke nipase ero keji, tabi fi koodu isopo ranse si ero keji:"
 
-#: src/js/controllers/index.js:1810
+#: src/js/controllers/index.js:1844
 msgid "Scan your fingerprint please"
 msgstr "Jowo yaworan ila owo re"
 
-#: public/views/walletHome.html:79
+#: public/views/walletHome.html:96
 msgid "Scanning Wallet funds..."
 msgstr "Yiyaworan awon owo apamowo..."
 
@@ -1540,20 +1562,20 @@ msgstr "Yiyaworan awon owo apamowo..."
 msgid "Scanning for addresses..."
 msgstr "Yiyaworan fun awon adireesi..."
 
+#: public/views/modals/select-subwallet.html:8
+msgid "Select Smart Contract"
+msgstr ""
+
 #: public/views/paymentUri.html:30
 msgid "Select a wallet"
 msgstr "Mu apamowo kan"
 
-#: public/views/modals/select-subwallet.html:8
-msgid "Select subwallet"
-msgstr "Mu iha apamowo"
-
 #: public/views/preferencesHiddenAssets.html:29
-msgid "Select the assets to hide in the wallet"
-msgstr "Mu awon dukia lati fipamo sinu apamowo naa"
+msgid "Select the assets to hide in the account"
+msgstr ""
 
 #: public/views/preferencesHiddenSubWallets.html:29
-msgid "Select the subwallets to hide in the wallet"
+msgid "Select the smart contracts to hide in the account"
 msgstr ""
 
 #: public/views/authConfirmation.html:10
@@ -1561,10 +1583,10 @@ msgid "Select your identity"
 msgstr "Mu idanimo re"
 
 #: public/views/includes/transaction.html:10
-#: public/views/walletHome.html:591
-#: public/views/walletHome.html:706
-#: src/js/controllers/index.js:824
-#: src/js/controllers/walletHome.js:1207
+#: public/views/walletHome.html:644
+#: public/views/walletHome.html:769
+#: src/js/controllers/index.js:859
+#: src/js/controllers/walletHome.js:1321
 msgid "Send"
 msgstr "Firanse"
 
@@ -1572,11 +1594,11 @@ msgstr "Firanse"
 msgid "Send Payment"
 msgstr "Fi owo ranse"
 
-#: public/views/preferencesInformation.html:125
+#: public/views/preferencesInformation.html:131
 msgid "Send addresses by email"
 msgstr "Fi adiresi ranse nipa e-mail"
 
-#: public/views/walletHome.html:381
+#: public/views/walletHome.html:433
 msgid "Send all"
 msgstr "Fi gbogbo e ranse"
 
@@ -1584,15 +1606,19 @@ msgstr "Fi gbogbo e ranse"
 msgid "Send by email"
 msgstr "Fi ranse nipa email"
 
+#: public/views/preferencesInformation.html:118
+msgid "Send this"
+msgstr ""
+
 #: public/views/modals/choose-profile.html:63
 msgid "Send this profile"
 msgstr "Fi awori yii ranse"
 
-#: public/views/walletHome.html:84
+#: public/views/walletHome.html:101
 msgid "Sending..."
 msgstr "Fifiranse..."
 
-#: public/views/walletHome.html:778
+#: public/views/walletHome.html:858
 msgid "Sent"
 msgstr "Firanse"
 
@@ -1609,7 +1635,7 @@ msgid "Set up a password"
 msgstr "Seto oro igbaniwole kan"
 
 #: public/views/includes/backup-reminder.html:8
-#: public/views/includes/sidebar.html:43
+#: public/views/includes/sidebar.html:46
 msgid "Settings"
 msgstr "Awon iseto"
 
@@ -1618,7 +1644,7 @@ msgid "Share"
 msgstr "Pin"
 
 #: public/views/modals/customized-amount.html:24
-#: public/views/walletHome.html:293
+#: public/views/walletHome.html:311
 msgid "Share address"
 msgstr "Pin adiresi"
 
@@ -1626,16 +1652,16 @@ msgstr "Pin adiresi"
 msgid "Share the code"
 msgstr "Pin koodu naa"
 
-#: public/views/walletHome.html:298
+#: public/views/walletHome.html:316
 msgid "Share this wallet address to receive payments."
 msgstr "Pin adiresi apamowo yi lati gba awon isan owo."
 
-#: public/views/walletHome.html:401
-#: public/views/walletHome.html:611
+#: public/views/walletHome.html:458
+#: public/views/walletHome.html:664
 msgid "Share via message"
 msgstr "Pin nipase ifiranse"
 
-#: public/views/walletHome.html:844
+#: public/views/walletHome.html:930
 msgid "Show all"
 msgstr "Safihan gbogbo e"
 
@@ -1647,10 +1673,18 @@ msgstr "Safihan irugbin ti apamowo lonokona"
 msgid "Sign"
 msgstr "Ibuwolu"
 
+#: public/views/preferencesInformation.html:104
+msgid "Sign a message with this address"
+msgstr ""
+
 #: public/views/modals/sign-message.html:8
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "Sign message"
 msgstr "Ise ibuwolu"
+
+#: public/views/modals/signed-message.html:26
+msgid "Signature:"
+msgstr ""
 
 #: public/views/editCorrespondentDevice.html:57
 msgid "Signed contracts:"
@@ -1666,20 +1700,20 @@ msgid "Signing address:"
 msgstr "Adiresi ibuwolu:"
 
 #: public/views/create.html:56
-#: public/views/preferences.html:40
-msgid "Single address wallet"
-msgstr "Apamọ́wọ́ àdírẹ́ẹ̀sì-kan"
+#: public/views/preferences.html:39
+msgid "Single address account"
+msgstr ""
 
 #: public/views/create.html:59
-#: public/views/preferences.html:42
-msgid "Single address wallets will not spawn new addresses for every transaction, change will always go to the one and only address the wallet contains."
-msgstr "Awon Apamowo oni Adiresi kan koni seda awon adiresi titun fun gbogbo idunadura, iyipada yio ma losi adiresi kan soso ti apamowo na ni."
+#: public/views/preferences.html:41
+msgid "Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains."
+msgstr ""
 
 #: src/js/services/profileService.js:334
-msgid "Small Expenses Wallet"
-msgstr "Apamowo awon inawo kekere"
+msgid "Small Expenses Account"
+msgstr ""
 
-#: public/views/walletHome.html:551
+#: public/views/walletHome.html:604
 msgid "Source code:"
 msgstr ""
 
@@ -1691,12 +1725,12 @@ msgstr "So irugbin pato..."
 msgid "Spend unconfirmed funds"
 msgstr "Na awọn owo ti ko ni ijẹrisi"
 
-#: public/views/preferences.html:81
+#: public/views/preferences.html:80
 #: public/views/preferencesGlobal.html:86
 msgid "Spending Restrictions"
 msgstr "Awon Hihamo inawo"
 
-#: public/views/modals/view-prosaic-contract.html:65
+#: public/views/modals/view-prosaic-contract.html:72
 msgid "Status"
 msgstr "Ipo"
 
@@ -1704,22 +1738,22 @@ msgstr "Ipo"
 msgid "Still not done"
 msgstr "Ko ti si setun"
 
-#: src/js/controllers/correspondentDevice.js:1421
+#: src/js/controllers/correspondentDevice.js:1418
 msgid "Store"
 msgstr "Toju"
 
 #: src/js/controllers/copayers.js:76
-#: src/js/controllers/export.js:182
-#: src/js/controllers/export.js:207
-#: src/js/controllers/index.js:333
-#: src/js/controllers/index.js:361
+#: src/js/controllers/export.js:185
+#: src/js/controllers/export.js:210
+#: src/js/controllers/index.js:338
+#: src/js/controllers/index.js:366
 #: src/js/controllers/preferencesDelete.js:56
-#: src/js/controllers/walletHome.js:2465
-#: src/js/controllers/walletHome.js:2541
+#: src/js/controllers/walletHome.js:2620
+#: src/js/controllers/walletHome.js:2696
 msgid "Success"
 msgstr "Aseyori"
 
-#: src/js/controllers/correspondentDevice.js:1363
+#: src/js/controllers/correspondentDevice.js:1360
 msgid "Surname"
 msgstr ""
 
@@ -1727,11 +1761,11 @@ msgstr ""
 msgid "Sweep paper wallet"
 msgstr "Gba apamowo oniwe"
 
-#: public/views/walletHome.html:83
+#: public/views/walletHome.html:100
 msgid "Syncing... {{index.count_unhandled_private_payments}} private payments left"
 msgstr "Mimusisepo... {{index.count_unhandled_private_payments}} awon isan owo ikoko loku"
 
-#: public/views/walletHome.html:82
+#: public/views/walletHome.html:99
 msgid "Syncing... {{index.syncProgress}}"
 msgstr "Mimusisepo... {{index.syncProgress}}"
 
@@ -1743,9 +1777,9 @@ msgstr "TOR"
 msgid "TOR enabled"
 msgstr "TOR sise"
 
-#: public/views/walletHome.html:117
-#: public/views/walletHome.html:122
-#: public/views/walletHome.html:743
+#: public/views/walletHome.html:134
+#: public/views/walletHome.html:139
+#: public/views/walletHome.html:824
 msgid "Tap to retry"
 msgstr "Te lati gbiyanju si"
 
@@ -1754,17 +1788,16 @@ msgstr "Te lati gbiyanju si"
 msgid "Terms of Use"
 msgstr "Awon ofin lilo"
 
-#: public/views/modals/offer-prosaic-contract.html:67
-#: public/views/modals/view-prosaic-contract.html:86
-#: public/views/walletHome.html:350
+#: public/views/modals/offer-prosaic-contract.html:76
+#: public/views/modals/view-prosaic-contract.html:93
 msgid "Text"
 msgstr "Ọrọ"
 
-#: public/views/correspondentDevice.html:350
+#: public/views/correspondentDevice.html:434
 msgid "Text message to"
 msgstr "Iṣẹ́ àyọkà si"
 
-#: public/views/walletHome.html:672
+#: public/views/walletHome.html:725
 msgid "Text to be forever saved on the DAG:"
 msgstr ""
 
@@ -1772,11 +1805,19 @@ msgstr ""
 msgid "Textcoin"
 msgstr "Textcoin"
 
+#: src/js/controllers/preferencesDelete.js:56
+msgid "The account \"{{walletName}}\" has been deleted"
+msgstr ""
+
+#: src/js/controllers/copayers.js:76
+msgid "The account \"{{walletName}}\" was deleted"
+msgstr ""
+
 #: public/views/modals/accept-profile.html:38
 msgid "The attested address belongs to:"
 msgstr "Adiresi ti a ti fi han je ti tani:"
 
-#: public/views/walletHome.html:552
+#: public/views/walletHome.html:605
 msgid "The expected result:"
 msgstr ""
 
@@ -1792,11 +1833,11 @@ msgstr ""
 msgid "The money is stored on this textcoin:"
 msgstr "Owo na wa ni afipamo ninu textcoin:"
 
-#: public/views/modals/bind.html:23
+#: public/views/modals/bind.html:63
 msgid "The peer receives this payment if"
 msgstr "Awon elegbe gba isan wo yi ti"
 
-#: public/views/modals/signed-message.html:27
+#: public/views/modals/signed-message.html:32
 msgid "The signature is"
 msgstr "Ibuwolu na ni"
 
@@ -1808,16 +1849,11 @@ msgstr "Apapọ iye to wa ninu apamọwọ rẹ jẹ"
 msgid "The vote will be signed by all your funded addresses"
 msgstr "Idibo na yio gba ibuwolu latowo gbogbo awon adiresi re to gba owo"
 
-#: src/js/controllers/copayers.js:76
-#: src/js/controllers/preferencesDelete.js:56
-msgid "The wallet \"{{walletName}}\" was deleted"
-msgstr "Won ti yo Apamowo na kuro \"{{walletName}}\""
-
 #: public/views/splash.html:38
 msgid "The wallet vendor will be able to know some of your balances and will be able to see which transactions are yours, but you can start using the wallet immediately and the wallet is fully functional."
 msgstr "Ataja apamowo na yio le mo omiran ninu awon oseku re yio si nipa lati ri awon idunadura to je tie, sugbon o le bere si ma lo apamowo na ni kia kia ati pe apamowo na sise lekunrere."
 
-#: public/views/correspondentDevice.html:305
+#: public/views/correspondentDevice.html:389
 msgid "Their recording preference"
 msgstr "Aayo Igbasile won"
 
@@ -1825,7 +1861,23 @@ msgstr "Aayo Igbasile won"
 msgid "There are no wallets to make this payment"
 msgstr "Ko si awon apamowo lati san owo yi"
 
-#: public/views/walletHome.html:297
+#: public/views/preferences.html:45
+msgid "This account cannot be converted to multi address account as it already has attestations"
+msgstr ""
+
+#: public/views/preferences.html:44
+msgid "This account cannot be converted to multi address account as it is multidevice"
+msgstr ""
+
+#: public/views/preferences.html:42
+msgid "This account cannot be converted to single address account as it already consists of multiple addresses"
+msgstr ""
+
+#: public/views/preferences.html:43
+msgid "This account cannot be converted to single address account as it is multidevice"
+msgstr ""
+
+#: public/views/walletHome.html:315
 msgid "This address is shared with {{index.shared_address_cosigners}}."
 msgstr "An pin adiresi yii pelu {{index.shared_address_cosigners}}."
 
@@ -1837,63 +1889,50 @@ msgstr "Asayan yi kole yipada nigbami"
 msgid "This option is better for privacy but will take  several gigabytes of storage and the initial sync will take several days.  CPU load will be high during sync."
 msgstr "Asayan yi da fun ipamo sugbon yio gba  gigabytes pupo ti ile ifipamo ati imusisepo akoko le gba ojo pupo. Eru CPU a po nigba imusisepi."
 
-#: public/views/walletHome.html:451
+#: public/views/walletHome.html:504
 msgid "This payment is bound to a condition..."
 msgstr "Isanwo yii sopọ mọ ipo kan..."
 
-#: src/js/controllers/correspondentDevice.js:150
-#: src/js/controllers/walletHome.js:2121
+#: src/js/controllers/correspondentDevice.js:160
+msgid "This payment must be paid only from single-address account"
+msgstr ""
+
+#: src/js/controllers/walletHome.js:2235
 msgid "This payment must be paid only from single-address wallet"
 msgstr "Isan wo yi gbudo wa lati odo apamowo aladiresi-kan"
 
-#: public/views/modals/tx-details.html:89
+#: public/views/modals/tx-details.html:96
 msgid "This transaction has become invalid; possibly due to a double spend attempt."
 msgstr "Idunadura yi ti je aifesemule; oleje nipase igbiyanju inawo meji."
 
-#: public/views/modals/tx-details.html:162
+#: public/views/modals/tx-details.html:175
 msgid "This transaction was sent to an autonomous agent"
 msgstr ""
 
-#: public/views/preferences.html:46
-msgid "This wallet cannot be converted to multi address wallet as it already has attestations"
-msgstr "A kole yi apamowo yi pada si apamowo aladiresi pupo tori o ti ni awon fifihun tele"
-
-#: public/views/preferences.html:45
-msgid "This wallet cannot be converted to multi address wallet as it is multidevice"
-msgstr "A kole yi apamowo yi pada si apamowo aladiresi pupo tori o je ero opo"
-
-#: public/views/preferences.html:43
-msgid "This wallet cannot be converted to single address wallet as it already consists of multiple addresses"
-msgstr "Apamowo yi kosle ti pada si apamowo aladiresi kan tori o ti ni awon adiresi pupo tele"
-
-#: public/views/preferences.html:44
-msgid "This wallet cannot be converted to single address wallet as it is multidevice"
-msgstr "A kole yi apamowo yi pada si apamowo aladiresi kan tori o je ero opo"
-
-#: public/views/import.html:46
+#: public/views/import.html:47
 #: public/views/recoveryFromSeed.html:39
-msgid "This will permanently delete all your existing wallets!"
-msgstr "Eleyi a yo gbogbo awon apamowo re to wa tele kuro patapata!"
+msgid "This will permanently delete all your existing accounts!"
+msgstr ""
 
-#: public/views/modals/offer-prosaic-contract.html:64
-#: public/views/modals/view-prosaic-contract.html:83
+#: public/views/modals/offer-prosaic-contract.html:73
+#: public/views/modals/view-prosaic-contract.html:90
 msgid "Title of contract"
 msgstr "Akọle adehun"
 
 #: public/views/includes/output.html:2
 #: public/views/includes/transaction.html:19
 #: public/views/modals/tx-details.html:39
-#: public/views/modals/tx-details.html:74
-#: public/views/walletHome.html:816
-#: src/js/controllers/index.js:1622
+#: public/views/modals/tx-details.html:81
+#: public/views/walletHome.html:899
+#: src/js/controllers/index.js:1656
 msgid "To"
 msgstr "Si"
 
-#: public/views/walletHome.html:825
+#: public/views/walletHome.html:911
 msgid "To AA"
 msgstr ""
 
-#: public/views/walletHome.html:412
+#: public/views/walletHome.html:465
 msgid "To Obyte address"
 msgstr "Si adirẹẹsi Obyte"
 
@@ -1901,35 +1940,35 @@ msgstr "Si adirẹẹsi Obyte"
 msgid "To be able to restore everything, please create a full backup (find the option in the menu)"
 msgstr "Lati le da ohun gbogbo pada, jowo seda afeyinti ekun (ri asayan na lori akojo)"
 
-#: public/views/walletHome.html:717
-msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address wallet first or create one."
-msgstr "Lati le fi data to wu ọ ranṣẹ sinu ikanni O<sub>byte</sub>, jọwọ kọkọ pada si apamọwọ aladirẹẹsi kan ṣoṣo tabi ṣẹda ọkan."
+#: public/views/walletHome.html:780
+msgid "To be able to send arbitrary data into O<sub>byte</sub> network, please switch to a single-address account first or create one."
+msgstr ""
 
-#: public/views/walletHome.html:460
+#: public/views/walletHome.html:513
 msgid "To bind the payment to a condition, please click the peer's address in chat"
 msgstr "Lati so isanwo na mo nkan, jowo te adiresi elegbe na ninu iwiregbe"
 
-#: src/js/controllers/index.js:1625
+#: src/js/controllers/index.js:1659
 msgid "To email"
 msgstr "Si email"
 
-#: public/views/walletHome.html:299
+#: public/views/walletHome.html:317
 msgid "To protect your privacy, new addresses are generated automatically once you use them."
 msgstr "Lati dabobo ikoko re, ipilese awon adiresi titun laifọwọyi ma nsele leyin to ba ti lo won."
 
-#: public/views/modals/view-prosaic-contract.html:93
+#: public/views/modals/view-prosaic-contract.html:100
 msgid "To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract."
 msgstr "Lati jẹrisi pipe adehun, a ṣe iṣiro hash SHA256 lati awọn eroja mẹta to sopọ: sha256(akọle+ọrọ+ọjọ_ṣiṣẹda) ti a sì paroko rẹ ni agbekalẹ BASE64. Lẹyin ti adehun naa gba itẹwọgba, ẹyọ kan pẹlu hash rẹ gba itẹjade sinu DAG naa. O le ṣayẹwo lati ri pe ọrọ adehun ko gba atunṣe nipasẹ ṣiṣe afiwe awọn hash to wa ninu DAG naa ati eyi ti a ṣe iṣiro lati adehun yii."
 
-#: public/views/walletHome.html:675
+#: public/views/walletHome.html:728
 msgid "Too long text"
 msgstr ""
 
-#: public/views/walletHome.html:222
+#: public/views/walletHome.html:240
 msgid "Total Locked Balance"
 msgstr "Iseku apapo ti a ti ti pa"
 
-#: public/views/walletHome.html:380
+#: public/views/walletHome.html:432
 msgid "Total amount"
 msgstr "Iye lapapo"
 
@@ -1941,13 +1980,13 @@ msgstr "Iye awon ajo se ibuwolu lapapo"
 msgid "Transaction"
 msgstr "Idunadura"
 
-#: src/js/controllers/index.js:278
+#: src/js/controllers/index.js:283
 msgid "Transaction created.\n"
 "Please approve it on the other devices."
 msgstr "A ti ṣẹda idunadura.\n"
 "Jọwọ fọwọsi lori awọn ẹrọ yooku naa."
 
-#: public/views/walletHome.html:767
+#: public/views/walletHome.html:848
 msgid "Transactions<br> Downloaded"
 msgstr "Awon idunadura <br> tati gba lati ori ayelujara"
 
@@ -1963,20 +2002,20 @@ msgstr "Awon olutumo"
 msgid "Trusted nodes"
 msgstr "Àwọn Ojú-Ìpàdé Tí A Gbẹ́Kẹ̀Lé"
 
-#: public/views/walletHome.html:556
+#: public/views/walletHome.html:609
 msgid "Try again"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1367
+#: src/js/controllers/correspondentDevice.js:1364
 msgid "US state"
 msgstr "Orilede US"
 
-#: src/js/controllers/walletHome.js:1284
+#: src/js/controllers/walletHome.js:1398
 msgid "Unable to send transaction proposal"
 msgstr "Akole fi imoran idunadura ranse"
 
-#: public/views/modals/tx-details.html:121
-#: public/views/walletHome.html:798
+#: public/views/modals/tx-details.html:128
+#: public/views/walletHome.html:879
 msgid "Unconfirmed"
 msgstr "Kole jerisi"
 
@@ -1988,11 +2027,11 @@ msgstr "Iye fun awon blackbytes"
 msgid "Unit for bytes"
 msgstr "Iye fun awon bytes"
 
-#: public/views/walletHome.html:215
+#: public/views/walletHome.html:233
 msgid "Unsent transactions"
 msgstr "Awin idunadura tikolo"
 
-#: public/views/walletHome.html:73
+#: public/views/walletHome.html:90
 msgid "Updating Wallet..."
 msgstr "Sise ìmúdójúìwọ̀n apamowo..."
 
@@ -2004,24 +2043,24 @@ msgstr "Igbesoke si {{version}}"
 msgid "Upgrading the database, please wait."
 msgstr ""
 
-#: public/views/modals/view-prosaic-contract.html:67
+#: public/views/modals/view-prosaic-contract.html:74
 msgid "Valid till"
 msgstr "O fẹsẹmulẹ titi di"
 
-#: public/views/walletHome.html:525
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:578
+#: public/views/walletHome.html:740
 msgid "Value"
 msgstr "Iye"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "Values"
 msgstr "Awon iye"
 
-#: public/views/walletHome.html:563
+#: public/views/walletHome.html:616
 msgid "Variable"
 msgstr ""
 
-#: src/js/controllers/correspondentDevice.js:1391
+#: src/js/controllers/correspondentDevice.js:1388
 msgid "Verifying the profile..."
 msgstr "Ijerisi awori..."
 
@@ -2033,7 +2072,7 @@ msgstr "Eya"
 msgid "WARNING:"
 msgstr "IKILO:"
 
-#: public/views/walletHome.html:240
+#: public/views/walletHome.html:258
 msgid "WARNING: Backup needed"
 msgstr "IKILO: nilo ẹ̀dà àbọ̀-ábá"
 
@@ -2041,7 +2080,8 @@ msgstr "IKILO: nilo ẹ̀dà àbọ̀-ábá"
 msgid "WARNING: This seed was created with a passphrase. To recover this wallet both the mnemonic and passphrase are needed."
 msgstr "IKILO: aseda irugbin yi pelu oro agbaniwole. Lati gba apamowo yi pada anilo akomona ati oro igbaniwole."
 
-#: public/views/import.html:44
+#: public/views/import.html:45
+#: public/views/preferencesTor.html:23
 #: public/views/recoveryFromSeed.html:37
 msgid "WARNINGS:"
 msgstr "AWON IKILO:"
@@ -2058,67 +2098,29 @@ msgstr "Diduro de awon ajo fowobowe"
 msgid "Waiting..."
 msgstr "Diduro..."
 
-#: public/views/preferencesDeleteWallet.html:12
-msgid "Wallet"
-msgstr "Àpàmówó"
-
-#: public/views/preferences.html:24
-msgid "Wallet Alias"
-msgstr "Oruko apeje apamowo"
-
-#: public/views/preferencesInformation.html:27
-msgid "Wallet Configuration (m-n)"
-msgstr "Iseto Apamowo (m-n)"
-
-#: public/views/preferencesInformation.html:20
-msgid "Wallet Id"
-msgstr "Idanimo apamowo"
-
-#: public/views/preferencesAdvanced.html:14
-#: public/views/preferencesInformation.html:8
-msgid "Wallet Information"
-msgstr "Àlàyé àpamọ́wọ́"
-
-#: public/views/preferencesInformation.html:12
-msgid "Wallet Name (at creation)"
-msgstr "Oruko apamowo (ni iseda)"
-
-#: src/js/services/profileService.js:455
-msgid "Wallet already in Obyte:"
-msgstr "Apamọwọ ti wa ninu Obyte tẹlẹ:"
-
-#: public/views/create.html:48
-msgid "Wallet name"
-msgstr "Oruko Apamowo"
-
 #: public/views/backup.html:34
 msgid "Wallet seed not available."
 msgstr "Irugbin apamowo o si nile."
-
-#: public/views/modals/destination-address.html:15
-#: public/views/modals/destination-address.html:29
-msgid "Wallets"
-msgstr "Awon Apamowo"
 
 #: public/views/preferencesDeleteWallet.html:15
 msgid "Warning!"
 msgstr "Ikilo!"
 
-#: public/views/modals/tx-details.html:132
+#: public/views/modals/tx-details.html:139
 msgid "Was claimed?"
 msgstr "Ti gba?"
 
-#: public/views/walletHome.html:339
+#: public/views/walletHome.html:357
 msgid "What to send"
 msgstr "Kini ifiranse"
 
 #: public/views/modals/multi-payment.html:35
-#: public/views/modals/offer-contract.html:112
+#: public/views/modals/offer-contract.html:150
 #: public/views/modals/sign-message.html:27
 #: public/views/modals/vote.html:28
-#: public/views/walletHome.html:580
-#: public/views/walletHome.html:604
-#: public/views/walletHome.html:698
+#: public/views/walletHome.html:633
+#: public/views/walletHome.html:657
+#: public/views/walletHome.html:761
 msgid "Who signs:"
 msgstr "Talo fowosiwe:"
 
@@ -2135,36 +2137,40 @@ msgid "Wrong password"
 msgstr "Oro agbaniwole tiko to"
 
 #: public/views/authConfirmation.html:17
-#: public/views/modals/tx-details.html:174
-#: src/js/controllers/index.js:666
+#: public/views/modals/tx-details.html:187
+#: src/js/controllers/index.js:671
 msgid "Yes"
 msgstr "Beeni"
 
-#: public/views/walletHome.html:540
+#: public/views/walletHome.html:593
 msgid "You are sending to an autonomous agent, the expected result:"
 msgstr ""
 
-#: public/views/walletHome.html:542
+#: public/views/walletHome.html:595
 msgid "You are sending to an autonomous agent:"
 msgstr ""
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "You can erase the textcoin from your wallet if you have already saved it elsewhere (e.g. as a paper wallet):"
 msgstr "Ole pa textcoin re kuro ninu apamowo re to ba ti fipamo si ibomiran tele. (bi apamowo oni iwe):"
 
-#: public/views/modals/bind.html:99
-msgid "You cannot bind your transaction to reverse payment as you are in a single address wallet.  Use a non-single address wallet and then transfer the money to this wallet."
-msgstr "O kole so idunadura re lati fa isan wo pada tori o wa ninu apamowo aladiresi kan. Lo apamowo ti konje aladiresi kan ko wa fi owo na ranse si apamowo yi."
+#: public/views/modals/bind.html:139
+msgid "You cannot bind your transaction to reverse payment as you are in a single address account.  Use a non-single address account and then transfer the money to that account."
+msgstr ""
 
-#: public/views/walletHome.html:42
-msgid "You do not have a wallet"
-msgstr "O ko ni apamowo kankan"
+#: public/views/walletHome.html:59
+msgid "You do not have an account"
+msgstr ""
 
 #: public/views/modals/choose-profile.html:70
 msgid "You need to go through an attestation to get a profile.  Look for Real Name Attestation bot in the Bot Store."
 msgstr "O nilo lati la fifihun koja lati gba awori. Wa bootu Ifihan Oruko to daju ni Itaja Bootu."
 
-#: public/views/modals/offer-prosaic-contract.html:90
+#: public/views/preferencesTor.html:25
+msgid "You need to have Tor service or Tor Browser running to use this feature!"
+msgstr ""
+
+#: public/views/modals/offer-prosaic-contract.html:99
 msgid "You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof."
 msgstr "Iwọ yíò san {{CHARGE_AMOUNT}} bytes lati fi rọpo awọn owo nigba titẹjade ẹri ibuwọlu."
 
@@ -2197,10 +2203,10 @@ msgstr "Aseda apamowo re lori ero yi, mu pamo dada. Re awon asayan edà àbọ̀
 msgid "[ Add new co-signer device ]"
 msgstr "[fikun ero ajo ibuwolu titun]"
 
-#: public/views/modals/offer-prosaic-contract.html:55
-#: public/views/modals/offer-prosaic-contract.html:61
-#: public/views/modals/view-prosaic-contract.html:74
-#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/offer-prosaic-contract.html:64
+#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/view-prosaic-contract.html:81
+#: public/views/modals/view-prosaic-contract.html:87
 msgid "address"
 msgstr "adirẹẹsi"
 
@@ -2208,13 +2214,13 @@ msgstr "adirẹẹsi"
 msgid "addresses"
 msgstr "awọn adirẹẹsi"
 
-#: public/views/modals/bind.html:37
-#: public/views/modals/offer-contract.html:44
-#: public/views/modals/offer-contract.html:52
+#: public/views/modals/bind.html:77
+#: public/views/modals/offer-contract.html:82
+#: public/views/modals/offer-contract.html:90
 msgid "amount"
 msgstr "iye"
 
-#: public/views/modals/bind.html:31
+#: public/views/modals/bind.html:71
 msgid "an event is posted by an oracle"
 msgstr "orisa loman ko Isele"
 
@@ -2227,37 +2233,37 @@ msgid "and it is recommended you back it up."
 msgstr "ati pe a gba ọ niyanju lati ṣe ẹda abọ-aba rẹ."
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by trusted attestor"
 msgstr "ti gba ijẹrisi nipasẹ olujẹri ti a gbẹkẹle"
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attested by:"
 msgstr "ti gba ijẹrisi nipasẹ:"
 
 #: public/views/modals/accept-profile.html:31
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
-#: public/views/modals/view-prosaic-contract.html:73
-#: public/views/modals/view-prosaic-contract.html:79
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
+#: public/views/modals/view-prosaic-contract.html:80
+#: public/views/modals/view-prosaic-contract.html:86
 msgid "attestor is not trusted by you"
 msgstr "olujẹri ko ni igbẹkẹle nipasẹ rẹ"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "available"
 msgstr "wa nile"
 
-#: src/js/controllers/index.js:475
+#: src/js/controllers/index.js:480
 msgid "by address"
 msgstr "nipa adiresi"
 
-#: public/views/modals/view-prosaic-contract.html:104
+#: public/views/modals/view-prosaic-contract.html:111
 msgid "calculated hash:"
 msgstr "hash ti a ṣe iṣiro:"
 
@@ -2266,23 +2272,23 @@ msgstr "hash ti a ṣe iṣiro:"
 msgid "can be spent if:"
 msgstr "le jẹ nina ti:"
 
-#: public/views/modals/offer-contract.html:77
+#: public/views/modals/offer-contract.html:115
 msgid "can unlock the contract"
 msgstr "le si adehun na"
 
-#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-contract.html:145
 msgid "can unlock the contract after it expires in"
 msgstr "le si adehun na leyin to ba ti pari ni"
 
 #: public/views/copayers.html:38
-msgid "cancel wallet creation"
-msgstr "daduro iseda apamowo"
+msgid "cancel the account creation"
+msgstr ""
 
-#: public/views/walletHome.html:676
+#: public/views/walletHome.html:729
 msgid "character(s)"
 msgstr ""
 
-#: public/views/modals/tx-details.html:140
+#: public/views/modals/tx-details.html:147
 msgid "claimed by {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgstr "tigba nipa {{btx.claimedByMe?'me':'receiver'|translate}}"
 
@@ -2290,82 +2296,82 @@ msgstr "tigba nipa {{btx.claimedByMe?'me':'receiver'|translate}}"
 msgid "clear chat history"
 msgstr "pa itan iweregbe re"
 
-#: public/views/walletHome.html:687
+#: public/views/walletHome.html:740
 msgid "confirmed"
 msgstr "ti fidimule"
 
-#: public/views/modals/select-subwallet.html:39
+#: public/views/modals/select-subwallet.html:47
 msgid "created"
 msgstr "ti seda"
 
-#: public/views/modals/view-prosaic-contract.html:94
+#: public/views/modals/view-prosaic-contract.html:101
 msgid "creation date:"
 msgstr "ọjọ ṣiṣẹda:"
 
-#: public/views/modals/offer-contract.html:109
+#: public/views/modals/offer-contract.html:147
 msgid "days"
 msgstr "awon ojo"
 
-#: src/js/controllers/walletHome.js:1182
+#: src/js/controllers/walletHome.js:1296
 msgid "decreased by"
 msgstr ""
 
-#: public/views/modals/bind.html:82
-#: public/views/modals/offer-contract.html:99
+#: public/views/modals/bind.html:122
+#: public/views/modals/offer-contract.html:137
 msgid "detailed instructions about using"
 msgstr "awọn ẹkunrẹrẹ alaye nipa lilo"
 
 #: public/views/backup.html:28
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your laptop computer."
-msgstr "bi apamowo kan-lara-meji pelu kokoro kan lori ero yi pelu kokoro miran lori àgbélétan re."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your laptop computer."
+msgstr ""
 
 #: public/views/backup.html:27
-msgid "e.g. 1-of-2 wallet with one key on this device and another key on your smartphone."
-msgstr "bi apamowo kan-larin-meji pelu kokoro kan lori ero yi ati kokoro miran lori ero ajafafa re."
+msgid "e.g. 1-of-2 account with one key on this device and another key on your smartphone."
+msgstr ""
 
-#: public/views/modals/bind.html:79
+#: public/views/modals/bind.html:119
 msgid "either way"
 msgstr "ona èyí tàbí èyinì"
 
-#: public/views/modals/tx-details.html:151
+#: public/views/modals/tx-details.html:158
 msgid "erase textcoin"
 msgstr "pa textcoin re"
 
-#: public/views/modals/bind.html:71
+#: public/views/modals/bind.html:111
 msgid "explicitly"
 msgstr "ni kedere"
 
-#: public/views/modals/view-prosaic-contract.html:105
+#: public/views/modals/view-prosaic-contract.html:112
 msgid "hash published in DAG:"
 msgstr "hash ti a ṣatẹjade ninu DAG:"
 
-#: public/views/modals/view-prosaic-contract.html:95
+#: public/views/modals/view-prosaic-contract.html:102
 msgid "hash source string:"
 msgstr "fọnran orisun hash:"
 
-#: public/views/modals/bind.html:87
-#: public/views/modals/offer-contract.html:69
-#: public/views/modals/offer-prosaic-contract.html:70
+#: public/views/modals/bind.html:127
+#: public/views/modals/offer-contract.html:107
+#: public/views/modals/offer-prosaic-contract.html:79
 msgid "hours"
 msgstr "awon wakati"
 
-#: public/views/modals/offer-contract.html:78
+#: public/views/modals/offer-contract.html:116
 msgid "if an event is posted by an oracle"
 msgstr "ti orisha ba ko isele"
 
-#: public/views/modals/bind.html:75
+#: public/views/modals/bind.html:115
 msgid "in merkle tree"
 msgstr "lori igi merkle"
 
-#: public/views/walletHome.html:171
-msgid "in smart wallets"
-msgstr "ninu awon apamowo to jafafa"
+#: public/views/walletHome.html:188
+msgid "in smart contracts"
+msgstr ""
 
-#: src/js/controllers/walletHome.js:1178
+#: src/js/controllers/walletHome.js:1292
 msgid "increased by"
 msgstr ""
 
-#: public/views/modals/signed-message.html:28
+#: public/views/modals/signed-message.html:33
 msgid "invalid"
 msgstr "aifesemule"
 
@@ -2373,7 +2379,7 @@ msgstr "aifesemule"
 msgid "keep for myself"
 msgstr "fipamo fun ara re"
 
-#: public/views/walletHome.html:547
+#: public/views/walletHome.html:600
 msgid "less"
 msgstr ""
 
@@ -2381,20 +2387,20 @@ msgstr ""
 msgid "locked by pending payments"
 msgstr "ti tipa nipase awon imuduro isanwo"
 
-#: public/views/walletHome.html:546
+#: public/views/walletHome.html:599
 msgid "more"
 msgstr ""
 
-#: public/views/modals/tx-details.html:169
-#: src/js/controllers/walletHome.js:1228
+#: public/views/modals/tx-details.html:182
+#: src/js/controllers/walletHome.js:1342
 msgid "none"
 msgstr ""
 
-#: public/views/modals/tx-details.html:134
+#: public/views/modals/tx-details.html:141
 msgid "not claimed"
 msgstr "ko reni gba"
 
-#: public/views/modals/view-prosaic-contract.html:101
+#: public/views/modals/view-prosaic-contract.html:108
 msgid "not valid"
 msgstr "ko fẹsẹmulẹ"
 
@@ -2410,17 +2416,17 @@ msgstr "ti"
 msgid "on"
 msgstr "ni"
 
-#: public/views/modals/bind.html:55
-#: public/views/modals/offer-contract.html:88
+#: public/views/modals/bind.html:95
+#: public/views/modals/offer-contract.html:126
 msgid "on feed name"
 msgstr "lori oruko feedi"
 
-#: public/views/walletHome.html:471
-#: public/views/walletHome.html:482
+#: public/views/walletHome.html:524
+#: public/views/walletHome.html:535
 msgid "optional"
 msgstr "èyí tí ó wu ni"
 
-#: public/views/modals/offer-contract.html:100
+#: public/views/modals/offer-contract.html:138
 msgid "or"
 msgstr "tabi"
 
@@ -2428,11 +2434,11 @@ msgstr "tabi"
 msgid "or backup all Obyte data at"
 msgstr "tabi ṣe ẹda abọ-aba gbogbo data Obyte ni"
 
-#: public/views/modals/offer-contract.html:51
+#: public/views/modals/offer-contract.html:89
 msgid "peer pays"
 msgstr "awon elegbe san owo"
 
-#: public/views/modals/bind.html:67
+#: public/views/modals/bind.html:107
 msgid "posted"
 msgstr "ti ko"
 
@@ -2440,19 +2446,19 @@ msgstr "ti ko"
 msgid "re"
 msgstr "re"
 
-#: public/views/modals/tx-details.html:154
+#: public/views/modals/tx-details.html:161
 msgid "re-send private payloads"
 msgstr "tu fi se afiranse awon eru sisan ikoko"
 
-#: public/views/modals/tx-details.html:157
+#: public/views/modals/tx-details.html:164
 msgid "re-send private payloads to cosigners"
 msgstr "tun se ifiranse awon eru sisan ikokonsi awon ajo fowo bowe"
 
-#: public/views/correspondentDevices.html:171
+#: public/views/correspondentDevices.html:220
 msgid "search by bot name"
 msgstr "ṣawari nipasẹ orukọ bot"
 
-#: public/views/correspondentDevices.html:112
+#: public/views/correspondentDevices.html:159
 msgid "search by contact name"
 msgstr "ṣawari nipasẹ orukọ olubasọrọ"
 
@@ -2461,40 +2467,40 @@ msgid "send"
 msgstr "firanse"
 
 #: public/views/modals/share.html:30
-#: src/js/controllers/walletHome.js:805
+#: src/js/controllers/walletHome.js:895
 msgid "send email"
 msgstr "fi email ranse"
 
-#: src/js/controllers/walletHome.js:1378
-#: src/js/controllers/walletHome.js:1413
-#: src/js/controllers/walletHome.js:1448
-#: src/js/controllers/walletHome.js:1461
-#: src/js/controllers/walletHome.js:1559
-#: src/js/controllers/walletHome.js:1611
-#: src/js/controllers/walletHome.js:1638
-#: src/js/controllers/walletHome.js:1813
-#: src/js/controllers/walletHome.js:1875
-#: src/js/controllers/walletHome.js:1884
+#: src/js/controllers/walletHome.js:1492
+#: src/js/controllers/walletHome.js:1527
+#: src/js/controllers/walletHome.js:1562
+#: src/js/controllers/walletHome.js:1575
+#: src/js/controllers/walletHome.js:1673
+#: src/js/controllers/walletHome.js:1725
+#: src/js/controllers/walletHome.js:1752
+#: src/js/controllers/walletHome.js:1927
+#: src/js/controllers/walletHome.js:1989
+#: src/js/controllers/walletHome.js:1998
 msgid "sending"
 msgstr "fifiranse"
 
-#: src/js/controllers/walletHome.js:1186
+#: src/js/controllers/walletHome.js:1300
 msgid "set to"
 msgstr ""
 
-#: public/views/modals/tx-details.html:148
+#: public/views/modals/tx-details.html:155
 msgid "share again"
 msgstr "tun pin"
 
-#: public/views/walletHome.html:457
+#: public/views/walletHome.html:510
 msgid "switch to multi-address"
 msgstr "yipada si adiresi opo"
 
-#: public/views/walletHome.html:456
+#: public/views/walletHome.html:509
 msgid "switch to single address"
 msgstr "yipada si adiresi okan"
 
-#: public/views/modals/view-prosaic-contract.html:89
+#: public/views/modals/view-prosaic-contract.html:96
 msgid "the contract is not signed yet"
 msgstr "a ko tii buwọ lu adehun naa"
 
@@ -2503,64 +2509,64 @@ msgid "the text below and send it to the recipient via any messaging app"
 msgstr "aroko to wa la be kosi firanse si olugba na nipase eto isise eyikeyi"
 
 #: public/views/modals/approveNewWitnesses.html:26
-#: src/js/controllers/walletHome.js:1207
+#: src/js/controllers/walletHome.js:1321
 msgid "to"
 msgstr "si"
 
-#: src/js/controllers/index.js:378
+#: src/js/controllers/index.js:383
 msgid "together with"
 msgstr "pelu"
 
-#: public/views/walletHome.html:472
-#: public/views/walletHome.html:483
+#: public/views/walletHome.html:525
+#: public/views/walletHome.html:536
 msgid "too long!"
 msgstr "ti gun ju!"
 
-#: public/views/modals/offer-prosaic-contract.html:54
-#: public/views/modals/offer-prosaic-contract.html:60
+#: public/views/modals/offer-prosaic-contract.html:63
+#: public/views/modals/offer-prosaic-contract.html:69
 msgid "trusted"
 msgstr "ti a gbẹkẹle"
 
-#: public/views/modals/view-prosaic-contract.html:92
+#: public/views/modals/view-prosaic-contract.html:99
 msgid "unit in DAG:"
 msgstr "ẹyọ ninu DAG:"
 
-#: src/js/controllers/walletHome.js:1219
+#: src/js/controllers/walletHome.js:1333
 msgid "unlimited"
 msgstr ""
 
-#: public/views/modals/signed-message.html:29
-#: public/views/modals/view-prosaic-contract.html:100
+#: public/views/modals/signed-message.html:34
+#: public/views/modals/view-prosaic-contract.html:107
 msgid "valid"
 msgstr "ifesemule"
 
-#: public/views/modals/view-prosaic-contract.html:98
+#: public/views/modals/view-prosaic-contract.html:105
 msgid "validate contract integrity"
 msgstr "jẹri si pipe adehun"
 
-#: src/js/controllers/walletHome.js:1341
+#: src/js/controllers/walletHome.js:1455
 msgid "wait for sync to complete before sending payments"
 msgstr "duro fun imusisepo lati pari koto se ifiranse awon isan owo"
 
-#: public/views/walletHome.html:571
+#: public/views/walletHome.html:624
 msgid "were added as it is the minimum amount for this AA"
 msgstr ""
 
-#: public/views/modals/select-subwallet.html:37
+#: public/views/modals/select-subwallet.html:45
 #: public/views/preferencesHiddenSubWallets.html:36
 msgid "with"
 msgstr "pelu"
 
-#: public/views/modals/bind.html:58
-#: public/views/modals/offer-contract.html:91
+#: public/views/modals/bind.html:98
+#: public/views/modals/offer-contract.html:129
 msgid "with expected value"
 msgstr "pelu iye tan reti"
 
-#: src/js/controllers/walletHome.js:1205
+#: src/js/controllers/walletHome.js:1319
 msgid "you"
 msgstr ""
 
-#: public/views/walletHome.html:371
+#: public/views/walletHome.html:423
 msgid "{{home.custom_amount_error}}"
 msgstr ""
 

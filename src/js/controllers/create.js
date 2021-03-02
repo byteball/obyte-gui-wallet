@@ -11,6 +11,8 @@ angular.module('copayApp.controllers').controller('createController',
 	var defaults = configService.getDefaults();
 	$scope.derivationPath = derivationPathHelper.default;
 
+	$scope.isSingleAddress = true;
+
 	// ng-repeat defined number of times instead of repeating over array?
 	this.getNumber = function(num) {
 		return new Array(num);

@@ -22,6 +22,44 @@ form[name="contractForm"] {
 	bottom: 15px;
 	line-height: 26px;
 }
+form#offer-contract-form span[selectable] {
+	display: inline-block;
+    cursor: pointer;
+    color: #000000;
+    font-size: 16px;
+    background: #FFF;
+    text-transform: none;
+    border-radius: 0px;
+    border: 1px solid transparent;
+    border-bottom: 1px dashed #000;
+    padding: 0px 3px;
+    line-height: 22px;
+    transition: all .3s;
+}
+
+form#offer-contract-form input.inline {
+    display: inline;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    height: 25px;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    font-size: 16px;
+    background: transparent;
+    border-radius: 0px;
+    margin-top: 3px;
+    padding: 0px 3px;
+    transition: all .3s;
+}
+
+form#offer-contract-form input.inline:focus {
+	border-bottom: 1px solid #4A90E2;
+	border-radius: 0px;
+}
+
+form#offer-contract-form .f-dropdown li a {
+  text-transform: none;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -30,7 +68,7 @@ form[name="contractForm"] {
     </a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title ellipsis" ng-style="{'color':color}" translate>
+    <h1 class="title ellipsis" style="color: #4E4E4E !important" translate>
       Offer a contract
     </h1>
   </section>
@@ -38,7 +76,7 @@ form[name="contractForm"] {
 
 
 <div class="modal-content fix-modals-touch">
-	<form name="contractForm">
+	<form name="contractForm" id="offer-contract-form">
 
 	<span translate>I pay</span>
 	<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="0" ng-attr-placeholder="{{'amount'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="contract.myAmount" name="myAmount" valid-amount="{{contract.myAsset}}" required autocomplete="off" style="text-align: right" class="inline w80">
@@ -68,7 +106,7 @@ form[name="contractForm"] {
 	<input type="number" min="0.1" required name="time2out" id="time2out" ng-model="contract.timeout" style="text-align: right" class="inline w30">
 	<span translate>hours</span>.<br><br>
 
-	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="display: inline-block; min-width: 18px; text-align: left; height: 22px"></span>
+	<span selectable="#dataparty" dropdown-toggle="#dataparty" data-model="contract" data-prop="data_party" data-exclusion-bind="expiry_party" class="capitalize" style="display: inline-block; min-width: 18px; text-align: left; height: 23px"></span>
 		<ul id="dataparty" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="party in arrParties" class="dropup-item" data-value="{{party.value}}">
 			<a><span >{{party.display_value|translate}}</span></a>
@@ -89,7 +127,7 @@ form[name="contractForm"] {
 	<input class="m0 inline" type="text" id="feed_name" name="feed_name" valid-feed-name="{{contract.oracle_address}}" ng-attr-placeholder="{{oracles[contract.oracle_address].feedname_placeholder || 'e.g. BTC_USD'}}" ng-model="contract.feed_name" maxlength="64" required style="width: 177px;">
 	<br>
 	<span translate class="p10l">with expected value</span>
-	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 22px"></span>
+	<span selectable="#relation" dropdown-toggle="#relation" data-model="contract" data-prop="relation" style="padding: 0 5px; display: inline-block; width: 30px; text-align: center; height: 24px"></span>
 		<ul id="relation" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="relation in arrRelations" class="dropup-item" data-value="{{relation}}">
 			<a><span >{{relation}}</span></a>

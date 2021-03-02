@@ -51,6 +51,12 @@ input {
   display: flex;
 }
 
+#history.history .flex_container 
+{
+  display: flex;
+  justify-content: space-between;
+}
+
 .ml_auto {
   margin-left: auto;
 }
@@ -107,59 +113,85 @@ _:-ms-fullscreen, :root .main {
 .tab-bar {
   background: #FFFFFF;
   z-index: 5;
-  border-bottom: 1px solid #E9E9EC;
+  position: initial;
+  border-bottom: 1px solid #ECECEC;
 }
 
 .tab-bar h1 {
   color: #7A8C9E;
   font-weight: 500;
+  display: flex;
   font-size: 14px;
-  display: inline-block;
+  line-height: 45px;
+  align-items: center;
 }
 
 .tab-bar-section.middle {
   left: 4.7rem;
+  display: flex;
   right: 4.7rem;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
 }
 
 .left-small {
   width: 4.7rem;
-  line-height: 2.95rem;
+/*  line-height: 2.95rem;*/
   border-right: none;
 }
 
 .right-small {
   width: 4.7rem;
   text-align: right;
-  line-height: 2.7rem;
+/*  line-height: 2.7rem;*/
   border-left: none;
 }
 
 .tab-bar .icon-back {
   font-size: 2.5rem;
-  position: absolute;
   line-height: 50px;
-  left: -5px;
-  color: #5478B3;
-  height: 45px;
-  top: 0px;
+  width: 5px;
+  margin-left: -6px;
+  color: #656565 !important;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  transition: all .3s;
+}
+
+.tab-bar .icon-back:hover,
+.tab-bar .icon-back:hover ~ .text-back {
+  color: #1560BD;
 }
 
 .tab-bar .text-back {
   margin-left: 26px;
   font-size: 0.9rem;
   font-weight: 400;
-  color: #5478B3;
+  color: #656565 !important;
   padding: 10px 0;
+  display: flex;
+  height: 45px;
+  align-items: center;
   visibility: middle;
+  transition: all .3s;
 }
 
 .tab-bar .text-close {
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 49px;
-  color: #5478B3;
+/*  line-height: 49px;*/
+  color: #656565;
+  height: 45px;
+  display: flex;
+  align-items: center;
   font-weight: 500;
+  transition: all .3s;
+}
+
+.tab-bar .text-close:hover {
+  color: #1560BD;
 }
 
 .bottom-bar {
@@ -237,7 +269,7 @@ _:-ms-fullscreen, :root .main {
   color: #FFF;
   font-weight: 700;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .walletHome .wallet-info {
@@ -323,6 +355,15 @@ ul.copayer-list img {
 
 .right-small a, .left-small a {
   color: #A5B2BF;
+  height: 45px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.right-small a {
+  justify-content: flex-end;
 }
 
 a.missing-copayers {
@@ -382,7 +423,10 @@ a.missing-copayers {
   float: left;
   width: 35px;
   height: 35px;
-  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
   padding: 2px;
 }
 
@@ -420,7 +464,7 @@ a.missing-copayers {
 
 .modal-content ul li .external-link, .modal-content ul li .external-link a, .modal-content ul li a.blue-link {
   font-size: 14px;
-  color: #3498DB;
+  color: #1560BD;
 }
 
 .modal-content ul li a.removeAddressbook {
@@ -850,7 +894,7 @@ textarea:focus
 }
 
 .tab-view#chat {
-  background: #D9E9FE;
+  background: #f0f4f9;
 }
 
 .tab-view#chat .line-b {
@@ -859,19 +903,18 @@ textarea:focus
   border-radius: 6px;
   background: #FFFFFF;
   margin-bottom: 6px;
-  transition: all 0.2s;
   margin-left: 8px;
   margin-right: 8px;
 }
 
 .tab-view#chat .line-b:hover {
   box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
-  border: 1px solid #ABC2E0;
-  transform: translateY(-3px);
+  border: 1px solid #4A90E2;
 }
 
-.tab-view#chat .line-b:hover .bot_name {
-  color: #002F6D;
+.tab-view#chat .line-b:hover .bot_name,
+.tab-view#chat .line-b:hover .icon-arrow-right3 {
+  color: #1560BD;
 }
 
 
@@ -963,10 +1006,7 @@ textarea:focus
 }
 .f-dropdown li a .check {
 	display: none;
-	position: absolute;
-	top: 50%;
-	right: -5px;
-	margin-top: -10px;
+	margin-left: 10px;
 }
 .f-dropdown li.selected a .check {
 	display: inline;
@@ -1054,4 +1094,20 @@ i.validation-icon {
 }
 .keyboard-open .send-form {
 	padding-bottom: 0px;
+}
+
+.color-round-block {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+li.dropup-item {
+  display: flex;
+  flex-direction: row;
+}
+
+li.dropup-item a {
+  /*width: 100%;*/
 }
