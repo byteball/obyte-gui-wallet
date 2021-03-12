@@ -1465,16 +1465,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	
   this.csvHistory = function() {
 
-	function saveFile(name, data) {
+function saveFile(name, data, filename) {
 	  var chooser = document.querySelector(name);
-	  chooser.addEventListener("change", function(evt) {
+	  chooser.setAttribute("nwsaveas", filename);
+	  var fileSaveChange = function(evt) {
 		var fs = require('fs');
-		fs.writeFile(this.value, data, function(err) {
+		fs.writeFile(evt.target.value, data, function(err) {
 		  if (err) {
 			$log.debug(err);
 		  }
+		  evt.target.removeEventListener("change", fileSaveChange, false);
+		  evt.target.value = null;
 		});
-	  }, false);
+	  };
+	  chooser.addEventListener("change", fileSaveChange, false);
 	  chooser.click();
 	}
 
@@ -1505,10 +1509,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	  return str;
 	}
 
-	var step = 6;
-	var unique = {};
-
-
 	if (isCordova) {
 	  $log.info('CSV generation not available in mobile');
 	  return;
@@ -1529,7 +1529,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		  $log.debug('Wallet Transaction History:', txs);
 
 		  var data = txs;
-		  var filename = 'Obyte-' + (self.alias || self.walletName) + '.csv';
+		  var filename = 'Obyte-' + (self.alias || self.walletName) + '-' + (new Date()).getTime() + '.csv';
 		  var csvContent = '';
 
 		  if (!isNode) csvContent = 'data:text/csv;charset=utf-8,';
@@ -1543,19 +1543,20 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			if (it.action == 'moved')
 			  amount = 0;
 
+			_asset = !it.asset || it.asset == 'base' ? 'byte' : it.asset;
 			_amount = (it.action == 'sent' ? '-' : '') + amount;
 			_note = formatString((it.message ? it.message : '') + ' unit: ' + it.unit);
 
 			if (it.action == 'moved')
 			  _note += ' Moved:' + it.amount
 
-			dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',byte,,,,';
+			dataString = formatDate(it.time * 1000) + ',' + formatString(it.addressTo) + ',' + _note + ',' + _amount + ',' + _asset + ',,,,';
 			csvContent += dataString + "\n";
 
 		  });
 
 		  if (isNode) {
-			saveFile('#export_file', csvContent);
+			saveFile('#export_file', csvContent, filename);
 		  } else {
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");
@@ -1564,7 +1565,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			link.click();
 		  }
 		  $timeout(function(){
-			  $rootScope.$apply();
+			$rootScope.$apply();
 		  });
 	  });
 	});
