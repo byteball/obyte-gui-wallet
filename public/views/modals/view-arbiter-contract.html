@@ -214,6 +214,7 @@ form[name="prosaicContractForm"] {
 			<span ng-show="me_is_payer" translate>Releases the funds locked on the contract to the seller and completes the contract.</span>
 			<span ng-show="!me_is_payer" translate>Sends money back to the buyer and completes the contract.</span>
 		</div>
+
 		<div class="large-12 medium-12 small-12 columns center" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal' || confirm_dispute">
 			<span ng-click="confirm_dispute=true" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
 		</div>
@@ -232,6 +233,14 @@ form[name="prosaicContractForm"] {
 		</div>
 		<div class="large-12 medium-12 small-12 columns description m10t" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal'">
 			<span translate>{{ me_is_payer ? 'If the counterparty refuses to fulfil their obligations' : 'If you have completed your work and the counterparty refuses to release the funds' }}, you can call the arbiter {{arbiter_name}} to resolve dispute. This reveals the contract text to the arbiter who will ask you to pay a fee for their services. Be prepared to provide evidence to prove your point. The arbiter will contact the other party to hear their point of view and evidence. The arbitration process might take a long time.</span>
+		</div>
+	</div>
+
+	<div class="row columns m20t" ng-show="isPrivate && status === 'completed' && !me_is_payer && !funds_claimed">
+		<div class="large-12 medium-12 small-12 columns center">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="claimAfterComplete()">
+				<i class="yes_icon"></i> <span class="tu" translate>Claim Funds</span>
+			</button>
 		</div>
 	</div>
 

@@ -134,7 +134,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var url_regexp = /\bhttps?:\/\/[\w+&@#/%?=~|!:,.;-]+[\w+&@#/%=~|-]/g;
 
 	function paymentDropdown(address) {
-		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li><li><a ng-click="offerArbiterContract(\''+address+'\')">'+gettext('Offer arbiter contract')+'</a></li></ul>';
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li><li><a ng-click="offerArbiterContract(\''+address+'\')">'+gettext('Offer contract with arbitration')+'</a></li></ul>';
 	}
 
 	function highlightActions(text, arrMyAddresses){
@@ -872,8 +872,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
+	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, type){
+		if (type=="watched")
+			return;
+		var title = type=="shared" ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
 		device.readCorrespondent(peer_address, function(correspondent){
