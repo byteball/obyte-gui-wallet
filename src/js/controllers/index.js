@@ -884,7 +884,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.onGoingProcess[processName] = isOn;
 
     var name;
-    self.anyOnGoingProcess = lodash.any(self.onGoingProcess, function(isOn, processName) {
+    self.anyOnGoingProcess = lodash.some(self.onGoingProcess, function(isOn, processName) {
       if (isOn)
         name = name || processName;
       return isOn;
