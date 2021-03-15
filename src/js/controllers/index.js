@@ -732,7 +732,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												if (!rows.length)
 													return cb();
 												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													if (objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.shared_address])
+													if (assocAmountByAssetAndAddress[objContract.asset] && objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.shared_address])
 														return cb(objContract);
 													cb();
 												});
@@ -763,7 +763,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 													 WHERE my_address=? AND status='completed' AND wac.asset=?", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
 											if (rows.length) {
 												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													if (objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.my_address])
+													if (assocAmountByAssetAndAddress[objContract.asset] && objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.my_address])
 														cb(objContract);
 													else {
 														cb();
