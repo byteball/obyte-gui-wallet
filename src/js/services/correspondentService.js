@@ -1256,20 +1256,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.claim = function() {
 						var claim = function() {
 							profileService.bKeepUnlocked = true;
-							var cosigners = [];
-							$scope.index.copayers.forEach(function(copayer) {
-								if (profileService.focusedClient.credentials.n > profileService.focusedClient.credentials.m) { // only selected
-									if (copayer.signs) cosigners.push(copayer.device_address);
-								} else {
-									cosigners.push(copayer.device_address); // all my cosigners (2-of-2)
-								}
-							});
 							var opts = {
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
 								amount: objContract.amount,
-								arrSigningDeviceAddresses: cosigners
+								arrSigningDeviceAddresses: getSigningDeviceAddresses(profileService.focusedClient)
 							};
 							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 								profileService.bKeepUnlocked = false;
