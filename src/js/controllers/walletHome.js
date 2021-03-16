@@ -2523,6 +2523,30 @@ angular.module('copayApp.controllers')
 				$scope.exchangeRates = network.exchangeRates;
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
+				var storage = require('ocore/storage.js');
+				storage.readUnit(btx.unit, function (objUnit) {
+					if (!objUnit)
+						throw Error("unit " + btx.unit + " not found");
+					var dataMessage = objUnit.messages.find(m => m.app === 'data');
+					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
+					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
+					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
+					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					if (dataMessage)
+						btx.dataJson = JSON.stringify(dataMessage.payload, null, 2);
+					if (dataFeedMessage)
+						btx.dataFeedJson = JSON.stringify(dataFeedMessage.payload, null, 2);
+					if (attestationMessage)
+						btx.attestationJson = JSON.stringify(attestationMessage.payload, null, 2);
+					if (profileMessage)
+						btx.profileJson = JSON.stringify(profileMessage.payload, null, 2);
+					if (definitionMessage)
+						btx.aaDefinitionJson = JSON.stringify(definitionMessage.payload).substr(0, 200) + '...';
+					$timeout(function () {
+						$scope.$apply();
+					});
+				});
+
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
 						var indivisible_asset = require('ocore/indivisible_asset');

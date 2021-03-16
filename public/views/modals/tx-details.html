@@ -110,7 +110,27 @@
     </li>
     <li class="line-b p10 row collapse">
       <div class="text-gray small-2 columns"><span>ID</span>:</div>
-      <div class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.unit)" class=" ">{{btx.unit}}</a></div>
+      <div class="right small-10 columns text-right enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.unit)" class=" ">{{btx.unit}}</a></div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.dataJson">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Data</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.dataJson}}</div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.dataFeedJson">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Data feed</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.dataFeedJson}}</div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.attestationJson">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Attestation</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.attestationJson}}</div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.profileJson">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Profile</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.profileJson}}</div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.aaDefinitionJson">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span donttranslate>AA def</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.aaDefinitionJson}}</div>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
       <span class="text-gray" translate>Note</span>:
