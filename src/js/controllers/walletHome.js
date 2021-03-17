@@ -2541,7 +2541,7 @@ angular.module('copayApp.controllers')
 					if (profileMessage)
 						btx.profileJson = JSON.stringify(profileMessage.payload, null, 2);
 					if (definitionMessage)
-						btx.aaDefinitionJson = JSON.stringify(definitionMessage.payload).substr(0, 200) + '...';
+						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
 					$timeout(function () {
 						$scope.$apply();
 					});
