@@ -393,7 +393,7 @@ angular.module('copayApp.controllers')
 
 				var walletGeneral = require('ocore/wallet_general.js');
 				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-				walletGeneral.readMyAddresses(function(arrMyAddresses) {
+				walletGeneral.readMyPersonalAndSharedAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
 						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
 							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress, true);
@@ -2522,6 +2522,30 @@ angular.module('copayApp.controllers')
 				$scope.n = fc.credentials.n;
 				$scope.exchangeRates = network.exchangeRates;
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
+
+				var storage = require('ocore/storage.js');
+				storage.readUnit(btx.unit, function (objUnit) {
+					if (!objUnit)
+						throw Error("unit " + btx.unit + " not found");
+					var dataMessage = objUnit.messages.find(m => m.app === 'data');
+					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
+					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
+					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
+					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					if (dataMessage)
+						btx.dataJson = JSON.stringify(dataMessage.payload, null, 2);
+					if (dataFeedMessage)
+						btx.dataFeedJson = JSON.stringify(dataFeedMessage.payload, null, 2);
+					if (attestationMessage)
+						btx.attestationJson = JSON.stringify(attestationMessage.payload, null, 2);
+					if (profileMessage)
+						btx.profileJson = JSON.stringify(profileMessage.payload, null, 2);
+					if (definitionMessage)
+						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
+					$timeout(function () {
+						$scope.$apply();
+					});
+				});
 
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {

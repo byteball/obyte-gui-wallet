@@ -19,7 +19,7 @@
     "fastclick": "1",
     "foundation": "5",
     "foundation-icon-fonts": "*",
-    "ng-lodash": "0.2",
+    "ng-lodash": "0.5",
     "qrcode-decoder-js": "*",
     "angular-elastic": "2",
     "ui-router-extras": "0.1",
