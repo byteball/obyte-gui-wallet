@@ -64,6 +64,13 @@ form[name="prosaicContractForm"] {
 	display: inline-block;
 	width: 100%;
 }
+.contractTitle {
+	font-weight: 700;
+	font-size: 32px;
+}
+.contractTitle::first-letter {
+	text-transform: uppercase;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -80,6 +87,9 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
+	<h1 class="contractTitle" translate>{{title}}</h1>
+
+
 	<h3><span translate>Status</span>: <b>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{me_is_winner ? "in your favor" : "in favor of your peer"}}</span></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
@@ -113,7 +123,6 @@ form[name="prosaicContractForm"] {
 	<h3 class="title" translate>Amount</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
 
-	<h3 class="title" translate>Title of contract</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{title}}</span>
 
 	<h3 class="title" translate>Text</h3>
@@ -147,7 +156,7 @@ form[name="prosaicContractForm"] {
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 
-	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'signed' && !!me_is_payer) || (status === 'dispute_resolved' && me_is_winner))">
+	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'signed' && !!me_is_payer) || (status === 'dispute_resolved' && me_is_winner) || (isPrivate && ((status === 'completed' && !me_is_payer) || (status === 'cancelled' && me_is_payer)) && !funds_claimed))">
 		<span class="title" translate>Cosigners</span>
 		<div class="row columns large-12 medium-12">
 			<cosigners></cosigners>

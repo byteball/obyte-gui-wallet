@@ -1168,7 +1168,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										cosigners.push(copayer.device_address);
 								});
 							} else {
-								cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);	
+								cosigners = getSigningDeviceAddresses(profileService.focusedClient);	
 							}
 						}
 
@@ -1254,7 +1254,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 											cosigners.push(copayer.device_address);
 									});
 								} else {
-									cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);	
+									cosigners = getSigningDeviceAddresses(profileService.focusedClient);	
 								}
 							}
 
