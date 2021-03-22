@@ -236,7 +236,7 @@ form[name="prosaicContractForm"] {
 		</div>
 	</div>
 
-	<div class="row columns m20t" ng-show="isPrivate && status === 'completed' && !me_is_payer && !funds_claimed">
+	<div class="row columns m20t" ng-show="isPrivate && ((status === 'completed' && !me_is_payer) || (status === 'cancelled' && me_is_payer)) && !funds_claimed">
 		<div class="large-12 medium-12 small-12 columns center">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="claimAfterComplete()">
 				<i class="yes_icon"></i> <span class="tu" translate>Claim Funds</span>

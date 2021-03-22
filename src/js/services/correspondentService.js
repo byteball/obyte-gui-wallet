@@ -218,7 +218,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					}
 
 					if (profileService.focusedClient.isPrivKeyEncrypted()) {
-						profileService.unlockFC("Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", function(err) {
+						profileService.unlockFC({message: "Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
 							if (err){
 								showError(err.message);
 								return;
@@ -456,31 +456,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	});
 
-	// listen for arbiter response
-	eventBus.on("saved_unit", function(objJoint) {
-		var objUnit = objJoint.unit;
-		var address = objUnit.authors[0].address;
-		arbiter_contract.getAllByArbiterAddress(address, function(contracts) {
-			contracts.forEach(function(objContract) {
-				if (objContract.status !== "in_dispute")
-					return;
-				var winner = parseWinnerFromUnit(objContract, objUnit);
-				if (!winner) {
-					return;
-				}
-				var unit = objJoint.unit.unit;
-				arbiter_contract.setField(objContract.hash, "resolution_unit", unit);
-				arbiter_contract.setField(objContract.hash, "status", "dispute_resolved", function(objContract) {
-					var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
-					text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
-						(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
-							"You can appeal to arbiter's decision from the contract view.");
-					addContractEventIntoChat(objContract, "event", true, text);
-				});
-			});
-		});
-	});
-
 	eventBus.on("my_transactions_became_stable", function(units) {
 		// arbiter response stabilized
 		db.query("SELECT * FROM wallet_arbiter_contracts WHERE resolution_unit IN (?)", [units], function(rows) {
@@ -522,10 +497,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								if (m.payload[key] != objContract.my_address)
 									return;
 								if (objContract.status === 'paid') {
-									arbiter_contract.setField(contract_hash, 'status', 'completed', function(objContract) {
+									var status = objContract.me_is_payer ? 'cancelled' : 'completed';
+									arbiter_contract.setField(contract_hash, 'status', status, function(objContract) {
 										if (objContract.cosigners) {
 											objContract.cosigners.forEach(function(cosigner) {
-												device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash": objContract.hash, "status": "completed"});
+												device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash": objContract.hash, "status": objContract.status});
 											});
 										}
 										addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\You can now claim your funds from the contract.');
@@ -1169,7 +1145,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.claimAfterComplete = function() {
-						if (objContract.status !== "completed" && objContract.status !== "in_dispute")
+						if (!(objContract.status === "completed" || objContract.status === "in_dispute" || objContract.status === "cancelled"))
 							return setError("contract can't be claimed");
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
@@ -1183,12 +1159,25 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						}
 						profileService.bKeepUnlocked = true;
 
+						var cosigners = [device.getMyDeviceAddress()];
+						if (profileService.focusedClient.credentials.m > 1) {
+							// we should name all our cosigners, ptherwise we will ask sign requests from contract peer
+							if (profileService.focusedClient.credentials.n == profileService.focusedClient.credentials.m) {
+								$scope.index.copayers.forEach(function(copayer) {
+									if (!copayer.me)
+										cosigners.push(copayer.device_address);
+								});
+							} else {
+								cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);	
+							}
+						}
+
 						profileService.focusedClient.sendMultiPayment({
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
 								amount: objContract.amount,
-								arrSigningDeviceAddresses: [device.getMyDeviceAddress()].concat(objContract.cosigners)
+								arrSigningDeviceAddresses: cosigners
 							}, function(err, unit){
 							// if multisig, it might take very long before the callback is called
 							//self.setOngoingProcess();
@@ -1256,12 +1245,25 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.claim = function() {
 						var claim = function() {
 							profileService.bKeepUnlocked = true;
+							var cosigners = [device.getMyDeviceAddress()];
+							if (profileService.focusedClient.credentials.m > 1) {
+								// we should name all our cosigners, ptherwise we will ask sign requests from contract peer
+								if (profileService.focusedClient.credentials.n == profileService.focusedClient.credentials.m) {
+									$scope.index.copayers.forEach(function(copayer) {
+										if (!copayer.me)
+											cosigners.push(copayer.device_address);
+									});
+								} else {
+									cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);	
+								}
+							}
+
 							var opts = {
 								shared_address: objContract.shared_address,
 								asset: objContract.asset,
 								to_address: objContract.my_address,
 								amount: objContract.amount,
-								arrSigningDeviceAddresses: getSigningDeviceAddresses(profileService.focusedClient)
+								arrSigningDeviceAddresses: cosigners
 							};
 							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 								profileService.bKeepUnlocked = false;

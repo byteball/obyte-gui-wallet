@@ -434,51 +434,52 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	// objAddress is local wallet address, top_address is the address that requested the signature, 
 	// it may be different from objAddress if it is a shared address
-	eventBus.on("signing_request", function(objAddress, top_address, objUnit, assocPrivatePayloads, from_address, signing_path){
-		
-		function createAndSendSignature(){
-			var coin = "0";
-			var path = "m/44'/" + coin + "'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
-			console.log("path "+path);
-			// focused client might be different from the wallet this signature is for, but it doesn't matter as we have a single key for all wallets
-			if (profileService.focusedClient.isPrivKeyEncrypted()){
-				console.log("priv key is encrypted, will be back after password request");
-				return profileService.insistUnlockFC(null, function(){
-					createAndSendSignature();
-				});
-			}
-			var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey);
-			var privateKey = xPrivKey.derive(path).privateKey;
-			console.log("priv key:", privateKey);
-			//var privKeyBuf = privateKey.toBuffer();
-			var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47
-			console.log("priv key buf:", privKeyBuf);
-			var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
-			var signature = ecdsaSig.sign(buf_to_sign, privKeyBuf);
-			bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
-			console.log("sent signature "+signature);
-		}
-		
-		function refuseSignature(){
-			var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
-			bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, top_address);
-			console.log("refused signature");
-		}
-		
+	eventBus.on("signing_request", function(objAddress, top_address, objUnit, assocPrivatePayloads, from_address, signing_path){		
 		var bbWallet = require('ocore/wallet.js');
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 		var unit = objUnit.unit;
 		var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
+
 		mutex.lock(["signing_request-"+unit], function(unlock){
+			function createAndSendSignature(){
+				var coin = "0";
+				var path = "m/44'/" + coin + "'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
+				console.log("path "+path);
+				// focused client might be different from the wallet this signature is for, but it doesn't matter as we have a single key for all wallets
+				if (profileService.focusedClient.isPrivKeyEncrypted()){
+					console.log("priv key is encrypted, will be back after password request");
+					return profileService.insistUnlockFC(null, function(){
+						createAndSendSignature();
+					});
+				}
+				var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey);
+				var privateKey = xPrivKey.derive(path).privateKey;
+				console.log("priv key:", privateKey);
+				//var privKeyBuf = privateKey.toBuffer();
+				var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47
+				console.log("priv key buf:", privKeyBuf);
+				var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
+				var signature = ecdsaSig.sign(buf_to_sign, privKeyBuf);
+				bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
+				console.log("sent signature "+signature);
+				unlock();
+			}
+			
+			function refuseSignature(){
+				var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
+				bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), "[refused]", signing_path, top_address);
+				console.log("refused signature");
+				unlock();
+			}
 			
 			// apply the previously obtained decision. 
 			// Unless the priv key is encrypted in which case the password request would have appeared from nowhere
-			if (assocChoicesByUnit[unit] && !profileService.focusedClient.isPrivKeyEncrypted()){
+			if (assocChoicesByUnit[unit]){
 				if (assocChoicesByUnit[unit] === "approve")
 					createAndSendSignature();
 				else if (assocChoicesByUnit[unit] === "refuse")
 					refuseSignature();
-				return unlock();
+				return;
 			}
 			
 			if (objUnit.signed_message){
@@ -486,13 +487,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				requestApproval(question, {
 					ifYes: function(){
 						createAndSendSignature();
-						unlock();
 					},
 					ifNo: function(){
 						// do nothing
 						console.log("===== NO CLICKED");
 						refuseSignature();
-						unlock();
 					}
 				});
 				return;
@@ -574,16 +573,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						var ask = function() {
 							requestApproval(question, {
 								ifYes: function(){
-									createAndSendSignature();
 									assocChoicesByUnit[unit] = "approve";
-									unlock();
+									createAndSendSignature();
 								},
 								ifNo: function(){
 									// do nothing
+									assocChoicesByUnit[unit] = "refuse";
 									console.log("===== NO CLICKED");
 									refuseSignature();
-									assocChoicesByUnit[unit] = "refuse";
-									unlock();
 								}
 							});
 						}
@@ -2008,11 +2005,14 @@ function saveFile(name, data, filename) {
 	  self.showErrorPopup(msg, cb);
   });
 
-  $rootScope.$on('Local/NeedsPassword', function(event, isSetup, error_message, cb) {
+  $rootScope.$on('Local/NeedsPassword', function(event, isSetup, messageObj, cb) {
 	console.log('NeedsPassword');
+	if (!messageObj)
+		messageObj = {message: null, type: null};
 	self.askPassword = {
 		isSetup: isSetup,
-		error: error_message,
+		message: messageObj.message,
+		type: messageObj.type,
 		callback: function(err, pass) {
 			self.askPassword = null;
 			return cb(err, pass);

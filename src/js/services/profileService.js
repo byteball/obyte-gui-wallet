@@ -666,9 +666,9 @@ angular.module('copayApp.services')
       } catch (e) {};
     };
 
-    root.unlockFC = function(error_message, cb) {
+    root.unlockFC = function(messageObj, cb) {
       $log.debug('Wallet is encrypted');
-      $rootScope.$emit('Local/NeedsPassword', false, error_message, function(err2, password) {
+      $rootScope.$emit('Local/NeedsPassword', false, messageObj, function(err2, password) {
         if (err2 || !password) {
           return cb({
             message: (err2 || gettext('Password needed'))
@@ -707,7 +707,7 @@ angular.module('copayApp.services')
     
     // continue to request password until the correct password is entered
     root.insistUnlockFC = function(error_message, cb){
-        root.unlockFC(error_message, function(err){
+        root.unlockFC({message: error_message, type: 'error'}, function(err){
             if (!err)
                 return cb();
             $timeout(function(){
