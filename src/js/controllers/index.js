@@ -755,12 +755,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									var input = payload.inputs[0];
 									async.each(payload.outputs, function(o, cb){
 										db.query("SELECT hash FROM wallet_arbiter_contracts AS wac\n\
-													JOIN outputs ON outputs.address=wac.shared_address AND outputs.unit=? AND outputs.asset=wac.asset AND \n\
+													JOIN outputs ON outputs.address=wac.shared_address AND outputs.unit=? AND (outputs.asset=wac.asset OR (outputs.asset IS NULL AND wac.asset IS NULL)) AND \n\
 														outputs.message_index=? AND outputs.output_index=?\n\
-													 WHERE my_address=? AND status='completed' AND wac.asset=?", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
+													 WHERE my_address=? AND status IN ('completed', 'dispute_resolved', 'cancelled') AND (wac.asset=? OR wac.asset IS NULL)", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
 											if (rows.length) {
 												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													if (assocAmountByAssetAndAddress[objContract.asset] && objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.my_address])
+													var asset = objContract.asset || 'base';
+													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
 														cb(objContract);
 													else {
 														cb();
@@ -782,7 +783,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						}
 						isContractSignRequest(function(isContract, type, objContract){
 							if (isContract) {
-								question = 'Sign '+type+' contract "'+objContract.title+'" from account '+credentials.walletName+'?';
+								if (type === 'prosaic') {
+									question = "Sign prosaic contract ";
+								} else {
+									question = "Sign contract with arbitration ";
+								}
+								question += '"' + objContract.title + '" from account '+credentials.walletName+'?';
 								return ask();
 							}
 							isContractFeeDepositRequest(function(isContract, objContract){
