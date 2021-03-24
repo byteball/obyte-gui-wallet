@@ -781,6 +781,45 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								}
 							);
 						}
+						function isContractReleaseRequest(cb) {
+							async.each(objUnit.messages, 
+								function(message, cb) {
+									if (message.app!="payment")
+										return cb();
+									var payload = message.payload;
+									if (!payload)
+										payload = assocPrivatePayloads[message.payload_hash];
+									if (!payload)
+										return cb();
+									var input = payload.inputs[0];
+									async.each(payload.outputs, function(o, cb){
+										db.query("SELECT hash FROM wallet_arbiter_contracts AS wac\n\
+													JOIN outputs ON outputs.address=wac.shared_address AND outputs.unit=? AND (outputs.asset=wac.asset OR (outputs.asset IS NULL AND wac.asset IS NULL)) AND \n\
+														outputs.message_index=? AND outputs.output_index=?\n\
+													 WHERE peer_address=? AND status IN ('paid', 'in_dispute') AND (wac.asset=? OR wac.asset IS NULL)", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
+											if (rows.length) {
+												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+													var asset = objContract.asset || 'base';
+													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
+														cb(objContract);
+													else {
+														cb();
+													}
+												});
+											} else {
+												cb();
+											}
+										});
+									}, cb);
+								},
+								function(objContract) {
+									if (objContract) {
+										return cb(true, objContract);
+									}
+									cb(false);
+								}
+							);
+						}
 						isContractSignRequest(function(isContract, type, objContract){
 							if (isContract) {
 								if (type === 'prosaic') {
@@ -806,7 +845,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											question = 'Approve funds claim from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
 											return ask();
 										}
-										ask();
+										isContractReleaseRequest(function(isContract, objContract){
+											if (isContract) {
+												question = 'Approve funds release from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
+												return ask();
+											}
+											ask();
+										});
 									});
 								});
 							});
