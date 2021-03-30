@@ -90,7 +90,7 @@ form[name="prosaicContractForm"] {
 	<h1 class="contractTitle" translate>{{title}}</h1>
 
 
-	<h3><span translate>Status</span>: <b>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{me_is_winner ? "in your favor" : "in favor of your peer"}}</span></h3>
+	<h3><span translate>Status</span>: <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
 	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
@@ -117,7 +117,7 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Arbiter</h3>
 		<div class="name p10l">
 			<span class="person_name" ng-if="arbiter_name">{{arbiter_name}}</span>
-			<div class="attestor"><span translate>address</span>: <a ng-href="{{arbstore_address}}/arbiter/{{arbiter_address}}" ng-click="openLink($event.target.getAttribute('href'))">{{arbiter_address}}</a></div>
+			<div class="attestor"><span translate>address</span>: <a ng-href="{{arbstore_url}}/arbiter/{{arbiter_address}}" ng-click="openLink($event.target.getAttribute('href'));$event.preventDefault()">{{arbiter_address}}</a></div>
 		</div>
 
 	<h3 class="title" translate>Amount</h3>
@@ -127,15 +127,15 @@ form[name="prosaicContractForm"] {
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap; line-height: 30px;" >Peer contacts: {{peer_contact_info}}</span><br>
-	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" >My contacts: {{my_contact_info}}</span>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap; line-height: 30px;" translate>Peer contacts:</span><span> {{peer_contact_info}}</span><br>
+	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" translate>My contacts:</span><span> {{my_contact_info}}</span>
 	<div ng-if="!my_contact_info && status == 'pending' && isIncoming">
-		My contacts: 
+		<span translate>My contacts:</span>
 		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.my_contact_info" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
-		<div class="help-text">It will be shared with peer and arbiter as a backup method to reach you.</div>
+		<div class="help-text" translate>It will be shared with peer and arbiter as a backup method to reach you.</div>
 	</div>
 
-	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'signed' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check">expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'signed' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check" translate>expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
@@ -163,7 +163,7 @@ form[name="prosaicContractForm"] {
 
 	<div ng-if="error" class="row columns m20b">
 			<span class="has-error size-12">
-			{{error}}
+			{{error|translate}}
 		</span>
 	</div>
 
