@@ -705,13 +705,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										prosaic_contract.getByHash(rows[0].hash, function(objContract) {
 											if (!objContract)
 												return cb2();
-											cb(true, objContract);
+											cb2(true, objContract);
 										});
 									}, function(cb2) {
 										arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-											cb(true, objContract);
+											if (!objContract)
+												return cb2();
+											cb2(true, objContract);
 										});
-									}]);
+									}], cb);
 								} else
 									cb(true);
 							});
@@ -742,7 +744,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								}
 							);
 						}
-						function isContractClaimRequest(cb) {
+						function isContractClaimOrReleaseRequest(cb) {
 							async.each(objUnit.messages, 
 								function(message, cb) {
 									if (message.app!="payment")
@@ -752,69 +754,26 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										payload = assocPrivatePayloads[message.payload_hash];
 									if (!payload)
 										return cb();
-									var input = payload.inputs[0];
-									async.each(payload.outputs, function(o, cb){
-										db.query("SELECT hash FROM wallet_arbiter_contracts AS wac\n\
-													JOIN outputs ON outputs.address=wac.shared_address AND outputs.unit=? AND (outputs.asset=wac.asset OR (outputs.asset IS NULL AND wac.asset IS NULL)) AND \n\
-														outputs.message_index=? AND outputs.output_index=?\n\
-													 WHERE my_address=? AND status IN ('completed', 'dispute_resolved', 'cancelled') AND (wac.asset=? OR wac.asset IS NULL)", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
-											if (rows.length) {
-												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													var asset = objContract.asset || 'base';
-													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
-														cb(objContract);
-													else {
-														cb();
-													}
-												});
-											} else {
-												cb();
-											}
-										});
-									}, cb);
+									db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=?", [objUnit.authors[0].address], function(rows) {
+										if (rows.length) {
+											arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+												var asset = objContract.asset || 'base';
+												if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
+													cb({objContract: objContract, isClaim: true});
+												else if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
+													cb({objContract: objContract, isClaim: false});
+												else {
+													cb();
+												}
+											});
+										} else {
+											cb();
+										}
+									});
 								},
-								function(objContract) {
-									if (objContract) {
-										return cb(true, objContract);
-									}
-									cb(false);
-								}
-							);
-						}
-						function isContractReleaseRequest(cb) {
-							async.each(objUnit.messages, 
-								function(message, cb) {
-									if (message.app!="payment")
-										return cb();
-									var payload = message.payload;
-									if (!payload)
-										payload = assocPrivatePayloads[message.payload_hash];
-									if (!payload)
-										return cb();
-									var input = payload.inputs[0];
-									async.each(payload.outputs, function(o, cb){
-										db.query("SELECT hash FROM wallet_arbiter_contracts AS wac\n\
-													JOIN outputs ON outputs.address=wac.shared_address AND outputs.unit=? AND (outputs.asset=wac.asset OR (outputs.asset IS NULL AND wac.asset IS NULL)) AND \n\
-														outputs.message_index=? AND outputs.output_index=?\n\
-													 WHERE peer_address=? AND status IN ('paid', 'in_dispute') AND (wac.asset=? OR wac.asset IS NULL)", [input.unit, input.message_index, input.output_index, o.address, payload.asset], function(rows) {
-											if (rows.length) {
-												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													var asset = objContract.asset || 'base';
-													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
-														cb(objContract);
-													else {
-														cb();
-													}
-												});
-											} else {
-												cb();
-											}
-										});
-									}, cb);
-								},
-								function(objContract) {
-									if (objContract) {
-										return cb(true, objContract);
+								function(result) {
+									if (result) {
+										return cb(true, result.objContract, result.isClaim);
 									}
 									cb(false);
 								}
@@ -840,18 +799,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										question = 'Approve contract '+(objContract ? '"' + objContract.title + '" ' : '')+'deposit from account '+credentials.walletName+'?';
 										return ask();
 									}
-									isContractClaimRequest(function(isContract, objContract){
+									isContractClaimOrReleaseRequest(function(isContract, objContract, isClaim){
 										if (isContract) {
-											question = 'Approve funds claim from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
+											question = 'Approve funds ' + (isClaim ? 'claim' : 'release') + ' from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
 											return ask();
 										}
-										isContractReleaseRequest(function(isContract, objContract){
-											if (isContract) {
-												question = 'Approve funds release from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
-												return ask();
-											}
-											ask();
-										});
+										ask();
 									});
 								});
 							});
