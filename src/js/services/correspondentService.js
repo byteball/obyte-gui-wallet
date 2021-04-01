@@ -430,6 +430,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		if (field === 'status' && value === 'in_appeal') {
 			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
 		}
+		if (field === 'status' && (value === 'appeal_resolved' || value === 'appeal_declined')) {
+			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_resolved' ? 'resolved' : 'declined')+ " your appeal.");	
+		}
 	});
 
 	// listen for arbiter response
@@ -1342,20 +1345,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							if (err) {
-								setError(err);
-								return;
-							}
-							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-								addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for him to get online and pair with both contract parties.");
-								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
-									hash: objContract.hash,
-									field: "status",
-									value: "in_appeal"
-								});
-
-								$modalInstance.dismiss();
-							});	
+							addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for him to get online and pair with both contract parties.");
+							$modalInstance.dismiss();
 						});
 					}
 
