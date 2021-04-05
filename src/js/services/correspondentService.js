@@ -431,7 +431,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
 		}
 		if (field === 'status' && (value === 'appeal_approved' || value === 'appeal_declined')) {
-			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'resolved' : 'declined')+ " your appeal.");	
+			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal.");	
 		}
 	});
 
