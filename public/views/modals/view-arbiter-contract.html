@@ -5,7 +5,7 @@
 .p20l {
 	padding-left: 20px;	
 }
-.attestor {
+.address {
 	clear: both;
 	font-size: 11px;
 }
@@ -98,8 +98,8 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Me</h3>
 		<div class="name p10l">
 			<span class="person_name">{{my_name}}</span>
-			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
-			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
+			<div class="address" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="address"><span translate>address</span>: {{my_address}}</div>
 			<li class="tumbler m15t">
 				<span translate class="m10r side" ng-class="{active: !me_is_payer}">Seller</span>
 		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
@@ -111,13 +111,13 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Peer</h3>
 		<div class="name p10l">
 			<span class="person_name">{{peer_name}}</span>
-			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
-			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+			<div class="address" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="address"><span translate>address</span>: {{peer_address}}</div>
 		</div>
 	<h3 class="person title" translate>Arbiter</h3>
 		<div class="name p10l">
 			<span class="person_name" ng-if="arbiter_name">{{arbiter_name}}</span>
-			<div class="attestor"><span translate>address</span>: <a ng-href="{{arbstore_url}}/arbiter/{{arbiter_address}}" ng-click="openLink($event.target.getAttribute('href'));$event.preventDefault()">{{arbiter_address}}</a></div>
+			<div class="address"><span translate>address</span>: <a ng-href="{{arbstore_url}}/arbiter/{{arbiter_address}}" ng-click="openLink($event.target.getAttribute('href'));$event.preventDefault()">{{arbiter_address}}</a></div>
 		</div>
 
 	<h3 class="title" translate>Amount</h3>

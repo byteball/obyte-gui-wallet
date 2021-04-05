@@ -253,7 +253,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+lodash.escape(objContract.hash)+'\')" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			params[++param_index] = objContract.hash;
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
 			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
 				return null;
@@ -263,8 +264,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			}
 			catch(e){
 				return '[invalid dispute request]';
-			}	
-			return toDelayedReplacement('<a ng-click="showDisputeRequest(\''+disputeJsonBase64+'\')" class="prosaic_contract_offer">Dispute request for contract "'+lodash.escape(objDispute.contract_content.title)+'" on ' + lodash.escape(objDispute.contract_content.creation_date) + ' [' + lodash.escape(objDispute.contract_hash.substr(0, 8)) + '...]</a><br><br><a ng-click="suggestCommand(\''+lodash.escape(objDispute.contract_hash)+' 10000 [Contract '+lodash.escape('"' + objDispute.contract_content.title + '"')+': optional comment]\')" class="suggest-command">Set my service fee for this contract with a comment, format:\nCONTRACT_HASH AMOUNT_IN_BYTES [COMMENT_FOR_PLAINTIFF]</a>');
+			}
+			params[++param_index] = disputeJsonBase64;
+			params[++param_index] = objDispute.contract_hash+' 10000 [Contract '+'"' + objDispute.contract_content.title + '"'+': optional comment]';
+			return toDelayedReplacement('<a ng-click="showDisputeRequest(messageEvent.message.params[' + (param_index-1) + '])" class="prosaic_contract_offer">Dispute request for contract "'+escapeHtml(objDispute.contract_content.title)+'" on ' + escapeHtml(objDispute.contract_content.creation_date) + ' [' + escapeHtml(objDispute.contract_hash.substr(0, 8)) + '...]</a><br><br><a ng-click="suggestCommand(messageEvent.message.params[' + param_index + '])" class="suggest-command">Set my service fee for this contract with a comment, format:\nCONTRACT_HASH AMOUNT_IN_BYTES [COMMENT_FOR_PLAINTIFF]</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -495,7 +498,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
 				return '[invalid contract]';
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(\''+lodash.escape(objContract.hash)+'\')" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			params[++param_index] = objContract.hash;
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);

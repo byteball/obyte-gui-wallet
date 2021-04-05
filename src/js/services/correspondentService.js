@@ -430,8 +430,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		if (field === 'status' && value === 'in_appeal') {
 			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
 		}
-		if (field === 'status' && (value === 'appeal_resolved' || value === 'appeal_declined')) {
-			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_resolved' ? 'resolved' : 'declined')+ " your appeal.");	
+		if (field === 'status' && (value === 'appeal_approved' || value === 'appeal_declined')) {
+			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'resolved' : 'declined')+ " your appeal.");	
 		}
 	});
 
@@ -1359,7 +1359,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.openInExplorer = correspondentListService.openInExplorer;
-					$scope.openLink = openLink;
+					$scope.openLink = go.openExternalLink;
 
 					$scope.expandProofBlock = function() {
 						$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
@@ -1608,14 +1608,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			var m = angular.element(document.getElementsByClassName("reveal-modal"));
 			m.addClass(animationService.modalAnimated.slideOutDown);
 		});
-	};
-
-	function openLink(url) {
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
-		else if (isCordova)
-			cordova.InAppBrowser.open(url, '_system');
-		return false;
 	};
 
 	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;

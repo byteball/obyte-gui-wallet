@@ -698,8 +698,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								return cb(false);
 							db.query("SELECT hash FROM prosaic_contracts WHERE prosaic_contracts.shared_address=? AND prosaic_contracts.status='accepted'\n\
 								UNION SELECT hash FROM wallet_arbiter_contracts WHERE wallet_arbiter_contracts.shared_address=? AND wallet_arbiter_contracts.status='accepted'", [possible_contract_output.address, possible_contract_output.address], function(rows) {
-								if (!rows.length)
-									return cb(false);
 								if (rows.length === 1) {
 									async.series([function(cb2) {
 										prosaic_contract.getByHash(rows[0].hash, function(objContract) {
@@ -715,7 +713,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										});
 									}], cb);
 								} else
-									cb(true);
+									cb(false);
 							});
 						}
 						function isContractDepositRequest(cb) {
@@ -754,19 +752,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										payload = assocPrivatePayloads[message.payload_hash];
 									if (!payload)
 										return cb();
-									db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=?", [objUnit.authors[0].address], function(rows) {
-										if (rows.length) {
-											arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-												var asset = objContract.asset || 'base';
-												if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
-													cb({objContract: objContract, isClaim: true});
-												else if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
-													cb({objContract: objContract, isClaim: false});
-												else {
-													cb();
-												}
-											});
-										} else {
+									arbiter_contract.getBySharedAddress(objUnit.authors[0].address, function(objContract) {
+										if (!objContract)
+											return cb();
+										var asset = objContract.asset || 'base';
+										if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
+											cb({objContract: objContract, isClaim: true});
+										else if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
+											cb({objContract: objContract, isClaim: false});
+										else {
 											cb();
 										}
 									});
