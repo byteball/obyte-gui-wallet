@@ -1009,12 +1009,15 @@ angular.module('copayApp.controllers')
 		}
 
 		function checkIfAAAndUpdateResults(address) {
+			self.bEstimatingAAResults = true;
 			readAADefinitionsWithBaseDefinitions(address, function (rows) {
 				self.aa_destinations = rows;
 				if (rows.length > 0) {
 					updateAADocs();
 					return updateAAResults();
 				}
+				else
+					self.bEstimatingAAResults = false;
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -1266,6 +1269,7 @@ angular.module('copayApp.controllers')
 			}
 			console.log("trigger", trigger);
 			self.aa_dry_run_error = null;
+			self.bEstimatingAAResults = true;
 			dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, function (err, arrResponses) {
 				self.aa_dry_run_error = err;
 				var results = [];
@@ -1275,6 +1279,7 @@ angular.module('copayApp.controllers')
 				self.aa_state_changes = state_changes;
 				self.responseVars = responseVars;
 				if (err) {
+					// bEstimatingAAResults stays true
 					return $timeout(function() {
 						$scope.$digest();
 					});
@@ -1344,6 +1349,7 @@ angular.module('copayApp.controllers')
 				});
 				if (results.length === 0 && state_changes.length === 0 && responseVars.length === 0)
 					results.push(gettext("none"));
+				self.bEstimatingAAResults = false;
 				$timeout(function() {
 					$scope.$digest();
 				});
