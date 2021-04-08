@@ -454,7 +454,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
 						(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 							"You can appeal to arbiter's decision from the contract view.");
-					addContractEventIntoChat(objContract, "event", true, text);
+					addContractEventIntoChat(objContract, "event", true, text, winner);
 				});
 			});
 		});
@@ -1360,6 +1360,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					$scope.openInExplorer = correspondentListService.openInExplorer;
 					$scope.openLink = go.openExternalLink;
+					$scope.getContractStatusEmoji = correspondentListService.getContractStatusEmoji;
 
 					$scope.expandProofBlock = function() {
 						$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
@@ -1437,12 +1438,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	};	
 
-	function addContractEventIntoChat(objContract, type, isIncoming, description) {
+	function addContractEventIntoChat(objContract, type, isIncoming, description, winner) {
 		device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
 			arbiter_contract.meIsCosigner(objContract, function(res) {
 				if (!correspondent || res) // we are a cosigner
 					return;
-				var chat_message = "(arbiter-contract-"+type+":" + Buffer.from(JSON.stringify({hash: objContract.hash, title: objContract.title, status: objContract.status}), 'utf8').toString('base64') + ")" + (description ? "\n\n" + description : "");
+				var chat_message = "(arbiter-contract-"+type+":" + Buffer.from(JSON.stringify({hash: objContract.hash, title: objContract.title, status: objContract.status, me_is_winner: (objContract.my_address === winner)}), 'utf8').toString('base64') + ")" + (description ? "\n\n" + description : "");
 				correspondentListService.addMessageEvent(isIncoming, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, type == 'event' ? 'event' : 'text');
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, isIncoming, type == 'event' ? 'event' : 'text');
 			});

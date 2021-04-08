@@ -134,7 +134,38 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var url_regexp = /\bhttps?:\/\/[\w+&@#/%?=~|!:,.;-]+[\w+&@#/%=~|-]/g;
 
 	function paymentDropdown(address) {
-		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li><li><a ng-click="offerArbiterContract(\''+address+'\')">'+gettext('Offer contract with arbitration')+'</a></li></ul>';
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')"><i class="icon-paperplane size-16"></i> '+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')"><i class="svg-icon icon-smart-contract"></i> '+gettext('Offer smart contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')"><i class="svg-icon icon-contract"></i> '+gettext('Offer prosaic contract')+'</a></li><li><a ng-click="offerArbiterContract(\''+address+'\')"><i class="svg-icon icon-scales"></i> '+gettext('Offer contract with arbitration')+'</a></li></ul>';
+	}
+
+	function getContractStatusEmoji(status, me_is_winner) {
+		switch (status) {
+			case "accepted":
+				return "✔️";
+			case "declined":
+				return "✖️";
+			case "cancelled":
+				return "❌";
+			case "signed":
+				return "🖋";
+			case "paid":
+				return "💰";
+			case "in_dispute":
+			case "in_appeal":
+				return "⚖️";
+			case "dispute_resolved":
+				if (me_is_winner)
+					return "⚖️✅";
+				else
+					return "⚖️❌";
+			case "appeal_approved":
+				return "⚖️✅";
+			case "appeal_declined":
+				return "⚖️❌";
+			case "completed":
+				return "✅";
+			default:
+				return "";
+		}
 	}
 
 	function highlightActions(text, arrMyAddresses){
@@ -254,7 +285,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			params[++param_index] = objContract.hash;
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'"><span class="emoji">' + getContractStatusEmoji(objContract.status, objContract.me_is_winner) + '</span> Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+'</a>');
 		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
 			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
 				return null;
@@ -499,7 +530,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			params[++param_index] = objContract.hash;
-			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'">[Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+']</a>');
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'"><span class="emoji">' + getContractStatusEmoji(objContract.status, objContract.me_is_winner) + '</span> Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+'</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -1018,6 +1049,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
 	root.signMessageFromAddress = signMessageFromAddress;
 	root.openInExplorer = openInExplorer;
+	root.getContractStatusEmoji = getContractStatusEmoji;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){

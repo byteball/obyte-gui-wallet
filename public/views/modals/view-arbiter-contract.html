@@ -90,7 +90,7 @@ form[name="prosaicContractForm"] {
 	<h1 class="contractTitle" translate>{{title}}</h1>
 
 
-	<h3><span translate>Status</span>: <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
+	<h3><span translate>Status</span>: <span class="emoji">{{getContractStatusEmoji(status, me_is_winner)}}</span> <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
 	<h3 ng-if="status == 'expired'"><span translate>Expired on</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>

@@ -183,4 +183,18 @@
 .icon-bubble:before {
   content: "\e96b";
 }
-
+.svg-icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+.icon-contract {
+	background: url('../img/contract.svg');
+}
+.icon-smart-contract {
+	background: url('../img/smart-contract.svg');
+}
+.icon-scales {
+	background: url('../img/scales.svg');
+	background-size: contain;
+}
