@@ -175,6 +175,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 		if(isCordova) wallet.showCompleteClient();
 	});
+
+	eventBus.on('alert_error', function(msg){
+		$rootScope.$emit("Local/ShowErrorAlert", msg);
+	});
 	
   function readLastTimestamp(cb) {
 	var db = require('ocore/db.js');

@@ -684,7 +684,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								my_pairing_code: pairing_code,
 								my_contact_info: contactInfo
 							}, function(objContract) {
-								correspondentService.listenForArbiterContractResponse();
 								correspondentService.addContractEventIntoChat(objContract, 'offer', false);
 								$modalInstance.dismiss('sent');
 							});

@@ -202,210 +202,51 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	}
 
-	function listenForArbiterContractResponse() {
+	// arbiter contract response received - accepted or declined
+	eventBus.on("arbiter_contract_response_received", function(contract) {
+		if (contract.status != 'accepted') {
+			return;
+		}
+
 		var showError = function(msg) {
 			$rootScope.$emit("Local/ShowErrorAlert", msg);
-		}
+		};
 
-		var start_listening = function(contracts) {
-			contracts.forEach(function(contract){
-				console.log("listening for arbiter contract response " + contract.hash);
-
-				// sendUnit can be called multiple times, as we now allow "accepting" the same contract multiple times in case previous tries fail
-				var sendUnit = function(contract){
-					if (contract.status != 'accepted') {
-						return;
-					}
-
-					if (profileService.focusedClient.isPrivKeyEncrypted()) {
-						profileService.unlockFC({message: "Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
-							if (err){
-								showError(err.message);
-								return;
-							}
-							sendUnit(contract);
-						});
-						return;
-					}
-					profileService.requestTouchid(function(err) {
-						if (err) {
-							profileService.lockFC();
-							showError(err);
-							return;
-						}
-						var chat_message = "(arbiter-contract-event:" + Buffer.from(JSON.stringify({hash: contract.hash, title: contract.title, status: contract.status}), 'utf8').toString('base64') + ")";
-						correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, 'event');
-						device.readCorrespondent(contract.peer_device_address, function(correspondent) {
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(contract.peer_device_address, chat_message, 1, "event");
-						});
-						
-						db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [contract.asset], function(rows){
-						    var arrDefinition =
-							["or", [
-								["and", [
-									["address", contract.my_address],
-									["address", contract.peer_address]
-								]],
-								[], // placeholders [1][1]
-								[],	// placeholders [1][2]
-								["and", [
-							        ["address", contract.my_address],
-							        ["in data feed", [[contract.arbiter_address], "CONTRACT_" + contract.hash, "=", contract.my_address]]
-							    ]],
-							    ["and", [
-							        ["address", contract.peer_address],
-							        ["in data feed", [[contract.arbiter_address], "CONTRACT_" + contract.hash, "=", contract.peer_address]]
-							    ]]
-							]];
-							var isPrivate = rows.length > 0;
-							if (isPrivate) { // private asset
-								arrDefinition[1][1] = ["and", [
-							        ["address", contract.my_address],
-							        ["in data feed", [[contract.peer_address], "CONTRACT_DONE_" + contract.hash, "=", contract.my_address]]
-							    ]];
-							    arrDefinition[1][2] = ["and", [
-							        ["address", contract.peer_address],
-							        ["in data feed", [[contract.my_address], "CONTRACT_DONE_" + contract.hash, "=", contract.peer_address]]
-							    ]];
-							} else {
-								arrDefinition[1][1] = ["and", [
-							        ["address", contract.my_address],
-							        ["has", {
-							            what: "output",
-							            asset: contract.asset || "base", 
-							            amount: contract.amount, 
-							            address: contract.peer_address
-							        }]
-							    ]];
-							    arrDefinition[1][2] = ["and", [
-							        ["address", contract.peer_address],
-							        ["has", {
-							            what: "output",
-							            asset: contract.asset || "base", 
-							            amount: contract.amount, 
-							            address: contract.my_address
-							        }]
-							    ]];
-							}
-							var assocSignersByPath = {
-								"r.0.0": {
-									address: contract.my_address,
-									member_signing_path: "r",
-									device_address: device.getMyDeviceAddress()
-								},
-								"r.0.1": {
-									address: contract.peer_address,
-									member_signing_path: "r",
-									device_address: contract.peer_device_address
-								},
-								"r.1.0": {
-									address: contract.my_address,
-									member_signing_path: "r",
-									device_address: device.getMyDeviceAddress()
-								},
-								"r.2.0": {
-									address: contract.peer_address,
-									member_signing_path: "r",
-									device_address: contract.peer_device_address
-								},
-								"r.3.0": {
-									address: contract.my_address,
-									member_signing_path: "r",
-									device_address: device.getMyDeviceAddress()
-								},
-								"r.4.0": {
-									address: contract.peer_address,
-									member_signing_path: "r",
-									device_address: contract.peer_device_address
-								},
-							};
-							require("ocore/wallet_defined_by_addresses.js").createNewSharedAddress(arrDefinition, assocSignersByPath, {
-								ifError: function(err){
-									showError(err);
-								},
-								ifOk: function(shared_address){
-									composeAndSend(shared_address);
-								}
-							});
-						});
-						
-						// create shared address and deposit some bytes to cover fees
-						function composeAndSend(shared_address){
-							
-							// set contract's shared address
-							arbiter_contract.setField(contract.hash, "shared_address", shared_address);
-
-							// share this contract to my cosigners
-							contract.cosigners.forEach(function(cosigner) {
-								arbiter_contract.share(contract.hash, cosigner);
-							});
-
-							profileService.bKeepUnlocked = true;
-
-							// post a unit with contract text hash and send it for signing to correspondent
-							var value = {"contract_text_hash": contract.hash, "arbiter": contract.arbiter_address};
-							var objContractMessage = {
-								app: "data",
-								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-								payload: value
-							};
-
-							profileService.focusedClient.sendMultiPayment({
-								asset: "base",
-								to_address: shared_address,
-								amount: arbiter_contract.CHARGE_AMOUNT,
-								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address, device.getMyDeviceAddress()]) : [],
-								signing_addresses: [shared_address],
-								messages: [objContractMessage]
-							}, function(err, unit) { // can take long if multisig
-								profileService.bKeepUnlocked = false;
-								$rootScope.sentUnit = unit;
-								if (err) {
-									showError(err);
-									return;
-								}
-
-								// set contract's unit field
-								arbiter_contract.setField(contract.hash, "unit", unit);
-								arbiter_contract.setField(contract.hash, "status", "signed", function(contract) {
-									var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + unit;
-									var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
-									var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
-									addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
-
-									// share new contract fields (shared address and unit) to peer & my cosigners
-									contract.cosigners.concat([contract.peer_device_address]).forEach(function(cosigner) {
-										device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
-											hash: contract.hash,
-											field: "shared_address",
-											value: shared_address
-										});
-										device.sendMessageToDevice(cosigner, "arbiter_contract_update", {
-											hash: contract.hash,
-											field: "unit",
-											value: unit
-										});
-									});
-								});
-							});
-						}
-					});
-				};
-				eventBus.on("arbiter_contract_response_received" + contract.hash, function() {
-					arbiter_contract.getByHash(contract.hash, function(objContract) {
-						sendUnit(objContract);
-					})
-				});
+		if (profileService.focusedClient.isPrivKeyEncrypted()) {
+			profileService.unlockFC({message: "Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
+				if (err){
+					showError(err.message);
+					return;
+				}
+				eventBus.emit("arbiter_contract_response_received", contract);
 			});
+			return;
 		}
-		arbiter_contract.getAllByStatus("pending", function(contracts){
-			start_listening(contracts);
+		profileService.requestTouchid(function(err) {
+			if (err) {
+				profileService.lockFC();
+				showError(err);
+				return;
+			}
+			var chat_message = "(arbiter-contract-event:" + Buffer.from(JSON.stringify({hash: contract.hash, title: contract.title, status: contract.status}), 'utf8').toString('base64') + ")";
+			correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, 'event');
+			device.readCorrespondent(contract.peer_device_address, function(correspondent) {
+				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(contract.peer_device_address, chat_message, 1, "event");
+			});
+			
+			profileService.bKeepUnlocked = true;
+			arbiter_contract.createSharedAddressAndPostUnit(contract, profileService.focusedClient, function(err, contract) {
+				profileService.bKeepUnlocked = false;
+				if (err)
+					return showError(err);
+				$rootScope.sentUnit = contract.unit;
+				var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + contract.unit;
+				var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
+				var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+				addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
+			});
 		});
-		arbiter_contract.getAllByStatus("accepted", function(contracts){ // this is for accepted contracts which were not signed (multisig wait failed)
-			start_listening(contracts);
-		});
-	}
+	});
 
 	eventBus.on("arbiter_contract_offer", function(hash) {
 		arbiter_contract.getByHash(hash, function(objContract) {
@@ -1613,7 +1454,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
 	root.listenForProsaicContractResponse = listenForProsaicContractResponse;
-	root.listenForArbiterContractResponse = listenForArbiterContractResponse;
 	root.readLastMainChainIndex = readLastMainChainIndex;
 	root.showProsaicContractOfferModal = showProsaicContractOfferModal;
 	root.showArbiterContractOfferModal = showArbiterContractOfferModal;
@@ -1621,7 +1461,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	root.addContractEventIntoChat = addContractEventIntoChat;
 
 	root.listenForProsaicContractResponse();
-	root.listenForArbiterContractResponse();
 
 	return root;
 });
