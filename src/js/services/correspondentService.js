@@ -204,6 +204,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	// arbiter contract response received - accepted or declined
 	eventBus.on("arbiter_contract_response_received", function(contract) {
+		addContractEventIntoChat(contract, "event", true);
+		
 		if (contract.status != 'accepted') {
 			return;
 		}
@@ -228,11 +230,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				showError(err);
 				return;
 			}
-			var chat_message = "(arbiter-contract-event:" + Buffer.from(JSON.stringify({hash: contract.hash, title: contract.title, status: contract.status}), 'utf8').toString('base64') + ")";
-			correspondentListService.addMessageEvent(true, contract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, 'event');
-			device.readCorrespondent(contract.peer_device_address, function(correspondent) {
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(contract.peer_device_address, chat_message, 1, "event");
-			});
 			
 			profileService.bKeepUnlocked = true;
 			arbiter_contract.createSharedAddressAndPostUnit(contract, profileService.focusedClient, function(err, contract) {
@@ -791,21 +788,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						arbiter_contract.getByHash(objContract.hash, function(objContract){
 							if (objContract.status !== "pending" && objContract.status !== "accepted")
 								return setError("contract status was changed, reopen it");
-							arbiter_contract.setField(objContract.hash, "status", status, function(objContract) {
-								addContractEventIntoChat(objContract, 'event', false);
-
-								// share accepted contract to previously selected cosigners
+							arbiter_contract.respond(objContract, status, signedMessageBase64, require("ocore/wallet.js").getSigner(), function(err, objContract) {
+								if (err)
+									return setError(err);
+								// share accepted contract to previously selected cosigners for them to see human-readable question on sign requests
 								if (status === "accepted") {
 									cosigners.forEach(function(cosigner){
-										arbiter_contract.share(objContract.hash, cosigner);
+										share(objContract.hash, cosigner);
 									});
 								}
-
-								device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
-									var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
-									arbiter_contract.respond(objContract, status, signedMessageBase64, pairing_code, objContract.my_contact_info, require("ocore/wallet.js").getSigner());
-								});
-
+								addContractEventIntoChat(objContract, 'event', false);
 								$timeout(function() {
 									$modalInstance.dismiss(status);
 								});
@@ -821,10 +813,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								if (!copayer.me)
 									cosigners.push(copayer.device_address);
 							});
-						}
-
-						if (cosigners.length) {
-							arbiter_contract.setField(objContract.hash, "cosigners", JSON.stringify(cosigners));
 						}
 
 						if ($scope.form.my_contact_info) {
@@ -847,7 +835,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								return setError("contract status was changed, reopen it");
 
 							arbiter_contract.setField(objContract.hash, "status", "revoked", function(objContract) {
-								device.sendMessageToDevice(correspondentListService.currentCorrespondent.device_address, "arbiter_contract_update", {
+								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
 									hash: objContract.hash,
 									field: "status",
 									value: objContract.status
