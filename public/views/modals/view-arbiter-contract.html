@@ -154,7 +154,7 @@ form[name="prosaicContractForm"] {
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 
-	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'signed' && !!me_is_payer) || (status === 'dispute_resolved' && me_is_winner) || (isPrivate && ((status === 'completed' && !me_is_payer) || (status === 'cancelled' && me_is_payer)) && !funds_claimed))">
+	<div ng-if="index.m < index.n && index.m > 1 && ((status == 'pending' && isIncoming) || (status === 'paid') || (status === 'signed' && !!me_is_payer) || (status === 'dispute_resolved' && me_is_winner) || (isPrivate && !funds_claimed && ((status === 'completed' && !me_is_payer) || (status === 'cancelled' && me_is_payer))))">
 		<span class="title" translate>Cosigners</span>
 		<div class="row columns large-12 medium-12">
 			<cosigners></cosigners>

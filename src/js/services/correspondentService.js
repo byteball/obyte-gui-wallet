@@ -205,7 +205,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	// arbiter contract response received - accepted or declined
 	eventBus.on("arbiter_contract_response_received", function(contract) {
 		addContractEventIntoChat(contract, "event", true);
-		
+
 		if (contract.status != 'accepted') {
 			return;
 		}
@@ -232,7 +232,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			}
 			
 			profileService.bKeepUnlocked = true;
-			arbiter_contract.createSharedAddressAndPostUnit(contract, profileService.focusedClient, function(err, contract) {
+			arbiter_contract.createSharedAddressAndPostUnit(contract.hash, profileService.focusedClient, function(err, contract) {
 				profileService.bKeepUnlocked = false;
 				if (err)
 					return showError(err);
@@ -251,184 +251,50 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		})
 	});
 
-	eventBus.on("arbiter_contract_update", function(objContract, field, value) {
+	eventBus.on("arbiter_contract_update", function(objContract, field, value, unit, winner, isPrivate) {
 		if (field === "unit") {
 			var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + value;
 			var payer_guidance_text = '\n\nNow you can pay to the contract for seller services by opening the contract window.';
 			var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
-		if (field === 'status' && value === 'revoked') {
-			addContractEventIntoChat(objContract, "event", true);	
-		}
-		if (field === 'status' && value === 'in_dispute') {
-			db.query("INSERT "+db.getIgnore()+" INTO my_watched_addresses (address) VALUES (?)", [objContract.arbiter_address]); // listen for arbiter response
-			addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
-		}
-		if (field === 'status' && value === 'in_appeal') {
-			addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
-		}
-		if (field === 'status' && (value === 'appeal_approved' || value === 'appeal_declined')) {
-			addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal.");	
-		}
-	});
-
-	// listen for arbiter response
-	eventBus.on("saved_unit", function(objJoint) {
-		var objUnit = objJoint.unit;
-		var address = objUnit.authors[0].address;
-		arbiter_contract.getAllByArbiterAddress(address, function(contracts) {
-			contracts.forEach(function(objContract) {
-				if (objContract.status !== "in_dispute")
-					return;
-				var winner = parseWinnerFromUnit(objContract, objUnit);
-				if (!winner) {
-					return;
-				}
-				var unit = objJoint.unit.unit;
-				arbiter_contract.setField(objContract.hash, "resolution_unit", unit);
-				arbiter_contract.setField(objContract.hash, "status", "dispute_resolved", function(objContract) {
-					var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
-					text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
-						(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
-							"You can appeal to arbiter's decision from the contract view.");
-					addContractEventIntoChat(objContract, "event", true, text, winner);
-				});
-			});
-		});
-	});
-
-	eventBus.on("my_transactions_became_stable", function(units) {
-		// arbiter response stabilized
-		db.query("SELECT * FROM wallet_arbiter_contracts WHERE resolution_unit IN (?)", [units], function(rows) {
-			rows.forEach(function(objContract) {
-				storage.readUnit(objContract.resolution_unit, function(objUnit) {
-					var winner = parseWinnerFromUnit(objContract, objUnit);
-					if (winner == objContract.my_address)
-						addContractEventIntoChat(objContract, "event", true, "You can now claim your funds from the contract");
-					var count = 0;
-					arbiter_contract.getAllByArbiterAddress(objContract.arbiter_address, function(contracts) {
-						contracts.forEach(function(objContract) {
-							if (objContract.status === "in_dispute")
-								count++;
-						});
-						if (count == 0)
-							wallet_general.removeWatchedAddress(objContract.arbiter_address);
-					});
-				});
-			});
-		})
-
-		// unit with peer funds release for private assets became stable
-		units.forEach(function(unit) {
-			storage.readUnit(unit, function(objUnit) {
-				objUnit.messages.forEach(function(m) {
-					if (m.app !== "data_feed")
-						return;
-					for (var key in m.payload) {
-						var contract_hash_matches = key.match(/CONTRACT_DONE_(.+)/);
-						if (!contract_hash_matches)
-							continue;
-						var contract_hash = contract_hash_matches[1];
-						arbiter_contract.getByHash(contract_hash, function(objContract) {
-							if (!objContract)
-								return;
-							db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
-								if (rows.length == 0)
-									return
-								if (m.payload[key] != objContract.my_address)
-									return;
-								if (objContract.status === 'paid') {
-									var status = objContract.me_is_payer ? 'cancelled' : 'completed';
-									arbiter_contract.setField(contract_hash, 'status', status, function(objContract) {
-										if (objContract.cosigners) {
-											objContract.cosigners.forEach(function(cosigner) {
-												device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash": objContract.hash, "field": "status", "value": objContract.status});
-											});
-										}
-										addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\You can now claim your funds from the contract.');
-
-										var count = 0;
-										arbiter_contract.getAllByPeerAddress(objContract.peer_address, function(contracts) {
-											contracts.forEach(function(objContract) {
-												if (objContract.status === "paid")
-													count++;
-											});
-											if (count == 0)
-												wallet_general.removeWatchedAddress(objContract.peer_address);
-										});
-									});
-								}
-							});
-						});
-					}
-				});
-			});
-		})
-	});
-
-	function parseWinnerFromUnit(contract, objUnit) {
-		if (objUnit.authors[0].address !== contract.arbiter_address) {
-			return;
-		}
-		var key = "CONTRACT_" + contract.hash;
-		var winner;
-		objUnit.messages.forEach(function(message){
-			if (message.app !== "data_feed" || !message.payload || !message.payload[key]) {
-				return;
+		if (field === 'status') {
+			if (value === 'revoked') {
+				addContractEventIntoChat(objContract, "event", true);	
 			}
-			winner = message.payload[key];
-		});
-		if (!winner || (winner !== contract.my_address && winner !== contract.peer_address)) {
-			return;
+			if (value === 'in_dispute') {
+				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
+			}
+			if (value === 'in_appeal') {
+				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
+			}
+			if (value === 'appeal_approved' || value === 'appeal_declined') {
+				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal.");	
+			}
+			if (value === 'paid') {
+				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
+			}
+			if (value === 'cancelled' || value === 'completed') {
+				if (!isPrivate)
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds locked on contract were sent to you.');
+				else
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
+			}
+			if (value === 'dispute_resolved') {
+				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
+				text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
+					(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
+						"You can appeal to arbiter's decision from the contract view.");
+				addContractEventIntoChat(objContract, "event", true, text, winner);
+			}
 		}
-		return winner;
-	}
-
-	// check if its an arbiter_contract deposit
-	var db = require("ocore/db.js");
-	eventBus.on("new_my_transactions", function(arrNewUnits) {
-		// arb contract payment
-		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
-			JOIN outputs ON outputs.address=wallet_arbiter_contracts.shared_address\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND wallet_arbiter_contracts.status='signed'\n\
-			GROUP BY outputs.address\n\
-			HAVING SUM(outputs.amount) >= wallet_arbiter_contracts.amount", [arrNewUnits], function(rows) {
-				rows.forEach(function(row) {
-					arbiter_contract.getByHash(row.hash, function(contract){
-						arbiter_contract.setField(contract.hash, "status", "paid", function(objContract) {
-							addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nYou can start fulfilling your contract obligations.');
-							db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
-								if (rows.length > 0) {
-									db.query("INSERT "+db.getIgnore()+" INTO my_watched_addresses (address) VALUES (?)", [objContract.peer_address]); // listen for peer announce to withdraw funds
-								}
-							});
-						});
-					});
-				});
-		});
-		// arb contract completion (public asset)
-		db.query("SELECT hash, outputs.unit FROM wallet_arbiter_contracts\n\
-			JOIN outputs ON outputs.address=wallet_arbiter_contracts.my_address AND outputs.amount=wallet_arbiter_contracts.amount\n\
-			JOIN inputs ON inputs.address=wallet_arbiter_contracts.shared_address AND inputs.unit=outputs.unit\n\
-			WHERE outputs.unit IN (?) AND outputs.asset IS wallet_arbiter_contracts.asset AND (wallet_arbiter_contracts.status='paid' OR wallet_arbiter_contracts.status='in_dispute')\n\
-			GROUP BY wallet_arbiter_contracts.hash", [arrNewUnits], function(rows) {
-				rows.forEach(function(row) {
-					arbiter_contract.getByHash(row.hash, function(contract){
-						var status = contract.me_is_payer ? "cancelled" : "completed";
-						arbiter_contract.setField(contract.hash, "status", status, function(objContract) {
-							if (objContract.cosigners) {
-								objContract.cosigners.forEach(function(cosigner) {
-									device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash": objContract.hash, "field": "status", "value": status});
-								});
-							}
-							addContractEventIntoChat(objContract, 'event', true, 'Contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + row.unit + '.\n\nFunds locked on contract were sent to you.');	
-						});
-					});
-				});
-		});
+		if (field === 'resolution_unit_stabilized') {
+			addContractEventIntoChat(objContract, "event", true, "You can now claim your funds from the contract", winner);
+		}
 	});
 
+	var db = require("ocore/db.js");
+	
 	function readLastMainChainIndex(cb){
 		if (require("ocore/conf.js").bLight){
 			require("ocore/network.js").requestFromLightVendor("get_last_mci", null, function(ws, request, response){
@@ -721,7 +587,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					}
 					if (objContract.resolution_unit) {
 						storage.readUnit(objContract.resolution_unit, function(objUnit) {
-							$scope.me_is_winner = parseWinnerFromUnit(objContract, objUnit) === objContract.my_address;
+							$scope.me_is_winner = arbiter_contract.parseWinnerFromUnit(objContract, objUnit) === objContract.my_address;
 						});
 					}
 					// hide "claim funds" button if not enough balance on the contract (already claimed)
@@ -782,39 +648,18 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						$scope.loading = false;	
 					};
 
-					var cosigners = [];
 					var respond = function(status, signedMessageBase64) {
-						// read again, as we might already updated contract status by network in background
-						arbiter_contract.getByHash(objContract.hash, function(objContract){
-							if (objContract.status !== "pending" && objContract.status !== "accepted")
-								return setError("contract status was changed, reopen it");
-							arbiter_contract.respond(objContract, status, signedMessageBase64, require("ocore/wallet.js").getSigner(), function(err, objContract) {
-								if (err)
-									return setError(err);
-								// share accepted contract to previously selected cosigners for them to see human-readable question on sign requests
-								if (status === "accepted") {
-									cosigners.forEach(function(cosigner){
-										share(objContract.hash, cosigner);
-									});
-								}
-								addContractEventIntoChat(objContract, 'event', false);
-								$timeout(function() {
-									$modalInstance.dismiss(status);
-								});
+						arbiter_contract.respond(objContract.hash, status, signedMessageBase64, require("ocore/wallet.js").getSigner(), function(err, objContract) {
+							if (err)
+								return setError(err);
+							addContractEventIntoChat(objContract, 'event', false);
+							$timeout(function() {
+								$modalInstance.dismiss(status);
 							});
 						});
 					};
 
 					$scope.accept = function() {
-						// save cosigners here as respond() can be called
-						cosigners = getSigningDeviceAddresses(profileService.focusedClient, true);
-						if (!cosigners.length && profileService.focusedClient.credentials.m > 1) {
-							$scope.index.copayers.forEach(function(copayer) {
-								if (!copayer.me)
-									cosigners.push(copayer.device_address);
-							});
-						}
-
 						if ($scope.form.my_contact_info) {
 							objContract.my_contact_info = $scope.form.my_contact_info;
 							arbiter_contract.setField(objContract.hash, "my_contact_info", $scope.form.my_contact_info);
@@ -829,30 +674,17 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.revoke = function() {
-						// read again, as we might already updated contract status by network in background
-						arbiter_contract.getByHash(objContract.hash, function(objContract){
-							if (objContract.status !== "pending")
-								return setError("contract status was changed, reopen it");
-
-							arbiter_contract.setField(objContract.hash, "status", "revoked", function(objContract) {
-								device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
-									hash: objContract.hash,
-									field: "status",
-									value: objContract.status
-								});
-
-								addContractEventIntoChat(objContract, 'event', false);
-
-								$timeout(function() {
-									$modalInstance.dismiss("revoke");
-								});
+						arbiter_contract.revoke(objContract.hash, function(err, objContract) {
+							if (err)
+								return setError(err);
+							addContractEventIntoChat(objContract, 'event', false);
+							$timeout(function() {
+								$modalInstance.dismiss("revoke");
 							});
 						});
 					};
 
 					$scope.pay = function() {
-						if (!objContract.shared_address || objContract.status !== "signed")
-							return setError("contract can't be paid");
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
@@ -871,40 +703,20 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							var opts = {
-								asset: objContract.asset,
-								to_address: objContract.shared_address,
-								amount: objContract.amount,
-								arrSigningDeviceAddresses: getSigningDeviceAddresses(profileService.focusedClient)
-							};
-							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
-								// if multisig, it might take very long before the callback is called
-								//self.setOngoingProcess();
-								profileService.bKeepUnlocked = false;
-								$rootScope.sentUnit = unit;
-								if (err){
-									if (err.match(/device address/))
-										err = "This is a private asset, please send it only by clicking links from chat";
-									if (err.match(/no funded/))
-										err = "Not enough spendable funds, make sure all your funds are confirmed";
-									return setError(err);
-								}
-								$rootScope.$emit("NewOutgoingTx");
-
-								arbiter_contract.setField(objContract.hash, "status", "paid", function(objContract){
-									if (objContract.cosigners) {
-										objContract.cosigners.forEach(function(cosigner) {
-											device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash":objContract.hash,"field": "status", "value": "paid"});
-										});
+							arbiter_contract.pay(objContract.hash, profileService.focusedClient, getSigningDeviceAddresses(profileService.focusedClient), 
+								function(err, objContract, unit) {
+									profileService.bKeepUnlocked = false;
+									$rootScope.sentUnit = unit;
+									if (err){
+										if (err.match(/device address/))
+											err = "This is a private asset, please send it only by clicking links from chat";
+										if (err.match(/no funded/))
+											err = "Not enough spendable funds, make sure all your funds are confirmed";
+										return setError(err);
 									}
+									$rootScope.$emit("NewOutgoingTx");
 									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
-									// peer will handle payment on his side by his own, checking incoming transactions
 									$modalInstance.dismiss();
-								});
-
-								if ($scope.isPrivate) {
-									db.query("INSERT "+db.getIgnore()+" INTO my_watched_addresses (address) VALUES (?)", [objContract.peer_address]); // listen for peer announce to withdraw funds
-								}
 							});
 						});
 					};
@@ -916,8 +728,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					}
 
 					$scope.complete = function() {
-						if (objContract.status !== "paid" && objContract.status !== "in_dispute")
-							return setError("contract can't be completed");
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
@@ -936,57 +746,21 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							var opts;
-							if ($scope.isPrivate) {
-								var value = {};
-								value["CONTRACT_DONE_" + objContract.hash] = objContract.peer_address;
-								opts = {
-									paying_addresses: [objContract.my_address],
-									signing_addresses: [objContract.my_address],
-									change_address: objContract.my_address,
-									arrSigningDeviceAddresses: [device.getMyDeviceAddress()].concat(objContract.cosigners),
-									messages: [{
-										app: 'data_feed',
-										payload_location: "inline",
-										payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-										payload: value
-									}]
-								};
-							} else {
-								opts = {
-									shared_address: objContract.shared_address,
-									asset: objContract.asset,
-									to_address: objContract.peer_address,
-									amount: objContract.amount,
-									arrSigningDeviceAddresses: [device.getMyDeviceAddress()].concat(objContract.cosigners)
-								};
-							}
-							profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
-								// if multisig, it might take very long before the callback is called
-								//self.setOngoingProcess();
-								profileService.bKeepUnlocked = false;
-								$rootScope.sentUnit = unit;
-								if (err){
-									if (err.match(/device address/))
-										err = "This is a private asset, please send it only by clicking links from chat";
-									if (err.match(/no funded/))
-										err = "Not enough spendable funds, make sure all your funds are confirmed";
-									return setError(err);
-								}
-								$rootScope.$emit("NewOutgoingTx");
-
-								var status = objContract.me_is_payer ? "completed" : "cancelled";
-								arbiter_contract.setField(objContract.hash, "status", status, function(objContract){
-									if (objContract.cosigners) {
-										objContract.cosigners.forEach(function(cosigner) {
-											device.sendMessageToDevice(cosigner, "arbiter_contract_update", {"hash": objContract.hash, "field": "status", "value": status});
-										});
+							
+							arbiter_contract.complete(hash, profileService.focusedClient, getExplicitSigningDeviceAddresses(getSigningDeviceAddresses), 
+								function(err, objContract, unit) {
+									profileService.bKeepUnlocked = false;
+									$rootScope.sentUnit = unit;
+									if (err){
+										if (err.match(/device address/))
+											err = "This is a private asset, please send it only by clicking links from chat";
+										if (err.match(/no funded/))
+											err = "Not enough spendable funds, make sure all your funds are confirmed";
+										return setError(err);
 									}
+									$rootScope.$emit("NewOutgoingTx");
 									addContractEventIntoChat(objContract, 'event', false, 'Contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
-								});
-								
-								// peer will handle completion on his side by his own, checking incoming transactions
-								$modalInstance.dismiss();
+									$modalInstance.dismiss();
 							});
 						});
 					};
@@ -1012,25 +786,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							var cosigners = [device.getMyDeviceAddress()];
-							if (profileService.focusedClient.credentials.m > 1) {
-								// we should name all our cosigners, ptherwise we will ask sign requests from contract peer
-								if (profileService.focusedClient.credentials.n == profileService.focusedClient.credentials.m) {
-									$scope.index.copayers.forEach(function(copayer) {
-										if (!copayer.me)
-											cosigners.push(copayer.device_address);
-									});
-								} else {
-									cosigners = getSigningDeviceAddresses(profileService.focusedClient);	
-								}
-							}
 
 							profileService.focusedClient.sendMultiPayment({
 									shared_address: objContract.shared_address,
 									asset: objContract.asset,
 									to_address: objContract.my_address,
 									amount: objContract.amount,
-									arrSigningDeviceAddresses: cosigners
+									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses)
 								}, function(err, unit){
 								// if multisig, it might take very long before the callback is called
 								//self.setOngoingProcess();
@@ -1056,10 +818,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.dispute = function() {
 						if ($scope.loading)
 							return;
-
-						if (objContract.status !== "paid") {
-							return setError("contract can't be disputed");
-						}
 						if (profileService.focusedClient.isPrivKeyEncrypted()) {
 							profileService.unlockFC(null, function(err) {
 								if (err){
@@ -1080,22 +838,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							}
 							start_loading();
 
-							arbiter_contract.openDispute(objContract.hash, function(err, re, objContract) {
+							arbiter_contract.openDispute(objContract.hash, function(err, resp, objContract) {
 								profileService.bKeepUnlocked = false;
-								if (err) {
-									setError(err);
-									return;
-								}
+								if (err)
+									return setError(err);
 								
 								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
 									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
-									device.sendMessageToDevice(objContract.peer_device_address, "arbiter_contract_update", {
-										hash: objContract.hash,
-										field: "status",
-										value: "in_dispute"
-									});
-									
-									db.query("INSERT "+db.getIgnore()+" INTO my_watched_addresses (address) VALUES (?)", [objContract.arbiter_address]); // listen for arbiter response
 
 									stop_loading();
 									$modalInstance.dismiss();
@@ -1114,25 +863,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									setError(err);
 									return;
 								}
-								var cosigners = [device.getMyDeviceAddress()];
-								if (profileService.focusedClient.credentials.m > 1) {
-									// we should name all our cosigners, ptherwise we will ask sign requests from contract peer
-									if (profileService.focusedClient.credentials.n == profileService.focusedClient.credentials.m) {
-										$scope.index.copayers.forEach(function(copayer) {
-											if (!copayer.me)
-												cosigners.push(copayer.device_address);
-										});
-									} else {
-										cosigners = getSigningDeviceAddresses(profileService.focusedClient);	
-									}
-								}
 
 								var opts = {
 									shared_address: objContract.shared_address,
 									asset: objContract.asset,
 									to_address: objContract.my_address,
 									amount: objContract.amount,
-									arrSigningDeviceAddresses: cosigners
+									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses)
 								};
 								profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 									profileService.bKeepUnlocked = false;
@@ -1165,15 +902,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					}
 
 					$scope.appeal = function() {
-						if (objContract.status !== "dispute_resolved") {
-							return setError("contract can't be appealed");
-						}
-
 						arbiter_contract.appeal(objContract.hash, function(err, res, objContract) {
-							if (err) {
-								setError(err);
-								return;
-							}
+							if (err)
+								return setError(err);
 							addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for him to get online and pair with both contract parties.");
 							$modalInstance.dismiss();
 						});
@@ -1269,14 +1000,28 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function addContractEventIntoChat(objContract, type, isIncoming, description, winner) {
 		device.readCorrespondent(objContract.peer_device_address, function(correspondent) {
-			arbiter_contract.meIsCosigner(objContract, function(res) {
-				if (!correspondent || res) // we are a cosigner
-					return;
-				var chat_message = "(arbiter-contract-"+type+":" + Buffer.from(JSON.stringify({hash: objContract.hash, title: objContract.title, status: objContract.status, me_is_winner: (objContract.my_address === winner)}), 'utf8').toString('base64') + ")" + (description ? "\n\n" + description : "");
-				correspondentListService.addMessageEvent(isIncoming, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, type == 'event' ? 'event' : 'text');
-				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, isIncoming, type == 'event' ? 'event' : 'text');
-			});
+			if (!correspondent || objContract.me_is_cosigner) // we are a cosigner
+				return;
+			var chat_message = "(arbiter-contract-"+type+":" + Buffer.from(JSON.stringify({hash: objContract.hash, title: objContract.title, status: objContract.status, me_is_winner: (objContract.my_address === winner)}), 'utf8').toString('base64') + ")" + (description ? "\n\n" + description : "");
+			correspondentListService.addMessageEvent(isIncoming, objContract.peer_device_address, correspondentListService.formatOutgoingMessage(chat_message), null, false, type == 'event' ? 'event' : 'text');
+			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, isIncoming, type == 'event' ? 'event' : 'text');
 		});
+	}
+
+	function getExplicitSigningDeviceAddresses(getSigningDeviceAddresses) {
+		var cosigners = [device.getMyDeviceAddress()];
+		if (profileService.focusedClient.credentials.m > 1) {
+			// we should name all our cosigners, ptherwise we will ask sign requests from contract peer
+			if (profileService.focusedClient.credentials.n == profileService.focusedClient.credentials.m) {
+				$scope.index.copayers.forEach(function(copayer) {
+					if (!copayer.me)
+						cosigners.push(copayer.device_address);
+				});
+			} else {
+				cosigners = getSigningDeviceAddresses(profileService.focusedClient);	
+			}
+		}
+		return cosigners;
 	}
 
 	function showDisputeRequestModal($scope, disputeJsonBase64){
@@ -1368,7 +1113,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							setError(err.message);
 							return;
 						}
-						$scope.complete();
+						$scope.resolve();
 					});
 					return;
 				}

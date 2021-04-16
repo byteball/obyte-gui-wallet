@@ -733,7 +733,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												if (!rows.length)
 													return cb();
 												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													if (assocAmountByAssetAndAddress[objContract.asset] && objContract.amount == assocAmountByAssetAndAddress[objContract.asset][objContract.shared_address])
+													var asset = objContract.asset || 'base';
+													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.shared_address])
 														return cb(objContract);
 													cb();
 												});
