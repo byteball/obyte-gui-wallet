@@ -75,7 +75,7 @@ form[name="prosaicContractForm"] {
 				<span translate class="m10l side">Buyer</span>
 		    </li>
 		</div>
-	<h3 class="person title" translate>Peer</h3>
+	<h3 class="person title" translate>Respondent</h3>
 		<div class="name p10l">
 			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
 			<div class="attestor"><a ng-click="pair(peer_pairing_code)" translate>pair</a> | <a ng-click="resolve(peer_address)" class="text-warning" translate>Resolve with this side as a winner</a></div>
@@ -91,7 +91,7 @@ form[name="prosaicContractForm"] {
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact Info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Peer contacts: {{peer_contact_info}}</span><br>
+	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: {{peer_contact_info}}</span><br>
 	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: {{plaintiff_contact_info}}</span>
 	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info"></div>
 
