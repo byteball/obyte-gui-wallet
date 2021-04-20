@@ -630,65 +630,57 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					console.log('offerArbiterContract');
 					$scope.error = '';
 
-					device.getOrGeneratePermanentPairingInfo(function(pairingInfo){
-						var pairing_code = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
-						var contract_text = $scope.form.contractText;
-						var contract_title = $scope.form.contractTitle;
-						var ttl = $scope.form.ttl;
-						var creation_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-						var arbiter_address = $scope.form.arbiterAddress;
-						var me_is_payer = $scope.form.me_is_payer;
-						var amount = $scope.form.amount;
-						var asset = $scope.form.asset;
-						if (asset === 'base')
-							amount *= walletSettings.unitValue;
-						if (asset === constants.BLACKBYTES_ASSET)
-							amount *= walletSettings.bbUnitValue;
-						if (profileService.assetMetadata[asset])
-							amount *= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
-						amount = Math.round(amount);
-						if (asset == 'base' && amount < 10000) {
-							setError('Minimum amount of bytes for contract is 10000 bytes');
-							return;
-						}
-						if (asset == 'base') asset = null;
+					var contract_text = $scope.form.contractText;
+					var contract_title = $scope.form.contractTitle;
+					var ttl = $scope.form.ttl;
+					var arbiter_address = $scope.form.arbiterAddress;
+					var me_is_payer = $scope.form.me_is_payer;
+					var amount = $scope.form.amount;
+					var asset = $scope.form.asset;
+					if (asset === 'base')
+						amount *= walletSettings.unitValue;
+					if (asset === constants.BLACKBYTES_ASSET)
+						amount *= walletSettings.bbUnitValue;
+					if (profileService.assetMetadata[asset])
+						amount *= Math.pow(10, profileService.assetMetadata[asset].decimals || 0);
+					amount = Math.round(amount);
+					if (asset == 'base' && amount < 10000) {
+						setError('Minimum amount of bytes for contract is 10000 bytes');
+						return;
+					}
+					if (asset == 'base') asset = null;
 
-						var hash = arbiter_contract.getHash({title:contract_title, text:contract_text, creation_date:creation_date, arbiter_address: arbiter_address, amount: amount, asset: asset});
-						var contactInfo = $scope.form.contactInfo;
-						if (contactInfo) {
-							configService.set({my_contact_info: contactInfo}, function(){});
-						}
+					var contactInfo = $scope.form.contactInfo;
+					if (contactInfo) {
+						configService.set({my_contact_info: contactInfo}, function(){});
+					}
 
-						readMyPaymentAddress(fc, function(my_address) {
-							var cosigners = indexScope.getSigningDeviceAddresses(fc);
-							if (!cosigners.length && fc.credentials.m > 1) {
-								indexScope.copayers.forEach(function(copayer) {
-									cosigners.push(copayer.device_address);
-								});
-							}
-							lodash.remove(cosigners, function(c){return c == device.getMyDeviceAddress()});
-							arbiter_contract.createAndSend({
-								hash: hash,
-								peer_address: address,
-								peer_device_address: correspondent.device_address,
-								my_address: my_address,
-								arbiter_address: arbiter_address,
-								me_is_payer: me_is_payer,
-								amount: amount,
-								asset: asset,
-								creation_date: creation_date,
-								ttl: ttl,
-								title: contract_title,
-								text: contract_text,
-								cosigners: cosigners,
-								my_pairing_code: pairing_code,
-								my_contact_info: contactInfo
-							}, function(objContract) {
-								correspondentService.addContractEventIntoChat(objContract, 'offer', false);
-								$modalInstance.dismiss('sent');
+					readMyPaymentAddress(fc, function(my_address) {
+						var cosigners = indexScope.getSigningDeviceAddresses(fc);
+						if (!cosigners.length && fc.credentials.m > 1) {
+							indexScope.copayers.forEach(function(copayer) {
+								cosigners.push(copayer.device_address);
 							});
-							arbiters.getInfo(arbiter_address);
+						}
+						lodash.remove(cosigners, function(c){return c == device.getMyDeviceAddress()});
+						arbiter_contract.createAndSend({
+							peer_address: address,
+							peer_device_address: correspondent.device_address,
+							my_address: my_address,
+							arbiter_address: arbiter_address,
+							me_is_payer: me_is_payer,
+							amount: amount,
+							asset: asset,
+							ttl: ttl,
+							title: contract_title,
+							text: contract_text,
+							cosigners: cosigners,
+							my_contact_info: contactInfo
+						}, function(objContract) {
+							correspondentService.addContractEventIntoChat(objContract, 'offer', false);
+							$modalInstance.dismiss('sent');
 						});
+						arbiters.getInfo(arbiter_address);
 					});
 				});
 			};
@@ -1253,7 +1245,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	}; // showSignMessageModal
 
 	$scope.sendPairingCode = function(isPermanent) {
-		var fun = isPermanent == "true" ? device.getOrGeneratePermanentPairingInfo : device.startWaitingForPairing;
+		var fun = isPermanent ? device.getOrGeneratePermanentPairingInfo : device.startWaitingForPairing;
 		fun(function(pairingInfo) {
 			$scope.message = pairingInfo.device_pubkey + "@" + pairingInfo.hub + "#" + pairingInfo.pairing_secret;
 			$scope.send();

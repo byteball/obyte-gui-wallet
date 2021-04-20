@@ -759,7 +759,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										return setError(err);
 									}
 									$rootScope.$emit("NewOutgoingTx");
-									addContractEventIntoChat(objContract, 'event', false, 'Contract was '+status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
 									$modalInstance.dismiss();
 							});
 						});

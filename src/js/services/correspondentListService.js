@@ -248,7 +248,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
 		}).replace(/\[(.+?)\]\(pairing-code:(.+?)\)/g, function(str, description, isPermanent){
 			isPermanent = isPermanent === "true";
-			return toDelayedReplacement('<a ng-click="sendPairingCode(\''+(isPermanent ? 'true' : 'false') + '\')">[Send '+(isPermanent?'permanent ':'')+'pairing code]</a>');
+			return toDelayedReplacement('<a ng-click="sendPairingCode('+(isPermanent ? 'true' : 'false') + ')">[Send '+(isPermanent?'permanent ':'')+'pairing code]</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
 		}).replace(/\[(.+?)\]\(sign-message-request(-network-aware)?:(.+?)\)/g, function(str, description, network_aware, message_to_sign){
