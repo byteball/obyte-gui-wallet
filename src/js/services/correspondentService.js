@@ -747,7 +747,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								return;
 							}
 							
-							arbiter_contract.complete(hash, profileService.focusedClient, getExplicitSigningDeviceAddresses(getSigningDeviceAddresses), 
+							arbiter_contract.complete(hash, profileService.focusedClient, getExplicitSigningDeviceAddresses(getSigningDeviceAddresses, $scope), 
 								function(err, objContract, unit) {
 									profileService.bKeepUnlocked = false;
 									$rootScope.sentUnit = unit;
@@ -792,7 +792,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									asset: objContract.asset,
 									to_address: objContract.my_address,
 									amount: objContract.amount,
-									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses)
+									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses, $scope)
 								}, function(err, unit){
 								// if multisig, it might take very long before the callback is called
 								//self.setOngoingProcess();
@@ -869,7 +869,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									asset: objContract.asset,
 									to_address: objContract.my_address,
 									amount: objContract.amount,
-									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses)
+									arrSigningDeviceAddresses: getExplicitSigningDeviceAddresses(getSigningDeviceAddresses, $scope)
 								};
 								profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
 									profileService.bKeepUnlocked = false;
@@ -1008,7 +1008,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		});
 	}
 
-	function getExplicitSigningDeviceAddresses(getSigningDeviceAddresses) {
+	function getExplicitSigningDeviceAddresses(getSigningDeviceAddresses, $scope) {
 		var cosigners = [device.getMyDeviceAddress()];
 		if (profileService.focusedClient.credentials.m > 1) {
 			// we should name all our cosigners, ptherwise we will ask sign requests from contract peer

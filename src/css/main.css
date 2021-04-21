@@ -2065,6 +2065,7 @@ form#contacts-order {
   border: 1px solid rgb(233, 233, 233);
   box-shadow: 0px 1px 2.6px rgba(181, 181, 181, 0.37);
   border-radius: 9px;
+  max-width: 240px;
 }
 
 .f-dropdown li {
