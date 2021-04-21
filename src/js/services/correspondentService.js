@@ -203,8 +203,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	}
 
 	// arbiter contract response received - accepted or declined
-	eventBus.on("arbiter_contract_response_received", function(contract) {
-		addContractEventIntoChat(contract, "event", true);
+	eventBus.on("arbiter_contract_response_received", function(contract, skipChatMessage) {
+		if (!skipChatMessage)
+			addContractEventIntoChat(contract, "event", true);
 
 		if (contract.status != 'accepted') {
 			return;
@@ -220,7 +221,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					showError(err.message);
 					return;
 				}
-				eventBus.emit("arbiter_contract_response_received", contract);
+				eventBus.emit("arbiter_contract_response_received", contract, true);
 			});
 			return;
 		}

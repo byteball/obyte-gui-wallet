@@ -2067,6 +2067,9 @@ form#contacts-order {
   border-radius: 9px;
   max-width: 240px;
 }
+.f-dropdown.drop-top {
+  max-width: 240px;	
+}
 
 .f-dropdown li {
   transition: all .3s;
