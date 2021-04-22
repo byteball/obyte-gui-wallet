@@ -884,7 +884,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$rootScope.$emit("NewOutgoingTx");
 
-									addContractEventIntoChat(objContract, "event", false, "Funds from the contract were sent to your address: " + objContract.my_address);
+									addContractEventIntoChat(objContract, "event", false, "Funds from the contract were sent to your address: " + objContract.my_address, objContract.my_address);
 									
 									$modalInstance.dismiss();
 								});
