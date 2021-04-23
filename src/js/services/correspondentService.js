@@ -267,10 +267,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
 			}
 			if (value === 'in_appeal') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for him to get online and pair with both contract parties.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties.");	
 			}
 			if (value === 'appeal_approved' || value === 'appeal_declined') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for wrong arbiter decision.");	
 			}
 			if (value === 'paid') {
 				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
@@ -1114,7 +1114,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							setError(err.message);
 							return;
 						}
-						$scope.resolve();
+						$scope.resolve(address);
 					});
 					return;
 				}
