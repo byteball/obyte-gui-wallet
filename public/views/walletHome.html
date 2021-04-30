@@ -358,7 +358,7 @@ input.datafeed_input {
                 </span>
                 <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
                   <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-                    <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
+                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
                       <div style="overflow: hidden;">
                         {{assetIndexSelectorValue >= 0
                           ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
