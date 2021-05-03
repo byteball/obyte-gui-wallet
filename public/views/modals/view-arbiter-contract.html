@@ -89,7 +89,6 @@ form[name="prosaicContractForm"] {
 <div class="modal-content fix-modals-touch p10">
 	<h1 class="contractTitle" translate>{{title}}</h1>
 
-
 	<h3><span translate>Status</span>: <span class="emoji">{{getContractStatusEmoji(status, me_is_winner)}}</span> <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
 
 	<h3 ng-if="status == 'pending'"><span translate>Valid till</span>: {{valid_till | date:'yyyy-MM-dd HH:mm'}}</h3>
@@ -261,6 +260,10 @@ form[name="prosaicContractForm"] {
 			<button class="button expand outline dark-gray round" ng-click="appeal()">
 				<span class="tu" translate>Appeal to moderator</span>
 			</button>
+			<div class="large-12 medium-12 small-12 columns description m10t">
+				<span translate>If you think that arbiter's decision is incorrect, you can appeal to it. ArbStore moderator will look into this case and will make a final desicion, either compensating you for incorrect arbiter's decision or closing the case. Note that the compensation is not the funds locked on this contract, as they can only be claimed by your peer at this moment. ArbStore will send you payment request to pay for moderator work.
+				Clicking this button reveals whole contract information to ArbStore.</span>
+			</div>
 		</div>
 	</div>
 </div>

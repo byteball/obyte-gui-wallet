@@ -819,38 +819,20 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.dispute = function() {
 						if ($scope.loading)
 							return;
-						if (profileService.focusedClient.isPrivKeyEncrypted()) {
-							profileService.unlockFC(null, function(err) {
-								if (err){
-									setError(err.message);
-									return;
-								}
-								$scope.dispute();
-							});
-							return;
-						}
-						profileService.bKeepUnlocked = true;
 
-						profileService.requestTouchid(function(err) {
-							if (err) {
-								profileService.lockFC();
-								setError(err);
-								return;
-							}
-							start_loading();
+						start_loading();
 
-							arbiter_contract.openDispute(objContract.hash, function(err, resp, objContract) {
-								profileService.bKeepUnlocked = false;
-								if (err)
-									return setError(err);
-								
-								require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+						arbiter_contract.openDispute(objContract.hash, function(err, resp, objContract) {
+							profileService.bKeepUnlocked = false;
+							if (err)
+								return setError(err);
+							
+							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
+								addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
 
-									stop_loading();
-									$modalInstance.dismiss();
-								});	
-							});
+								stop_loading();
+								$modalInstance.dismiss();
+							});	
 						});
 					}
 
@@ -1108,6 +1090,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 			};
 
 			$scope.resolve = function(address) {
+				if (!confirm('Do you want to resolve this dispute using '+address+' as a winner?'))
+					return;
 				if (profileService.focusedClient.isPrivKeyEncrypted()) {
 					profileService.unlockFC(null, function(err) {
 						if (err){
@@ -1155,7 +1139,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						
 						var testnet = constants.version.match(/t$/) ? "testnet" : "";
 						var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-						var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.my_address ? "plaintiff" : "peer") + " ["+address+"], unit: " + url;
+						var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.my_address ? "plaintiff" : "respondent") + " ["+address+"], unit: " + url;
 						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
 						device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
 							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
