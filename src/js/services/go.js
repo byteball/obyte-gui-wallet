@@ -117,7 +117,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		if (uri.indexOf("byteball:") == -1 && uri.indexOf("obyte:") == -1) return handleFile(uri);
+		var conf = require('ocore/conf.js');
+		var bb_url = new RegExp('^'+conf.program+':', 'i');
+		var ob_url = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
+		if (!uri.match(bb_url) && !uri.match(ob_url)) return handleFile(uri);
 
 		console.log("handleUri "+uri);
 
