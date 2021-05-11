@@ -1007,166 +1007,171 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		return cosigners;
 	}
 
-	function showDisputeRequestModal($scope, disputeJsonBase64){
+	function showDisputeRequestModal($scope, contract_hash){
 		$rootScope.modalOpened = true;
-		var strJSON = Buffer.from(disputeJsonBase64, "base64").toString("utf8");
-		var objDispute = JSON.parse(strJSON);
-		var ModalInstanceCtrl = function($scope, $modalInstance) {
-			$scope.plaintiff_address = objDispute.my_address;
-			$scope.peer_address = objDispute.peer_address;
-			$scope.plaintiff_pairing_code = objDispute.my_pairing_code;
-			$scope.peer_pairing_code = objDispute.peer_pairing_code;
-			$scope.text = objDispute.contract_content.text;
-			$scope.title = objDispute.contract_content.title;
-			$scope.creation_date = objDispute.contract_content.creation_date;
-			$scope.arbiter_address = objDispute.arbiter_address;
-			$scope.contract_hash = objDispute.contract_hash;
-			$scope.me_is_payer = objDispute.me_is_payer;
-			$scope.unit = objDispute.unit;
-			$scope.isMobile = isMobile.any();
-			$scope.amount = objDispute.amount;
-			$scope.asset = objDispute.asset;
-			$scope.calculated_hash = arbiter_contract.getHash($scope);
-			$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : "base") : 'private asset';
-			$scope.plaintiff_contact_info = objDispute.my_contact_info;
-			$scope.peer_contact_info = objDispute.peer_contact_info;
+		arbiter_contract.getDisputeByContractHash(contract_hash, function(objDispute){
+			if (!objDispute)
+				throw Error("no dispute found in database");
+			var ModalInstanceCtrl = function($scope, $modalInstance) {
+				$scope.plaintiff_address = objDispute.plaintiff_address;
+				$scope.respondent_address = objDispute.respondent_address;
+				$scope.plaintiff_pairing_code = objDispute.plaintiff_pairing_code;
+				$scope.respondent_pairing_code = objDispute.respondent_pairing_code;
+				$scope.text = objDispute.contract_content.text;
+				$scope.title = objDispute.contract_content.title;
+				$scope.creation_date = objDispute.contract_content.creation_date;
+				$scope.arbiter_address = objDispute.arbiter_address;
+				$scope.contract_hash = objDispute.contract_hash;
+				$scope.plaintiff_is_payer = objDispute.plaintiff_is_payer;
+				$scope.unit = objDispute.contract_unit;
+				$scope.isMobile = isMobile.any();
+				$scope.amount = objDispute.amount;
+				$scope.asset = objDispute.asset;
+				$scope.status = objDispute.status;
+				$scope.calculated_hash = arbiter_contract.getHash($scope);
+				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : "base") : 'private asset';
+				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
+				$scope.respondent_contact_info = objDispute.respondent_contact_info;
 
-			if (objDispute.unit) {
-				db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.unit], function(rows) {
-					if (!rows.length)
-						return;
-					var payload = rows[0].payload;
-					try {
-						$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
-						$timeout(function() {
-							$rootScope.$apply();
-						});
-					} catch (e) {}
-				})
-			}
+				if (objDispute.contract_unit) {
+					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.contract_unit], function(rows) {
+						if (!rows.length)
+							return;
+						var payload = rows[0].payload;
+						try {
+							$scope.hash_inside_unit = JSON.parse(payload).contract_text_hash;
+							$timeout(function() {
+								$rootScope.$apply();
+							});
+						} catch (e) {}
+					})
+				}
 
-			$timeout(function() {
-				$rootScope.tab = $scope.index.tab = "chat";
-				$rootScope.$apply();
-			});
-
-			var setError = function(err) {
-				$scope.error = err;
 				$timeout(function() {
+					$rootScope.tab = $scope.index.tab = "chat";
 					$rootScope.$apply();
 				});
-			}
 
-			$scope.pair = function(code) {
-				var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#(.+)$/);
-				if (!matches)
-					return setError("Invalid pairing code");
-				var pubkey = matches[1];
-				var hub = matches[2];
-				var pairing_secret = matches[3];
-				if (pubkey.length !== 44)
-					return setError("Invalid pubkey length");
-				correspondentListService.acceptInvitation(hub, pubkey, pairing_secret, function(err){
-					if (err)
-						return setError(err);
-					$scope.close();
-				});
-			}
-
-			$scope.close = function() {
-				$modalInstance.dismiss("cancel");
-			};
-
-			$scope.openInExplorer = correspondentListService.openInExplorer;
-
-			$scope.expandProofBlock = function() {
-				$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
-			};
-
-			$scope.checkValidity = function() {
-				$timeout(function() {
-					$scope.validity_checked = true;
-				}, 500);
-			};
-
-			$scope.resolve = function(address) {
-				if (!confirm('Do you want to resolve this dispute using '+address+' as a winner?'))
-					return;
-				if (profileService.focusedClient.isPrivKeyEncrypted()) {
-					profileService.unlockFC(null, function(err) {
-						if (err){
-							setError(err.message);
-							return;
-						}
-						$scope.resolve(address);
+				var setError = function(err) {
+					$scope.error = err;
+					$timeout(function() {
+						$rootScope.$apply();
 					});
-					return;
 				}
-				profileService.bKeepUnlocked = true;
 
-				profileService.requestTouchid(function(err) {
-					if (err) {
-						profileService.lockFC();
-						setError(err);
+				$scope.pair = function(code) {
+					var matches = code.match(/^([\w\/+]+)@([\w.:\/-]+)#(.+)$/);
+					if (!matches)
+						return setError("Invalid pairing code");
+					var pubkey = matches[1];
+					var hub = matches[2];
+					var pairing_secret = matches[3];
+					if (pubkey.length !== 44)
+						return setError("Invalid pubkey length");
+					correspondentListService.acceptInvitation(hub, pubkey, pairing_secret, function(err){
+						if (err)
+							return setError(err);
+						$scope.close();
+					});
+				}
+
+				$scope.close = function() {
+					$modalInstance.dismiss("cancel");
+				};
+
+				$scope.openInExplorer = correspondentListService.openInExplorer;
+
+				$scope.expandProofBlock = function() {
+					$scope.proofBlockExpanded = !$scope.proofBlockExpanded;
+				};
+
+				$scope.checkValidity = function() {
+					$timeout(function() {
+						$scope.validity_checked = true;
+					}, 500);
+				};
+
+				$scope.resolve = function(address) {
+					if (!confirm('Do you want to resolve this dispute with '+address+' as a winner?'))
+						return;
+					if (profileService.focusedClient.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								setError(err.message);
+								return;
+							}
+							$scope.resolve(address);
+						});
 						return;
 					}
-					var data_payload = {};
-					data_payload["CONTRACT_" + objDispute.contract_hash] = address;
-					var opts = {
-						paying_addresses: [objDispute.arbiter_address],
-						signing_addresses: [objDispute.arbiter_address],
-						change_address: objDispute.arbiter_address,
-						messages: [
-							{
-								app: "data_feed",
-								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-								payload: data_payload
-							}
-						]
-					};
-					profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
-						// if multisig, it might take very long before the callback is called
-						//self.setOngoingProcess();
-						profileService.bKeepUnlocked = false;
-						$rootScope.sentUnit = unit;
-						if (err){
-							if (err.match(/no funded/))
-								err = "Not enough spendable funds, make sure all your funds are confirmed";
-							return setError(err);
+					profileService.bKeepUnlocked = true;
+
+					profileService.requestTouchid(function(err) {
+						if (err) {
+							profileService.lockFC();
+							setError(err);
+							return;
 						}
-						$rootScope.$emit("NewOutgoingTx");
-						
-						var testnet = constants.version.match(/t$/) ? "testnet" : "";
-						var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-						var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.my_address ? "plaintiff" : "respondent") + " ["+address+"], unit: " + url;
-						correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
-						device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
-							if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+						var data_payload = {};
+						data_payload["CONTRACT_" + objDispute.contract_hash] = address;
+						var opts = {
+							paying_addresses: [objDispute.arbiter_address],
+							signing_addresses: [objDispute.arbiter_address],
+							change_address: objDispute.arbiter_address,
+							messages: [
+								{
+									app: "data_feed",
+									payload_location: "inline",
+									payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+									payload: data_payload
+								}
+							]
+						};
+						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
+							// if multisig, it might take very long before the callback is called
+							//self.setOngoingProcess();
+							profileService.bKeepUnlocked = false;
+							$rootScope.sentUnit = unit;
+							if (err){
+								if (err.match(/no funded/))
+									err = "Not enough spendable funds, make sure all your funds are confirmed";
+								return setError(err);
+							}
+							$rootScope.$emit("NewOutgoingTx");
+
+							db.query("UPDATE arbiter_disputes SET status='resolved' WHERE contract_hash=?", [objDispute.contract_hash], function(){});
+							
+							var testnet = constants.version.match(/t$/) ? "testnet" : "";
+							var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
+							var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.plaintiff_address ? "plaintiff" : "respondent") + " ["+address+"], unit: " + url;
+							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
+							device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
+								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+							});
+							// peer will handle completion on his side by his own, checking incoming transactions
+							$modalInstance.dismiss();
 						});
-						// peer will handle completion on his side by his own, checking incoming transactions
-						$modalInstance.dismiss();
 					});
-				});
+				};
 			};
-		};
 
-		var modalInstance = $modal.open({
-			templateUrl: "views/modals/view-dispute-request.html",
-			windowClass: animationService.modalAnimated.slideUp,
-			controller: ModalInstanceCtrl,
-			scope: $scope
-		});
+			var modalInstance = $modal.open({
+				templateUrl: "views/modals/view-dispute-request.html",
+				windowClass: animationService.modalAnimated.slideUp,
+				controller: ModalInstanceCtrl,
+				scope: $scope
+			});
 
-		var disableCloseModal = $rootScope.$on("closeModal", function() {
-			modalInstance.dismiss("cancel");
-		});
+			var disableCloseModal = $rootScope.$on("closeModal", function() {
+				modalInstance.dismiss("cancel");
+			});
 
-		modalInstance.result.finally(function() {
-			$rootScope.modalOpened = false;
-			disableCloseModal();
-			var m = angular.element(document.getElementsByClassName("reveal-modal"));
-			m.addClass(animationService.modalAnimated.slideOutDown);
+			modalInstance.result.finally(function() {
+				$rootScope.modalOpened = false;
+				disableCloseModal();
+				var m = angular.element(document.getElementsByClassName("reveal-modal"));
+				m.addClass(animationService.modalAnimated.slideOutDown);
+			});
 		});
 	};
 

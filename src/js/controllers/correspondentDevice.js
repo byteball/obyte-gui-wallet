@@ -1783,8 +1783,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		correspondentService.showArbiterContractOfferModal($scope, hash, indexScope.getSigningDeviceAddresses);
 	};
 
-	$scope.showDisputeRequest = function(disputeJsonBase64) {
-		correspondentService.showDisputeRequestModal($scope, disputeJsonBase64);
+	$scope.showDisputeRequest = function(contract_hash) {
+		correspondentService.showDisputeRequestModal($scope, contract_hash);
 	};
 
 	function setOngoingProcess(name) {

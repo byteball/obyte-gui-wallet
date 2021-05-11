@@ -67,6 +67,12 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 			$rootScope.$digest();
 		});
 	});
+	arbiter_contract.getDisputesByArbstore(correspondent.device_address, function(disputes){
+		$scope.arbiterDisputes = disputes;
+		$timeout(function(){
+			$rootScope.$digest();
+		});
+	});
 
 	$scope.showProsaicContract = function(hash){
 		correspondentService.showProsaicContractOfferModal($scope, hash, false, function(){});
@@ -74,6 +80,10 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
 	$scope.showArbiterContract = function(hash){
 		correspondentService.showArbiterContractOfferModal($scope, hash, indexScope.getSigningDeviceAddresses);
+	};
+
+	$scope.showDisputeRequest = function(contract_hash) {
+		correspondentService.showDisputeRequestModal($scope, contract_hash);
 	};
 
 	$scope.save = function() {

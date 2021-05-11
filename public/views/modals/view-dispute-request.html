@@ -71,10 +71,12 @@ form[name="prosaicContractForm"] {
 <div class="modal-content fix-modals-touch p10">
 	<h1 class="contractTitle" translate>{{title}}</h1>
 
-	<h3 class="person title" translate>Contract hash</h3>
-		<div class="attestor">{{contract_hash}}</div>
+	<h3 class="title" translate>Status: <b translate>{{status}}</b></h3>
 
-	<h3 class="person title" translate>Plaintiff – <i translate>{{me_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
+	<h3 class="person title" translate>Contract hash</h3>
+	<div class="attestor">{{contract_hash}}</div>
+
+	<h3 class="person title" translate>Plaintiff – <i translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
 		<div class="name p10l">
 			<div class="attestor"><span translate>address</span>: {{plaintiff_address}}</div>
 			<div class="attestor">
@@ -82,12 +84,12 @@ form[name="prosaicContractForm"] {
 				<a ng-click="resolve(plaintiff_address)" class="text-warning" translate>Resolve with this side as a winner</a> – <span translate>post your final decision, marking this person as dispute winner</span>
 			</div>
 		</div>
-	<h3 class="person title" translate>Respondent – <i translate>{{me_is_payer ? 'Seller' : 'Buyer'}}</i></h3>
+	<h3 class="person title" translate>Respondent – <i translate>{{plaintiff_is_payer ? 'Seller' : 'Buyer'}}</i></h3>
 		<div class="name p10l">
-			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+			<div class="attestor"><span translate>address</span>: {{respondent_address}}</div>
 			<div class="attestor">
-				<a ng-click="pair(peer_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span><br>
-				<a ng-click="resolve(peer_address)" class="text-warning" translate>Resolve with this side as a winner</a> – <span translate>post your final decision, marking this person as dispute winner</span>
+				<a ng-click="pair(respondent_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span><br>
+				<a ng-click="resolve(respondent_address)" class="text-warning" translate>Resolve with this side as a winner</a> – <span translate>post your final decision, marking this person as dispute winner</span>
 			</div>
 		</div>
 

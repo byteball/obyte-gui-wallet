@@ -296,8 +296,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			catch(e){
 				return '[invalid dispute request]';
 			}
-			params[++param_index] = disputeJsonBase64;
-			params[++param_index] = objDispute.contract_hash+' 2.5 OPTIONAL_COMMENT_FOR_CONTRACT_' + objDispute.contract_content.title;
+			params[++param_index] = objDispute.contract_hash;
+			params[++param_index] = objDispute.contract_hash+' 2.5 OPTIONAL_COMMENT_FOR_CONTRACT_' + objDispute.title;
 			var asset_name = "GB";
 			if (objDispute.service_fee_asset === "base") {
 			} else if (objDispute.service_fee_asset === "blackbytes" || objDispute.service_fee_asset === constants.BLACKBYTES_ASSET) {
@@ -307,7 +307,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			} else {
 				asset_name = objDispute.service_fee_asset || "GB";
 			} 
-			return toDelayedReplacement('<a ng-click="showDisputeRequest(messageEvent.message.params[' + (param_index-1) + '])" class="prosaic_contract_offer">Dispute request for contract "'+escapeHtml(objDispute.contract_content.title)+'" on ' + escapeHtml(objDispute.contract_content.creation_date) + ' [' + escapeHtml(objDispute.contract_hash.substr(0, 8)) + '...]</a><br><br><a ng-click="suggestCommand(messageEvent.message.params[' + param_index + '])" class="suggest-command">Set my service fee for this contract with a comment, format:\nCONTRACT_HASH AMOUNT OPTIONAL_COMMENT_FOR_PLAINTIFF</a><br>, where AMOUNT is in ' + escapeHtml(asset_name));
+			return toDelayedReplacement('<a ng-click="showDisputeRequest(messageEvent.message.params[' + (param_index-1) + '])" class="prosaic_contract_offer">Dispute request for contract "'+escapeHtml(objDispute.title)+'" [' + escapeHtml(objDispute.contract_hash.substr(0, 8)) + '...]</a><br><br><a ng-click="suggestCommand(messageEvent.message.params[' + param_index + '])" class="suggest-command">Set my service fee for this contract with a comment, format:\nCONTRACT_HASH AMOUNT OPTIONAL_COMMENT_FOR_PLAINTIFF</a><br>, where AMOUNT is in ' + escapeHtml(asset_name));
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
