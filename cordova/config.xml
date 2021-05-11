@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="org.byteball.wallet"
-  version="3.3.1"
-  android-versionCode="1091"
-  ios-CFBundleVersion="3.3.1" xmlns:android="http://schemas.android.com/apk/res/android">
+  version="3.3.2"
+  android-versionCode="1092"
+  ios-CFBundleVersion="3.3.2" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Obyte</name>
     <description>
       Obyte wallet.
@@ -97,6 +97,9 @@
 			<false/>
 		</config-file>
 		<edit-config target="*-Info.plist" parent="NSCameraUsageDescription" mode="merge" overwrite="true" id="config.xml">
+			<string>This app uses camera to scan qr-codes</string>
+		</edit-config>
+		<edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge" overwrite="true">
 			<string>This app uses camera to scan qr-codes</string>
 		</edit-config>
     </platform>

@@ -1361,17 +1361,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 	
   self.setBalance = function(assocBalances, assocSharedBalances) {
-	if (!assocBalances) return;
-	var config = configService.getSync().wallet.settings;
-	var fc = profileService.focusedClient;
-	var hiddenAssets = self.getCurrentWalletHiddenAssets();
-	var hiddenSubWallets = self.getCurrentWalletHiddenSubWallets();
-	console.log('setBalance hiddenAssets:', hiddenAssets);
+    if (!assocBalances) return;
+    var config = configService.getSync().wallet.settings;
+    var fc = profileService.focusedClient;
+    var hiddenAssets = self.getCurrentWalletHiddenAssets();
+    var hiddenSubWallets = self.getCurrentWalletHiddenSubWallets();
+    console.log('setBalance hiddenAssets:', hiddenAssets);
+    var exchangeRates = require('ocore/network.js').exchangeRates;
 
-	// Selected unit
-	self.unitValue = config.unitValue;
-	self.unitName = config.unitName;
-	self.bbUnitName = config.bbUnitName;
+    // Selected unit
+    self.unitValue = config.unitValue;
+    self.unitName = config.unitName;
+    self.bbUnitName = config.bbUnitName;
   
 	self.assetsSet = {};
 	self.arrBalances = [];
@@ -1393,33 +1394,61 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		}
 		if (balanceInfo.name)
 			profileService.assetMetadata[asset] = {decimals: balanceInfo.decimals, name: balanceInfo.name};
-		if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
-		  balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
-		  balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
-		  balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
-		  balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
-		  if (typeof balanceInfo.shared === 'number')
-			balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
-		  if (!balanceInfo.name){
-			if (!Math.log10) // android 4.4
-			  Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
-			if (asset === "base"){
-			  balanceInfo.name = self.unitName;
-			  balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
-			}
-			else if (asset === self.BLACKBYTES_ASSET){
-			  balanceInfo.name = self.bbUnitName;
-			  balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
-			}
-		  }
+        if (asset === "base" || asset == self.BLACKBYTES_ASSET || balanceInfo.name){
+          balanceInfo.totalStr = profileService.formatAmountWithUnit(balanceInfo.total, asset);
+          balanceInfo.totalStrWithoutUnit = profileService.formatAmount(balanceInfo.total, asset);
+          balanceInfo.stableStr = profileService.formatAmountWithUnit(balanceInfo.stable, asset);
+          balanceInfo.pendingStr = profileService.formatAmountWithUnitIfShort(balanceInfo.pending, asset);
+          if (typeof balanceInfo.shared === 'number')
+            balanceInfo.sharedStr = profileService.formatAmountWithUnitIfShort(balanceInfo.shared, asset);
+          if (!balanceInfo.name){
+            if (!Math.log10) // android 4.4
+              Math.log10 = function(x) { return Math.log(x) * Math.LOG10E; };
+            if (asset === "base"){
+              balanceInfo.name = self.unitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.unitValue));
+            }
+            else if (asset === self.BLACKBYTES_ASSET){
+              balanceInfo.name = self.bbUnitName;
+              balanceInfo.decimals = Math.round(Math.log10(config.bbUnitValue));
+            }
+          }
 		}
-		self.assetsSet[asset] = balanceInfo;
-		if (self.isAssetHidden(asset, hiddenAssets)) {
-		  continue;
-		}
-		self.arrBalances.push(balanceInfo);
+		var completeBalance = balanceInfo.total + (balanceInfo.shared || 0);
+		if (asset === 'base' && exchangeRates.GBYTE_USD)
+			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBYTE_USD;
+		else if (asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD)
+			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBB_USD;
+		else if (exchangeRates[asset + '_USD'])
+			balanceInfo.usdValue = completeBalance / Math.pow(10, balanceInfo.decimals || 0) * exchangeRates[asset + '_USD'];
+		else
+			balanceInfo.usdValue = 0;
+        self.assetsSet[asset] = balanceInfo;
+        if (self.isAssetHidden(asset, hiddenAssets)) {
+          continue;
+        }
+        self.arrBalances.push(balanceInfo);
 	}
-	self.assetIndex = self.assetIndex || 0;
+	self.arrBalances.sort((b1, b2) => {
+		if (b1.asset === 'base')
+			return -1;
+		if (b2.asset === 'base')
+			return 1;
+		var usdDiff = b1.usdValue - b2.usdValue;
+		if (usdDiff !== 0)
+			return -usdDiff;
+		var balDiff = b1.total / Math.pow(10, b1.decimals) - b2.total / Math.pow(10, b2.decimals);
+		if (balDiff !== 0)
+			return -balDiff;
+		var name1 = b1.name || '';
+		var name2 = b2.name || '';
+		if (name1 < name2)
+			return -1;
+		if (name1 > name2)
+			return 1;
+		return 0;
+	});
+    self.assetIndex = self.assetIndex || 0;
 	if (!self.arrBalances[self.assetIndex]) // if no such index in the subwallet, reset to bytes
 		self.assetIndex = 0;
 	if (!self.shared_address)
