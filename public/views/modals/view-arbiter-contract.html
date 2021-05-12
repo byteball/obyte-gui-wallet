@@ -169,7 +169,7 @@ form[name="prosaicContractForm"] {
 	<div class="row m20t" ng-if="(status == 'pending' || status === 'accepted') && isIncoming && index.isEnoughSignersSelected()">
 		<div class="columns" ng-class="{'small-6': status == 'pending', 'small-12': status != 'pending'}">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()">
-				<i ng-class="yes_icon"></i> <span>{{(confirm_label || (status == 'pending' ? 'Accept' : 'Retry signing'))|translate}}</span>
+				<i class="fi-check"></i> <span>{{(confirm_label || (status == 'pending' ? 'Accept' : 'Retry signing'))|translate}}</span>
 			</button>
 		</div>
 
@@ -261,7 +261,7 @@ form[name="prosaicContractForm"] {
 				<span class="tu" translate>Appeal to moderator</span>
 			</button>
 			<div class="large-12 medium-12 small-12 columns description m10t">
-				<span translate>If you think that arbiter's decision is incorrect, you can appeal to it. ArbStore moderator will look into this case and will make a final desicion, either compensating you for incorrect arbiter's decision or closing the case. Note that the compensation is not the funds locked on this contract, as they can only be claimed by your peer at this moment. ArbStore will send you payment request to pay for moderator work.
+				<span translate>If you think that arbiter's decision is incorrect, you can appeal it. ArbStore moderator will look into this case and will make a final desicion, either compensating you for incorrect arbiter's decision or closing the case. Note that the compensation is not the funds locked on this contract, as they can only be claimed by your peer at this moment. ArbStore will ask you to pay {{appealFeeCost}} for moderator's work. Compensation amount will be {{appealFeeCompensation}}.
 				Clicking this button reveals whole contract information to ArbStore.</span>
 			</div>
 		</div>

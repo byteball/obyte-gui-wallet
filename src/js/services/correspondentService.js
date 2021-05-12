@@ -589,6 +589,20 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					if (objContract.resolution_unit) {
 						storage.readUnit(objContract.resolution_unit, function(objUnit) {
 							$scope.me_is_winner = arbiter_contract.parseWinnerFromUnit(objContract, objUnit) === objContract.my_address;
+							// appeal fee request
+							if (objContract.status === 'dispute_resolved' && !$scope.me_is_winner) {
+								arbiter_contract.getAppealFee(objContract.hash, function(err, feeParams) {
+									if (err) {
+										$scope.appealFeeCost = $scope.appealFeeCompensation = "#UNKNOWN#";
+										return;
+									}
+									$scope.appealFeeCost = txFormatService.formatAmountStr(feeParams.amount, feeParams.asset ? feeParams.asset : "base");
+									$scope.appealFeeCompensation = txFormatService.formatAmountStr(3*feeParams.amount, feeParams.asset ? feeParams.asset : "base");
+									$timeout(function() {
+										$rootScope.$apply();
+									});
+								});
+							}
 						});
 					}
 					// hide "claim funds" button if not enough balance on the contract (already claimed)
