@@ -1047,6 +1047,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
 
+				if ($scope.asset) {
+					require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+						if (assetMetadata || $scope.asset == constants.BLACKBYTES_ASSET) {
+							$scope.assetMetadata = assetMetadata[$scope.asset] || {};
+						}
+					});
+				}
+
 				if (objDispute.contract_unit) {
 					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.contract_unit], function(rows) {
 						if (!rows.length)
@@ -1106,65 +1114,68 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				};
 
 				$scope.resolve = function(address) {
-					if (!confirm('Do you want to resolve this dispute with '+address+' as a winner?'))
-						return;
-					if (profileService.focusedClient.isPrivKeyEncrypted()) {
-						profileService.unlockFC(null, function(err) {
-							if (err){
-								setError(err.message);
+					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
+						ifYes: function(){
+							if (profileService.focusedClient.isPrivKeyEncrypted()) {
+								profileService.unlockFC(null, function(err) {
+									if (err){
+										setError(err.message);
+										return;
+									}
+									$scope.resolve(address);
+								});
 								return;
 							}
-							$scope.resolve(address);
-						});
-						return;
-					}
-					profileService.bKeepUnlocked = true;
+							profileService.bKeepUnlocked = true;
 
-					profileService.requestTouchid(function(err) {
-						if (err) {
-							profileService.lockFC();
-							setError(err);
-							return;
-						}
-						var data_payload = {};
-						data_payload["CONTRACT_" + objDispute.contract_hash] = address;
-						var opts = {
-							paying_addresses: [objDispute.arbiter_address],
-							signing_addresses: [objDispute.arbiter_address],
-							change_address: objDispute.arbiter_address,
-							messages: [
-								{
-									app: "data_feed",
-									payload_location: "inline",
-									payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-									payload: data_payload
+							profileService.requestTouchid(function(err) {
+								if (err) {
+									profileService.lockFC();
+									setError(err);
+									return;
 								}
-							]
-						};
-						profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
-							// if multisig, it might take very long before the callback is called
-							//self.setOngoingProcess();
-							profileService.bKeepUnlocked = false;
-							$rootScope.sentUnit = unit;
-							if (err){
-								if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
-								return setError(err);
-							}
-							$rootScope.$emit("NewOutgoingTx");
+								var data_payload = {};
+								data_payload["CONTRACT_" + objDispute.contract_hash] = address;
+								var opts = {
+									paying_addresses: [objDispute.arbiter_address],
+									signing_addresses: [objDispute.arbiter_address],
+									change_address: objDispute.arbiter_address,
+									messages: [
+										{
+											app: "data_feed",
+											payload_location: "inline",
+											payload_hash: objectHash.getBase64Hash(data_payload, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
+											payload: data_payload
+										}
+									]
+								};
+								profileService.focusedClient.sendMultiPayment(opts, function(err, unit){
+									// if multisig, it might take very long before the callback is called
+									//self.setOngoingProcess();
+									profileService.bKeepUnlocked = false;
+									$rootScope.sentUnit = unit;
+									if (err){
+										if (err.match(/no funded/))
+											err = "Not enough spendable funds, make sure all your funds are confirmed";
+										return setError(err);
+									}
+									$rootScope.$emit("NewOutgoingTx");
 
-							db.query("UPDATE arbiter_disputes SET status='resolved' WHERE contract_hash=?", [objDispute.contract_hash], function(){});
-							
-							var testnet = constants.version.match(/t$/) ? "testnet" : "";
-							var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
-							var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.plaintiff_address ? "plaintiff" : "respondent") + " ["+address+"], unit: " + url;
-							correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
-							device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
-								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+									db.query("UPDATE arbiter_disputes SET status='resolved' WHERE contract_hash=?", [objDispute.contract_hash], function(){});
+									
+									var testnet = constants.version.match(/t$/) ? "testnet" : "";
+									var url = "https://" + testnet + "explorer.obyte.org/#" + unit;
+									var text = "\"" + objDispute.contract_content.title +"\" contract dispute is resolved in favor of " + (address == objDispute.plaintiff_address ? "plaintiff" : "respondent") + " ["+address+"], unit: " + url;
+									correspondentListService.addMessageEvent(false, correspondentListService.currentCorrespondent.device_address, correspondentListService.formatOutgoingMessage(text));
+									device.readCorrespondent(correspondentListService.currentCorrespondent.device_address, function(correspondent) {
+										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
+									});
+									// peer will handle completion on his side by his own, checking incoming transactions
+									$modalInstance.dismiss();
+								});
 							});
-							// peer will handle completion on his side by his own, checking incoming transactions
-							$modalInstance.dismiss();
-						});
+						},
+						ifNo: function(){}
 					});
 				};
 			};

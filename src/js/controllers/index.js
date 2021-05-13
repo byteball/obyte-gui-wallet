@@ -866,6 +866,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		_modalRequestApproval(question, callbacks);
 	  }
 	};
+	self.requestApproval = requestApproval;
 	
 
 	
