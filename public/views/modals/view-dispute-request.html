@@ -7,7 +7,8 @@
 }
 .attestor {
 	clear: both;
-	font-size: 11px;
+	font-size: 13px;
+	line-height: 2;
 }
 .w40 {
 	width: 40px !important;
@@ -53,6 +54,10 @@ form[name="prosaicContractForm"] {
 .contractTitle::first-letter {
 	text-transform: uppercase;
 }
+.button_text_note {
+	display: block;
+	font-size: 11px;
+}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -74,35 +79,32 @@ form[name="prosaicContractForm"] {
 	<h3 class="title" translate>Status: <b translate>{{status}}</b></h3>
 
 	<h3 class="person title" translate>Contract hash</h3>
-	<div class="attestor">{{contract_hash}}</div>
+	<div class="attestor p10l">{{contract_hash}}</div>
 
 	<h3 class="person title" translate>Plaintiff – <i translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
 		<div class="name p10l">
 			<div class="attestor"><span translate>address</span>: {{plaintiff_address}}</div>
 			<div class="attestor">
-				<a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span><br>
-				<a ng-click="resolve(plaintiff_address)" class="text-warning" translate>Resolve with this side as a winner</a> – <span translate>post your final decision, marking this person as dispute winner</span>
+				<a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
 			</div>
 		</div>
 	<h3 class="person title" translate>Respondent – <i translate>{{plaintiff_is_payer ? 'Seller' : 'Buyer'}}</i></h3>
 		<div class="name p10l">
 			<div class="attestor"><span translate>address</span>: {{respondent_address}}</div>
 			<div class="attestor">
-				<a ng-click="pair(respondent_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span><br>
-				<a ng-click="resolve(respondent_address)" class="text-warning" translate>Resolve with this side as a winner</a> – <span translate>post your final decision, marking this person as dispute winner</span>
+				<a ng-click="pair(respondent_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
 			</div>
 		</div>
 
 	<h3 class="title" translate>Amount</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
+	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
 
 	<h3 class="title" translate>Text</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact Info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: {{peer_contact_info}}</span><br>
-	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: {{plaintiff_contact_info}}</span>
-	<div ng-if="!my_contact_info && status == 'pending' && isIncoming" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;">My contacts: <input type="text" name="form.my_contact_info" ng-model="form.my_contact_info"></div>
+	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: {{peer_contact_info}}</span><br>
+	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: {{plaintiff_contact_info}}</span>
 
 	<h3 class="unit"><span translate>Proof of contract signing</span>: <span ng-click="expandProofBlock()" class="validation_check">expand</span></h3>
 	
@@ -127,5 +129,24 @@ form[name="prosaicContractForm"] {
 			<span class="has-error size-12">
 			{{error}}
 		</span>
+	</div>
+
+
+	<div ng-if="true || status === 'pending'" class="m20t">
+		<h3 class="title" translate>Resolve contract</h3>
+		<div class="attestor p10l" translate>post your final decision, marking one of the side as a winner</div>
+		<div class="large-6 medium-6 small-6 columns center m10t">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="resolve(plaintiff_address)">
+				<span class="tu" translate>Plaintiff</span>
+				<span class="button_text_note" translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</span>
+			</button>
+		</div>
+
+		<div class="large-6 medium-6 small-6 columns center m10t">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="resolve(respondent_address)">
+				<span class="tu" translate>Respondent</span>
+				<span class="button_text_note" translate>{{plaintiff_is_payer ? 'Seller' : 'Buyer'}}</span>
+			</button>
+		</div>
 	</div>
 </div>
