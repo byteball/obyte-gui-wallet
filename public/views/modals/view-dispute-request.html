@@ -74,23 +74,23 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
-	<h1 class="contractTitle" translate>{{title}}</h1>
+	<h1 class="contractTitle enable_text_select" translate>{{title}}</h1>
 
 	<h3 class="title" translate>Status: <b translate>{{status}}</b></h3>
 
 	<h3 class="person title" translate>Contract hash</h3>
-	<div class="attestor p10l">{{contract_hash}}</div>
+	<div class="attestor p10l enable_text_select">{{contract_hash}}</div>
 
 	<h3 class="person title" translate>Plaintiff – <i translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
 		<div class="name p10l">
-			<div class="attestor"><span translate>address</span>: {{plaintiff_address}}</div>
+			<div class="attestor"><span translate>address</span>: <span class="enable_text_select">{{plaintiff_address}}</span></div>
 			<div class="attestor">
 				<a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
 			</div>
 		</div>
 	<h3 class="person title" translate>Respondent – <i translate>{{plaintiff_is_payer ? 'Seller' : 'Buyer'}}</i></h3>
 		<div class="name p10l">
-			<div class="attestor"><span translate>address</span>: {{respondent_address}}</div>
+			<div class="attestor"><span translate>address</span>: <span class="enable_text_select">{{respondent_address}}</span></div>
 			<div class="attestor">
 				<a ng-click="pair(respondent_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
 			</div>
@@ -132,7 +132,7 @@ form[name="prosaicContractForm"] {
 	</div>
 
 
-	<div ng-if="true || status === 'pending'" class="m20t">
+	<div ng-if="status === 'pending'" class="m20t">
 		<h3 class="title" translate>Resolve contract</h3>
 		<div class="attestor p10l" translate>post your final decision, marking one of the side as a winner</div>
 		<div class="large-6 medium-6 small-6 columns center m10t">
