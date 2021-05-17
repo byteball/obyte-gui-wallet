@@ -902,7 +902,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						arbiter_contract.appeal(objContract.hash, function(err, res, objContract) {
 							if (err)
 								return setError(err);
-							addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for him to get online and pair with both contract parties.");
+							addContractEventIntoChat(objContract, "event", false, "Moderator is notified. Wait for them to get online and pair with both contract parties.");
 							$modalInstance.dismiss();
 						});
 					}
@@ -1114,26 +1114,26 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				};
 
 				$scope.resolve = function(address) {
-					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
-						ifYes: function(){
-							if (profileService.focusedClient.isPrivKeyEncrypted()) {
-								profileService.unlockFC(null, function(err) {
-									if (err){
-										setError(err.message);
-										return;
-									}
-									$scope.resolve(address);
-								});
+					if (profileService.focusedClient.isPrivKeyEncrypted()) {
+						profileService.unlockFC(null, function(err) {
+							if (err){
+								setError(err.message);
 								return;
 							}
-							profileService.bKeepUnlocked = true;
+							$scope.resolve(address);
+						});
+						return;
+					}
+					profileService.bKeepUnlocked = true;
 
-							profileService.requestTouchid(function(err) {
-								if (err) {
-									profileService.lockFC();
-									setError(err);
-									return;
-								}
+					profileService.requestTouchid(function(err) {
+						if (err) {
+							profileService.lockFC();
+							setError(err);
+							return;
+						}
+						$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
+							ifYes: function(){
 								var data_payload = {};
 								data_payload["CONTRACT_" + objDispute.contract_hash] = address;
 								var opts = {
@@ -1173,9 +1173,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									// peer will handle completion on his side by his own, checking incoming transactions
 									$modalInstance.dismiss();
 								});
-							});
-						},
-						ifNo: function(){}
+							},
+							ifNo: function(){}
+						});
 					});
 				};
 			};
