@@ -1172,12 +1172,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									});
 									// peer will handle completion on his side by his own, checking incoming transactions
 									
-									$scope.arbiterDisputes.forEach(function(dispute) {
-										if (dispute.contract_hash == objDispute.contract_hash) {
-											dispute.status = "resolved";
-										}
-									});
-
+									// mark dispute as resolved in edit view
+									if ($scope.arbiterDisputes && $scope.arbiterDisputes.length) {
+										$scope.arbiterDisputes.forEach(function(dispute) {
+											if (dispute.contract_hash == objDispute.contract_hash) {
+												dispute.status = "resolved";
+											}
+										});
+									}
 									$modalInstance.dismiss();
 								});
 							},
