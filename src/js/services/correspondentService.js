@@ -1171,6 +1171,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, text, 0);
 									});
 									// peer will handle completion on his side by his own, checking incoming transactions
+									
+									$scope.arbiterDisputes.forEach(function(dispute) {
+										if (dispute.contract_hash == objDispute.contract_hash) {
+											dispute.status = "resolved";
+										}
+									});
+
 									$modalInstance.dismiss();
 								});
 							},
