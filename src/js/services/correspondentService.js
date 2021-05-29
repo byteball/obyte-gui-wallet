@@ -1114,26 +1114,26 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				};
 
 				$scope.resolve = function(address) {
-					if (profileService.focusedClient.isPrivKeyEncrypted()) {
-						profileService.unlockFC(null, function(err) {
-							if (err){
-								setError(err.message);
+					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
+						ifYes: function ifYes(){
+							if (profileService.focusedClient.isPrivKeyEncrypted()) {
+								profileService.unlockFC(null, function(err) {
+									if (err){
+										setError(err.message);
+										return;
+									}
+									ifYes();
+								});
 								return;
 							}
-							$scope.resolve(address);
-						});
-						return;
-					}
-					profileService.bKeepUnlocked = true;
+							profileService.bKeepUnlocked = true;
 
-					profileService.requestTouchid(function(err) {
-						if (err) {
-							profileService.lockFC();
-							setError(err);
-							return;
-						}
-						$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
-							ifYes: function(){
+							profileService.requestTouchid(function(err) {
+								if (err) {
+									profileService.lockFC();
+									setError(err);
+									return;
+								}
 								var data_payload = {};
 								data_payload["CONTRACT_" + objDispute.contract_hash] = address;
 								var opts = {
@@ -1182,9 +1182,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$modalInstance.dismiss();
 								});
-							},
-							ifNo: function(){}
-						});
+							});
+						},
+						ifNo: function(){}
 					});
 				};
 			};
