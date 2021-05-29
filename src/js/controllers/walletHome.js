@@ -559,11 +559,13 @@ angular.module('copayApp.controllers')
 					if (!asset)
 						throw Error("no asset");
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
+					var asset_param = (asset === 'base') ? '' : '&asset=' + encodeURIComponent(asset);
 					$timeout(function() {
 						$scope.customizedAmountUnit =
 							amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : (assetInfo.name || 'of ' + asset)));
 						$scope.amountInSmallestUnits = amountInSmallestUnits;
-						$scope.asset_param = (asset === 'base') ? '' : '&asset=' + encodeURIComponent(asset);
+						$scope.qr_string = $scope.protocol + ":" + $scope.addr + '?amount=' + amountInSmallestUnits + asset_param;
+						$scope.qr_version = indexScope.determineQRcodeVersionFromString( $scope.qr_string );
 					}, 1);
 				};
 

@@ -990,6 +990,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	return arrSigningDeviceAddresses;
   }
 
+  self.determineQRcodeVersionFromString = function( inputtext ) {
+      // maximum characters per QR code version using ECC level m
+      // source: http://www.qrcode.com/en/about/version.html
+      var maxCharsforQRVersion = [0,14,26,42,62,84,106,122,152,180,213];
+      var qrversion = 5;
+      // find lowest version number that has enough space for our text
+      for (var i = (maxCharsforQRVersion.length-1); i > 0 ; i--) {
+          if ( maxCharsforQRVersion[i] >= inputtext.length)
+          {
+              qrversion = i;
+          }
+      }
+
+      return qrversion;
+  }
+
   self.goHome = function() {
 	go.walletHome();
   };
