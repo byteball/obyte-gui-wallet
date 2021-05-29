@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
 
 		var self = this;
 		var home = this;
@@ -2659,10 +2659,10 @@ angular.module('copayApp.controllers')
 
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						if (indexScope.shared_address) {
-							walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], null, success);
+							walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], true, null, success);
 						}
 						else {
-							wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, success);
+							wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], true, null, success);
 						}
 					});
 				};

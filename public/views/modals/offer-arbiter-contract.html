@@ -1,0 +1,182 @@
+<style>
+.p10l {
+	padding-left: 10px;
+}
+.w40 {
+	width: 40px !important;
+}
+.w80 {
+	width: 80px !important;
+}
+.help-link {
+	margin-bottom: 15px;
+}
+.expand-link {
+	font-size: 12px;
+	color: #3498DB;
+	border-bottom: 1px dotted #3498DB;
+	cursor: pointer;
+}
+.attestor {
+	clear: both;
+	font-size: 11px;
+	line-height: 15px;
+}
+.help-text {
+	font-size: 13px;
+	line-height: 15px;
+	color: #aEaFc1;
+}
+span.capitalize {
+	display: inline-block;
+}
+span.capitalize:first-letter {
+	text-transform: uppercase;
+}
+form[name="arbiterContractForm"] {
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	line-height: 26px;
+}
+.title {
+	margin-top: 15px;
+	margin-bottom: 0;
+	display: inline-block;
+}
+
+form[name="arbiterContractForm"] span[selectable] {
+	display: inline-block;
+    cursor: pointer;
+    color: #000000;
+    font-size: 16px;
+    background: #FFF;
+    text-transform: none;
+    border-radius: 0px;
+    border: 1px solid transparent;
+    border-bottom: 1px dashed #000;
+    padding: 0px 3px;
+    line-height: 25px;
+    transition: all .3s;
+}
+
+form[name="arbiterContractForm"] input.inline {
+    display: inline;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    height: 25px;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    font-size: 16px;
+    background: transparent;
+    border-radius: 0px;
+    margin-top: 3px;
+    padding: 0px 3px;
+    transition: all .3s;
+}
+
+form[name="arbiterContractForm"] input.inline:focus {
+	border-bottom: 1px solid #4A90E2;
+	border-radius: 0px;
+}
+
+form[name="arbiterContractForm"] .f-dropdown li a {
+  text-transform: none;
+}
+.description.center {
+	display: inline-block;
+	width: 100%;
+}
+.textarea-with-info {
+	margin-bottom: 5px;
+}
+</style>
+<nav class="tab-bar">
+  <section class="left-small">
+	<a ng-click="cancel()" class="p10">
+	  <span class="text-close" translate>Close</span>
+	</a>
+  </section>
+  <section class="middle tab-bar-section">
+	<h1 class="title ellipsis" translate ng-style="{'color': index.backgroundColor}">
+	  Offer contract with arbitration
+	</h1>
+  </section>
+</nav>
+
+
+<div class="modal-content fix-modals-touch">
+	<form name="arbiterContractForm">
+		<span class="person title" translate>Me</span>
+		<div class="name p10l">
+			<span class="first_name">{{my_first_name}}</span>
+			<span class="last_name">{{my_last_name}}</span>
+			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
+			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<li class="tumbler m15t">
+				<span translate class="m10r side" ng-class="{active: !form.me_is_payer}">Seller</span>
+		        <switch ng-model="form.me_is_payer" class="blue"></switch>
+		        <span translate class="m10l side" ng-class="{active: form.me_is_payer}">Buyer</span>
+		    </li>
+		    <span class="description center" ng-show="form.me_is_payer" translate>You will pay {{peer_device_name}} for their services.</span>
+		    <span class="description center" ng-show="!form.me_is_payer" translate>{{peer_device_name}} will pay for your services.</span>
+		</div>
+		<span class="person title" translate>Peer</span>
+		<div class="name p10l">
+			<span class="first_name">{{peer_first_name}}</span>
+			<span class="last_name">{{peer_last_name}}</span>
+			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
+			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+		</div>
+		<br>
+		<div class="person title" translate>Amount:</div><br>
+		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="{{form.asset == 'base' ? (10000 / unitValue) : 0}}" ng-attr-placeholder="{{'10000'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+		<span selectable="#myasset" dropdown-toggle="#myasset" data-model="form" data-prop="asset"></span>
+		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
+		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
+			<a><span >{{info.displayName|translate}}</span></a>
+		  </li>
+		</ul>  <span class="min_error has-error size-12" ng-show="arbiterContractForm.amount.$error.min">Min amount is 10 kB.</span>
+		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset.</div>
+
+		<div class="title" translate>Arbiter address</div>
+		<div class="help-text"><a class="help-link" ng-click="openExternalLink('https://obyte.org/where-to-get-arbiters')" translate>Where to get arbiter address?</a></div>
+		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress"/>
+
+		<span class="title" translate>Title of contract</span>
+		<input type="text" name="title" required ng-model="form.contractTitle"/>
+		
+		<div class="title" translate>Text</div>
+		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n" class="textarea-with-info"></textarea>
+		<div class="help-text"><span translate>Markdown supported:</span> <a class="help-link" ng-click="openExternalLink('https://guides.github.com/features/mastering-markdown/')" translate>markdown cheatsheet</a></div>
+		<br>
+		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
+		<br>
+		<div class="contact_info title" translate>My contacts: <span class="description" translate>(optional)</span></div>
+		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.contactInfo" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
+		<div class="help-text" translate>They will be shared with peer and arbiter as a backup method to reach you.</div>
+
+		<div ng-if="index.m < index.n && index.m > 1">
+			<h3 class="title" translate>Cosigners</h3>
+			<div class="row columns large-12 medium-12">
+				<cosigners></cosigners>
+			</div>
+		</div>
+		
+		<div ng-if="error" class="row columns">
+			<span class="has-error size-12">
+				{{error|translate}}
+			</span>
+		</div>
+		
+		<div class="m20t large-12 large-centered row columns">
+			<button type="button" class="button black round expand" ng-disabled="arbiterContractForm.$invalid || bWorking || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+				Offer Contract
+			</button>
+
+			<div translate class="attestor">You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</div><br><br>
+		</div>
+	</form>
+</div>

@@ -227,6 +227,7 @@ ul.button-group li {
 ul.button-group li.selected {
   color: #fff;
   background-color: #1560BD;
+  box-shadow: inset 0 0 5px black;
 }
 
 .modal-content ul.subwallets {
@@ -2064,6 +2065,10 @@ form#contacts-order {
   border: 1px solid rgb(233, 233, 233);
   box-shadow: 0px 1px 2.6px rgba(181, 181, 181, 0.37);
   border-radius: 9px;
+  max-width: 240px;
+}
+.f-dropdown.drop-top {
+  max-width: 240px;	
 }
 
 .f-dropdown li {
@@ -2100,6 +2105,32 @@ form#contacts-order {
   line-height: 17px;
 }
 
+.m10l {
+	margin-left: 10px;
+}
+.tumbler {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+}
+.tumbler .switch {
+	background: #F5F5F5;
+}
+.tumbler .switch.checked {
+	background: #F5F5F5;
+	border-color: #dfdfdf;
+}
+.tumbler .switch small {
+	background: #358BEA;
+}
+.tumbler .side {
+	color: #74889C;
+	line-height: 30px;
+}
+.tumbler .side.active {
+	color: #2C3E50;
+}
+
 .tab-view#chat {
   background: #f0f4f9;
 }
@@ -2115,6 +2146,35 @@ form#contacts-order {
   margin-right: 8px;
 }
 
+.prosaic_contract_offer {
+	font-style: italic;
+}
+
+.arbiter_contract_offer {
+	font-style: italic;
+}
+.bubble a.arbiter_contract_event, .bubble.event a {
+	font-style: italic;
+	color: #008CBA;
+}
+.bubble.event {
+	background: transparent;
+	border: 1px solid #0B93F6;
+	color: #2C3E50;
+}
+.bubble.event:before {
+	display: none;
+}
+.bubble.event:after{
+	content: "system";
+	right: -20px;
+	background: transparent;
+	left: initial;
+	font-size: 8px;
+	color: grey;
+	width: 32px;
+	bottom: -10px;
+}
 
 .tab-view#chat .line-b:hover {
   box-shadow: 0px 4px 9px rgba(171, 194, 224, 0.38);
@@ -2135,4 +2195,17 @@ form#contacts-order {
     border: 1px solid #4A90E2;
     transform: none;
   }
+}
+
+.emoji {
+	font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol;
+	font-style: normal;
+	font-weight: normal;
+}
+@media
+not screen and (min-device-pixel-ratio: 2),
+not screen and (min-resolution: 192dpi) {
+	.emoji {
+	  margin-right: 5px;
+	}
 }
