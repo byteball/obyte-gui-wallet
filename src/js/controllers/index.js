@@ -1391,6 +1391,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     self.unitName = config.unitName;
     self.bbUnitName = config.bbUnitName;
   
+	var currentAsset = self.arrBalances.length > 0 ? self.arrBalances[self.assetIndex || 0].asset : null;
+	console.log('current asset', currentAsset);
+	
 	self.assetsSet = {};
 	self.arrBalances = [];
 	for (var asset in assocBalances){
@@ -1466,6 +1469,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		return 0;
 	});
     self.assetIndex = self.assetIndex || 0;
+	if (currentAsset) {
+		var assetIndex = lodash.findIndex(self.arrBalances, { asset: currentAsset });
+		console.log('asset index was ' + self.assetIndex + ', became ' + assetIndex);
+		if (assetIndex >= 0)
+			self.assetIndex = assetIndex;
+	}
 	if (!self.arrBalances[self.assetIndex]) // if no such index in the subwallet, reset to bytes
 		self.assetIndex = 0;
 	if (!self.shared_address)
