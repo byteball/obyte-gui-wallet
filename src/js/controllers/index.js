@@ -1457,7 +1457,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		var usdDiff = b1.usdValue - b2.usdValue;
 		if (usdDiff !== 0)
 			return -usdDiff;
-		var balDiff = b1.total / Math.pow(10, b1.decimals) - b2.total / Math.pow(10, b2.decimals);
+		var balDiff = b1.total / Math.pow(10, b1.decimals || 0) - b2.total / Math.pow(10, b2.decimals || 0);
 		if (balDiff !== 0)
 			return -balDiff;
 		var name1 = b1.name || '';
@@ -1472,7 +1472,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (currentAsset) {
 		var assetIndex = lodash.findIndex(self.arrBalances, { asset: currentAsset });
 		console.log('asset index was ' + self.assetIndex + ', became ' + assetIndex);
-		if (assetIndex >= 0)
+		if (assetIndex >= 0 && assetIndex !== self.assetIndex)
 			self.assetIndex = assetIndex;
 	}
 	if (!self.arrBalances[self.assetIndex]) // if no such index in the subwallet, reset to bytes
