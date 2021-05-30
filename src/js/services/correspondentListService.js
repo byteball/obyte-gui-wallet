@@ -67,10 +67,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load){
+	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type){
 		if (!root.messageEventsByCorrespondent[peer_address] && !skip_history_load) {
 			return loadMoreHistory({device_address: peer_address}, function() {
-				addMessageEvent(bIncoming, peer_address, body, message_counter, true);
+				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type);
 			});
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -94,7 +94,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			bIncoming: bIncoming,
 			message: body,
 			timestamp: Math.floor(Date.now() / 1000),
-			message_counter: message_counter
+			message_counter: message_counter,
+			type: type
 		};
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
@@ -116,7 +117,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function insertMsg(messages, msg_obj) {
 		for (var i = messages.length-1; i >= 0 && msg_obj.message_counter; i--) {
 			var message = messages[i];
-			if (message.message_counter === undefined || message.message_counter && msg_obj.message_counter > message.message_counter) {
+			if (!message.message_counter || message.message_counter && msg_obj.message_counter > message.message_counter) {
 				messages.splice(i+1, 0, msg_obj);
 				return;
 			}
@@ -133,7 +134,38 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	var url_regexp = /\bhttps?:\/\/[\w+&@#/%?=~|!:,.;-]+[\w+&@#/%=~|-]/g;
 
 	function paymentDropdown(address) {
-		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')">'+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')">'+gettext('Offer a contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')">'+gettext('Offer prosaic contract')+'</a></li></ul>';
+		return '<a dropdown-toggle="#pop'+address+'">'+address+'</a><ul id="pop'+address+'" class="f-dropdown pop-custom-dropdown" style="left:0px" data-dropdown-content><li><a ng-click="sendPayment(\''+address+'\')"><i class="icon-paperplane size-16"></i> '+gettext('Pay to this address')+'</a></li><li><a ng-click="offerContract(\''+address+'\')"><i class="svg-icon icon-smart-contract"></i> '+gettext('Offer smart contract')+'</a></li><li><a ng-click="offerProsaicContract(\''+address+'\')"><i class="svg-icon icon-contract"></i> '+gettext('Offer prosaic contract')+'</a></li><li><a ng-click="offerArbiterContract(\''+address+'\')"><i class="svg-icon icon-scales"></i> '+gettext('Offer contract with arbitration')+'</a></li></ul>';
+	}
+
+	function getContractStatusEmoji(status, me_is_winner) {
+		switch (status) {
+			case "accepted":
+				return "✔️";
+			case "declined":
+				return "✖️";
+			case "cancelled":
+				return "❌";
+			case "signed":
+				return "🖋";
+			case "paid":
+				return "💰";
+			case "in_dispute":
+			case "in_appeal":
+				return "⚖️";
+			case "dispute_resolved":
+				if (me_is_winner)
+					return "⚖️✅";
+				else
+					return "⚖️❌";
+			case "appeal_approved":
+				return "⚖️✅";
+			case "appeal_declined":
+				return "⚖️❌";
+			case "completed":
+				return "✅";
+			default:
+				return "";
+		}
 	}
 
 	function highlightActions(text, arrMyAddresses){
@@ -214,6 +246,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPrivateProfile)
 				return '[invalid profile]';
 			return toDelayedReplacement('<a ng-click="acceptPrivateProfile(\''+privateProfileJsonBase64+'\')">[Profile of '+escapeHtml(objPrivateProfile._label)+']</a>');
+		}).replace(/\[(.+?)\]\(pairing-code:(.+?)\)/g, function(str, description, isPermanent){
+			isPermanent = isPermanent === "true";
+			return toDelayedReplacement('<a ng-click="sendPairingCode('+(isPermanent ? 'true' : 'false') + ')">[Send '+(isPermanent?'permanent ':'')+'pairing code]</a>');
 		}).replace(/\[(.+?)\]\(profile-request:([\w,]+?)\)/g, function(str, description, fields_list){
 			return toDelayedReplacement('<a ng-click="choosePrivateProfile(\''+escapeQuotes(fields_list)+'\')">[Request for profile]</a>');
 		}).replace(/\[(.+?)\]\(sign-message-request(-network-aware)?:(.+?)\)/g, function(str, description, network_aware, message_to_sign){
@@ -243,6 +278,36 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', true)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+		}).replace(/\(arbiter-contract-offer:(.+?)\)|\(arbiter-contract-event:(.+?)\)/g, function(str, contractJsonBase64offer, contractJsonBase64event){
+			var type = contractJsonBase64offer ? 'offer' : 'event';
+			var contractJsonBase64 = contractJsonBase64offer || contractJsonBase64event;
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			params[++param_index] = objContract.hash;
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'"><span class="emoji">' + getContractStatusEmoji(objContract.status, objContract.me_is_winner) + '</span> Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+'</a>');
+		}).replace(/\(arbiter-dispute:(.+?)\)/g, function(str, disputeJsonBase64){
+			if (!ValidationUtils.isValidBase64(disputeJsonBase64))
+				return null;
+			var strJSON = Buffer.from(disputeJsonBase64, 'base64').toString('utf8');
+			try{
+				var objDispute = JSON.parse(strJSON);
+			}
+			catch(e){
+				return '[invalid dispute request]';
+			}
+			params[++param_index] = objDispute.contract_hash;
+			params[++param_index] = objDispute.contract_hash+'\n2.5\nOPTIONAL COMMENT FOR CONTRACT \"' + objDispute.title + '"';
+			var asset_name = "GB";
+			if (objDispute.service_fee_asset === "base") {
+			} else if (objDispute.service_fee_asset === "blackbytes" || objDispute.service_fee_asset === constants.BLACKBYTES_ASSET) {
+				asset_name = "GBB";
+			} else if (profileService.assetMetadata[objDispute.service_fee_asset]) {
+				asset_name = profileService.assetMetadata[objDispute.service_fee_asset].name;
+			} else {
+				asset_name = objDispute.service_fee_asset || "GB";
+			} 
+			return toDelayedReplacement('<a ng-click="showDisputeRequest(messageEvent.message.params[' + (param_index-1) + '])" class="prosaic_contract_offer">Dispute request for contract "'+escapeHtml(objDispute.title)+'" [' + escapeHtml(objDispute.contract_hash.substr(0, 8)) + '...]</a><br><br><a ng-click="suggestCommand(messageEvent.message.params[' + param_index + '])" class="suggest-command">Set my service fee for this contract with a comment, format:\nCONTRACT_HASH\nAMOUNT\nOPTIONAL COMMENT FOR PLAINTIFF</a>,<br> where AMOUNT is in ' + escapeHtml(asset_name) + '.<br>Please mention the contract title in your optional comment.');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -342,8 +407,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
-		if (!ValidationUtils.isValidAddress(objProsaicContract.my_address) || !objProsaicContract.text.length)
-			return null;
 		return objProsaicContract;
 	}
 	
@@ -469,6 +532,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objContract)
 				return '[invalid contract]';
 			return toDelayedReplacement('<a ng-click="showProsaicContractOffer(\''+contractJsonBase64+'\', false)" class="prosaic_contract_offer">[Prosaic contract '+(objContract.status ? escapeHtml(objContract.status) : 'offer')+': '+escapeHtml(objContract.title)+']</a>');
+		}).replace(/\(arbiter-contract-offer:(.+?)\)|\(arbiter-contract-event:(.+?)\)/g, function(str, contractJsonBase64offer, contractJsonBase64event){
+			var type = contractJsonBase64offer ? 'offer' : 'event';
+			var contractJsonBase64 = contractJsonBase64offer || contractJsonBase64event;
+			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
+			if (!objContract)
+				return '[invalid contract]';
+			params[++param_index] = objContract.hash;
+			return toDelayedReplacement('<a ng-click="showArbiterContractOffer(messageEvent.message.params[' + param_index + '])" class="arbiter_contract_'+type+'"><span class="emoji">' + getContractStatusEmoji(objContract.status, objContract.me_is_winner) + '</span> Contract with arbitration '+(type=='offer' ? 'offer' : escapeHtml(objContract.status))+': '+escapeHtml(objContract.title)+'</a>');
 		});
 		for (var key in assocReplacements)
 			text = text.replace(key, assocReplacements[key]);
@@ -706,7 +777,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						messageEvents.unshift({type: 'system', bIncoming: false, message: "<span class=\"system-span\">" + last_msg_ts.toDateString() + "</span>", timestamp: Math.floor(msg_ts.getTime() / 1000)});	
 					}
 					last_msg_ts = msg_ts;
-					if (message.type == "text") {
+					if (message.type == "text" || message.type == "event") {
 						if (message.is_incoming) {
 							message.message = highlightActions(escapeHtml(message.message), arrMyAddresses);
 							message.message.text = text2html(message.message.text);
@@ -780,51 +851,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 
-	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
-		var privateProfile = require('ocore/private_profile.js');
-		scope.my_name = "NAME UNKNOWN";
-		scope.my_attestor = {};
-		scope.peer_name = "NAME UNKNOWN";
-		scope.peer_attestor = {};
-		async.series([function(cb2) {
-			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				if (profile.first_name && profile.last_name) {
-					scope.peer_name = profile.first_name +' '+ profile.last_name;
-					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				}
-				cb2();
-			});
-		}, function(cb2) {
-			privateProfile.getFieldsForAddress(my_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				if (profile.first_name && profile.last_name) {
-					scope.my_name = profile.first_name +' '+ profile.last_name;
-					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				}
-				cb2();
-			});
-		}, function(cb2) {
-			if (Object.keys(scope.peer_attestor).length) return cb2();
-			privateProfile.getFieldsForAddress(peer_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				if (profile.name) {
-					scope.peer_name = profile.name;
-					scope.peer_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				}
-				cb2();
-			});
-		}, function(cb2) {
-			if (Object.keys(scope.my_attestor).length) return cb2();
-			privateProfile.getFieldsForAddress(my_address, ["name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address}), function(profile) {
-				if (profile.name) {
-					scope.my_name = profile.name;
-					scope.my_attestor = {address: profile.attestor_address, attestation_unit: profile.attestation_unit, trusted: !!lodash.find(configService.getSync().realNameAttestorAddresses, function(attestor){return attestor.address == profile.attestor_address})}
-				}
-				cb2();
-			});
-		}], function(){
-			cb();
-		});
-	}
-
 	function openInExplorer(unit) {
 		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
@@ -890,8 +916,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, bToSharedAddress){
-		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
+	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, type){
+		if (type=="watched")
+			return;
+		var title = type=="shared" ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
 		device.readCorrespondent(peer_address, function(correspondent){
@@ -943,8 +971,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								[addresses],
 								rows => {
 									var row = rows[0];
-									if (!row)
+									if (!row) {
+										delete $rootScope.newPaymentsCount[unit];
 										return console.log("failed to find our wallet for payment in unit " + unit);
+									}
 									$rootScope.newPaymentsDetails[unit] = {
 										receivedAddress: row.shared_address,
 										walletAddress: row.address,
@@ -1027,8 +1057,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.addMessageEvent = addMessageEvent;
 	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
 	root.signMessageFromAddress = signMessageFromAddress;
-	root.populateScopeWithAttestedFields = populateScopeWithAttestedFields;
 	root.openInExplorer = openInExplorer;
+	root.getContractStatusEmoji = getContractStatusEmoji;
 	
 	root.list = function(cb) {
 	  device.readCorrespondents(function(arrCorrespondents){
@@ -1074,185 +1104,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.currentCorrespondent = null;
 	root.messageEventsByCorrespondent = {};
 	root.assocLastMessageDateByCorrespondent = {};
-
-	root.listenForProsaicContractResponse = function(contracts) {
-		var prosaic_contract = require('ocore/prosaic_contract.js');
-		var storage = require('ocore/storage.js');
-		var fc = profileService.focusedClient;
-
-		var showError = function(msg) {
-			$rootScope.$emit('Local/ShowErrorAlert', msg);
-		}
-
-		var start_listening = function(contracts) {
-			contracts.forEach(function(contract){
-				console.log('listening for prosaic contract response ' + contract.hash);
-
-				var sendUnit = function(accepted, authors){
-					if (!accepted) {
-						return;
-					}
-
-					if (fc.isPrivKeyEncrypted()) {
-						profileService.unlockFC(null, function(err) {
-							if (err){
-								showError(err);
-								return;
-							}
-							sendUnit(accepted, authors);
-						});
-						return;
-					}
-					
-					root.readLastMainChainIndex(function(err, last_mci){
-						if (err){
-							showError(err);
-							return;
-						}
-						var arrDefinition = 
-							['and', [
-								['address', contract.my_address],
-								['address', contract.peer_address]
-							]];
-						var assocSignersByPath = {
-							'r.0': {
-								address: contract.my_address,
-								member_signing_path: 'r',
-								device_address: device.getMyDeviceAddress()
-							},
-							'r.1': {
-								address: contract.peer_address,
-								member_signing_path: 'r',
-								device_address: contract.peer_device_address
-							}
-						};
-						require('ocore/wallet_defined_by_addresses.js').createNewSharedAddress(arrDefinition, assocSignersByPath, {
-							ifError: function(err){
-								showError(err);
-							},
-							ifOk: function(shared_address){
-								composeAndSend(shared_address);
-							}
-						});
-					});
-					
-					// create shared address and deposit some bytes to cover fees
-					function composeAndSend(shared_address){
-						prosaic_contract.setField(contract.hash, "shared_address", shared_address);
-						device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
-							hash: contract.hash,
-							field: "shared_address",
-							value: shared_address
-						});
-						contract.cosigners.forEach(function(cosigner){
-							if (cosigner != device.getMyDeviceAddress())
-								prosaic_contract.share(contract.hash, cosigner);
-						});
-
-						profileService.bKeepUnlocked = true;
-						var opts = {
-							asset: "base",
-							to_address: shared_address,
-							amount: prosaic_contract.CHARGE_AMOUNT,
-							arrSigningDeviceAddresses: contract.cosigners
-						};
-						fc.sendMultiPayment(opts, function(err, unit){
-							// if multisig, it might take very long before the callback is called
-							//self.setOngoingProcess();
-							profileService.bKeepUnlocked = false;
-							$rootScope.sentUnit = unit;
-							if (err){
-								if (err.match(/device address/))
-									err = "This is a private asset, please send it only by clicking links from chat";
-								if (err.match(/no funded/))
-									err = "Not enough spendable funds, make sure all your funds are confirmed";
-								showError(err);
-								return;
-							}
-							$rootScope.$emit("NewOutgoingTx");
-
-							// post a unit with contract text hash and send it for signing to correspondent
-							var value = {"contract_text_hash": contract.hash};
-							var objMessage = {
-								app: "data",
-								payload_location: "inline",
-								payload_hash: objectHash.getBase64Hash(value, storage.getMinRetrievableMci() >= constants.timestampUpgradeMci),
-								payload: value
-							};
-
-							fc.sendMultiPayment({
-								arrSigningDeviceAddresses: contract.cosigners.length ? contract.cosigners.concat([contract.peer_device_address]) : [],
-								shared_address: shared_address,
-								messages: [objMessage]
-							}, function(err, unit) { // can take long if multisig
-								//indexScope.setOngoingProcess(gettext('proposing a contract'), false);
-								$rootScope.sentUnit = unit;
-								if (err) {
-									showError(err);
-									return;
-								}
-								prosaic_contract.setField(contract.hash, "unit", unit);
-								device.sendMessageToDevice(contract.peer_device_address, "prosaic_contract_update", {
-									hash: contract.hash,
-									field: "unit",
-									value: unit
-								});
-								var testnet = constants.version.match(/t$/) ? 'testnet' : '';
-								var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
-								var text = "unit with contract hash for \""+ contract.title +"\" was posted into DAG " + url;
-								addMessageEvent(false, contract.peer_device_address, formatOutgoingMessage(text));
-								device.sendMessageToDevice(contract.peer_device_address, "text", text);
-							});
-						});
-					}
-				};
-				eventBus.once("prosaic_contract_response_received" + contract.hash, sendUnit);
-			});
-		}
-
-		if (contracts)
-			return start_listening(contracts);
-		prosaic_contract.getAllByStatus("pending", function(contracts){
-			start_listening(contracts);
-		});
-	}
-	root.listenForProsaicContractResponse();
-
-	root.readLastMainChainIndex = function(cb){
-		if (require('ocore/conf.js').bLight){
-			require('ocore/network.js').requestFromLightVendor('get_last_mci', null, function(ws, request, response){
-				response.error ? cb(response.error) : cb(null, response);
-			});
-		}
-		else
-			require('ocore/storage.js').readLastMainChainIndex(function(last_mci){
-				cb(null, last_mci);
-			})
-	}
-  /*
-  root.remove = function(addr, cb) {
-	var fc = profileService.focusedClient;
-	root.list(function(err, ab) {
-	  if (err) return cb(err);
-	  if (!ab) return;
-	  if (!ab[addr]) return cb('Entry does not exist');
-	  delete ab[addr];
-	  storageService.setCorrespondentList(fc.credentials.network, JSON.stringify(ab), function(err) {
-		if (err) return cb('Error deleting entry');
-		root.list(function(err, ab) {
-		  return cb(err, ab);
-		});
-	  });
-	}); 
-  };
-
-  root.removeAll = function() {
-	var fc = profileService.focusedClient;
-	storageService.removeCorrespondentList(fc.credentials.network, function(err) {
-	  if (err) return cb('Error deleting correspondentList');
-	  return cb();
-	});
-  };*/
 
 	return root;
 });

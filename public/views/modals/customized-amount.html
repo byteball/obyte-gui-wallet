@@ -16,10 +16,10 @@
   <h4 class="title m0" translate>QR Code</h4>
   <ul class="no-bullet size-14 m0">
     <li class="line-b p10 oh text-center">
-      <qrcode size="220" version="6" data="{{protocol}}:{{addr + '?amount=' + amountInSmallestUnits + asset_param}}"></qrcode>
+      <qrcode size="220" data="{{qr_string}}" version="{{qr_version}}"></qrcode>
       <div class="m10t text-center" ng-show="isCordova">
         <span class="button outline dark-gray tiny round"
-          ng-click="shareAddress(protocol + ':' + addr + '?amount=' + amountInSmallestUnits + asset_param)">
+          ng-click="shareAddress(qr_string)">
           <i class="fi-share"></i>
           <span translate>Share address</span>
         </span>

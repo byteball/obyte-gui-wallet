@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
 
 		var self = this;
 		var home = this;
@@ -393,7 +393,7 @@ angular.module('copayApp.controllers')
 
 				var walletGeneral = require('ocore/wallet_general.js');
 				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-				walletGeneral.readMyAddresses(function(arrMyAddresses) {
+				walletGeneral.readMyPersonalAndSharedAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
 						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
 							$scope.humanReadableDefinition = correspondentListService.getHumanReadableDefinition(arrDefinition, arrMyAddresses, [], assocPeerNamesByAddress, true);
@@ -559,11 +559,13 @@ angular.module('copayApp.controllers')
 					if (!asset)
 						throw Error("no asset");
 					var amountInSmallestUnits = profileService.getAmountInSmallestUnits(amount, asset);
+					var asset_param = (asset === 'base') ? '' : '&asset=' + encodeURIComponent(asset);
 					$timeout(function() {
 						$scope.customizedAmountUnit =
 							amount + ' ' + ((asset === 'base') ? $scope.unitName : (asset === constants.BLACKBYTES_ASSET ? $scope.bbUnitName : (assetInfo.name || 'of ' + asset)));
 						$scope.amountInSmallestUnits = amountInSmallestUnits;
-						$scope.asset_param = (asset === 'base') ? '' : '&asset=' + encodeURIComponent(asset);
+						$scope.qr_string = $scope.protocol + ":" + $scope.addr + '?amount=' + amountInSmallestUnits + asset_param;
+						$scope.qr_version = indexScope.determineQRcodeVersionFromString( $scope.qr_string );
 					}, 1);
 				};
 
@@ -1009,12 +1011,15 @@ angular.module('copayApp.controllers')
 		}
 
 		function checkIfAAAndUpdateResults(address) {
+			self.bEstimatingAAResults = true;
 			readAADefinitionsWithBaseDefinitions(address, function (rows) {
 				self.aa_destinations = rows;
 				if (rows.length > 0) {
 					updateAADocs();
 					return updateAAResults();
 				}
+				else
+					self.bEstimatingAAResults = false;
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -1266,6 +1271,7 @@ angular.module('copayApp.controllers')
 			}
 			console.log("trigger", trigger);
 			self.aa_dry_run_error = null;
+			self.bEstimatingAAResults = true;
 			dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, function (err, arrResponses) {
 				self.aa_dry_run_error = err;
 				var results = [];
@@ -1275,6 +1281,7 @@ angular.module('copayApp.controllers')
 				self.aa_state_changes = state_changes;
 				self.responseVars = responseVars;
 				if (err) {
+					// bEstimatingAAResults stays true
 					return $timeout(function() {
 						$scope.$digest();
 					});
@@ -1344,6 +1351,7 @@ angular.module('copayApp.controllers')
 				});
 				if (results.length === 0 && state_changes.length === 0 && responseVars.length === 0)
 					results.push(gettext("none"));
+				self.bEstimatingAAResults = false;
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -2523,6 +2531,30 @@ angular.module('copayApp.controllers')
 				$scope.exchangeRates = network.exchangeRates;
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
+				var storage = require('ocore/storage.js');
+				storage.readUnit(btx.unit, function (objUnit) {
+					if (!objUnit)
+						throw Error("unit " + btx.unit + " not found");
+					var dataMessage = objUnit.messages.find(m => m.app === 'data');
+					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
+					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
+					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
+					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					if (dataMessage)
+						btx.dataJson = JSON.stringify(dataMessage.payload, null, 2);
+					if (dataFeedMessage)
+						btx.dataFeedJson = JSON.stringify(dataFeedMessage.payload, null, 2);
+					if (attestationMessage)
+						btx.attestationJson = JSON.stringify(attestationMessage.payload, null, 2);
+					if (profileMessage)
+						btx.profileJson = JSON.stringify(profileMessage.payload, null, 2);
+					if (definitionMessage)
+						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
+					$timeout(function () {
+						$scope.$apply();
+					});
+				});
+
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
 						var indivisible_asset = require('ocore/indivisible_asset');
@@ -2627,10 +2659,10 @@ angular.module('copayApp.controllers')
 
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						if (indexScope.shared_address) {
-							walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], null, success);
+							walletDefinedByAddresses.forwardPrivateChainsToOtherMembersOfAddresses(arrCosignerChains, [indexScope.shared_address], true, null, success);
 						}
 						else {
-							wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], null, success);
+							wallet_defined_by_keys.forwardPrivateChainsToOtherMembersOfWallets(arrCosignerChains, [fc.credentials.walletId], true, null, success);
 						}
 					});
 				};
