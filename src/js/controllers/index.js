@@ -1472,7 +1472,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (currentAsset) {
 		var assetIndex = lodash.findIndex(self.arrBalances, { asset: currentAsset });
 		console.log('asset index was ' + self.assetIndex + ', became ' + assetIndex);
-		if (assetIndex >= 0)
+		if (assetIndex >= 0 && assetIndex !== self.assetIndex)
 			self.assetIndex = assetIndex;
 	}
 	if (!self.arrBalances[self.assetIndex]) // if no such index in the subwallet, reset to bytes
