@@ -239,7 +239,7 @@ form[name="prosaicContractForm"] {
 			<span ng-click="dispute()" translate class="validation_check" ng-class="{disabled: loading}">open dispute</span>
 		</div>
 		<div class="large-12 medium-12 small-12 columns description m10t" ng-hide="status === 'in_dispute' || status === 'dispute_resolved' || status === 'in_appeal'">
-			<span translate>{{ me_is_payer ? 'If the counterparty refuses to fulfil their obligations' : 'If you have completed your work and the counterparty refuses to release the funds' }}, you can call the arbiter {{arbiter_name}} to resolve dispute. This reveals the contract text to the arbiter who will ask you to pay a fee for their services. Be prepared to provide evidence to prove your point. The arbiter will contact the other party to hear their point of view and evidence. The arbitration process might take a long time.</span>
+			<span translate>{{ me_is_payer ? 'If the counterparty refuses to fulfil their obligations' : 'If you have completed your work and the counterparty refuses to release the funds' }}, you can call the arbiter {{arbiter_name}} to resolve the dispute. This reveals the contract text to the arbiter who will ask you to pay a fee for their services. Be prepared to provide evidence to prove your point. The arbiter will contact the other party to hear their point of view and evidence. The arbitration process might take a long time.</span>
 		</div>
 	</div>
 
@@ -262,7 +262,7 @@ form[name="prosaicContractForm"] {
 				<span class="tu" translate>Appeal to moderator</span>
 			</button>
 			<div class="large-12 medium-12 small-12 columns description m10t">
-				<span translate>If you think that arbiter's decision is incorrect, you can appeal it. ArbStore moderator will look into this case and if they decide that the arbiter's decision was incorrect, the ArbStore will pay you a compensation {{appealFeeCompensation}} which will be charged from the arbiter's deposit with the ArbStore. Note that the moderator cannot reverse the arbiter's decision and your counterpart still receives the money from the contract. To pay for the moderator's work, the ArbStore will charge you an appeal fee {{appealFeeCost}}.</span>
+				<span translate>If you think that the arbiter's decision is incorrect, you can appeal it. An ArbStore moderator will look into this case and if they decide that the arbiter's decision was incorrect, the ArbStore will pay you a compensation {{appealFeeCompensation}} which will be charged from the arbiter's deposit with the ArbStore. Note that the moderator cannot reverse the arbiter's decision and your counterpart still receives the money from the contract. To pay for the moderator's work, the ArbStore will charge you an appeal fee {{appealFeeCost}}.</span>
 			</div>
 		</div>
 	</div>
