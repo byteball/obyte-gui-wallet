@@ -720,7 +720,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							arbiter_contract.pay(objContract.hash, profileService.focusedClient, getSigningDeviceAddresses(profileService.focusedClient), 
+							arbiter_contract.pay(objContract.hash, Object.assign(profileService.focusedClient, {spendUnconfirmed: configService.getSync().wallet.spendUnconfirmed}), getSigningDeviceAddresses(profileService.focusedClient), 
 								function(err, objContract, unit) {
 									profileService.bKeepUnlocked = false;
 									$rootScope.sentUnit = unit;
