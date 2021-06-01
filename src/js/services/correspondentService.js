@@ -238,7 +238,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				if (err)
 					return showError(err);
 				$rootScope.sentUnit = contract.unit;
-				var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + contract.unit;
+				var testnet = constants.version.match(/t$/) ? "testnet" : "";
+				var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + contract.unit;
 				var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
 				var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
 				addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
@@ -253,8 +254,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	});
 
 	eventBus.on("arbiter_contract_update", function(objContract, field, value, unit, winner, isPrivate) {
+		var testnet = constants.version.match(/t$/) ? "testnet" : "";
 		if (field === "unit") {
-			var text = 'Unit with contract hash was posted into DAG\nhttps://explorer.obyte.org/#' + value;
+			var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + value;
 			var payer_guidance_text = '\n\nNow you can pay to the contract for seller services by opening the contract window.';
 			var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
@@ -273,17 +275,17 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for wrong arbiter decision.");	
 			}
 			if (value === 'paid') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
+				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
 			}
 			if (value === 'cancelled' || value === 'completed') {
 				if (!isPrivate)
-					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds locked on contract were sent to you.');
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds locked on contract were sent to you.');
 				else
-					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
 			}
 			if (value === 'dispute_resolved') {
 				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
-				text += " Unit with the resolution was posted into DAG: https://explorer.obyte.org/#" + unit + "\n\n" + 
+				text += " Unit with the resolution was posted into DAG: https://"+testnet+"explorer.obyte.org/#" + unit + "\n\n" + 
 					(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 						"You can appeal to arbiter's decision from the contract view.");
 				addContractEventIntoChat(objContract, "event", true, text, winner);
@@ -718,7 +720,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							arbiter_contract.pay(objContract.hash, profileService.focusedClient, getSigningDeviceAddresses(profileService.focusedClient), 
+							arbiter_contract.pay(objContract.hash, Object.assign(profileService.focusedClient, {spendUnconfirmed: configService.getSync().wallet.spendUnconfirmed}), getSigningDeviceAddresses(profileService.focusedClient), 
 								function(err, objContract, unit) {
 									profileService.bKeepUnlocked = false;
 									$rootScope.sentUnit = unit;
@@ -730,7 +732,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										return setError(err);
 									}
 									$rootScope.$emit("NewOutgoingTx");
-									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
+									var testnet = constants.version.match(/t$/) ? "testnet" : "";
+									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
 									$modalInstance.dismiss();
 							});
 						});
@@ -774,7 +777,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										return setError(err);
 									}
 									$rootScope.$emit("NewOutgoingTx");
-									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
 									$modalInstance.dismiss();
 							});
 						});
@@ -822,7 +825,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								}
 								$rootScope.$emit("NewOutgoingTx");
 
-								addContractEventIntoChat(objContract, 'event', false, 'Funds were claimed, unit: ' + 'https://explorer.obyte.org/#' + unit + '.');
+								var testnet = constants.version.match(/t$/) ? "testnet" : "";
+								addContractEventIntoChat(objContract, 'event', false, 'Funds were claimed, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.');
 								
 								// peer will handle completion on his side by his own, checking incoming transactions
 								$modalInstance.dismiss();
