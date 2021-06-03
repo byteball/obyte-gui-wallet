@@ -1393,7 +1393,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   
 	var currentAsset = self.arrBalances.length > 0 ? self.arrBalances[self.assetIndex || 0].asset : null;
 	console.log('current asset', currentAsset);
-	
+
 	self.assetsSet = {};
 	self.arrBalances = [];
 	for (var asset in assocBalances){

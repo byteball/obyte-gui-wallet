@@ -96,12 +96,9 @@
 		<config-file target="*-Info.plist" parent="LSSupportsOpeningDocumentsInPlace">
 			<false/>
 		</config-file>
-		<edit-config target="*-Info.plist" parent="NSCameraUsageDescription" mode="merge" overwrite="true" id="config.xml">
+		<config-file target="*-Info.plist" parent="NSCameraUsageDescription">
 			<string>This app uses camera to scan qr-codes</string>
-		</edit-config>
-		<edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge" overwrite="true">
-			<string>This app uses camera to scan qr-codes</string>
-		</edit-config>
+		</config-file>
     </platform>
 
     <platform name="android">
