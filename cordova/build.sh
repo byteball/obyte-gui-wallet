@@ -109,7 +109,7 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-device-name@1.3.2
 	checkOK
-	cordova plugin add phonegap-plugin-push
+	cordova plugin add https://github.com/havesource/cordova-plugin-push
 	checkOK
 	cordova plugin add cordova-android-referrer
 	checkOK
