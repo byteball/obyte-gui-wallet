@@ -561,7 +561,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					if ($scope.asset) {
 						require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
-							if (assetMetadata || $scope.asset == constants.BLACKBYTES_ASSET) {
+							if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
 								$scope.assetMetadata = assetMetadata[$scope.asset] || {};
 							}
 							db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
