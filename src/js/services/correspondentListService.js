@@ -146,7 +146,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			case "cancelled":
 				return "❌";
 			case "signed":
-				return "🖋";
+				return "📝";
 			case "paid":
 				return "💰";
 			case "in_dispute":
