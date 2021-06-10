@@ -565,6 +565,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
 									profileService.assetMetadata[$scope.asset] = assetMetadata[$scope.asset];
 									$scope.assetMetadata = assetMetadata[$scope.asset] || {};
+									$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
 								}
 								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
 									if (rows.length > 0) {
