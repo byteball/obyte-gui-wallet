@@ -560,20 +560,24 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 
 					if ($scope.asset) {
-						require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
-							if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
-								profileService.assetMetadata[$scope.asset] = assetMetadata[$scope.asset];
-								$scope.assetMetadata = assetMetadata[$scope.asset] || {};
-							}
-							db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
-								if (rows.length > 0) {
-									$scope.isPrivate = true;
+						var updateAssetMetadata = function() {
+							require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+								if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
+									profileService.assetMetadata[$scope.asset] = assetMetadata[$scope.asset];
+									$scope.assetMetadata = assetMetadata[$scope.asset] || {};
 								}
-								$timeout(function() {
-									$rootScope.$apply();
+								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
+									if (rows.length > 0) {
+										$scope.isPrivate = true;
+									}
+									eventBus.once('maybe_new_transactions', updateAssetMetadata);
+									$timeout(function() {
+										$rootScope.$apply();
+									});
 								});
 							});
-						});
+						};
+						updateAssetMetadata();
 					}
 
 					if (objContract.unit) {
