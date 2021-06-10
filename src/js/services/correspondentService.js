@@ -570,7 +570,6 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									if (rows.length > 0) {
 										$scope.isPrivate = true;
 									}
-									eventBus.once('maybe_new_transactions', updateAssetMetadata);
 									$timeout(function() {
 										$rootScope.$apply();
 									});
@@ -578,6 +577,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							});
 						};
 						updateAssetMetadata();
+						eventBus.once('maybe_new_transactions', updateAssetMetadata);
 					}
 
 					if (objContract.unit) {
