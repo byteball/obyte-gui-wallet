@@ -1117,8 +1117,7 @@ angular.module('copayApp.controllers')
 		this.onChanged = function () {
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {
-					if (!$scope.sendPaymentForm.$invalid)
-						lodash.debounce(updateAAResults, 500)();
+					lodash.debounce(updateAAResults, 500)();
 				}, 100);
 		};
 
