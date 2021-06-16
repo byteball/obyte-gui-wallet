@@ -69,7 +69,7 @@ if [ ! -d $PROJECT ]; then
 
 	if [ $CURRENT_OS == "IOS" ]; then
 		echo "${OpenColor}${Green}* Adding IOS platform... ${CloseColor}"
-		cordova platforms add ios@5.1.1
+		cordova platforms add ios
 		checkOK
 	fi
 
@@ -135,6 +135,7 @@ if [ ! -d $PROJECT ]; then
 		cordova plugin add cordova-plugin-ionic-webview
 		checkOK
 	fi
+
 	cordova plugin add cordova-plugin-ionic-keyboard
 	checkOK
 fi
