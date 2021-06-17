@@ -26,6 +26,6 @@
     "markdown-it": "^8.4.2"
   },
   "resolutions": {
-    "angular": "1.6.10"
+    "angular": "1.8.2"
   }
 }

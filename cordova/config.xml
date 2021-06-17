@@ -32,8 +32,10 @@
 	<preference name="KeepRunning" value="false"/>
 	<preference name="android-minSdkVersion" value="19" />
 	<preference name="android-targetSdkVersion" value="28" />
-	<preference name="deployment-target" value="9.0" />
+	<preference name="deployment-target" value="11.0" />
 	<preference name="AndroidLaunchMode" value="singleTask" />
+	<preference name="scheme" value="obyte" />
+	<preference name="hostname" value="localhost" />
 	<splash density="xxhdpi" src="splashscreen@2x~universal~anyany.png"/>
     
     <platform name="ios">

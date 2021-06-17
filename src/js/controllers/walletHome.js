@@ -950,7 +950,8 @@ angular.module('copayApp.controllers')
 					var aa_validation = require('ocore/aa_validation.js');
 					aa_validation.validateAADefinition(arrDefinition, function (err) {
 						self.aa_validation_error = err;
-						form.definition.$setValidity('aaDef', !err);
+						if (form.definition)
+							form.definition.$setValidity('aaDef', !err);
 						$timeout(function() {
 							$scope.$digest();
 						});
@@ -1117,8 +1118,7 @@ angular.module('copayApp.controllers')
 		this.onChanged = function () {
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {
-					if (!$scope.sendPaymentForm.$invalid)
-						lodash.debounce(updateAAResults, 500)();
+					lodash.debounce(updateAAResults, 500)();
 				}, 100);
 		};
 
