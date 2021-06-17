@@ -950,7 +950,8 @@ angular.module('copayApp.controllers')
 					var aa_validation = require('ocore/aa_validation.js');
 					aa_validation.validateAADefinition(arrDefinition, function (err) {
 						self.aa_validation_error = err;
-						form.definition.$setValidity('aaDef', !err);
+						if (form.definition)
+							form.definition.$setValidity('aaDef', !err);
 						$timeout(function() {
 							$scope.$digest();
 						});
