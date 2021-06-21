@@ -127,22 +127,22 @@ _:-ms-fullscreen, :root .main {
 }
 
 .tab-bar-section.middle {
-  left: 4.7rem;
+  left: 4rem;
   display: flex;
-  right: 4.7rem;
+  right: 4rem;
   align-items: center;
   justify-content: center;
   height: 45px;
 }
 
 .left-small {
-  width: 4.7rem;
+  width: 4rem;
 /*  line-height: 2.95rem;*/
   border-right: none;
 }
 
 .right-small {
-  width: 4.7rem;
+  width: 4rem;
   text-align: right;
 /*  line-height: 2.7rem;*/
   border-left: none;

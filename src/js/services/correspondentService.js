@@ -558,6 +558,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.my_contact_info = objContract.my_contact_info;
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
+					$scope.testnet = constants.version.match(/t$/);
 
 					if ($scope.asset) {
 						var updateAssetMetadata = function() {
@@ -683,6 +684,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.accept = function() {
+						if ($scope.bWorking)
+							return;
+						$scope.bWorking = true;
 						if ($scope.form.my_contact_info) {
 							objContract.my_contact_info = $scope.form.my_contact_info;
 							arbiter_contract.setField(objContract.hash, "my_contact_info", $scope.form.my_contact_info);
@@ -690,6 +694,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						}
 
 						correspondentListService.signMessageFromAddress(objContract.title, objContract.my_address, getSigningDeviceAddresses(profileService.focusedClient), false, function (err, signedMessageBase64) {
+							$scope.bWorking = false;
 							if (err)
 								return setError(err);
 							respond("accepted", signedMessageBase64);
@@ -697,7 +702,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.revoke = function() {
+						if ($scope.bWorking)
+							return;
+						$scope.bWorking = true;
 						arbiter_contract.revoke(objContract.hash, function(err, objContract) {
+							$scope.bWorking = false;
 							if (err)
 								return setError(err);
 							addContractEventIntoChat(objContract, 'event', false);
@@ -726,9 +735,13 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
+							if ($scope.bWorking)
+								return;
+							$scope.bWorking = true;
 							arbiter_contract.pay(objContract.hash, Object.assign(profileService.focusedClient, {spendUnconfirmed: configService.getSync().wallet.spendUnconfirmed}), getSigningDeviceAddresses(profileService.focusedClient), 
 								function(err, objContract, unit) {
 									profileService.bKeepUnlocked = false;
+									$scope.bWorking = false;
 									$rootScope.sentUnit = unit;
 									if (err){
 										if (err.match(/device address/))
