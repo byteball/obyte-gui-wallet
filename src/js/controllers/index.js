@@ -141,7 +141,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		});
 	}
 
-	if (isCordova && isMobile.iOS()) {
+	if (isCordova && isMobile.iOS() && (typeof Keyboard !== "undefined")) {
 		Keyboard.hideFormAccessoryBar(false);
 	}
 	
