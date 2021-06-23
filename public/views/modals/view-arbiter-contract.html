@@ -69,9 +69,6 @@ form[name="prosaicContractForm"] {
 	font-size: 32px;
 	overflow-wrap: break-word;
 }
-.contractTitle::first-letter {
-	text-transform: uppercase;
-}
 </style>
 <nav class="tab-bar">
   <section class="left-small">
@@ -88,7 +85,7 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
-	<h1 class="contractTitle enable_text_select" translate>{{title}}</h1>
+	<h1 class="contractTitle enable_text_select" translate>{{title | capitalize}}</h1>
 
 	<h3><span translate>Status</span>: <span class="emoji">{{getContractStatusEmoji(status, me_is_winner)}}</span> <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
 

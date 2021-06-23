@@ -615,4 +615,10 @@ angular.module('copayApp.directives')
   return function(str) {
         return str ? str.split(/[\n\s,;]/).reduce(function(acc, val){return isNaN(+val) ? acc : acc + (+val)}, 0) : 0;
     };
-}]);
+}])
+.filter('capitalize', function() {
+	return function(str) {
+		str = str || '';
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+});
