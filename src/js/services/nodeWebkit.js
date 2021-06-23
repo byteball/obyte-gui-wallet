@@ -33,11 +33,5 @@ angular.module('copayApp.services').factory('nodeWebkit', function nodeWebkitFac
     return clipboard.set(text);
   };
 
-  root.openExternalLink = function(url) {
-    if (!isNodeWebkit()) return;
-    var gui = require('nw.gui');
-    return gui.Shell.openExternal(url);
-  };
-
   return root;
 });
