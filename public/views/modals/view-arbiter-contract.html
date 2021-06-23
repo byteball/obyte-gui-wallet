@@ -88,7 +88,7 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
-	<h1 class="contractTitle" translate>{{title}}</h1>
+	<h1 class="contractTitle enable_text_select" translate>{{title}}</h1>
 
 	<h3><span translate>Status</span>: <span class="emoji">{{getContractStatusEmoji(status, me_is_winner)}}</span> <b translate>{{status}}</b> <span ng-show="status === 'dispute_resolved'">{{(me_is_winner ? "in your favor" : "in favor of your peer")|translate}}</span></h3>
 
@@ -127,8 +127,8 @@ form[name="prosaicContractForm"] {
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact info</h3>
-	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap; line-height: 30px;" translate>Peer contacts:</span><span> {{peer_contact_info}}</span><br>
-	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" translate>My contacts:</span><span> {{my_contact_info}}</span>
+	<span style="width: 100%; word-wrap: break-word;white-space: pre-wrap; line-height: 30px;" translate>Peer contacts:</span><span class="enable_text_select"> {{peer_contact_info}}</span><br>
+	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" translate>My contacts:</span><span class="enable_text_select"> {{my_contact_info}}</span>
 	<div ng-if="!my_contact_info && status == 'pending' && isIncoming">
 		<span translate>My contacts:</span>
 		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.my_contact_info" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>

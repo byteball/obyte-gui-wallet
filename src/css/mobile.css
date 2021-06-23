@@ -133,6 +133,7 @@ _:-ms-fullscreen, :root .main {
   align-items: center;
   justify-content: center;
   height: 45px;
+  padding: 0;
 }
 
 .left-small {
