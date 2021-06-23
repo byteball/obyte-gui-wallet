@@ -51,9 +51,6 @@ form[name="prosaicContractForm"] {
 	font-weight: 700;
 	font-size: 32px;
 }
-.contractTitle::first-letter {
-	text-transform: uppercase;
-}
 .button_text_note {
 	display: block;
 	font-size: 11px;
@@ -74,7 +71,7 @@ form[name="prosaicContractForm"] {
 
 
 <div class="modal-content fix-modals-touch p10">
-	<h1 class="contractTitle enable_text_select" translate>{{title}}</h1>
+	<h1 class="contractTitle enable_text_select" translate>{{title | capitalize}}</h1>
 
 	<h3 class="title" translate>Status: <b translate>{{status}}</b></h3>
 
@@ -103,8 +100,8 @@ form[name="prosaicContractForm"] {
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
 
 	<h3 class="title" translate>Contact Info</h3>
-	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: {{peer_contact_info}}</span><br>
-	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: {{plaintiff_contact_info}}</span>
+	<span class="p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: <span class="enable_text_select">{{peer_contact_info}}</span></span><br>
+	<span class="p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: <span class="enable_text_select">{{plaintiff_contact_info}}</span></span>
 
 	<h3 class="unit"><span translate>Proof of contract signing</span>: <span ng-click="expandProofBlock()" class="validation_check">expand</span></h3>
 	
