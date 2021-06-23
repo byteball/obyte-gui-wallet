@@ -1321,14 +1321,6 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	$scope.suggestCommand = function(command){
 		$scope.message = command;
 	};
-	
-	$scope.openExternalLink = function(url){
-		url = url.replace(/&amp;/g, '&');
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
-		else if (isCordova)
-			cordova.InAppBrowser.open(url, '_system');
-	};
 
 	$scope.editCorrespondent = function() {
 		go.path('correspondentDevices.correspondentDevice.editCorrespondentDevice');

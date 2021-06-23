@@ -2467,14 +2467,7 @@ angular.module('copayApp.controllers')
 			}
 		};
 
-		this.openInExplorer = function(unit) {
-			var testnet = home.isTestnet ? 'testnet' : '';
-			var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
-			if (typeof nw !== 'undefined')
-				nw.Shell.openExternal(url);
-			else if (isCordova)
-				cordova.InAppBrowser.open(url, '_system');
-		};
+		this.openInExplorer = correspondentListService.openInExplorer;
 
 		this.sendAttachedFile = function ($ev) {
 			home.attachedFile = $ev.target.files[0];

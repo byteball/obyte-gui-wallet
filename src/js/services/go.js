@@ -2,7 +2,7 @@
 
 var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
 	var root = {};
 
 	var hideSidebars = function() {
@@ -31,14 +31,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		}
 	};
 
-	root.openExternalLink = function(url, target) {
-		if (nodeWebkit.isDefined()) {
-			nodeWebkit.openExternalLink(url);
-		}
-		else {
-			target = target || '_blank';
-			var ref = window.open(url, target, 'location=no');
-		}
+	root.openExternalLink = function(url) {
+		url = url.replace(/&amp;/g, '&');
+		if (typeof nw !== 'undefined')
+			nw.Shell.openExternal(url);
+		else if (isCordova)
+			cordova.InAppBrowser.open(url, '_system');
 	};
 
 	root.path = function(path, cb) {
@@ -111,9 +109,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		root.path(path);
 	};
 
-	$rootScope.openExternalLink = function(url, target) {
-		root.openExternalLink(url, target);
-	};
+	$rootScope.openExternalLink = root.openExternalLink;
 
 
 	function handleUri(uri){
