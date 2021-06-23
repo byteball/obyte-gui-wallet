@@ -272,7 +272,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(url_regexp, function(str){
 			param_index++;
 			params[param_index] = str;
-			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
+			return toDelayedReplacement('<a ng-click="$root.openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
 		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
@@ -526,7 +526,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		}).replace(url_regexp, function(str){
 			param_index++;
 			params[param_index] = str;
-			return toDelayedReplacement('<a ng-click="openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
+			return toDelayedReplacement('<a ng-click="$root.openExternalLink(messageEvent.message.params[' + param_index + '])" class="external-link">' + str + '</a>');
 		}).replace(/\(prosaic-contract:([\w\/+=]+?)\)/g, function(str, contractJsonBase64){
 			var objContract = getProsaicContractFromJsonBase64(contractJsonBase64);
 			if (!objContract)
@@ -854,10 +854,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function openInExplorer(unit) {
 		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
 		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
-		else if (isCordova)
-			cordova.InAppBrowser.open(url, '_system');
+		go.openExternalLink(url);
 	};
 
 	/*eventBus.on("sign_message_from_address", function(message, address, signingDeviceAddresses) {
