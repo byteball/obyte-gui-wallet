@@ -76,6 +76,7 @@ module.exports = function(grunt) {
           'bower_components/angular-elastic/elastic.js',
           'bower_components/ui-router-extras/release/ct-ui-router-extras.js',
           'bower_components/markdown-it/dist/markdown-it.min.js',
+          'bower_components/chart.js/dist/Chart.min.js'
         ],
         dest: 'public/angular.js'
       },

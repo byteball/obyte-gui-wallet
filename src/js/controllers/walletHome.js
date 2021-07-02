@@ -78,6 +78,56 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
 
+		// donut chart
+		var indexToBalance = [];
+		var chartLabels = [];
+		var chartData = [2, 3, 4, 2, 6, 3, 2, 1, 3];
+		var chart = new Chart(document.getElementById('donut').getContext('2d'), {
+			type: 'doughnut',
+			data: {
+				labels: chartLabels,
+				datasets: [{
+					backgroundColor: [ '#4e6b8e', '#000000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+					data: chartData
+				}],
+			},
+			options: {
+				legend: {display: false},
+				maintainAspectRatio: false,
+				onClick: function(event, elems) {
+					if (!elems.length)
+						return;
+					self.changeAssetIndexSelectorValue(indexToBalance[elems[0]._index]);
+				}
+			}
+		});
+		var updateChart = function() {
+			if ($scope.index.arrBalances.length === 0)
+				return;
+			chartData.length = 0;
+			chartLabels.length = 0;
+			indexToBalance = [];
+			for (var i = 0; i < $scope.index.arrBalances.length; i++) {
+				var balance = $scope.index.arrBalances[i];
+				if (balance.total == 0)
+					return;
+				if (balance.asset === 'base' && $scope.home.exchangeRates.GBYTE_USD) {
+					chartData.push((balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toFixed(2));
+					chartLabels.push(balance.name + ', $');
+				} else if (balance.asset === $scope.index.BLACKBYTES_ASSET) {
+					chartData.push((balance.total / 1e9 * home.exchangeRates.GBB_USD).toFixed(2));
+					chartLabels.push(balance.name + ', $');
+				} else if ($scope.home.exchangeRates[balance.asset + '_USD']) {
+					chartData.push((balance.total / Math.pow(10, index.arrBalances[index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toFixed(2));
+					chartLabels.push(balance.name + ', $');
+				}
+				indexToBalance.push(i);
+			}
+			chart.update();
+		};
+		//$scope.$watchCollection("index.arrBalances", updateChart);
+		//$scope.$watchCollection("home.exchangeRates", updateChart);
+
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
 				window.plugins.mfilechooser.open([], function(uri) {
@@ -1103,14 +1153,14 @@ angular.module('copayApp.controllers')
 					}
 				}
 			} else {
-			  	for(var unit in $rootScope.newPaymentsDetails) {
+				for(var unit in $rootScope.newPaymentsDetails) {
 					var details = $rootScope.newPaymentsDetails[unit];
 					if (details.walletId === indexScope.walletId
 						&& details.walletAddress === details.receivedAddress
 						&& details.asset === asset) {
 						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
-			  	}
+				}
 			}
 			return totalCounts;
 		};
@@ -1123,13 +1173,13 @@ angular.module('copayApp.controllers')
 		};
 
 	this.showDataFieldSuggestions = function (currentElem, index, arrayOfElements) {
-      arrayOfElements.forEach((e, idx)=>{
-        if(index !== idx) {
-          e.suggestionsShown = false;
-        }
-      });
-      arrayOfElements[index].suggestionsShown = true;
-    };
+	  arrayOfElements.forEach((e, idx)=>{
+		if(index !== idx) {
+		  e.suggestionsShown = false;
+		}
+	  });
+	  arrayOfElements[index].suggestionsShown = true;
+	};
 
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
@@ -1850,7 +1900,7 @@ angular.module('copayApp.controllers')
 		this.switchForms = function() {
 			 this.bSendAll = false;
 			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	this.lockAmount = this.send_multiple = false;
+				this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
 				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
@@ -2035,9 +2085,9 @@ angular.module('copayApp.controllers')
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex]) // no balances yet, assume can send
-			 	return true;
+				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	return true;
+				return true;
 			var form = $scope.sendPaymentForm;
 			if (!form || !form.address) // disappeared
 				return true;
