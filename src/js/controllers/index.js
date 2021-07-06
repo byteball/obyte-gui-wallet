@@ -2119,11 +2119,5 @@ function saveFile(name, data, filename) {
 			}
 		}, false);
   })();
-  
-  document.addEventListener('click', function(e){
-	let inside = e.target.closest('.custom-dropdown');
-	if (!inside)
-	  $rootScope.$emit("closeAssetDropDown");
-  });
 
 });
