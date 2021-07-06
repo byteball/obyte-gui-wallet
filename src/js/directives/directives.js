@@ -638,17 +638,17 @@ angular.module('copayApp.directives')
 	}
 })
 .filter('balancesFilter', function() {
-	return function(balances, prefix) {
-		if (!prefix)
+	return function(balances, substring) {
+		if (!substring)
 			return balances;
-		prefix = prefix.toLocaleLowerCase();
+		substring = substring.toLocaleLowerCase();
 		return balances.filter(function(b) {
 			var name = b.name || b.asset;
 			if (b.asset === 'base')
 				name = 'bytes';
 			if (b.asset === constants.BLACKBYTES_ASSET)
 				name = 'blackbytes';
-			return name.toLocaleLowerCase().includes(prefix.toLocaleLowerCase()) || (b.totalStr ? b.totalStr.toLocaleLowerCase().includes(prefix.toLocaleLowerCase()) : false);
+			return name.toLocaleLowerCase().includes(substring) || (b.totalStr ? b.totalStr.toLocaleLowerCase().includes(substring) : false);
 		});
 	}
 });
