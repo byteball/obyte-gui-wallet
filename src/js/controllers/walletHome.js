@@ -448,10 +448,23 @@ angular.module('copayApp.controllers')
 
 		};
 		
+		var clickHandler = function(e){
+			let inside = e.target.closest('.custom-dropdown');
+			if (!inside) {
+				$rootScope.$emit("closeAssetDropDown");
+				e.preventDefault();
+				e.stopImmediatePropagation();
+			}
+		};
 		this.toggleAssetDropwDown = function(state, target) {
 			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
+			document.removeEventListener('click', clickHandler, true);
 			if (self.assetDropDownVisible) {
-				$scope.assetsPrefix = "";
+				$scope.assetSubstring = "";
+				document.addEventListener('click', clickHandler, true);
+
+				if (isCordova)
+					return;
 				$timeout(function() {
 					var elems = (target ? target.parentNode.parentNode : document).querySelectorAll('.search-bar input');
 					if (elems.length)

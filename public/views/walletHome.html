@@ -372,10 +372,10 @@ input.datafeed_input {
                       </div>
                     </button>
                     <ul class="custom-option-container" ng-show="home.assetDropDownVisible">
-                      <li class="search-bar"><input type="text" name="search" ng-model="assetsPrefix" placeholder="{{'search assets' | translate}}" /></li>
+                      <li class="search-bar"><input type="text" name="search" ng-model="assetSubstring" placeholder="{{'search assets' | translate}}" /></li>
                       <li
                         class="custom-option"
-                        ng-repeat="balance in index.arrBalances | balancesFilter:assetsPrefix"
+                        ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
                         ng-click="home.changeAssetIndexSelectorValue(index.arrBalances.indexOf(balance))">
                         {{
                           (balance.asset === 'base'
@@ -391,7 +391,7 @@ input.datafeed_input {
                       </li>
                       <li
                         class="custom-option"
-                        ng-repeat="balance in home.dataAssets | balancesFilter:assetsPrefix"
+                        ng-repeat="balance in home.dataAssets | balancesFilter:assetSubstring"
                         ng-click="home.changeAssetIndexSelectorValue(balance.index)">
                         {{
                           balance.asset
@@ -801,10 +801,10 @@ input.datafeed_input {
               </div>
             </button>
             <ul class="custom-option-container" ng-show="home.assetDropDownVisible">
-           		<li class="search-bar"><input type="text" name="search" ng-model="assetsPrefix" placeholder="{{'search assets' | translate}}" /></li>
+           		<li class="search-bar"><input type="text" name="search" ng-model="assetSubstring" placeholder="{{'search assets' | translate}}" /></li>
               <li
                 class="custom-option"
-                ng-repeat="balance in index.arrBalances | balancesFilter:assetsPrefix"
+                ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
                 ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
