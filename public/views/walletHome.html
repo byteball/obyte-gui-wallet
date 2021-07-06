@@ -349,7 +349,7 @@ input.datafeed_input {
     send
 
     -->
-    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'">
+    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropwDown(false)">
       <div>
         <h4 class="title m0">
             <div class="size-10">
@@ -358,7 +358,7 @@ input.datafeed_input {
                 </span>
                 <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
                   <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
+                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
                       <div style="overflow: hidden;">
                         {{assetIndexSelectorValue >= 0
                           ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
@@ -371,12 +371,12 @@ input.datafeed_input {
                         }}
                       </div>
                     </button>
-                    <ul class="custom-option-container" ng-if="home.assetDropDownVisible">
+                    <ul class="custom-option-container" ng-show="home.assetDropDownVisible">
+                      <li class="search-bar"><input type="text" name="search" ng-model="assetsPrefix" placeholder="{{'search assets' | translate}}" /></li>
                       <li
                         class="custom-option"
-                        ng-repeat="balance in index.arrBalances"
-                        ng-click="home.changeAssetIndexSelectorValue(index.arrBalances.indexOf(balance))"
-                      >
+                        ng-repeat="balance in index.arrBalances | balancesFilter:assetsPrefix"
+                        ng-click="home.changeAssetIndexSelectorValue(index.arrBalances.indexOf(balance))">
                         {{
                           (balance.asset === 'base'
                             ? 'Bytes'
@@ -391,9 +391,8 @@ input.datafeed_input {
                       </li>
                       <li
                         class="custom-option"
-                        ng-repeat="balance in home.dataAssets"
-                        ng-click="home.changeAssetIndexSelectorValue(balance.index)"
-                      >
+                        ng-repeat="balance in home.dataAssets | balancesFilter:assetsPrefix"
+                        ng-click="home.changeAssetIndexSelectorValue(balance.index)">
                         {{
                           balance.asset
                         }}
@@ -792,19 +791,20 @@ input.datafeed_input {
     history
 
     -->
-    <div id="history" class="history tab-view">
+    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropwDown(false)">
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:10px 10px; background-color: #F1F3F5;">
           <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown()">
+            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
               <div style="overflow: hidden;">
                 {{index.assetIndex >= 0 ? (index.arrBalances[index.assetIndex].totalStr ? index.arrBalances[index.assetIndex].totalStr : index.arrBalances[index.assetIndex].total.toLocaleString() + ' of ' + index.arrBalances[index.assetIndex].asset) : ''}}
               </div>
             </button>
-            <ul class="custom-option-container" ng-if="home.assetDropDownVisible">
+            <ul class="custom-option-container" ng-show="home.assetDropDownVisible">
+           		<li class="search-bar"><input type="text" name="search" ng-model="assetsPrefix" placeholder="{{'search assets' | translate}}" /></li>
               <li
                 class="custom-option"
-                ng-repeat="balance in index.arrBalances"
+                ng-repeat="balance in index.arrBalances | balancesFilter:assetsPrefix"
                 ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}

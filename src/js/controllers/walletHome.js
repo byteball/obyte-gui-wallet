@@ -448,8 +448,16 @@ angular.module('copayApp.controllers')
 
 		};
 		
-		this.toggleAssetDropwDown = function() {
-			self.assetDropDownVisible = !self.assetDropDownVisible;
+		this.toggleAssetDropwDown = function(state, target) {
+			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
+			if (self.assetDropDownVisible) {
+				$scope.assetsPrefix = "";
+				$timeout(function() {
+					var elems = (target ? target.parentNode.parentNode : document).querySelectorAll('.search-bar input');
+					if (elems.length)
+						elems[0].focus();
+				});
+			}
 		}
 
 		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {

@@ -2052,6 +2052,15 @@ a.suggest-command {
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.custom-dropdown .search-bar {
+	list-style-type: none;
+	padding: 4px 38px 4px 0.5rem;
+}
+.custom-dropdown .search-bar input{
+	margin: 0;
+	border: 0px;
+}
+
 form#bots-order,
 form#contacts-order {
   display: flex;
