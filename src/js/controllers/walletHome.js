@@ -81,13 +81,25 @@ angular.module('copayApp.controllers')
 		// donut chart
 		var indexToBalance = [];
 		var chartLabels = [];
-		var chartData = [2, 3, 4, 2, 6, 3, 2, 1, 3];
+		var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
 		var chart = new Chart(document.getElementById('donut').getContext('2d'), {
 			type: 'doughnut',
 			data: {
 				labels: chartLabels,
 				datasets: [{
-					backgroundColor: [ '#4e6b8e', '#000000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
+					backgroundColor: function(context) {
+						if (context.dataIndex === 0)
+							return '#4e6b8e';
+						var sum = 0;
+						var currentVal = 0;
+						for (var i = 0; i < chartData.length; i++) {
+							if (i === context.dataIndex)
+								currentVal = Math.ceil(sum + chartData[i] / 2);
+							sum += chartData[i];
+						}
+						return 'hsla(' + (currentVal / sum * 360) + ', 50%, 60%, 1)';
+					},
+					hoverBackgroundColor: [''],
 					data: chartData
 				}],
 			},
