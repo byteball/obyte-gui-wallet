@@ -124,6 +124,8 @@
                 <data android:mimeType="application/coin" />
             </intent-filter>
 		</config-file>
+		
+		<preference name="AndroidXEnabled" value="true" />
 
 		<resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
