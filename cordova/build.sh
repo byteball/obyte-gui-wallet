@@ -63,7 +63,7 @@ if [ ! -d $PROJECT ]; then
 
 	if [ $CURRENT_OS == "ANDROID" ]; then
 		echo "${OpenColor}${Green}* Adding Android platform... ${CloseColor}"
-		cordova platforms add android@8.1.0
+		cordova platforms add android
 		checkOK
 	fi
 
@@ -125,8 +125,6 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add cordova-plugin-splashscreen
 	checkOK
 	if [ $CURRENT_OS == "ANDROID" ]; then # fixes androidx errors
-		cordova plugin add cordova-plugin-androidx
-		checkOK
 		cordova plugin add cordova-plugin-androidx-adapter
 		checkOK
 	fi
