@@ -24,7 +24,8 @@
     "angular-elastic": "2",
     "ui-router-extras": "0.1",
     "markdown-it": "^8.4.2",
-    "chart.js": "^2.9.4"
+    "chart.js": "^2.9.4",
+    "chartjs-plugin-datalabels": "^1.0.0"
   },
   "resolutions": {
     "angular": "1.8.2"

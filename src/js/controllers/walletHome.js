@@ -80,26 +80,29 @@ angular.module('copayApp.controllers')
 
 		// donut chart
 		var indexToBalance = [];
-		var chartLabels = [];
+		var chartLabels = ['kB', 'kBB', 'OUSD_v2', 'XYMZ', 'RIPL', 'OBTC', 'xApI'];
 		var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
-		var chart = new Chart(document.getElementById('donut').getContext('2d'), {
+		var getColor = function(context, s, l) {
+			if (context.dataIndex === 0)
+				return '#4e6b8e';
+			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
+		};
+		var canvasCtx = document.getElementById('donut').getContext('2d');
+		/*var chart = new Chart(canvasCtx, {
 			type: 'doughnut',
 			data: {
 				labels: chartLabels,
 				datasets: [{
 					backgroundColor: function(context) {
-						if (context.dataIndex === 0)
-							return '#4e6b8e';
-						var sum = 0;
-						var currentVal = 0;
-						for (var i = 0; i < chartData.length; i++) {
-							if (i === context.dataIndex)
-								currentVal = Math.ceil(sum + chartData[i] / 2);
-							sum += chartData[i];
-						}
-						return 'hsla(' + (currentVal / sum * 360) + ', 50%, 60%, 1)';
+						return getColor(context, '50%', '60%');
 					},
-					hoverBackgroundColor: [''],
+					hoverBackgroundColor: function(context) {
+						return getColor(context, '100%', '40%');
+					},
+					hoverBorderColor: function(context) {
+						return getColor(context, '100%', '40%');
+					},
+					hoverBorderWidth: 4,
 					data: chartData
 				}],
 			},
@@ -110,9 +113,26 @@ angular.module('copayApp.controllers')
 					if (!elems.length)
 						return;
 					self.changeAssetIndexSelectorValue(indexToBalance[elems[0]._index]);
+				},
+				plugins: {
+					datalabels: {
+						color: '#FFFFFF',
+						backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
+						borderRadius: 5,
+						font: {
+							weight: 'bold'
+						},
+						textAlign: 'center',
+						display: 'auto',
+						clip: true,
+						formatter: function(value, context) {
+							return chartLabels[context.dataIndex] + "\n$"+value;
+						}
+					}
 				}
-			}
-		});
+			},
+			plugins: [ChartDataLabels]
+		});*/
 		var updateChart = function() {
 			if ($scope.index.arrBalances.length === 0)
 				return;
@@ -139,6 +159,10 @@ angular.module('copayApp.controllers')
 		};
 		//$scope.$watchCollection("index.arrBalances", updateChart);
 		//$scope.$watchCollection("home.exchangeRates", updateChart);
+		canvasCtx.beginPath();
+		canvasCtx.arc(150, 150, 30, 0, 2* Math.PI);
+		canvasCtx.fillRect(25,25, 100, 100);
+		canvasCtx.stroke();
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
