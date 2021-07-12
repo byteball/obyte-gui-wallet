@@ -47,6 +47,7 @@
           <contact ng-show="!btx.labelTo" class="enable_text_select wrap_address_section"
             address="{{!!addressbook[btx.addressTo] ? addressbook[btx.addressTo] + ' (' + btx.addressTo + ')' : btx.addressTo}}" />
         </span>
+        <span ng-if="btx.to_aa_description" class="right text-right enable_text_select" style="clear: right;">{{btx.to_aa_description}}</span>
       </span>
     </li>
 
@@ -74,6 +75,7 @@
             {{!!addressbook[address] ? addressbook[address] + ' (' + address + ')' : address}}
           </span>
         </div>
+        <span ng-if="btx.from_aa_description" class="right text-right enable_text_select" style="clear: right;">{{btx.from_aa_description}}</span>
       </div>
     </li>
 
@@ -198,14 +200,14 @@
 
       <li class="line-b p10 row collapse">
         <div class="text-gray small-2 columns"><span translate>Response unit</span>:</div>
-        <div ng-if="btx.response_unit" class="right small-10 columns enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.response_unit)">{{btx.response_unit}}</a></div>
+        <div ng-if="btx.response_unit" class="right small-10 columns text-right enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.response_unit)">{{btx.response_unit}}</a></div>
         <div ng-if="!btx.response_unit" class="right small-10 columns text-right" translate>none</div>
       </li>
   
       <li class="line-b p10">
-        <span class="text-gray"><span translate>Bounced?</span></span>
-        <span ng-if="btx.bounced" class="right" translate>Yes</span>
-        <span ng-if="!btx.bounced" class="right" translate>No</span>
+        <span class="text-gray"><span translate>Result</span></span>
+        <span ng-if="btx.bounced" class="right" translate>Bounced</span>
+        <span ng-if="!btx.bounced" class="right" translate>Success</span>
       </li>
 
       <li ng-show="btx.response.error" class="line-b p10 row collapse">
