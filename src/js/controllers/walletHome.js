@@ -88,8 +88,27 @@ angular.module('copayApp.controllers')
 			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
 		};
 		var canvasCtx = document.getElementById('donut').getContext('2d');
-		/*var chart = new Chart(canvasCtx, {
-			type: 'doughnut',
+		Chart.defaults.donut = Chart.defaults.doughnut;
+		var custom = Chart.controllers.doughnut.extend({
+			 draw: function(ease) {
+				Chart.controllers.doughnut.prototype.draw.call(this, ease);
+
+				var chart = this.chart;
+				var ctx = chart.ctx;
+
+				ctx.beginPath();
+				var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+				var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+				var radius = this.outerRadius;
+				ctx.lineWidth = 2;
+
+				ctx.arc(centerX, centerY, radius, 0, 2* Math.PI);
+				ctx.stroke();
+			}
+		});
+		Chart.controllers.donut = custom;
+		var chart = new Chart(canvasCtx, {
+			type: 'donut',
 			data: {
 				labels: chartLabels,
 				datasets: [{
@@ -132,7 +151,7 @@ angular.module('copayApp.controllers')
 				}
 			},
 			plugins: [ChartDataLabels]
-		});*/
+		});
 		var updateChart = function() {
 			if ($scope.index.arrBalances.length === 0)
 				return;
@@ -157,12 +176,9 @@ angular.module('copayApp.controllers')
 			}
 			chart.update();
 		};
+		$scope.$watch("index.assetIndex", chart.update);
 		//$scope.$watchCollection("index.arrBalances", updateChart);
 		//$scope.$watchCollection("home.exchangeRates", updateChart);
-		canvasCtx.beginPath();
-		canvasCtx.arc(150, 150, 30, 0, 2* Math.PI);
-		canvasCtx.fillRect(25,25, 100, 100);
-		canvasCtx.stroke();
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
