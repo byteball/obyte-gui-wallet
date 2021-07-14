@@ -87,46 +87,22 @@ angular.module('copayApp.controllers')
 				return '#4e6b8e';
 			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
 		};
-		var canvasCtx = document.getElementById('donut').getContext('2d');
+		var canvas = document.getElementById('donut');
+		var canvasCtx = canvas.getContext('2d');
 		Chart.defaults.donut = Chart.defaults.doughnut;
+		var chart, ctx, centerX, centerY, radius;
 		var custom = Chart.controllers.doughnut.extend({
 			 draw: function(ease) {
 				Chart.controllers.doughnut.prototype.draw.call(this, ease);
 
-				var chart = this.chart;
-				var ctx = chart.ctx;
+				chart = this.chart;
+				ctx = chart.ctx;
 
-				var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-				var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-				var radius = this.outerRadius;
+				centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+				centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+				radius = this.outerRadius;
 
-				var currentSum = 0;
-				var sum = chartData.reduce(function(acc, val, index) {
-					if (index === $scope.index.assetIndex)
-						currentSum = acc + val/2;
-					return acc + val
-				}, 0);
-
-				var angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
-				var pointerX = centerX + radius * Math.cos(angle);
-				var pointerY = centerY + radius * Math.sin(angle);
-
-				/*ctx.beginPath();
-				ctx.lineWidth = 2;
-				ctx.arc(centerX, centerY, radius, 0, 2* Math.PI);
-				ctx.stroke();*/
-				ctx.save();
-				ctx.beginPath();
-				ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
-				ctx.fill();
-
-				ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-				ctx.shadowBlur = 7;
-				ctx.shadowOffsetX = 2;
-				ctx.shadowOffsetY = 5;
-				ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
-				ctx.fill();
-				ctx.restore();
+				drawPointer();
 			}
 		});
 		Chart.controllers.donut = custom;
@@ -202,6 +178,48 @@ angular.module('copayApp.controllers')
 		//$scope.$watch("index.assetIndex", chart.update);
 		//$scope.$watchCollection("index.arrBalances", updateChart);
 		//$scope.$watchCollection("home.exchangeRates", updateChart);
+		
+		// pointer
+		var angle, pointerX, pointerY;
+		var updateAngle = function(e) {
+			if (!e) {
+				var currentSum = 0;
+				var sum = chartData.reduce(function(acc, val, index) {
+					if (index === $scope.index.assetIndex)
+						currentSum = acc + val/2;
+					return acc + val
+				}, 0);
+
+				angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
+			} else {
+				var bounds = canvas.getBoundingClientRect();
+				var x = e.pageX - bounds.left - scrollX;
+				var y = e.pageY - bounds.top - scrollY;
+				angle = Math.atan2(y - centerY, x - centerX);
+			}
+			pointerX = centerX + radius * Math.cos(angle);
+			pointerY = centerY + radius * Math.sin(angle);
+		};
+		var drawPointer = function() {
+			ctx.save();
+			ctx.beginPath();
+			ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
+			ctx.fill();
+			
+			ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+			ctx.shadowBlur = 7;
+			ctx.shadowOffsetX = 2;
+			ctx.shadowOffsetY = 5;
+			ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
+			ctx.fill();
+			ctx.restore();
+		};
+		
+		canvas.addEventListener("mousemove", function(e) {
+			e.preventDefault();
+			updateAngle(e);
+			requestAnimationFrame(drawPointer);
+		});
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
