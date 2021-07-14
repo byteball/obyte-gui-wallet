@@ -96,14 +96,37 @@ angular.module('copayApp.controllers')
 				var chart = this.chart;
 				var ctx = chart.ctx;
 
-				ctx.beginPath();
 				var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
 				var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
 				var radius = this.outerRadius;
-				ctx.lineWidth = 2;
 
+				var currentSum = 0;
+				var sum = chartData.reduce(function(acc, val, index) {
+					if (index === $scope.index.assetIndex)
+						currentSum = acc + val/2;
+					return acc + val
+				}, 0);
+
+				var angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
+				var pointerX = centerX + radius * Math.cos(angle);
+				var pointerY = centerY + radius * Math.sin(angle);
+
+				/*ctx.beginPath();
+				ctx.lineWidth = 2;
 				ctx.arc(centerX, centerY, radius, 0, 2* Math.PI);
-				ctx.stroke();
+				ctx.stroke();*/
+				ctx.save();
+				ctx.beginPath();
+				ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
+				ctx.fill();
+
+				ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+				ctx.shadowBlur = 7;
+				ctx.shadowOffsetX = 2;
+				ctx.shadowOffsetY = 5;
+				ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
+				ctx.fill();
+				ctx.restore();
 			}
 		});
 		Chart.controllers.donut = custom;
@@ -169,14 +192,14 @@ angular.module('copayApp.controllers')
 					chartData.push((balance.total / 1e9 * home.exchangeRates.GBB_USD).toFixed(2));
 					chartLabels.push(balance.name + ', $');
 				} else if ($scope.home.exchangeRates[balance.asset + '_USD']) {
-					chartData.push((balance.total / Math.pow(10, index.arrBalances[index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toFixed(2));
+					chartData.push((balance.total / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toFixed(2));
 					chartLabels.push(balance.name + ', $');
 				}
 				indexToBalance.push(i);
 			}
 			chart.update();
 		};
-		$scope.$watch("index.assetIndex", chart.update);
+		//$scope.$watch("index.assetIndex", chart.update);
 		//$scope.$watchCollection("index.arrBalances", updateChart);
 		//$scope.$watchCollection("home.exchangeRates", updateChart);
 
