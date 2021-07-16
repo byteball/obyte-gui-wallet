@@ -600,6 +600,21 @@ angular.module('copayApp.directives')
       }
     }
   })
+.directive('onEscape', function($rootScope, isCordova) {
+	return {
+		restrict: 'A',
+		scope: {
+			fn: '&onEscape'
+		},
+		link: function (scope, elem, attrs) {
+			elem.on('keydown', function (event) {
+				if (event.keyCode === 27)
+					scope.fn();
+				scope.$apply();
+			});
+		}
+	}
+})
   .filter('encodeURIComponent', function() {
     return window.encodeURIComponent;
 })
@@ -620,5 +635,20 @@ angular.module('copayApp.directives')
 	return function(str) {
 		str = str || '';
 		return str.charAt(0).toUpperCase() + str.slice(1);
+	}
+})
+.filter('balancesFilter', function() {
+	return function(balances, substring) {
+		if (!substring)
+			return balances;
+		substring = substring.toLocaleLowerCase();
+		return balances.filter(function(b) {
+			var name = b.name || b.asset;
+			if (b.asset === 'base')
+				name = 'bytes';
+			if (b.asset === constants.BLACKBYTES_ASSET)
+				name = 'blackbytes';
+			return name.toLocaleLowerCase().includes(substring) || (b.totalStr ? b.totalStr.toLocaleLowerCase().includes(substring) : false);
+		});
 	}
 });

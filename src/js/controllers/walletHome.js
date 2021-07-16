@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService) {
 
 		var self = this;
 		var home = this;
@@ -613,8 +613,29 @@ angular.module('copayApp.controllers')
 
 		};
 		
-		this.toggleAssetDropwDown = function() {
-			self.assetDropDownVisible = !self.assetDropDownVisible;
+		var clickHandler = function(e){
+			let inside = e.target.closest('.custom-dropdown');
+			if (!inside) {
+				$rootScope.$emit("closeAssetDropDown");
+				e.preventDefault();
+				e.stopImmediatePropagation();
+			}
+		};
+		this.toggleAssetDropwDown = function(state, target) {
+			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
+			document.removeEventListener('click', clickHandler, true);
+			if (self.assetDropDownVisible) {
+				$scope.assetSubstring = "";
+				document.addEventListener('click', clickHandler, true);
+
+				if (isCordova)
+					return;
+				$timeout(function() {
+					var elems = (target ? target.parentNode.parentNode : document).querySelectorAll('.search-bar input');
+					if (elems.length)
+						elems[0].focus();
+				});
+			}
 		}
 
 		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
@@ -1211,31 +1232,16 @@ angular.module('copayApp.controllers')
 
 		function updateAADocs() {
 			var row = self.aa_destinations[0];
-			var aa_address = row.address;
-			var arrBaseDefinition = JSON.parse(row.base_definition || row.definition);
-			var doc_url = arrBaseDefinition[1].doc_url;
-			if (!doc_url)
-				return;
-			// allow other protocols, e.g. ipfs
-		//	if (doc_url.indexOf(':') === -1)
-		//		doc_url = 'https://' + doc_url;
-			doc_url = doc_url.replace(/{{aa_address}}/g, aa_address);
-			require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
-				if (err)
-					return console.log("fetching doc_url failed: " + err);
-				try {
-					var doc = JSON.parse(response);
-					self.aa_description = doc.description;
-					self.aa_homepage_url = doc.homepage_url;
-					self.aa_source_url = doc.source_url;
-					self.aa_field_descriptions = doc.field_descriptions;
-					if (self.aa_description.length > 200)
-						self.aa_truncated_description = self.aa_description.substr(0, 180) + '...';
-				}
-				catch (e) {
-					return console.log("failed to parse doc_url response: " + e + ", the response was: " + response);
-				}
-				$timeout(function() {
+			aaDocService.getAADocs(row.address, row.base_definition || row.definition, doc => {
+				if (!doc)
+					return;
+				self.aa_description = doc.description;
+				self.aa_homepage_url = doc.homepage_url;
+				self.aa_source_url = doc.source_url;
+				self.aa_field_descriptions = doc.field_descriptions;
+				if (self.aa_description.length > 200)
+					self.aa_truncated_description = self.aa_description.substr(0, 180) + '...';
+				$timeout(function () {
 					$scope.$digest();
 				});
 			});
@@ -2712,6 +2718,27 @@ angular.module('copayApp.controllers')
 						$scope.$apply();
 					});
 				});
+
+				var setAADescription = function (aa_address, field) {
+					readAADefinitionsWithBaseDefinitions(aa_address, rows => {
+						var row = rows[0];
+						if (!row)
+							return;
+						aaDocService.getAADocs(row.address, row.base_definition || row.definition, doc => {
+							if (!doc)
+								return;
+							btx[field] = (doc.description.length > 120) ? doc.description.substr(0, 117) + '...' : doc.description;
+							$timeout(function () {
+								$scope.$digest();
+							});
+						});
+					});
+				};
+
+				if (btx.to_aa && btx.addressTo)
+					setAADescription(btx.addressTo, 'to_aa_description');
+				if (btx.from_aa)
+					setAADescription(btx.arrPayerAddresses[0], 'from_aa_description');
 
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
