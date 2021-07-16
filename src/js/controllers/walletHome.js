@@ -88,15 +88,71 @@ angular.module('copayApp.controllers')
 			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
 		};
 		var canvas = document.getElementById('donut');
-		var canvasCtx = canvas.getContext('2d');
+		var ctx = canvas.getContext('2d');
+		var chart, centerX, centerY, radius;
+
+		// pointer
+		var angle, pointerX, pointerY;
+		var movePointer = false;
+		var updateAngle = function(e) {
+			if (!e) {
+				var currentSum = 0;
+				var sum = chartData.reduce(function(acc, val, index) {
+					if (index === $scope.index.assetIndex)
+						currentSum = acc + val/2;
+					return acc + val
+				}, 0);
+
+				angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
+			} else {
+				var bounds = canvas.getBoundingClientRect();
+				var x = e.pageX - bounds.left - scrollX;
+				var y = e.pageY - bounds.top - scrollY;
+				angle = Math.atan2(y - centerY, x - centerX);
+			}
+			pointerX = centerX + radius * Math.cos(angle);
+			pointerY = centerY + radius * Math.sin(angle);
+		};
+		var drawPointer = function() {
+			ctx.save();
+			ctx.beginPath();
+			ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
+			ctx.fill();
+			
+			ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+			ctx.shadowBlur = 7;
+			ctx.shadowOffsetX = 2;
+			ctx.shadowOffsetY = 5;
+			ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
+			ctx.fill();
+			ctx.restore();
+		};
+		["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
+			canvas.addEventListener(e, function(e) {
+				if (e.type === "mousedown" || e.type === "touchstart")
+					movePointer = true;
+				if (!movePointer)
+					return;
+				e.preventDefault();
+				if (e.type === "touchmove")
+					e = e.touches[0] || e.changedTouches[0];
+				updateAngle(e);
+				chart.render();
+			});
+		});
+		["mouseup", "touchend"].forEach(function(e) {
+			canvas.addEventListener(e, function(e) {
+				e.preventDefault();
+				movePointer = false;
+			});
+		});
+
 		Chart.defaults.donut = Chart.defaults.doughnut;
-		var chart, ctx, centerX, centerY, radius;
 		var custom = Chart.controllers.doughnut.extend({
 			 draw: function(ease) {
 				Chart.controllers.doughnut.prototype.draw.call(this, ease);
 
 				chart = this.chart;
-				ctx = chart.ctx;
 
 				centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
 				centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
@@ -106,7 +162,7 @@ angular.module('copayApp.controllers')
 			}
 		});
 		Chart.controllers.donut = custom;
-		var chart = new Chart(canvasCtx, {
+		var chart = new Chart(ctx, {
 			type: 'donut',
 			data: {
 				labels: chartLabels,
@@ -126,7 +182,15 @@ angular.module('copayApp.controllers')
 			},
 			options: {
 				legend: {display: false},
+				tooltips: {enabled: false},
 				maintainAspectRatio: false,
+				animation: {
+					duration: 0
+				},
+				hover: {
+					animationDuration: 0
+				},
+				responsiveAnimationDuration: 0,
 				onClick: function(event, elems) {
 					if (!elems.length)
 						return;
@@ -175,51 +239,9 @@ angular.module('copayApp.controllers')
 			}
 			chart.update();
 		};
-		//$scope.$watch("index.assetIndex", chart.update);
+		$scope.$watch("index.assetIndex", function() {updateAngle();chart.render();});
 		//$scope.$watchCollection("index.arrBalances", updateChart);
 		//$scope.$watchCollection("home.exchangeRates", updateChart);
-		
-		// pointer
-		var angle, pointerX, pointerY;
-		var updateAngle = function(e) {
-			if (!e) {
-				var currentSum = 0;
-				var sum = chartData.reduce(function(acc, val, index) {
-					if (index === $scope.index.assetIndex)
-						currentSum = acc + val/2;
-					return acc + val
-				}, 0);
-
-				angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
-			} else {
-				var bounds = canvas.getBoundingClientRect();
-				var x = e.pageX - bounds.left - scrollX;
-				var y = e.pageY - bounds.top - scrollY;
-				angle = Math.atan2(y - centerY, x - centerX);
-			}
-			pointerX = centerX + radius * Math.cos(angle);
-			pointerY = centerY + radius * Math.sin(angle);
-		};
-		var drawPointer = function() {
-			ctx.save();
-			ctx.beginPath();
-			ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
-			ctx.fill();
-			
-			ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-			ctx.shadowBlur = 7;
-			ctx.shadowOffsetX = 2;
-			ctx.shadowOffsetY = 5;
-			ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
-			ctx.fill();
-			ctx.restore();
-		};
-		
-		canvas.addEventListener("mousemove", function(e) {
-			e.preventDefault();
-			updateAngle(e);
-			requestAnimationFrame(drawPointer);
-		});
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
