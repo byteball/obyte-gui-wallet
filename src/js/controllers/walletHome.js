@@ -79,12 +79,12 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFileName = '';
 
 		// donut chart
-		var indexToBalance = [];
+		var indexToBalance = [0, 1, 2, 2, 2, 2, 2, 2, 2];
 		var chartLabels = ['kB', 'kBB', 'OUSD_v2', 'XYMZ', 'RIPL', 'OBTC', 'xApI'];
 		var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
 		var getColor = function(context, s, l) {
 			if (context.dataIndex === 0)
-				return '#4e6b8e';
+				return 'hsla(213, '+s+', '+l+', 1)';
 			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
 		};
 		var canvas = document.getElementById('donut');
@@ -92,39 +92,70 @@ angular.module('copayApp.controllers')
 		var chart, centerX, centerY, radius;
 
 		// pointer
-		var angle, pointerX, pointerY;
+		var sum, currentIndex, currentSum;
+		var angle, pointerX, pointerY, pointerStartX, pointerStartY;
 		var movePointer = false;
 		var updateAngle = function(e) {
 			if (!e) {
-				var currentSum = 0;
-				var sum = chartData.reduce(function(acc, val, index) {
-					if (index === $scope.index.assetIndex)
-						currentSum = acc + val/2;
-					return acc + val
-				}, 0);
-
-				angle = currentSum / sum * 2 * Math.PI - Math.PI/2;
+				sum = currentSum = 0;
+				currentIndex = -1;
+				for (var i = 0; i < chartData.length; i++) {
+					if (indexToBalance[i] === $scope.index.assetIndex) {
+						currentIndex = i;
+						currentSum = sum;
+					}
+					sum += chartData[i];
+				}
+				angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
 			} else {
 				var bounds = canvas.getBoundingClientRect();
 				var x = e.pageX - bounds.left - scrollX;
 				var y = e.pageY - bounds.top - scrollY;
 				angle = Math.atan2(y - centerY, x - centerX);
+
+				var percentageAngle = angle + Math.PI / 2;
+				if (percentageAngle < 0)
+					percentageAngle += 2 * Math.PI;
+				var currentAngleValue = percentageAngle  / 2 / Math.PI * sum;
+				var stoppedAtIndex = 0;
+				while (currentAngleValue > 0) {
+					currentAngleValue -= chartData[stoppedAtIndex++]
+				}
+				stoppedAtIndex = stoppedAtIndex > 0 ? stoppedAtIndex-1 : 0;
+				if (stoppedAtIndex !== currentIndex) {
+					currentIndex = stoppedAtIndex;
+					self.changeAssetIndexSelectorValue(indexToBalance[stoppedAtIndex]);
+				}
 			}
 			pointerX = centerX + radius * Math.cos(angle);
 			pointerY = centerY + radius * Math.sin(angle);
+			pointerStartX = centerX + radius * 1.2 * Math.cos(angle);
+			pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
 		};
 		var drawPointer = function() {
+			if (isNaN(pointerStartX))
+				return;
 			ctx.save();
 			ctx.beginPath();
-			ctx.arc(pointerX, pointerY, 10, 0, 2 * Math.PI);
-			ctx.fill();
-			
-			ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
-			ctx.shadowBlur = 7;
-			ctx.shadowOffsetX = 2;
-			ctx.shadowOffsetY = 5;
-			ctx.fillStyle = "rgba(132, 28, 255, 0.8)";
-			ctx.fill();
+			/*var headlen = 20; // length of head in pixels
+			var dx = pointerX - pointerStartX;
+			var dy = pointerY - pointerStartY;
+			var angle = Math.atan2(dy, dx);
+			ctx.moveTo(pointerStartX, pointerStartY);
+			ctx.lineTo(pointerX, pointerY);
+			ctx.moveTo(pointerX, pointerY);
+			ctx.lineTo(pointerX - headlen * Math.cos(angle - Math.PI / 6), pointerY - headlen * Math.sin(angle - Math.PI / 6));
+			ctx.moveTo(pointerX, pointerY);
+			ctx.lineTo(pointerX - headlen * Math.cos(angle + Math.PI / 6), pointerY - headlen * Math.sin(angle + Math.PI / 6));
+			ctx.lineWidth = 5;*/
+			ctx.translate(pointerStartX, pointerStartY);
+			ctx.rotate(angle+Math.PI/64);
+			ctx.scale(-0.1, 0.1);
+			ctx.translate(100, -170);
+			ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
+			l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
+			l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
+			ctx.closePath();
 			ctx.restore();
 		};
 		["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
@@ -134,15 +165,15 @@ angular.module('copayApp.controllers')
 				if (!movePointer)
 					return;
 				e.preventDefault();
+				e.stopImmediatePropagation();
 				if (e.type === "touchmove")
 					e = e.touches[0] || e.changedTouches[0];
 				updateAngle(e);
-				chart.render();
+				chart.update();
 			});
 		});
 		["mouseup", "touchend"].forEach(function(e) {
 			canvas.addEventListener(e, function(e) {
-				e.preventDefault();
 				movePointer = false;
 			});
 		});
@@ -162,25 +193,26 @@ angular.module('copayApp.controllers')
 			}
 		});
 		Chart.controllers.donut = custom;
-		var chart = new Chart(ctx, {
+		chart = new Chart(ctx, {
 			type: 'donut',
 			data: {
 				labels: chartLabels,
 				datasets: [{
 					backgroundColor: function(context) {
-						return getColor(context, '50%', '60%');
+						return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
 					},
-					hoverBackgroundColor: function(context) {
+					/*hoverBackgroundColor: function(context) {
 						return getColor(context, '100%', '40%');
 					},
 					hoverBorderColor: function(context) {
 						return getColor(context, '100%', '40%');
-					},
-					hoverBorderWidth: 4,
+					},*/
+					hoverBorderWidth: 0,
 					data: chartData
 				}],
 			},
 			options: {
+				layout: {padding: {left: 30, right: 30, top: 0, bottom: 0}},
 				legend: {display: false},
 				tooltips: {enabled: false},
 				maintainAspectRatio: false,
@@ -191,11 +223,7 @@ angular.module('copayApp.controllers')
 					animationDuration: 0
 				},
 				responsiveAnimationDuration: 0,
-				onClick: function(event, elems) {
-					if (!elems.length)
-						return;
-					self.changeAssetIndexSelectorValue(indexToBalance[elems[0]._index]);
-				},
+				events: [],
 				plugins: {
 					datalabels: {
 						color: '#FFFFFF',
@@ -221,10 +249,22 @@ angular.module('copayApp.controllers')
 			chartData.length = 0;
 			chartLabels.length = 0;
 			indexToBalance = [];
+			var sum = $scope.index.arrBalances.reduce((acc, val) => acc + val.total, 0);
 			for (var i = 0; i < $scope.index.arrBalances.length; i++) {
 				var balance = $scope.index.arrBalances[i];
-				if (balance.total == 0)
-					return;
+				var value = 1;
+				if (sum > 0) {
+					if (balance.total == 0)
+						continue;
+
+					var dollarValue = self.getDollarValue(balance.total, balance);
+					if (!dollarValue)
+						continue;
+					var value = parseFloat(dollarValue.substr(2));
+				}
+				chartData.push(value);
+				chartLabels.push(balance.name + ', $');
+				/*
 				if (balance.asset === 'base' && $scope.home.exchangeRates.GBYTE_USD) {
 					chartData.push((balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toFixed(2));
 					chartLabels.push(balance.name + ', $');
@@ -234,14 +274,21 @@ angular.module('copayApp.controllers')
 				} else if ($scope.home.exchangeRates[balance.asset + '_USD']) {
 					chartData.push((balance.total / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toFixed(2));
 					chartLabels.push(balance.name + ', $');
-				}
+				}*/
 				indexToBalance.push(i);
 			}
+			updateAngle();
 			chart.update();
 		};
-		$scope.$watch("index.assetIndex", function() {updateAngle();chart.render();});
-		//$scope.$watchCollection("index.arrBalances", updateChart);
-		//$scope.$watchCollection("home.exchangeRates", updateChart);
+		$scope.$watch("index.assetIndex", function() {
+			if (movePointer) {
+				return;
+			}
+			updateAngle();
+			chart.update();
+		});
+		$scope.$watchCollection("index.arrBalances", updateChart);
+		$scope.$watchCollection("home.exchangeRates", updateChart);
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
