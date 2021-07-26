@@ -79,216 +79,198 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFileName = '';
 
 		// donut chart
-		var indexToBalance = [0, 1, 2, 2, 2, 2, 2, 2, 2];
-		var chartLabels = ['kB', 'kBB', 'OUSD_v2', 'XYMZ', 'RIPL', 'OBTC', 'xApI'];
-		var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
-		var getColor = function(context, s, l) {
-			if (context.dataIndex === 0)
-				return 'hsla(213, '+s+', '+l+', 1)';
-			return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
-		};
-		var canvas = document.getElementById('donut');
-		var ctx = canvas.getContext('2d');
-		var chart, centerX, centerY, radius;
+		var drawDonutChart = function() {
+			var absentValue = 0.373737321;
+			var indexToBalance = [0, 1, 2, 2, 2, 2, 2, 2, 2];
+			var chartLabels = ['kB', 'kBB', 'OUSD_v2', 'XYMZ', 'RIPL', 'OBTC', 'xApI'];
+			var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
+			var getColor = function(context, s, l) {
+				if (context.dataIndex === 0)
+					return 'hsla(213, '+s+', '+l+', 1)';
+				return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
+			};
+			var canvas = document.getElementById('donut');
+			var ctx = canvas.getContext('2d');
+			var chart, centerX, centerY, radius;
 
-		// pointer
-		var sum, currentIndex, currentSum;
-		var angle, pointerX, pointerY, pointerStartX, pointerStartY;
-		var movePointer = false;
-		var updateAngle = function(e) {
-			if (!e) {
-				sum = currentSum = 0;
-				currentIndex = -1;
-				for (var i = 0; i < chartData.length; i++) {
-					if (indexToBalance[i] === $scope.index.assetIndex) {
-						currentIndex = i;
-						currentSum = sum;
+			// pointer
+			var sum, currentIndex, currentSum;
+			var angle, pointerX, pointerY, pointerStartX, pointerStartY;
+			var movePointer = false;
+			var updateAngle = function(e) {
+				if (!e) {
+					sum = currentSum = 0;
+					currentIndex = -1;
+					for (var i = 0; i < chartData.length; i++) {
+						if (indexToBalance[i] === $scope.index.assetIndex) {
+							currentIndex = i;
+							currentSum = sum;
+						}
+						sum += chartData[i];
 					}
-					sum += chartData[i];
-				}
-				angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
-			} else {
-				var bounds = canvas.getBoundingClientRect();
-				var x = e.pageX - bounds.left - scrollX;
-				var y = e.pageY - bounds.top - scrollY;
-				angle = Math.atan2(y - centerY, x - centerX);
+					angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
+				} else {
+					var bounds = canvas.getBoundingClientRect();
+					var x = e.pageX - bounds.left - scrollX;
+					var y = e.pageY - bounds.top - scrollY;
+					angle = Math.atan2(y - centerY, x - centerX);
 
-				var percentageAngle = angle + Math.PI / 2;
-				if (percentageAngle < 0)
-					percentageAngle += 2 * Math.PI;
-				var currentAngleValue = percentageAngle  / 2 / Math.PI * sum;
-				var stoppedAtIndex = 0;
-				while (currentAngleValue > 0) {
-					currentAngleValue -= chartData[stoppedAtIndex++]
+					var percentageAngle = angle + Math.PI / 2;
+					if (percentageAngle < 0)
+						percentageAngle += 2 * Math.PI;
+					var currentAngleValue = percentageAngle  / 2 / Math.PI * sum;
+					var stoppedAtIndex = 0;
+					while (currentAngleValue > 0) {
+						currentAngleValue -= chartData[stoppedAtIndex++]
+					}
+					stoppedAtIndex = stoppedAtIndex > 0 ? stoppedAtIndex-1 : 0;
+					if (stoppedAtIndex !== currentIndex) {
+						currentIndex = stoppedAtIndex;
+						self.changeAssetIndexSelectorValue(indexToBalance[stoppedAtIndex]);
+					}
 				}
-				stoppedAtIndex = stoppedAtIndex > 0 ? stoppedAtIndex-1 : 0;
-				if (stoppedAtIndex !== currentIndex) {
-					currentIndex = stoppedAtIndex;
-					self.changeAssetIndexSelectorValue(indexToBalance[stoppedAtIndex]);
-				}
-			}
-			pointerX = centerX + radius * Math.cos(angle);
-			pointerY = centerY + radius * Math.sin(angle);
-			pointerStartX = centerX + radius * 1.2 * Math.cos(angle);
-			pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
-		};
-		var drawPointer = function() {
-			if (isNaN(pointerStartX))
-				return;
-			ctx.save();
-			ctx.beginPath();
-			/*var headlen = 20; // length of head in pixels
-			var dx = pointerX - pointerStartX;
-			var dy = pointerY - pointerStartY;
-			var angle = Math.atan2(dy, dx);
-			ctx.moveTo(pointerStartX, pointerStartY);
-			ctx.lineTo(pointerX, pointerY);
-			ctx.moveTo(pointerX, pointerY);
-			ctx.lineTo(pointerX - headlen * Math.cos(angle - Math.PI / 6), pointerY - headlen * Math.sin(angle - Math.PI / 6));
-			ctx.moveTo(pointerX, pointerY);
-			ctx.lineTo(pointerX - headlen * Math.cos(angle + Math.PI / 6), pointerY - headlen * Math.sin(angle + Math.PI / 6));
-			ctx.lineWidth = 5;*/
-			ctx.translate(pointerStartX, pointerStartY);
-			ctx.rotate(angle+Math.PI/64);
-			ctx.scale(-0.1, 0.1);
-			ctx.translate(100, -170);
-			ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
-			l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
-			l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
-			ctx.closePath();
-			ctx.restore();
-		};
-		["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
-			canvas.addEventListener(e, function(e) {
-				if (e.type === "mousedown" || e.type === "touchstart")
-					movePointer = true;
-				if (!movePointer)
+				pointerX = centerX + radius * Math.cos(angle);
+				pointerY = centerY + radius * Math.sin(angle);
+				pointerStartX = centerX + radius * 1.2 * Math.cos(angle);
+				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
+			};
+			var drawPointer = function() {
+				if (isNaN(pointerStartX))
 					return;
-				e.preventDefault();
-				e.stopImmediatePropagation();
-				if (e.type === "touchmove")
-					e = e.touches[0] || e.changedTouches[0];
-				updateAngle(e);
-				chart.update();
+				ctx.save();
+				ctx.beginPath();
+				ctx.translate(pointerStartX, pointerStartY);
+				ctx.rotate(angle+Math.PI/64);
+				ctx.scale(-0.1, 0.1);
+				ctx.translate(100, -170);
+				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
+				l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
+				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
+				ctx.closePath();
+				ctx.restore();
+			};
+			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
+				canvas.addEventListener(e, function(e) {
+					if (e.type === "mousedown" || e.type === "touchstart")
+						movePointer = true;
+					if (!movePointer)
+						return;
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					if (e.type === "touchmove")
+						e = e.touches[0] || e.changedTouches[0];
+					updateAngle(e);
+					chart.update();
+				});
 			});
-		});
-		["mouseup", "touchend"].forEach(function(e) {
-			canvas.addEventListener(e, function(e) {
-				movePointer = false;
+			["mouseup", "touchend"].forEach(function(e) {
+				canvas.addEventListener(e, function(e) {
+					movePointer = false;
+				});
 			});
-		});
 
-		Chart.defaults.donut = Chart.defaults.doughnut;
-		var custom = Chart.controllers.doughnut.extend({
-			 draw: function(ease) {
-				Chart.controllers.doughnut.prototype.draw.call(this, ease);
+			Chart.defaults.donut = Chart.defaults.doughnut;
+			var custom = Chart.controllers.doughnut.extend({
+				 draw: function(ease) {
+					Chart.controllers.doughnut.prototype.draw.call(this, ease);
 
-				chart = this.chart;
+					chart = this.chart;
 
-				centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-				centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-				radius = this.outerRadius;
+					centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+					centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+					radius = this.outerRadius;
 
-				drawPointer();
-			}
-		});
-		Chart.controllers.donut = custom;
-		chart = new Chart(ctx, {
-			type: 'donut',
-			data: {
-				labels: chartLabels,
-				datasets: [{
-					backgroundColor: function(context) {
-						return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
-					},
-					/*hoverBackgroundColor: function(context) {
-						return getColor(context, '100%', '40%');
-					},
-					hoverBorderColor: function(context) {
-						return getColor(context, '100%', '40%');
-					},*/
-					hoverBorderWidth: 0,
-					data: chartData
-				}],
-			},
-			options: {
-				layout: {padding: {left: 30, right: 30, top: 0, bottom: 0}},
-				legend: {display: false},
-				tooltips: {enabled: false},
-				maintainAspectRatio: false,
-				animation: {
-					duration: 0
-				},
-				hover: {
-					animationDuration: 0
-				},
-				responsiveAnimationDuration: 0,
-				events: [],
-				plugins: {
-					datalabels: {
-						color: '#FFFFFF',
-						backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
-						borderRadius: 5,
-						font: {
-							weight: 'bold'
+					drawPointer();
+				}
+			});
+			Chart.controllers.donut = custom;
+			chart = new Chart(ctx, {
+				type: 'donut',
+				data: {
+					labels: chartLabels,
+					datasets: [{
+						backgroundColor: function(context) {
+							return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
 						},
-						textAlign: 'center',
-						display: 'auto',
-						clip: true,
-						formatter: function(value, context) {
-							return chartLabels[context.dataIndex] + "\n$"+value;
+						/*hoverBackgroundColor: function(context) {
+							return getColor(context, '100%', '40%');
+						},
+						hoverBorderColor: function(context) {
+							return getColor(context, '100%', '40%');
+						},*/
+						hoverBorderWidth: 0,
+						data: chartData
+					}],
+				},
+				options: {
+					layout: {padding: {left: 30, right: 30, top: 20, bottom: 50}},
+					legend: {display: false},
+					tooltips: {enabled: false},
+					maintainAspectRatio: false,
+					animation: {
+						duration: 0
+					},
+					hover: {
+						animationDuration: 0
+					},
+					responsiveAnimationDuration: 0,
+					events: [],
+					plugins: {
+						datalabels: {
+							color: '#FFFFFF',
+							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
+							borderRadius: 5,
+							font: {
+								weight: 'bold'
+							},
+							textAlign: 'center',
+							display: 'auto',
+							clip: true,
+							formatter: function(value, context) {
+								return chartLabels[context.dataIndex] + (value != absentValue ? "\n$"+value : "");
+							}
 						}
 					}
-				}
-			},
-			plugins: [ChartDataLabels]
-		});
-		var updateChart = function() {
-			if ($scope.index.arrBalances.length === 0)
-				return;
-			chartData.length = 0;
-			chartLabels.length = 0;
-			indexToBalance = [];
-			var sum = $scope.index.arrBalances.reduce((acc, val) => acc + val.total, 0);
-			for (var i = 0; i < $scope.index.arrBalances.length; i++) {
-				var balance = $scope.index.arrBalances[i];
-				var value = 1;
-				if (sum > 0) {
-					if (balance.total == 0)
-						continue;
+				},
+				plugins: [ChartDataLabels]
+			});
+			var updateChart = function() {
+				if ($scope.index.arrBalances.length === 0)
+					return;
+				chartData.length = 0;
+				chartLabels.length = 0;
+				indexToBalance = [];
+				var sum = $scope.index.arrBalances.reduce((acc, val) => acc + val.total, 0);
+				for (var i = 0; i < $scope.index.arrBalances.length; i++) {
+					var balance = $scope.index.arrBalances[i];
+					var value = absentValue;
+					if (sum > 0) {
+						if (balance.total == 0)
+							continue;
 
-					var dollarValue = self.getDollarValue(balance.total, balance);
-					if (!dollarValue)
-						continue;
-					var value = parseFloat(dollarValue.substr(2));
+						var dollarValue = self.getDollarValue(balance.total, balance);
+						if (!dollarValue)
+							continue;
+						var value = parseFloat(dollarValue.substr(2));
+					}
+					chartData.push(value);
+					chartLabels.push(balance.name);
+					indexToBalance.push(i);
 				}
-				chartData.push(value);
-				chartLabels.push(balance.name + ', $');
-				/*
-				if (balance.asset === 'base' && $scope.home.exchangeRates.GBYTE_USD) {
-					chartData.push((balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toFixed(2));
-					chartLabels.push(balance.name + ', $');
-				} else if (balance.asset === $scope.index.BLACKBYTES_ASSET) {
-					chartData.push((balance.total / 1e9 * home.exchangeRates.GBB_USD).toFixed(2));
-					chartLabels.push(balance.name + ', $');
-				} else if ($scope.home.exchangeRates[balance.asset + '_USD']) {
-					chartData.push((balance.total / Math.pow(10, $scope.index.arrBalances[$scope.index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toFixed(2));
-					chartLabels.push(balance.name + ', $');
-				}*/
-				indexToBalance.push(i);
-			}
-			updateAngle();
-			chart.update();
+				updateAngle();
+				chart.update();
+			};
+			$scope.$watch("index.assetIndex", function() {
+				if (movePointer) {
+					return;
+				}
+				updateAngle();
+				chart.update();
+			});
+			$scope.$watchCollection("index.arrBalances", updateChart);
+			$scope.$watchCollection("home.exchangeRates", updateChart);
 		};
-		$scope.$watch("index.assetIndex", function() {
-			if (movePointer) {
-				return;
-			}
-			updateAngle();
-			chart.update();
-		});
-		$scope.$watchCollection("index.arrBalances", updateChart);
-		$scope.$watchCollection("home.exchangeRates", updateChart);
+		drawDonutChart();
 
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
