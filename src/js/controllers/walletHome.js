@@ -135,10 +135,12 @@ angular.module('copayApp.controllers')
 				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
 			};
 			var drawPointer = function() {
-				if (isNaN(pointerStartX))
+				if (isNaN(pointerStartX)) {
+					if (typeof updateChart === "function")
+						updateChart();
 					return;
+				}
 				ctx.save();
-				ctx.beginPath();
 				ctx.translate(pointerStartX, pointerStartY);
 				ctx.rotate(angle+Math.PI/64);
 				ctx.scale(-0.1, 0.1);
@@ -146,7 +148,6 @@ angular.module('copayApp.controllers')
 				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
 				l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
 				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
-				ctx.closePath();
 				ctx.restore();
 			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
@@ -157,7 +158,7 @@ angular.module('copayApp.controllers')
 						return;
 					e.preventDefault();
 					e.stopImmediatePropagation();
-					if (e.type === "touchmove")
+					if (e.type === "touchmove" || e.type === "touchstart")
 						e = e.touches[0] || e.changedTouches[0];
 					updateAngle(e);
 					chart.update();
@@ -218,6 +219,8 @@ angular.module('copayApp.controllers')
 					plugins: {
 						datalabels: {
 							color: '#FFFFFF',
+							textShadowColor: '#000000',
+							textShadowBlur: 5,
 							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
 							borderRadius: 5,
 							font: {
@@ -227,7 +230,14 @@ angular.module('copayApp.controllers')
 							display: 'auto',
 							clip: true,
 							formatter: function(value, context) {
-								return chartLabels[context.dataIndex] + (value != absentValue ? "\n$"+value : "");
+								var text = chartLabels[context.dataIndex];
+								if (radius < 150 && text.length > 8) {
+									var charsCutoutNum = Math.round((150 - radius) / 15);
+									text = text.substr(0, text.length-charsCutoutNum) + "...";
+								}
+								if (value != absentValue)
+									text += "\n$"+value;
+								return text;
 							}
 						}
 					}
