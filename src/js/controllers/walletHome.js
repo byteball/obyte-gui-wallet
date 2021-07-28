@@ -236,7 +236,7 @@ angular.module('copayApp.controllers')
 								if (charsCutoutNum < text.length)
 									text = text.substr(0, charsCutoutNum) + "...";
 								if (value != absentValue)
-									text += "\n$"+value;
+									text += "\n$"+(value < 0.01 ? value : value.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
 								return text;
 							}
 						}
