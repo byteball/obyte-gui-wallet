@@ -80,10 +80,10 @@ angular.module('copayApp.controllers')
 
 		// donut chart
 		var drawDonutChart = function() {
-			var absentValue = 0.373737321;
-			var indexToBalance = [0, 1, 2, 2, 2, 2, 2, 2, 2];
-			var chartLabels = ['kB', 'kBB', 'OUSD_v2', 'XYMZ', 'RIPL', 'OBTC', 'xApI'];
-			var chartData = [6, 5, 4, 3, 3, 3, 2, 1, 1];
+			var absentValue = 0.373737321; // stub for all-zero assets to draw equal chart regions
+			var indexToBalance = [];
+			var chartLabels = [];
+			var chartData = [];
 			var getColor = function(context, s, l) {
 				if (context.dataIndex === 0)
 					return 'hsla(213, '+s+', '+l+', 1)';
@@ -98,6 +98,10 @@ angular.module('copayApp.controllers')
 			var angle, pointerX, pointerY, pointerStartX, pointerStartY;
 			var movePointer = false;
 			var updateAngle = function(e) {
+				if (!radius) {
+					$timeout(function(){updateAngle();chart.update();}, 300);
+					return;
+				}
 				if (!e) {
 					sum = currentSum = 0;
 					currentIndex = -1;
@@ -135,11 +139,8 @@ angular.module('copayApp.controllers')
 				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
 			};
 			var drawPointer = function() {
-				if (isNaN(pointerStartX)) {
-					if (typeof updateChart === "function")
-						updateChart();
+				if (isNaN(pointerStartX))
 					return;
-				}
 				ctx.save();
 				ctx.translate(pointerStartX, pointerStartY);
 				ctx.rotate(angle+Math.PI/64);
@@ -193,12 +194,6 @@ angular.module('copayApp.controllers')
 						backgroundColor: function(context) {
 							return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
 						},
-						/*hoverBackgroundColor: function(context) {
-							return getColor(context, '100%', '40%');
-						},
-						hoverBorderColor: function(context) {
-							return getColor(context, '100%', '40%');
-						},*/
 						hoverBorderWidth: 0,
 						data: chartData
 					}],
@@ -231,10 +226,11 @@ angular.module('copayApp.controllers')
 							clip: true,
 							formatter: function(value, context) {
 								var text = chartLabels[context.dataIndex];
-								if (radius < 150 && text.length > 8) {
-									var charsCutoutNum = Math.round((150 - radius) / 15);
-									text = text.substr(0, text.length-charsCutoutNum) + "...";
-								}
+								if (!text)
+									return;
+								var charsCutoutNum = Math.round(radius / 15);
+								if (charsCutoutNum < text.length)
+									text = text.substr(0, charsCutoutNum) + "...";
 								if (value != absentValue)
 									text += "\n$"+value;
 								return text;
@@ -245,7 +241,7 @@ angular.module('copayApp.controllers')
 				plugins: [ChartDataLabels]
 			});
 			var updateChart = function() {
-				if ($scope.index.arrBalances.length === 0)
+				if (typeof $scope.index.arrBalances === "undefined" || $scope.index.arrBalances.length === 0)
 					return;
 				chartData.length = 0;
 				chartLabels.length = 0;
@@ -258,13 +254,15 @@ angular.module('copayApp.controllers')
 						if (balance.total == 0)
 							continue;
 
-						var dollarValue = self.getDollarValue(balance.total, balance);
-						if (!dollarValue)
-							continue;
-						var value = parseFloat(dollarValue.substr(2));
+						if (Object.keys(self.exchangeRates).length) {
+							var dollarValue = self.getDollarValue(balance.total, balance);
+							if (!dollarValue)
+								continue;
+							value = parseFloat(dollarValue.substr(2));
+						}
 					}
 					chartData.push(value);
-					chartLabels.push(balance.name);
+					chartLabels.push(balance.name || balance.asset);
 					indexToBalance.push(i);
 				}
 				updateAngle();
