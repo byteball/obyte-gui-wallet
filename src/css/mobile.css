@@ -255,6 +255,8 @@ _:-ms-fullscreen, :root .main {
 
 .walletHome {
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .walletHome .avatar-wallet {

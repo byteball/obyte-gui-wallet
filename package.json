@@ -21,7 +21,7 @@
     "resizable": false,
     "frame": true,
     "width": 400,
-    "height": 600,
+    "height": 768,
     "position": "center",
     "fullscreen": false
   },

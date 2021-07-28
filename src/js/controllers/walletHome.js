@@ -78,6 +78,208 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
 
+		// donut chart
+		var drawDonutChart = function() {
+			var absentValue = 0.373737321; // stub for all-zero assets to draw equal chart regions
+			var indexToBalance = [];
+			var chartLabels = [];
+			var chartData = [];
+			var getColor = function(context, s, l) {
+				if (context.dataIndex === 0)
+					return 'hsla(213, '+s+', '+l+', 1)';
+				return 'hsla(' + (context.dataIndex * 2 / chartData.length % 1 * 360) + ', '+s+', '+l+', 1)';
+			};
+			var canvas = document.getElementById('donut');
+			var ctx = canvas.getContext('2d');
+			var chart, centerX, centerY, radius;
+
+			// pointer
+			var sum, currentIndex, currentSum;
+			var angle, pointerX, pointerY, pointerStartX, pointerStartY;
+			var movePointer = false;
+			var updateAngle = function(e) {
+				if (!radius) {
+					$timeout(function(){updateAngle();chart.update();}, 300);
+					return;
+				}
+				if (!e) {
+					sum = currentSum = 0;
+					currentIndex = -1;
+					for (var i = 0; i < chartData.length; i++) {
+						if (indexToBalance[i] === $scope.index.assetIndex) {
+							currentIndex = i;
+							currentSum = sum;
+						}
+						sum += chartData[i];
+					}
+					angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
+				} else {
+					var bounds = canvas.getBoundingClientRect();
+					var x = e.pageX - bounds.left - scrollX;
+					var y = e.pageY - bounds.top - scrollY;
+					angle = Math.atan2(y - centerY, x - centerX);
+
+					var percentageAngle = angle + Math.PI / 2;
+					if (percentageAngle < 0)
+						percentageAngle += 2 * Math.PI;
+					var currentAngleValue = percentageAngle  / 2 / Math.PI * sum;
+					var stoppedAtIndex = 0;
+					while (currentAngleValue > 0) {
+						currentAngleValue -= chartData[stoppedAtIndex++]
+					}
+					stoppedAtIndex = stoppedAtIndex > 0 ? stoppedAtIndex-1 : 0;
+					if (stoppedAtIndex !== currentIndex) {
+						currentIndex = stoppedAtIndex;
+						self.changeAssetIndexSelectorValue(indexToBalance[stoppedAtIndex]);
+					}
+				}
+				pointerX = centerX + radius * Math.cos(angle);
+				pointerY = centerY + radius * Math.sin(angle);
+				pointerStartX = centerX + radius * 1.2 * Math.cos(angle);
+				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
+			};
+			var drawPointer = function() {
+				if (isNaN(pointerStartX))
+					return;
+				ctx.save();
+				ctx.translate(pointerStartX, pointerStartY);
+				ctx.rotate(angle+Math.PI/64);
+				ctx.scale(-0.1, 0.1);
+				ctx.translate(100, -170);
+				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
+				l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
+				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
+				ctx.restore();
+			};
+			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
+				canvas.addEventListener(e, function(e) {
+					if (e.type === "mousedown" || e.type === "touchstart")
+						movePointer = true;
+					if (!movePointer)
+						return;
+					e.preventDefault();
+					e.stopImmediatePropagation();
+					if (e.type === "touchmove" || e.type === "touchstart")
+						e = e.touches[0] || e.changedTouches[0];
+					updateAngle(e);
+					chart.update();
+				});
+			});
+			["mouseup", "touchend"].forEach(function(e) {
+				canvas.addEventListener(e, function(e) {
+					movePointer = false;
+				});
+			});
+
+			Chart.defaults.donut = Chart.defaults.doughnut;
+			var custom = Chart.controllers.doughnut.extend({
+				 draw: function(ease) {
+					Chart.controllers.doughnut.prototype.draw.call(this, ease);
+
+					chart = this.chart;
+
+					centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+					centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+					radius = this.outerRadius;
+
+					drawPointer();
+				}
+			});
+			Chart.controllers.donut = custom;
+			chart = new Chart(ctx, {
+				type: 'donut',
+				data: {
+					labels: chartLabels,
+					datasets: [{
+						backgroundColor: function(context) {
+							return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
+						},
+						hoverBorderWidth: 0,
+						data: chartData
+					}],
+				},
+				options: {
+					layout: {padding: {left: 30, right: 30, top: 20, bottom: 50}},
+					legend: {display: false},
+					tooltips: {enabled: false},
+					maintainAspectRatio: false,
+					animation: {
+						duration: 0
+					},
+					hover: {
+						animationDuration: 0
+					},
+					responsiveAnimationDuration: 0,
+					events: [],
+					plugins: {
+						datalabels: {
+							color: '#FFFFFF',
+							textShadowColor: '#000000',
+							textShadowBlur: 5,
+							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
+							borderRadius: 5,
+							font: {
+								weight: 'bold'
+							},
+							textAlign: 'center',
+							display: 'auto',
+							clip: true,
+							formatter: function(value, context) {
+								var text = chartLabels[context.dataIndex];
+								if (!text)
+									return;
+								var charsCutoutNum = Math.round(radius / 15);
+								if (charsCutoutNum < text.length)
+									text = text.substr(0, charsCutoutNum) + "...";
+								if (value != absentValue)
+									text += "\n$"+value;
+								return text;
+							}
+						}
+					}
+				},
+				plugins: [ChartDataLabels]
+			});
+			var updateChart = function() {
+				if (typeof $scope.index.arrBalances === "undefined" || $scope.index.arrBalances.length === 0)
+					return;
+				chartData.length = 0;
+				chartLabels.length = 0;
+				indexToBalance = [];
+				var sum = $scope.index.arrBalances.reduce((acc, val) => acc + val.total, 0);
+				for (var i = 0; i < $scope.index.arrBalances.length; i++) {
+					var balance = $scope.index.arrBalances[i];
+					var value = absentValue;
+					if (sum > 0) {
+						if (balance.total == 0)
+							continue;
+
+						if (Object.keys(self.exchangeRates).length) {
+							var dollarValue = self.getDollarValue(balance.total, balance);
+							if (!dollarValue)
+								continue;
+							value = parseFloat(dollarValue.substr(2));
+						}
+					}
+					chartData.push(value);
+					chartLabels.push(balance.name || balance.asset);
+					indexToBalance.push(i);
+				}
+				updateAngle();
+				chart.update();
+			};
+			$scope.$watch("index.assetIndex", function() {
+				if (movePointer) {
+					return;
+				}
+				updateAngle();
+				chart.update();
+			});
+			$scope.$watchCollection("index.arrBalances", updateChart);
+			$scope.$watchCollection("home.exchangeRates", updateChart);
+		};
+		drawDonutChart();
+
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
 				window.plugins.mfilechooser.open([], function(uri) {
@@ -1109,14 +1311,14 @@ angular.module('copayApp.controllers')
 					}
 				}
 			} else {
-			  	for(var unit in $rootScope.newPaymentsDetails) {
+				for(var unit in $rootScope.newPaymentsDetails) {
 					var details = $rootScope.newPaymentsDetails[unit];
 					if (details.walletId === indexScope.walletId
 						&& details.walletAddress === details.receivedAddress
 						&& details.asset === asset) {
 						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
-			  	}
+				}
 			}
 			return totalCounts;
 		};
@@ -1129,13 +1331,13 @@ angular.module('copayApp.controllers')
 		};
 
 	this.showDataFieldSuggestions = function (currentElem, index, arrayOfElements) {
-      arrayOfElements.forEach((e, idx)=>{
-        if(index !== idx) {
-          e.suggestionsShown = false;
-        }
-      });
-      arrayOfElements[index].suggestionsShown = true;
-    };
+	  arrayOfElements.forEach((e, idx)=>{
+		if(index !== idx) {
+		  e.suggestionsShown = false;
+		}
+	  });
+	  arrayOfElements[index].suggestionsShown = true;
+	};
 
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
@@ -1856,7 +2058,7 @@ angular.module('copayApp.controllers')
 		this.switchForms = function() {
 			 this.bSendAll = false;
 			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	this.lockAmount = this.send_multiple = false;
+				this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
 				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
@@ -2041,9 +2243,9 @@ angular.module('copayApp.controllers')
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex]) // no balances yet, assume can send
-			 	return true;
+				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	return true;
+				return true;
 			var form = $scope.sendPaymentForm;
 			if (!form || !form.address) // disappeared
 				return true;

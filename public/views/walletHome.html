@@ -45,6 +45,10 @@ input.datafeed_input {
   margin-left: 10px;
   text-align: right;
 }
+.chart_container {
+	flex:  1 1 auto;
+	overflow: hidden;
+}
 </style>
 
 
@@ -226,7 +230,10 @@ input.datafeed_input {
         </div>
       </div> <!-- oh -->
 
-
+      <!-- Donut chart -->
+      <div class="chart_container">
+      	<canvas ng-show="index.arrBalances.length > 1" id="donut"></canvas>
+      </div>
 
       <div ng-if="index.txps[0]">
         <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
@@ -241,7 +248,6 @@ input.datafeed_input {
           <b>{{index.lockedBalanceStr}} </b>
         </div>
       </div>
-      <div class="extra-margin-bottom"></div>
     </div> <!-- END WalletHome -->
 
     <!--
