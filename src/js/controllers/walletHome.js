@@ -157,8 +157,11 @@ angular.module('copayApp.controllers')
 			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
 				canvas.addEventListener(e, function(e) {
-					if (e.type === "mousedown" || e.type === "touchstart")
+					if (e.type === "mousedown" || e.type === "touchstart") {
+						if (e.button && e.button !== 0)
+							return;
 						movePointer = true;
+					}
 					if (!movePointer)
 						return;
 					e.preventDefault();
