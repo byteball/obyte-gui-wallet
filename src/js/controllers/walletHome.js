@@ -239,7 +239,7 @@ angular.module('copayApp.controllers')
 								if (charsCutoutNum < text.length)
 									text = text.substr(0, charsCutoutNum) + "...";
 								if (value != absentValue)
-									text += "\n$"+(value < 0.01 ? value : value.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
+									text += "\n$"+(value < 0.1 ? value : value.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
 								return text;
 							}
 						}
@@ -264,7 +264,7 @@ angular.module('copayApp.controllers')
 						if (Object.keys(self.exchangeRates).length) {
 							if (!balance.usdValue)
 								continue;
-							value = balance.usdValue < 0.01 ? balance.usdValue.toFixed(1-Math.floor(Math.log(balance.usdValue)/Math.log(10))) : balance.usdValue.toFixed(2);
+							value = balance.usdValue < 0.1 ? balance.usdValue.toFixed(1-Math.floor(Math.log(balance.usdValue)/Math.log(10))) : balance.usdValue.toFixed(2);
 							value = parseFloat(value);
 						}
 					}
