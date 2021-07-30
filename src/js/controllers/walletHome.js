@@ -164,10 +164,11 @@ angular.module('copayApp.controllers')
 					}
 					if (!movePointer)
 						return;
-					e.preventDefault();
-					e.stopImmediatePropagation();
+					//e.preventDefault();
+					//e.stopImmediatePropagation();
 					if (e.type === "touchmove" || e.type === "touchstart")
 						e = e.touches[0] || e.changedTouches[0];
+					//canvas.dispatchEvent(new MouseEvent('mousemove', {clientX: e.clientX, clientY: e.clientY}));
 					updateAngle(e);
 					chart.update();
 				});
@@ -193,14 +194,17 @@ angular.module('copayApp.controllers')
 				}
 			});
 			Chart.controllers.donut = custom;
+			var getSectorColor = function(context) {
+				return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
+			};
 			chart = new Chart(ctx, {
 				type: 'donut',
 				data: {
 					labels: chartLabels,
 					datasets: [{
-						backgroundColor: function(context) {
-							return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
-						},
+						backgroundColor: getSectorColor,
+						hoverBackgroundColor: getSectorColor,
+						borderWidth: 0,
 						hoverBorderWidth: 0,
 						data: chartData
 					}],
@@ -208,7 +212,19 @@ angular.module('copayApp.controllers')
 				options: {
 					layout: {padding: {left: 30, right: 30, top: 20, bottom: 50}},
 					legend: {display: false},
-					tooltips: {enabled: false},
+					tooltips: {
+						displayColors: false,
+						bodyAlign: 'center',
+						callbacks: {
+							label: function(item, data) {
+								var label = [data.labels[item.index]];
+								var val = data.datasets[item.datasetIndex].data[item.index];
+								label.push("$" + val);
+								label.push((val / sum * 100).toLocaleString([], {maximumFractionDigits: 1}) + "%");
+								return label;
+							}
+						}
+					},
 					maintainAspectRatio: false,
 					animation: {
 						duration: 0
@@ -217,7 +233,7 @@ angular.module('copayApp.controllers')
 						animationDuration: 0
 					},
 					responsiveAnimationDuration: 0,
-					events: [],
+					//events: ['mousemove'],
 					plugins: {
 						datalabels: {
 							color: '#FFFFFF',
@@ -284,6 +300,7 @@ angular.module('copayApp.controllers')
 			});
 			$scope.$watchCollection("index.arrBalances", updateChart);
 			$scope.$watchCollection("home.exchangeRates", updateChart);
+			$rootScope.$on('Local/BalanceUpdated', function(){currentIndex = -1; updateChart();});
 		};
 		drawDonutChart();
 
