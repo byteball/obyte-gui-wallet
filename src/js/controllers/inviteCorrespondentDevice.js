@@ -3,7 +3,7 @@
 var eventBus = require('ocore/event_bus.js');
 
 angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceController',
-  function($scope, $timeout, profileService, go, isCordova, correspondentListService, gettextCatalog) {
+  function($scope, $timeout, notification, profileService, go, isCordova, correspondentListService, gettextCatalog, nodeWebkit) {
     
     var self = this;
     var indexScope = $scope.index;
@@ -28,9 +28,12 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     $scope.copyCode = function() {
         console.log("copyCode");
         //$scope.$digest();
+        notification.success(gettextCatalog.getString('Copied to clipboard'));
         if (isCordova) {
-            window.cordova.plugins.clipboard.copy($scope.code);
-            window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
+            cordova.plugins.clipboard.copy($scope.code);
+        }
+        else if (nodeWebkit.isDefined()) {
+            nodeWebkit.writeToClipboard($scope.code);
         }
     };
 
