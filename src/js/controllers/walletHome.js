@@ -115,7 +115,7 @@ angular.module('copayApp.controllers')
 						}
 						sum += chartData[i];
 					}
-					if (currentIndex != oldCurrentIndex)
+					if (currentIndex !== -1 && currentIndex != oldCurrentIndex)
 						angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
 				} else {
 					var bounds = canvas.getBoundingClientRect();
@@ -157,18 +157,22 @@ angular.module('copayApp.controllers')
 			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
 				canvas.addEventListener(e, function(e) {
+					var start = false;
 					if (e.type === "mousedown" || e.type === "touchstart") {
 						if (e.button && e.button !== 0)
 							return;
 						movePointer = true;
+						start = true;
 					}
 					if (!movePointer)
 						return;
-					//e.preventDefault();
-					//e.stopImmediatePropagation();
+
 					if (e.type === "touchmove" || e.type === "touchstart")
 						e = e.touches[0] || e.changedTouches[0];
-					//canvas.dispatchEvent(new MouseEvent('mousemove', {clientX: e.clientX, clientY: e.clientY}));
+
+					if (start && e.pageX / centerX > 0.7)
+						$scope.index.suspendSwipe(500);
+
 					updateAngle(e);
 					chart.update();
 				});
@@ -219,8 +223,10 @@ angular.module('copayApp.controllers')
 							label: function(item, data) {
 								var label = [data.labels[item.index]];
 								var val = data.datasets[item.datasetIndex].data[item.index];
-								label.push("$" + val);
-								label.push((val / sum * 100).toLocaleString([], {maximumFractionDigits: 1}) + "%");
+								if (val !== absentValue) {
+									label.push("$" + val);
+									label.push((val / sum * 100).toLocaleString([], {maximumFractionDigits: 1}) + "%");
+								}
 								return label;
 							}
 						}
@@ -276,10 +282,7 @@ angular.module('copayApp.controllers')
 					if (sum > 0) {
 						if (balance.total == 0)
 							continue;
-
-						if (Object.keys(self.exchangeRates).length) {
-							if (!balance.usdValue)
-								continue;
+						if (balance.usdValue) {
 							value = balance.usdValue < 0.1 ? balance.usdValue.toFixed(1-Math.floor(Math.log(balance.usdValue)/Math.log(10))) : balance.usdValue.toFixed(2);
 							value = parseFloat(value);
 						}

@@ -1771,7 +1771,7 @@ function saveFile(name, data, filename) {
 			console.log('ignoring swipe');
 	};
 	
-	self.suspendSwipe = function(){
+	self.suspendSwipe = function(timeout){
 		if (self.arrBalances.length <= 1)
 			return;
 		self.bSwipeSuspended = true;
@@ -1779,7 +1779,7 @@ function saveFile(name, data, filename) {
 		$timeout(function(){
 			self.bSwipeSuspended = false;
 			console.log('resuming swipe');
-		}, 100);
+		}, timeout || 100);
 	};
 
   self.retryScan = function() {
