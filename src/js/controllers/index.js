@@ -446,8 +446,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 		mutex.lock(["signing_request-"+unit], function(unlock){
 			function createAndSendSignature(){
-				var coin = "0";
-				var path = "m/44'/" + coin + "'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
+				var path = "m/44'/0'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
 				console.log("path "+path);
 				// focused client might be different from the wallet this signature is for, but it doesn't matter as we have a single key for all wallets
 				if (profileService.focusedClient.isPrivKeyEncrypted()){
