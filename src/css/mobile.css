@@ -893,7 +893,7 @@ textarea:focus
   top: 45px;
   bottom: 0px;
   overflow: auto;
-  padding-bottom: 30px;
+  padding-bottom: 60px;
 }
 
 .tab-view#chat {
