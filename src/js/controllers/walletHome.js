@@ -294,11 +294,11 @@ angular.module('copayApp.controllers')
 					var balance = $scope.index.arrBalances[i];
 					var value = absentValue;
 					if (sum > 0) {
-						if (balance.total == 0)
-							continue;
-						if (balance.usdValue) {
+						if (balance.usdValue && balance.total > 0) {
 							value = balance.usdValue < 0.1 ? balance.usdValue.toFixed(1-Math.floor(Math.log(balance.usdValue)/Math.log(10))) : balance.usdValue.toFixed(2);
 							value = parseFloat(value);
+						} else {
+							continue;
 						}
 					}
 					chartData.push(value);
