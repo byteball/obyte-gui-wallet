@@ -117,6 +117,9 @@ angular.module('copayApp.controllers')
 					}
 					if (currentIndex !== -1 && currentIndex != oldCurrentIndex)
 						angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
+					if (currentIndex === -1) {
+						angle = null;
+					}
 				} else {
 					var bounds = canvas.getBoundingClientRect();
 					var x = e.pageX - bounds.left - scrollX;
@@ -143,13 +146,14 @@ angular.module('copayApp.controllers')
 				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
 			};
 			var drawPointer = function() {
-				if (isNaN(pointerStartX))
+				if (isNaN(pointerStartX) || angle === null)
 					return;
 				ctx.save();
 				ctx.translate(pointerStartX, pointerStartY);
 				ctx.rotate(angle+Math.PI/64);
 				ctx.scale(-0.1, 0.1);
 				ctx.translate(100, -200);
+				ctx.fillStyle = 'hsla(84, 0%, 27%, 1)';
 				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
 				l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
 				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
