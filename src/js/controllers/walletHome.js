@@ -157,6 +157,16 @@ angular.module('copayApp.controllers')
 			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
 				canvas.addEventListener(e, function(e) {
+					var bounds = canvas.getBoundingClientRect();
+					console.log(e.pageY, bounds.top, bounds.height);
+					if (e.pageX - bounds.left < 10 ||
+						bounds.left + bounds.width - e.pageX < 10 ||
+						e.pageY - bounds.top < 10 ||
+						bounds.top + bounds.height - e.pageY < 10) {
+						movePointer = false;
+						return;
+					}
+
 					var start = false;
 					if (e.type === "mousedown" || e.type === "touchstart") {
 						if (e.button && e.button !== 0)
@@ -199,9 +209,9 @@ angular.module('copayApp.controllers')
 			});
 			Chart.controllers.donut = custom;
 			var getSectorColor = function(context) {
-				return getColor(context, context.dataIndex === currentIndex ? '100%' : '50%', context.dataIndex === currentIndex ? '40%' : '60%');
+				return getColor(context, context.dataIndex === currentIndex ? '100%' : '60%', context.dataIndex === currentIndex ? '30%' : '50%');
 			};
-			chart = new Chart(ctx, {
+			var chartInstance = new Chart(ctx, {
 				type: 'donut',
 				data: {
 					labels: chartLabels,
@@ -214,7 +224,7 @@ angular.module('copayApp.controllers')
 					}],
 				},
 				options: {
-					layout: {padding: {left: 30, right: 30, top: 20, bottom: 50}},
+					layout: {padding: {left: 30, right: 30, top: 20, bottom: 20}},
 					legend: {display: false},
 					tooltips: {
 						displayColors: false,
@@ -224,7 +234,7 @@ angular.module('copayApp.controllers')
 								var label = [data.labels[item.index]];
 								var val = data.datasets[item.datasetIndex].data[item.index];
 								if (val !== absentValue) {
-									label.push("$" + val);
+									label.push("$" + val.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
 									label.push((val / sum * 100).toLocaleString([], {maximumFractionDigits: 1}) + "%");
 								}
 								return label;
@@ -244,9 +254,9 @@ angular.module('copayApp.controllers')
 						datalabels: {
 							color: '#FFFFFF',
 							textShadowColor: '#000000',
-							textShadowBlur: 5,
+							textShadowBlur: 0,
 							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
-							borderRadius: 5,
+							borderRadius: 0,
 							font: {
 								weight: 'bold'
 							},
@@ -291,6 +301,7 @@ angular.module('copayApp.controllers')
 					chartLabels.push(balance.name || balance.asset);
 					indexToBalance.push(i);
 				}
+				chartInstance.options.tooltips.enabled = chartData.length > 1;
 				updateAngle();
 				chart.update();
 			};
