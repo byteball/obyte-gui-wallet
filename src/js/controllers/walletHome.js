@@ -101,7 +101,7 @@ angular.module('copayApp.controllers')
 			var movePointer = false;
 			var updateAngle = function(e) {
 				if (!radius) {
-					$timeout(function(){updateAngle(e);chart.update();}, 300);
+					$timeout(function(){updateAngle(e);chartInstance.update();}, 300);
 					return;
 				}
 				if (!e) {
@@ -188,7 +188,7 @@ angular.module('copayApp.controllers')
 						$scope.index.suspendSwipe(500);
 
 					updateAngle(e);
-					chart.update();
+					chartInstance.update();
 				});
 			});
 			["mouseup", "touchend"].forEach(function(e) {
@@ -307,14 +307,14 @@ angular.module('copayApp.controllers')
 				}
 				chartInstance.options.tooltips.enabled = chartData.length > 1;
 				updateAngle();
-				chart.update();
+				chartInstance.update();
 			};
 			$scope.$watch("index.assetIndex", function() {
 				if (movePointer) {
 					return;
 				}
 				updateAngle();
-				chart.update();
+				chartInstance.update();
 			});
 			$scope.$watchCollection("index.arrBalances", updateChart);
 			$scope.$watchCollection("home.exchangeRates", updateChart);

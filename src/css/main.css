@@ -1570,7 +1570,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .onGoingProcess {
   left: 0;
   width: 100%;
-  bottom: 90px;
+  bottom: 120px;
   position: absolute;
   z-index: 1020;
 }
