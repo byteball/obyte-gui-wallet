@@ -28,25 +28,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.usePushNotifications = isCordova && !isMobile.Windows();
   
   self.totalUSDBalance = 0;
+  self.addressUSDBalance = 0;
   self.isBackupReminderShown = false;
 
-  self.calculateTotalUsdBalance = function () {
+  self.recalculateUsdBalances = function () {
 	var exchangeRates = require('ocore/network.js').exchangeRates;
 	var totalUSDBalance = 0;
+	var addressUSDBalance = 0;
 	
 	for (var i = 0; i < self.arrBalances.length; i++){
-	  var balance = self.arrBalances[i];
-	  var completeBalance = (balance.total + (balance.shared || 0))
-	  if (!balance.pending && balance.asset === 'base' && exchangeRates.GBYTE_USD && balance.total) {
-		totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
-	  } else if (!balance.pending && balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD && balance.total) {
-		totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
-	  } else if (!balance.pending && exchangeRates[balance.asset + '_USD'] && balance.total) {
-		totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
-	  }
+		var balance = self.arrBalances[i];
+		var completeBalance = balance.total + (balance.shared || 0);
+		if (balance.asset === 'base' && exchangeRates.GBYTE_USD) {
+			balance.usdValue = balance.total / 1e9 * exchangeRates.GBYTE_USD;
+			totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
+		}
+		else if (balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD) {
+			balance.usdValue = balance.total / 1e9 * exchangeRates.GBB_USD;
+			totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
+		}
+		else if (exchangeRates[balance.asset + '_USD']) {
+			balance.usdValue = balance.total / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+			totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+		}
+		else
+			balance.usdValue = 0;
+
+		addressUSDBalance += balance.usdValue;
 	}
 
 	self.totalUSDBalance = totalUSDBalance;
+	self.addressUSDBalance = addressUSDBalance;
   }
 
   $timeout(function () {
@@ -235,7 +247,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 
 	eventBus.on('rates_updated', function(){
-	self.calculateTotalUsdBalance();
+		self.recalculateUsdBalances();
 		$timeout(function() {
 			$rootScope.$apply();
 		});
@@ -1433,21 +1445,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             }
           }
 		}
-		var completeBalance = balanceInfo.total + (balanceInfo.shared || 0);
-		if (asset === 'base' && exchangeRates.GBYTE_USD)
-			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBYTE_USD;
-		else if (asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD)
-			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBB_USD;
-		else if (exchangeRates[asset + '_USD'])
-			balanceInfo.usdValue = completeBalance / Math.pow(10, balanceInfo.decimals || 0) * exchangeRates[asset + '_USD'];
-		else
-			balanceInfo.usdValue = 0;
         self.assetsSet[asset] = balanceInfo;
         if (self.isAssetHidden(asset, hiddenAssets)) {
           continue;
         }
         self.arrBalances.push(balanceInfo);
 	}
+	self.recalculateUsdBalances();
 	self.arrBalances.sort((b1, b2) => {
 		if (b1.asset === 'base')
 			return -1;
@@ -1508,7 +1512,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 	  */
 
-	self.calculateTotalUsdBalance();
+	self.recalculateUsdBalances();
 
 	$timeout(function() {
 	  $rootScope.$apply();
