@@ -160,7 +160,7 @@ input.datafeed_input {
 							<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
 							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
 						</div>
-						<div class="size-14 secondrow" ng-if="balance.usdValue">
+						<div class="size-14 secondrow" ng-if="!balance.pending && balance.usdValue">
 							<span>≈ ${{ balance.usdValue.toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 					</div>
@@ -201,10 +201,6 @@ input.datafeed_input {
 
 		<div class="pr columns line-b p10b p10t" ng-if="index.shared_address">
 			<div class="right">
-				<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
-					<i class="fi-widget size-18 vm wallet-settings"></i>
-					<span class="show-for-medium-up" translate>Preferences</span>
-				</a>
 				<a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
 				<!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
 					<img src="./img/eye.svg">
@@ -212,7 +208,7 @@ input.datafeed_input {
 				</a>
 			</div>
 			<div class="wallet-info">
-				<span>Smart Contract of {{(index.alias || index.walletName)}}</span>
+				<span>Smart Contract in {{(index.alias || index.walletName)}}</span>
 			</div>
 		</div>
 
