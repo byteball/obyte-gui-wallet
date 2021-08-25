@@ -160,14 +160,8 @@ input.datafeed_input {
 							<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
 							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
 						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === 'base' && home.exchangeRates.GBYTE_USD && balance.total">
-							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
-						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD && balance.total">
-							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
-						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD'] && balance.total">
-							<span>≈ ${{ (balance.total / Math.pow(10, balance.decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+						<div class="size-14 secondrow" ng-if="!balance.pending && balance.usdValue">
+							<span>≈ ${{ balance.usdValue.toLocaleString([], {maximumFractionDigits: 2}) }}</span>
 						</div>
 					</div>
           <style ng-if="index.isCordova">
@@ -203,33 +197,27 @@ input.datafeed_input {
             </div>
           </div>
         </div> <!-- amount -->
-
-        <div class="pr columns line-b">
-          <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
-          </div>
-          <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
-              <i class="fi-widget size-18 vm wallet-settings"></i>
-              <span class="show-for-medium-up" translate>Preferences</span>
-            </a>
-            <a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
-              <!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
-              <img src="./img/eye.svg">
-              <span class="show-for-medium-up" translate>Definition</span>
-            </a>
-          </div>
-          <div class="wallet-info">
-              <p class="m0">
-              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart contract: {{index.shared_address | limitTo: 6}}...</span>
-              </p>
-              <div class="size-12 text-gray" ng-if="!index.shared_address">
-                <span ng-include="'views/includes/walletInfo.html'"></span>
-              </div>
-          </div>
-        </div>
       </div> <!-- oh -->
 
+		<div class="pr columns line-b p10b p10t" ng-if="index.shared_address">
+			<div class="right">
+				<a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
+				<!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
+					<img src="./img/eye.svg">
+					<span class="show-for-medium-up" translate>Definition</span>
+				</a>
+			</div>
+			<div class="wallet-info">
+				<span>Smart Contract in {{(index.alias || index.walletName)}}</span>
+			</div>
+		</div>
+
+      <div class="wallet_preferences" ng-if="!index.shared_address">
+		<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
+			<i class="fi-widget size-18 vm wallet-settings"></i>
+			<span class="show-for-medium-up" translate>Preferences</span>
+		</a>
+	</div>
       <!-- Donut chart -->
       <div class="chart_container">
       	<canvas id="donut"></canvas>

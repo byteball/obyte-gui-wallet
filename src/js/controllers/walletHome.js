@@ -159,6 +159,21 @@ angular.module('copayApp.controllers')
 				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
 				ctx.restore();
 			};
+			var drawUSDBalance = function() {
+				if (isNaN(pointerStartX) || angle == null)
+					return;
+				ctx.save();
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				var text = '$' + $scope.index.addressUSDBalance.toLocaleString([], {maximumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0});
+				var fontSize = 24;
+				while (fontSize*0.6*text.length > radius) {
+					fontSize = fontSize-2;
+				}
+				ctx.font = fontSize + 'px Roboto';
+				ctx.fillText(text, centerX, centerY);
+				ctx.restore();
+			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
 				canvas.addEventListener(e, function(e) {
 					var bounds = canvas.getBoundingClientRect();
@@ -209,6 +224,7 @@ angular.module('copayApp.controllers')
 					radius = this.outerRadius;
 
 					drawPointer();
+					drawUSDBalance();
 				}
 			});
 			Chart.controllers.donut = custom;
@@ -315,6 +331,9 @@ angular.module('copayApp.controllers')
 				}
 				updateAngle();
 				chartInstance.update();
+			});
+			$scope.$watch("index.shared_address", function() {
+				$timeout(function() {chartInstance.resize()});
 			});
 			$scope.$watchCollection("index.arrBalances", updateChart);
 			$scope.$watchCollection("home.exchangeRates", updateChart);

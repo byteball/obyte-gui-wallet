@@ -2196,6 +2196,11 @@ form#contacts-order {
   color: #1560BD;
 }
 
+.wallet_preferences {
+	position: absolute;
+	right:  15px;
+}
+
 @supports (-webkit-touch-callout: none) {
   /* CSS specific to iOS devices */ 
 
