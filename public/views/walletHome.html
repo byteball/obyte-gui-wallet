@@ -199,15 +199,27 @@ input.datafeed_input {
         </div> <!-- amount -->
       </div> <!-- oh -->
 
-      <div class="wallet_preferences">
-		<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
+		<div class="pr columns line-b p10b p10t" ng-if="index.shared_address">
+			<div class="right">
+				<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
+					<i class="fi-widget size-18 vm wallet-settings"></i>
+					<span class="show-for-medium-up" translate>Preferences</span>
+				</a>
+				<a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
+				<!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
+					<img src="./img/eye.svg">
+					<span class="show-for-medium-up" translate>Definition</span>
+				</a>
+			</div>
+			<div class="wallet-info">
+				<span>Smart Contract of {{(index.alias || index.walletName)}}</span>
+			</div>
+		</div>
+
+      <div class="wallet_preferences" ng-if="!index.shared_address">
+		<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
 			<i class="fi-widget size-18 vm wallet-settings"></i>
 			<span class="show-for-medium-up" translate>Preferences</span>
-		</a>
-		<a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
-		<!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
-		<img src="./img/eye.svg">
-		<span class="show-for-medium-up" translate>Definition</span>
 		</a>
 	</div>
       <!-- Donut chart -->

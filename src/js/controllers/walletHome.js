@@ -332,6 +332,9 @@ angular.module('copayApp.controllers')
 				updateAngle();
 				chartInstance.update();
 			});
+			$scope.$watch("index.shared_address", function() {
+				$timeout(function() {chartInstance.resize()});
+			});
 			$scope.$watchCollection("index.arrBalances", updateChart);
 			$scope.$watchCollection("home.exchangeRates", updateChart);
 			$rootScope.$on('Local/BalanceUpdated', function(){currentIndex = -1; updateChart();});
