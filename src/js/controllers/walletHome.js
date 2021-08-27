@@ -146,7 +146,7 @@ angular.module('copayApp.controllers')
 				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
 			};
 			var drawPointer = function() {
-				if (isNaN(pointerStartX) || angle == null)
+				if (isNaN(pointerStartX) || angle === null)
 					return;
 				ctx.save();
 				ctx.translate(pointerStartX, pointerStartY);
