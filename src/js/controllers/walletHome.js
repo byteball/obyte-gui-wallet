@@ -160,17 +160,18 @@ angular.module('copayApp.controllers')
 				ctx.restore();
 			};
 			var drawUSDBalance = function() {
-				if (isNaN(pointerStartX))
+				if (radius === null || !chartData.length)
 					return;
 				ctx.save();
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
-				var text = '$' + $scope.index.addressUSDBalance.toLocaleString([], {maximumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0});
+				var text = '$' + $scope.index.addressUSDBalance.toLocaleString([], {minimumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0, maximumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0});
 				var fontSize = 24;
 				while (fontSize*0.6*text.length > radius) {
 					fontSize = fontSize-2;
 				}
 				ctx.font = fontSize + 'px Roboto';
+				ctx.fillStyle = '#34495E';
 				ctx.fillText(text, centerX, centerY);
 				ctx.restore();
 			};
