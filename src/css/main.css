@@ -2199,6 +2199,7 @@ form#contacts-order {
 .wallet_preferences {
 	position: absolute;
 	right:  15px;
+	margin-top: 15px;
 }
 
 @supports (-webkit-touch-callout: none) {

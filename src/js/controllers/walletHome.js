@@ -160,7 +160,7 @@ angular.module('copayApp.controllers')
 				ctx.restore();
 			};
 			var drawUSDBalance = function() {
-				if (isNaN(pointerStartX) || angle == null)
+				if (isNaN(pointerStartX))
 					return;
 				ctx.save();
 				ctx.textAlign = 'center';
@@ -177,7 +177,6 @@ angular.module('copayApp.controllers')
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
 				canvas.addEventListener(e, function(e) {
 					var bounds = canvas.getBoundingClientRect();
-					console.log(e.pageY, bounds.top, bounds.height);
 					if (e.pageX - bounds.left < 10 ||
 						bounds.left + bounds.width - e.pageX < 10 ||
 						e.pageY - bounds.top < 10 ||
@@ -278,7 +277,7 @@ angular.module('copayApp.controllers')
 							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
 							borderRadius: 0,
 							font: {
-								weight: 'bold'
+								family: 'Roboto'
 							},
 							textAlign: 'center',
 							display: 'auto',
