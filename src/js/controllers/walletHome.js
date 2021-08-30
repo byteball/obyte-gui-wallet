@@ -142,8 +142,8 @@ angular.module('copayApp.controllers')
 				}
 				pointerX = centerX + radius * Math.cos(angle);
 				pointerY = centerY + radius * Math.sin(angle);
-				pointerStartX = centerX + radius * 1.2 * Math.cos(angle);
-				pointerStartY = centerY + radius * 1.2 * Math.sin(angle);
+				pointerStartX = centerX + radius * 1.17 * Math.cos(angle);
+				pointerStartY = centerY + radius * 1.17 * Math.sin(angle);
 			};
 			var drawPointer = function() {
 				if (isNaN(pointerStartX) || angle === null)
@@ -151,7 +151,7 @@ angular.module('copayApp.controllers')
 				ctx.save();
 				ctx.translate(pointerStartX, pointerStartY);
 				ctx.rotate(angle+Math.PI/64);
-				ctx.scale(-0.1, 0.1);
+				ctx.scale(-0.1 * Math.min(radius / 170, 1), 0.1 * Math.min(radius / 170, 1));
 				ctx.translate(100, -200);
 				ctx.fillStyle = 'hsla(84, 0%, 27%, 1)';
 				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\

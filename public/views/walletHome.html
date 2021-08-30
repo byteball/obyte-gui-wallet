@@ -132,7 +132,7 @@ input.datafeed_input {
 		<div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1;" ng-if="home.isTestnet">
 			{{home.testnetName}}
 		</div>
-		<div class="amount" ng-style="{'background-color':index.backgroundColor}" style="flex:0 0 auto;" ng-swipe-right="index.suspendSwipe()">
+		<div class="amount" ng-style="{'background-color':index.backgroundColor}" style="flex:0 0 auto; overflow: hidden;" ng-swipe-right="index.suspendSwipe()">
 			<div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
 				<div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
 					<span class="size-12 db m10b">{{index.updateError|translate}}</span>
