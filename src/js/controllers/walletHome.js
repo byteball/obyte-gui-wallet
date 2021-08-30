@@ -244,7 +244,7 @@ angular.module('copayApp.controllers')
 					}],
 				},
 				options: {
-					layout: {padding: {left: 30, right: 30, top: 23, bottom: 20}},
+					layout: {padding: {left: 30, right: 30, top: 20, bottom: 20}},
 					legend: {display: false},
 					tooltips: {
 						displayColors: false,
