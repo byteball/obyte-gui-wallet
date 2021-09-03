@@ -889,6 +889,11 @@ textarea:focus
   bottom: 58px;
   overflow: auto;
 }
+@supports (bottom: env(safe-area-inset-bottom)) {
+	.tab-view {
+  		bottom: calc(env(safe-area-inset-bottom, 0) + 58px);
+  	}
+}
 
 .tab-view#chat {
   background: #f0f4f9;
