@@ -236,7 +236,7 @@ input.datafeed_input {
     receive
 
     -->
-    <div id="receive" class="receive tab-view" style="padding-bottom: 0px">
+    <div id="receive" class="receive tab-view">
 
       <div ng-show="index.needsBackup" class="p60t row text-center">
         <div class="large-12 columns">
@@ -256,8 +256,8 @@ input.datafeed_input {
           </button>
         </div>
       </div>
-      <div ng-show="!index.needsBackup">
-        <div class="row">
+      <div ng-show="!index.needsBackup" class="receive_content">
+        <div>
           <!-- Address-->
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Obyte address</h2>
@@ -282,7 +282,7 @@ input.datafeed_input {
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -291,13 +291,6 @@ input.datafeed_input {
             </div>
 
             <div ng-show="home.addr[index.walletId]">
-              <div class="m10t text-center" ng-show="index.isCordova">
-                <span class="button outline dark-gray tiny round"
-                  ng-click="home.shareAddress(home.addr[index.walletId])">
-                  <i class="fi-share"></i>
-                  <span translate>Share address</span>
-                </span>
-              </div>
               <div class="line-t size-12 text-center">
 				<span ng-if="index.shared_address" translate>This address is shared with {{index.shared_address_cosigners}}.</span>
 				<span ng-if="!index.shared_address" translate>Share this wallet address to receive payments.</span>
@@ -306,15 +299,14 @@ input.datafeed_input {
             </div>
           </div>
         </div>
-        <div class="row m20t" ng-if="!index.shared_address && !index.isSingleAddress">
-          <div class="large-12 columns">
-            <button class="button black expand round m0" ng-click="home.setAddress(true)"
-              ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
+        <div class="m20t" ng-if="!index.shared_address && !index.isSingleAddress">
+          <div class="center">
+            <a ng-click="home.setAddress(true)" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate style="border-bottom: 1px dotted">
               Generate new address
-            </button>
+            </a>
           </div>
         </div>
-        <div class="m20t text-center m30b">
+        <div class="m20t text-center">
 	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-style="{'max-width' : (index.shared_address ? '100%' : '45%')}">
 	          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor, 'display': 'inline-block'}">
 	            <span translate>Request a specific amount</span>
@@ -325,7 +317,12 @@ input.datafeed_input {
 	            <span translate>Claim funds using textcoin</span>
 	          </a>
           </div>
-          <br><br><br>
+	    </div>
+	    <div class="get_coins">
+	    	<a data-href="https://getmein.ooo/?recipient={{index.shared_address || home.addr[index.walletId]}}&dst_network=Obyte" ng-click="$root.openExternalLink($event.target.dataset['href']);" class="button black round small m10b" translate ng-style="{'background-color':index.backgroundColor}" style="margin-top: -10px">Get me coins</a>
+	    	<div class="size-12 center columns" translate>
+	    		Transfer your ETH tokens to Obyte wallet or buy GBYTE.
+	    	</div>
 	    </div>
       </div>
     </div> <!-- END Receive -->
