@@ -1517,6 +1517,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	$timeout(function() {
 	  $rootScope.$apply();
 	});
+	
+	if (!self.bFirstBalanceDone) {
+		self.bFirstBalanceDone = true;
+		console.log('first balance done');
+		eventBus.emit('app_ready');
+	}
   };
 
 	
