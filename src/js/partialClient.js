@@ -97,12 +97,8 @@ function initWallet() {
 		if(!color) color = '#4A90E2';
 		getFromId('name1Color').style.color = color;
 		getFromId('name1').innerHTML = walletName;
-		getFromId('name2').innerHTML = walletName;
 		getFromId('spinnerBg').style.backgroundColor = color;
 		getFromId('amountBg').style.backgroundColor = color;
-		var subStrName = getFromId('subStrName');
-		subStrName.style.backgroundColor = color;
-		subStrName.innerHTML = walletName.substr(0, 1);
 		document.getElementsByClassName('page')[1].style.display = 'block';
 	}
 
