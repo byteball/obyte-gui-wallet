@@ -104,6 +104,9 @@ angular.module('copayApp.controllers')
 					$timeout(function(){updateAngle(e);chartInstance.update();}, 300);
 					return;
 				}
+				if (!chartData.length) {
+					return
+				}
 				if (!e) {
 					sum = currentSum = 0;
 					var oldCurrentIndex = currentIndex;
