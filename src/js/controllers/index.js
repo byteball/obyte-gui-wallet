@@ -1253,7 +1253,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		fc.getBalance(self.shared_address, function(err, assocBalances, assocSharedBalances) {
 			if (err)
 				throw "impossible getBal";
-			$log.debug('updateAll Wallet Balance:', assocBalances, assocSharedBalances);
+			//$log.debug('updateAll Wallet Balance:', assocBalances, assocSharedBalances);
+			$log.debug('updateAll Wallet Balance');
 			self.setBalance(assocBalances, assocSharedBalances);
 			// Notify external addons or plugins
 			$rootScope.$emit('Local/BalanceUpdated', assocBalances);
@@ -1483,8 +1484,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
 	if(isCordova) wallet.showCompleteClient();
-	console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
-	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	// console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	// breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	console.log('========= setBalance done');
+	breadcrumbs.add('setBalance done');
 
 	  /*
 	// SAT
