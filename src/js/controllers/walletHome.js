@@ -92,6 +92,7 @@ angular.module('copayApp.controllers')
 				return 'hsl(' + (context.dataIndex * 0.22 % 1 * 360) + ', '+s+', '+l+')';
 			};
 			var canvas = document.getElementById('donut');
+			var chart_container = canvas.closest('.chart_container');
 			var ctx = canvas.getContext('2d');
 			var chart, centerX, centerY, radius;
 
@@ -179,8 +180,8 @@ angular.module('copayApp.controllers')
 				ctx.restore();
 			};
 			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
-				canvas.addEventListener(e, function(e) {
-					var bounds = canvas.getBoundingClientRect();
+				chart_container.addEventListener(e, function(e) {
+					var bounds = chart_container.getBoundingClientRect();
 					if (e.pageX - bounds.left < 10 ||
 						bounds.left + bounds.width - e.pageX < 10 ||
 						e.pageY - bounds.top < 10 ||
@@ -210,7 +211,7 @@ angular.module('copayApp.controllers')
 				});
 			});
 			["mouseup", "touchend"].forEach(function(e) {
-				canvas.addEventListener(e, function(e) {
+				chart_container.addEventListener(e, function(e) {
 					movePointer = false;
 				});
 			});
