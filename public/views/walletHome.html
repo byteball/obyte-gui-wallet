@@ -337,7 +337,7 @@ input.datafeed_input {
     send
 
     -->
-    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropdown(false)">
       <div>
         <h4 class="title m0">
             <div class="size-10">
@@ -346,7 +346,7 @@ input.datafeed_input {
                 </span>
                 <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
                   <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
                       <div style="overflow: hidden;">
                         {{assetIndexSelectorValue >= 0
                           ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
@@ -789,11 +789,11 @@ input.datafeed_input {
     history
 
     -->
-    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropdown(false)">
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:10px 10px; background-color: #F1F3F5;">
           <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+            <button class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
               <div style="overflow: hidden;">
                 {{index.assetIndex >= 0 ? (index.arrBalances[index.assetIndex].totalStr ? index.arrBalances[index.assetIndex].totalStr : index.arrBalances[index.assetIndex].total.toLocaleString() + ' of ' + index.arrBalances[index.assetIndex].asset) : ''}}
               </div>
@@ -803,7 +803,7 @@ input.datafeed_input {
               <li
                 class="custom-option"
                 ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
-                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown(); home.additional_assets = null;"
+                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropdown(); home.additional_assets = null;"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
                 <div class="custom-badge" ng-if="home.getAssetBadge(balance.asset) > 0">

@@ -426,7 +426,7 @@ angular.module('copayApp.controllers')
 
 		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function () {
 			if (self.assetDropDownVisible) {
-				self.toggleAssetDropwDown();
+				self.toggleAssetDropdown();
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -723,7 +723,7 @@ angular.module('copayApp.controllers')
 				e.stopImmediatePropagation();
 			}
 		};
-		this.toggleAssetDropwDown = function(state, target) {
+		this.toggleAssetDropdown = function(state, target) {
 			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
 			document.removeEventListener('click', clickHandler, true);
 			if (self.assetDropDownVisible) {
@@ -743,7 +743,7 @@ angular.module('copayApp.controllers')
 		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
 			$scope.assetIndexSelectorValue = assetIndexSelectorValue;
 			self.additional_assets = null;
-			self.toggleAssetDropwDown();
+			self.toggleAssetDropdown();
 			self.forceAmountRevalidation();
 			self.switchForms();
 			self.onChanged();
