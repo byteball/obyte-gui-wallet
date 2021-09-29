@@ -1460,6 +1460,8 @@ angular.module('copayApp.controllers')
 
 		function updateAAResults () {
 			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('sendPaymentForm is gone');
 			var amount = form.amount.$modelValue || 0;
 			if (!self.aa_destinations || self.aa_destinations.length === 0)
 				return console.log('no AA destinations');
