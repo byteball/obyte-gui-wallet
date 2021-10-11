@@ -94,3 +94,6 @@ appimage/obyte/*
 appimage/out/*
 appimage/pkg2appimage
 viewkv.js
+
+dist
+yarn.lock
