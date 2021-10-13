@@ -21,7 +21,7 @@ DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputBaseFilename={#MyAppPackageName}-win32
 ; SourceDir=../../obytebuilds
-OutputDir=../../obytebuilds
+OutputDir=../../obytebuilds/{#MyAppVersion}-win-x86
 Compression=lzma
 SolidCompression=yes
 ; SetupIconFile=../public/img/icons/logo-circle.ico
@@ -60,7 +60,7 @@ Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\..\obytebuilds\{#MyAppPackageName}\win32\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\obytebuilds\{#MyAppVersion}-win-x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../public/img/icons/logo-circle.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

@@ -1,14 +1,4 @@
 module.exports = function(grunt) {
-	
-	function getPlatform(){
-		switch(process.platform){
-			case 'win32': return 'win64'; // change to 'win' for both 32 and 64
-			case 'linux': return 'linux64';
-			case 'darwin': return 'osx64';
-			default: throw Error("unknown platform "+process.platform);
-		}
-	}
-
   // Project Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -17,13 +7,10 @@ module.exports = function(grunt) {
         command: 'node ./util/version.js'
       },
       clear: {
-        command: 'rm -Rf node_modules/@bower_components node_modules'
+        command: 'rm -Rf node_modules yarn.lock'
       },
       osx64: {
-        command: '../obytebuilds/build-osx.sh osx64'
-      },
-      osx32: {
-        command: '../obytebuilds/build-osx.sh osx32'
+        command: "../obytebuilds/"+process.env.npm_package_version+"-mac-x64/build-osx.sh osx64"
       }
     },
     watch: {
@@ -192,83 +179,32 @@ module.exports = function(grunt) {
         flatten: true,
         options: {timestamp: true, mode: true},
         src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/app.entitlements', 'webkitbuilds/Background.png'],
-        dest: '../obytebuilds/'
+        dest: "../obytebuilds/"+process.env.npm_package_version+"-mac-x64"
       },
       linux: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux32/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: '../obytebuilds/Obyte/linux64/', flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
         ],
       }
-    },
-    /*karma: {
-      unit: {
-        configFile: 'test/karma.conf.js'
-      },
-      prod: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
-      }
-    },
-    coveralls: {
-      options: {
-        debug: false,
-        coverageDir: 'coverage/report-lcov',
-        dryRun: true,
-        force: true,
-        recursive: false
-      }
-    },*/
-    nwjs: {
-      options: {
-          //platforms: ['win','osx64','linux'],
-          //platforms: ['osx64'],
-          platforms: [getPlatform()],
-          appName: 'Obyte',
-          buildDir: '../obytebuilds',
-          version: grunt.option('nw') || '0.14.7',
-          zip: false,
-          macIcns: './public/img/icons/logo-circle.icns',
-          winIco: './public/img/icons/logo-circle.ico',
-          exeIco: './public/img/icons/logo-circle.ico',
-          macPlist: {
-          	CFBundleURLTypes: [{CFBundleURLName: 'Obyte action', CFBundleURLSchemes: ['byteball', 'obyte']}],
-      		/*CFBundleIconFile: 'nw.icns',*/
-      		LSHasLocalizedDisplayName: 0,
-      		UTExportedTypeDeclarations: [{
-      			UTTypeIdentifier: 'org.obyte.coin',
-      			UTTypeDescription: 'Obyte Private Coin',
-      			UTTypeConformsTo: ["public.data"],
-      			UTTypeTagSpecification: {
-      				"public.filename-extension":["coin"]
-      			}
-      		}],
-      		CFBundleDocumentTypes: [{
-      			CFBundleTypeName: "Obyte Private Coin",
-      			LSItemContentTypes: ["org.obyte.coin"],
-      			CFBundleTypeIconFile: "app.icns"
-      		}]
-          }
-      },
-      src: ['./package.json', './public/**/*', './angular-bitcore-wallet-client/**/*']
     },
     compress: {
       linux32: {
         options: {
-          archive: '../obytebuilds/obyte-linux32.zip'
+          archive: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/obyte-linux32.zip"
         },
         expand: true,
-        cwd: '../obytebuilds/Obyte/linux32/',
+        cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/",
         src: ['**/*'],
         dest: 'obyte-linux32/'
       },
       linux64: {
         options: {
-          archive: '../obytebuilds/obyte-linux64.zip'
+          archive: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/obyte-linux64.zip"
         },
         expand: true,
-        cwd: '../obytebuilds/Obyte/linux64/',
+        cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/",
         src: ['**/*'],
         dest: 'obyte-linux64/'
       }
@@ -295,7 +231,7 @@ module.exports = function(grunt) {
     debian_package: {
         linux64: {
             files: [
-                {expand: true, cwd: '../obytebuilds/obyte-test/linux64/', src: ['**/*'], dest: '/opt/obyte-test/'},
+                {expand: true, cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", src: ['**/*'], dest: '/opt/obyte/'}
                 //{expand: true, cwd: '../obytebuilds/obyte-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/obyte-test.desktop'}
             ],
             options: {
@@ -334,22 +270,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-exec');
-  //grunt.loadNpmTasks('grunt-karma');
-  //grunt.loadNpmTasks('grunt-karma-coveralls');
   grunt.loadNpmTasks('grunt-contrib-compress');
-  //grunt.loadNpmTasks('grunt-debian-package');
   grunt.loadNpmTasks('innosetup-compiler');
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
   grunt.registerTask('watch-dev', ['default', 'watch']);
   grunt.registerTask('cordova', ['default', 'browserify', 'babel']);
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
-  //grunt.registerTask('prod', ['default', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
-  //grunt.registerTask('test', ['karma:unit']);
-  //grunt.registerTask('test-coveralls', ['karma:prod', 'coveralls']);
-  //grunt.registerTask('desktop', ['prod', 'nwjs', 'copy:linux', 'compress:linux32', 'compress:linux64', 'copy:osx', 'exec:osx32', 'exec:osx64']);
-  grunt.registerTask('desktop', ['default', 'nwjs']);
+  grunt.registerTask('prepare-dist', ['default']);
+  grunt.registerTask('desktop', ['default']);
   grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
   grunt.registerTask('linux64', ['copy:linux', 'compress:linux64']);
   grunt.registerTask('linux32', ['copy:linux', 'compress:linux32']);
@@ -357,5 +287,5 @@ module.exports = function(grunt) {
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
   grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
-	grunt.registerTask('partial-fast', ['browserify:partialClient']);
+  grunt.registerTask('partial-fast', ['browserify:partialClient']);
 };

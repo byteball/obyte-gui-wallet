@@ -13,7 +13,9 @@
     "bitcoin"
   ],
   "main": "public/index.html",
+  "key": "ppgbkonninhcodjcnbpghnagfadnfjck",
   "window": {
+  	"id": "${npm_package_name}",
     "title": "Obyte wallet",
     "icon": "./public/img/icons/logo-circle-256.png",
     "show": true,
@@ -45,20 +47,6 @@
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-    "async": "^2.6.1",
-    "bip38": "^1.4.0",
-    "bitcore-lib": "^0.13.14",
-    "bitcore-mnemonic": "~1.0.0",
-    "jszip": "^3.1.3",
-    "lodash": "^4.6.1",
-    "moment": "^2.28.0",
-    "ocore": "git+https://github.com/byteball/ocore.git",
-    "preconditions": "^1.0.8",
-    "secp256k1": "^3.6.1",
-    "shelljs": "^0.3.0",
-    "sjcl": "^1.0.2",
-    "unzip": "git+https://github.com/byteball/unzip.git",
-    "zip": "git+https://github.com/xJeneKx/zip.git",
     "@bower_components/angular": "angular/bower-angular#1.8.2",
     "@bower_components/angular-carousel": "byteball/angular-carousel#master",
     "@bower_components/angular-elastic": "monospaced/angular-elastic#2",
@@ -84,17 +72,81 @@
     "@bower_components/ng-lodash": "rockabox/ng-lodash#0.5",
     "@bower_components/qrcode-decoder-js": "colkito/qrcode-decoder-js#*",
     "@bower_components/qrcode-generator": "git://github.com/monospaced/bower-qrcode-generator.git#0.0.2",
-    "@bower_components/ui-router-extras": "christopherthielen/ui-router-extras#0.1"
+    "@bower_components/ui-router-extras": "christopherthielen/ui-router-extras#0.1",
+    "async": "^2.6.1",
+    "bip38": "^1.4.0",
+    "bitcore-lib": "^0.13.14",
+    "bitcore-mnemonic": "~1.0.0",
+    "jszip": "^3.1.3",
+    "lodash": "^4.6.1",
+    "ocore": "git+https://github.com/kakysha/ocore.git#upgrade-nwjs",
+    "preconditions": "^1.0.8",
+    "secp256k1": "^3.6.1",
+    "shelljs": "^0.3.0",
+    "sjcl": "^1.0.2",
+    "unzip": "git+https://github.com/byteball/unzip.git",
+    "zip": "git+https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {},
   "scripts": {
-    "postinstall": "cd node_modules/secp256k1 && npx -q nw-gyp rebuild --target=$npm_package_build_nwVersion",
+    "postinstall": "node util/postinstall.js",
     "start": "grunt && nw",
-    "dist": "build --tasks mac-x64 --concurrent .",
+    "dist:all": "grunt prepare-dist && build --tasks win-x86,win-x64,linux-x86,linux-x64,mac-x64 --concurrent .",
+    "dist:mac": "grunt prepare-dist && build --tasks mac-x64 .",
+    "dist:win64": "grunt prepare-dist && build --tasks win-x64 .",
+    "dist:win86": "grunt prepare-dist && build --tasks win-x86 .",
+    "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 .",
+    "dist:linux86": "grunt prepare-dist && build --tasks linux-x86 .",
     "test": "grunt test-coveralls"
   },
   "build": {
-    "nwVersion": "0.57.0"
+    "nwVersion": "0.53.0",
+    "output": "../obytebuilds",
+    "outputPattern": "${VERSION}-${PLATFORM}-${ARCH}",
+    "files": [
+      "./package.json",
+      "./public/**/*",
+      "./angular-bitcore-wallet-client/**/*",
+      "node_modules/**/*"
+    ],
+    "excludes": [
+      "**/@bower_components/**",
+      "**/grunt*/**",
+      "**/browserify*/**",
+      "**/7zip-*/**",
+      "**/acorn*/**",
+      "**/@babel/**",
+      "**/babel-*/**",
+      "**/rocksdb/deps/**",
+      "**/sqlite3/!(lib|package.json)/**",
+      "**/secp256k1/build/Release/obj.target/**"
+    ],
+    "mac": {
+    	"name": "Obyte",
+   		"icon": "./public/img/icons/logo-circle.icns",
+   		"documentIcon": "./public/img/icons/logo-circle.icns",
+   		"plistStrings": {
+   			"CFBundleURLTypes": [{"CFBundleURLName": "Obyte action", "CFBundleURLSchemes": ["byteball", "obyte"]}],
+      		"LSHasLocalizedDisplayName": 0,
+      		"UTExportedTypeDeclarations": [{
+      			"UTTypeIdentifier": "org.obyte.coin",
+      			"UTTypeDescription": "Obyte Private Coin",
+      			"UTTypeConformsTo": ["public.data"],
+      			"UTTypeTagSpecification": {
+      				"public.filename-extension":["coin"]
+      			}
+      		}],
+      		"CFBundleDocumentTypes": [{
+      			"CFBundleTypeName": "Obyte Private Coin",
+      			"LSItemContentTypes": ["org.obyte.coin"],
+      			"CFBundleTypeIconFile": "app.icns"
+      		}]
+   		}
+    },
+    "win": {
+    	"productName": "Obyte",
+    	"icon": "./public/img/icons/logo-circle.ico"
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -103,21 +155,17 @@
     "grunt-angular-gettext": "2.2.3",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "=5.0.0",
-    "grunt-contrib-compress": "^1.3.0",
+    "grunt-contrib-compress": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-exec": "^1.0.0",
     "innosetup-compiler": "^5.5.9",
-    "nw": "0.57.0-sdk",
+    "nw": "0.53.0-sdk",
     "nwjs-builder-phoenix": "^1.15.0"
   },
   "resolutions": {
-    "level-rocksdb": "^5",
-    "sqlite3": "^5"
-  },
-  "engines": {
-    "yarn": ">= 1.0.0"
+    "moment": "npm:dayjs"
   }
 }

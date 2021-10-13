@@ -14,7 +14,7 @@ APP_NAME="Obyte"
 ARCH="$1"
 DMG_BACKGROUND_IMG="Background.png"
 
-PATH_NAME="${APP_NAME}/$1/"
+PATH_NAME="./"
 # you should not need to change these
 APP_EXE="${PATH_NAME}${APP_NAME}.app/Contents/MacOS/nwjs"
 
@@ -22,35 +22,19 @@ VOL_NAME="${APP_NAME}-${ARCH}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
-
-# Check the background image DPI and convert it if it isn't 72x72
-_BACKGROUND_IMAGE_DPI_H=`sips -g dpiHeight ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+'`
-_BACKGROUND_IMAGE_DPI_W=`sips -g dpiWidth ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+'`
-
-if [ $(echo " $_BACKGROUND_IMAGE_DPI_H != 72.0 " | bc) -eq 1 -o $(echo " $_BACKGROUND_IMAGE_DPI_W != 72.0 " | bc) -eq 1 ]; then
-   echo "WARNING: The background image's DPI is not 72.  This will result in distorted backgrounds on Mac OS X 10.7+."
-   echo "         I will convert it to 72 DPI for you."
-   
-   _DMG_BACKGROUND_TMP="${DMG_BACKGROUND_IMG%.*}"_dpifix."${DMG_BACKGROUND_IMG##*.}"
-
-   sips -s dpiWidth 72 -s dpiHeight 72 ${DMG_BACKGROUND_IMG} --out ${_DMG_BACKGROUND_TMP}
-   
-   DMG_BACKGROUND_IMG="${_DMG_BACKGROUND_TMP}"
-fi
+SIGNING_IDENTITY="Apple Development: Mikhail Pustovalov (6K7XMMR3JZ)"
 
 echo "Signing the app ..."
 
 # the same for both main app and nested binaries
-CHILD_ARGS=('--sign' "Developer ID Application: Matrix Platform LLC" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
-APP_ARGS=('--sign' "Developer ID Application: Matrix Platform LLC" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
+CHILD_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
+APP_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
 
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Helper.app/Contents/MacOS/nwjs Helper"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework/Libraries/exif.so"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework/Resources/app_mode_loader.app/Contents/MacOS/app_mode_loader"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Versions/50.0.2661.102/nwjs Framework.framework"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64/node_sqlite3.node"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper.app/Contents/MacOS/nwjs Helper"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/nwjs Framework"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/sqlite3/lib/binding/napi-v3-darwin-x64/node_sqlite3.node"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/secp256k1/build/Release/secp256k1.node"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/rocksdb/build/Release/leveldown.node"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/darwin-x64+arm64/node.napi.node"
 codesign "${APP_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app"
 
 # clear out any old data
@@ -63,12 +47,8 @@ mkdir -p "${STAGING_DIR}"
 cp -rpf "${PATH_NAME}${APP_NAME}.app" "${STAGING_DIR}"
 # ... cp anything else you want in the DMG - documentation, etc.
 
-pushd "${STAGING_DIR}"
-
-popd
-
 # Fix size to 350MB
-SIZE=350
+SIZE=1650
 
 if [ $? -ne 0 ]; then
    echo "Error: Cannot compute size of staging dir"

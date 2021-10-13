@@ -21,7 +21,7 @@ DefaultDirName={pf64}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 OutputBaseFilename={#MyAppPackageName}-win64
 ; SourceDir=../../obytebuilds
-OutputDir=../../obytebuilds
+OutputDir=../../obytebuilds/{#MyAppVersion}-win-x64
 Compression=lzma
 SolidCompression=yes
 ; SetupIconFile=../public/img/icons/logo-circle.ico
@@ -56,12 +56,11 @@ Root: HKCR; Subkey: "{#MyAppName}Coin";                     ValueData: "{#MyAppN
 Root: HKCR; Subkey: "{#MyAppName}Coin\DefaultIcon";             ValueData: "{app}\icon.ico";               ValueType: string;  ValueName: ""
 Root: HKCR; Subkey: "{#MyAppName}Coin\shell\open\command";  ValueData: "{app}\{#MyAppExeName} ""%1""";  ValueType: string;  ValueName: ""
 
-
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\..\obytebuilds\{#MyAppPackageName}\win64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\..\obytebuilds\{#MyAppVersion}-win-x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../public/img/icons/logo-circle.ico"; DestDir: "{app}"; DestName: "icon.ico"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
