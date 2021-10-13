@@ -4,17 +4,14 @@ O<sub>byte</sub> is a wallet for storage and transfer of decentralized value.  S
 
 [Obyte.org](https://obyte.org/)
 
-## Main Features
-
-TBD
 
 ## Installation
 
-Download and install [NW.js v0.14.7 LTS](https://dl.nwjs.io/v0.14.7) and [Node.js v5.12.0](https://nodejs.org/download/release/v5.12.0/).  These versions are recommended for easiest install but newer versions will work too.  If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Update npm to version >= 3.10.10, older version won't work anymore:
+Install [Node.js v16](https://nodejs.org/download/release/v16.10.0/). If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Install [Yarn](https://classic.yarnpkg.com/lang/en/).
 ```
-nvm install 5.12
-nvm use 5
-nvm install-latest-npm
+nvm install 16
+nvm use 16
+nvm install -g yarn
 ```
 
 Clone the source:
@@ -29,35 +26,23 @@ If you are building for testnet, switch to testnet branch:
 git checkout testnet
 ```
 
-Install [bower](http://bower.io/) and [grunt](http://gruntjs.com/getting-started) if you haven't already:
-
-```sh
-npm install -g bower
-npm install -g grunt-cli
-```
 
 Build O<sub>byte</sub>:
 
 ```sh
-bower install
-npm install # on macOS: env CXXFLAGS="-mmacosx-version-min=10.9" LDFLAGS="-mmacosx-version-min=10.9" npm install
-grunt
+yarn
 ```
-If you are on Windows or using NW.js and Node.js versions other than recommended, see [NW.js instructions about building native modules](http://docs.nwjs.io/en/latest/For%20Users/Advanced/Use%20Native%20Node%20Modules/).
 
-After first run, you'll likely encounter runtime error complaining about node_sqlite3.node not being found, copy the file from the neighboring directory to where the program tries to find it, and run again (e.g. `cp -r node_modules/sqlite3/lib/binding/node-v47-darwin-x64 node_modules/sqlite3/lib/binding/node-webkit-v0.14.7-darwin-x64`). If that didn't work, copy node_sqlite3.node from node_modules folder, which is got installed with installer file from obyte.org website.
-
-Then run O<sub>byte</sub> desktop client:
+Run O<sub>byte</sub>:
 
 ```sh
-/path/to/your/nwjs/nwjs .
+yarn start
 ```
 
-If you have run `grunt desktop` then there is 0.14.7 NW.js also installed in cache folder.
 
 ## Build O<sub>byte</sub> App Bundles
 
-All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkdir -p ../obytebuilds`. You need newer version of Node.js (latest should work) to assemble Android & iOS bundles, so use NVM to manage your Node.js installations (to keep v5.12 for NW.js and latest one for mobile platforms). Remember to switch to newer Node.js version (`nvm use 8`) before installing any software from the instructions below.
+All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkdir -p ../obytebuilds`.
 
 
 ### Android
@@ -81,26 +66,19 @@ All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkd
 
 ### macOS
 
-- `grunt desktop`
-- copy `node_modules` into the app bundle ../obytebuilds/Obyte/osx64/Obyte.app/Contents/Resources/app.nw, except those that are important only for development (karma, grunt, jasmine)
-- `grunt dmg`
+- `yarn dist:mac`
+- `yarn grunt dmg`
 
 ### Windows
 
-- `grunt desktop`
-- copy `node_modules` into the app bundle ../obytebuilds/Obyte/win64, except those that are important only for development (karma, grunt, jasmine)
-- `grunt inno64`
+- `yarn dist:win64` or `yarn dist:win86`
+- `yarn grunt inno64`
 
 ### Linux
 
-- `grunt desktop`
-- copy `node_modules` into the app bundle ../obytebuilds/Obyte/linux64, except those that are important only for development (karma, grunt, jasmine)
-- `grunt linux64`
+- `yarn dist:linux64` or `yarn dist:linux86`
+- `yarn grunt linux64` or `yarn grunt linux32`
 
-
-## About O<sub>byte</sub>
-
-TBD
 
 ## O<sub>byte</sub> Backups and Recovery
 
@@ -115,8 +93,6 @@ O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is us
 
 The application and the libraries it requires can be bundled into a one-file executable called AppImage. It should run on most Linux distribution without any additional package installation.
 There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 16.04.
-
-Install Node.JS version >= 8 preferably using [NVM](https://github.com/creationix/nvm)
 
 Install tools:
 `sudo apt-get install build-essential python desktop-file-utils libglib2.0-bin`
@@ -133,20 +109,11 @@ If you are building for testnet, switch to testnet branch:
 git checkout testnet
 ```
 
-Install bower, grunt, node-gyp and nw-gyp if you haven't already:
-
-```sh
-npm install -g bower
-npm install -g grunt-cli
-npm install -g nw-gyp
-npm install -g node-gyp
-```
 
 Go to appimage directory and execute the script:
 
 ```sh
-cd appimage
-bash appimage.sh
+./appimage/appimage.sh
 ```
 
 When completed, you will find the appimage in `../obytebuilds`
@@ -156,11 +123,6 @@ Obyte appimage can be launched from any directory, ensure to make it executable 
 ```
 chmod a+x obyte-x86_64.AppImage
 ./obyte-x86_64.AppImage
-```
-
-By default the app is built using 0.35.5 NW.js to support latest Linux distributions, you can set the environment variable NW_VERSION to build using another NW.js version.
-```sh
-NW_VERSION=0.23.7 bash appimage.sh
 ```
 
 
