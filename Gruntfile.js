@@ -259,6 +259,23 @@ module.exports = function(grunt) {
             },
             script: 'webkitbuilds/setup-win32.iss'
         }
+    },
+    clean: {
+    	options: {
+    		force: true
+    	},
+    	mac: [
+	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
+	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Frameworks/nwjs Framework.framework/Resources/!(en)*.lproj/**"
+	    ],
+	    win: [
+	    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/!(win32)-*/**",
+	    	"../obytebuilds/*-win-*/locales/!(en)*.pak*"
+	    ],
+	    linux: [
+	    	"../obytebuilds/*-linux-*/node_modules/rocksdb/prebuilds/!(linux)-*/**",
+	    	"../obytebuilds/*-linux-*/locales/!(en)*.pak*"	
+	    ]
     }
   });
 
@@ -272,6 +289,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('innosetup-compiler');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
   grunt.registerTask('watch-dev', ['default', 'watch']);
@@ -288,4 +306,5 @@ module.exports = function(grunt) {
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
   grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
   grunt.registerTask('partial-fast', ['browserify:partialClient']);
+
 };
