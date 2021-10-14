@@ -22,7 +22,7 @@ VOL_NAME="${APP_NAME}-${ARCH}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
-SIGNING_IDENTITY="Apple Development: Mikhail Pustovalov (6K7XMMR3JZ)"
+SIGNING_IDENTITY="Developer ID Application: Matrix Platform LLC"
 
 echo "Signing the app ..."
 
@@ -47,8 +47,7 @@ mkdir -p "${STAGING_DIR}"
 cp -rpf "${PATH_NAME}${APP_NAME}.app" "${STAGING_DIR}"
 # ... cp anything else you want in the DMG - documentation, etc.
 
-# Fix size to 350MB
-SIZE=1650
+SIZE=1024
 
 if [ $? -ne 0 ]; then
    echo "Error: Cannot compute size of staging dir"
