@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	if (correspondent && !correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
-	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
+	$scope.messageEvents = correspondent ? correspondentListService.messageEventsByCorrespondent[correspondent.device_address] : [];
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
