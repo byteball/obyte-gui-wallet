@@ -113,12 +113,14 @@
       "**/grunt*/**",
       "**/browserify*/**",
       "**/7zip-*/**",
+      "**/node-gyp/**",
       "**/acorn*/**",
       "**/@babel/**",
       "**/babel-*/**",
-      "**/rocksdb/deps/**",
       "**/sqlite3/!(lib|package.json)/**",
-      "**/secp256k1/build/Release/obj.target/**"
+      "**/secp256k1/build/Release/obj*/**",
+      "**/rocksdb/deps/**",
+      "**/*.pdb"
     ],
     "mac": {
       "name": "Obyte",

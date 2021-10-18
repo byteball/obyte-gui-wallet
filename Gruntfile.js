@@ -266,14 +266,17 @@ module.exports = function(grunt) {
     	},
     	mac: [
 	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
+        "../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/build/**",
 	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Frameworks/nwjs Framework.framework/Resources/!(en)*.lproj/**"
 	    ],
 	    win: [
-	    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/!(win32)-*/**",
+	    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/**",
+        "../obytebuilds/*-win-*/node_modules/rocksdb/build/Release/!(leveldown.node)**",
 	    	"../obytebuilds/*-win-*/locales/!(en)*.pak*"
 	    ],
 	    linux: [
 	    	"../obytebuilds/*-linux-*/node_modules/rocksdb/prebuilds/!(linux)-*/**",
+        "../obytebuilds/*-linux-*/node_modules/rocksdb/build/**",
 	    	"../obytebuilds/*-linux-*/locales/!(en)*.pak*"	
 	    ]
     }
