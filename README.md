@@ -7,15 +7,36 @@ O<sub>byte</sub> is a wallet for storage and transfer of decentralized value.  S
 
 ## Installation
 
-Install [Node.js v16](https://nodejs.org/download/release/v16.10.0/). If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Install [Yarn](https://classic.yarnpkg.com/lang/en/).
-```
+1. Install [Node.js](https://nodejs.org/download/release/v16.10.0/), preferrably somewhat latest version. If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Install [Yarn](https://classic.yarnpkg.com/lang/en/).
+```bash
 nvm install 16
 nvm use 16
 nvm install -g yarn
 ```
 
-Clone the source:
+2. Then you need build tools to rebuild native modules for NW.js (secp256k1 atleast, and some more on Windows platforms). We use [nw-gyp](https://github.com/nwjs/nw-gyp#installation) for rebuilding modules, you can read the requirements for nw-gyp for your platform on it's page. Basically you need C++ build tools and Python2.7.
 
+    * On **Ubuntu**-like platforms and other **Linux**:
+
+    ```bash
+    sudo apt install python g++
+    ```
+
+    * On **macOS** you need to install XCode and Command Line Tools, Python2.7 is already installed in your system. After installing XCode, run:
+
+    ```bash
+    xcode-select --install
+    ```
+
+    * On **Windows** you need to manually download and install:
+
+      * [Python2.7](https://www.python.org/downloads/release/python-2718/)
+      * C++ Build Tools 2015 (not later). To install Build Tools, you have two options:
+        - Install [Microsoft Build Tools 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48159)
+        - Install [Visual Studio 2015](https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409) and select Common Tools for Visual C++ during setup.
+      * [Windows 8.1 SDK](https://go.microsoft.com/fwlink/p/?LinkId=323507)
+
+3. Now clone the source:
 ```sh
 git clone https://github.com/byteball/obyte-gui-wallet.git
 cd obyte-gui-wallet
@@ -92,23 +113,10 @@ O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is us
 ## Create an AppImage
 
 The application and the libraries it requires can be bundled into a one-file executable called AppImage. It should run on most Linux distribution without any additional package installation.
-There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 16.04.
+There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 21.10.
 
 Install tools:
-`sudo apt-get install build-essential python desktop-file-utils libglib2.0-bin`
-
-Clone the source:
-
-```sh
-git clone https://github.com/byteball/obyte-gui-wallet.git
-cd obyte-gui-wallet
-```
-
-If you are building for testnet, switch to testnet branch:
-```sh
-git checkout testnet
-```
-
+`sudo apt install desktop-file-utils libglib2.0-bin`
 
 Go to appimage directory and execute the script:
 
