@@ -63,7 +63,8 @@ yarn start
 
 ## Build O<sub>byte</sub> App Bundles
 
-All app bundles will be placed at `../obytebuilds` dir, so create it first: `mkdir -p ../obytebuilds`.
+You need NPM to be at least version 7, so run `npm -v` to check your currently installed version, and if it has lower version, update: `npm install -g npm@7`.
+All app bundles will be placed at `../obytebuilds` dir. 
 
 
 ### Android

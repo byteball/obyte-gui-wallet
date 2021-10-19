@@ -264,24 +264,70 @@ module.exports = function(grunt) {
     	options: {
     		force: true
     	},
-    	mac: [
-	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
-        	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/build/**",
-	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Frameworks/nwjs Framework.framework/Resources/!(en)*.lproj/**",
-	    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/!(en)*.lproj/**"
-	    ],
-	    win: [
-	    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/**",
-        	"../obytebuilds/*-win-*/node_modules/rocksdb/build/Release/!(leveldown.node)**",
-	    	"../obytebuilds/*-win-*/locales/!(en)*.pak*"
-	    ],
-	    linux: [
-	    	"../obytebuilds/*-linux-*/node_modules/rocksdb/prebuilds/!(linux)-*/**",
-        	"../obytebuilds/*-linux-*/node_modules/rocksdb/build/**",
-	    	"../obytebuilds/*-linux-*/locales/!(en)*.pak*"	
-	    ]
+    	mac: {
+    		src: [
+		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
+	        	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/build/**",
+		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Frameworks/nwjs Framework.framework/Resources/!(en)*.lproj/**",
+		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/!(en)*.lproj/**",
+		    	"../obytebuilds/*-mac-*/!(*.app)**",
+		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/*"
+	    	],
+	    	filter: function(filepath) {
+	    		var prodDeps = getDeps('prod');
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var remove = !prodDeps.includes(modName);
+				return remove
+	    	}
+		},
+	    win: {
+		    src: [
+		    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/**",
+	        	"../obytebuilds/*-win-*/node_modules/rocksdb/build/Release/!(leveldown.node)**",
+		    	"../obytebuilds/*-win-*/locales/!(en)*.pak*",
+		    	"../obytebuilds/*-win-*/node_modules/*"
+		    ],
+		    filter: function(filepath) {
+	    		var prodDeps = getDeps('prod');
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var remove = !prodDeps.includes(modName);
+				return remove
+	    	}
+		},
+	    linux: {
+	    	src: [
+		    	"../obytebuilds/*-linux-*/node_modules/rocksdb/prebuilds/!(linux)-*/**",
+	        	"../obytebuilds/*-linux-*/node_modules/rocksdb/build/**",
+		    	"../obytebuilds/*-linux-*/locales/!(en)*.pak*",
+		    	"../obytebuilds/*-linux-*/node_modules/*"
+		    ],
+		    filter: function(filepath) {
+	    		var prodDeps = getDeps('prod');
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var remove = !prodDeps.includes(modName);
+				return remove
+	    	}
+	    }
     }
   });
+
+var cachedDeps = [];
+function getDeps(type) {
+	if (cachedDeps[type])
+		return cachedDeps[type];
+	var deps = Buffer.from(require("child_process").spawnSync("yarn", ["list", "--depth=0", "--"+type]).stdout).toString("ascii").split("\n");
+	deps.pop();
+	deps.shift();
+	deps = deps.map(d => {
+		d = d
+		.substring(0, d.lastIndexOf("@")) // remove version from end
+		.substr(d.indexOf(" ") + 1); // remove garbage from start
+		if (d.lastIndexOf("/") != -1)
+			d = d.substr(0, d.lastIndexOf("/")); // remove nested modules from the end
+		return d;
+	})
+	cachedDeps[type] = deps;
+}
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
