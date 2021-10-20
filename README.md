@@ -113,9 +113,9 @@ The application and the libraries it requires can be bundled into a one-file exe
 There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 21.10.
 
 Install tools:
-`sudo apt install desktop-file-utils libglib2.0-bin`
+`sudo apt install imagemagick`
 
-Go to appimage directory and execute the script:
+Execute the script:
 
 ```sh
 ./appimage/appimage.sh

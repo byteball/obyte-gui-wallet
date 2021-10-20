@@ -7,8 +7,8 @@ ingredients:
   dist: bionic
   sources: deb https://packages.ubuntu.com/ bionic main universe
 script:
-  - cp -r ../../../../obytebuilds/*-linux-x64/* usr/bin/
-  - cp ../../../../obytebuilds/Obyte/*-linux-x64/public/img/icons/logo-circle-256.png obyte.png
+  - cp -r ../../../../obytebuilds/$VERSION-linux-x64/* usr/bin/
+  - cp ../../../../obytebuilds/$VERSION-linux-x64/public/img/icons/logo-circle-256.png obyte.png
   - cat > obyte.desktop << EOF
   - [Desktop Entry]
   - Type=Application

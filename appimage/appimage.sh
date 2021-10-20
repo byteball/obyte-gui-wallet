@@ -1,7 +1,7 @@
 if [ -z "${NW_VERSION}" ]; then
-  NW_VERSION=$(node -p -e "require('./package.json').build.nwVersion")
+  export NW_VERSION=$(node -p -e "require('./package.json').build.nwVersion")
 fi
-VERSION=$(node -p "require('./package.json').version")
+export VERSION=$(node -p "require('./package.json').version")
 #cd ..
 #rm -rf node_modules
 #yarn

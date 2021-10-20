@@ -181,11 +181,16 @@ module.exports = function(grunt) {
         src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/app.entitlements', 'webkitbuilds/Background.png'],
         dest: "../obytebuilds/"+process.env.npm_package_version+"-mac-x64"
       },
-      linux: {
+      linux64: {
 		options: {timestamp: true, mode: true},
         files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} },
+          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} }
+        ],
+      },
+      linux32: {
+		options: {timestamp: true, mode: true},
+        files: [
+          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} }
         ],
       }
     },
@@ -351,8 +356,8 @@ function getDeps(type) {
   grunt.registerTask('prepare-dist', ['default']);
   grunt.registerTask('desktop', ['default']);
   grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
-  grunt.registerTask('linux64', ['copy:linux', 'compress:linux64']);
-  grunt.registerTask('linux32', ['copy:linux', 'compress:linux32']);
+  grunt.registerTask('linux64', ['copy:linux64', 'compress:linux64']);
+  grunt.registerTask('linux32', ['copy:linux32', 'compress:linux32']);
   grunt.registerTask('deb', ['debian_package:linux64']);
   grunt.registerTask('inno64', ['innosetup_compiler:win64']);
   grunt.registerTask('inno32', ['innosetup_compiler:win32']);
