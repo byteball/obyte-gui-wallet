@@ -275,7 +275,7 @@ module.exports = function(grunt) {
 	    	],
 	    	filter: function(filepath) {
 	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
 	    		var remove = !prodDeps.includes(modName);
 				return remove
 	    	}
@@ -289,7 +289,7 @@ module.exports = function(grunt) {
 		    ],
 		    filter: function(filepath) {
 	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
 	    		var remove = !prodDeps.includes(modName);
 				return remove
 	    	}
@@ -303,7 +303,7 @@ module.exports = function(grunt) {
 		    ],
 		    filter: function(filepath) {
 	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules/')+13);
+	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
 	    		var remove = !prodDeps.includes(modName);
 				return remove
 	    	}
