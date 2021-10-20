@@ -28,13 +28,9 @@ nvm install -g yarn
     xcode-select --install
     ```
 
-    * On **Windows** you need to manually download and install:
+    * On **Windows** you need C++ Build Tools 2015 or 2017 (not later) and Python2.7, everything can be installed via one command:
 
-      * [Python2.7](https://www.python.org/downloads/release/python-2718/)
-      * C++ Build Tools 2015 (not later). To install Build Tools, you have two options:
-        - Install [Microsoft Build Tools 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48159)
-        - Install [Visual Studio 2015](https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409) and select Common Tools for Visual C++ during setup.
-      * [Windows 8.1 SDK](https://go.microsoft.com/fwlink/p/?LinkId=323507)
+      * Run cmd.exe with Administrator privileges and run: `yarn global add windows-build-tools`. This will take some time, be patient.
 
 3. Now clone the source:
 ```sh
@@ -63,26 +59,26 @@ yarn start
 
 ## Build O<sub>byte</sub> App Bundles
 
-You need NPM to be at least version 7, so run `npm -v` to check your currently installed version, and if it has lower version, update: `npm install -g npm@7`.
+You need NPM to be at least version 7, so run `npm -v` to check your currently installed version, and if it has lower version, update: `yarn global add npm@7`.
 All app bundles will be placed at `../obytebuilds` dir. 
 
 
 ### Android
 - Install jdk1.8 (9 and higher won't work)
 - Install Android SDK (install Android Studio and use its setup wizard to install latest SDK), then put `export ANDROID_HOME=~/Library/Android/sdk` inside your `~/.zshrc` or `~/.bash_profile`, then `yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses`
-- Install Cordova `npm install cordova -g`
+- Install Cordova `yarn global add cordova`
 - Install [Gradle](https://gradle.org/install/) (macOS: `brew install gradle`)
 - Run `make android-debug`
 
 ### iOS
 
 - Install Xcode
-- Install Cordova `npm install cordova -g`
-- Install ios-deploy `npm install -g ios-deploy`
+- Install Cordova `yarn global add cordova`
+- Install ios-deploy `yarn global add ios-deploy`
 - Install [CocoaPods](https://cocoapods.org) `brew install cocoapods`, then `pod setup`
 - Run `make ios-debug`
   * In case of `DeviceSupport` missing error, run `cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/ && sudo ln -s 10.3.1\ \(14E8301\)/ 10.3`
-  * If you encounter 'bitcore' not found after app launch, install it `npm install bitcore-lib`, then rerun make again.
+  * If you encounter 'bitcore' not found after app launch, install it `yarn add bitcore-lib`, then rerun make again.
   * On code signing error, open Xcode project `../obytebuilds/project-IOS/platforms/ios` in Xcode, open project properties, select Obyte target and set your AppleID account as a team. Xcode may also ask you to change bundle identifier to be unique, just append any random string to 'org.byteball.wallet' bundle identifier.
   * *Never open Xcode project using .xcodeproj file*, just open the directory `../obytebuilds/project-IOS/platforms/ios` in Xcode instead
 

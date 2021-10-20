@@ -315,7 +315,7 @@ var cachedDeps = [];
 function getDeps(type) {
 	if (cachedDeps[type])
 		return cachedDeps[type];
-	var deps = Buffer.from(require("child_process").spawnSync("yarn", ["list", "--depth=0", "--"+type]).stdout).toString("ascii").split("\n");
+	var deps = Buffer.from(require("child_process").spawnSync("yarn" + (process.platform == "win32" ? ".cmd" : ""), ["list", "--depth=0", "--"+type]).stdout).toString("ascii").split("\n");
 	deps.pop();
 	deps.shift();
 	deps = deps.map(d => {
