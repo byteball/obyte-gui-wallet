@@ -6,7 +6,7 @@ export VERSION=$(node -p "require('./package.json').version")
 #rm -rf node_modules
 #yarn
 yarn dist:linux64
-yarn grunt linux64
+yarn grunt copy:linux64
 cd appimage
 rm pkg2appimage
 wget https://raw.githubusercontent.com/AppImage/pkg2appimage/master/pkg2appimage

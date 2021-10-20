@@ -19,7 +19,7 @@ nvm install -g yarn
     * On **Ubuntu**-like platforms and other **Linux**:
 
     ```bash
-    sudo apt install python g++
+    sudo apt install python g++ make
     ```
 
     * On **macOS** you need to install XCode and Command Line Tools, Python2.7 is already installed in your system. After installing XCode, run:
