@@ -103,6 +103,7 @@
     "nwFlavor": "sdk",
     "output": "../obytebuilds",
     "outputPattern": "${VERSION}-${PLATFORM}-${ARCH}",
+    "appId": "org.obyte.wallet",
     "files": [
       "./package.json",
       "./public/**/*",

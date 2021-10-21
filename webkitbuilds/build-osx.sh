@@ -22,7 +22,7 @@ VOL_NAME="${APP_NAME}-${ARCH}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
-SIGNING_IDENTITY="Developer ID Application: Matrix Platform LLC"
+SIGNING_IDENTITY="41A1F53FEF8E816A45B9EE4A6005CA6DC66114F4"
 
 echo "Signing the app ..."
 
@@ -30,11 +30,30 @@ echo "Signing the app ..."
 CHILD_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
 APP_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
 
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (GPU).app"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (Plugin).app"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper.app/Contents/MacOS/nwjs Helper"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/nwjs Framework"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper.app"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/app_mode_loader"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/chrome_crashpad_handler"
+
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libEGL.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libGLESv2.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libswiftshader_libEGL.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libswiftshader_libGLESv2.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libvk_swiftshader.dylib"
+
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/XPCServices/AlertNotificationService.xpc"
+
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Versions/Current/libnode.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Versions/Current/libffmpeg.dylib"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Versions/Current/nwjs Framework"
+
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/sqlite3/lib/binding/napi-v3-darwin-x64/node_sqlite3.node"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/secp256k1/build/Release/secp256k1.node"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/darwin-x64+arm64/node.napi.node"
+
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/MacOS/${APP_NAME}"
 codesign "${APP_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app"
 
 # clear out any old data
@@ -44,7 +63,7 @@ rm -rf "${STAGING_DIR}" "${DMG_TMP}" "${DMG_FINAL}"
 # copy over the stuff we want in the final disk image to our staging dir
 echo "Copying ..."
 mkdir -p "${STAGING_DIR}"
-cp -rpf "${PATH_NAME}${APP_NAME}.app" "${STAGING_DIR}"
+cp -Rpfa "${PATH_NAME}${APP_NAME}.app" "${STAGING_DIR}"
 # ... cp anything else you want in the DMG - documentation, etc.
 
 SIZE=1024
