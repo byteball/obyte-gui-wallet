@@ -22,7 +22,7 @@ VOL_NAME="${APP_NAME}-${ARCH}"
 DMG_TMP="${VOL_NAME}-temp.dmg"
 DMG_FINAL="${VOL_NAME}.dmg"
 STAGING_DIR="tmp"
-SIGNING_IDENTITY="41A1F53FEF8E816A45B9EE4A6005CA6DC66114F4"
+SIGNING_IDENTITY="Developer ID Application: Matrix Platform LLC"
 
 echo "Signing the app ..."
 
