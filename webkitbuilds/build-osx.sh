@@ -30,8 +30,9 @@ echo "Signing the app ..."
 CHILD_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
 APP_ARGS=('--sign' "$SIGNING_IDENTITY" '--verbose=3' '--options' 'runtime' '--timestamp' '--deep' '--force' '--entitlements' 'app.entitlements')
 
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (GPU).app"
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (Plugin).app"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (GPU).app/Contents/MacOS/nwjs Helper (GPU)"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (Renderer).app/Contents/MacOS/nwjs Helper (Renderer)"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper (Plugin).app/Contents/MacOS/nwjs Helper (Plugin)"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper.app/Contents/MacOS/nwjs Helper"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/nwjs Helper.app"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Helpers/app_mode_loader"
@@ -43,7 +44,7 @@ codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwj
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libswiftshader_libGLESv2.dylib"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Libraries/libvk_swiftshader.dylib"
 
-codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/XPCServices/AlertNotificationService.xpc"
+codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/XPCServices/AlertNotificationService.xpc/Contents/MacOS/AlertNotificationService"
 
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Versions/Current/libnode.dylib"
 codesign "${CHILD_ARGS[@]}" "${PATH_NAME}${APP_NAME}.app/Contents/Frameworks/nwjs Framework.framework/Versions/Current/libffmpeg.dylib"
