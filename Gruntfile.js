@@ -327,9 +327,12 @@ function getDeps(type) {
 	deps.pop();
 	deps = deps.map(d => {
 		d = d
-		.substr(d.indexOf("node_modules") + 13); // remove garbage from start
+		.substr(d.indexOf("node_modules") + 13)  // remove garbage from start
+		.replace("\r", ""); // remove caret return on win platform
 		if (d.indexOf("/") != -1)
 			d = d.substr(0, d.indexOf("/")); // remove nested modules from the end
+		if (d.indexOf("\\") != -1)
+			d = d.substr(0, d.indexOf("\\")); // remove nested modules from the end
 		return d;
 	})
 	cachedDeps[type] = deps;
