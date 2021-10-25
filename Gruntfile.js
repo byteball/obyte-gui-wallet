@@ -322,15 +322,14 @@ var cachedDeps = [];
 function getDeps(type) {
 	if (cachedDeps[type])
 		return cachedDeps[type];
-	var deps = Buffer.from(require("child_process").spawnSync("yarn" + (process.platform == "win32" ? ".cmd" : ""), ["list", "--depth=0", "--"+type]).stdout).toString("ascii").split("\n");
-	deps.pop();
+	var deps = Buffer.from(require("child_process").spawnSync("npm" + (process.platform == "win32" ? ".cmd" : ""), ["list", "--depth=Infinity", "--" + type, "--parseable", "--silent"]).stdout).toString("ascii").split("\n");
 	deps.shift();
+	deps.pop();
 	deps = deps.map(d => {
 		d = d
-		.substring(0, d.lastIndexOf("@")) // remove version from end
-		.substr(d.indexOf(" ") + 1); // remove garbage from start
-		if (d.lastIndexOf("/") != -1)
-			d = d.substr(0, d.lastIndexOf("/")); // remove nested modules from the end
+		.substr(d.indexOf("node_modules") + 13); // remove garbage from start
+		if (d.indexOf("/") != -1)
+			d = d.substr(0, d.indexOf("/")); // remove nested modules from the end
 		return d;
 	})
 	cachedDeps[type] = deps;
