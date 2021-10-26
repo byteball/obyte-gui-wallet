@@ -166,6 +166,7 @@
     },
     "win": {
       "productName": "Obyte",
+      "fileDescription": "Obyte - smart payments made simple",
       "icon": "./public/img/icons/logo-circle.ico"
     },
     "linux": {
