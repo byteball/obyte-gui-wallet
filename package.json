@@ -99,7 +99,7 @@
     "test": "grunt test-coveralls"
   },
   "build": {
-    "nwVersion": "0.53.0",
+    "nwVersion": "0.55.0",
     "nwFlavor": "sdk",
     "output": "../obytebuilds",
     "outputPattern": "${VERSION}-${PLATFORM}-${ARCH}",
@@ -188,7 +188,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-exec": "^1.0.0",
     "innosetup-compiler": "^5.5.9",
-    "nw": "0.53.0-sdk",
+    "nw": "0.55.0-sdk",
 	"nw-gyp": "^3.6.5",
     "@kakysha/nwjs-builder-phoenix": "^1.15.0"
   },
