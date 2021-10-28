@@ -612,10 +612,10 @@ angular
       });
       try {
         nativeMenuBar.createMacBuiltin("Obyte");
+        win.menu = nativeMenuBar;
       } catch (e) {
         $log.debug('This is not OSX');
       }
-      win.menu = nativeMenuBar;
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
