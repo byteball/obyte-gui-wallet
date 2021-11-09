@@ -208,7 +208,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest) {
 				return toDelayedReplacement(paymentDropdown(address));
 			}
-			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>');
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\''+(objPaymentRequest.additional_assets ? ', '+escapeQuotes(JSON.stringify(objPaymentRequest.additional_assets)) : '')+')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			param_index++;
 			params[param_index] = uri;
@@ -563,6 +563,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		console.log("asset="+asset);
 		if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH)) // invalid asset
 			return null;
+		var res = URI.parseAdditionalAssets(asset, assocParams);
+		if (res.error)
+			return null;
+		var additional_assets = res.additional_assets;
 		var device_address = assocParams['device_address'] || '';
 		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
 			return null;
@@ -578,9 +582,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			single_address = 1;
 		}
 		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address account': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
+		if (additional_assets) {
+			for (var a in additional_assets)
+				amountStr += ', ' + getAmountText(additional_assets[a], a);
+		}
 		return {
 			amount: amount,
 			asset: asset,
+			additional_assets: additional_assets,
 			device_address: device_address,
 			base64data: base64data,
 			from_address: from_address,

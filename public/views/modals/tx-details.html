@@ -112,6 +112,14 @@
       <div class="text-gray small-2 columns"><span>ID</span>:</div>
       <div class="right small-10 columns text-right enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.unit)" class=" ">{{btx.unit}}</a></div>
     </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.additional_assets">
+      <div class="text-gray small-6 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Additional payments</span>:</div>
+      <div class="right small-6 columns text-right enable_text_select" style="word-wrap: break-word;">
+        <div ng-repeat="(asset, amount) in btx.additional_assets">
+          {{formatAmountWithUnit(amount, asset, {dontRound: true})}}
+        </div>
+      </div>
+    </li>
     <li class="line-b p10 oh row collapse" ng-if="btx.dataJson">
       <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>Data</span>:</div>
       <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.dataJson}}</div>

@@ -377,12 +377,12 @@ angular.module('copayApp.controllers')
 			}
 		};
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address, additional_assets) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address, single_address);
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address, single_address, additional_assets);
 			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
@@ -426,7 +426,7 @@ angular.module('copayApp.controllers')
 
 		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function () {
 			if (self.assetDropDownVisible) {
-				self.toggleAssetDropwDown();
+				self.toggleAssetDropdown();
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -723,7 +723,7 @@ angular.module('copayApp.controllers')
 				e.stopImmediatePropagation();
 			}
 		};
-		this.toggleAssetDropwDown = function(state, target) {
+		this.toggleAssetDropdown = function(state, target) {
 			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
 			document.removeEventListener('click', clickHandler, true);
 			if (self.assetDropDownVisible) {
@@ -742,7 +742,8 @@ angular.module('copayApp.controllers')
 
 		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
 			$scope.assetIndexSelectorValue = assetIndexSelectorValue;
-			self.toggleAssetDropwDown();
+			self.additional_assets = null;
+			self.toggleAssetDropdown();
 			self.forceAmountRevalidation();
 			self.switchForms();
 			self.onChanged();
@@ -1254,6 +1255,7 @@ angular.module('copayApp.controllers')
 		}
 
 		this.onAddressChanged = function () {
+			console.log('onAddressChanged');
 			resetAAFields();
 			var form = $scope.sendPaymentForm;
 			if (form.address.$invalid) {
@@ -1389,6 +1391,7 @@ angular.module('copayApp.controllers')
 		};
 
 		this.onChanged = function () {
+			console.log('onChanged');
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {
 					lodash.debounce(updateAAResults, 500)();
@@ -1457,6 +1460,8 @@ angular.module('copayApp.controllers')
 
 		function updateAAResults () {
 			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('sendPaymentForm is gone');
 			var amount = form.amount.$modelValue || 0;
 			if (!self.aa_destinations || self.aa_destinations.length === 0)
 				return console.log('no AA destinations');
@@ -1536,10 +1541,12 @@ angular.module('copayApp.controllers')
 			if (!$scope.sendPaymentForm.$valid)
 				return console.log('form not valid yet');
 			trigger.outputs[asset] = amount;
+			if (self.additional_assets)
+				Object.assign(trigger.outputs, self.additional_assets);
 			for (var a in bounce_fees) {
 				if (a !== asset) {
 					addBounceFees(a, bounce_fees[a], aa_address);
-					trigger.outputs[a] = bounce_fees[a];
+					trigger.outputs[a] = Math.max(bounce_fees[a], trigger.outputs[a] || 0);
 				}
 			}
 			console.log("trigger", trigger);
@@ -1669,6 +1676,11 @@ angular.module('copayApp.controllers')
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
+			
+			if (self.additional_assets && Object.keys(self.additional_assets).length === 0)
+				self.additional_assets = null;
+			if (self.additional_assets && self.bSendAll)
+				return self.setSendError("can't send additional assets with send-all");
 
 			var resetAddressValidation = function(){};
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
@@ -1742,6 +1754,8 @@ angular.module('copayApp.controllers')
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
+				if (assetInfo.additional_assets)
+					return self.setSendError("additional assets can not be sent to multiple addresses");
 				var outputs = getOutputsForMultiSend();
 				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
 			} else {
@@ -1994,9 +2008,20 @@ angular.module('copayApp.controllers')
 						if (self.from_address && !indexScope.shared_address)
 							opts.paying_addresses = [self.from_address];
 						if (!isMultipleSend) {
-							opts.to_address = to_address;
-							opts.amount = amount;
-						} else {
+							if (self.additional_assets) {
+								var outputs_by_asset = {};
+								outputs_by_asset[asset || 'base'] = [{ address: to_address, amount: amount }];
+								for (var additional_asset in self.additional_assets)
+									outputs_by_asset[additional_asset] = [{ address: to_address, amount: self.additional_assets[additional_asset] }];
+								delete opts.asset;
+								opts.outputs_by_asset = outputs_by_asset;
+							}
+							else {
+								opts.to_address = to_address;
+								opts.amount = amount;
+							}
+						}
+						else {
 							if (asset !== "base")
 								opts.asset_outputs = outputs;
 							else
@@ -2011,12 +2036,20 @@ angular.module('copayApp.controllers')
 								return self.setSendError("cannot add bounce fees in asset " + other_asset_added_bounce_fees[0].asset);
 							}
 							if (asset !== "base") { // add base_outputs to pay for bounce fees
-								if (!isMultipleSend) {
+								if (!isMultipleSend && !self.additional_assets) {
 									opts.asset_outputs = [{ address: to_address, amount: amount }];
 									delete opts.to_address;
 									delete opts.amount;
 								}
-								opts.base_outputs = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === 'base'; }).map(function (feeInfo) { return { address: feeInfo.address, amount: feeInfo.amount }; });
+								var base_outputs = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === 'base'; }).map(function (feeInfo) { return { address: feeInfo.address, amount: feeInfo.amount }; });
+								if (self.additional_assets) {
+									var existing_amount = opts.outputs_by_asset.base ? opts.outputs_by_asset.base[0].amount : 0;
+									var bounce_fee = base_outputs[0].amount;
+									if (existing_amount < bounce_fee)
+										opts.outputs_by_asset.base = base_outputs;
+								}
+								else
+									opts.base_outputs = base_outputs;
 							}
 						}
 
@@ -2118,6 +2151,7 @@ angular.module('copayApp.controllers')
 
 		$scope.$watch('index.assetIndex', function(newVal, oldVal) {
 			$scope.assetIndexSelectorValue = newVal;
+		//	self.additional_assets = null; // would execute after we set additional_assets
 			self.switchForms();
 		});
 		this.switchForms = function() {
@@ -2126,6 +2160,7 @@ angular.module('copayApp.controllers')
 				this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
+				this.additional_assets = null;
 				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
 					this.feedvaluespairs = [{}];
 				if ($scope.assetIndexSelectorValue === -6)
@@ -2439,7 +2474,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address, additional_assets) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -2481,7 +2516,7 @@ angular.module('copayApp.controllers')
 						console.log("no balances yet, will wait");
 						self.resetForm();
 						return $timeout(function () {
-							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address);
+							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address, additional_assets);
 						}, 1000);
 					}
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
@@ -2493,6 +2528,7 @@ angular.module('copayApp.controllers')
 					}
 					$scope.index.assetIndex = assetIndex;
 					$scope.assetIndexSelectorValue = assetIndex;
+					this.additional_assets = additional_assets;
 					this.lockAsset = true;
 				}
 				else
@@ -2602,6 +2638,7 @@ angular.module('copayApp.controllers')
 			this.hideAdvSend = true;
 			this.send_multiple = false;
 			this.from_address = null;
+			this.additional_assets = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -2801,11 +2838,23 @@ angular.module('copayApp.controllers')
 				storage.readUnit(btx.unit, function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
+					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && (m.payload.asset || 'base') !== btx.asset);
 					var dataMessage = objUnit.messages.find(m => m.app === 'data');
 					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
 					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
 					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
 					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					if (additionalPaymentMessages.length > 0 && btx.action === 'sent') {
+						var additional_assets = {};
+						additionalPaymentMessages.forEach(m => {
+							var asset = m.payload.asset || 'base';
+							var amount = m.payload.outputs.filter(o => o.address === btx.addressTo).reduce((acc, o) => acc + o.amount, 0);
+							if (amount)
+								additional_assets[asset] = amount;
+						});
+						if (Object.keys(additional_assets).length > 0)
+							btx.additional_assets = additional_assets;
+					}
 					if (dataMessage)
 						btx.dataJson = JSON.stringify(dataMessage.payload, null, 2);
 					if (dataFeedMessage)
@@ -2842,6 +2891,8 @@ angular.module('copayApp.controllers')
 				if (btx.from_aa)
 					setAADescription(btx.arrPayerAddresses[0], 'from_aa_description');
 
+				$scope.formatAmountWithUnit = profileService.formatAmountWithUnit;
+				
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
 						var indivisible_asset = require('ocore/indivisible_asset');
@@ -3097,6 +3148,9 @@ angular.module('copayApp.controllers')
 				return '' + amount / Math.pow(10, assetInfo.decimals);
 			return amount;
 		};
+
+		this.formatAmountWithUnit = profileService.formatAmountWithUnit;
+		this.getAmountInDisplayUnits = profileService.getAmountInDisplayUnits;
   
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
@@ -3109,6 +3163,7 @@ angular.module('copayApp.controllers')
 			this.hideAdvSend = true;
 			this.send_multiple = false;
 			this.from_address = null;
+			this.additional_assets = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -3207,10 +3262,13 @@ angular.module('copayApp.controllers')
 						if (form.amount) {
 							form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
 							form.amount.$render();
+							if (btx.additional_assets)
+								self.additional_assets = btx.additional_assets;
 						}
 					}
 						
 					self.switchForms();
+					self.onAddressChanged();
 				});
 			};
 			function ifNotFound() {
