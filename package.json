@@ -12,7 +12,7 @@
     "multisignature",
     "bitcoin"
   ],
-  "main": "public/index.html",
+  "main": "main.js",
   "key": "ppgbkonninhcodjcnbpghnagfadnfjck",
   "window": {
     "id": "${npm_package_name}",
@@ -81,7 +81,7 @@
     "lodash": "^4.6.1",
     "ocore": "git+https://github.com/kakysha/ocore.git#upgrade-nwjs",
     "preconditions": "^1.0.8",
-    "secp256k1": "^3.6.1",
+    "secp256k1": "^4",
     "shelljs": "^0.3.0",
     "sjcl": "^1.0.2",
     "unzip": "git+https://github.com/byteball/unzip.git",
@@ -89,8 +89,8 @@
   },
   "optionalDependencies": {},
   "scripts": {
-    "postinstall": "node util/postinstall.js",
-    "start": "grunt && nw",
+    "2postinstall": "node util/postinstall.js",
+    "start": "grunt && electron .",
     "dist:mac": "grunt prepare-dist && build --tasks mac-x64 . && grunt clean:mac",
     "dist:win64": "grunt prepare-dist && build --tasks win-x64 . && grunt clean:win",
     "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
@@ -170,12 +170,13 @@
       "icon": "./public/img/icons/logo-circle.ico"
     },
     "linux": {
-    	"name": "Obyte"
+      "name": "Obyte"
     }
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
+    "electron": "^15.3.1",
     "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
     "grunt-babel": "^8.0.0",
@@ -187,10 +188,7 @@
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-exec": "^1.0.0",
-    "innosetup-compiler": "^5.5.9",
-    "nw": "0.55.0-sdk",
-	"nw-gyp": "^3.6.5",
-    "@kakysha/nwjs-builder-phoenix": "^1.15.0"
+    "innosetup-compiler": "^5.5.9"
   },
   "resolutions": {
     "moment": "npm:dayjs"
