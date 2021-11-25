@@ -2,7 +2,7 @@
 
 var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
 	var root = {};
 
 	var hideSidebars = function() {

@@ -5,7 +5,7 @@
 var constants = require('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
-  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, correspondentService, addressService, lodash, txFormatService, $deepStateRedirect, $state, backButton, gettext, nodeWebkit, notification) {
+  function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, correspondentService, addressService, lodash, txFormatService, $deepStateRedirect, $state, backButton, gettext, notification) {
 	
 	var async = require('async');
 	var chatStorage = require('ocore/chat_storage.js');

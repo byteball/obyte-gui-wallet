@@ -260,7 +260,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 			var arrWalletIndexes = Object.keys(assocMaxAddressIndexes);
 			if (arrWalletIndexes.length) {
 				removeAddressesAndWallets(function () {
-					var myDeviceAddress = objectHash.getDeviceAddress(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true).toString('base64'));
+					var myDeviceAddress = objectHash.getDeviceAddress(Buffer.from(ecdsa.publicKeyCreate(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}), true)).toString('base64'));
 					profileService.replaceProfile(self.xPrivKey.toString(), self.inputMnemonic, myDeviceAddress, function () {
 						device.setDevicePrivateKey(self.xPrivKey.derive("m/1'").privateKey.bn.toBuffer({size: 32}));
 						createWallets(arrWalletIndexes, assocMaxAddressIndexes, function () {

@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -22,6 +22,7 @@ app.whenReady().then(() => {
 	app.on('activate', function () {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow()
 	})
+	Menu.setApplicationMenu(null);
 })
 
 app.on('window-all-closed', function () {

@@ -594,7 +594,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, uxLanguage, animationService) {
     (window.FastClick || module.exports.FastClick).attach(document.body);
 
     uxLanguage.init();
@@ -602,20 +602,6 @@ angular
     // Register URI handler, not for mobileApp
     if (!isCordova) {
       uriHandler.register();
-    }
-
-    if (nodeWebkit.isDefined()) {
-      var gui = require('nw.gui');
-      var win = gui.Window.get();
-      var nativeMenuBar = new gui.Menu({
-        type: "menubar"
-      });
-      try {
-        nativeMenuBar.createMacBuiltin("Obyte");
-        win.menu = nativeMenuBar;
-      } catch (e) {
-        $log.debug('This is not OSX');
-      }
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
