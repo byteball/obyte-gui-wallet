@@ -271,19 +271,11 @@ module.exports = function(grunt) {
     	},
     	mac: {
     		src: [
-		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
-	        	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/rocksdb/build/**",
-		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Frameworks/nwjs Framework.framework/Resources/!(en)*.lproj/**",
-		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/!(en)*.lproj/**",
-		    	"../obytebuilds/*-mac-*/!(*.app)**",
-		    	"../obytebuilds/*-mac-*/"+process.env.npm_package_build_mac_name+".app/Contents/Resources/app.nw/node_modules/*"
-	    	],
-	    	filter: function(filepath) {
-	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
-	    		var remove = !prodDeps.includes(modName);
-				return remove
-	    	}
+		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/app/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
+	        	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/app/node_modules/rocksdb/build/**",
+		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Frameworks/Electron Framework.framework/Resources/!(en)*.lproj/**",
+		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/!(en)*.lproj/**"
+	    	]
 		},
 	    win: {
 		    src: [

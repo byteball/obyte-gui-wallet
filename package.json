@@ -46,6 +46,17 @@
     "request": "browser-request",
     "secp256k1": "secp256k1/js"
   },
+  "scripts": {
+    "2postinstall": "node util/postinstall.js",
+    "start": "grunt && electron .",
+    "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
+    "dist:macarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:mac && electron-builder --arm64 --pd ../obytebuilds/mac-arm64",
+    "dist:win64": "grunt prepare-dist && build --tasks win-x64 . && grunt clean:win",
+    "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
+    "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 . && grunt clean:linux",
+    "dist:linux86": "grunt prepare-dist && build --tasks linux-x86 . && grunt clean:linux",
+    "test": "grunt test-coveralls"
+  },
   "dependencies": {
     "@bower_components/angular": "angular/bower-angular#1.8.2",
     "@bower_components/angular-carousel": "byteball/angular-carousel#master",
@@ -88,47 +99,38 @@
     "zip": "git+https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {},
-  "scripts": {
-    "2postinstall": "node util/postinstall.js",
-    "start": "grunt && electron .",
-    "dist:mac": "grunt prepare-dist && build --tasks mac-x64 . && grunt clean:mac",
-    "dist:win64": "grunt prepare-dist && build --tasks win-x64 . && grunt clean:win",
-    "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
-    "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 . && grunt clean:linux",
-    "dist:linux86": "grunt prepare-dist && build --tasks linux-x86 . && grunt clean:linux",
-    "test": "grunt test-coveralls"
-  },
   "build": {
-    "nwVersion": "0.55.0",
-    "nwFlavor": "sdk",
-    "output": "../obytebuilds",
-    "outputPattern": "${VERSION}-${PLATFORM}-${ARCH}",
     "appId": "org.obyte.wallet",
+    "directories": {
+      "buildResources": "webkitbuilds",
+      "output": "../obytebuilds"
+    },
+    "asar": false,
+    "npmRebuild": false,
     "files": [
       "./package.json",
+      "./main.js",
       "./public/**/*",
       "./angular-bitcore-wallet-client/**/*",
-      "node_modules/**/*"
-    ],
-    "excludes": [
-      "**/@bower_components/**",
-      "**/grunt*/**",
-      "**/browserify*/**",
-      "**/7zip-*/**",
-      "**/node-gyp/**",
-      "**/acorn*/**",
-      "**/@babel/**",
-      "**/babel-*/**",
-      "**/sqlite3/!(lib|package.json)/**",
-      "**/secp256k1/build/Release/obj*/**",
-      "**/rocksdb/deps/**",
-      "**/*.pdb"
+      "node_modules/**/*",
+      "!**/@bower_components/**",
+      "!**/grunt*/**",
+      "!**/browserify*/**",
+      "!**/7zip-*/**",
+      "!**/node-gyp/**",
+      "!**/acorn*/**",
+      "!**/@babel/**",
+      "!**/babel-*/**",
+      "!**/sqlite3/!(lib|package.json)/**",
+      "!**/secp256k1/build/Release/obj*/**",
+      "!**/rocksdb/deps/**",
+      "!**/*.pdb"
     ],
     "mac": {
-      "name": "Obyte",
       "icon": "./public/img/icons/logo-circle.icns",
-      "documentIcon": "./public/img/icons/logo-circle.icns",
-      "plistStrings": {
+      "identity": null,
+      "target": "dmg",
+      "extendInfo": {
         "CFBundleURLTypes": [
           {
             "CFBundleURLName": "Obyte action",
@@ -165,18 +167,14 @@
       }
     },
     "win": {
-      "productName": "Obyte",
-      "fileDescription": "Obyte - smart payments made simple",
       "icon": "./public/img/icons/logo-circle.ico"
-    },
-    "linux": {
-      "name": "Obyte"
     }
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
     "electron": "^15.3.1",
+    "electron-builder": "^22.14.5",
     "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
     "grunt-babel": "^8.0.0",

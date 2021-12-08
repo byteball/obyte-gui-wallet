@@ -337,37 +337,25 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 
 	}
 	
-	var gui;
-	try{
-		gui = require('nw.gui');
+	let electron;
+	try {
+		electron = require('electron');
 	}
-	catch(e){
-	}
-	
-	if (gui){ // nwjs
+	catch(e){}
+	if (electron) {
 		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 			removeListenerForOnopen();
-			gui.App.on('open', function(commandLine) {
-				console.log("Open url: " + commandLine);
-				if (commandLine){
-					var file = extractObyteArgFromCommandLine(commandLine);
+			electron.ipcRenderer.on('open', (event, message) => {
+				console.log("Open url: " + message);
+				if (message){
+					var file = extractObyteArgFromCommandLine(message);
 					if (!file)
 						return console.log("no byteball:, obyte:, or file arg found");
 					handleUri(file);
-					gui.Window.get().focus();
 				}
 			});
+			electron.ipcRenderer.send('done-loading');
 		});
-		console.log("argv: "+gui.App.argv);
-		if (gui.App.argv[0]){
-			// wait till the wallet fully loads
-			var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
-				setTimeout(function(){
-					handleUri(gui.App.argv[0]);
-				}, 100);
-				removeListener();
-			});
-		}
 		if (process.platform === 'win32' || process.platform === 'linux'){
 			// wait till the wallet fully loads
 			var removeRegListener = $rootScope.$on('Local/BalanceUpdated', function(){
