@@ -48,6 +48,7 @@
   },
   "scripts": {
     "2postinstall": "node util/postinstall.js",
+    "r": "electron .",
     "start": "grunt && electron .",
     "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
     "dist:macarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:mac && electron-builder --arm64 --pd ../obytebuilds/mac-arm64",
@@ -90,6 +91,7 @@
     "bitcore-mnemonic": "~1.0.0",
     "jszip": "^3.1.3",
     "lodash": "^4.6.1",
+    "moment": "npm:dayjs",
     "ocore": "git+https://github.com/kakysha/ocore.git#upgrade-nwjs",
     "preconditions": "^1.0.8",
     "secp256k1": "^4",
