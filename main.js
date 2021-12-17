@@ -2,19 +2,61 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const package = require('./package.json');
 const sqlite3 = require('sqlite3').verbose();
+const level = require('level-rocksdb');
+const fs = require('fs');
 
+// UPGRADE old NW.js localStorage to electron format
+let upgradeKeys = {};
 const userDir = app.getPath('userData');
-const db = new sqlite3.Database(`${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`, null, (err) => {
-	console.log(err);
+const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
+let lsUpgrader1 = new Promise((resolve, reject) => {
+	const db = new sqlite3.Database(lsSqliteFile, (err) => {
+		if (err)
+			return resolve();
+		db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
+			if (err)
+				return resolve();
+			for (const row of rows) {
+				handleRow(row.key, row.value.toString().replace(/\0/g, ''));
+			}
+			resolve();
+		});
+	});
 });
-db.get(`SELECT value FROM ItemTable WHERE key='profile'`, [], (err, res) => {
-	console.log(res.value.toString('utf8'));
-	//const profile = Buffer.from(res).toString();
-	//console.log(err, JSON.parse(res));
-})
+const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
+let lsUpgrader2 = new Promise((resolve, reject) => {
+	const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
+		if (err)
+			return resolve();
+		leveldb.createReadStream().on('data', function (data) {
+			const key = data.key.replace('_chrome-extension://ppgbkonninhcodjcnbpghnagfadnfjck\0\1', '');
+			handleRow(key, data.value.substring(1))
+		}).on('end', function () {
+			resolve();
+		});
+	});
+});
+function handleRow(key, value) {
+	try {
+		let v = JSON.parse(value);
+	} catch(e) {
+		return;
+	}
+	switch (key) {
+		case "config":
+		case "agreeDisclaimer":
+		case "profile":
+			upgradeKeys[key] = value;
+			break;
+	}
+}
+/// UPGRADE
 
 let mainWindow;
-function createWindow () {
+async function createWindow () {
+	await Promise.all([lsUpgrader1, lsUpgrader2]);
+	let upgrade = Object.keys(upgradeKeys).length > 0;
+
 	mainWindow = new BrowserWindow({
 		width: 1200,
 		height: 1000,
@@ -25,8 +67,19 @@ function createWindow () {
 			//preload: path.join(__dirname, 'preload.js')
 		}
 	});
-	mainWindow.loadFile('public/index.html');
+	let file = 'public/index.html';
+	if (upgrade) {
+		file = 'public/upgrader.html';
+	}
+	mainWindow.loadFile(file);
 	mainWindow.webContents.openDevTools();
+	if (upgrade) {
+		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
+		ipcMain.on('done-upgrading', () => {
+			fs.rmSync(lsSqliteFile, {force: true});
+			fs.rmSync(lsLevelDBDir, {recursive: true, force: true});
+		});
+	}
 	if (urlToLoad) {
 		ipcMain.on('done-loading', () => {
 			mainWindow.webContents.send('open', urlToLoad);

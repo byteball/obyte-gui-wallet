@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title translate>Obyte &mdash; smart payments</title>
+</head>
+<body ng-cloak class="ng-cloak">
+	<script>
+		const electron = require('electron');
+		electron.ipcRenderer.on('upgradeKeys', (ev, upgradeKeysJSON) => {
+			console.log('=UPGRADE localStorage=');
+			const upgradeKeys = JSON.parse(upgradeKeysJSON);
+			for (let key in upgradeKeys) {
+				const value = upgradeKeys[key];
+				console.log(key, value);
+				localStorage.setItem(key, value);
+			}
+			electron.ipcRenderer.send('done-upgrading');
+			// load app now
+			setTimeout(() => {location.href = 'index.html'}, 500);
+		});
+	</script>
+</body>
+</html>
