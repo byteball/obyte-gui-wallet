@@ -10,7 +10,7 @@ let upgradeKeys = {};
 const userDir = app.getPath('userData');
 const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 let lsUpgrader1 = new Promise((resolve, reject) => {
-	const db = new sqlite3.Database(lsSqliteFile, (err) => {
+	const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
 		if (err)
 			return resolve();
 		db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
