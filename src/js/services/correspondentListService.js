@@ -31,18 +31,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		$rootScope.$watch('newMessagesCount', function(counters) {
 			messagesCount = lodash.sum(lodash.values(counters));
 			if (messagesCount || paymentsCount) {
-				electron.ipcRenderer.send('set-badge-count', messagesCount + paymentsCount);
+				electron.ipcRenderer.send('update-badge', messagesCount + paymentsCount);
 			} else {
-				electron.ipcRenderer.send('set-badge-count', 0);
+				electron.ipcRenderer.send('update-badge', 0);
 			}
 		}, true);
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
 			paymentsCount = lodash.sum(lodash.values(counters));
 			if (paymentsCount || messagesCount) {
-				electron.ipcRenderer.send('set-badge-count', messagesCount + paymentsCount);
+				electron.ipcRenderer.send('update-badge', messagesCount + paymentsCount);
 			} else {
-				electron.ipcRenderer.send('set-badge-count', 0);
+				electron.ipcRenderer.send('update-badge', 0);
 			}
 		}, true);
 	}

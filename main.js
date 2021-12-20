@@ -4,6 +4,7 @@ const package = require('./package.json');
 const sqlite3 = require('sqlite3').verbose();
 const level = require('level-rocksdb');
 const fs = require('fs');
+const Badge = require('electron-windows-badge');
 
 // UPGRADE old NW.js localStorage to electron format
 let upgradeKeys = {};
@@ -67,6 +68,7 @@ async function createWindow () {
 			//preload: path.join(__dirname, 'preload.js')
 		}
 	});
+	new Badge(mainWindow, {});
 	let file = 'public/index.html';
 	if (upgrade) {
 		file = 'public/upgrader.html';
@@ -91,7 +93,7 @@ async function createWindow () {
 	mainWindow.on('blur', () => {
 		mainWindow.webContents.send('blur');
 	});
-	ipcMain.on('set-badge-count', (event, count) => {
+	ipcMain.on('update-badge', (event, count) => {
 		app.setBadgeCount(count);
 	});
 }

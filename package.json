@@ -89,6 +89,7 @@
     "bip38": "^1.4.0",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
+    "electron-windows-badge": "^1.1.0",
     "jszip": "^3.1.3",
     "lodash": "^4.6.1",
     "moment": "npm:dayjs",
