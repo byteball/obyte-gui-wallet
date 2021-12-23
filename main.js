@@ -9,34 +9,38 @@ const Badge = require('electron-windows-badge');
 // UPGRADE old NW.js localStorage to electron format
 let upgradeKeys = {};
 const userDir = process.platform == 'win32' ? process.env.LOCALAPPDATA + '/' + package.name : app.getPath('userData');
+const upgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
-let lsUpgrader1 = new Promise((resolve, reject) => {
-	const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
-		if (err)
-			return resolve();
-		db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
+const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
+let lsUpgrader1, lsUpgrader2;
+if (!fs.existsSync(upgradedFlagFile)) {
+	lsUpgrader1 = new Promise((resolve, reject) => {
+		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
 			if (err)
 				return resolve();
-			for (const row of rows) {
-				handleRow(row.key, row.value.toString().replace(/\0/g, ''));
-			}
-			resolve();
+			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
+				if (err)
+					return resolve();
+				for (const row of rows) {
+					handleRow(row.key, row.value.toString().replace(/\0/g, ''));
+				}
+				resolve();
+			});
 		});
 	});
-});
-const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
-let lsUpgrader2 = new Promise((resolve, reject) => {
-	const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
-		if (err)
-			return resolve();
-		leveldb.createReadStream().on('data', function (data) {
-			const key = data.key.replace('_chrome-extension://ppgbkonninhcodjcnbpghnagfadnfjck\0\1', '');
-			handleRow(key, data.value.substring(1))
-		}).on('end', function () {
-			resolve();
+	lsUpgrader2 = new Promise((resolve, reject) => {
+		const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
+			if (err)
+				return resolve();
+			leveldb.createReadStream().on('data', function (data) {
+				const key = data.key.replace('_chrome-extension://ppgbkonninhcodjcnbpghnagfadnfjck\0\1', '');
+				handleRow(key, data.value.substring(1))
+			}).on('end', function () {
+				resolve();
+			});
 		});
 	});
-});
+}
 function handleRow(key, value) {
 	try {
 		let v = JSON.parse(value);
@@ -78,6 +82,7 @@ async function createWindow () {
 	if (upgrade) {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
 		ipcMain.on('done-upgrading', () => {
+			fs.writeFileSync(upgradedFlagFile, "true");
 			fs.rmSync(lsSqliteFile, {force: true});
 			fs.rmSync(lsLevelDBDir, {recursive: true, force: true});
 		});
