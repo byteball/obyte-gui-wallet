@@ -9,11 +9,19 @@ const Badge = require('electron-windows-badge');
 // UPGRADE old NW.js localStorage to electron format
 let upgradeKeys = {};
 const userDir = process.platform == 'win32' ? process.env.LOCALAPPDATA + '/' + package.name : app.getPath('userData');
+const files = ['conf.json',
+	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
+	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
 const upgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(upgradedFlagFile)) {
+	if (process.platform == 'win32') { // move all files from Local to Roaming
+		for (const file of files) {
+			fs.rename(`${userDir}/${file}`, `${app.getPath('userData')}/${file}`, err => {});
+		}
+	}
 	lsUpgrader1 = new Promise((resolve, reject) => {
 		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
 			if (err)
