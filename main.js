@@ -8,7 +8,7 @@ const Badge = require('electron-windows-badge');
 
 // UPGRADE old NW.js localStorage to electron format
 let upgradeKeys = {};
-const userDir = app.getPath('userData');
+const userDir = process.platform == 'win32' ? process.env.LOCALAPPDATA + '/' + package.name : app.getPath('userData');
 const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 let lsUpgrader1 = new Promise((resolve, reject) => {
 	const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
