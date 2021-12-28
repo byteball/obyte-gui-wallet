@@ -294,18 +294,11 @@ module.exports = function(grunt) {
 		},
 	    linux: {
 	    	src: [
-		    	"../obytebuilds/*-linux-*/node_modules/rocksdb/prebuilds/!(linux)-*/**",
-	        	"../obytebuilds/*-linux-*/node_modules/rocksdb/build/**",
-		    	"../obytebuilds/*-linux-*/locales/!(en)*.pak*",
-		    	"../obytebuilds/*-linux-*/node_modules/*",
-		    	"../obytebuilds/*-linux-*/*(chromedriver|nwjc)"
-		    ],
-		    filter: function(filepath) {
-	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
-	    		var remove = !prodDeps.includes(modName);
-				return remove
-	    	}
+		    	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/prebuilds/!(linux)-*/**",
+	        	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/build/deps/**",
+		    	"../obytebuilds/*linux-*/locales/!(en)*.pak*",
+		    	"../obytebuilds/*linux-*/*(chromedriver|nwjc)"
+		    ]
 	    }
     }
   });

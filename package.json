@@ -52,6 +52,8 @@
     "start": "grunt && electron .",
     "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
     "dist:macarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:mac && electron-builder --arm64 --pd ../obytebuilds/mac-arm64",
+    "dist:linuxarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:linux && electron-builder --arm64 --pd ../obytebuilds/linux-arm64-unpacked",
+    "dist:linuxx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:linux && electron-builder --x64 --pd ../obytebuilds/linux-x64-unpacked",
     "dist:win64": "grunt prepare-dist && build --tasks win-x64 . && grunt clean:win",
     "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
     "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 . && grunt clean:linux",
@@ -171,6 +173,9 @@
     },
     "win": {
       "icon": "./public/img/icons/logo-circle.ico"
+    },
+    "linux": {
+    	"target": "AppImage"
     }
   },
   "devDependencies": {
