@@ -5,6 +5,12 @@ var eventBus = require('ocore/event_bus.js');
 angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
 	var root = {};
 
+	let electron;
+	try {
+		electron = require('electron');
+	}
+	catch(e){}
+
 	var hideSidebars = function() {
 		if (typeof document === 'undefined')
 			return;
@@ -33,8 +39,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	root.openExternalLink = function(url) {
 		url = url.replace(/&amp;/g, '&');
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
+		if (electron)
+			electron.shell.openExternal(url);
 		else if (isCordova)
 			cordova.InAppBrowser.open(url, '_system');
 	};
@@ -337,11 +343,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 
 	}
 	
-	let electron;
-	try {
-		electron = require('electron');
-	}
-	catch(e){}
 	if (electron) {
 		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 			removeListenerForOnopen();
