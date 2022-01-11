@@ -278,19 +278,12 @@ module.exports = function(grunt) {
 	    	]
 		},
 	    win: {
-		    src: [
-		    	"../obytebuilds/*-win-*/node_modules/rocksdb/prebuilds/**",
-	        	"../obytebuilds/*-win-*/node_modules/rocksdb/build/Release/!(leveldown.node)**",
-		    	"../obytebuilds/*-win-*/locales/!(en)*.pak*",
-		    	"../obytebuilds/*-win-*/node_modules/*",
-		    	"../obytebuilds/*-win-*/*(chromedriver.exe|nwjc.exe)"
-		    ],
-		    filter: function(filepath) {
-	    		var prodDeps = getDeps('prod');
-	    		var modName = filepath.substr(filepath.lastIndexOf('node_modules')+13);
-	    		var remove = !prodDeps.includes(modName);
-				return remove
-	    	}
+			src: [
+				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/prebuilds/!(win*)-*/**",
+				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/build/deps/**",
+				"../obytebuilds/*win-*/locales/!(en)*.pak*",
+				"../obytebuilds/*win-*/*(chromedriver|nwjc)"
+			]
 		},
 	    linux: {
 	    	src: [
