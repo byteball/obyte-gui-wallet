@@ -53,8 +53,8 @@
     "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
     "dist:macarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:mac && electron-builder --arm64 --pd ../obytebuilds/mac-arm64",
     "dist:linuxarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:linux && electron-builder --arm64 --pd ../obytebuilds/linux-arm64-unpacked",
-    "dist:linuxx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:linux && electron-builder --x64 --pd ../obytebuilds/linux-x64-unpacked",
-    "dist:win64": "grunt prepare-dist && build --tasks win-x64 . && grunt clean:win",
+    "dist:linuxx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:linux && electron-builder --x64 --pd ../obytebuilds/linux-unpacked",
+    "dist:winx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:win && electron-builder --x64 --pd ../obytebuilds/win-unpacked",
     "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
     "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 . && grunt clean:linux",
     "dist:linux86": "grunt prepare-dist && build --tasks linux-x86 . && grunt clean:linux",
@@ -106,6 +106,7 @@
   "optionalDependencies": {},
   "build": {
     "appId": "org.obyte.wallet",
+    "productName": "Obyte",
     "directories": {
       "buildResources": "webkitbuilds",
       "output": "../obytebuilds"
@@ -131,51 +132,26 @@
       "!**/rocksdb/deps/**",
       "!**/*.pdb"
     ],
+    "protocols": [{
+    	"name": "Obyte URL",
+    	"schemes": ["obyte", "byteball"]
+    }],
+    "fileAssociations": [{
+    	"ext": "coin",
+    	"name": "Coin",
+    	"description": "Obyte Private Coin",
+    	"mimeType" : "application/x-obyte"
+    }],
     "mac": {
       "icon": "./public/img/icons/logo-circle.icns",
       "identity": null,
-      "target": "dmg",
-      "extendInfo": {
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLName": "Obyte action",
-            "CFBundleURLSchemes": [
-              "byteball",
-              "obyte"
-            ]
-          }
-        ],
-        "LSHasLocalizedDisplayName": 0,
-        "UTExportedTypeDeclarations": [
-          {
-            "UTTypeIdentifier": "org.obyte.coin",
-            "UTTypeDescription": "Obyte Private Coin",
-            "UTTypeConformsTo": [
-              "public.data"
-            ],
-            "UTTypeTagSpecification": {
-              "public.filename-extension": [
-                "coin"
-              ]
-            }
-          }
-        ],
-        "CFBundleDocumentTypes": [
-          {
-            "CFBundleTypeName": "Obyte Private Coin",
-            "LSItemContentTypes": [
-              "org.obyte.coin"
-            ],
-            "CFBundleTypeIconFile": "app.icns"
-          }
-        ]
-      }
+      "target": "dmg"
     },
     "win": {
-      "icon": "./public/img/icons/logo-circle.ico"
+      "icon": "./public/img/icons/logo-circle-256.png"
     },
     "linux": {
-    	"target": "AppImage"
+      "target": "AppImage"
     }
   },
   "devDependencies": {
