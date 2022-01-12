@@ -259,6 +259,84 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		}
 		return null;
 	}
+
+	function createLinuxDesktopFile(){
+		var path = require('path'+'');
+		if (process.env.APPIMAGE){
+			console.log("run from appimage " + process.env.APPIMAGE);
+			var execPath = process.env.APPIMAGE;
+			var iconDir = process.env.HOME + "/.local/share/icons";
+			var iconPath = iconDir + "/obyte-logo-circle-256.png";
+			fileSystemService.recursiveMkdir(iconDir, parseInt('700', 8), function(err){
+				console.log('mkdir icons: '+err);
+				//we store the app icon outside the appimage filesystem
+				fileSystemService.readFile(path.dirname(process.execPath) + "/public/img/icons/logo-circle-256.png", function(err, data) {
+					console.log("error when reading icon: " + err);
+					fileSystemService.nwWriteFile(iconPath, data, function(err){
+						console.log("error when writing icon: " + err);
+					});
+				});
+			})
+		} else {
+			var execPath = process.execPath;
+			var iconPath = path.dirname(execPath)+"/public/img/icons/logo-circle-256.png";
+		}
+		console.log("will write .desktop file");
+		var fs = require('fs'+'');
+		var child_process = require('child_process'+'');
+		var package_json = require('../package.json'+''); // relative to html root
+		var oname = package_json.name.replace(/byteball/i, 'obyte');
+		var applicationsDir = process.env.HOME + '/.local/share/applications';
+		var mimeDir = process.env.HOME + '/.local/share/mime';
+		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
+			console.log('mkdir applications: '+err);
+			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
+Type=Application\n\
+Version=1.0\n\
+Name="+oname[0].toUpperCase() + oname.slice(1)+"\n\
+Comment="+package_json.description+"\n\
+Exec="+execPath.replace(/ /g, '\\ ')+" %u\n\
+Icon="+ iconPath +"\n\
+Terminal=false\n\
+Categories=Office;Finance;\n\
+MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
+X-Ubuntu-Touch=true\n\
+X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
+				if (err)
+					throw Error("failed to write desktop file: "+err);
+				child_process.exec('update-desktop-database '+applicationsDir, function(err){
+					if (err)
+						throw Error("failed to exec update-desktop-database: "+err);
+					var writeXml = function() {
+						fs.writeFile(mimeDir + '/packages/' + oname+'.xml', "<?xml version=\"1.0\"?>\n\
+	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
+	   <mime-type type=\"application/x-"+oname+"\">\n\
+	   <comment>Obyte Private Coin</comment>\n\
+	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
+	  </mime-type>\n\
+	 </mime-info>\n", {mode: parseInt('755', 8)}, function(err) {
+	 						if (err)
+								throw Error("failed to write MIME config file: "+err);
+							child_process.exec('update-mime-database '+mimeDir, function(err){
+								if (err)
+									throw Error("failed to exec update-mime-database: "+err);
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
+							});
+	 						console.log(".desktop done");
+	 					});
+					};
+					if (!fs.existsSync(mimeDir + '/packages')) {
+						fileSystemService.recursiveMkdir(mimeDir + '/packages', parseInt('755', 8), function(err){
+							writeXml();
+						});
+					}
+					else
+						writeXml();
+				});
+			});
+		});
+
+	}
 	
 	if (electron) {
 		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
@@ -274,6 +352,15 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			});
 			electron.ipcRenderer.send('done-loading');
 		});
+		if (process.platform === 'linux'){
+			// wait till the wallet fully loads
+			var removeRegListener = $rootScope.$on('Local/BalanceUpdated', function(){
+				setTimeout(function(){
+					createLinuxDesktopFile();
+				}, 200);
+				removeRegListener();
+			});
+		}
 	}
 	else if (window.cordova){
 		//console.log("go service: setting temp handleOpenURL");

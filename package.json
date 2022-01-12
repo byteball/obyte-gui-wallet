@@ -133,13 +133,13 @@
       "!**/*.pdb"
     ],
     "protocols": [{
-    	"name": "Obyte URL",
-    	"schemes": ["obyte", "byteball"]
+    	"name": "${productName} URL",
+    	"schemes": ["obyte", "byteball", "${productName}"]
     }],
     "fileAssociations": [{
     	"ext": "coin",
     	"name": "Coin",
-    	"description": "Obyte Private Coin",
+    	"description": "${productName} Private Coin",
     	"mimeType" : "application/x-obyte"
     }],
     "mac": {
@@ -151,7 +151,9 @@
       "icon": "./public/img/icons/logo-circle-256.png"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "category": "Office;Finance;",
+      "artifactName": "${productName}"
     }
   },
   "devDependencies": {
