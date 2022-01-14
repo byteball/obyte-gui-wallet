@@ -153,7 +153,8 @@
     "linux": {
       "target": "AppImage",
       "category": "Office;Finance;",
-      "artifactName": "${productName}"
+      "executableName": "Obyte",
+      "icon": "./public/img/icons/logo-circle.icns",
     }
   },
   "devDependencies": {

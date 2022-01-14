@@ -74,6 +74,7 @@ async function createWindow () {
 		width: 1200,
 		height: 1000,
 		resizable: false,
+		icon: "./public/img/icons/logo-circle-256.png",
 		webPreferences: {
 			contextIsolation: false,
 			nodeIntegration: true

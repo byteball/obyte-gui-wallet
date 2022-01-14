@@ -270,7 +270,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			fileSystemService.recursiveMkdir(iconDir, parseInt('700', 8), function(err){
 				console.log('mkdir icons: '+err);
 				//we store the app icon outside the appimage filesystem
-				fileSystemService.readFile(path.dirname(process.execPath) + "/public/img/icons/logo-circle-256.png", function(err, data) {
+				fileSystemService.readFile(path.dirname(process.execPath) + "/resources/app/public/img/icons/logo-circle-256.png", function(err, data) {
 					console.log("error when reading icon: " + err);
 					fileSystemService.nwWriteFile(iconPath, data, function(err){
 						console.log("error when writing icon: " + err);
