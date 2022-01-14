@@ -154,7 +154,7 @@
       "target": "AppImage",
       "category": "Office;Finance;",
       "executableName": "Obyte",
-      "icon": "./public/img/icons/logo-circle.icns",
+      "icon": "./public/img/icons/logo-circle.icns"
     }
   },
   "devDependencies": {
