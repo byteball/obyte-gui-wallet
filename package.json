@@ -133,13 +133,13 @@
       "!**/*.pdb"
     ],
     "protocols": [{
-    	"name": "${productName} URL",
-    	"schemes": ["obyte", "byteball", "${productName}"]
+    	"name": "Obyte URL",
+    	"schemes": ["obyte", "byteball"]
     }],
     "fileAssociations": [{
     	"ext": "coin",
     	"name": "Coin",
-    	"description": "${productName} Private Coin",
+    	"description": "Obyte Private Coin",
     	"mimeType" : "application/x-obyte"
     }],
     "mac": {

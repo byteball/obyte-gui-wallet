@@ -112,12 +112,17 @@ async function createWindow () {
 	});
 }
 
+let protocols = process.env.testnet ? ["obyte-tn", "byteball-tn"] : ["obyte", "byteball"];
 if (process.defaultApp) {
 	if (process.argv.length >= 2) {
-		app.setAsDefaultProtocolClient(package.name, process.execPath, [path.resolve(process.argv[1])]);
+		protocols.forEach(pr => {
+			app.setAsDefaultProtocolClient(pr, process.execPath, [path.resolve(process.argv[1])]);
+		});
 	}
 } else {
-	app.setAsDefaultProtocolClient(package.name);
+	protocols.forEach(pr => {
+		app.setAsDefaultProtocolClient(pr);
+	});
 }
 
 const gotTheLock = app.requestSingleInstanceLock();
