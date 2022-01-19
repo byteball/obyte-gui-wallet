@@ -6,26 +6,43 @@ const level = require('level-rocksdb');
 const fs = require('fs');
 const Badge = require('electron-windows-badge');
 
-// UPGRADE old NW.js localStorage to electron format
-let upgradeKeys = {};
+// UPGRADE old NW.js localStorage to electron format & rename byteball to obyte
+const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball';
 const userDir = process.platform == 'win32' ? process.env.LOCALAPPDATA + '/' + package.name : app.getPath('userData');
-const files = ['conf.json',
+const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
-const upgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
+const renamedFlagFile = `${app.getPath('userData')}/.renamed`;
+
+if (!fs.existsSync(renamedFlagFile)) {
+	if (fs.existsSync(oldUserDir)) {
+		console.log(`moving files from ${oldUserDir} to ${userDir}`);
+		if (!fs.existsSync(`${app.getPath('userData')}/Default`)){
+			fs.mkdirSync(`${app.getPath('userData')}/Default`);
+		}
+		for (const file of files) {
+			try {
+				console.log(`moving ${file}`);
+				fs.renameSync(`${oldUserDir}/${file}`, `${app.getPath('userData')}/${file}`);
+				console.log(`OK`);
+			} catch(e) {
+			}
+		}
+	}
+	fs.writeFileSync(renamedFlagFile, "true");
+}
+
+let upgradeKeys = {};
+const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
 let lsUpgrader1, lsUpgrader2;
-if (!fs.existsSync(upgradedFlagFile)) {
-	if (process.platform == 'win32') { // move all files from Local to Roaming
-		for (const file of files) {
-			fs.rename(`${userDir}/${file}`, `${app.getPath('userData')}/${file}`, err => {});
-		}
-	}
+if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
 		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
 			if (err)
 				return resolve();
+			console.log(`Upgrading Local Storage from SQLite database...`);
 			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
 				if (err)
 					return resolve();
@@ -40,6 +57,7 @@ if (!fs.existsSync(upgradedFlagFile)) {
 		const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
 			if (err)
 				return resolve();
+			console.log(`Upgrading Local Storage from LevelDB database...`);
 			leveldb.createReadStream().on('data', function (data) {
 				const key = data.key.replace('_chrome-extension://ppgbkonninhcodjcnbpghnagfadnfjck\0\1', '');
 				handleRow(key, data.value.substring(1))
@@ -91,7 +109,7 @@ async function createWindow () {
 	if (upgrade) {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
 		ipcMain.on('done-upgrading', () => {
-			fs.writeFileSync(upgradedFlagFile, "true");
+			fs.writeFileSync(lsUpgradedFlagFile, "true");
 			fs.rmSync(lsSqliteFile, {force: true});
 			fs.rmSync(lsLevelDBDir, {recursive: true, force: true});
 		});
@@ -138,6 +156,7 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 		if (mainWindow.isMinimized())
 			mainWindow.restore();
 		mainWindow.focus();
+		mainWindow.webContents.send('open', commandLine.at(-1));
 	}
 });
 
@@ -155,6 +174,12 @@ app.on('window-all-closed', function () {
 });
 
 let urlToLoad;
+if (process.argv.length >= 2) {
+	let lastArg = process.argv.at(-1);
+	if (lastArg.includes('obyte') || lastArg.includes('byteball')) {
+		urlToLoad = lastArg;
+	}
+}
 app.on('open-url', (event, url) => {
 	if (mainWindow != null) {
 		mainWindow.webContents.send('open', url);
