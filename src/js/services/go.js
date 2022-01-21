@@ -285,21 +285,21 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var fs = require('fs'+'');
 		var child_process = require('child_process'+'');
 		var package_json = require('../package.json'+''); // relative to html root
-		var oname = package_json.name.replace(/byteball/i, 'obyte');
+		var conf = require('ocore/conf.js');
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
-			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
+			fs.writeFile(applicationsDir + '/' +conf.program+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+oname[0].toUpperCase() + oname.slice(1)+"\n\
+Name="+conf.program[0].toUpperCase() + conf.program.slice(1)+"\n\
 Comment="+package_json.description+"\n\
 Exec="+execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+ iconPath +"\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
+MimeType=x-scheme-handler/"+conf.program+";application/x-"+conf.program+";x-scheme-handler/"+conf.program+";application/x-"+conf.program+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (err)
@@ -308,9 +308,9 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
 					var writeXml = function() {
-						fs.writeFile(mimeDir + '/packages/' + oname+'.xml', "<?xml version=\"1.0\"?>\n\
+						fs.writeFile(mimeDir + '/packages/' + conf.program+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
-	   <mime-type type=\"application/x-"+oname+"\">\n\
+	   <mime-type type=\"application/x-"+conf.program+"\">\n\
 	   <comment>Obyte Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
@@ -320,7 +320,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 							child_process.exec('update-mime-database '+mimeDir, function(err){
 								if (err)
 									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+conf.program, function(err){});
 							});
 	 						console.log(".desktop done");
 	 					});
