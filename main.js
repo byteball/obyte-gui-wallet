@@ -34,8 +34,8 @@ if (!fs.existsSync(renamedFlagFile)) {
 
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
-const lsSqliteFile = `${userDir}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
-const lsLevelDBDir = `${userDir}/Default/Local Storage/leveldb`;
+const lsSqliteFile = `${app.getPath('userData')}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
+const lsLevelDBDir = `${app.getPath('userData')}/Default/Local Storage/leveldb`;
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {

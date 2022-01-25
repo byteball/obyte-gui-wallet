@@ -8,6 +8,9 @@ angular.module('copayApp.controllers').controller('importController',
 		var crypto = require('crypto');
 		var conf = require('ocore/conf');
 		var userAgent = navigator.userAgent;
+		var files = [conf.database.filename, conf.database.filename+"-shm", conf.database.filename+"-wal",
+			'conf.json'
+		];
 		
 		if(isCordova) {
 			var zip = new JSZip();
@@ -129,8 +132,13 @@ angular.module('copayApp.controllers').controller('importController',
 				},
 				function(next) {
 					db.close(function() {
-						// remove old SQLite database
-						fileSystemService.deleteDirFiles(dbDirPath, next);
+						// remove our own old files
+						async.each(files, (f, cb) => {
+							fileSystemService.nwUnlink(dbDirPath + f, cb)
+						}, err => {
+							console.log(err);
+							next();
+						});
 					});
 				},
 				function(next) {
