@@ -105,6 +105,9 @@ async function createWindow () {
 		file = 'public/upgrader.html';
 	}
 	mainWindow.loadFile(file);
+	mainWindow.webContents.on('devtools-opened', () => {
+		mainWindow.resizable = true;
+	});
 	// mainWindow.webContents.openDevTools();
 	if (upgrade) {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));

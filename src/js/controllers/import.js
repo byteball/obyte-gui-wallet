@@ -136,7 +136,8 @@ angular.module('copayApp.controllers').controller('importController',
 						async.each(files, (f, cb) => {
 							fileSystemService.nwUnlink(dbDirPath + f, cb)
 						}, err => {
-							console.log(err);
+							if (err && err.code != 'ENOENT')
+								return next(err);
 							next();
 						});
 					});
