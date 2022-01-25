@@ -89,8 +89,8 @@ async function createWindow () {
 	let upgrade = Object.keys(upgradeKeys).length > 0;
 
 	mainWindow = new BrowserWindow({
-		width: 1200,
-		height: 1000,
+		width: 400,
+		height: 700,
 		resizable: false,
 		icon: path.join(__dirname, '/public/img/icons/logo-circle-256.png'),
 		webPreferences: {
@@ -105,7 +105,7 @@ async function createWindow () {
 		file = 'public/upgrader.html';
 	}
 	mainWindow.loadFile(file);
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 	if (upgrade) {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
 		ipcMain.on('done-upgrading', () => {
