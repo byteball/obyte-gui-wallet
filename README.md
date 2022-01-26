@@ -11,10 +11,10 @@ O<sub>byte</sub> is a wallet for storage and transfer of decentralized value.  S
 ```bash
 nvm install 16
 nvm use 16
-nvm install -g yarn
+npm install -g yarn
 ```
 
-2. Then you need build tools to rebuild native modules for NW.js (secp256k1 atleast, and some more on Windows platforms). We use [nw-gyp](https://github.com/nwjs/nw-gyp#installation) for rebuilding modules, you can read the requirements for nw-gyp for your platform on it's page. Basically you need C++ build tools and Python2.7.
+2. Then you need build tools to rebuild native modules for Electron (secp256k1 atleast, and some more on Windows platforms). We use [nw-gyp](https://github.com/nwjs/nw-gyp#installation) for rebuilding modules, you can read the requirements for nw-gyp for your platform on it's page. Basically you need C++ build tools and Python2.7.
 
     * On **Ubuntu**-like platforms and other **Linux**:
 
@@ -84,51 +84,24 @@ All app bundles will be placed at `../obytebuilds` dir.
 
 ### macOS
 
-- `yarn dist:mac`
-- `yarn grunt dmg`
+- `yarn dist:macarm64` or `yarn dist:macx64`
 
 ### Windows
 
-- `yarn dist:win64` or `yarn dist:win86`
-- `yarn grunt inno64`
+- `yarn dist:winx64`
 
 ### Linux
 
-- `yarn dist:linux64` or `yarn dist:linux86`
-- `yarn grunt linux64` or `yarn grunt linux32`
+- `yarn dist:linuxx64` or `yarn dist:linuxarm64`
 
 
 ## O<sub>byte</sub> Backups and Recovery
 
 O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is used for wallet address derivation.  There is a BIP39 mnemonic for backing up the wallet key, but it is not enough.  Private payments and co-signers of multisig wallets are stored only in the app's data directory, which you have to back up manually:
 
-* macOS: `~/Library/Application Support/byteball`
-* Linux: `~/.config/byteball`
-* Windows: `%LOCALAPPDATA%\byteball`
-
-
-## Create an AppImage
-
-The application and the libraries it requires can be bundled into a one-file executable called AppImage. It should run on most Linux distribution without any additional package installation.
-There is a script that handles the whole image creation process, the following procedure has been tested on Ubuntu 21.10.
-
-Install tools:
-`sudo apt install imagemagick`
-
-Execute the script:
-
-```sh
-./appimage/appimage.sh
-```
-
-When completed, you will find the appimage in `../obytebuilds`
-
-Obyte appimage can be launched from any directory, ensure to make it executable then launch it:
-
-```
-chmod a+x obyte-x86_64.AppImage
-./obyte-x86_64.AppImage
-```
+* macOS: `~/Library/Application Support/obyte-gui-wallet`
+* Linux: `~/.config/obyte-gui-wallet`
+* Windows: `%APPDATA%\obyte-gui-wallet`
 
 
 ## Translations

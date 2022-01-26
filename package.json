@@ -47,7 +47,6 @@
     "secp256k1": "secp256k1/js"
   },
   "scripts": {
-    "2postinstall": "node util/postinstall.js",
     "r": "electron .",
     "start": "grunt && electron .",
     "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
@@ -55,9 +54,6 @@
     "dist:linuxarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:linux && electron-builder --arm64 --pd ../obytebuilds/linux-arm64-unpacked",
     "dist:linuxx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:linux && electron-builder --x64 --pd ../obytebuilds/linux-unpacked",
     "dist:winx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:win && electron-builder --x64 --pd ../obytebuilds/win-unpacked",
-    "dist:win86": "grunt prepare-dist && build --tasks win-x86 . && grunt clean:win",
-    "dist:linux64": "grunt prepare-dist && build --tasks linux-x64 . && grunt clean:linux",
-    "dist:linux86": "grunt prepare-dist && build --tasks linux-x86 . && grunt clean:linux",
     "test": "grunt test-coveralls"
   },
   "dependencies": {
@@ -132,16 +128,23 @@
       "!**/rocksdb/deps/**",
       "!**/*.pdb"
     ],
-    "protocols": [{
-    	"name": "Obyte URL",
-    	"schemes": ["obyte", "byteball"]
-    }],
-    "fileAssociations": [{
-    	"ext": "coin",
-    	"name": "Coin",
-    	"description": "Obyte Private Coin",
-    	"mimeType" : "application/x-obyte"
-    }],
+    "protocols": [
+      {
+        "name": "Obyte URL",
+        "schemes": [
+          "obyte",
+          "byteball"
+        ]
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": "coin",
+        "name": "Coin",
+        "description": "Obyte Private Coin",
+        "mimeType": "application/x-obyte"
+      }
+    ],
     "mac": {
       "icon": "./public/img/icons/logo-circle.icns",
       "identity": null,
