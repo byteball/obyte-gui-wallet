@@ -1,35 +1,42 @@
 'use strict';
 
 angular.module('copayApp.services').factory('electron', function electronFactory() {
-  var root = {};
+	var root = {};
+	let electron;
+	try {
+		electron = require('electron');
+	}
+	catch(e){}
 
-  var isElectron = function() {
-    var isNode = (typeof process !== "undefined" && typeof require !== "undefined");
-    if(isNode) {
-      try {
-        return (typeof require('electron') !== "undefined");
-      } catch(e) {
-        return false;
-      }
-    }
-  };
-    
+	root.isDefined = function() {
+		return !!electron;
+	};
 
-  root.isDefined = function() {
-    return isElectron();
-  };
+	root.readFromClipboard = function() {
+		if (!electron) return;
+		return electron.clipboard.readText();
+	};
 
-  root.readFromClipboard = function() {
-    if (!isElectron()) return;
-    const { clipboard } = require('electron');
-    return clipboard.readText();
-  };
+	root.writeToClipboard = function(text) {
+		if (!electron) return;
+		return electron.clipboard.writeText(text);
+	};
+	root.emit = (evt, ...args) => {
+		if (!electron) return;
+		electron.ipcRenderer.send(evt, ...args);
+	};
+	root.on = (evt, cb) => {
+		if (!electron) return;
+		electron.ipcRenderer.on(evt, cb);
+	}
+	root.once = (evt, cb) => {
+		if (!electron) return;
+		electron.ipcRenderer.once(evt, cb);
+	}
+	root.relaunch = () => {
+		if (!electron) return;
+		electron.ipcRenderer.send('relaunch');
+	}
 
-  root.writeToClipboard = function(text) {
-    if (!isElectron()) return;
-    const { clipboard } = require('electron');
-    return clipboard.writeText(text);
-  };
-
-  return root;
+	return root;
 });

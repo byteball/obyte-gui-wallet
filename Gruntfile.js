@@ -271,10 +271,10 @@ module.exports = function(grunt) {
     	},
     	mac: {
     		src: [
-		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/app/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
-	        	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/app/node_modules/rocksdb/build/**",
-		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Frameworks/Electron Framework.framework/Resources/!(en)*.lproj/**",
-		    	"../obytebuilds/mac*/"+process.env.npm_package_name+".app/Contents/Resources/!(en)*.lproj/**"
+		    	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/app/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
+	        	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/app/node_modules/rocksdb/build/**",
+		    	"../obytebuilds/mac*/Obyte*.app/Contents/Frameworks/Electron Framework.framework/Resources/!(en)*.lproj/**",
+		    	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/!(en)*.lproj/**"
 	    	]
 		},
 	    win: {

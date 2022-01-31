@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile) {
+	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron) {
 		
 		var JSZip = require("jszip");
 		var async = require('async');
@@ -267,6 +267,8 @@ angular.module('copayApp.controllers').controller('importController',
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
+								else if (electron.isDefined())
+									electron.relaunch();
 								else if (process.exit)
 									process.exit();
 							});

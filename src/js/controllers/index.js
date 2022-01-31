@@ -1531,22 +1531,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	
 	
   this.csvHistory = function() {
-
-function saveFile(name, data, filename) {
-	  var chooser = document.querySelector(name);
-	  chooser.setAttribute("nwsaveas", filename);
-	  var fileSaveChange = function(evt) {
-		var fs = require('fs');
-		fs.writeFile(evt.target.value, data, function(err) {
-		  if (err) {
-			$log.debug(err);
-		  }
-		  evt.target.removeEventListener("change", fileSaveChange, false);
-		  evt.target.value = null;
+	function saveFile(data, filename) {
+		electron.once('save-dialog-done', (evt, path) => {
+			if (!path)
+				return;
+			var fs = require('fs');
+			fs.writeFile(path, data, function(err) {
+				if (err) {
+					$log.debug(err);
+				}
+			});
 		});
-	  };
-	  chooser.addEventListener("change", fileSaveChange, false);
-	  chooser.click();
+		electron.emit('open-save-dialog', {defaultPath: filename});
 	}
 
 	function formatDate(date) {
@@ -1623,7 +1619,7 @@ function saveFile(name, data, filename) {
 		  });
 
 		  if (isNode) {
-			saveFile('#export_file', csvContent, filename);
+			saveFile(csvContent, filename);
 		  } else {
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");

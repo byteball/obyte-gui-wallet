@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification) {
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron) {
 
 		var async = require('async');
 		var crypto = require('crypto');
@@ -118,13 +118,12 @@ angular.module('copayApp.controllers').controller('exportController',
 		function saveFile(file, cb) {
 			var backupFilename = 'ObyteBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
-				var inputFile = document.getElementById('nwExportInputFile');
-				inputFile.setAttribute("nwsaveas", backupFilename);
-				inputFile.click();
-				window.addEventListener('focus', checkValueFileAndChangeStatusExported, true);
-				inputFile.onchange = function() {
-					cb(this.value);
-				};
+				electron.once('save-dialog-done', (evt, path) => {
+					if (!path)
+						return;
+					cb(path);
+				});
+				electron.emit('open-save-dialog', {defaultPath: backupFilename});
 			}
 			else {
 				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Obyte', backupFilename, file, function(err) {

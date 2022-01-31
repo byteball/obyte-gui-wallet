@@ -56,6 +56,9 @@ Run O<sub>byte</sub>:
 yarn start
 ```
 
+## Web Inspector
+
+To open Chrome Dev Tools (web inspector) inside your currently running Obyte application, press Control-I (Command-I for Macs).
 
 ## Build O<sub>byte</sub> App Bundles
 

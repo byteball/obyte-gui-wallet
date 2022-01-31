@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const package = require('./package.json');
 const sqlite3 = require('sqlite3').verbose();
@@ -30,6 +30,7 @@ if (!fs.existsSync(renamedFlagFile)) {
 		}
 	}
 	fs.writeFileSync(renamedFlagFile, "true");
+	fs.rmSync(oldUserDir, { recursive: true, force: true });
 }
 
 let upgradeKeys = {};
@@ -108,7 +109,6 @@ async function createWindow () {
 	mainWindow.webContents.on('devtools-opened', () => {
 		mainWindow.resizable = true;
 	});
-	// mainWindow.webContents.openDevTools();
 	if (upgrade) {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
 		ipcMain.on('done-upgrading', () => {
@@ -130,6 +130,19 @@ async function createWindow () {
 	});
 	ipcMain.on('update-badge', (event, count) => {
 		app.setBadgeCount(count);
+	});
+	ipcMain.on('relaunch', () => {
+		app.relaunch();
+		app.quit();
+	});
+	ipcMain.on('open-save-dialog', (event, opts) => {
+		const path = dialog.showSaveDialogSync(mainWindow, opts);
+		mainWindow.webContents.send('save-dialog-done', path);
+	});
+	mainWindow.webContents.on('before-input-event', (event, input) => {
+		if ((input.control || input.meta) && input.key.toLowerCase() === 'i') {
+			mainWindow.webContents.openDevTools({mode: 'detach'});
+		}
 	});
 }
 
