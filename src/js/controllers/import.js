@@ -100,6 +100,12 @@ angular.module('copayApp.controllers').controller('importController',
 								storageService.storeProfile = function(){};
 							});
 						}
+						else if (key == 'focusedWalletId') {
+							zip.file(key).async('string').then(function(data) {
+								storageService.storeFocusedWalletId(data, callback);
+								storageService.storeFocusedWalletId = function(){};
+							});
+						}
 						else if (key == 'config') {
 							zip.file(key).async('string').then(function(data) {
 								storageService.storeConfig(data, callback);
@@ -148,6 +154,14 @@ angular.module('copayApp.controllers').controller('importController',
 						if(err) return next(err);
 						storageService.storeProfile(Profile.fromString(data.toString()), next)
 						storageService.storeProfile = function(){};
+					});
+				},
+				function(next) {
+					// restore wallet focused profile
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'focusedWalletId', function(err, data) {
+						if(err) return next(err);
+						storageService.storeFocusedWalletId(data, next);
+						storageService.storeFocusedWalletId = function(){};
 					});
 				},
 				function(next) {

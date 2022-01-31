@@ -169,19 +169,22 @@ angular.module('copayApp.controllers').controller('exportController',
 				});
 				storageService.getProfile(function(err, profile) {
 					storageService.getConfig(function(err, config) {
-						zip.text('profile', JSON.stringify(profile));
-						zip.text('config', config);
-						if (conf.bLight) zip.text('light', 'true');
-						addDBAndConfToZip(function(err) {
-							if (err) return showError(err);
-							zip.end(function() {
-								connection.release();
-								self.connection = null;
-								self.exporting = false;
-								zip = null;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+						storageService.getFocusedWalletId(function(err, id) {
+							zip.text('profile', JSON.stringify(profile));
+							zip.text('config', config);
+							zip.text('focusedWalletId', id);
+							if (conf.bLight) zip.text('light', 'true');
+							addDBAndConfToZip(function(err) {
+								if (err) return showError(err);
+								zip.end(function() {
+									connection.release();
+									self.connection = null;
+									self.exporting = false;
+									zip = null;
+									$timeout(function() {
+										$rootScope.$apply();
+										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+									});
 								});
 							});
 						});
@@ -193,25 +196,28 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExportCordova = function(connection) {
 			storageService.getProfile(function(err, profile) {
 				storageService.getConfig(function(err, config) {
-					zip.file('profile', JSON.stringify(profile));
-					zip.file('config', config);
-					zip.file('light', 'true');
-					addDBAndConfToZip(function(err) {
-						if (err) return showError(err);
-						var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
-						zip.generateAsync(zipParams).then(function(zipFile) {
-							saveFile(encrypt(zipFile, self.password), function(err) {
-								connection.release();
-								if (err) return showError(err);
-								self.exporting = false;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
-								});
+					storageService.getFocusedWalletId(function(err, id) {
+						zip.file('profile', JSON.stringify(profile));
+						zip.file('config', config);
+						zip.file('focusedWalletId', id);
+						zip.file('light', 'true');
+						addDBAndConfToZip(function(err) {
+							if (err) return showError(err);
+							var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
+							zip.generateAsync(zipParams).then(function(zipFile) {
+								saveFile(encrypt(zipFile, self.password), function(err) {
+									connection.release();
+									if (err) return showError(err);
+									self.exporting = false;
+									$timeout(function() {
+										$rootScope.$apply();
+										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+									});
+								})
+							}, function(err) {
+								showError(err);
 							})
-						}, function(err) {
-							showError(err);
-						})
+						});
 					});
 				});
 			});
