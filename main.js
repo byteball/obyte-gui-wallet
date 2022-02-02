@@ -35,8 +35,9 @@ if (!fs.existsSync(renamedFlagFile)) {
 
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
-const lsSqliteFile = `${app.getPath('userData')}/Default/Local Storage/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
-const lsLevelDBDir = `${app.getPath('userData')}/Default/Local Storage/leveldb`;
+const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
+const lsSqliteFile = `${oldLSDir}/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
+const lsLevelDBDir = `${oldLSDir}/leveldb`;
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
@@ -44,7 +45,7 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 			if (err)
 				return resolve();
 			console.log(`Upgrading Local Storage from SQLite database...`);
-			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer')`, [], (err, rows) => {
+			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId')`, [], (err, rows) => {
 				if (err)
 					return resolve();
 				for (const row of rows) {
@@ -69,15 +70,11 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 	});
 }
 function handleRow(key, value) {
-	try {
-		let v = JSON.parse(value);
-	} catch(e) {
-		return;
-	}
 	switch (key) {
 		case "config":
 		case "agreeDisclaimer":
 		case "profile":
+		case "focusedWalletId":
 			upgradeKeys[key] = value;
 			break;
 	}
@@ -113,8 +110,7 @@ async function createWindow () {
 		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
 		ipcMain.on('done-upgrading', () => {
 			fs.writeFileSync(lsUpgradedFlagFile, "true");
-			fs.rmSync(lsSqliteFile, {force: true});
-			fs.rmSync(lsLevelDBDir, {recursive: true, force: true});
+			fs.rmSync(oldLSDir, {recursive: true, force: true});
 		});
 	}
 	if (urlToLoad) {
@@ -182,7 +178,15 @@ app.whenReady().then(() => {
 		if (BrowserWindow.getAllWindows().length === 0)
 			createWindow();
 	});
-	Menu.setApplicationMenu(null);
+	if (process.platform === 'darwin') {
+		const template = [{
+				label: app.name,
+				submenu:[{label: 'Quit', role: 'quit'}]
+		}];
+		const menu = Menu.buildFromTemplate(template);
+		Menu.setApplicationMenu(menu);
+	} else
+		Menu.setApplicationMenu(null);
 });
 
 app.on('window-all-closed', function () {

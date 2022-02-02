@@ -181,7 +181,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			db.close();
 			if (self.isCordova && navigator && navigator.app) // android
 				navigator.app.exitApp();
-			else if (process.exit) // nwjs
+			else if (electron.isDefined())
+				electron.relaunch();
+			else if (process.exit)
 				process.exit();
 			// ios doesn't exit
 		});

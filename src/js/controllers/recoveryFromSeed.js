@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('recoveryFromSeed',
-	function ($rootScope, $scope, $log, $timeout, profileService) {
+	function ($rootScope, $scope, $log, $timeout, profileService, electron) {
 
 		var async = require('async');
 		var conf = require('ocore/conf.js');
@@ -269,7 +269,9 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 								$rootScope.$emit('Local/ShowAlert', arrWalletIndexes.length + " accounts recovered, please restart the application to finish.", 'fi-check', function () {
 									if (navigator && navigator.app) // android
 										navigator.app.exitApp();
-									else if (process.exit) // nwjs
+									else if (electron.isDefined())
+										electron.relaunch();
+									else if (process.exit)
 										process.exit();
 								});
 							});
