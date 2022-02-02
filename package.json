@@ -44,7 +44,7 @@
   },
   "browser": {
     "request": "browser-request",
-    "secp256k1": "secp256k1/js"
+    "secp256k1": "secp256k1/elliptic"
   },
   "scripts": {
     "r": "electron .",
