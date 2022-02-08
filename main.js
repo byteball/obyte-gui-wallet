@@ -45,7 +45,7 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 			if (err)
 				return resolve();
 			console.log(`Upgrading Local Storage from SQLite database...`);
-			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId')`, [], (err, rows) => {
+			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId', 'addressbook-livenet')`, [], (err, rows) => {
 				if (err)
 					return resolve();
 				for (const row of rows) {
@@ -75,6 +75,7 @@ function handleRow(key, value) {
 		case "agreeDisclaimer":
 		case "profile":
 		case "focusedWalletId":
+		case "addressbook-livenet":
 			upgradeKeys[key] = value;
 			break;
 	}

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron) {
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService) {
 
 		var async = require('async');
 		var crypto = require('crypto');
@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			var _zip = require('zip' + '');
 			zip = null;
 		}
+		var fc = profileService.focusedClient;
 
 		var self = this;
 		self.error = null;
@@ -170,20 +171,23 @@ angular.module('copayApp.controllers').controller('exportController',
 				storageService.getProfile(function(err, profile) {
 					storageService.getConfig(function(err, config) {
 						storageService.getFocusedWalletId(function(err, id) {
-							zip.text('profile', JSON.stringify(profile));
-							zip.text('config', config);
-							zip.text('focusedWalletId', id);
-							if (conf.bLight) zip.text('light', 'true');
-							addDBAndConfToZip(function(err) {
-								if (err) return showError(err);
-								zip.end(function() {
-									connection.release();
-									self.connection = null;
-									self.exporting = false;
-									zip = null;
-									$timeout(function() {
-										$rootScope.$apply();
-										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+							storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+								zip.text('profile', JSON.stringify(profile));
+								zip.text('config', config);
+								zip.text('focusedWalletId', id);
+								zip.text('addressbook-'+fc.credentials.network, ab);
+								if (conf.bLight) zip.text('light', 'true');
+								addDBAndConfToZip(function(err) {
+									if (err) return showError(err);
+									zip.end(function() {
+										connection.release();
+										self.connection = null;
+										self.exporting = false;
+										zip = null;
+										$timeout(function() {
+											$rootScope.$apply();
+											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+										});
 									});
 								});
 							});
@@ -197,26 +201,29 @@ angular.module('copayApp.controllers').controller('exportController',
 			storageService.getProfile(function(err, profile) {
 				storageService.getConfig(function(err, config) {
 					storageService.getFocusedWalletId(function(err, id) {
-						zip.file('profile', JSON.stringify(profile));
-						zip.file('config', config);
-						zip.file('focusedWalletId', id);
-						zip.file('light', 'true');
-						addDBAndConfToZip(function(err) {
-							if (err) return showError(err);
-							var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
-							zip.generateAsync(zipParams).then(function(zipFile) {
-								saveFile(encrypt(zipFile, self.password), function(err) {
-									connection.release();
-									if (err) return showError(err);
-									self.exporting = false;
-									$timeout(function() {
-										$rootScope.$apply();
-										notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
-									});
+						storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+							zip.file('profile', JSON.stringify(profile));
+							zip.file('config', config);
+							zip.file('focusedWalletId', id);
+							zip.file('addressbook-'+fc.credentials.network, ab);
+							zip.file('light', 'true');
+							addDBAndConfToZip(function(err) {
+								if (err) return showError(err);
+								var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
+								zip.generateAsync(zipParams).then(function(zipFile) {
+									saveFile(encrypt(zipFile, self.password), function(err) {
+										connection.release();
+										if (err) return showError(err);
+										self.exporting = false;
+										$timeout(function() {
+											$rootScope.$apply();
+											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+										});
+									})
+								}, function(err) {
+									showError(err);
 								})
-							}, function(err) {
-								showError(err);
-							})
+							});
 						});
 					});
 				});

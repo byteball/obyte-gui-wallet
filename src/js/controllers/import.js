@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron) {
+	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron, profileService) {
 		
 		var JSZip = require("jszip");
 		var async = require('async');
@@ -17,7 +17,8 @@ angular.module('copayApp.controllers').controller('importController',
 		}else{
 			var unzip = require('unzip' + '');
 		}
-		
+		var fc = profileService.focusedClient;
+
 		var self = this;
 		self.importing = false;
 		self.password = '';
@@ -106,6 +107,12 @@ angular.module('copayApp.controllers').controller('importController',
 								storageService.storeFocusedWalletId = function(){};
 							});
 						}
+						else if (/addressbook-/.test(key)) {
+							zip.file(key).async('string').then(function(data) {
+								storageService.setAddressbook(fc.credentials.network, data, callback);
+								storageService.setAddressbook = function(){};
+							});
+						}
 						else if (key == 'config') {
 							zip.file(key).async('string').then(function(data) {
 								storageService.storeConfig(data, callback);
@@ -170,6 +177,14 @@ angular.module('copayApp.controllers').controller('importController',
 						if(err) return next(err);
 						storageService.storeConfig(data.toString(), next);
 						storageService.storeConfig = function(){};
+					});
+				},
+				function(next) {
+					// restore wallet config
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'addressbook-'+fc.credentials.network, function(err, data) {
+						if(err) return next(err);
+						storageService.setAddressbook(fc.credentials.network, data.toString(), next);
+						storageService.setAddressbook = function(){};
 					});
 				},
 				function(next) {
