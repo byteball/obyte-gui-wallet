@@ -6,7 +6,7 @@ angular.module('copayApp.controllers').controller('disclaimerController',
 	if (!isCordova && process.platform === 'win32' && navigator.userAgent.indexOf('Windows NT 5.1') >= 0)
 		$rootScope.$emit('Local/ShowAlert', "Windows XP is not supported", 'fi-alert', function() {
 			if (electron.isDefined())
-				electron.relaunch();
+				electron.exit();
 			else if (process.exit)
 				process.exit();
 		});

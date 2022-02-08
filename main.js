@@ -131,6 +131,9 @@ async function createWindow () {
 		app.relaunch();
 		app.quit();
 	});
+	ipcMain.on('exit', () => {
+		app.quit();
+	});
 	ipcMain.on('open-save-dialog', (event, opts) => {
 		const path = dialog.showSaveDialogSync(mainWindow, opts);
 		mainWindow.webContents.send('save-dialog-done', path);
