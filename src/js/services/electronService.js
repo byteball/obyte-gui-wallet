@@ -37,6 +37,10 @@ angular.module('copayApp.services').factory('electron', function electronFactory
 		if (!electron) return;
 		electron.ipcRenderer.send('relaunch');
 	}
+	root.getElectronInstance = () => {
+		if (!electron) return;
+		return electron;
+	};
 
 	return root;
 });

@@ -217,7 +217,7 @@ module.exports = function(grunt) {
     browserify: {
         dist:{
             options:{
-                exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
+                exclude: ['sqlite3', 'electron', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
                 ignore: ['../ocore/kvstore.js', './node_modules/ocore/kvstore.js', '../ocore/desktop_app.js', './node_modules/ocore/desktop_app.js', '../ocore/mail.js', './node_modules/ocore/mail.js']
             },
             src: 'public/obyte.js',
@@ -225,7 +225,7 @@ module.exports = function(grunt) {
         },
 	    partialClient:{
 		    options:{
-          exclude: ['sqlite3', 'nw.gui', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
+          exclude: ['sqlite3', 'electron', 'mysql', 'ws', 'regedit', 'fs', 'path', 'socks'],
           ignore: ['../ocore/kvstore.js', './node_modules/ocore/kvstore.js', '../ocore/desktop_app.js', './node_modules/ocore/desktop_app.js', '../ocore/mail.js', './node_modules/ocore/mail.js']
 		    },
 		    src: 'src/js/partialClient.js',
