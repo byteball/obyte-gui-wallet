@@ -594,7 +594,7 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService) {
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService, $modalStack) {
     FastClick.attach(document.body);
 
     uxLanguage.init();
@@ -619,7 +619,10 @@ angular
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
+    	var openModal = $modalStack.getTop();
+    	if (openModal) {
+    		$modalStack.dismissAll();
+    	}
       if (!profileService.profile && toState.needProfile) {
 		  
         // Give us time to open / create the profile
