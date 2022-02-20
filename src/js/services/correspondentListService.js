@@ -573,7 +573,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		var base64data = assocParams['base64data'] || '';
 		if (base64data && !ValidationUtils.isValidBase64(base64data))
 			return null;
-		var from_address = from_address = assocParams['from_address'] || '';
+		var from_address = assocParams['from_address'] || '';
+		if (from_address && !ValidationUtils.isValidAddress(from_address))
+			return null;
 		var single_address = assocParams['single_address'] || 0;
 		if (single_address)
 			single_address = single_address.replace(/^single/, ''); // backward compatibility
