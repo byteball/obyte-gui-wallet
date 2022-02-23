@@ -221,7 +221,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			param_index++
 			params[param_index] = uri;
-			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
+			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Send data: '+escapeHtml(JSON.stringify(assocParams, null, 2))+']</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
 			param_index++
 			params[param_index] = command;
@@ -261,7 +261,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
 			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
+			var text = 'Message signed by '+escapeHtml(objSignedMessage.authors[0].address)+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -494,7 +494,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
 			if (!assocParams)
 				return str;
-			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
+			return toDelayedReplacement('<i>Sent data: '+ escapeHtml(JSON.stringify(assocParams, null, 2))+'</i>');
 		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
