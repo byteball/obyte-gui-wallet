@@ -96,7 +96,7 @@ function initWallet() {
 		var color = root.config.colorFor ? root.config.colorFor[root.focusedClient.credentials.walletId] : '#4A90E2';
 		if(!color) color = '#4A90E2';
 		getFromId('name1Color').style.color = color;
-		getFromId('name1').innerHTML = walletName;
+		getFromId('name1').innerText = walletName;
 		getFromId('spinnerBg').style.backgroundColor = color;
 		getFromId('amountBg').style.backgroundColor = color;
 		document.getElementsByClassName('page')[1].style.display = 'block';
