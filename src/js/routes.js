@@ -622,7 +622,7 @@ angular
         profileService.loadAndBindProfile(function(err) {
 		  delete profileService.assocVisitedFromStates[fromState.name];
           if (err) {
-            if (err.message && err.message.match('NOPROFILE')) {
+            if ((err.message && err.message.match('NOPROFILE')) || err.name === "NotFoundError") {
               $log.debug('No profile... redirecting');
               return $state.transitionTo('splash');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {

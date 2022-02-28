@@ -6,9 +6,8 @@ const level = require('level-rocksdb');
 const fs = require('fs');
 const Badge = require('electron-windows-badge');
 
-// UPGRADE old NW.js localStorage to electron format & rename byteball to obyte
+// rename byteball to obyte 
 const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball';
-const userDir = process.platform == 'win32' ? process.env.LOCALAPPDATA + '/' + package.name : app.getPath('userData');
 const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
@@ -16,7 +15,7 @@ const renamedFlagFile = `${app.getPath('userData')}/.renamed`;
 
 if (!fs.existsSync(renamedFlagFile)) {
 	if (fs.existsSync(oldUserDir)) {
-		console.log(`moving files from ${oldUserDir} to ${userDir}`);
+		console.log(`moving files from ${oldUserDir} to ${app.getPath('userData')}`);
 		if (!fs.existsSync(`${app.getPath('userData')}/Default`)){
 			fs.mkdirSync(`${app.getPath('userData')}/Default`);
 		}
@@ -32,12 +31,13 @@ if (!fs.existsSync(renamedFlagFile)) {
 	fs.writeFileSync(renamedFlagFile, "true");
 	fs.rmSync(oldUserDir, { recursive: true, force: true });
 }
-
+// UPGRADE old NW.js localStorage to new rocksdb storage
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
 const lsSqliteFile = `${oldLSDir}/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
+const walletDataDir = `${app.getPath('userData')}/walletdata`;
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
@@ -49,7 +49,7 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 				if (err)
 					return resolve();
 				for (const row of rows) {
-					handleRow(row.key, row.value.toString().replace(/\0/g, ''));
+					handleRow(row.key, new TextDecoder('utf-16').decode(row.value));
 				}
 				resolve();
 			});
@@ -80,12 +80,26 @@ function handleRow(key, value) {
 			break;
 	}
 }
-/// UPGRADE
+async function finishLSUpgrade() {
+	await Promise.all([lsUpgrader1, lsUpgrader2]);
+	if (Object.keys(upgradeKeys).length == 0)
+		return;
+	level(walletDataDir, { createIfMissing: true }, async (err, db) => {
+		if (err)
+			return console.error(`can't create ${walletDataDir} database`);
+		for (const key in upgradeKeys) {
+			console.log(`storing ${key}...`);
+			await db.put(key, upgradeKeys[key]);
+		}
+		fs.writeFileSync(lsUpgradedFlagFile, "true");
+		fs.rmSync(oldLSDir, {recursive: true, force: true});
+		db.close()
+	});
+}
 
 let mainWindow;
 async function createWindow () {
-	await Promise.all([lsUpgrader1, lsUpgrader2]);
-	let upgrade = Object.keys(upgradeKeys).length > 0;
+	await finishLSUpgrade();
 
 	mainWindow = new BrowserWindow({
 		width: 400,
@@ -99,21 +113,10 @@ async function createWindow () {
 		}
 	});
 	new Badge(mainWindow, {});
-	let file = 'public/index.html';
-	if (upgrade) {
-		file = 'public/upgrader.html';
-	}
-	mainWindow.loadFile(file);
+	mainWindow.loadFile('public/index.html');
 	mainWindow.webContents.on('devtools-opened', () => {
 		mainWindow.resizable = true;
 	});
-	if (upgrade) {
-		mainWindow.webContents.send('upgradeKeys', JSON.stringify(upgradeKeys));
-		ipcMain.on('done-upgrading', () => {
-			fs.writeFileSync(lsUpgradedFlagFile, "true");
-			fs.rmSync(oldLSDir, {recursive: true, force: true});
-		});
-	}
 	if (urlToLoad) {
 		ipcMain.on('done-loading', () => {
 			mainWindow.webContents.send('open', urlToLoad);
