@@ -7,7 +7,8 @@ const fs = require('fs');
 const Badge = require('electron-windows-badge');
 
 // rename byteball to obyte 
-const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball';
+const isTestnet = package.name.includes('-tn');
+const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball' + (isTestnet ? '-tn' : '');
 const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
@@ -37,7 +38,8 @@ const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
 const lsSqliteFile = `${oldLSDir}/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
-const walletDataDir = `${app.getPath('userData')}/walletdata`;
+const walletDataDir = `walletdata`;
+let walletDataPath = `${app.getPath('userData')}/${walletDataDir}`;
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
@@ -84,9 +86,13 @@ async function finishLSUpgrade() {
 	await Promise.all([lsUpgrader1, lsUpgrader2]);
 	if (Object.keys(upgradeKeys).length == 0)
 		return;
-	level(walletDataDir, { createIfMissing: true }, async (err, db) => {
+	if (process.platform === 'win32') {
+		process.chdir(app.getPath('userData')); // workaround non-latin characters in path
+		walletDataPath = walletDataPath;
+	}
+	level(walletDataPath, { createIfMissing: true }, async (err, db) => {
 		if (err)
-			return console.error(`can't create ${walletDataDir} database`);
+			return console.error(`can't create ${walletDataPath} database`);
 		for (const key in upgradeKeys) {
 			console.log(`storing ${key}...`);
 			await db.put(key, upgradeKeys[key]);
