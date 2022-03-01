@@ -6,6 +6,17 @@ const level = require('level-rocksdb');
 const fs = require('fs');
 const Badge = require('electron-windows-badge');
 
+if (process.platform === 'win32') { // fix for Electron not working when UTF-8 symbols in path
+	app.commandLine.appendSwitch('no-sandbox')
+	app.commandLine.appendSwitch('disable-gpu')
+	app.commandLine.appendSwitch('disable-software-rasterizer')
+	app.commandLine.appendSwitch('disable-gpu-compositing')
+	app.commandLine.appendSwitch('disable-gpu-rasterization')
+	app.commandLine.appendSwitch('disable-gpu-sandbox')
+	app.commandLine.appendSwitch('--no-sandbox')
+	app.disableHardwareAcceleration();
+}
+
 // rename byteball to obyte 
 const isTestnet = package.name.includes('-tn');
 const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball' + (isTestnet ? '-tn' : '');
@@ -47,7 +58,7 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 			if (err)
 				return resolve();
 			console.log(`Upgrading Local Storage from SQLite database...`);
-			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId', 'addressbook-livenet')`, [], (err, rows) => {
+			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId', 'addressbook-livenet', 'addressbook-testnet')`, [], (err, rows) => {
 				if (err)
 					return resolve();
 				for (const row of rows) {
@@ -78,6 +89,7 @@ function handleRow(key, value) {
 		case "profile":
 		case "focusedWalletId":
 		case "addressbook-livenet":
+		case "addressbook-testnet":
 			upgradeKeys[key] = value;
 			break;
 	}
