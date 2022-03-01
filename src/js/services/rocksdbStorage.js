@@ -4,10 +4,15 @@ angular.module('copayApp.services')
   .factory('rocksdbStorageService', function($timeout, isCordova) {
   	if (isCordova)
   		return console.log('rocksdbStorageService is not available on mobile devices');
-
+  	var desktopApp = require('ocore/desktop_app.js');
     var root = {};
-    var path = require('ocore/desktop_app.js').getAppDataDir() + '/walletdata';
+    var walletDataDir = 'walletdata';
+    var path = desktopApp.getAppDataDir() + '/' + walletDataDir;
     var level = require('level-rocksdb');
+    if (process.platform === 'win32') {
+		process.chdir(desktopApp.getAppDataDir()); // workaround non-latin characters in path
+		path = walletDataDir;
+	}
 	var db = level(path, { createIfMissing: true });
 
     root.get = function(k, cb) {

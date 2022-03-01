@@ -88,7 +88,7 @@ async function finishLSUpgrade() {
 		return;
 	if (process.platform === 'win32') {
 		process.chdir(app.getPath('userData')); // workaround non-latin characters in path
-		walletDataPath = walletDataPath;
+		walletDataPath = walletDataDir;
 	}
 	level(walletDataPath, { createIfMissing: true }, async (err, db) => {
 		if (err)
