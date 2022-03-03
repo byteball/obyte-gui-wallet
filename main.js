@@ -167,7 +167,7 @@ async function createWindow () {
 	});
 }
 
-let protocols = process.env.testnet ? ["obyte-tn", "byteball-tn"] : ["obyte", "byteball"];
+let protocols = isTestnet ? ["obyte-tn", "byteball-tn"] : ["obyte", "byteball"];
 if (process.defaultApp) {
 	if (process.argv.length >= 2) {
 		protocols.forEach(pr => {

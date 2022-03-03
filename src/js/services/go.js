@@ -346,7 +346,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (message){
 					var file = extractObyteArgFromCommandLine(message);
 					if (!file)
-						return console.log("no byteball:, obyte:, or file arg found");
+						return console.log("no protocol for this app instance / network was found in url");
 					handleUri(file);
 				}
 			});

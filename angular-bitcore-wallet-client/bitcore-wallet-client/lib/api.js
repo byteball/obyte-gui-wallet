@@ -1,12 +1,14 @@
 /** @namespace Client.API */
 'use strict';
 
-if (process.browser){
-	var conf = require('ocore/conf.js');
-	var appPackageJson = require('../../../package.json');
-	conf.program = appPackageJson.name;
-	conf.program_version = appPackageJson.version;
-}
+var conf = require('ocore/conf.js');
+var appPackageJson = require('../../../package.json');
+conf.program = 'obyte';
+if (process.env.testnet)
+	conf.program += '-tn';
+if (process.env.devnet)
+	conf.program += '-dn';
+conf.program_version = appPackageJson.version;
 
 var ecdsaSig = require('ocore/signature.js');
 var breadcrumbs = require('ocore/breadcrumbs.js');
