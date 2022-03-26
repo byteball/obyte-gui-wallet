@@ -2838,7 +2838,7 @@ angular.module('copayApp.controllers')
 				storage.readUnit(btx.unit, function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
-					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && (m.payload.asset || 'base') !== btx.asset);
+					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && m.payload && (m.payload.asset || 'base') !== btx.asset);
 					var dataMessage = objUnit.messages.find(m => m.app === 'data');
 					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
 					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
