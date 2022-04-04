@@ -574,7 +574,12 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var fc = profileService.focusedClient;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
-			$scope.ArbStoreCut = arbiter_contract.ArbStoreCut;
+			arbiter.getArbstoreInfo($scope.form.arbiterAddress, info => {
+				$scope.ArbStoreCut = info.cut;
+				$timeout(function() {
+					$rootScope.$apply();
+				});
+			});
 			$scope.form = {
 				ttl: 24*7,
 				me_is_payer: true,

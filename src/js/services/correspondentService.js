@@ -559,7 +559,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
-					$scope.ArbStoreCut = arbiter_contract.ArbStoreCut;
+					arbiters.getArbstoreInfo(objContract.arbiter_address, info => {
+						$scope.ArbStoreCut = info.cut;
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
 
 					if ($scope.asset) {
 						var updateAssetMetadata = function() {
