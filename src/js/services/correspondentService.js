@@ -11,6 +11,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	var chatStorage = require("ocore/chat_storage.js");
 	var wallet_general = require('ocore/wallet_general.js');
 	var arbiter_contract = require("ocore/arbiter_contract.js");
+	var arbiters = require("ocore/arbiters.js");
 	var storage = require("ocore/storage.js");
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
@@ -560,6 +561,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
 					arbiters.getArbstoreInfo(objContract.arbiter_address, info => {
+						if (!info) return;
 						$scope.ArbStoreCut = info.cut;
 						$timeout(function() {
 							$rootScope.$apply();
@@ -635,7 +637,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						$scope.status = "expired";
 
 					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
-						require("ocore/arbiters.js").getInfo(objContract.arbiter_address, function(info){
+						arbiters.getInfo(objContract.arbiter_address, function(info){
 							if (info)
 								$scope.arbiter_name = info.real_name;
 							$timeout(function() {
