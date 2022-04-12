@@ -560,9 +560,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
-					arbiters.getArbstoreInfo(objContract.arbiter_address, info => {
-						if (!info) return;
-						$scope.ArbStoreCut = info.cut;
+					arbiters.getArbstoreInfo(objContract.arbiter_address, (err, info) => {
+						if (err) {
+							$scope.error = err;
+						} else {
+							$scope.ArbStoreCut = info.cut;
+						}
 						$timeout(function() {
 							$rootScope.$apply();
 						});
@@ -637,9 +640,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						$scope.status = "expired";
 
 					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
-						arbiters.getInfo(objContract.arbiter_address, function(info){
-							if (info)
+						arbiters.getInfo(objContract.arbiter_address, function(err, info){
+							if (err) {
+								$scope.error = err;
+							} else {
 								$scope.arbiter_name = info.real_name;
+							}
 							$timeout(function() {
 								$rootScope.$apply();
 							});
@@ -874,11 +880,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							if (err)
 								return setError(err);
 							
-							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-								addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
-
+							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(err, objArbiter) {
 								stop_loading();
-								$modalInstance.dismiss();
+								if (err) {
+									return setError(err);
+								} else {
+									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+									$modalInstance.dismiss();
+								}
 							});	
 						});
 					}

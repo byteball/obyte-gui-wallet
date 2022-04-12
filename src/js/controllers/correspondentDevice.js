@@ -582,9 +582,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			};
 			$scope.requestArbiterInfo = () => {
 				$scope.loading = true;
-				arbiters.getArbstoreInfo($scope.form.arbiterAddress, info => {
+				$scope.ArbStoreCut = null;
+				$scope.error = null;
+				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, info) => {
 					$scope.loading = false;
-					$scope.ArbStoreCut = info ? info.cut : null;
+					if (err) {
+						$scope.error = err;
+					} else {
+						$scope.ArbStoreCut = info.cut;
+					}
 					$timeout(function() {
 						$rootScope.$apply();
 					});
