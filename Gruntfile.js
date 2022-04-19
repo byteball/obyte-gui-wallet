@@ -8,9 +8,6 @@ module.exports = function(grunt) {
       },
       clear: {
         command: 'rm -Rf node_modules yarn.lock'
-      },
-      osx64: {
-        command: "../obytebuilds/"+process.env.npm_package_version+"-mac-x64/build-osx.sh osx64"
       }
     },
     watch: {
@@ -173,45 +170,6 @@ module.exports = function(grunt) {
         options: {timestamp: true, mode: true},
         src: ['src/js/fileStorage.js'],
         dest: 'public/'
-      },
-      osx: {
-        expand: true,
-        flatten: true,
-        options: {timestamp: true, mode: true},
-        src: ['webkitbuilds/build-osx.sh', 'webkitbuilds/app.entitlements', 'webkitbuilds/Background.png'],
-        dest: "../obytebuilds/"+process.env.npm_package_version+"-mac-x64"
-      },
-      linux64: {
-		options: {timestamp: true, mode: true},
-        files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} }
-        ],
-      },
-      linux32: {
-		options: {timestamp: true, mode: true},
-        files: [
-          {expand: true, cwd: './webkitbuilds/', src: ['obyte.desktop', '../public/img/icons/logo-circle.ico', '../public/img/icons/logo-circle-256.png'], dest: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/", flatten: true, filter: 'isFile', options: {timestamp: true, mode: true} }
-        ],
-      }
-    },
-    compress: {
-      linux32: {
-        options: {
-          archive: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/obyte-linux32.zip"
-        },
-        expand: true,
-        cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x86/",
-        src: ['**/*'],
-        dest: 'obyte-linux32/'
-      },
-      linux64: {
-        options: {
-          archive: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/obyte-linux64.zip"
-        },
-        expand: true,
-        cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/",
-        src: ['**/*'],
-        dest: 'obyte-linux64/'
       }
     },
     browserify: {
@@ -230,39 +188,6 @@ module.exports = function(grunt) {
 		    },
 		    src: 'src/js/partialClient.js',
 		    dest: 'public/partialClient.js'
-        }
-    },
-    // .deb proved to be very slow to produce and install: lintian spends a lot of time verifying a .bin file
-    debian_package: {
-        linux64: {
-            files: [
-                {expand: true, cwd: "../obytebuilds/"+process.env.npm_package_version+"-linux-x64/", src: ['**/*'], dest: '/opt/obyte/'}
-                //{expand: true, cwd: '../obytebuilds/obyte-test/linux64', src: ['obyte.desktop'], dest: '/usr/share/applications/obyte-test.desktop'}
-            ],
-            options: {
-                maintainer: {
-                    name: 'Obyte',
-                    email: 'o@obyte.org'
-                },
-                long_description: 'Smart payments made simple',
-                target_architecture: 'amd64'
-            }
-        }
-    },
-    innosetup_compiler: {
-        win64: {
-            options: {
-                gui: false,
-                verbose: false
-            },
-            script: 'webkitbuilds/setup-win64.iss'
-        },
-        win32: {
-            options: {
-                gui: false,
-                verbose: false
-            },
-            script: 'webkitbuilds/setup-win32.iss'
         }
     },
     clean: {
@@ -304,8 +229,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-exec');
-  grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.loadNpmTasks('innosetup-compiler');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('default', ['nggettext_compile', 'exec:version', 'concat', 'copy:icons', 'copy:modules']);
@@ -314,13 +237,6 @@ module.exports = function(grunt) {
   grunt.registerTask('cordova-prod', ['cordova', 'uglify']);
   grunt.registerTask('translate', ['nggettext_extract']);
   grunt.registerTask('prepare-dist', ['default']);
-  grunt.registerTask('desktop', ['default']);
-  grunt.registerTask('dmg', ['copy:osx', 'exec:osx64']);
-  grunt.registerTask('linux64', ['copy:linux64', 'compress:linux64']);
-  grunt.registerTask('linux32', ['copy:linux32', 'compress:linux32']);
-  grunt.registerTask('deb', ['debian_package:linux64']);
-  grunt.registerTask('inno64', ['innosetup_compiler:win64']);
-  grunt.registerTask('inno32', ['innosetup_compiler:win32']);
   grunt.registerTask('partial', ['browserify:partialClient', 'uglify:partialClient']);
   grunt.registerTask('partial-fast', ['browserify:partialClient']);
 

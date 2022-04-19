@@ -147,7 +147,8 @@
     ],
     "mac": {
       "icon": "./public/img/icons/logo-circle.icns",
-      "identity": null,
+      "identity": "Developer ID Application: Matrix Platform LLC",
+      "entitlements": "./webkitbuilds/app.entitlements",
       "target": "dmg"
     },
     "win": {
@@ -170,7 +171,6 @@
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "=5.0.0",
     "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-compress": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
