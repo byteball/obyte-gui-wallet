@@ -296,26 +296,6 @@ module.exports = function(grunt) {
     }
   });
 
-var cachedDeps = [];
-function getDeps(type) {
-	if (cachedDeps[type])
-		return cachedDeps[type];
-	var deps = Buffer.from(require("child_process").spawnSync("npm" + (process.platform == "win32" ? ".cmd" : ""), ["list", "--depth=Infinity", "--" + type, "--parseable", "--silent"]).stdout).toString("ascii").split("\n");
-	deps.shift();
-	deps.pop();
-	deps = deps.map(d => {
-		d = d
-		.substr(d.indexOf("node_modules") + 13)  // remove garbage from start
-		.replace("\r", ""); // remove caret return on win platform
-		if (d.indexOf("/") != -1)
-			d = d.substr(0, d.indexOf("/")); // remove nested modules from the end
-		if (d.indexOf("\\") != -1)
-			d = d.substr(0, d.indexOf("\\")); // remove nested modules from the end
-		return d;
-	})
-	cachedDeps[type] = deps;
-}
-
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');

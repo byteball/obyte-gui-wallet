@@ -14,7 +14,7 @@ nvm use 16
 npm install -g yarn
 ```
 
-2. Then you need build tools to rebuild native modules for Electron (secp256k1 atleast, and some more on Windows platforms). We use [nw-gyp](https://github.com/nwjs/nw-gyp#installation) for rebuilding modules, you can read the requirements for nw-gyp for your platform on it's page. Basically you need C++ build tools and Python2.7.
+2. Then you need build tools to rebuild native modules for Electron (secp256k1 atleast, and some more on Windows platforms). Basically you need C++ build tools and Python2.7.
 
     * On **Ubuntu**-like platforms and other **Linux**:
 
