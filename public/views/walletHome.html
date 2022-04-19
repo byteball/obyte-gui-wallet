@@ -337,7 +337,7 @@ input.datafeed_input {
     send
 
     -->
-    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropdown(false)">
       <div>
         <h4 class="title m0">
             <div class="size-10">
@@ -346,7 +346,7 @@ input.datafeed_input {
                 </span>
                 <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
                   <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
                       <div style="overflow: hidden;">
                         {{assetIndexSelectorValue >= 0
                           ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
@@ -530,6 +530,16 @@ input.datafeed_input {
 	              </div>
 	            </div>
 
+              <div class="row" ng-if="home.additional_assets">
+                <div class="large-12 columns m30b m10t">
+                  <label translate>Additional assets sent in this payment:</label>
+                  <div ng-repeat="(asset, amount) in home.additional_assets" class="enable_text_select">
+                    {{home.formatAmountWithUnit(amount, asset, {dontRound: true})}}
+                    <span ng-if="home.getDollarValue(home.getAmountInDisplayUnits(amount, asset), {asset: asset})" style="color: #A5B2BF;">{{home.getDollarValue(home.getAmountInDisplayUnits(amount, asset), {asset: asset})}}</span>
+                  </div>
+                </div>
+	            </div>
+
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
                   <div class="large-12 columns m20b">
                       <a style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
@@ -628,7 +638,7 @@ input.datafeed_input {
 	                <a ng-click="home.resetForm()" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
 	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAsset || home.lockAddress || home.lockAmount || home.bSendAll)}">
-	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || home.bEstimatingAAResults"
+	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || home.bEstimatingAAResults || home.additional_assets && home.additional_assets[index.arrBalances[index.assetIndex].asset]"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
 	                </button>
@@ -779,11 +789,11 @@ input.datafeed_input {
     history
 
     -->
-    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropdown(false)">
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:10px 10px; background-color: #F1F3F5;">
           <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+            <button class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
               <div style="overflow: hidden;">
                 {{index.assetIndex >= 0 ? (index.arrBalances[index.assetIndex].totalStr ? index.arrBalances[index.assetIndex].totalStr : index.arrBalances[index.assetIndex].total.toLocaleString() + ' of ' + index.arrBalances[index.assetIndex].asset) : ''}}
               </div>
@@ -793,7 +803,7 @@ input.datafeed_input {
               <li
                 class="custom-option"
                 ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
-                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
+                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropdown(); home.additional_assets = null;"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
                 <div class="custom-badge" ng-if="home.getAssetBadge(balance.asset) > 0">

@@ -134,3 +134,9 @@ The GUI is based on [Copay](https://github.com/bitpay/copay), the most beautiful
 ## License
 
 MIT.
+
+## Donations
+
+We accept donations through [Kivach](https://kivach.org) and forward a portion of the donations to other open-source projects that made Obyte possible.
+
+[![Kivach](https://kivach.org/api/banner?repo=byteball/obyte-gui-wallet)](https://kivach.org/repo/byteball/obyte-gui-wallet)

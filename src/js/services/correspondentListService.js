@@ -208,7 +208,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest) {
 				return toDelayedReplacement(paymentDropdown(address));
 			}
-			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\')">'+objPaymentRequest.amountStr+'</a>');
+			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\''+(objPaymentRequest.additional_assets ? ', '+escapeQuotes(JSON.stringify(objPaymentRequest.additional_assets)) : '')+')">'+objPaymentRequest.amountStr+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			param_index++;
 			params[param_index] = uri;
@@ -221,7 +221,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return str;
 			param_index++
 			params[param_index] = uri;
-			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Send data: '+JSON.stringify(assocParams, null, 2)+']</a>');
+			return toDelayedReplacement('<a ng-click="handleUri(messageEvent.message.params[' + param_index + '])">[Send data: '+escapeHtml(JSON.stringify(assocParams, null, 2))+']</a>');
 		}).replace(/\[(.+?)\]\(suggest-command:(.+?)\)/g, function(str, description, command){
 			param_index++
 			params[param_index] = command;
@@ -261,7 +261,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
 			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtml(displayed_signed_message);
+			var text = 'Message signed by '+escapeHtml(objSignedMessage.authors[0].address)+': '+escapeHtml(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -494,7 +494,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var assocParams = query_string ? URI.parseQueryString(query_string, '&amp;') : null;
 			if (!assocParams)
 				return str;
-			return toDelayedReplacement('<i>Sent data: '+ JSON.stringify(assocParams, null, 2)+'</i>');
+			return toDelayedReplacement('<i>Sent data: '+ escapeHtml(JSON.stringify(assocParams, null, 2))+'</i>');
 		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
 			if (!objVote)
@@ -563,13 +563,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		console.log("asset="+asset);
 		if (asset !== 'base' && !ValidationUtils.isValidBase64(asset, constants.HASH_LENGTH)) // invalid asset
 			return null;
+		var res = URI.parseAdditionalAssets(asset, assocParams);
+		if (res.error)
+			return null;
+		var additional_assets = res.additional_assets;
 		var device_address = assocParams['device_address'] || '';
 		if (device_address && !ValidationUtils.isValidDeviceAddress(device_address))
 			return null;
 		var base64data = assocParams['base64data'] || '';
 		if (base64data && !ValidationUtils.isValidBase64(base64data))
 			return null;
-		var from_address = from_address = assocParams['from_address'] || '';
+		var from_address = assocParams['from_address'] || '';
+		if (from_address && !ValidationUtils.isValidAddress(from_address))
+			return null;
 		var single_address = assocParams['single_address'] || 0;
 		if (single_address)
 			single_address = single_address.replace(/^single/, ''); // backward compatibility
@@ -578,9 +584,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			single_address = 1;
 		}
 		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address account': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
+		if (additional_assets) {
+			for (var a in additional_assets)
+				amountStr += ', ' + getAmountText(additional_assets[a], a);
+		}
 		return {
 			amount: amount,
 			asset: asset,
+			additional_assets: additional_assets,
 			device_address: device_address,
 			base64data: base64data,
 			from_address: from_address,

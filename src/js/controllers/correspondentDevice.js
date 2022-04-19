@@ -33,7 +33,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	
 	if (correspondent && !correspondentListService.messageEventsByCorrespondent[correspondent.device_address])
 		correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
-	$scope.messageEvents = correspondentListService.messageEventsByCorrespondent[correspondent.device_address];
+	$scope.messageEvents = correspondent ? correspondentListService.messageEventsByCorrespondent[correspondent.device_address] : [];
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
@@ -138,7 +138,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
-	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address){
+	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address, additional_assets){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
 			console.log("i do not own anything of asset "+asset);
@@ -149,7 +149,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				backButton.dontDeletePath = true;
 				go.send(function () {
 					//$rootScope.$emit('Local/SetTab', 'send', true);
-					$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data, from_address, single_address);
+					$rootScope.$emit('paymentRequest', address, amount, asset, correspondent.device_address, base64data, from_address, single_address, additional_assets);
 				});
 			}
 			var fc = profileService.focusedClient;
