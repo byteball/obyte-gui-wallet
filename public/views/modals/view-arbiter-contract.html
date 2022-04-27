@@ -119,6 +119,7 @@ form[name="prosaicContractForm"] {
 
 	<h3 class="title" translate>Amount</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
+	<div class="description" ng-show="!isPrivate && ArbStoreCut !== null" translate>A cut of {{ArbStoreCut*100}}% from this amount will be sent to ArbStore when contract is completed.</div>
 
 	<h3 class="title" translate>Text</h3>
 	<span class="enable_text_select" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" markdown>{{text}}</span>
@@ -200,7 +201,7 @@ form[name="prosaicContractForm"] {
 
 	<div class="row columns m20t" ng-show="(status === 'paid' || status === 'in_dispute') && !!unit">
 		<div class="large-12 medium-12 small-12 columns center" ng-show="!confirm_complete">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="confirmcomplete(true)">
+			<button class="button expand round" class="yes_button_class" ng-click="confirmcomplete(true)">
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Release funds':'Refund'}}</span>
 			</button>
 		</div>
@@ -210,7 +211,7 @@ form[name="prosaicContractForm"] {
 			</button>
 		</div>
 		<div class="large-6 medium-6 small-6 columns center" ng-show="confirm_complete">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="complete()">
+			<button class="button expand round" class="yes_button_class" ng-click="complete()"  ng-class="{disabled: completing}">
 				<i class="yes_icon"></i> <span class="tu" translate>{{me_is_payer?'Confirm':'Refund'}}</span>
 			</button>
 		</div>

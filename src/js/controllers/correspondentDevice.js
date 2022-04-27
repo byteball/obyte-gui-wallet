@@ -574,12 +574,27 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var fc = profileService.focusedClient;
 		
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
-
 			$scope.form = {
 				ttl: 24*7,
 				me_is_payer: true,
 				amount: null,
 				asset: 'base'
+			};
+			$scope.requestArbiterInfo = () => {
+				$scope.loading = true;
+				$scope.ArbStoreCut = null;
+				$scope.error = null;
+				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, info) => {
+					$scope.loading = false;
+					if (err) {
+						$scope.error = err;
+					} else {
+						$scope.ArbStoreCut = info.cut;
+					}
+					$timeout(function() {
+						$rootScope.$apply();
+					});
+				});
 			};
 			$scope.peer_device_name = correspondent.name;
 			$scope.index = indexScope;
