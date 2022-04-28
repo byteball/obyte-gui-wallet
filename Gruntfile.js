@@ -206,16 +206,14 @@ module.exports = function(grunt) {
 			src: [
 				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/prebuilds/!(win*)-*/**",
 				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/build/deps/**",
-				"../obytebuilds/*win-*/locales/!(en)*.pak*",
-				"../obytebuilds/*win-*/*(chromedriver|nwjc)"
+				"../obytebuilds/*win-*/locales/!(en)*.pak*"
 			]
 		},
 	    linux: {
 	    	src: [
 		    	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/prebuilds/!(linux)-*/**",
 	        	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/build/deps/**",
-		    	"../obytebuilds/*linux-*/locales/!(en)*.pak*",
-		    	"../obytebuilds/*linux-*/*(chromedriver|nwjc)"
+		    	"../obytebuilds/*linux-*/locales/!(en)*.pak*"
 		    ]
 	    }
     }
