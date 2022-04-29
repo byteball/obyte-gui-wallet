@@ -1,5 +1,5 @@
 {
-  "name": "byteball",
+  "name": "obyte-gui-wallet",
   "description": "Smart payments made simple",
   "author": "Obyte",
   "version": "3.4.1",
@@ -12,8 +12,10 @@
     "multisignature",
     "bitcoin"
   ],
-  "main": "public/index.html",
+  "main": "main.js",
+  "key": "ppgbkonninhcodjcnbpghnagfadnfjck",
   "window": {
+    "id": "${npm_package_name}",
     "title": "Obyte wallet",
     "icon": "./public/img/icons/logo-circle-256.png",
     "show": true,
@@ -42,42 +44,142 @@
   },
   "browser": {
     "request": "browser-request",
-    "secp256k1": "secp256k1/js"
+    "secp256k1": "secp256k1/elliptic"
+  },
+  "scripts": {
+    "r": "electron .",
+    "start": "grunt && electron .",
+    "dist:macx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:mac && electron-builder --x64 --pd ../obytebuilds/mac",
+    "dist:macarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:mac && electron-builder --arm64 --pd ../obytebuilds/mac-arm64",
+    "dist:linuxarm64": "grunt prepare-dist && electron-builder --dir --arm64 && grunt clean:linux && electron-builder --arm64 --pd ../obytebuilds/linux-arm64-unpacked",
+    "dist:linuxx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:linux && electron-builder --x64 --pd ../obytebuilds/linux-unpacked",
+    "dist:winx64": "grunt prepare-dist && electron-builder --dir --x64 && grunt clean:win && electron-builder --x64 --pd ../obytebuilds/win-unpacked",
+    "test": "grunt test-coveralls"
   },
   "dependencies": {
+    "@bower_components/angular": "angular/bower-angular#1.8.2",
+    "@bower_components/angular-carousel": "byteball/angular-carousel#master",
+    "@bower_components/angular-elastic": "monospaced/angular-elastic#2",
+    "@bower_components/angular-foundation": "byteball/angular-foundation#*",
+    "@bower_components/angular-gettext": "rubenv/angular-gettext#2",
+    "@bower_components/angular-moment": "urish/angular-moment#1",
+    "@bower_components/angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
+    "@bower_components/angular-touch": "angular/bower-angular-touch#1.6.6",
+    "@bower_components/angular-ui-router": "angular-ui/angular-ui-router-bower#0.2",
+    "@bower_components/angular-ui-switch": "xpepermint/angular-ui-switch#0.1",
+    "@bower_components/animate.css": "daneden/animate.css#3",
+    "@bower_components/chart.js": "chartjs/Chart.js#^2.9.4",
+    "@bower_components/chartjs-plugin-datalabels": "chartjs/chartjs-plugin-datalabels#^1.0.0",
+    "@bower_components/fastclick": "ftlabs/fastclick#1",
+    "@bower_components/foundation": "zurb/bower-foundation#5",
+    "@bower_components/foundation-icon-fonts": "zurb/foundation-icon-fonts#*",
+    "@bower_components/jquery": "jquery/jquery-dist#>=1.2",
+    "@bower_components/jquery-placeholder": "mathiasbynens/jquery-placeholder#~2.0.7",
+    "@bower_components/jquery.cookie": "carhartl/jquery-cookie#~1.4.0",
+    "@bower_components/markdown-it": "markdown-it/markdown-it#^8.4.2",
+    "@bower_components/modernizr": "Modernizr/Modernizr#2.8.3",
+    "@bower_components/moment": "moment/moment#>=2.19.3 <3.0.0",
+    "@bower_components/ng-lodash": "rockabox/ng-lodash#0.5",
+    "@bower_components/qrcode-decoder-js": "colkito/qrcode-decoder-js#*",
+    "@bower_components/qrcode-generator": "https://github.com/monospaced/bower-qrcode-generator.git#0.0.2",
+    "@bower_components/ui-router-extras": "christopherthielen/ui-router-extras#0.1",
     "async": "^2.6.1",
     "bip38": "^1.4.0",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
+    "electron-windows-badge": "^1.1.0",
     "jszip": "^3.1.3",
     "lodash": "^4.6.1",
-    "moment": "^2.28.0",
-    "ocore": "git+https://github.com/byteball/ocore.git",
+    "moment": "npm:dayjs",
+    "ocore": "https://github.com/byteball/ocore.git",
     "preconditions": "^1.0.8",
-    "secp256k1": "^3.6.1",
+    "secp256k1": "^4",
     "shelljs": "^0.3.0",
     "sjcl": "^1.0.2",
-    "unzip": "git+https://github.com/byteball/unzip.git",
-    "zip": "git+https://github.com/xJeneKx/zip.git"
+    "unzip": "https://github.com/byteball/unzip.git",
+    "zip": "https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {},
-  "scripts": {
-    "test": "./node_modules/.bin/grunt test-coveralls"
+  "build": {
+    "appId": "org.obyte.wallet",
+    "productName": "Obyte",
+    "directories": {
+      "buildResources": "webkitbuilds",
+      "output": "../obytebuilds"
+    },
+    "asar": false,
+    "npmRebuild": false,
+    "files": [
+      "./package.json",
+      "./main.js",
+      "./public/**/*",
+      "./angular-bitcore-wallet-client/**/*",
+      "node_modules/**/*",
+      "!**/@bower_components/**",
+      "!**/grunt*/**",
+      "!**/browserify*/**",
+      "!**/7zip-*/**",
+      "!**/node-gyp/**",
+      "!**/acorn*/**",
+      "!**/@babel/**",
+      "!**/babel-*/**",
+      "!**/sqlite3/!(lib|package.json)/**",
+      "!**/secp256k1/build/Release/obj*/**",
+      "!**/rocksdb/deps/**",
+      "!**/*.pdb"
+    ],
+    "protocols": [
+      {
+        "name": "Obyte URL",
+        "schemes": [
+          "obyte",
+          "byteball"
+        ]
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": "coin",
+        "name": "Coin",
+        "description": "Obyte Private Coin",
+        "mimeType": "application/x-obyte"
+      }
+    ],
+    "mac": {
+      "icon": "./public/img/icons/logo-circle.icns",
+      "identity": "Matrix Platform LLC",
+      "entitlements": "./webkitbuilds/app.entitlements",
+      "target": "dmg"
+    },
+    "win": {
+      "icon": "./public/img/icons/logo-circle-256.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Office;Finance;",
+      "executableName": "Obyte",
+      "icon": "./public/img/icons/logo-circle.icns"
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
     "@babel/preset-env": "^7.11.5",
+    "electron": "^15.3.1",
+    "electron-builder": "^23.0.2",
     "grunt": "1.0.4",
     "grunt-angular-gettext": "2.2.3",
     "grunt-babel": "^8.0.0",
     "grunt-browserify": "=5.0.0",
-    "grunt-contrib-compress": "^1.3.0",
+    "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-exec": "^1.0.0",
-    "grunt-nw-builder": "^2.0.0",
     "innosetup-compiler": "^5.5.9"
+  },
+  "resolutions": {
+    "moment": "npm:dayjs",
+    "qrcode-generator": "https://github.com/monospaced/bower-qrcode-generator.git#v0.2.0"
   }
 }

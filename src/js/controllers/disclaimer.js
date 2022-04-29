@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('disclaimerController',
-  function($scope, $timeout, storageService, applicationService, gettextCatalog, isCordova, uxLanguage, go, $rootScope) {
+  function($scope, $timeout, storageService, applicationService, gettextCatalog, isCordova, uxLanguage, go, $rootScope, electron) {
 
 	if (!isCordova && process.platform === 'win32' && navigator.userAgent.indexOf('Windows NT 5.1') >= 0)
 		$rootScope.$emit('Local/ShowAlert', "Windows XP is not supported", 'fi-alert', function() {
-			process.exit();
+			if (electron.isDefined())
+				electron.exit();
+			else if (process.exit)
+				process.exit();
 		});
 	
     $scope.agree = function() {

@@ -142,12 +142,12 @@ if $DBGJS
 then
 	echo "${OpenColor}${Green}* Generating obyte bundle (debug js)...${CloseColor}"
 	cd $BUILDDIR/..
-	grunt cordova
+	yarn grunt cordova
 	checkOK
 else
 	echo "${OpenColor}${Green}* Generating obyte bundle...${CloseColor}"
 	cd $BUILDDIR/..
-	grunt cordova-prod
+	yarn grunt cordova-prod
 	checkOK
 fi
 

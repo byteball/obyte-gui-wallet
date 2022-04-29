@@ -5,7 +5,7 @@ var eventBus = require("ocore/event_bus.js");
 var ValidationUtils = require("ocore/validation_utils.js");
 var objectHash = require("ocore/object_hash.js");
 
-angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService, notification, gettext, isCordova, nodeWebkit) {
+angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService, notification, gettext, isCordova, electron) {
 	var root = {};
 	var device = require("ocore/device.js");
 	var chatStorage = require("ocore/chat_storage.js");
@@ -470,8 +470,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						notification.success(gettext("Copied to clipboard"));
 						if (isCordova) {
 							cordova.plugins.clipboard.copy(text);
-						} else if (nodeWebkit.isDefined()) {
-							nodeWebkit.writeToClipboard(text);
+						} else if (electron.isDefined()) {
+							electron.writeToClipboard(text);
 						}
 					}
 				};
@@ -979,8 +979,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						notification.success(gettext("Copied to clipboard"));
 						if (isCordova) {
 							cordova.plugins.clipboard.copy(text);
-						} else if (nodeWebkit.isDefined()) {
-							nodeWebkit.writeToClipboard(text);
+						} else if (electron.isDefined()) {
+							electron.writeToClipboard(text);
 						}
 					}
 				};

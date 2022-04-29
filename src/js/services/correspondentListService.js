@@ -5,7 +5,7 @@ var eventBus = require('ocore/event_bus.js');
 var ValidationUtils = require('ocore/validation_utils.js');
 var objectHash = require('ocore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService, electron) {
 	var root = {};
 	var crypto = require('crypto');
 	var device = require('ocore/device.js');
@@ -17,32 +17,32 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	$rootScope.newPaymentsCount = {};
 	$rootScope.newPaymentsDetails = {};
 
-	if (typeof nw !== 'undefined') {
-		var messagesCount;
-		var paymentsCount;
-		var win = nw.Window.get();
-		win.on('focus', function(){
+	if (electron.isDefined()) {
+		const electron = require('electron');
+		var messagesCount = 0;
+		var paymentsCount = 0;
+		electron.ipcRenderer.on('focus', function() {
 			$rootScope.newMsgCounterEnabled = false;
 		});
-		win.on('blur', function(){
+		electron.ipcRenderer.on('blur', function() {
 			$rootScope.newMsgCounterEnabled = true;
 		});
 
 		$rootScope.$watch('newMessagesCount', function(counters) {
 			messagesCount = lodash.sum(lodash.values(counters));
 			if (messagesCount || paymentsCount) {
-				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
+				electron.ipcRenderer.send('update-badge', messagesCount + paymentsCount);
 			} else {
-				win.setBadgeLabel("");
+				electron.ipcRenderer.send('update-badge', 0);
 			}
 		}, true);
 
 		$rootScope.$watch('newPaymentsCount', function(counters) {
 			paymentsCount = lodash.sum(lodash.values(counters));
 			if (paymentsCount || messagesCount) {
-				win.setBadgeLabel(""+ (messagesCount + paymentsCount));
+				electron.ipcRenderer.send('update-badge', messagesCount + paymentsCount);
 			} else {
-				win.setBadgeLabel("");
+				electron.ipcRenderer.send('update-badge', 0);
 			}
 		}, true);
 	}

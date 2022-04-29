@@ -34,7 +34,6 @@
 	<preference name="android-targetSdkVersion" value="30" />
 	<preference name="deployment-target" value="11.0" />
 	<preference name="AndroidLaunchMode" value="singleTask" />
-	<preference name="scheme" value="obyte" />
 	<preference name="hostname" value="localhost" />
 	<splash density="xxhdpi" src="splashscreen@2x~universal~anyany.png"/>
     

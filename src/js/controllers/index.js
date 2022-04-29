@@ -10,7 +10,7 @@ var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -181,7 +181,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			db.close();
 			if (self.isCordova && navigator && navigator.app) // android
 				navigator.app.exitApp();
-			else if (process.exit) // nwjs
+			else if (electron.isDefined())
+				electron.exit();
+			else if (process.exit)
 				process.exit();
 			// ios doesn't exit
 		});
@@ -1531,22 +1533,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	
 	
   this.csvHistory = function() {
-
-function saveFile(name, data, filename) {
-	  var chooser = document.querySelector(name);
-	  chooser.setAttribute("nwsaveas", filename);
-	  var fileSaveChange = function(evt) {
-		var fs = require('fs');
-		fs.writeFile(evt.target.value, data, function(err) {
-		  if (err) {
-			$log.debug(err);
-		  }
-		  evt.target.removeEventListener("change", fileSaveChange, false);
-		  evt.target.value = null;
+	function saveFile(data, filename) {
+		electron.once('save-dialog-done', (evt, path) => {
+			if (!path)
+				return;
+			var fs = require('fs');
+			fs.writeFile(path, data, function(err) {
+				if (err) {
+					$log.debug(err);
+				}
+			});
 		});
-	  };
-	  chooser.addEventListener("change", fileSaveChange, false);
-	  chooser.click();
+		electron.emit('open-save-dialog', {defaultPath: filename});
 	}
 
 	function formatDate(date) {
@@ -1580,7 +1578,7 @@ function saveFile(name, data, filename) {
 	  $log.info('CSV generation not available in mobile');
 	  return;
 	}
-	var isNode = nodeWebkit.isDefined();
+	var isNode = electron.isDefined();
 	var fc = profileService.focusedClient;
 	var c = fc.credentials;
 	if (!fc.isComplete()) return;
@@ -1623,7 +1621,7 @@ function saveFile(name, data, filename) {
 		  });
 
 		  if (isNode) {
-			saveFile('#export_file', csvContent, filename);
+			saveFile(csvContent, filename);
 		  } else {
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");

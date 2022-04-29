@@ -571,8 +571,12 @@ angular.module('copayApp.directives')
 	    	elem.find('a').on('click', function(e) {
 	    		e.preventDefault();
 	    		var url = angular.element(this).attr('href');
-	    		if (typeof nw !== 'undefined')
-					nw.Shell.openExternal(url);
+	    		let electron;
+	    		try {
+	    			electron = require('electron');
+	    		} catch(e) {}
+	    		if (electron)
+					electron.shell.openExternal(url);
 				else if (isCordova)
 					cordova.InAppBrowser.open(url, '_system');
 	    	})

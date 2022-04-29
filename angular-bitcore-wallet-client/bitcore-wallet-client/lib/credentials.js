@@ -1,6 +1,5 @@
 'use strict';
 
-var crypto = require('crypto');
 var $ = require('preconditions').singleton();
 var _ = require('lodash');
 

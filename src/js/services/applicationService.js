@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('applicationService', function($rootScope, $timeout, isCordova, nodeWebkit, go) {
+  .factory('applicationService', function($rootScope, $timeout, isCordova, electron, go) {
     var root = {};
 
     root.restart = function() {
@@ -13,13 +13,10 @@ angular.module('copayApp.services')
 
       } else {
         // Go home reloading the application
-        if (nodeWebkit.isDefined()) {
+        if (electron.isDefined()) {
           go.walletHome();
           $timeout(function() {
-            var win = require('nw.gui').Window.get();
-            win.reload(3);
-            //or
-            win.reloadDev();
+            require('electron').remote.getCurrentWindow.reload();
           }, 100);
         } else {
           window.location = window.location.href.substr(0, hashIndex);

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('copayApp.services')
-  .factory('storageService', function(logHeader, fileStorageService, localStorageService, sjcl, $log, lodash, isCordova) {
+  .factory('storageService', function(logHeader, fileStorageService, rocksdbStorageService, sjcl, $log, lodash, isCordova) {
 
     var root = {};
 
@@ -10,7 +10,7 @@ angular.module('copayApp.services')
     $log.debug('Using file storage:', shouldUseFileStorage);
 
 
-    var storage = shouldUseFileStorage ? fileStorageService : localStorageService;
+    var storage = shouldUseFileStorage ? fileStorageService : rocksdbStorageService;
 
     var getUUID = function(cb) {
       // TO SIMULATE MOBILE
