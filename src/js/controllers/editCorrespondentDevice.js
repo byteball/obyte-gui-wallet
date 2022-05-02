@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
-  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, correspondentService, $modal, animationService, nodeWebkit, gettext, notification) {
+  function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, correspondentService, $modal, animationService, gettext, notification) {
 	
 	var self = this;
 	

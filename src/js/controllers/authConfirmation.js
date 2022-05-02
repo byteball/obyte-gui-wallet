@@ -18,7 +18,7 @@ To do:
 var ecdsaSig = require('ocore/signature.js');
 
 angular.module('copayApp.controllers').controller('authConfirmationController',
-  function($scope, $timeout, configService, profileService, go, authService) {
+  function($scope, $timeout, configService, lodash, profileService, go, authService) {
     
     function extractDomainFromUrl(url){
         var domain_with_path = url.replace(/^https?:\/\//i, '');
@@ -57,10 +57,9 @@ angular.module('copayApp.controllers').controller('authConfirmationController',
         var credentials = lodash.find(profileService.profile.credentials, {walletId: $scope.walletId});
         if (!credentials)
             throw Error("unknown wallet: "+$scope.walletId);
-        var coin = (credentials.network == 'livenet' ? "0" : "1");
 
         var signWithLocalPrivateKey = function(wallet_id, account, is_change, address_index, text_to_sign, handleSig){
-            var path = "m/44'/" + coin + "'/" + account + "'/"+is_change+"/"+address_index;
+            var path = "m/44'/0'/" + account + "'/"+is_change+"/"+address_index;
             var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey); // todo unlock the key if encrypted
             var privateKey = xPrivKey.derive(path).privateKey;
             //var privKeyBuf = privateKey.toBuffer();

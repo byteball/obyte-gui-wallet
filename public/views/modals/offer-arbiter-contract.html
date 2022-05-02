@@ -143,7 +143,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 
 		<div class="title" translate>Arbiter address</div>
 		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/')" translate>Where to get arbiter address?</a></div>
-		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress"/>
+		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()"/>
 
 		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>
@@ -172,11 +172,10 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		</div>
 		
 		<div class="m20t large-12 large-centered row columns">
-			<button type="button" class="button black round expand" ng-disabled="arbiterContractForm.$invalid || bWorking || !index.isEnoughSignersSelected()" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
+			<button type="button" class="button black round expand" ng-disabled="arbiterContractForm.$invalid || bWorking || !index.isEnoughSignersSelected() || loading === true || ArbStoreCut === null" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
 				Offer Contract
 			</button>
-
-			<div translate class="attestor">You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</div><br><br>
+			<div class="attestor"><span ng-show="loading === true" translate>loading rates from ArbStore...</span><span ng-show="loading === false && ArbStoreCut" translate>{{ArbStoreCut*100}}% of the contract amount will deducted from the seller and sent to the ArbStore on successful completion of the contract.</span><span translate>You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</span></div><br><br>
 		</div>
 	</form>
 </div>

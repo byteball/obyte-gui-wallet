@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification) {
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService) {
 
 		var async = require('async');
 		var crypto = require('crypto');
@@ -14,6 +14,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			var _zip = require('zip' + '');
 			zip = null;
 		}
+		var fc = profileService.focusedClient;
 
 		var self = this;
 		self.error = null;
@@ -118,17 +119,16 @@ angular.module('copayApp.controllers').controller('exportController',
 		function saveFile(file, cb) {
 			var backupFilename = 'ObyteBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
-				var inputFile = document.getElementById('nwExportInputFile');
-				inputFile.setAttribute("nwsaveas", backupFilename);
-				inputFile.click();
-				window.addEventListener('focus', checkValueFileAndChangeStatusExported, true);
-				inputFile.onchange = function() {
-					cb(this.value);
-				};
+				electron.once('save-dialog-done', (evt, path) => {
+					if (!path)
+						return;
+					cb(path);
+				});
+				electron.emit('open-save-dialog', {defaultPath: backupFilename});
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory), 'Obyte', backupFilename, file, function(err) {
-					var text = isMobile.iOS() ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to /Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup');
+				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalApplicationStorageDirectory), 'Obyte', backupFilename, file, function(err) {
+					var text = isMobile.iOS() ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to '+window.cordova.file.externalApplicationStorageDirectory+'Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup');
 					navigator.notification.alert(text, function(){
 						window.plugins.socialsharing.shareWithOptions({files: [(isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory) + 'Obyte/'+ backupFilename]}, function(){}, function(){});
 					}, 'Backup done');
@@ -170,19 +170,25 @@ angular.module('copayApp.controllers').controller('exportController',
 				});
 				storageService.getProfile(function(err, profile) {
 					storageService.getConfig(function(err, config) {
-						zip.text('profile', JSON.stringify(profile));
-						zip.text('config', config);
-						if (conf.bLight) zip.text('light', 'true');
-						addDBAndConfToZip(function(err) {
-							if (err) return showError(err);
-							zip.end(function() {
-								connection.release();
-								self.connection = null;
-								self.exporting = false;
-								zip = null;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+						storageService.getFocusedWalletId(function(err, id) {
+							storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+								zip.text('profile', JSON.stringify(profile));
+								zip.text('config', config);
+								zip.text('focusedWalletId', id);
+								zip.text('addressbook-'+fc.credentials.network, ab);
+								if (conf.bLight) zip.text('light', 'true');
+								addDBAndConfToZip(function(err) {
+									if (err) return showError(err);
+									zip.end(function() {
+										connection.release();
+										self.connection = null;
+										self.exporting = false;
+										zip = null;
+										$timeout(function() {
+											$rootScope.$apply();
+											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+										});
+									});
 								});
 							});
 						});
@@ -194,25 +200,31 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExportCordova = function(connection) {
 			storageService.getProfile(function(err, profile) {
 				storageService.getConfig(function(err, config) {
-					zip.file('profile', JSON.stringify(profile));
-					zip.file('config', config);
-					zip.file('light', 'true');
-					addDBAndConfToZip(function(err) {
-						if (err) return showError(err);
-						var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
-						zip.generateAsync(zipParams).then(function(zipFile) {
-							saveFile(encrypt(zipFile, self.password), function(err) {
-								connection.release();
+					storageService.getFocusedWalletId(function(err, id) {
+						storageService.getAddressbook(fc.credentials.network, function(err, ab) {
+							zip.file('profile', JSON.stringify(profile));
+							zip.file('config', config);
+							zip.file('focusedWalletId', id);
+							zip.file('addressbook-'+fc.credentials.network, ab);
+							zip.file('light', 'true');
+							addDBAndConfToZip(function(err) {
 								if (err) return showError(err);
-								self.exporting = false;
-								$timeout(function() {
-									$rootScope.$apply();
-									notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
-								});
-							})
-						}, function(err) {
-							showError(err);
-						})
+								var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
+								zip.generateAsync(zipParams).then(function(zipFile) {
+									saveFile(encrypt(zipFile, self.password), function(err) {
+										connection.release();
+										if (err) return showError(err);
+										self.exporting = false;
+										$timeout(function() {
+											$rootScope.$apply();
+											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
+										});
+									})
+								}, function(err) {
+									showError(err);
+								})
+							});
+						});
 					});
 				});
 			});

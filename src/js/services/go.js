@@ -2,8 +2,14 @@
 
 var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, nodeWebkit, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
 	var root = {};
+
+	let electron;
+	try {
+		electron = require('electron');
+	}
+	catch(e){}
 
 	var hideSidebars = function() {
 		if (typeof document === 'undefined')
@@ -33,8 +39,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	root.openExternalLink = function(url) {
 		url = url.replace(/&amp;/g, '&');
-		if (typeof nw !== 'undefined')
-			nw.Shell.openExternal(url);
+		if (electron)
+			electron.shell.openExternal(url);
 		else if (isCordova)
 			cordova.InAppBrowser.open(url, '_system');
 	};
@@ -132,7 +138,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 					if (objRequest.type === 'address') {
 						var emitPaymentRequest = function () {
 							root.send(function () {
-								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address, objRequest.single_address);
+								$rootScope.$emit('paymentRequest', objRequest.address, objRequest.amount, objRequest.asset, null, objRequest.base64data, objRequest.from_address, objRequest.single_address, objRequest.additional_assets);
 							});
 						}
 						if (!objRequest.from_address)
@@ -253,13 +259,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		}
 		return null;
 	}
-	
-	function registerWindowsProtocolHandler(){
-		// now we do it in inno setup
-	}
-	
-	function createLinuxDesktopFile(){
 
+	function createLinuxDesktopFile(){
 		var path = require('path'+'');
 		if (process.env.APPIMAGE){
 			console.log("run from appimage " + process.env.APPIMAGE);
@@ -269,7 +270,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			fileSystemService.recursiveMkdir(iconDir, parseInt('700', 8), function(err){
 				console.log('mkdir icons: '+err);
 				//we store the app icon outside the appimage filesystem
-				fileSystemService.readFile(path.dirname(process.execPath) + "/public/img/icons/logo-circle-256.png", function(err, data) {
+				fileSystemService.readFile(path.dirname(process.execPath) + "/resources/app/public/img/icons/logo-circle-256.png", function(err, data) {
 					console.log("error when reading icon: " + err);
 					fileSystemService.nwWriteFile(iconPath, data, function(err){
 						console.log("error when writing icon: " + err);
@@ -284,21 +285,21 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var fs = require('fs'+'');
 		var child_process = require('child_process'+'');
 		var package_json = require('../package.json'+''); // relative to html root
-		var oname = package_json.name.replace(/byteball/i, 'obyte');
+		var conf = require('ocore/conf.js');
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
 			console.log('mkdir applications: '+err);
-			fs.writeFile(applicationsDir + '/' +oname+'.desktop', "[Desktop Entry]\n\
+			fs.writeFile(applicationsDir + '/' +conf.program+'.desktop', "[Desktop Entry]\n\
 Type=Application\n\
 Version=1.0\n\
-Name="+oname[0].toUpperCase() + oname.slice(1)+"\n\
+Name="+conf.program[0].toUpperCase() + conf.program.slice(1)+"\n\
 Comment="+package_json.description+"\n\
 Exec="+execPath.replace(/ /g, '\\ ')+" %u\n\
 Icon="+ iconPath +"\n\
 Terminal=false\n\
 Categories=Office;Finance;\n\
-MimeType=x-scheme-handler/"+package_json.name+";application/x-"+package_json.name+";x-scheme-handler/"+oname+";application/x-"+oname+";\n\
+MimeType=x-scheme-handler/"+conf.program+";application/x-"+conf.program+";x-scheme-handler/"+conf.program+";application/x-"+conf.program+";\n\
 X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (err)
@@ -307,9 +308,9 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 					if (err)
 						throw Error("failed to exec update-desktop-database: "+err);
 					var writeXml = function() {
-						fs.writeFile(mimeDir + '/packages/' + oname+'.xml', "<?xml version=\"1.0\"?>\n\
+						fs.writeFile(mimeDir + '/packages/' + conf.program+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
-	   <mime-type type=\"application/x-"+oname+"\">\n\
+	   <mime-type type=\"application/x-"+conf.program+"\">\n\
 	   <comment>Obyte Private Coin</comment>\n\
 	   <glob pattern=\"*."+configService.privateTextcoinExt+"\"/>\n\
 	  </mime-type>\n\
@@ -319,7 +320,7 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 							child_process.exec('update-mime-database '+mimeDir, function(err){
 								if (err)
 									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+oname, function(err){});
+								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+conf.program, function(err){});
 							});
 	 						console.log(".desktop done");
 	 					});
@@ -337,56 +338,29 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 
 	}
 	
-	var gui;
-	try{
-		gui = require('nw.gui');
-	}
-	catch(e){
-	}
-	
-	if (gui){ // nwjs
+	if (electron) {
 		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 			removeListenerForOnopen();
-			gui.App.on('open', function(commandLine) {
-				console.log("Open url: " + commandLine);
-				if (commandLine){
-					var file = extractObyteArgFromCommandLine(commandLine);
+			electron.ipcRenderer.on('open', (event, message) => {
+				console.log("Open url: " + message);
+				if (message){
+					var file = extractObyteArgFromCommandLine(message);
 					if (!file)
-						return console.log("no byteball-tn:, obyte-tn:, or file arg found");
+						return console.log("no protocol for this app instance / network was found in url");
 					handleUri(file);
-					gui.Window.get().focus();
 				}
 			});
+			electron.ipcRenderer.send('done-loading');
 		});
-		console.log("argv: "+gui.App.argv);
-		if (gui.App.argv[0]){
-			// wait till the wallet fully loads
-			var removeListener = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
-				setTimeout(function(){
-					handleUri(gui.App.argv[0]);
-				}, 100);
-				removeListener();
-			});
-		}
-		if (process.platform === 'win32' || process.platform === 'linux'){
+		if (process.platform === 'linux'){
 			// wait till the wallet fully loads
 			var removeRegListener = $rootScope.$on('Local/BalanceUpdated', function(){
 				setTimeout(function(){
-					(process.platform === 'win32') ? registerWindowsProtocolHandler() : createLinuxDesktopFile();
-					gui.desktop = process.env.HOME + '/.local/share/applications';
+					createLinuxDesktopFile();
 				}, 200);
 				removeRegListener();
 			});
 		}
-		/*var win = gui.Window.get();
-		win.on('close', function(){
-			console.log('close event');
-			var db = require('ocore/db.js');
-			db.close(function(err){
-				console.log('close err: '+err);
-			});
-			this.close(true);
-		});*/
 	}
 	else if (window.cordova){
 		//console.log("go service: setting temp handleOpenURL");

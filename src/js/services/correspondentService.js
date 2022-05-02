@@ -5,12 +5,13 @@ var eventBus = require("ocore/event_bus.js");
 var ValidationUtils = require("ocore/validation_utils.js");
 var objectHash = require("ocore/object_hash.js");
 
-angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService, notification, gettext, isCordova, nodeWebkit) {
+angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService, notification, gettext, isCordova, electron) {
 	var root = {};
 	var device = require("ocore/device.js");
 	var chatStorage = require("ocore/chat_storage.js");
 	var wallet_general = require('ocore/wallet_general.js');
 	var arbiter_contract = require("ocore/arbiter_contract.js");
+	var arbiters = require("ocore/arbiters.js");
 	var storage = require("ocore/storage.js");
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
@@ -469,8 +470,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						notification.success(gettext("Copied to clipboard"));
 						if (isCordova) {
 							cordova.plugins.clipboard.copy(text);
-						} else if (nodeWebkit.isDefined()) {
-							nodeWebkit.writeToClipboard(text);
+						} else if (electron.isDefined()) {
+							electron.writeToClipboard(text);
 						}
 					}
 				};
@@ -559,6 +560,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
+					arbiters.getArbstoreInfo(objContract.arbiter_address, (err, info) => {
+						if (err) {
+							$scope.error = err;
+						} else {
+							$scope.ArbStoreCut = info.cut;
+						}
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
 
 					if ($scope.asset) {
 						var updateAssetMetadata = function() {
@@ -629,9 +640,12 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						$scope.status = "expired";
 
 					populateScopeWithAttestedFields($scope, objContract.my_address, objContract.peer_address, function() {
-						require("ocore/arbiters.js").getInfo(objContract.arbiter_address, function(info){
-							if (info)
+						arbiters.getInfo(objContract.arbiter_address, function(err, info){
+							if (err) {
+								$scope.error = err;
+							} else {
 								$scope.arbiter_name = info.real_name;
+							}
 							$timeout(function() {
 								$rootScope.$apply();
 							});
@@ -783,9 +797,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								setError(err);
 								return;
 							}
-							
+							$scope.completing = true;
 							arbiter_contract.complete(hash, profileService.focusedClient, getExplicitSigningDeviceAddresses(getSigningDeviceAddresses, $scope), 
 								function(err, objContract, unit) {
+									$scope.completing = false;
 									profileService.bKeepUnlocked = false;
 									$rootScope.sentUnit = unit;
 									if (err){
@@ -865,11 +880,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							if (err)
 								return setError(err);
 							
-							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(objArbiter) {
-								addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
-
+							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(err, objArbiter) {
 								stop_loading();
-								$modalInstance.dismiss();
+								if (err) {
+									return setError(err);
+								} else {
+									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+									$modalInstance.dismiss();
+								}
 							});	
 						});
 					}
@@ -961,8 +979,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						notification.success(gettext("Copied to clipboard"));
 						if (isCordova) {
 							cordova.plugins.clipboard.copy(text);
-						} else if (nodeWebkit.isDefined()) {
-							nodeWebkit.writeToClipboard(text);
+						} else if (electron.isDefined()) {
+							electron.writeToClipboard(text);
 						}
 					}
 				};

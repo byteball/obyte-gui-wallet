@@ -53,9 +53,8 @@
         </div>
 
         <div ng-hide="create.hideWalletName">
-          <label><span translate class="left m10t">Single address account</span>
-            <switch name="isSingleAddress" ng-model="isSingleAddress" class="green right m10b"></switch>
-          </label>
+          <label><span translate class="left m10t">Single address account</span></label>
+          <switch name="isSingleAddress" ng-model="isSingleAddress" class="green right m10b"></switch>
           <div class="description m10b" translate>
           	Single address accounts will not spawn new addresses for every transaction, change will always go to the one and only address the account contains.
           </div>

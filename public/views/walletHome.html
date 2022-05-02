@@ -45,6 +45,14 @@ input.datafeed_input {
   margin-left: 10px;
   text-align: right;
 }
+.chart_container {
+	flex:  1 1 auto;
+	overflow: hidden;
+}
+#donut {
+	max-width: 500px;
+	margin: 0 auto;
+}
 </style>
 
 
@@ -124,132 +132,115 @@ input.datafeed_input {
 
     -->
 
-    <div id="walletHome" class="walletHome tab-view tab-in">
-	  <div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1" ng-if="home.isTestnet">{{home.testnetName}}</div>
-      <div class="oh">
-        <div class="amount" ng-style="{'background-color':index.backgroundColor}" ng-swipe-right="index.suspendSwipe()">
-          <div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
-            <div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
-              <span class="size-12 db m10b">{{index.updateError|translate}}</span>
-              <button class="outline white tiny round" translate>Tap to retry</button>
-            </div>
-
-            <div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'>
-              <span translate>Scan status finished with error</span>
-              <br><span translate>Tap to retry</span>
-            </div>
-
-            <ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
-                <li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
-					<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
-						<strong class="size-36" ng-if="balance.totalStr && balance.totalStr.length <= 16">{{balance.totalStr}}</strong>
-						<div ng-if="balance.totalStr && balance.totalStr.length > 16">
-							<div><strong class="size-36">{{balance.totalStrWithoutUnit}}</strong></div>
-							<div class="of-asset-name">{{balance.name}}</div>
+	<div id="walletHome" class="walletHome tab-view tab-in">
+		<div style="position:absolute; width: 100%; left: 0px; top: 15px; text-align: center; color: white; z-index: 1;" ng-if="home.isTestnet">
+			{{home.testnetName}}
+		</div>
+		<div class="amount" ng-style="{'background-color':index.backgroundColor}" style="flex:0 0 auto; overflow: hidden;" ng-swipe-right="index.suspendSwipe()">
+			<div ng-if="!index.anyOnGoingProcess || 1" style="position: relative;">
+				<div ng-show="index.updateError" ng-click='index.openWallet(); index.updateTxHistory()'>
+					<span class="size-12 db m10b">{{index.updateError|translate}}</span>
+					<button class="outline white tiny round" translate>Tap to retry</button>
+				</div>
+				<div ng-show="index.walletScanStatus == 'error'" ng-click='index.retryScan()'>
+					<span translate>Scan status finished with error</span>
+					<br><span translate>Tap to retry</span>
+				</div>
+				<ul rn-carousel rn-carousel-transition="hexagon" rn-carousel-index="index.assetIndex" rn-carousel-controls>
+					<li ng-click='index.onClick()' ng-show="!index.updateError && index.walletScanStatus != 'error'" ng-repeat="balance in index.arrBalances">
+						<div ng-click='index.updateAll(); index.updateHistoryFromNetwork()'>
+							<strong class="size-36" ng-if="balance.totalStr && balance.totalStr.length <= 16">{{balance.totalStr}}</strong>
+							<div ng-if="balance.totalStr && balance.totalStr.length > 16">
+								<div><strong class="size-36">{{balance.totalStrWithoutUnit}}</strong></div>
+								<div class="of-asset-name">{{balance.name}}</div>
+							</div>
+							<div ng-if="!balance.totalStr">
+								<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
+								<div class="of-asset">of {{balance.asset}}</div>
+							</div>
+							<div class="size-14 secondrow" ng-if="balance.pending">
+								<span translate>Including pending confirmation</span>:
+								<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
+								<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
+							</div>
+							<div class="size-14 secondrow" ng-if="!balance.pending && balance.usdValue">
+								<span>≈ ${{ balance.usdValue.toLocaleString([], {maximumFractionDigits: 2}) }}</span>
+							</div>
 						</div>
-						<div ng-if="!balance.totalStr">
-							<div><strong class="size-36">{{balance.total.toLocaleString()}}</strong></div>
-							<div class="of-asset">of {{balance.asset}}</div>
+						<style ng-if="index.isCordova">
+						.rn-carousel-controls {
+							display: none !important;
+						}
+						</style>
+						<style>
+						.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
+							background-color: {{index.backgroundColor}};
+						}
+						.secondrow {
+							margin-top: -7px;
+							margin-bottom: 10px;
+						}
+						</style>
+						<div class="size-14" ng-if="balance.shared">
+							<a ng-click="index.openSubwalletModal()">
+								<span translate>Also</span>
+								<span ng-if="balance.sharedStr">{{balance.sharedStr}}</span>
+								<span ng-if="!balance.sharedStr">{{balance.shared.toLocaleString()}}</span>
+								<span translate>in smart contracts</span>
+							</a>
 						</div>
-						<div class="size-14 secondrow" ng-if="balance.pending">
-							<span translate>Including pending confirmation</span>:
-							<span ng-if="balance.pendingStr">{{balance.pendingStr}}</span>
-							<span ng-if="!balance.pendingStr">{{balance.pending.toLocaleString()}}</span>
-						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === 'base' && home.exchangeRates.GBYTE_USD && balance.total">
-							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBYTE_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
-						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && balance.asset === index.BLACKBYTES_ASSET && home.exchangeRates.GBB_USD && balance.total">
-							<span>≈ ${{ (balance.total / 1e9 * home.exchangeRates.GBB_USD).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
-						</div>
-						<div class="size-14 secondrow" ng-if="!balance.pending && home.exchangeRates[balance.asset + '_USD'] && balance.total">
-							<span>≈ ${{ (balance.total / Math.pow(10, index.arrBalances[index.assetIndex].decimals || 0) * home.exchangeRates[balance.asset + '_USD']).toLocaleString([], {maximumFractionDigits: 2}) }}</span>
-						</div>
-					</div>
-          <style ng-if="index.isCordova">
-            .rn-carousel-controls {
-              display: none !important;
-            }
-          </style>
-          <style>
-          	.rn-carousel-control.rn-carousel-control-next, .rn-carousel-control.rn-carousel-control-prev {
-            	background-color: {{index.backgroundColor}};
-            }
-			.secondrow {
-				margin-top: -7px;
-				margin-bottom: 10px;
-			}
-          </style>
-                    <div class="size-14" ng-if="balance.shared">
-						<a ng-click="index.openSubwalletModal()">
-							<span translate>Also</span>
-							<span ng-if="balance.sharedStr">{{balance.sharedStr}}</span>
-							<span ng-if="!balance.sharedStr">{{balance.shared.toLocaleString()}}</span>
-							<span translate>in smart contracts</span>
-						</a>
-                    </div>
-                </li>
-            </ul>
-            <div rn-carousel-indicators ng-if="index.arrBalances.length > 1" slides="index.arrBalances" rn-carousel-index="index.assetIndex"></div>
-          </div>
-
-          <div ng-if="index.anyOnGoingProcess && 0">
-            <div class="size-36">
-              <strong>...</strong>
-            </div>
-          </div>
-        </div> <!-- amount -->
-
-        <div class="pr columns line-b">
-          <div class="avatar-wallet left"
-            ng-style="{'background-color':index.backgroundColor}">{{ (index.alias || index.walletName) | limitTo: 1}}
-          </div>
-          <div class="right">
-            <a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0" ng-if="!index.shared_address">
-              <i class="fi-widget size-18 vm wallet-settings"></i>
-              <span class="show-for-medium-up" translate>Preferences</span>
-            </a>
-            <a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
-              <!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
-              <img src="./img/eye.svg">
-              <span class="show-for-medium-up" translate>Definition</span>
-            </a>
-          </div>
-          <div class="wallet-info">
-              <p class="m0">
-              {{(index.alias || index.walletName)}}<span ng-if="index.shared_address" style="overflow:hidden; text-overflow: ellipsis; white-space: nowrap;"><br>Smart contract: {{index.shared_address | limitTo: 6}}...</span>
-              </p>
-              <div class="size-12 text-gray" ng-if="!index.shared_address">
-                <span ng-include="'views/includes/walletInfo.html'"></span>
-              </div>
-          </div>
-        </div>
-      </div> <!-- oh -->
-
-
-
-      <div ng-if="index.txps[0]">
-        <h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
-        <h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
-        <div class="last-transactions pr" ng-repeat="tx in index.txps"
-          ng-include="index.txTemplateUrl">
-        </div>
-
-        <div class="text-gray text-center size-12 p10t"
-          ng-show="index.lockedBalanceBytes && !index.updatingStatus">
-          <span translate>Total Locked Balance</span>:
-          <b>{{index.lockedBalanceStr}} </b>
-        </div>
-      </div>
-      <div class="extra-margin-bottom"></div>
-    </div> <!-- END WalletHome -->
+					</li>
+				</ul>
+				<div rn-carousel-indicators ng-if="index.arrBalances.length > 1" slides="index.arrBalances" rn-carousel-index="index.assetIndex"></div>
+			</div>
+			<div ng-if="index.anyOnGoingProcess && 0">
+				<div class="size-36">
+					<strong>...</strong>
+				</div>
+			</div>
+		</div> <!-- amount -->
+		<div class="pr columns line-b p10b p10t" ng-if="index.shared_address" style="flex:0 0 auto;">
+			<div class="right">
+				<a ng-click="openSharedAddressDefinitionModal(index.shared_address)" class="button outline round light-gray tiny preferences-icon m0" ng-if="index.shared_address">
+					<!-- <i class="fi-eye size-24 vm wallet-settings"></i> -->
+					<img src="./img/eye.svg">
+					<span class="show-for-medium-up" translate>Definition</span>
+				</a>
+			</div>
+			<div class="wallet-info">
+				<span>Smart Contract in {{(index.alias || index.walletName)}}</span>
+			</div>
+		</div>
+		<div class="wallet_preferences" ng-if="!index.shared_address">
+			<a ng-click="$root.go('preferences')" class="button outline round light-gray tiny preferences-icon m0">
+				<i class="fi-widget size-18 vm wallet-settings"></i>
+				<span class="show-for-medium-up" translate>Preferences</span>
+			</a>
+		</div>
+		<!-- Donut chart -->
+		<div class="chart_container">
+			<canvas id="donut"></canvas>
+		</div>
+		<div ng-if="index.txps[0]">
+			<h4 ng-show="index.requiresMultipleSignatures" class="title m0" translate>Payment Proposals</h4>
+			<h4 ng-show="!index.requiresMultipleSignatures" class="title m0" translate>Unsent transactions</h4>
+			<div class="last-transactions pr" ng-repeat="tx in index.txps"
+				ng-include="index.txTemplateUrl">
+			</div>
+			<div class="text-gray text-center size-12 p10t"
+				ng-show="index.lockedBalanceBytes && !index.updatingStatus">
+				<span translate>Total Locked Balance</span>:
+				<b>{{index.lockedBalanceStr}} </b>
+			</div>
+		</div>
+	</div> <!-- END WalletHome -->
 
     <!--
 
     receive
 
     -->
-    <div id="receive" class="receive tab-view" style="padding-bottom: 0px">
+    <div id="receive" class="receive tab-view">
 
       <div ng-show="index.needsBackup" class="p60t row text-center">
         <div class="large-12 columns">
@@ -269,8 +260,8 @@ input.datafeed_input {
           </button>
         </div>
       </div>
-      <div ng-show="!index.needsBackup">
-        <div class="row">
+      <div ng-show="!index.needsBackup" class="receive_content">
+        <div>
           <!-- Address-->
           <div class="large-12 columns">
             <h2 class="text-center m10t" translate>My Obyte address</h2>
@@ -295,7 +286,7 @@ input.datafeed_input {
                   </div>
                 </div>
                 <div class="m10t" >
-                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-12">
+                  <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
@@ -304,13 +295,6 @@ input.datafeed_input {
             </div>
 
             <div ng-show="home.addr[index.walletId]">
-              <div class="m10t text-center" ng-show="index.isCordova">
-                <span class="button outline dark-gray tiny round"
-                  ng-click="home.shareAddress(home.addr[index.walletId])">
-                  <i class="fi-share"></i>
-                  <span translate>Share address</span>
-                </span>
-              </div>
               <div class="line-t size-12 text-center">
 				<span ng-if="index.shared_address" translate>This address is shared with {{index.shared_address_cosigners}}.</span>
 				<span ng-if="!index.shared_address" translate>Share this wallet address to receive payments.</span>
@@ -319,15 +303,14 @@ input.datafeed_input {
             </div>
           </div>
         </div>
-        <div class="row m20t" ng-if="!index.shared_address && !index.isSingleAddress">
-          <div class="large-12 columns">
-            <button class="button black expand round m0" ng-click="home.setAddress(true)"
-              ng-style="{'background-color':index.backgroundColor}" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate>
+        <div class="m20t" ng-if="!index.shared_address && !index.isSingleAddress">
+          <div class="center">
+            <a ng-click="home.setAddress(true)" ng-disabled="home.blockUx || index.isOffline ||home.generatingAddress" translate style="border-bottom: 1px dotted">
               Generate new address
-            </button>
+            </a>
           </div>
         </div>
-        <div class="m20t text-center m30b">
+        <div class="m20t text-center">
 	        <div class="text-center hor-link" ng-show="!home.generatingAddress && home.addr[index.walletId]" ng-style="{'max-width' : (index.shared_address ? '100%' : '45%')}">
 	          <a class="size-14" ng-click="home.openCustomizedAmountModal(index.shared_address || home.addr[index.walletId])" ng-style="{'color':index.backgroundColor, 'display': 'inline-block'}">
 	            <span translate>Request a specific amount</span>
@@ -338,7 +321,12 @@ input.datafeed_input {
 	            <span translate>Claim funds using textcoin</span>
 	          </a>
           </div>
-          <br><br><br>
+	    </div>
+	    <div class="get_coins">
+	    	<a data-href="https://getmein.ooo/?recipient={{index.shared_address || home.addr[index.walletId]}}&dst_network=Obyte" ng-click="$root.openExternalLink($event.target.dataset['href']);" class="button black round small m10b" translate ng-style="{'background-color':index.backgroundColor}" style="margin-top: -10px">Get me coins</a>
+	    	<div class="size-12 center columns" translate>
+	    		Transfer your ETH tokens to Obyte wallet or buy GBYTE.
+	    	</div>
 	    </div>
       </div>
     </div> <!-- END Receive -->
@@ -349,7 +337,7 @@ input.datafeed_input {
     send
 
     -->
-    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="send" class="send tab-view" ng-init="assetIndexSelectorValue=0;home.shownForm='payment'" on-escape="home.toggleAssetDropdown(false)">
       <div>
         <h4 class="title m0">
             <div class="size-10">
@@ -358,7 +346,7 @@ input.datafeed_input {
                 </span>
                 <h4 class="title m0" style="padding:10px 0 0; background-color: #F1F3F5;">
                   <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+                    <button ng-disabled="home.blockUx || home.lockAsset" class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
                       <div style="overflow: hidden;">
                         {{assetIndexSelectorValue >= 0
                           ? (index.arrBalances[assetIndexSelectorValue].asset === 'base'
@@ -542,6 +530,16 @@ input.datafeed_input {
 	              </div>
 	            </div>
 
+              <div class="row" ng-if="home.additional_assets">
+                <div class="large-12 columns m30b m10t">
+                  <label translate>Additional assets sent in this payment:</label>
+                  <div ng-repeat="(asset, amount) in home.additional_assets" class="enable_text_select">
+                    {{home.formatAmountWithUnit(amount, asset, {dontRound: true})}}
+                    <span ng-if="home.getDollarValue(home.getAmountInDisplayUnits(amount, asset), {asset: asset})" style="color: #A5B2BF;">{{home.getDollarValue(home.getAmountInDisplayUnits(amount, asset), {asset: asset})}}</span>
+                  </div>
+                </div>
+	            </div>
+
               <div class="row" ng-if="home.feedvaluespairs.length === 0">
                   <div class="large-12 columns m20b">
                       <a style="font-size: 12px; font-weight: bold; margin-top: -1.5rem; margin-bottom: 1rem;" ng-click="home.feedvaluespairs.push({})" translate>Also send data...</a>
@@ -640,7 +638,7 @@ input.datafeed_input {
 	                <a ng-click="home.resetForm()" class="button expand outline dark-gray round" translate>Cancel</a>
 	              </div>
 	              <div class="columns" ng-class="{'small-6 medium-6 large-6':!home.send_multiple && (home.lockAsset || home.lockAddress || home.lockAmount || home.bSendAll)}">
-	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || home.bEstimatingAAResults"
+	                <button type="submit" ng-if="mtab === 1" class="button black round expand" ng-disabled="home.current_payment_key || sendPaymentForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || home.bEstimatingAAResults || home.additional_assets && home.additional_assets[index.arrBalances[index.assetIndex].asset]"
 	                  ng-style="{'background-color':index.backgroundColor}"  translate>
 	                  Send
 	                </button>
@@ -791,11 +789,11 @@ input.datafeed_input {
     history
 
     -->
-    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropwDown(false)">
+    <div id="history" class="history tab-view" on-escape="home.toggleAssetDropdown(false)">
       <div ng-show="index.arrBalances.length > 1">
         <h4 class="title m0" style="padding:10px 10px; background-color: #F1F3F5;">
           <div ng-disabled="home.blockUx || home.lockAsset" class="custom-dropdown">
-            <button class="down-button" type="submit" ng-click="home.toggleAssetDropwDown(null, $event.target)">
+            <button class="down-button" type="submit" ng-click="home.toggleAssetDropdown(null, $event.target)">
               <div style="overflow: hidden;">
                 {{index.assetIndex >= 0 ? (index.arrBalances[index.assetIndex].totalStr ? index.arrBalances[index.assetIndex].totalStr : index.arrBalances[index.assetIndex].total.toLocaleString() + ' of ' + index.arrBalances[index.assetIndex].asset) : ''}}
               </div>
@@ -805,7 +803,7 @@ input.datafeed_input {
               <li
                 class="custom-option"
                 ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
-                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropwDown()"
+                ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropdown(); home.additional_assets = null;"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
                 <div class="custom-badge" ng-if="home.getAssetBadge(balance.asset) > 0">
@@ -932,7 +930,6 @@ input.datafeed_input {
             </button>
           </div>
           <div class="large-6 medium-6 small-6 columns" ng-show="!index.isCordova">
-            <input id="export_file" type="file" accept=".csv" style="display:none">
             <a class="button outline dark-gray round" ng-click="index.csvHistory();" style="width:100%; overflow: hidden; text-overflow: ellipsis;">
               <i class="fi-page-export-csv"></i>
               <span translate>Download CSV file</span>

@@ -1570,7 +1570,7 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
 .onGoingProcess {
   left: 0;
   width: 100%;
-  bottom: 90px;
+  bottom: 120px;
   position: absolute;
   z-index: 1020;
 }
@@ -2196,6 +2196,16 @@ form#contacts-order {
   color: #1560BD;
 }
 
+.wallet_preferences {
+	position: absolute;
+	right:  15px;
+	top: 215px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
 @supports (-webkit-touch-callout: none) {
   /* CSS specific to iOS devices */ 
 
@@ -2217,4 +2227,21 @@ not screen and (min-resolution: 192dpi) {
 	.emoji {
 	  margin-right: 5px;
 	}
+}
+
+.receive .receive_content {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+.receive .receive_content > * {
+	flex: 0 0 auto;
+}
+.receive .receive_content .get_coins {
+	flex:1 1 auto;
+	min-height: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }

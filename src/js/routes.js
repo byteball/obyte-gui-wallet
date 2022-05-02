@@ -594,8 +594,8 @@ angular
         needProfile: false
       });
   })
-  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, nodeWebkit, uxLanguage, animationService) {
-    FastClick.attach(document.body);
+  .run(function($rootScope, $state, $log, uriHandler, isCordova, profileService, $timeout, uxLanguage, animationService, $modalStack) {
+    (window.FastClick || module.exports.FastClick).attach(document.body);
 
     uxLanguage.init();
 
@@ -604,22 +604,11 @@ angular
       uriHandler.register();
     }
 
-    if (nodeWebkit.isDefined()) {
-      var gui = require('nw.gui');
-      var win = gui.Window.get();
-      var nativeMenuBar = new gui.Menu({
-        type: "menubar"
-      });
-      try {
-        nativeMenuBar.createMacBuiltin("Obyte");
-      } catch (e) {
-        $log.debug('This is not OSX');
-      }
-      win.menu = nativeMenuBar;
-    }
-
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
+    	var openModal = $modalStack.getTop();
+    	if (openModal) {
+    		$modalStack.dismissAll();
+    	}
       if (!profileService.profile && toState.needProfile) {
 		  
         // Give us time to open / create the profile
@@ -636,7 +625,7 @@ angular
         profileService.loadAndBindProfile(function(err) {
 		  delete profileService.assocVisitedFromStates[fromState.name];
           if (err) {
-            if (err.message && err.message.match('NOPROFILE')) {
+            if ((err.message && err.message.match('NOPROFILE')) || err.name === "NotFoundError") {
               $log.debug('No profile... redirecting');
               return $state.transitionTo('splash');
             } else if (err.message && err.message.match('NONAGREEDDISCLAIMER')) {

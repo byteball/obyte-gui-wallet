@@ -10,7 +10,7 @@ var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, nodeWebkit, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -28,25 +28,37 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.usePushNotifications = isCordova && !isMobile.Windows();
   
   self.totalUSDBalance = 0;
+  self.addressUSDBalance = 0;
   self.isBackupReminderShown = false;
 
-  self.calculateTotalUsdBalance = function () {
+  self.recalculateUsdBalances = function () {
 	var exchangeRates = require('ocore/network.js').exchangeRates;
 	var totalUSDBalance = 0;
+	var addressUSDBalance = 0;
 	
 	for (var i = 0; i < self.arrBalances.length; i++){
-	  var balance = self.arrBalances[i];
-	  var completeBalance = (balance.total + (balance.shared || 0))
-	  if (!balance.pending && balance.asset === 'base' && exchangeRates.GBYTE_USD && balance.total) {
-		totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
-	  } else if (!balance.pending && balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD && balance.total) {
-		totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
-	  } else if (!balance.pending && exchangeRates[balance.asset + '_USD'] && balance.total) {
-		totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
-	  }
+		var balance = self.arrBalances[i];
+		var completeBalance = balance.total + (balance.shared || 0);
+		if (balance.asset === 'base' && exchangeRates.GBYTE_USD) {
+			balance.usdValue = balance.total / 1e9 * exchangeRates.GBYTE_USD;
+			totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBYTE_USD;
+		}
+		else if (balance.asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD) {
+			balance.usdValue = balance.total / 1e9 * exchangeRates.GBB_USD;
+			totalUSDBalance += completeBalance / 1e9 * exchangeRates.GBB_USD;
+		}
+		else if (exchangeRates[balance.asset + '_USD']) {
+			balance.usdValue = balance.total / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+			totalUSDBalance += completeBalance / Math.pow(10, balance.decimals || 0) * exchangeRates[balance.asset + '_USD'];
+		}
+		else
+			balance.usdValue = 0;
+
+		addressUSDBalance += balance.usdValue;
 	}
 
 	self.totalUSDBalance = totalUSDBalance;
+	self.addressUSDBalance = addressUSDBalance;
   }
 
   $timeout(function () {
@@ -169,7 +181,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			db.close();
 			if (self.isCordova && navigator && navigator.app) // android
 				navigator.app.exitApp();
-			else if (process.exit) // nwjs
+			else if (electron.isDefined())
+				electron.exit();
+			else if (process.exit)
 				process.exit();
 			// ios doesn't exit
 		});
@@ -235,7 +249,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 
 	eventBus.on('rates_updated', function(){
-	self.calculateTotalUsdBalance();
+		self.recalculateUsdBalances();
 		$timeout(function() {
 			$rootScope.$apply();
 		});
@@ -446,8 +460,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 		mutex.lock(["signing_request-"+unit], function(unlock){
 			function createAndSendSignature(){
-				var coin = "0";
-				var path = "m/44'/" + coin + "'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
+				var path = "m/44'/0'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
 				console.log("path "+path);
 				// focused client might be different from the wallet this signature is for, but it doesn't matter as we have a single key for all wallets
 				if (profileService.focusedClient.isPrivKeyEncrypted()){
@@ -1242,7 +1255,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		fc.getBalance(self.shared_address, function(err, assocBalances, assocSharedBalances) {
 			if (err)
 				throw "impossible getBal";
-			$log.debug('updateAll Wallet Balance:', assocBalances, assocSharedBalances);
+			//$log.debug('updateAll Wallet Balance:', assocBalances, assocSharedBalances);
+			$log.debug('updateAll Wallet Balance');
 			self.setBalance(assocBalances, assocSharedBalances);
 			// Notify external addons or plugins
 			$rootScope.$emit('Local/BalanceUpdated', assocBalances);
@@ -1434,21 +1448,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
             }
           }
 		}
-		var completeBalance = balanceInfo.total + (balanceInfo.shared || 0);
-		if (asset === 'base' && exchangeRates.GBYTE_USD)
-			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBYTE_USD;
-		else if (asset === self.BLACKBYTES_ASSET && exchangeRates.GBB_USD)
-			balanceInfo.usdValue = completeBalance / 1e9 * exchangeRates.GBB_USD;
-		else if (exchangeRates[asset + '_USD'])
-			balanceInfo.usdValue = completeBalance / Math.pow(10, balanceInfo.decimals || 0) * exchangeRates[asset + '_USD'];
-		else
-			balanceInfo.usdValue = 0;
         self.assetsSet[asset] = balanceInfo;
         if (self.isAssetHidden(asset, hiddenAssets)) {
           continue;
         }
         self.arrBalances.push(balanceInfo);
 	}
+	self.recalculateUsdBalances();
 	self.arrBalances.sort((b1, b2) => {
 		if (b1.asset === 'base')
 			return -1;
@@ -1480,8 +1486,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	if (!self.shared_address)
 		self.arrMainWalletBalances = self.arrBalances;
 	if(isCordova) wallet.showCompleteClient();
-	console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
-	breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	// console.log('========= setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	// breadcrumbs.add('setBalance done, balances: '+JSON.stringify(self.arrBalances));
+	console.log('========= setBalance done');
+	breadcrumbs.add('setBalance done');
 
 	  /*
 	// SAT
@@ -1509,32 +1517,34 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 	  */
 
-	self.calculateTotalUsdBalance();
+	self.recalculateUsdBalances();
 
 	$timeout(function() {
 	  $rootScope.$apply();
 	});
+	
+	if (!self.bFirstBalanceDone) {
+		self.bFirstBalanceDone = true;
+		console.log('first balance done');
+		eventBus.emit('app_ready');
+	}
   };
 
 	
 	
   this.csvHistory = function() {
-
-function saveFile(name, data, filename) {
-	  var chooser = document.querySelector(name);
-	  chooser.setAttribute("nwsaveas", filename);
-	  var fileSaveChange = function(evt) {
-		var fs = require('fs');
-		fs.writeFile(evt.target.value, data, function(err) {
-		  if (err) {
-			$log.debug(err);
-		  }
-		  evt.target.removeEventListener("change", fileSaveChange, false);
-		  evt.target.value = null;
+	function saveFile(data, filename) {
+		electron.once('save-dialog-done', (evt, path) => {
+			if (!path)
+				return;
+			var fs = require('fs');
+			fs.writeFile(path, data, function(err) {
+				if (err) {
+					$log.debug(err);
+				}
+			});
 		});
-	  };
-	  chooser.addEventListener("change", fileSaveChange, false);
-	  chooser.click();
+		electron.emit('open-save-dialog', {defaultPath: filename});
 	}
 
 	function formatDate(date) {
@@ -1568,7 +1578,7 @@ function saveFile(name, data, filename) {
 	  $log.info('CSV generation not available in mobile');
 	  return;
 	}
-	var isNode = nodeWebkit.isDefined();
+	var isNode = electron.isDefined();
 	var fc = profileService.focusedClient;
 	var c = fc.credentials;
 	if (!fc.isComplete()) return;
@@ -1611,7 +1621,7 @@ function saveFile(name, data, filename) {
 		  });
 
 		  if (isNode) {
-			saveFile('#export_file', csvContent, filename);
+			saveFile(csvContent, filename);
 		  } else {
 			var encodedUri = encodeURI(csvContent);
 			var link = document.createElement("a");
@@ -1771,7 +1781,7 @@ function saveFile(name, data, filename) {
 			console.log('ignoring swipe');
 	};
 	
-	self.suspendSwipe = function(){
+	self.suspendSwipe = function(timeout){
 		if (self.arrBalances.length <= 1)
 			return;
 		self.bSwipeSuspended = true;
@@ -1779,7 +1789,7 @@ function saveFile(name, data, filename) {
 		$timeout(function(){
 			self.bSwipeSuspended = false;
 			console.log('resuming swipe');
-		}, 100);
+		}, timeout || 100);
 	};
 
   self.retryScan = function() {
