@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, nodeWebkit, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService) {
 
 		var self = this;
 		var home = this;
@@ -78,6 +78,273 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
 
+		// donut chart
+		var drawDonutChart = function() {
+			var absentValue = 0.373737321; // stub for all-zero assets to draw equal chart regions
+			var indexToBalance = [];
+			var chartLabels = [];
+			var chartData = [];
+			var getColor = function(context, s, l) {
+				if (context.dataIndex === 0)
+					return 'hsl(213, '+s+', '+l+')';
+				if ($scope.index.arrBalances[indexToBalance[context.dataIndex]] && $scope.index.arrBalances[indexToBalance[context.dataIndex]].asset === constants.BLACKBYTES_ASSET)
+					return 'hsla(0, 0%, 0%, '+(s==='100%'?'1':'0.8')+')';
+				return 'hsl(' + (context.dataIndex * 0.22 % 1 * 360) + ', '+s+', '+l+')';
+			};
+			var canvas = document.getElementById('donut');
+			var chart_container = canvas.closest('.chart_container');
+			var ctx = canvas.getContext('2d');
+			var chart, centerX, centerY, radius;
+
+			// pointer
+			var sum, currentIndex, currentSum;
+			var angle, pointerX, pointerY, pointerStartX, pointerStartY;
+			var movePointer = false;
+			var updateAngle = function(e) {
+				if (!radius) {
+					$timeout(function(){updateAngle(e);chartInstance.update();}, 300);
+					return;
+				}
+				if (!chartData.length) {
+					return
+				}
+				if (!e) {
+					sum = currentSum = 0;
+					var oldCurrentIndex = currentIndex;
+					currentIndex = -1;
+					for (var i = 0; i < chartData.length; i++) {
+						if (indexToBalance[i] === $scope.index.assetIndex) {
+							currentIndex = i;
+							currentSum = sum;
+						}
+						sum += chartData[i];
+					}
+					if (currentIndex !== -1 && currentIndex != oldCurrentIndex)
+						angle = (currentSum + chartData[currentIndex]/2) / sum * 2 * Math.PI - Math.PI/2;
+					if (currentIndex === -1) {
+						angle = null;
+					}
+				} else {
+					var bounds = canvas.getBoundingClientRect();
+					var x = e.pageX - bounds.left - scrollX;
+					var y = e.pageY - bounds.top - scrollY;
+					angle = Math.atan2(y - centerY, x - centerX);
+
+					var percentageAngle = angle + Math.PI / 2;
+					if (percentageAngle < 0)
+						percentageAngle += 2 * Math.PI;
+					var currentAngleValue = percentageAngle  / 2 / Math.PI * sum;
+					var stoppedAtIndex = 0;
+					while (currentAngleValue > 0) {
+						currentAngleValue -= chartData[stoppedAtIndex++]
+					}
+					stoppedAtIndex = stoppedAtIndex > 0 ? stoppedAtIndex-1 : 0;
+					if (stoppedAtIndex !== currentIndex) {
+						currentIndex = stoppedAtIndex;
+						self.changeAssetIndexSelectorValue(indexToBalance[stoppedAtIndex]);
+					}
+				}
+				pointerX = centerX + radius * Math.cos(angle);
+				pointerY = centerY + radius * Math.sin(angle);
+				pointerStartX = centerX + radius * 1.17 * Math.cos(angle);
+				pointerStartY = centerY + radius * 1.17 * Math.sin(angle);
+			};
+			var drawPointer = function() {
+				if (isNaN(pointerStartX) || angle === null)
+					return;
+				ctx.save();
+				ctx.translate(pointerStartX, pointerStartY);
+				ctx.rotate(angle+Math.PI/64);
+				ctx.scale(-0.1 * Math.min(radius / 170, 1), 0.1 * Math.min(radius / 170, 1));
+				ctx.translate(100, -200);
+				ctx.fillStyle = 'hsla(84, 0%, 27%, 1)';
+				ctx.fill(new Path2D("M438.731,209.463l-416-192c-6.624-3.008-14.528-1.216-19.136,4.48c-4.64,5.696-4.8,13.792-0.384,19.648l136.8,182.4\n\
+				l-136.8,182.4c-4.416,5.856-4.256,13.984,0.352,19.648c3.104,3.872,7.744,5.952,12.448,5.952c2.272,0,4.544-0.48,6.688-1.472\n\
+				l416-192c5.696-2.624,9.312-8.288,9.312-14.528S444.395,212.087,438.731,209.463z"));
+				ctx.restore();
+			};
+			var drawUSDBalance = function() {
+				if (radius === null || !chartData.length)
+					return;
+				ctx.save();
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				var text = '$' + $scope.index.addressUSDBalance.toLocaleString([], {minimumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0, maximumFractionDigits: $scope.index.addressUSDBalance < 1000 ? 2 : 0});
+				var fontSize = 24;
+				while (fontSize*0.6*text.length > radius) {
+					fontSize = fontSize-2;
+				}
+				ctx.font = fontSize + 'px Roboto';
+				ctx.fillStyle = '#34495E';
+				ctx.fillText(text, centerX, centerY);
+				ctx.restore();
+			};
+			["mousemove", "touchmove", "mousedown", "touchstart"].forEach(function(e) {
+				chart_container.addEventListener(e, function(e) {
+					var bounds = chart_container.getBoundingClientRect();
+					if (e.pageX - bounds.left < 10 ||
+						bounds.left + bounds.width - e.pageX < 10 ||
+						e.pageY - bounds.top < 10 ||
+						bounds.top + bounds.height - e.pageY < 10) {
+						movePointer = false;
+						return;
+					}
+
+					var start = false;
+					if (e.type === "mousedown" || e.type === "touchstart") {
+						if (e.button && e.button !== 0)
+							return;
+						movePointer = true;
+						start = true;
+					}
+					if (!movePointer)
+						return;
+
+					if (e.type === "touchmove" || e.type === "touchstart")
+						e = e.touches[0] || e.changedTouches[0];
+
+					if (start && e.pageX / centerX > 0.7)
+						$scope.index.suspendSwipe(500);
+
+					updateAngle(e);
+					chartInstance.update();
+				});
+			});
+			["mouseup", "touchend"].forEach(function(e) {
+				chart_container.addEventListener(e, function(e) {
+					movePointer = false;
+				});
+			});
+
+			Chart.defaults.donut = Chart.defaults.doughnut;
+			var custom = Chart.controllers.doughnut.extend({
+				 draw: function(ease) {
+					Chart.controllers.doughnut.prototype.draw.call(this, ease);
+
+					chart = this.chart;
+
+					centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+					centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+					radius = this.outerRadius;
+
+					drawPointer();
+					drawUSDBalance();
+				}
+			});
+			Chart.controllers.donut = custom;
+			var getSectorColor = function(context) {
+				return getColor(context, context.dataIndex === currentIndex ? '100%' : '60%', context.dataIndex === currentIndex ? '30%' : '50%');
+			};
+			var chartInstance = new Chart(ctx, {
+				type: 'donut',
+				data: {
+					labels: chartLabels,
+					datasets: [{
+						backgroundColor: getSectorColor,
+						hoverBackgroundColor: getSectorColor,
+						borderWidth: 0,
+						hoverBorderWidth: 0,
+						data: chartData
+					}],
+				},
+				options: {
+					layout: {padding: {left: 30, right: 30, top: 20, bottom: 20}},
+					legend: {display: false},
+					tooltips: {
+						displayColors: false,
+						bodyAlign: 'center',
+						callbacks: {
+							label: function(item, data) {
+								var label = [data.labels[item.index]];
+								var val = data.datasets[item.datasetIndex].data[item.index];
+								if (val !== absentValue) {
+									label.push("$" + val.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
+									label.push((val / sum * 100).toLocaleString([], {maximumFractionDigits: 1}) + "%");
+								}
+								return label;
+							}
+						}
+					},
+					maintainAspectRatio: false,
+					animation: {
+						duration: 0
+					},
+					hover: {
+						animationDuration: 0
+					},
+					responsiveAnimationDuration: 0,
+					//events: ['mousemove'],
+					plugins: {
+						datalabels: {
+							color: '#FFFFFF',
+							textShadowColor: '#000000',
+							textShadowBlur: 0,
+							backgroundColor: 'hsla(0, 100%, 0%, 0.0)',
+							borderRadius: 0,
+							font: {
+								family: 'Roboto'
+							},
+							textAlign: 'center',
+							display: 'auto',
+							clip: true,
+							formatter: function(value, context) {
+								var text = chartLabels[context.dataIndex];
+								if (!text)
+									return;
+								var charsCutoutNum = Math.round(radius / 15);
+								if (charsCutoutNum < text.length)
+									text = text.substr(0, charsCutoutNum) + "...";
+								if (value != absentValue)
+									text += "\n$"+(value < 0.1 ? value : value.toLocaleString([], {minimumFractionDigits:2, maximumFractionDigits: 2}));
+								return text;
+							}
+						}
+					}
+				},
+				plugins: [ChartDataLabels]
+			});
+			var updateChart = function() {
+				if (typeof $scope.index.arrBalances === "undefined" || $scope.index.arrBalances.length === 0)
+					return;
+				chartData.length = 0;
+				chartLabels.length = 0;
+				indexToBalance = [];
+				var sum = $scope.index.arrBalances.reduce((acc, val) => acc + val.total, 0);
+				for (var i = 0; i < $scope.index.arrBalances.length; i++) {
+					var balance = $scope.index.arrBalances[i];
+					var value = absentValue;
+					if (sum > 0) {
+						if (balance.usdValue && balance.total > 0) {
+							value = balance.usdValue < 0.1 ? balance.usdValue.toFixed(1-Math.floor(Math.log(balance.usdValue)/Math.log(10))) : balance.usdValue.toFixed(2);
+							value = parseFloat(value);
+						} else {
+							continue;
+						}
+					}
+					chartData.push(value);
+					chartLabels.push(balance.name || balance.asset);
+					indexToBalance.push(i);
+				}
+				chartInstance.options.tooltips.enabled = chartData.length > 1;
+				updateAngle();
+				chartInstance.update();
+			};
+			$scope.$watch("index.assetIndex", function() {
+				if (movePointer) {
+					return;
+				}
+				updateAngle();
+				chartInstance.update();
+			});
+			$scope.$watch("index.shared_address", function() {
+				$timeout(function() {chartInstance.resize()});
+			});
+			$scope.$watchCollection("index.arrBalances", updateChart);
+			$scope.$watchCollection("home.exchangeRates", updateChart);
+			$rootScope.$on('Local/BalanceUpdated', function(){currentIndex = -1; updateChart();});
+		};
+		drawDonutChart();
+
 		self.oldAndroidInputFileClick = function() {
 			if(isMobile.Android() && self.androidVersion < 5) {
 				window.plugins.mfilechooser.open([], function(uri) {
@@ -110,12 +377,12 @@ angular.module('copayApp.controllers')
 			}
 		};
 
-		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address) {
+		var disablePaymentRequestListener = $rootScope.$on('paymentRequest', function(event, address, amount, asset, recipient_device_address, base64data, from_address, single_address, additional_assets) {
 			console.log('paymentRequest event ' + address + ', ' + amount);
 			self.resetForm();
 			$timeout(function() {
 				$rootScope.$emit('Local/SetTab', 'send');
-				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address, single_address);
+				self.setForm(address, amount, null, asset, recipient_device_address, base64data, from_address, single_address, additional_assets);
 			}, 100);
 
 			/*var form = $scope.sendPaymentForm;
@@ -159,7 +426,7 @@ angular.module('copayApp.controllers')
 
 		var disableAssetDropDownListener = $rootScope.$on('closeAssetDropDown', function () {
 			if (self.assetDropDownVisible) {
-				self.toggleAssetDropwDown();
+				self.toggleAssetDropdown();
 				$timeout(function() {
 					$scope.$digest();
 				});
@@ -456,7 +723,7 @@ angular.module('copayApp.controllers')
 				e.stopImmediatePropagation();
 			}
 		};
-		this.toggleAssetDropwDown = function(state, target) {
+		this.toggleAssetDropdown = function(state, target) {
 			self.assetDropDownVisible = (typeof state === "undefined" || state === null) ? !self.assetDropDownVisible : state;
 			document.removeEventListener('click', clickHandler, true);
 			if (self.assetDropDownVisible) {
@@ -475,7 +742,8 @@ angular.module('copayApp.controllers')
 
 		this.changeAssetIndexSelectorValue = function(assetIndexSelectorValue) {
 			$scope.assetIndexSelectorValue = assetIndexSelectorValue;
-			self.toggleAssetDropwDown();
+			self.additional_assets = null;
+			self.toggleAssetDropdown();
 			self.forceAmountRevalidation();
 			self.switchForms();
 			self.onChanged();
@@ -530,8 +798,8 @@ angular.module('copayApp.controllers')
 				window.cordova.plugins.clipboard.copy(addr);
 				window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
 			}
-			else if (nodeWebkit.isDefined()) {
-				nodeWebkit.writeToClipboard(addr);
+			else if (electron.isDefined()) {
+				electron.writeToClipboard(addr);
 			}
 		};
 
@@ -987,6 +1255,7 @@ angular.module('copayApp.controllers')
 		}
 
 		this.onAddressChanged = function () {
+			console.log('onAddressChanged');
 			resetAAFields();
 			var form = $scope.sendPaymentForm;
 			if (form.address.$invalid) {
@@ -1109,19 +1378,20 @@ angular.module('copayApp.controllers')
 					}
 				}
 			} else {
-			  	for(var unit in $rootScope.newPaymentsDetails) {
+				for(var unit in $rootScope.newPaymentsDetails) {
 					var details = $rootScope.newPaymentsDetails[unit];
 					if (details.walletId === indexScope.walletId
 						&& details.walletAddress === details.receivedAddress
 						&& details.asset === asset) {
 						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
-			  	}
+				}
 			}
 			return totalCounts;
 		};
 
 		this.onChanged = function () {
+			console.log('onChanged');
 			if ($scope.assetIndexSelectorValue >= 0)
 				$timeout(function () {
 					lodash.debounce(updateAAResults, 500)();
@@ -1129,13 +1399,13 @@ angular.module('copayApp.controllers')
 		};
 
 	this.showDataFieldSuggestions = function (currentElem, index, arrayOfElements) {
-      arrayOfElements.forEach((e, idx)=>{
-        if(index !== idx) {
-          e.suggestionsShown = false;
-        }
-      });
-      arrayOfElements[index].suggestionsShown = true;
-    };
+	  arrayOfElements.forEach((e, idx)=>{
+		if(index !== idx) {
+		  e.suggestionsShown = false;
+		}
+	  });
+	  arrayOfElements[index].suggestionsShown = true;
+	};
 
 		this.onMultiAddressesChanged = function () {
 			var form = $scope.sendPaymentForm;
@@ -1190,6 +1460,8 @@ angular.module('copayApp.controllers')
 
 		function updateAAResults () {
 			var form = $scope.sendPaymentForm;
+			if (!form)
+				return console.log('sendPaymentForm is gone');
 			var amount = form.amount.$modelValue || 0;
 			if (!self.aa_destinations || self.aa_destinations.length === 0)
 				return console.log('no AA destinations');
@@ -1269,10 +1541,12 @@ angular.module('copayApp.controllers')
 			if (!$scope.sendPaymentForm.$valid)
 				return console.log('form not valid yet');
 			trigger.outputs[asset] = amount;
+			if (self.additional_assets)
+				Object.assign(trigger.outputs, self.additional_assets);
 			for (var a in bounce_fees) {
 				if (a !== asset) {
 					addBounceFees(a, bounce_fees[a], aa_address);
-					trigger.outputs[a] = bounce_fees[a];
+					trigger.outputs[a] = Math.max(bounce_fees[a], trigger.outputs[a] || 0);
 				}
 			}
 			console.log("trigger", trigger);
@@ -1402,6 +1676,11 @@ angular.module('copayApp.controllers')
 				return console.log('form is gone');
 			if (self.bSendAll)
 				form.amount.$setValidity('validAmount', true);
+			
+			if (self.additional_assets && Object.keys(self.additional_assets).length === 0)
+				self.additional_assets = null;
+			if (self.additional_assets && self.bSendAll)
+				return self.setSendError("can't send additional assets with send-all");
 
 			var resetAddressValidation = function(){};
 			if ($scope.mtab == 2 && !isMultipleSend && !form.address.$modelValue) { // clicked 'share via message' button
@@ -1475,6 +1754,8 @@ angular.module('copayApp.controllers')
 			if (isMultipleSend) {
 				if (assetInfo.is_private)
 					return self.setSendError("private assets can not be sent to multiple addresses");
+				if (assetInfo.additional_assets)
+					return self.setSendError("additional assets can not be sent to multiple addresses");
 				var outputs = getOutputsForMultiSend();
 				var current_payment_key = form.addresses.$modelValue.replace(/[^a-zA-Z0-9]/g, '');
 			} else {
@@ -1727,9 +2008,20 @@ angular.module('copayApp.controllers')
 						if (self.from_address && !indexScope.shared_address)
 							opts.paying_addresses = [self.from_address];
 						if (!isMultipleSend) {
-							opts.to_address = to_address;
-							opts.amount = amount;
-						} else {
+							if (self.additional_assets) {
+								var outputs_by_asset = {};
+								outputs_by_asset[asset || 'base'] = [{ address: to_address, amount: amount }];
+								for (var additional_asset in self.additional_assets)
+									outputs_by_asset[additional_asset] = [{ address: to_address, amount: self.additional_assets[additional_asset] }];
+								delete opts.asset;
+								opts.outputs_by_asset = outputs_by_asset;
+							}
+							else {
+								opts.to_address = to_address;
+								opts.amount = amount;
+							}
+						}
+						else {
 							if (asset !== "base")
 								opts.asset_outputs = outputs;
 							else
@@ -1744,12 +2036,20 @@ angular.module('copayApp.controllers')
 								return self.setSendError("cannot add bounce fees in asset " + other_asset_added_bounce_fees[0].asset);
 							}
 							if (asset !== "base") { // add base_outputs to pay for bounce fees
-								if (!isMultipleSend) {
+								if (!isMultipleSend && !self.additional_assets) {
 									opts.asset_outputs = [{ address: to_address, amount: amount }];
 									delete opts.to_address;
 									delete opts.amount;
 								}
-								opts.base_outputs = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === 'base'; }).map(function (feeInfo) { return { address: feeInfo.address, amount: feeInfo.amount }; });
+								var base_outputs = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset === 'base'; }).map(function (feeInfo) { return { address: feeInfo.address, amount: feeInfo.amount }; });
+								if (self.additional_assets) {
+									var existing_amount = opts.outputs_by_asset.base ? opts.outputs_by_asset.base[0].amount : 0;
+									var bounce_fee = base_outputs[0].amount;
+									if (existing_amount < bounce_fee)
+										opts.outputs_by_asset.base = base_outputs;
+								}
+								else
+									opts.base_outputs = base_outputs;
 							}
 						}
 
@@ -1851,14 +2151,16 @@ angular.module('copayApp.controllers')
 
 		$scope.$watch('index.assetIndex', function(newVal, oldVal) {
 			$scope.assetIndexSelectorValue = newVal;
+		//	self.additional_assets = null; // would execute after we set additional_assets
 			self.switchForms();
 		});
 		this.switchForms = function() {
 			 this.bSendAll = false;
 			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	this.lockAmount = this.send_multiple = false;
+				this.lockAmount = this.send_multiple = false;
 			if ($scope.assetIndexSelectorValue < 0) {
 				this.shownForm = 'data';
+				this.additional_assets = null;
 				if (!this.feedvaluespairs || this.feedvaluespairs.length === 0)
 					this.feedvaluespairs = [{}];
 				if ($scope.assetIndexSelectorValue === -6)
@@ -2041,9 +2343,9 @@ angular.module('copayApp.controllers')
 			if ($scope.index.arrBalances.length === 0 || $scope.index.assetIndex < 0) // no balances yet, assume can send
 				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex]) // no balances yet, assume can send
-			 	return true;
+				return true;
 			if (!$scope.index.arrBalances[$scope.index.assetIndex].is_private)
-			 	return true;
+				return true;
 			var form = $scope.sendPaymentForm;
 			if (!form || !form.address) // disappeared
 				return true;
@@ -2172,7 +2474,7 @@ angular.module('copayApp.controllers')
 			form.address.$render();
 		}
 
-		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address) {
+		this.setForm = function(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address, additional_assets) {
 			this.resetError();
 			$timeout((function() {
 				delete this.binding;
@@ -2214,7 +2516,7 @@ angular.module('copayApp.controllers')
 						console.log("no balances yet, will wait");
 						self.resetForm();
 						return $timeout(function () {
-							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address);
+							self.setForm(to, amount, comment, asset, recipient_device_address, base64data, from_address, single_address, additional_assets);
 						}, 1000);
 					}
 					var assetIndex = lodash.findIndex($scope.index.arrBalances, {
@@ -2226,6 +2528,7 @@ angular.module('copayApp.controllers')
 					}
 					$scope.index.assetIndex = assetIndex;
 					$scope.assetIndexSelectorValue = assetIndex;
+					this.additional_assets = additional_assets;
 					this.lockAsset = true;
 				}
 				else
@@ -2335,6 +2638,7 @@ angular.module('copayApp.controllers')
 			this.hideAdvSend = true;
 			this.send_multiple = false;
 			this.from_address = null;
+			this.additional_assets = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -2534,11 +2838,23 @@ angular.module('copayApp.controllers')
 				storage.readUnit(btx.unit, function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
+					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && m.payload && (m.payload.asset || 'base') !== btx.asset);
 					var dataMessage = objUnit.messages.find(m => m.app === 'data');
 					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
 					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
 					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
 					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					if (additionalPaymentMessages.length > 0 && btx.action === 'sent') {
+						var additional_assets = {};
+						additionalPaymentMessages.forEach(m => {
+							var asset = m.payload.asset || 'base';
+							var amount = m.payload.outputs.filter(o => o.address === btx.addressTo).reduce((acc, o) => acc + o.amount, 0);
+							if (amount)
+								additional_assets[asset] = amount;
+						});
+						if (Object.keys(additional_assets).length > 0)
+							btx.additional_assets = additional_assets;
+					}
 					if (dataMessage)
 						btx.dataJson = JSON.stringify(dataMessage.payload, null, 2);
 					if (dataFeedMessage)
@@ -2575,6 +2891,8 @@ angular.module('copayApp.controllers')
 				if (btx.from_aa)
 					setAADescription(btx.arrPayerAddresses[0], 'from_aa_description');
 
+				$scope.formatAmountWithUnit = profileService.formatAmountWithUnit;
+				
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
 						var indivisible_asset = require('ocore/indivisible_asset');
@@ -2830,6 +3148,9 @@ angular.module('copayApp.controllers')
 				return '' + amount / Math.pow(10, assetInfo.decimals);
 			return amount;
 		};
+
+		this.formatAmountWithUnit = profileService.formatAmountWithUnit;
+		this.getAmountInDisplayUnits = profileService.getAmountInDisplayUnits;
   
 		this.resend = function(btx) {
 			$rootScope.$emit('Local/SetTab', 'send');
@@ -2842,6 +3163,7 @@ angular.module('copayApp.controllers')
 			this.hideAdvSend = true;
 			this.send_multiple = false;
 			this.from_address = null;
+			this.additional_assets = null;
 
 			this._amount = this._address = null;
 			this.bSendAll = false;
@@ -2940,10 +3262,13 @@ angular.module('copayApp.controllers')
 						if (form.amount) {
 							form.amount.$setViewValue("" + $scope.calculateAmount(btx.amount, btx.asset));
 							form.amount.$render();
+							if (btx.additional_assets)
+								self.additional_assets = btx.additional_assets;
 						}
 					}
 						
 					self.switchForms();
+					self.onAddressChanged();
 				});
 			};
 			function ifNotFound() {

@@ -1,20 +1,24 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile) {
+	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron, profileService) {
 		
 		var JSZip = require("jszip");
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('ocore/conf');
 		var userAgent = navigator.userAgent;
+		var files = [conf.database.filename, conf.database.filename+"-shm", conf.database.filename+"-wal",
+			'conf.json'
+		];
 		
 		if(isCordova) {
 			var zip = new JSZip();
 		}else{
 			var unzip = require('unzip' + '');
 		}
-		
+		var fc = profileService.focusedClient;
+
 		var self = this;
 		self.importing = false;
 		self.password = '';
@@ -97,6 +101,18 @@ angular.module('copayApp.controllers').controller('importController',
 								storageService.storeProfile = function(){};
 							});
 						}
+						else if (key == 'focusedWalletId') {
+							zip.file(key).async('string').then(function(data) {
+								storageService.storeFocusedWalletId(data, callback);
+								storageService.storeFocusedWalletId = function(){};
+							});
+						}
+						else if (/addressbook-/.test(key)) {
+							zip.file(key).async('string').then(function(data) {
+								storageService.setAddressbook(fc.credentials.network, data, callback);
+								storageService.setAddressbook = function(){};
+							});
+						}
 						else if (key == 'config') {
 							zip.file(key).async('string').then(function(data) {
 								storageService.storeConfig(data, callback);
@@ -129,8 +145,14 @@ angular.module('copayApp.controllers').controller('importController',
 				},
 				function(next) {
 					db.close(function() {
-						// remove old SQLite database
-						fileSystemService.deleteDirFiles(dbDirPath, next);
+						// remove our own old files
+						async.each(files, (f, cb) => {
+							fileSystemService.nwUnlink(dbDirPath + f, cb)
+						}, err => {
+							if (err && err.code != 'ENOENT')
+								return next(err);
+							next();
+						});
 					});
 				},
 				function(next) {
@@ -142,11 +164,27 @@ angular.module('copayApp.controllers').controller('importController',
 					});
 				},
 				function(next) {
+					// restore wallet focused profile
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'focusedWalletId', function(err, data) {
+						if(err) return next(err);
+						storageService.storeFocusedWalletId(data, next);
+						storageService.storeFocusedWalletId = function(){};
+					});
+				},
+				function(next) {
 					// restore wallet config
 					fileSystemService.readFile(dbDirPath + 'temp/' + 'config', function(err, data) {
 						if(err) return next(err);
 						storageService.storeConfig(data.toString(), next);
 						storageService.storeConfig = function(){};
+					});
+				},
+				function(next) {
+					// restore wallet config
+					fileSystemService.readFile(dbDirPath + 'temp/' + 'addressbook-'+fc.credentials.network, function(err, data) {
+						if(err) return next(err);
+						storageService.setAddressbook(fc.credentials.network, data.toString(), next);
+						storageService.setAddressbook = function(){};
 					});
 				},
 				function(next) {
@@ -258,6 +296,8 @@ angular.module('copayApp.controllers').controller('importController',
 							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
 								if (navigator && navigator.app)
 									navigator.app.exitApp();
+								else if (electron.isDefined())
+									electron.relaunch();
 								else if (process.exit)
 									process.exit();
 							});

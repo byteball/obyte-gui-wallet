@@ -224,7 +224,6 @@ _:-ms-fullscreen, :root .main {
   width: 100%;
   text-align: center;
   padding: 2.5rem 1rem 0.5rem 1rem;
-  margin-bottom: 11px;
   color: #fff;
   height: 200px;
 }
@@ -255,6 +254,8 @@ _:-ms-fullscreen, :root .main {
 
 .walletHome {
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
 .walletHome .avatar-wallet {
@@ -274,16 +275,12 @@ _:-ms-fullscreen, :root .main {
 }
 
 .walletHome .wallet-info {
-  margin-left: 85px;
-  line-height: 110%;
-  height: 60px;
-  overflow: hidden;
-}
-
-.walletHome .wallet-info .m0 {
-  white-space: nowrap;
+  line-height: 40px;
+  height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 5px;
 }
 
 .copayers {
@@ -889,9 +886,13 @@ textarea:focus
   width:100%;
   position: absolute;
   top: 45px;
-  bottom: 0px;
+  bottom: 58px;
   overflow: auto;
-  padding-bottom: 30px;
+}
+@supports (bottom: env(safe-area-inset-bottom)) {
+	.tab-view {
+  		bottom: calc(env(safe-area-inset-bottom, 0) + 58px);
+  	}
 }
 
 .tab-view#chat {
