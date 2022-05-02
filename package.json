@@ -101,8 +101,8 @@
   },
   "optionalDependencies": {},
   "build": {
-    "appId": "org.obyte.wallet",
-    "productName": "Obyte",
+    "appId": "org.obyte.wallet.testnet",
+    "productName": "Obyte TN",
     "directories": {
       "buildResources": "webkitbuilds",
       "output": "../obytebuilds"
@@ -132,17 +132,17 @@
       {
         "name": "Obyte URL",
         "schemes": [
-          "obyte",
-          "byteball"
+          "obyte-tn",
+          "byteball-tn"
         ]
       }
     ],
     "fileAssociations": [
       {
-        "ext": "coin",
-        "name": "Coin",
-        "description": "Obyte Private Coin",
-        "mimeType": "application/x-obyte"
+        "ext": "coin-tn",
+        "name": "Testnet Coin",
+        "description": "Obyte Private Testnet Coin",
+        "mimeType": "application/x-obyte-tn"
       }
     ],
     "mac": {
@@ -157,7 +157,7 @@
     "linux": {
       "target": "AppImage",
       "category": "Office;Finance;",
-      "executableName": "Obyte",
+      "executableName": "Obyte TN",
       "icon": "./public/img/icons/logo-circle.icns"
     }
   },
