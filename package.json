@@ -13,20 +13,6 @@
     "bitcoin"
   ],
   "main": "main.js",
-  "key": "ppgbkonninhcodjcnbpghnagfadnfjck",
-  "window": {
-    "id": "${npm_package_name}",
-    "title": "Obyte wallet",
-    "icon": "./public/img/icons/logo-circle-256.png",
-    "show": true,
-    "visible": true,
-    "resizable": false,
-    "frame": true,
-    "width": 400,
-    "height": 700,
-    "position": "center",
-    "fullscreen": false
-  },
   "webkit": {
     "page-cache": false,
     "java": false,
