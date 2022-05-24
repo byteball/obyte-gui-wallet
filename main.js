@@ -20,6 +20,7 @@ if (process.platform === 'win32') { // fix for Electron not working when UTF-8 s
 // rename byteball to obyte 
 const isTestnet = package.name.includes('-tn');
 const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball' + (isTestnet ? '-tn' : '');
+const extensionId = isTestnet ? 'fhbdbceecnjfepdnmkgncdnkleeblcpf' : 'ppgbkonninhcodjcnbpghnagfadnfjck';
 const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
@@ -47,7 +48,7 @@ if (!fs.existsSync(renamedFlagFile)) {
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
 const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
-const lsSqliteFile = `${oldLSDir}/chrome-extension_ppgbkonninhcodjcnbpghnagfadnfjck_0.localstorage`;
+const lsSqliteFile = `${oldLSDir}/chrome-extension_${extensionId}_0.localstorage`;
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
 const walletDataDir = `walletdata`;
 let walletDataPath = `${app.getPath('userData')}/${walletDataDir}`;
@@ -74,7 +75,7 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 				return resolve();
 			console.log(`Upgrading Local Storage from LevelDB database...`);
 			leveldb.createReadStream().on('data', function (data) {
-				const key = data.key.replace('_chrome-extension://ppgbkonninhcodjcnbpghnagfadnfjck\0\1', '');
+				const key = data.key.replace('_chrome-extension://' + extensionId + '\0\1', '');
 				handleRow(key, data.value.substring(1))
 			}).on('end', function () {
 				resolve();
@@ -184,7 +185,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
 	app.quit();
-	return;
+//	return;
 }
 
 app.on('second-instance', (event, commandLine, workingDirectory) => {
