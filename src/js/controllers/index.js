@@ -211,8 +211,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	function readLastDateString(cb){
 		var conf = require('ocore/conf.js');
-		if (conf.storage !== 'sqlite')
-			return cb();
+	//	if (conf.storage !== 'sqlite')
+	//		return cb();
 		readLastTimestamp(function(ts){
 	  if (!ts)
 		return cb();

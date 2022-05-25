@@ -25,11 +25,11 @@ angular.module('copayApp.controllers')
 				$scope.numCosigners = fc.credentials.n;
 				var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
 				var db = require('ocore/db.js');
-				walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function(addresses) {
-					$scope.numAddresses = addresses.length;
+				walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function (addressInfos) {
+					$scope.numAddresses = addressInfos.length;
 					db.query(
 						"SELECT 1 FROM private_profiles WHERE address=? UNION SELECT 1 FROM attestations WHERE address=?", 
-						[addresses[0], addresses[0]], 
+						[addressInfos[0].address, addressInfos[0].address], 
 						function(rows){
 							$scope.bHasAttestations = (rows.length > 0);
 							$scope.bEditable = ($scope.numAddresses === 1 && $scope.numCosigners === 1 && !$scope.bHasAttestations);

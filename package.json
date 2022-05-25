@@ -135,6 +135,26 @@
       "icon": "./public/img/icons/logo-circle.icns",
       "identity": "Matrix Platform LLC",
       "entitlements": "./webkitbuilds/app.entitlements",
+      "files": [
+        "./package.json",
+        "./main.js",
+        "./public/**/*",
+        "./angular-bitcore-wallet-client/**/*",
+        "node_modules/**/*",
+        "!**/@bower_components/**",
+        "!**/grunt*/**",
+        "!**/browserify*/**",
+        "!**/7zip-*/**",
+        "!**/node-gyp/**",
+        "!**/acorn*/**",
+        "!**/@babel/**",
+        "!**/babel-*/**",
+        "!**/sqlite3/!(lib|package.json)/**",
+        "!**/secp256k1/build/Release/obj*/**",
+        "!**/rocksdb/deps/**",
+        "!**/*.pdb",
+        "!node_modules/rocksdb/prebuilds/!(darwin)-*/**"
+      ],
       "target": "dmg"
     },
     "win": {
