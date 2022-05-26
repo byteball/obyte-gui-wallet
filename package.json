@@ -88,7 +88,7 @@
   "optionalDependencies": {},
   "build": {
     "appId": "org.obyte.wallet.testnet",
-    "productName": "Obyte TN",
+    "productName": "Obyte-TN",
     "directories": {
       "buildResources": "webkitbuilds",
       "output": "../obytebuilds"
@@ -163,7 +163,7 @@
     "linux": {
       "target": "AppImage",
       "category": "Office;Finance;",
-      "executableName": "Obyte TN",
+      "executableName": "Obyte-TN",
       "icon": "./public/img/icons/logo-circle.icns"
     }
   },
