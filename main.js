@@ -58,7 +58,7 @@ const lsLevelDBDir = `${oldLSDir}/leveldb`;
 const walletDataDir = `walletdata`;
 let walletDataPath = `${app.getPath('userData')}/${walletDataDir}`;
 let lsUpgrader1, lsUpgrader2;
-if (!fs.existsSync(lsUpgradedFlagFile)) {
+if (!fs.existsSync(lsUpgradedFlagFile) && fs.existsSync(oldLSDir)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
 		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
 			if (err) {
@@ -104,7 +104,7 @@ function handleRow(key, value) {
 			break;
 	}
 }
-async function finishLSUpgrade() {
+async function upgradeLS() {
 	await Promise.all([lsUpgrader1, lsUpgrader2]);
 	if (Object.keys(upgradeKeys).length == 0)
 		return;
@@ -127,7 +127,7 @@ async function finishLSUpgrade() {
 
 let mainWindow;
 async function createWindow () {
-	await finishLSUpgrade();
+	await upgradeLS();
 
 	mainWindow = new BrowserWindow({
 		width: 400,
