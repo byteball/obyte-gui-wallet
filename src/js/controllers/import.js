@@ -182,7 +182,7 @@ angular.module('copayApp.controllers').controller('importController',
 				function(next) {
 					// restore wallet config
 					fileSystemService.readFile(dbDirPath + 'temp/' + 'addressbook-'+fc.credentials.network, function(err, data) {
-						if(err) return next(err);
+						if(err) return next();
 						storageService.setAddressbook(fc.credentials.network, data.toString(), next);
 						storageService.setAddressbook = function(){};
 					});
