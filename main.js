@@ -20,8 +20,9 @@ if (process.platform === 'win32') { // fix for Electron not working when UTF-8 s
 // rename byteball to obyte 
 const isTestnet = package.name.includes('-tn');
 const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball' + (isTestnet ? '-tn' : '');
+const oldLocalStorageRelativeDir = process.platform === 'win32' ? 'User Data/Default/Local Storage' : 'Default/Local Storage';
 const extensionId = isTestnet ? 'fhbdbceecnjfepdnmkgncdnkleeblcpf' : 'ppgbkonninhcodjcnbpghnagfadnfjck';
-const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
+const files = ['conf.json', 'rocksdb', oldLocalStorageRelativeDir,
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
 const renamedFlagFile = `${app.getPath('userData')}/.renamed`;
@@ -47,7 +48,7 @@ if (!fs.existsSync(renamedFlagFile)) {
 // UPGRADE old NW.js localStorage to new rocksdb storage
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
-const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
+const oldLSDir = `${app.getPath('userData')}/${oldLocalStorageRelativeDir}`;
 const lsSqliteFile = `${oldLSDir}/chrome-extension_${extensionId}_0.localstorage`;
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
 const walletDataDir = `walletdata`;
