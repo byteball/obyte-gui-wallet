@@ -39,6 +39,7 @@ if (!fs.existsSync(renamedFlagFile)) {
 				fs.renameSync(`${oldUserDir}/${file}`, `${app.getPath('userData')}/${file}`);
 				console.log(`OK`);
 			} catch(e) {
+				console.log(`failed to move ${file}`, e);
 			}
 		}
 	}
@@ -57,8 +58,10 @@ let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
 		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
-			if (err)
+			if (err) {
+				console.log(`failed to open sqlite db ${lsSqliteFile}`, err);
 				return resolve();
+			}
 			console.log(`Upgrading Local Storage from SQLite database...`);
 			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId', 'addressbook-livenet', 'addressbook-testnet')`, [], (err, rows) => {
 				if (err)
@@ -72,8 +75,10 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 	});
 	lsUpgrader2 = new Promise((resolve, reject) => {
 		const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
-			if (err)
+			if (err) {
+				console.log(`failed to open leveldb ${lsLevelDBDir}`, err);
 				return resolve();
+			}
 			console.log(`Upgrading Local Storage from LevelDB database...`);
 			leveldb.createReadStream().on('data', function (data) {
 				const key = data.key.replace('_chrome-extension://' + extensionId + '\0\1', '');
