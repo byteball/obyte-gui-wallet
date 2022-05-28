@@ -1,8 +1,8 @@
 {
-  "name": "obyte-tn-gui-wallet",
+  "name": "obyte-tn",
   "description": "Smart payments made simple",
   "author": "Obyte",
-  "version": "3.4.1t",
+  "version": "4.0.0t",
   "keywords": [
     "wallet",
     "obyte",

@@ -20,8 +20,9 @@ if (process.platform === 'win32') { // fix for Electron not working when UTF-8 s
 // rename byteball to obyte 
 const isTestnet = package.name.includes('-tn');
 const oldUserDir = (process.platform == 'win32' ? process.env.LOCALAPPDATA : app.getPath('appData')) + '/byteball' + (isTestnet ? '-tn' : '');
+const oldLocalStorageRelativeDir = process.platform === 'win32' ? 'User Data/Default/Local Storage' : 'Default/Local Storage';
 const extensionId = isTestnet ? 'fhbdbceecnjfepdnmkgncdnkleeblcpf' : 'ppgbkonninhcodjcnbpghnagfadnfjck';
-const files = ['conf.json', 'rocksdb', 'Default/Local Storage',
+const files = ['conf.json', 'rocksdb', oldLocalStorageRelativeDir,
 	'byteball-light.sqlite', 'byteball-light.sqlite-shm', 'byteball-light.sqlite-wal',
 	'byteball.sqlite', 'byteball.sqlite-shm', 'byteball.sqlite-wal'];
 const renamedFlagFile = `${app.getPath('userData')}/.renamed`;
@@ -32,12 +33,16 @@ if (!fs.existsSync(renamedFlagFile)) {
 		if (!fs.existsSync(`${app.getPath('userData')}/Default`)){
 			fs.mkdirSync(`${app.getPath('userData')}/Default`);
 		}
+		if (process.platform === 'win32' && !fs.existsSync(`${app.getPath('userData')}/User Data/Default`)){
+			fs.mkdirSync(`${app.getPath('userData')}/User Data/Default`, { recursive: true });
+		}
 		for (const file of files) {
 			try {
 				console.log(`moving ${file}`);
 				fs.renameSync(`${oldUserDir}/${file}`, `${app.getPath('userData')}/${file}`);
 				console.log(`OK`);
 			} catch(e) {
+				console.log(`failed to move ${file}`, e);
 			}
 		}
 	}
@@ -47,17 +52,19 @@ if (!fs.existsSync(renamedFlagFile)) {
 // UPGRADE old NW.js localStorage to new rocksdb storage
 let upgradeKeys = {};
 const lsUpgradedFlagFile = `${app.getPath('userData')}/.upgraded`;
-const oldLSDir = `${app.getPath('userData')}/Default/Local Storage`;
+const oldLSDir = `${app.getPath('userData')}/${oldLocalStorageRelativeDir}`;
 const lsSqliteFile = `${oldLSDir}/chrome-extension_${extensionId}_0.localstorage`;
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
 const walletDataDir = `walletdata`;
 let walletDataPath = `${app.getPath('userData')}/${walletDataDir}`;
 let lsUpgrader1, lsUpgrader2;
-if (!fs.existsSync(lsUpgradedFlagFile)) {
+if (!fs.existsSync(lsUpgradedFlagFile) && fs.existsSync(oldLSDir)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
 		const db = new sqlite3.Database(lsSqliteFile, sqlite3.OPEN_READONLY, (err) => {
-			if (err)
+			if (err) {
+				console.log(`failed to open sqlite db ${lsSqliteFile}`, err);
 				return resolve();
+			}
 			console.log(`Upgrading Local Storage from SQLite database...`);
 			db.all(`SELECT key, value FROM ItemTable WHERE key IN ('profile', 'config', 'agreeDisclaimer', 'focusedWalletId', 'addressbook-livenet', 'addressbook-testnet')`, [], (err, rows) => {
 				if (err)
@@ -71,8 +78,10 @@ if (!fs.existsSync(lsUpgradedFlagFile)) {
 	});
 	lsUpgrader2 = new Promise((resolve, reject) => {
 		const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
-			if (err)
+			if (err) {
+				console.log(`failed to open leveldb ${lsLevelDBDir}`, err);
 				return resolve();
+			}
 			console.log(`Upgrading Local Storage from LevelDB database...`);
 			leveldb.createReadStream().on('data', function (data) {
 				const key = data.key.replace('_chrome-extension://' + extensionId + '\0\1', '');
@@ -95,7 +104,7 @@ function handleRow(key, value) {
 			break;
 	}
 }
-async function finishLSUpgrade() {
+async function upgradeLS() {
 	await Promise.all([lsUpgrader1, lsUpgrader2]);
 	if (Object.keys(upgradeKeys).length == 0)
 		return;
@@ -118,7 +127,7 @@ async function finishLSUpgrade() {
 
 let mainWindow;
 async function createWindow () {
-	await finishLSUpgrade();
+	await upgradeLS();
 
 	mainWindow = new BrowserWindow({
 		width: 400,
