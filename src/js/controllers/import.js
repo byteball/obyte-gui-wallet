@@ -166,7 +166,7 @@ angular.module('copayApp.controllers').controller('importController',
 				function(next) {
 					// restore wallet focused profile
 					fileSystemService.readFile(dbDirPath + 'temp/' + 'focusedWalletId', function(err, data) {
-						if(err) return next(err);
+						if(err) return next();
 						storageService.storeFocusedWalletId(data, next);
 						storageService.storeFocusedWalletId = function(){};
 					});
