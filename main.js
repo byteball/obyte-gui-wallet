@@ -33,6 +33,9 @@ if (!fs.existsSync(renamedFlagFile)) {
 		if (!fs.existsSync(`${app.getPath('userData')}/Default`)){
 			fs.mkdirSync(`${app.getPath('userData')}/Default`);
 		}
+		if (process.platform === 'win32' && !fs.existsSync(`${app.getPath('userData')}/User Data/Default`)){
+			fs.mkdirSync(`${app.getPath('userData')}/User Data/Default`, { recursive: true });
+		}
 		for (const file of files) {
 			try {
 				console.log(`moving ${file}`);
