@@ -2,8 +2,10 @@
 
 angular.module('copayApp.services')
   .factory('rocksdbStorageService', function($timeout, isCordova) {
-  	if (isCordova)
-  		return console.log('rocksdbStorageService is not available on mobile devices');
+    if (isCordova) {
+      console.log('rocksdbStorageService is not available on mobile devices');
+      return {};
+    }
   	var desktopApp = require('ocore/desktop_app.js');
     var root = {};
     var walletDataDir = 'walletdata';

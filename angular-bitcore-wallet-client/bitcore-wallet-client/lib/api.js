@@ -4,6 +4,7 @@
 if (typeof window === 'object' && window && window.cordova) {
   var conf = require('ocore/conf.js');
   var appPackageJson = require('../../../package.json');
+  conf.program = appPackageJson.name;
   /*
   // overwrite if package.json name is different from obyte/obyte-tn/obyte-dn
   conf.program = 'obyte';
