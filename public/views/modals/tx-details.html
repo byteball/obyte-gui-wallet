@@ -35,7 +35,7 @@
 
   <ul class="no-bullet size-14 m0 tx-details"> 
 
-    <li ng-if="!btx.hasMultiplesOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh flex_container" ng-click="copyAddress(btx.addressTo)">
+    <li ng-if="!btx.hasMultipleOutputs && btx.addressTo && btx.addressTo != 'N/A'" class="line-b p10 oh flex_container" ng-click="copyAddress(btx.addressTo)">
       <span class="text-gray" translate>To</span>:
       <span class="right ml_auto">
         <span ng-if="btx.merchant">
@@ -58,12 +58,12 @@
 	    </span>
     </li>
 
-    <li ng-show="btx.hasMultiplesOutputs" class="line-b p10 oh" 
-      ng-click="showMultiplesOutputs = !showMultiplesOutputs">
+    <li ng-show="btx.hasMultipleOutputs" class="line-b p10 oh" 
+      ng-click="showMultipleOutputs = !showMultipleOutputs">
       <span class="text-gray" translate>Recipients</span>:
       <span class="right">{{btx.recipientCount}}
-        <i ng-show="showMultiplesOutputs" class="icon-arrow-up3 size-24"></i>
-        <i ng-show="!showMultiplesOutputs" class="icon-arrow-down3 size-24"></i>
+        <i ng-show="showMultipleOutputs" class="icon-arrow-up3 size-24"></i>
+        <i ng-show="!showMultipleOutputs" class="icon-arrow-down3 size-24"></i>
       </span>
     </li>
 	  
@@ -82,7 +82,7 @@
 	  <div class="right small-10 columns enable_text_select ellipsis"><div class="right">{{btx.my_address}}</div></div>
     </li>
 
-    <div class="line-b" ng-show="btx.hasMultiplesOutputs && showMultiplesOutputs"
+    <div class="line-b" ng-show="btx.hasMultipleOutputs && showMultipleOutputs"
       ng-repeat="output in btx.outputs"
       ng-include="'views/includes/output.html'">
     </div>
