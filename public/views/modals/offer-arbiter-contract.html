@@ -175,7 +175,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 			<button type="button" class="button black round expand" ng-disabled="arbiterContractForm.$invalid || bWorking || !index.isEnoughSignersSelected() || loading === true || ArbStoreCut === null" ng-style="{'background-color':color}" ng-click="payAndOffer()" translate>
 				Offer Contract
 			</button>
-			<div class="attestor"><span ng-show="loading === true" translate>loading rates from ArbStore...</span><span ng-show="loading === false && ArbStoreCut" translate>{{ArbStoreCut*100}}% of the contract amount will deducted from the seller and sent to the ArbStore on successful completion of the contract.</span><span translate>You will be charged {{CHARGE_AMOUNT}} bytes to compensate for fees when posting signature proof.</span></div><br><br>
+			<div class="attestor"><span ng-show="loading === true" translate>loading rates from ArbStore...</span><span ng-show="loading === false && ArbStoreCut" translate>{{ArbStoreCut*100}}% of the contract amount will deducted from the seller and sent to the ArbStore on successful completion of the contract.</span> <span translate>You will be charged {{CHARGE_AMOUNT}} bytes to compensate for the fees when posting the proof of signatures.</span></div><br><br>
 		</div>
 	</form>
 </div>
