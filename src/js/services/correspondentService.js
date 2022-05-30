@@ -258,8 +258,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		var testnet = constants.version.match(/t$/) ? "testnet" : "";
 		if (field === "unit") {
 			var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + value;
-			var payer_guidance_text = '\n\nNow you can pay to the contract for seller services by opening the contract window.';
-			var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+			var payer_guidance_text = "\n\nNow you can pay to the contract for the seller's services by opening the contract window.";
+			var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
 		if (field === 'status') {
@@ -270,17 +270,17 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
 			}
 			if (value === 'in_appeal') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties and the arbiter.");	
 			}
 			if (value === 'appeal_approved' || value === 'appeal_declined') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for wrong arbiter decision.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for the arbiter's wrong decision.");	
 			}
 			if (value === 'paid') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
+				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations. When done, please let the buyer know so that they can review your work and release the funds from the contract to you.');
 			}
 			if (value === 'cancelled' || value === 'completed') {
 				if (!isPrivate)
-					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds locked on contract were sent to you.');
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds locked on the contract were sent to you.');
 				else
 					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
 			}
@@ -766,7 +766,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$rootScope.$emit("NewOutgoingTx");
 									var testnet = constants.version.match(/t$/) ? "testnet" : "";
-									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations. When they are done, please review their work and release the funds from the contract to the seller.');
 									$modalInstance.dismiss();
 							});
 						});
