@@ -241,8 +241,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$rootScope.sentUnit = contract.unit;
 				var testnet = constants.version.match(/t$/) ? "testnet" : "";
 				var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + contract.unit;
-				var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
-				var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+				var payer_guidance_text = '\n\nNow please pay to the contract for the seller\'s services by opening the contract window.';
+				var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 				addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 			});
 		});
@@ -258,8 +258,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		var testnet = constants.version.match(/t$/) ? "testnet" : "";
 		if (field === "unit") {
 			var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + value;
-			var payer_guidance_text = '\n\nNow you can pay to the contract for seller services by opening the contract window.';
-			var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+			var payer_guidance_text = "\n\nNow please pay to the contract for the seller's services by opening the contract window.";
+			var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
 		if (field === 'status') {
@@ -270,17 +270,17 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
 			}
 			if (value === 'in_appeal') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties and the arbiter.");	
 			}
 			if (value === 'appeal_approved' || value === 'appeal_declined') {
-				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for wrong arbiter decision.");	
+				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for the arbiter's wrong decision.");	
 			}
 			if (value === 'paid') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations.');
+				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nNow you can start fulfilling your contract obligations. When done, please let the buyer know so that they can review your work and release the funds from the contract to you.');
 			}
 			if (value === 'cancelled' || value === 'completed') {
 				if (!isPrivate)
-					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds locked on contract were sent to you.');
+					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds locked on the contract were sent to you.');
 				else
 					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
 			}
@@ -555,7 +555,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.me_is_payer = objContract.me_is_payer;
 					$scope.amount = objContract.amount;
 					$scope.asset = objContract.asset;
-					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
+					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
 					$scope.my_contact_info = objContract.my_contact_info;
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
@@ -573,20 +573,24 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					if ($scope.asset) {
 						var updateAssetMetadata = function() {
-							require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+							const applyNewAssetMetadata = (assetMetadata) => {
 								if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
 									profileService.assetMetadata[$scope.asset] = assetMetadata[$scope.asset];
 									$scope.assetMetadata = assetMetadata[$scope.asset] || {};
-									$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
+									$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
 								}
-								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
+								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function (rows) {
 									if (rows.length > 0) {
 										$scope.isPrivate = true;
 									}
-									$timeout(function() {
+									$timeout(function () {
 										$rootScope.$apply();
 									});
 								});
+							};
+							require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+								if (bUpdated)
+									applyNewAssetMetadata(assetMetadata);
 							});
 						};
 						updateAssetMetadata();
@@ -616,8 +620,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										$scope.appealFeeCost = $scope.appealFeeCompensation = "#UNKNOWN#";
 										return;
 									}
-									$scope.appealFeeCost = txFormatService.formatAmountStr(feeParams.amount, feeParams.asset ? feeParams.asset : "base");
-									$scope.appealFeeCompensation = txFormatService.formatAmountStr(3*feeParams.amount, feeParams.asset ? feeParams.asset : "base");
+									$scope.appealFeeCost = txFormatService.formatAmountStr(feeParams.amount, feeParams.asset || "base");
+									$scope.appealFeeCompensation = txFormatService.formatAmountStr(3*feeParams.amount, feeParams.asset || "base");
 									$timeout(function() {
 										$rootScope.$apply();
 									});
@@ -766,7 +770,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$rootScope.$emit("NewOutgoingTx");
 									var testnet = constants.version.match(/t$/) ? "testnet" : "";
-									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nThe seller can now start fulfilling their contract obligations. When they are done, please review their work and release the funds from the contract to the seller.');
 									$modalInstance.dismiss();
 							});
 						});
@@ -1085,15 +1089,22 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.asset = objDispute.asset;
 				$scope.status = objDispute.status;
 				$scope.calculated_hash = arbiter_contract.getHash($scope);
-				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : "base") : 'private asset';
+				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset || "base") : 'private asset';
 				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
 
 				if ($scope.asset) {
-					require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+					const applyNewAssetMetadata = (assetMetadata) => {
 						if (assetMetadata || $scope.asset == constants.BLACKBYTES_ASSET) {
 							$scope.assetMetadata = assetMetadata[$scope.asset] || {};
+							$timeout(function() {
+								$rootScope.$apply();
+							});
 						}
+					};
+					require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+						if (bUpdated)
+							applyNewAssetMetadata(assetMetadata);
 					});
 				}
 

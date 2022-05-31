@@ -943,19 +943,22 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (unit === $rootScope.sentUnit)
 				return;
 			if (!$rootScope.newPaymentsCount[unit]) {
-				$rootScope.newPaymentsCount[unit] = 1;
 				function ifFound(objJoint) {
 					$timeout(function(){
 						
+						const author_addresses = objJoint.unit.authors.map(author => author.address);
 						var allAddressWithAssets = [];
 						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment' && message.payload); // public payments only
 						paymentMessages.forEach(message => {
 							var outputs = message.payload.outputs;
 							outputs.forEach(output =>
 								allAddressWithAssets.findIndex(awa => awa.address === output.address) < 0
+								&& author_addresses.findIndex(addr => addr === output.address) < 0 // exclude change outputs
 								&& allAddressWithAssets.push({ address: output.address, asset: message.payload.asset || 'base' })
 							);
 						});
+						if (allAddressWithAssets.length === 0)
+							return console.log("no external outputs");
 						var addresses = allAddressWithAssets.map(awa => awa.address);
 						var getAssetByAddress = address => allAddressWithAssets.find(awa => awa.address === address).asset;
 						db.query(`SELECT address, wallet FROM my_addresses WHERE address IN(?)`, [addresses], rows => {
@@ -967,6 +970,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									walletId: row.wallet,
 									asset: getAssetByAddress(row.address),
 								};
+								$rootScope.newPaymentsCount[unit] = 1;
 								return $rootScope.$emit('Local/BadgeUpdated');
 							}
 							// else received payment to a shared address
@@ -989,6 +993,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 										walletId: row.wallet,
 										asset: getAssetByAddress(row.shared_address),
 									};
+									$rootScope.newPaymentsCount[unit] = 1;
 									$rootScope.$emit('Local/BadgeUpdated');
 								}
 							);
