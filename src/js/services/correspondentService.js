@@ -555,7 +555,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.me_is_payer = objContract.me_is_payer;
 					$scope.amount = objContract.amount;
 					$scope.asset = objContract.asset;
-					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
+					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
 					$scope.my_contact_info = objContract.my_contact_info;
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
@@ -620,8 +620,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 										$scope.appealFeeCost = $scope.appealFeeCompensation = "#UNKNOWN#";
 										return;
 									}
-									$scope.appealFeeCost = txFormatService.formatAmountStr(feeParams.amount, feeParams.asset ? feeParams.asset : "base");
-									$scope.appealFeeCompensation = txFormatService.formatAmountStr(3*feeParams.amount, feeParams.asset ? feeParams.asset : "base");
+									$scope.appealFeeCost = txFormatService.formatAmountStr(feeParams.amount, feeParams.asset || "base");
+									$scope.appealFeeCompensation = txFormatService.formatAmountStr(3*feeParams.amount, feeParams.asset || "base");
 									$timeout(function() {
 										$rootScope.$apply();
 									});
@@ -1089,7 +1089,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.asset = objDispute.asset;
 				$scope.status = objDispute.status;
 				$scope.calculated_hash = arbiter_contract.getHash($scope);
-				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset ? objDispute.asset : "base") : 'private asset';
+				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset || "base") : 'private asset';
 				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
 
