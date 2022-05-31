@@ -947,12 +947,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				function ifFound(objJoint) {
 					$timeout(function(){
 						
+						const author_addresses = objJoint.unit.authors.map(author => author.address);
 						var allAddressWithAssets = [];
 						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment' && message.payload); // public payments only
 						paymentMessages.forEach(message => {
 							var outputs = message.payload.outputs;
 							outputs.forEach(output =>
 								allAddressWithAssets.findIndex(awa => awa.address === output.address) < 0
+								&& author_addresses.findIndex(addr => addr === output.address) < 0 // exclude change outputs
 								&& allAddressWithAssets.push({ address: output.address, asset: message.payload.asset || 'base' })
 							);
 						});
