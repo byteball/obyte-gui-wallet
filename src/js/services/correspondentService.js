@@ -241,8 +241,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$rootScope.sentUnit = contract.unit;
 				var testnet = constants.version.match(/t$/) ? "testnet" : "";
 				var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + contract.unit;
-				var payer_guidance_text = '\n\nNow you can pay to the contract for seller\'s services by opening the contract window.';
-				var payee_guidance_text = '\n\nNow wait for buyer to pay to the contract.';
+				var payer_guidance_text = '\n\nNow you can pay to the contract for the seller\'s services by opening the contract window.';
+				var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 				addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 			});
 		});
