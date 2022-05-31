@@ -1205,10 +1205,15 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	if (!document.getElementById('menu-' + tab) && ++tries < 5) {
 		console.log("will retry setTab later:", tab, reset, tries, switchState);
+		self.waitingForMenu = true;
 		return $timeout(function() {
-			self.setTab(tab, reset, tries, switchState);
+			if (self.waitingForMenu) // skip if another call has already successfully set (another) tab
+				self.setTab(tab, reset, tries, switchState);
+			else
+				console.log("setTab retry ", tab, reset, tries, switchState, ": tab already set to ", self.tab);
 		}, (tries === 1) ? 10 : 300);
 	}
+	self.waitingForMenu = false;
 
 	if (!self.tab || !$state.is('walletHome'))
 	  $rootScope.tab = self.tab = 'walletHome';
