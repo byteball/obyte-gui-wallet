@@ -573,20 +573,24 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 					if ($scope.asset) {
 						var updateAssetMetadata = function() {
-							require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+							const applyNewAssetMetadata = (assetMetadata) => {
 								if ((assetMetadata && assetMetadata[$scope.asset]) || $scope.asset == constants.BLACKBYTES_ASSET) {
 									profileService.assetMetadata[$scope.asset] = assetMetadata[$scope.asset];
 									$scope.assetMetadata = assetMetadata[$scope.asset] || {};
-									$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset ? objContract.asset : "base");
+									$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
 								}
-								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function(rows){
+								db.query("SELECT 1 FROM assets WHERE unit IN(?) AND is_private=1 LIMIT 1", [objContract.asset], function (rows) {
 									if (rows.length > 0) {
 										$scope.isPrivate = true;
 									}
-									$timeout(function() {
+									$timeout(function () {
 										$rootScope.$apply();
 									});
 								});
+							};
+							require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+								if (bUpdated)
+									applyNewAssetMetadata(assetMetadata);
 							});
 						};
 						updateAssetMetadata();
@@ -1090,10 +1094,17 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
 
 				if ($scope.asset) {
-					require("ocore/wallet.js").readAssetMetadata([$scope.asset], function(assetMetadata) {
+					const applyNewAssetMetadata = (assetMetadata) => {
 						if (assetMetadata || $scope.asset == constants.BLACKBYTES_ASSET) {
 							$scope.assetMetadata = assetMetadata[$scope.asset] || {};
+							$timeout(function() {
+								$rootScope.$apply();
+							});
 						}
+					};
+					require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+						if (bUpdated)
+							applyNewAssetMetadata(assetMetadata);
 					});
 				}
 

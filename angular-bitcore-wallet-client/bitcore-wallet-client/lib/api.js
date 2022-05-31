@@ -633,14 +633,20 @@ API.prototype.getBalance = function(shared_address, cb) {
 					arrAssets.push(asset);
 			if (arrAssets.length === 0)
 				return cb(null, assocBalances, assocSharedBalances);
+      const applyNewAssetMetadata = (assocAssetMetadata) => {
+        for (var asset in assocAssetMetadata) {
+          var objAssetMetadata = assocAssetMetadata[asset];
+          for (var key in objAssetMetadata)
+            assocBalances[asset][key] = objAssetMetadata[key];
+        }
+      };
 			Wallet.readAssetMetadata(arrAssets, function(assocAssetMetadata){
-				for (var asset in assocAssetMetadata){
-					var objAssetMetadata = assocAssetMetadata[asset];
-					for (var key in objAssetMetadata)
-						assocBalances[asset][key] = objAssetMetadata[key];
-				}
-				cb(null, assocBalances, assocSharedBalances);
-			});
+        applyNewAssetMetadata(assocAssetMetadata);
+        cb(null, assocBalances, assocSharedBalances);
+      }, (bUpdated, assocAssetMetadata) => {
+        if (bUpdated)
+          applyNewAssetMetadata(assocAssetMetadata);
+      });
 		});
 	});
 };
