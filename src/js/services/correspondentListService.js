@@ -943,7 +943,6 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (unit === $rootScope.sentUnit)
 				return;
 			if (!$rootScope.newPaymentsCount[unit]) {
-				$rootScope.newPaymentsCount[unit] = 1;
 				function ifFound(objJoint) {
 					$timeout(function(){
 						
@@ -971,6 +970,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 									walletId: row.wallet,
 									asset: getAssetByAddress(row.address),
 								};
+								$rootScope.newPaymentsCount[unit] = 1;
 								return $rootScope.$emit('Local/BadgeUpdated');
 							}
 							// else received payment to a shared address
@@ -993,6 +993,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 										walletId: row.wallet,
 										asset: getAssetByAddress(row.shared_address),
 									};
+									$rootScope.newPaymentsCount[unit] = 1;
 									$rootScope.$emit('Local/BadgeUpdated');
 								}
 							);
