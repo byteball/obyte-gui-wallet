@@ -958,6 +958,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 								&& allAddressWithAssets.push({ address: output.address, asset: message.payload.asset || 'base' })
 							);
 						});
+						if (allAddressWithAssets.length === 0)
+							return console.log("no external outputs");
 						var addresses = allAddressWithAssets.map(awa => awa.address);
 						var getAssetByAddress = address => allAddressWithAssets.find(awa => awa.address === address).asset;
 						db.query(`SELECT address, wallet FROM my_addresses WHERE address IN(?)`, [addresses], rows => {
