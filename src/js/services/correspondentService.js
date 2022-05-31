@@ -241,7 +241,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$rootScope.sentUnit = contract.unit;
 				var testnet = constants.version.match(/t$/) ? "testnet" : "";
 				var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + contract.unit;
-				var payer_guidance_text = '\n\nNow you can pay to the contract for the seller\'s services by opening the contract window.';
+				var payer_guidance_text = '\n\nNow please pay to the contract for the seller\'s services by opening the contract window.';
 				var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 				addContractEventIntoChat(contract, "event", false, text + (contract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 			});
@@ -258,7 +258,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		var testnet = constants.version.match(/t$/) ? "testnet" : "";
 		if (field === "unit") {
 			var text = 'Unit with contract hash was posted into DAG\nhttps://'+testnet+'explorer.obyte.org/#' + value;
-			var payer_guidance_text = "\n\nNow you can pay to the contract for the seller's services by opening the contract window.";
+			var payer_guidance_text = "\n\nNow please pay to the contract for the seller's services by opening the contract window.";
 			var payee_guidance_text = '\n\nNow wait for the buyer to pay to the contract.';
 			addContractEventIntoChat(objContract, "event", true, text + (objContract.me_is_payer ? payer_guidance_text : payee_guidance_text));
 		}
@@ -276,7 +276,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, "event", true, "Moderator has " + (value === 'appeal_approved' ? 'approved' : 'declined')+ " your appeal. You will receive a compensation for the arbiter's wrong decision.");	
 			}
 			if (value === 'paid') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can start fulfilling your contract obligations. When done, please let the buyer know so that they can review your work and release the funds from the contract to you.');
+				addContractEventIntoChat(objContract, 'event', true, 'Contract was paid, unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nNow you can start fulfilling your contract obligations. When done, please let the buyer know so that they can review your work and release the funds from the contract to you.');
 			}
 			if (value === 'cancelled' || value === 'completed') {
 				if (!isPrivate)
