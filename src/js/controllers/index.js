@@ -203,7 +203,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	  var timestamp = rows[0].timestamp;
 	  if (timestamp)
 		return cb(timestamp*1000);
-	  data_feeds.readDataFeedValue([configService.TIMESTAMPER_ADDRESS], 'timestamp', null, 0, 1e15, false, 'last', function (objResult) {
+	  data_feeds.readDataFeedValue([configService.TIMESTAMPER_ADDRESS], 'timestamp', null, 0, 1e15, false, 'last', 0, function (objResult) {
 		cb(objResult.value ? parseInt(objResult.value) : 0);
 	  });
 	});
