@@ -75,11 +75,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         }
 	};
 
-	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
-			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
-		}
-	});
+	if (correspondent.device_address) {
+		$scope.$watch("newMessagesCount['" + correspondent.device_address + "']", function (counter) {
+			if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
+				$scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+			}
+		});
+	}
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
