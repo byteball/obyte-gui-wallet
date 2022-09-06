@@ -1092,8 +1092,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return cb("cannot pair with myself");
 		if (!device.isValidPubKey(device_pubkey))
 			return cb("invalid peer public key");
-		// the correspondent will be initially called 'New', we'll rename it as soon as we receive the reverse pairing secret back
-		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, 'New', function(device_address){
+		// the correspondent will be initially called '[New]', we'll rename it as soon as we receive the reverse pairing secret back
+		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, '[New]', function(device_address){
 			device.startWaitingForPairing(function(reversePairingInfo){
 				device.sendPairingMessage(hub_host, device_pubkey, pairing_secret, reversePairingInfo.pairing_secret, {
 					ifOk: cb,
