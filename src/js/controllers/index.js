@@ -1646,10 +1646,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
 	var walletId = client.credentials.walletId;
 	if (self.arrBalances.length === 0)
-		return console.log('updateLocalTxHistory: no balances yet');
+		return console.log('updateLocalTxHistory: no balances yet'), cb();
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
 	if (!client.isComplete())
-		return console.log('fc incomplete yet');
+		return console.log('fc incomplete yet'), cb();
 	client.getTxHistory(self.arrBalances[self.assetIndex].asset, self.shared_address, function onGotTxHistory(txs) {
 		$timeout(function(){
 			var newHistory = self.processNewTxs(txs);
