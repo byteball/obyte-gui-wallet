@@ -72,6 +72,7 @@ angular.module('copayApp.controllers')
 				asset: 'Text'
 			},
 		]
+		this.isShownCopiedMessage = false;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 		self.android = isMobile.Android() && window.cordova;
 		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
@@ -800,6 +801,12 @@ angular.module('copayApp.controllers')
 			}
 			else if (electron.isDefined()) {
 				electron.writeToClipboard(addr);
+				self.isShownCopiedMessage = true;
+				
+				setTimeout(() => {
+					self.isShownCopiedMessage = false;
+					$rootScope.$apply();
+				}, 1250);
 			}
 		};
 

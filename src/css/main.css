@@ -1588,6 +1588,27 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 3px;
 }
 
+.copiedToClipboardBar {
+  left: 0;
+  width: 100%;
+  bottom: 300px;
+  position: absolute;
+  z-index: 1020;
+}
+
+.copiedToClipboardBar-content {
+  background: #213140;
+  text-align: center;
+  max-width: 16.5rem;
+  max-height: 3.5rem;
+  margin: auto;
+  color: #fff;
+  padding: 0.5rem;
+  font-size: 13px;
+  opacity: 0.8;
+  border-radius: 1000px;
+}
+
 /*/////////////////// SPINNER ////////////////////*/
 
 #history .spinner, #receive .spinner, #send .spinner {

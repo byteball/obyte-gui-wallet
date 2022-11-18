@@ -53,6 +53,42 @@ input.datafeed_input {
 	max-width: 500px;
 	margin: 0 auto;
 }
+
+.c-tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.c-tooltip .tooltiptext {
+	visibility: hidden;
+	width: 100px;
+	background-color: #343434;
+	color: #fff;
+	text-align: center;
+	border-radius: 100px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	bottom: 105%;
+	left: 50%;
+	margin-left: -60px;
+	font-size: 13px;
+}
+
+.c-tooltip .tooltiptext::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #343434 transparent transparent transparent;
+}
+
+.c-tooltip:hover .tooltiptext {
+	visibility: visible;
+}
 </style>
 
 
@@ -84,6 +120,12 @@ input.datafeed_input {
       </div>
       <span translate>Reconnecting to Wallet Service...</span>
     </div>
+  </div>
+
+  <div class="copiedToClipboardBar" ng-show="home.isShownCopiedMessage">
+	<div class="copiedToClipboardBar-content" ng-style="{'background-color':'#343434'}">
+	  <span translate>Copied to clipboard</span>
+	</div>
   </div>
 
   <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline">
@@ -272,7 +314,7 @@ input.datafeed_input {
                 </span>
               </div>
 
-              <div class="text-center" ng-click="home.copyAddress(index.shared_address || home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
+              <div class="text-center" ng-click="home.copyAddress(index.shared_address || home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress" style="cursor: pointer">
                 <qrcode size="220" data="{{home.protocol}}:{{index.shared_address || home.addr[index.walletId]}}"></qrcode>
                 <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                   <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
@@ -285,11 +327,12 @@ input.datafeed_input {
                     </div>
                   </div>
                 </div>
-                <div class="m10t" >
+                <div class="m10t c-tooltip">
                   <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
 
                   </h4>
+				  <span class="tooltiptext" translate>Click to copy</span>
                 </div>
               </div>
             </div>
