@@ -254,7 +254,12 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var arrParts = tokenize(commandLine); // on windows commandLine includes exe and all args, on mac just our arg
 		for (var i=0; i<arrParts.length; i++){
 			var part = arrParts[i].trim().replace(/"/g, '');
-			if (part.match(bb_url) || part.match(ob_url) || part.match(file))
+			
+			if (part.match(file)) {
+				return arrParts.join(' ');
+			}
+			
+			if (part.match(bb_url) || part.match(ob_url))
 				return part;
 		}
 		return null;
