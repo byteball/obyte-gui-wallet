@@ -157,6 +157,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		alternativeIsoCode: 'USD',
 		},
 	},
+	  
+  hideZeroBalanceAssets: false,
 
 	// hidden assets: key = wallet id, value = set of assets (string: boolean)
 	hiddenAssets: {},
