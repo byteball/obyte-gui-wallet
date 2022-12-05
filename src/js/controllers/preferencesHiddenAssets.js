@@ -7,6 +7,7 @@ PreferencesHiddenAssetsCtrl.$inject = ['$scope','configService'];
 function PreferencesHiddenAssetsCtrl($scope, configService) {
   var ctrl = this;
   var configHiddenAssets = configService.getSync().hiddenAssets;
+  var configHideZeroBalanceAssets = configService.getSync().hideZeroBalanceAssets;
   var indexScope = $scope.index;
   var walletId = indexScope.walletId;
   var hiddenAssetsSet = {};
@@ -29,6 +30,8 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
   ctrl.arrAssetsData = resAssetsData;
   ctrl.isChanged = false;
   ctrl.isOneAssetLeft = false;
+  
+  ctrl.hideZeroBalanceAssets = configHideZeroBalanceAssets;
 
   checkOneAssetLeft();
 
@@ -43,6 +46,19 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
     saveConfig();
     ctrl.isChanged = true;
   };
+  
+  ctrl.handleZeroBalanceAssetsVisibility = function () {
+	  configService.set(
+		  {
+			  hideZeroBalanceAssets: ctrl.hideZeroBalanceAssets
+		  },
+		  function (err) {
+			  if (err)
+				  return $scope.$emit('Local/DeviceError', err);
+		  }
+	  );
+	  ctrl.isChanged = true;
+  }
 
   ctrl.isSwitchAssetDisabled = function (assetData) {
     return !assetData.value && ctrl.isOneAssetLeft;

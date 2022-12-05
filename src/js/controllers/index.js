@@ -30,6 +30,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.totalUSDBalance = 0;
   self.addressUSDBalance = 0;
   self.isBackupReminderShown = false;
+  
+  self.hideZeroBalanceAssets = false;
 
   self.recalculateUsdBalances = function () {
 	var exchangeRates = require('ocore/network.js').exchangeRates;
@@ -1405,6 +1407,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log('setBalance hiddenAssets:', hiddenAssets);
     var exchangeRates = require('ocore/network.js').exchangeRates;
 
+	const hideZeroBalanceAssets = configService.getSync().hideZeroBalanceAssets;
+
     // Selected unit
     self.unitValue = config.unitValue;
     self.unitName = config.unitName;
@@ -1454,6 +1458,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           }
 		}
         self.assetsSet[asset] = balanceInfo;
+		if (hideZeroBalanceAssets && asset !== 'base' && balanceInfo.total === 0) {
+			continue;
+		}
         if (self.isAssetHidden(asset, hiddenAssets)) {
           continue;
         }

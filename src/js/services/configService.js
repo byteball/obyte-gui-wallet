@@ -157,6 +157,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		alternativeIsoCode: 'USD',
 		},
 	},
+	 
+  hideZeroBalanceAssets: false,
 
 	// hidden assets: key = wallet id, value = set of assets (string: boolean)
 	hiddenAssets: {},
@@ -295,6 +297,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		}
 		if (!_config.hiddenAssets) {
 			_config.hiddenAssets = defaultConfig.hiddenAssets;
+		}
+		if (!_config.hideZeroBalanceAssets) {
+			_config.hideZeroBalanceAssets = defaultConfig.hideZeroBalanceAssets;
 		}
 		if (!_config.hiddenSubWallets) {
 			_config.hiddenSubWallets = defaultConfig.hiddenSubWallets;

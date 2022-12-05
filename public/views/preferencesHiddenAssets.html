@@ -27,6 +27,21 @@
     }
   </style>
 
+  <h4 translate>Choose hide or not zero-balance assets</h4>
+
+  <table class="no-bullet m0 list-switch">
+    <tr class="list-switch__row">
+      <td class="list-switch__cell list-switch__cell_content">
+        Hide zero-balance assets
+      </td>
+      <td class="list-switch__cell list-switch__cell_switch">
+        <switch class="green"
+          ng-change="ctrl.handleZeroBalanceAssetsVisibility()"
+          ng-model="ctrl.hideZeroBalanceAssets"></switch>
+      </td>
+    </tr>
+  </table>
+
   <h4 translate>Select the assets to hide in the account</h4>
 
   <table class="no-bullet m0 list-switch">
