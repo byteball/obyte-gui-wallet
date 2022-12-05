@@ -57,6 +57,7 @@ function PreferencesHiddenAssetsCtrl($scope, configService) {
 				  return $scope.$emit('Local/DeviceError', err);
 		  }
 	  );
+	  ctrl.isChanged = true;
   }
 
   ctrl.isSwitchAssetDisabled = function (assetData) {
