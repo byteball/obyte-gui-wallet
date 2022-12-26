@@ -78,6 +78,25 @@ angular.module('copayApp.controllers')
 		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
+		
+		function checkBackupDate() {
+			const backupDate = config.backupDate;
+			const restoreDate = $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+			
+			if(backupDate) {
+				configService.set({
+					backupDate: null,
+					restoredFromBackupCreatedOn: backupDate,
+					restoreDate,
+				}, (err) => {
+					if (err) {
+						return $scope.$emit('Local/DeviceError', err);
+					}
+				})
+			}
+		}
+
+		checkBackupDate();
 
 		// donut chart
 		var drawDonutChart = function() {

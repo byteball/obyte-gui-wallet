@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService) {
-
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService, configService) {
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('ocore/conf');
@@ -157,6 +156,16 @@ angular.module('copayApp.controllers').controller('exportController',
 			});
 			return false;
 		}
+		
+		function setBackupDate(newValue) {
+			configService.set({
+				backupDate: newValue
+			}, (err) => {
+				if (err) {
+					return $scope.$emit('Local/DeviceError', err);
+				}
+			})
+		}
 
 		self.walletExportPC = function(connection) {
 			self.connection = connection;
@@ -184,6 +193,7 @@ angular.module('copayApp.controllers').controller('exportController',
 										self.connection = null;
 										self.exporting = false;
 										zip = null;
+										setBackupDate(null);
 										$timeout(function() {
 											$rootScope.$apply();
 											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -215,6 +225,7 @@ angular.module('copayApp.controllers').controller('exportController',
 										connection.release();
 										if (err) return showError(err);
 										self.exporting = false;
+										setBackupDate(null);
 										$timeout(function() {
 											$rootScope.$apply();
 											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -233,6 +244,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
+			setBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
 			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
 			migrateJoints(function(err) {
 				if (err) return showError(err);
