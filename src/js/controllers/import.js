@@ -29,10 +29,6 @@ angular.module('copayApp.controllers').controller('importController',
 		self.androidVersion = isMobile.Android() ? parseFloat(userAgent.slice(userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
-		
-		self.backupDate = configService.getSync().backupDate;
-		self.restoredFromBackupCreatedOn = configService.getSync().restoredFromBackupCreatedOn;
-		self.restoreDate = configService.getSync().restoreDate;
 
 		function migrateJoints(callback) {
 			conf = require('ocore/conf');

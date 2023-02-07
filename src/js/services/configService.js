@@ -189,6 +189,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   autoUpdateWitnessesList: true,
 
   backupDate: null,
+  lastBackupDate: null,
   restoredFromBackupCreatedOn: null,	  
   restoreDate: null
   };

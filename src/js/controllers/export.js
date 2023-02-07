@@ -166,6 +166,16 @@ angular.module('copayApp.controllers').controller('exportController',
 				}
 			})
 		}
+		
+		function setLastBackupDate(newValue) {
+			configService.set({
+				lastBackupDate: newValue
+			}, (err) => {
+				if (err) {
+					return $scope.$emit('Local/DeviceError', err);
+				}
+			})
+		}
 
 		self.walletExportPC = function(connection) {
 			self.connection = connection;
@@ -245,6 +255,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.exporting = true;
 			self.error = '';
 			setBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
+			setLastBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
 			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
 			migrateJoints(function(err) {
 				if (err) return showError(err);

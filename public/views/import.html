@@ -4,29 +4,7 @@
 	ng-init="titleSection='Restore all wallet data';  goBackToState = true; noColor = true">
 </div>
 
-<div class="content preferences" ng-controller="importController as import">
-	<h4 translate ng-show="import.backupDate || import.restoredFromBackupCreatedOn || import.restoreDate">Backup dates</h4>
-		<ul class="no-bullet m0">
-			<li ng-conf ng-show="import.backupDate">
-				<span translate>Last backup date</span>
-				<span class="right text-gray">
-            {{import.backupDate}} 
-          </span>
-			</li>
-			<li ng-conf  ng-show="import.restoredFromBackupCreatedOn">
-				<span translate>Restored from backup created on</span>
-				<span class="right text-gray">
-            {{import.restoredFromBackupCreatedOn}}
-          </span>
-			</li>
-			<li ng-conf ng-show="import.restoreDate">
-				<span translate>Restore date</span>
-				<span class="right text-gray">
-            {{import.restoreDate}}
-          </span>
-			</li>
-		</ul>
-	
+<div class="content preferences" ng-controller="importController as import">	
 	<h4></h4>
 
 	<div class="onGoingProcess" ng-show="import.importing">
