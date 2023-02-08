@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('importController',
-	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron, profileService, configService) {
+	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron, profileService) {
 		
 		var JSZip = require("jszip");
 		var async = require('async');
