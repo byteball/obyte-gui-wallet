@@ -159,7 +159,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		
 		function setBackupDate(newValue) {
 			configService.set({
-				backupDate: newValue
+				restoredFromBackup: newValue
 			}, (err) => {
 				if (err) {
 					return $scope.$emit('Local/DeviceError', err);
@@ -196,6 +196,7 @@ angular.module('copayApp.controllers').controller('exportController',
 								zip.text('focusedWalletId', id);
 								zip.text('addressbook-'+fc.credentials.network, ab);
 								if (conf.bLight) zip.text('light', 'true');
+								setBackupDate(null);
 								addDBAndConfToZip(function(err) {
 									if (err) return showError(err);
 									zip.end(function() {
@@ -203,7 +204,6 @@ angular.module('copayApp.controllers').controller('exportController',
 										self.connection = null;
 										self.exporting = false;
 										zip = null;
-										setBackupDate(null);
 										$timeout(function() {
 											$rootScope.$apply();
 											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
@@ -227,6 +227,7 @@ angular.module('copayApp.controllers').controller('exportController',
 							zip.file('focusedWalletId', id);
 							zip.file('addressbook-'+fc.credentials.network, ab);
 							zip.file('light', 'true');
+							setBackupDate(null);
 							addDBAndConfToZip(function(err) {
 								if (err) return showError(err);
 								var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
@@ -235,7 +236,6 @@ angular.module('copayApp.controllers').controller('exportController',
 										connection.release();
 										if (err) return showError(err);
 										self.exporting = false;
-										setBackupDate(null);
 										$timeout(function() {
 											$rootScope.$apply();
 											notification.success(gettextCatalog.getString('Success'), gettextCatalog.getString('Export completed successfully', {}));
