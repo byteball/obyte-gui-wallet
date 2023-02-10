@@ -80,13 +80,12 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFileName = '';
 		
 		function checkBackupDate() {
-			const restoredFromBackup = config.restoredFromBackup;
 			const restoreDate = $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
-			
-			if(restoredFromBackup) {
+
+			if(config.restoredFromBackup) {
 				configService.set({
-					restoredFromBackup: null,
-					restoredFromBackupCreatedOn: restoredFromBackup,
+					restoredFromBackup: false,
+					restoredFromBackupCreatedOn: config.lastBackupDate,
 					restoreDate,
 				}, (err) => {
 					if (err) {

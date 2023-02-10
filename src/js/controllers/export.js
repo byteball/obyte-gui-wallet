@@ -157,7 +157,7 @@ angular.module('copayApp.controllers').controller('exportController',
 			return false;
 		}
 		
-		function setBackupDate(newValue) {
+		function setRestoredFromBackup(newValue) {
 			configService.set({
 				restoredFromBackup: newValue
 			}, (err) => {
@@ -196,7 +196,7 @@ angular.module('copayApp.controllers').controller('exportController',
 								zip.text('focusedWalletId', id);
 								zip.text('addressbook-'+fc.credentials.network, ab);
 								if (conf.bLight) zip.text('light', 'true');
-								setBackupDate(null);
+								setRestoredFromBackup(false);
 								addDBAndConfToZip(function(err) {
 									if (err) return showError(err);
 									zip.end(function() {
@@ -227,7 +227,7 @@ angular.module('copayApp.controllers').controller('exportController',
 							zip.file('focusedWalletId', id);
 							zip.file('addressbook-'+fc.credentials.network, ab);
 							zip.file('light', 'true');
-							setBackupDate(null);
+							setRestoredFromBackup(false);
 							addDBAndConfToZip(function(err) {
 								if (err) return showError(err);
 								var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
@@ -254,7 +254,7 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			setBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
+			setRestoredFromBackup(true);
 			setLastBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'));
 			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
 			migrateJoints(function(err) {
