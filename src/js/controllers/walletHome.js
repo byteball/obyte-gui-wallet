@@ -78,6 +78,24 @@ angular.module('copayApp.controllers')
 		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
+		
+		function checkIsWalletRestored() {
+			const restoreDate = $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+
+			if(config.restoredFromBackup) {
+				configService.set({
+					restoredFromBackup: false,
+					restoredFromBackupCreatedOn: config.lastBackupDate,
+					restoreDate,
+				}, (err) => {
+					if (err) {
+						return $scope.$emit('Local/DeviceError', err);
+					}
+				})
+			}
+		}
+
+		checkIsWalletRestored();
 
 		// donut chart
 		var drawDonutChart = function() {

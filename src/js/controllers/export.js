@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('exportController',
-	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService) {
-
+	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService, configService) {
 		var async = require('async');
 		var crypto = require('crypto');
 		var conf = require('ocore/conf');
@@ -157,6 +156,31 @@ angular.module('copayApp.controllers').controller('exportController',
 			});
 			return false;
 		}
+		
+		function setRestoredFromBackup(newValue, cb) {
+			configService.set({
+				restoredFromBackup: newValue
+			}, (err) => {
+				if (err) {
+					return $scope.$emit('Local/DeviceError', err);
+				}
+				
+				if(cb) {
+					cb();
+				}
+			})
+		}
+		
+		function setLastBackupDate(newValue, cb) {
+			configService.set({
+				lastBackupDate: newValue
+			}, (err) => {
+				if (err) {
+					return $scope.$emit('Local/DeviceError', err);
+				}
+				cb();
+			})
+		}
 
 		self.walletExportPC = function(connection) {
 			self.connection = connection;
@@ -177,9 +201,18 @@ angular.module('copayApp.controllers').controller('exportController',
 								zip.text('focusedWalletId', id);
 								zip.text('addressbook-'+fc.credentials.network, ab);
 								if (conf.bLight) zip.text('light', 'true');
+								
+								zip.setErrorCB((err) => {
+									setRestoredFromBackup(false);
+									return showError(err);
+								})
 								addDBAndConfToZip(function(err) {
-									if (err) return showError(err);
+									if (err) {
+										setRestoredFromBackup(false);
+										return showError(err);
+									}
 									zip.end(function() {
+										setRestoredFromBackup(false);
 										connection.release();
 										self.connection = null;
 										self.exporting = false;
@@ -208,10 +241,14 @@ angular.module('copayApp.controllers').controller('exportController',
 							zip.file('addressbook-'+fc.credentials.network, ab);
 							zip.file('light', 'true');
 							addDBAndConfToZip(function(err) {
-								if (err) return showError(err);
+								if (err) {
+									setRestoredFromBackup(false);
+									return showError(err);
+								}
 								var zipParams = {type: "nodebuffer", compression: 'DEFLATE', compressionOptions: {level: 9}};
 								zip.generateAsync(zipParams).then(function(zipFile) {
 									saveFile(encrypt(zipFile, self.password), function(err) {
+										setRestoredFromBackup(false);
 										connection.release();
 										if (err) return showError(err);
 										self.exporting = false;
@@ -221,6 +258,7 @@ angular.module('copayApp.controllers').controller('exportController',
 										});
 									})
 								}, function(err) {
+									setRestoredFromBackup(false);
 									showError(err);
 								})
 							});
@@ -233,16 +271,20 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.walletExport = function() {
 			self.exporting = true;
 			self.error = '';
-			// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
-			migrateJoints(function(err) {
-				if (err) return showError(err);
-				var db = require('ocore/db');
-				db.takeConnectionFromPool(function(connection) {
-					if (isCordova) {
-						self.walletExportCordova(connection);
-					} else {
-						self.walletExportPC(connection);
-					}
+			setRestoredFromBackup(true, () => {
+				setLastBackupDate($filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss'), () => {
+				// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
+					migrateJoints(function(err) {
+						if (err) return showError(err);
+						var db = require('ocore/db');
+						db.takeConnectionFromPool(function(connection) {
+							if (isCordova) {
+								self.walletExportCordova(connection);
+							} else {
+								self.walletExportPC(connection);
+							}
+						});
+					});
 				});
 			});
 		}
