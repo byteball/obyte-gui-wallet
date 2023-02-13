@@ -79,7 +79,7 @@ angular.module('copayApp.controllers')
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
 		
-		function checkBackupDate() {
+		function checkIsWalletRestored() {
 			const restoreDate = $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
 
 			if(config.restoredFromBackup) {
@@ -95,7 +95,7 @@ angular.module('copayApp.controllers')
 			}
 		}
 
-		checkBackupDate();
+		checkIsWalletRestored();
 
 		// donut chart
 		var drawDonutChart = function() {
