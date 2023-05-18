@@ -2523,7 +2523,7 @@ angular.module('copayApp.controllers')
 						if (paymentData) {
 							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
-								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
+								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], isObject: typeof paymentData[key] === 'object', readonly: true});
 							}
 						}
 					}

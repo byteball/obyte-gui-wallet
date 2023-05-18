@@ -67,7 +67,7 @@
     "@bower_components/moment": "moment/moment#>=2.19.3 <3.0.0",
     "@bower_components/ng-lodash": "rockabox/ng-lodash#0.5",
     "@bower_components/qrcode-decoder-js": "colkito/qrcode-decoder-js#*",
-    "@bower_components/qrcode-generator": "https://github.com/monospaced/bower-qrcode-generator.git#0.0.2",
+    "@bower_components/qrcode-generator": "https://github.com/monospaced/bower-qrcode-generator.git#0.2.0",
     "@bower_components/ui-router-extras": "christopherthielen/ui-router-extras#0.1",
     "async": "^2.6.1",
     "bip38": "^1.4.0",
