@@ -813,9 +813,9 @@ angular.module('copayApp.controllers')
 		};
 
 		this.copyAddress = function(addr) {
+			notification.success(gettextCatalog.getString('Copied to clipboard'));
 			if (isCordova) {
-				window.cordova.plugins.clipboard.copy(addr);
-				window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
+				cordova.plugins.clipboard.copy(addr);
 			}
 			else if (electron.isDefined()) {
 				electron.writeToClipboard(addr);

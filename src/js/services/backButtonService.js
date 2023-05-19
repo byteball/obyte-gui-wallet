@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('copayApp.services').factory('backButton', function($log, $rootScope, gettextCatalog, $deepStateRedirect, $document, $timeout, go, $state, lodash) {
+angular.module('copayApp.services').factory('backButton', function($log, $rootScope, notification, gettextCatalog, $deepStateRedirect, $document, $timeout, go, $state, lodash) {
 	var root = {};
 	
 	root.menuOpened = false;
@@ -70,7 +70,7 @@ angular.module('copayApp.services').factory('backButton', function($log, $rootSc
 		}
 		else {
 			shownExitMessage = true;
-			window.plugins.toast.showShortBottom(gettextCatalog.getString('Press again to exit'));
+			notification.success(gettextCatalog.getString('Press again to exit'));
 			$timeout(function() {
 				shownExitMessage = false;
 			}, 2000);
