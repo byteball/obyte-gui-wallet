@@ -142,7 +142,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset.</div>
 
 		<div class="title" translate>Arbiter address</div>
-		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/')" translate>Where to get arbiter address?</a></div>
+		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/arbiters')" translate>Where to get arbiter address?</a></div>
 		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()"/>
 
 		<span class="title" translate>Title of contract</span>
