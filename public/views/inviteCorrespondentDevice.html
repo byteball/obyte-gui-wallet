@@ -1,3 +1,47 @@
+<style>
+	.c-tooltip {
+		position: relative;
+		display: block;
+	}
+	
+	.c-tooltip .tooltiptext {
+		display: none;
+		width: 100px;
+		background-color: #343434;
+		color: #fff;
+		text-align: center;
+		border-radius: 100px;
+		padding: 5px 0;
+		position: absolute;
+		margin-left: auto;
+		margin-right: auto;
+		top: -30px;
+		left: 0;
+		right: 0;
+		z-index: 1;
+		font-size: 13px;
+	}
+
+	.c-tooltip .tooltiptext::after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		margin-left: -5px;
+		border-width: 5px;
+		border-style: solid;
+		border-color: #343434 transparent transparent transparent;
+	}
+
+	.c-tooltip:hover .tooltiptext {
+		display: block;
+	}
+
+	.copiedToClipboardBar {
+		bottom: 250px
+	}
+</style>
+
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
@@ -6,21 +50,28 @@
 
 
 
-<div ng-controller="inviteCorrespondentDeviceController" style="position: absolute; width: 100%; top:45px; bottom: 37px; overflow: scroll;">
+<div ng-controller="inviteCorrespondentDeviceController as home" style="position: absolute; width: 100%; top:45px; bottom: 37px; overflow: scroll;">
 
-    
+	<div class="copiedToClipboardBar" ng-show="home.isShownCopiedMessage">
+		<div class="copiedToClipboardBar-content" ng-style="{'background-color':'#343434'}">
+			<span translate>Copied to clipboard</span>
+		</div>
+	</div>
 
     <div class="m20b">
 
       <div class="text-center">
         <div class="columns m10t" >
-            <div ng-click="copyCode()">
+            <div ng-click="copyCode()" style="cursor: pointer">
                 <qrcode size="220" version="{{qr_version}}" data="{{protocol}}:{{code}}"></qrcode>
-            </div>
-            <div class="m10t">
-				<span translate>Scan the above QR code using the other device, or send this pairing code to the other device:</span>
-                <div class="secret m10t m20b enable_text_select" ng-click="copyCode()">{{code}}</div>
-            </div>
+				<div class="m10t">
+					<span translate>Scan the above QR code using the other device, or send this pairing code to the other device:</span>
+					<div class="c-tooltip">
+						<div class="tooltiptext" translate>Click to copy</div>
+						<div class="secret m10t m20b enable_text_select">{{code}}</div>
+					</div>
+				</div>
+			</div>
 			<div class="m10t text-center" ng-show="index.isCordova">
 				<span class="button outline dark-gray tiny round" ng-click="shareCode()">
 					<i class="fi-share"></i>

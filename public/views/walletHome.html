@@ -60,7 +60,7 @@ input.datafeed_input {
 }
 
 .c-tooltip .tooltiptext {
-	visibility: hidden;
+	display: none;
 	width: 100px;
 	background-color: #343434;
 	color: #fff;
@@ -68,10 +68,12 @@ input.datafeed_input {
 	border-radius: 100px;
 	padding: 5px 0;
 	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: -30px;
+	left: 0;
+	right: 0;
 	z-index: 1;
-	bottom: 105%;
-	left: 50%;
-	margin-left: -60px;
 	font-size: 13px;
 }
 
@@ -87,7 +89,7 @@ input.datafeed_input {
 }
 
 .c-tooltip:hover .tooltiptext {
-	visibility: visible;
+	display: block;
 }
 </style>
 
@@ -328,11 +330,10 @@ input.datafeed_input {
                   </div>
                 </div>
                 <div class="m10t c-tooltip">
+				  <div class="tooltiptext" translate>Click to copy</div>
                   <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
-
                   </h4>
-				  <span class="tooltiptext" translate>Click to copy</span>
                 </div>
               </div>
             </div>
