@@ -3,10 +3,11 @@
 var eventBus = require('ocore/event_bus.js');
 
 angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceController',
-  function($scope, $timeout, profileService, go, isCordova, correspondentListService, gettextCatalog) {
-    
+  function($scope, $rootScope, $timeout, profileService, go, isCordova, correspondentListService, gettextCatalog, electron) {	
     var self = this;
     var indexScope = $scope.index;
+
+	self.isShownCopiedMessage = false;
     
     function onPaired(peer_address){
         correspondentListService.setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
@@ -26,12 +27,18 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
     });
     
     $scope.copyCode = function() {
-        console.log("copyCode");
-        //$scope.$digest();
-        if (isCordova) {
-            window.cordova.plugins.clipboard.copy($scope.code);
-            window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
-        }
+		if (isCordova) {
+			window.cordova.plugins.clipboard.copy($scope.code);
+			window.plugins.toast.showShortCenter(gettextCatalog.getString('Copied to clipboard'));
+		} else if (electron.isDefined()) {
+			electron.writeToClipboard($scope.code);
+			self.isShownCopiedMessage = true;
+
+			setTimeout(() => {
+				self.isShownCopiedMessage = false;
+				$rootScope.$apply();
+			}, 1250);
+		}
     };
 
     $scope.onTextClick = function ($event) {

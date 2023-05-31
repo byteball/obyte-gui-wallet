@@ -53,42 +53,6 @@ input.datafeed_input {
 	max-width: 500px;
 	margin: 0 auto;
 }
-
-.c-tooltip {
-	position: relative;
-	display: inline-block;
-}
-
-.c-tooltip .tooltiptext {
-	visibility: hidden;
-	width: 100px;
-	background-color: #343434;
-	color: #fff;
-	text-align: center;
-	border-radius: 100px;
-	padding: 5px 0;
-	position: absolute;
-	z-index: 1;
-	bottom: 105%;
-	left: 50%;
-	margin-left: -60px;
-	font-size: 13px;
-}
-
-.c-tooltip .tooltiptext::after {
-	content: "";
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: #343434 transparent transparent transparent;
-}
-
-.c-tooltip:hover .tooltiptext {
-	visibility: visible;
-}
 </style>
 
 
@@ -328,11 +292,10 @@ input.datafeed_input {
                   </div>
                 </div>
                 <div class="m10t c-tooltip">
+				  <div class="tooltiptext" translate>Click to copy</div>
                   <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
-
                   </h4>
-				  <span class="tooltiptext" translate>Click to copy</span>
                 </div>
               </div>
             </div>
