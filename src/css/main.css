@@ -2268,6 +2268,7 @@ not screen and (min-resolution: 192dpi) {
 }
 
 .c-tooltip {
+	display: block;
 	position: relative;
 }
 

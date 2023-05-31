@@ -1,8 +1,4 @@
 <style>
-	.c-tooltip {
-		display: block;
-	}
-
 	.copiedToClipboardBar {
 		bottom: 250px
 	}
@@ -16,9 +12,9 @@
 
 
 
-<div ng-controller="inviteCorrespondentDeviceController as home" style="position: absolute; width: 100%; top:45px; bottom: 37px; overflow: scroll;">
+<div ng-controller="inviteCorrespondentDeviceController as inviteCorrespondent" style="position: absolute; width: 100%; top:45px; bottom: 37px; overflow: scroll;">
 
-	<div class="copiedToClipboardBar" ng-show="home.isShownCopiedMessage">
+	<div class="copiedToClipboardBar" ng-show="inviteCorrespondent.isShownCopiedMessage">
 		<div class="copiedToClipboardBar-content" ng-style="{'background-color':'#343434'}">
 			<span translate>Copied to clipboard</span>
 		</div>
