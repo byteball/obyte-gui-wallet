@@ -211,7 +211,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
-			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
+			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the counterparty"}];
 			$scope.arrPeerPaysTos = [];
 			if (!fc.isSingleAddress)
 				$scope.arrPeerPaysTos.push({value: 'me', display_value: "to me"});
@@ -303,7 +303,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					peer_amount = Math.round(peer_amount);
 					
 					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
-						$scope.error = "The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.";
+						$scope.error = "The amounts are equal, you cannot require the counterparty to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the counterparty to pay their half to you.";
 						$timeout(function() {
 							$scope.$digest();
 						}, 1);

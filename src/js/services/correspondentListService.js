@@ -658,7 +658,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
 			if (assocPeerNamesByAddress[address])
-				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
+				return '<span title="counterparty address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){

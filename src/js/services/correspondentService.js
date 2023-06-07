@@ -217,7 +217,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		};
 
 		if (profileService.focusedClient.isPrivKeyEncrypted()) {
-			profileService.unlockFC({message: "Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
+			profileService.unlockFC({message: "Counterparty accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
 				if (err){
 					showError(err.message);
 					return;
@@ -285,7 +285,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
 			}
 			if (value === 'dispute_resolved') {
-				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
+				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your counterparty."); 
 				text += " Unit with the resolution was posted into DAG: https://"+testnet+"explorer.obyte.org/#" + unit + "\n\n" + 
 					(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 						"You can appeal to arbiter's decision from the contract view.");
@@ -816,7 +816,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$rootScope.$emit("NewOutgoingTx");
 									var testnet = constants.version.match(/t$/) ? "testnet" : "";
-									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the counterparty.');
 									$modalInstance.dismiss();
 							});
 						});
