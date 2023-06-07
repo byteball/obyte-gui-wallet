@@ -578,7 +578,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.form = {
 				ttl: 24*7,
-				me_is_payer: true,
+				me_is_payer: false,
 				amount: null,
 				asset: 'base'
 			};
