@@ -618,6 +618,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					info.displayName = 'of '+b.asset.substr(0, 4);
 				return info;
 			});
+			if ($scope.arrAssetInfos.find(info => info.asset == configService.USDC_ASSET)) // USDC as default asset
+				$scope.form.asset = configService.USDC_ASSET;
 
 			readMyPaymentAddress(fc, function(my_address) {
 				$scope.my_address = my_address;
