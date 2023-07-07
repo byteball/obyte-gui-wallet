@@ -117,6 +117,10 @@ form[name="prosaicContractForm"] {
 			<div class="address"><span translate>address</span>: <a ng-href="{{arbstore_url}}/arbiters/{{arbiter_address}}" ng-click="$root.openExternalLink($event.target.getAttribute('href'));$event.preventDefault()">{{arbiter_address}}</a></div>
 		</div>
 		<div class="description p10l" ng-if="status=='pending' && isIncoming"><span translate>By selecting the arbiter you agree to their pricing and terms specified in their listing and to the terms of the ArbStore they are listed on</span> <a class="help-link" ng-if="terms_url" ng-click="$root.openExternalLink(terms_url)" translate>{{terms_url}}</a></div>
+		<div class="p10l m5t" style="display: table; width: 100%;" ng-if="status=='pending' && isIncoming">
+			<div style="display: table-cell; vertical-align: middle;" translate>I agree with the suggested arbiter choice</div>
+			<switch ng-model="form.arbiterApproved" class="green" style="display: table-cell;"></switch>
+		</div>
 
 	<h3 class="title" translate>Amount</h3>
 	<span class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;">{{amountStr}} <i ng-if="asset">{{assetMetadata ? '' : 'of ' + asset}}</i></span>
@@ -130,13 +134,13 @@ form[name="prosaicContractForm"] {
 	<span ng-if="!(!my_contact_info && status == 'pending' && isIncoming)" class="enable_text_select p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;line-height: 30px;" translate>My contacts:</span><span class="enable_text_select"> {{my_contact_info}}</span>
 	<div class="p10l" ng-if="!my_contact_info && status == 'pending' && isIncoming">
 		<span translate>My contacts:</span>
-		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.my_contact_info" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
-		<div class="help-text" translate>It will be shared with the counterparty and arbiter as a backup method to reach you.</div>
+		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" style="margin-bottom: 0px;" ng-model="form.my_contact_info" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
+		<div class="description" translate>They will be shared with the counterparty and arbiter as a backup method to reach you.</div>
 	</div>
 
 	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'signed' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check" translate>expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
-	<div ng-show="proofBlockExpanded" class="description"><br>
+	<div ng-show="proofBlockExpanded" class="description p10l"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
 		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
@@ -161,14 +165,18 @@ form[name="prosaicContractForm"] {
 	</div>
 
 	<div ng-if="error" class="row columns m20b">
-			<span class="has-error size-12">
+		<span class="has-error size-12">
 			{{error|translate}}
 		</span>
 	</div>
 
+	<div class="row columns m20b m20t has-error size-12" ng-if="(status == 'pending' || status === 'accepted') && isIncoming && !form.arbiterApproved" translate>
+		Please review and accept the arbiter choice above
+	</div>
+
 	<div class="row m20t" ng-if="(status == 'pending' || status === 'accepted') && isIncoming && index.isEnoughSignersSelected()">
 		<div class="columns" ng-class="{'small-6': status == 'pending', 'small-12': status != 'pending'}">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()" ng-disabled="bWorking">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()" ng-disabled="bWorking || !form.arbiterApproved">
 				<i class="fi-check"></i> <span>{{(confirm_label || (status == 'pending' ? 'Accept' : 'Retry signing'))|translate}}</span>
 			</button>
 		</div>

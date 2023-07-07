@@ -560,6 +560,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
+					$scope.form.arbiterApproved = false;
 					arbiters.getArbstoreInfo(objContract.arbiter_address, (err, info) => {
 						if (err) {
 							$scope.error = err;
