@@ -654,9 +654,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								$rootScope.$apply();
 							});
 						});
-						device.requestFromHub("hub/get_arbstore_url", objContract.arbiter_address, function(err, url){
-							if (url)
-								$scope.arbstore_url = url;
+						arbiters.getArbstoreInfo(objContract.arbiter_address, (err, arbstoreInfo) => {
+							if (err) {
+								$scope.error = err;
+							}
+							else {
+								$scope.arbstore_url = arbstoreInfo.url;
+								$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';;
+							}
 							$timeout(function() {
 								$rootScope.$apply();
 							});

@@ -143,7 +143,9 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 
 		<div class="title" translate>Arbiter address</div>
 		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/arbiters')" translate>Where to get arbiter address?</a></div>
-		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()"/>
+		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()" style="margin-bottom: 0px;" />
+		<div class="help-text" ng-if="terms_url" style="margin-bottom: 5px;">{{arbiterName || "Anonymous arbiter"}}</div>
+		<div class="help-text"><span translate>By selecting the arbiter you agree to their pricing and terms specified in their listing and to the terms of the ArbStore they are listed on</span> <a class="help-link" ng-if="terms_url" ng-click="$root.openExternalLink(terms_url)" translate>{{terms_url}}</a></div>
 
 		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>

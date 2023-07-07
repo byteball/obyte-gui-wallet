@@ -585,16 +585,30 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.requestArbiterInfo = () => {
 				$scope.loading = true;
 				$scope.ArbStoreCut = null;
+				$scope.terms_url = null;
+				$scope.arbiterName = null;
 				$scope.error = null;
-				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, info) => {
+				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, arbstoreInfo) => {
 					$scope.loading = false;
 					if (err) {
 						$scope.error = err;
-					} else {
-						$scope.ArbStoreCut = info.cut;
+						$timeout(function () {
+							$rootScope.$apply();
+						});
+						return;
 					}
-					$timeout(function() {
-						$rootScope.$apply();
+					$scope.ArbStoreCut = arbstoreInfo.cut;
+					$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';
+					arbiters.getInfo($scope.form.arbiterAddress, (err, arbiterInfo) => {
+						if (err) {
+							$scope.error = err;
+						}
+						else {
+							$scope.arbiterName = arbiterInfo.real_name;
+						}
+						$timeout(function() {
+							$rootScope.$apply();
+						});
 					});
 				});
 			};
