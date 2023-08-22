@@ -309,6 +309,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						}, 1);
 						return;
 					}
+					$scope.bWorking = true;
 					
 					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
 					fnReadMyAddress(fc, function(my_address){
@@ -324,6 +325,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								$timeout(function() {
 									$scope.$digest();
 								}, 1);
+								$scope.bWorking = false;
 								return;
 							}
 							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
@@ -515,6 +517,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					console.log('offerProsaicContract');
 					$scope.error = '';
 
+					if ($scope.bWorking)
+						return console.log("already working");
+					$scope.bWorking = true;
+
 					var contract_text = $scope.form.contractText;
 					var contract_title = $scope.form.contractTitle;
 					var ttl = $scope.form.ttl;
@@ -536,6 +542,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							device.readCorrespondent(correspondent.device_address, function(correspondent) {
 								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 							});
+							$scope.bWorking = false;
 							$modalInstance.dismiss('sent');
 						});
 					});
@@ -683,6 +690,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					}
 					if (asset == 'base') asset = null;
 
+					if ($scope.bWorking)
+						return console.log("already working");
+					$scope.bWorking = true;
+
 					var contactInfo = $scope.form.contactInfo;
 					if (contactInfo) {
 						configService.set({my_contact_info: contactInfo}, function(){});
@@ -711,6 +722,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							my_contact_info: contactInfo
 						}, function(objContract) {
 							correspondentService.addContractEventIntoChat(objContract, 'offer', false);
+							$scope.bWorking = false;
 							$modalInstance.dismiss('sent');
 						});
 						arbiters.getInfo(arbiter_address);
