@@ -16,9 +16,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
 		var privateProfile = require("ocore/private_profile.js");
-		scope.my_name = "NAME UNKNOWN";
+		scope.my_name = "NAME NOT VERIFIED";
 		scope.my_attestor = {};
-		scope.peer_name = "NAME UNKNOWN";
+		scope.peer_name = "NAME NOT VERIFIED";
 		scope.peer_attestor = {};
 		async.series([function(cb2) {
 			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address;}), function(profile) {
