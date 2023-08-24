@@ -80,6 +80,7 @@ form[name="prosaicContractForm"] {
 
 	<h3 class="person title" translate>Plaintiff – <i translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
 		<div class="name p10l">
+			<div class="attestor" ng-if="plaintiff_party_name"><span class="enable_text_select">{{plaintiff_party_name}}</span></div>
 			<div class="attestor"><span translate>address</span>: <span class="enable_text_select">{{plaintiff_address}}</span></div>
 			<div class="attestor">
 				<a ng-click="pair(plaintiff_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
@@ -87,6 +88,7 @@ form[name="prosaicContractForm"] {
 		</div>
 	<h3 class="person title" translate>Respondent – <i translate>{{plaintiff_is_payer ? 'Seller' : 'Buyer'}}</i></h3>
 		<div class="name p10l">
+			<div class="attestor" ng-if="respondent_party_name"><span class="enable_text_select">{{respondent_party_name}}</span></div>
 			<div class="attestor"><span translate>address</span>: <span class="enable_text_select">{{respondent_address}}</span></div>
 			<div class="attestor">
 				<a ng-click="pair(respondent_pairing_code)" translate>pair</a> – <span translate>start chat with this person</span>
@@ -107,10 +109,10 @@ form[name="prosaicContractForm"] {
 	
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
-		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
+		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from 8 concatenated components: sha256(title + text + creation_date + payer_name + arbiter_address + payee_name + amount + asset) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
 		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard()">copy text</a>
-		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}</textarea>
+		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}{{payer_name}}{{arbiter_address}}{{payee_name}}{{amount}}{{asset}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
 		<span ng-show="validity_checked">integrity check: 
@@ -131,7 +133,7 @@ form[name="prosaicContractForm"] {
 
 	<div ng-if="status === 'pending'" class="m20t">
 		<h3 class="title" translate>Resolve contract</h3>
-		<div class="attestor p10l" translate>post your final decision, marking one of the side as a winner</div>
+		<div class="attestor p10l" translate>post your final decision, marking one of the sides the winner</div>
 		<div class="large-6 medium-6 small-6 columns center m10t">
 			<button class="button expand round" ng-class="yes_button_class" ng-click="resolve(plaintiff_address)">
 				<span class="tu" translate>Plaintiff</span>

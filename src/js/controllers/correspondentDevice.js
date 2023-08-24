@@ -675,6 +675,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var ttl = $scope.form.ttl;
 					var arbiter_address = $scope.form.arbiterAddress;
 					var me_is_payer = $scope.form.me_is_payer;
+					var my_party_name = $scope.form.myPartyName;
+					var peer_party_name = $scope.form.peerPartyName;
 					var amount = $scope.form.amount;
 					var asset = $scope.form.asset;
 					if (asset === 'base')
@@ -713,6 +715,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							my_address: my_address,
 							arbiter_address: arbiter_address,
 							me_is_payer: me_is_payer,
+							my_party_name,
+							peer_party_name,
 							amount: amount,
 							asset: asset,
 							ttl: ttl,

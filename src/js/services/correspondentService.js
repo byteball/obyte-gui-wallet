@@ -267,7 +267,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, "event", true);	
 			}
 			if (value === 'in_dispute') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
+				addContractEventIntoChat(objContract, 'event', true, 'A dispute has just been opened by your counterparty. The arbiter has been notified. Wait for them to get online and pair with both contract parties.');
 			}
 			if (value === 'in_appeal') {
 				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties and the arbiter.");	
@@ -553,6 +553,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_address = objContract.peer_address;
 					$scope.peer_device_address = objContract.peer_device_address;
 					$scope.me_is_payer = objContract.me_is_payer;
+					$scope.my_party_name = objContract.my_party_name;
+					$scope.peer_party_name = objContract.peer_party_name;
+					$scope.payer_name = (objContract.me_is_payer ? objContract.my_party_name : objContract.peer_party_name) || '';
+					$scope.payee_name = (objContract.me_is_payer ? objContract.peer_party_name : objContract.my_party_name) || '';
 					$scope.amount = objContract.amount;
 					$scope.asset = objContract.asset;
 					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
@@ -895,7 +899,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								if (err) {
 									return setError(err);
 								} else {
-									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+									addContractEventIntoChat(objContract, 'event', false, "You have just opened a dispute in this contract. Arbiter " + objArbiter.real_name + " has been notified. Wait for them to get online and pair with both contract parties. After the arbiter takes a look at the contract and makes sure it is within their areas of expertise, you'll get a message from the ArbStore bot asking to pay for the arbiter's work.");
 									$modalInstance.dismiss();
 								}
 							});	
@@ -1089,12 +1093,26 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.arbiter_address = objDispute.arbiter_address;
 				$scope.contract_hash = objDispute.contract_hash;
 				$scope.plaintiff_is_payer = objDispute.plaintiff_is_payer;
+				$scope.plaintiff_party_name = objDispute.contract_content.plaintiff_party_name;
+				$scope.respondent_party_name = objDispute.contract_content.respondent_party_name;
+				$scope.payer_name = (objDispute.plaintiff_is_payer ? objDispute.contract_content.plaintiff_party_name : objDispute.contract_content.respondent_party_name) || '';
+				$scope.payee_name = (objDispute.plaintiff_is_payer ? objDispute.contract_content.respondent_party_name : objDispute.contract_content.plaintiff_party_name) || '';
 				$scope.unit = objDispute.contract_unit;
 				$scope.isMobile = isMobile.any();
 				$scope.amount = objDispute.amount;
 				$scope.asset = objDispute.asset;
 				$scope.status = objDispute.status;
-				$scope.calculated_hash = arbiter_contract.getHash($scope);
+				$scope.calculated_hash = arbiter_contract.getHash({
+					title: objDispute.contract_content.title,
+					text: objDispute.contract_content.text,
+					creation_date: objDispute.contract_content.creation_date,
+					arbiter_address: objDispute.arbiter_address,
+					amount: objDispute.amount,
+					asset: objDispute.asset,
+					me_is_payer: objDispute.plaintiff_is_payer,
+					my_party_name: objDispute.contract_content.plaintiff_party_name,
+					peer_party_name: objDispute.contract_content.respondent_party_name,
+				});
 				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset || "base") : 'private asset';
 				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
@@ -1173,7 +1191,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				};
 
 				$scope.resolve = function(address) {
-					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
+					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as winner?', {
 						ifYes: function ifYes(){
 							if (profileService.focusedClient.isPrivKeyEncrypted()) {
 								profileService.unlockFC(null, function(err) {

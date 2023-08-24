@@ -94,9 +94,10 @@ form[name="prosaicContractForm"] {
 
 	<h3 class="person title" translate>Me</h3>
 		<div class="name p10l">
-			<span class="person_name enable_text_select">{{my_name}}</span>
-			<div class="address" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
-			<div class="address enable_text_select"><span translate>address</span>: {{my_address}}</div>
+			<div ng-if="my_party_name" class="person_name enable_text_select">{{my_party_name}}</div>
+			<span ng-if="my_party_name" translate>Signer:</span> <span class="person_name enable_text_select">{{my_name}}</span>
+			<div class="address enable_text_select"><span ng-if="my_party_name" translate>signer</span> <span translate>address</span>: {{my_address}}</div>
+			<div class="address" ng-show="my_attestor.address"><span ng-if="my_party_name" translate>signer</span> <span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by a trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>attested by a trusted attestor</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<li class="tumbler m15t">
 				<span translate class="m10r side" ng-class="{active: !me_is_payer}">Seller</span>
 		        <switch ng-model="me_is_payer" class="blue" disabled="true"></switch>
@@ -107,9 +108,10 @@ form[name="prosaicContractForm"] {
 		</div>
 	<h3 class="person title" translate>Counterparty</h3>
 		<div class="name p10l">
-			<span class="person_name enable_text_select">{{peer_name}}</span>
-			<div class="address" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>attested by trusted attestor</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
-			<div class="address enable_text_select"><span translate>address</span>: {{peer_address}}</div>
+			<div ng-if="peer_party_name" class="person_name enable_text_select">{{peer_party_name}}</div>
+			<span ng-if="peer_party_name" translate>Signer:</span> <span class="person_name enable_text_select">{{peer_name}}</span>
+			<div class="address enable_text_select"><span ng-if="peer_party_name" translate>signer</span> <span translate>address</span>: {{peer_address}}</div>
+			<div class="address" ng-show="peer_attestor.address"><span ng-if="peer_party_name" translate>signer</span> <span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by a trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>attested by a trusted attestor</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 		</div>
 	<h3 class="person title" translate>Arbiter</h3>
 		<div class="name p10l">
@@ -142,18 +144,18 @@ form[name="prosaicContractForm"] {
 	
 	<div ng-show="proofBlockExpanded" class="description p10l"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
-		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from three concatenated components: sha256(title+text+creation_date) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
+		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from 8 concatenated components: sha256(title + text + creation_date + payer_name + arbiter_address + payee_name + amount + asset) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
-		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard()" ng-hide="hash === calculated_hash_V1">copy text</a>
-		<textarea readonly="readonly" id="sourcetext" ng-hide="hash === calculated_hash_V1">{{title}}{{text}}{{creation_date}}</textarea>
+		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard()">copy text</a>
+		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}{{payer_name}}{{arbiter_address}}{{payee_name}}{{amount}}{{asset}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
 		<span ng-show="validity_checked">integrity check: 
-			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="(hash === calculated_hash || hash === calculated_hash_V1) && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="(hash === calculated_hash || hash === calculated_hash_V1) && hash === hash_inside_unit" translate>valid</span>
-			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="(hash !== calculated_hash && hash !== calculated_hash_V1) || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="(hash !== calculated_hash && hash !== calculated_hash_V1) || hash !== hash_inside_unit" translate>not valid</span>
+			<i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="(hash === calculated_hash) && hash === hash_inside_unit" title="{{'valid' | translate}}"></i><span class="mobile" ng-show="(hash === calculated_hash) && hash === hash_inside_unit" translate>valid</span>
+			<i class="validation-icon icon-close-circle size-14 has-error" ng-show="(hash !== calculated_hash) || hash !== hash_inside_unit" title="{{'not valid' | translate}}"></i><span class="mobile" ng-show="(hash !== calculated_hash) || hash !== hash_inside_unit" translate>not valid</span>
 		</span><br><br>
 
-		<span ng-show="validity_checked"><span class="text-bold" translate>calculated hash:</span> {{hash == calculated_hash ? calculated_hash : calculated_hash_V1}}</span><br>
+		<span ng-show="validity_checked"><span class="text-bold" translate>calculated hash:</span> {{calculated_hash}}</span><br>
 		<span ng-show="validity_checked"><span class="text-bold" translate>hash published in DAG:</span> {{hash_inside_unit}}</span>
 	</div>
 
@@ -170,13 +172,13 @@ form[name="prosaicContractForm"] {
 		</span>
 	</div>
 
-	<div class="row columns m20b m20t has-error size-12" ng-if="(status == 'pending' || status === 'accepted') && isIncoming && !form.arbiterApproved" translate>
+	<div class="row columns m20b m20t has-error size-12" ng-if="(status == 'pending') && isIncoming && !form.arbiterApproved" translate>
 		Please review and accept the arbiter choice above
 	</div>
 
 	<div class="row m20t" ng-if="(status == 'pending' || status === 'accepted') && isIncoming && index.isEnoughSignersSelected()">
 		<div class="columns" ng-class="{'small-6': status == 'pending', 'small-12': status != 'pending'}">
-			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()" ng-disabled="bWorking || !form.arbiterApproved">
+			<button class="button expand round" ng-class="yes_button_class" ng-click="accept()" ng-disabled="bWorking || !form.arbiterApproved && status == 'pending'">
 				<i class="fi-check"></i> <span>{{(confirm_label || (status == 'pending' ? 'Accept' : 'Retry signing'))|translate}}</span>
 			</button>
 		</div>
