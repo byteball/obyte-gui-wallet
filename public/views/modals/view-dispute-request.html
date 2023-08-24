@@ -78,6 +78,9 @@ form[name="prosaicContractForm"] {
 	<h3 class="person title" translate>Contract hash</h3>
 	<div class="attestor p10l enable_text_select">{{contract_hash}}</div>
 
+	<h3 class="person title" translate>Contract address</h3>
+	<div class="attestor p10l enable_text_select"><a ng-click="openInExplorer(shared_address)">{{shared_address}}</a></div>
+
 	<h3 class="person title" translate>Plaintiff – <i translate>{{plaintiff_is_payer ? 'Buyer' : 'Seller'}}</i></h3>
 		<div class="name p10l">
 			<div class="attestor" ng-if="plaintiff_party_name"><span class="enable_text_select">{{plaintiff_party_name}}</span></div>
@@ -105,7 +108,7 @@ form[name="prosaicContractForm"] {
 	<span class="p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Respondent contacts: <span class="enable_text_select">{{respondent_contact_info}}</span></span><br>
 	<span class="p10l" style="width: 100%; word-wrap: break-word;white-space: pre-wrap;" >Plaintiff contacts: <span class="enable_text_select">{{plaintiff_contact_info}}</span></span>
 
-	<h3 class="unit"><span translate>Proof of contract signing</span>: <span ng-click="expandProofBlock()" class="validation_check">expand</span></h3>
+	<h3 class="unit m10t"><span translate>Proof of contract signing</span>: <span ng-click="expandProofBlock()" class="validation_check">expand</span></h3>
 	
 	<div ng-show="proofBlockExpanded" class="description"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>

@@ -548,6 +548,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.status = objContract.status;
 					$scope.creation_date = objContract.creation_date;
 					$scope.hash = objContract.hash;
+					$scope.shared_address = objContract.shared_address;
 					$scope.calculated_hash = arbiter_contract.getHash(objContract);
 					$scope.my_address = objContract.my_address;
 					$scope.peer_address = objContract.peer_address;
@@ -1133,6 +1134,18 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				}
 
 				if (objDispute.contract_unit) {
+					storage.readUnit(objDispute.contract_unit, objUnit => {
+						if (!objUnit)
+							return console.log("contract unit " + objDispute.contract_unit + ' not found');
+						const addresses = objUnit.authors.map(author => author.address);
+						const non_party_authors = addresses.filter(a => a !== objDispute.plaintiff_address && a !== objDispute.respondent_address);
+						if (non_party_authors.length !== 1)
+							return console.log("unexpected non-party authors", non_party_authors);
+						$scope.shared_address = non_party_authors[0];
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
 					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.contract_unit], function(rows) {
 						if (!rows.length)
 							return;

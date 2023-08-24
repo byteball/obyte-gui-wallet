@@ -9,6 +9,9 @@
 	clear: both;
 	font-size: 11px;
 }
+.contract-attrs {
+	font-size: 13px;
+}
 .w40 {
 	width: 40px !important;
 }
@@ -140,7 +143,15 @@ form[name="prosaicContractForm"] {
 		<div class="description" translate>They will be shared with the counterparty and arbiter as a backup method to reach you.</div>
 	</div>
 
-	<h3 class="unit" ng-if="status === 'accepted' || status === 'paid' || status === 'signed' || status === 'cancelled' || status === 'completed' || status === 'in_dispute' || status === 'dispute_resolved'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check" translate>expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
+	<div ng-if="unit" class="">
+		<h3 class="title" translate>Contract hash</h3>
+		<div class="p10l contract-attrs enable_text_select">{{hash}}</div>
+
+		<h3 class="title" translate>Contract address</h3>
+		<div class="p10l contract-attrs enable_text_select"><a ng-click="openInExplorer(shared_address)">{{shared_address}}</a></div>
+	</div>
+
+	<h3 class="unit m10t" ng-if="status !== 'pending' && status !== 'revoked' && status !== 'declined'"><span translate>Proof of contract signing</span>: <span ng-if="unit" ng-click="expandProofBlock()" class="validation_check" translate>expand</span><span translate ng-if="!unit">the contract is not signed yet</span></h3>
 	
 	<div ng-show="proofBlockExpanded" class="description p10l"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
