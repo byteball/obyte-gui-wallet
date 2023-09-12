@@ -862,9 +862,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 
-	function openInExplorer(unit) {
+	function openInExplorer(unit, type) {
 		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
-		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+		const path = type ? (type + '/') : '#';
+		var url = 'https://' + testnet + 'explorer.obyte.org/' + path + unit;
 		go.openExternalLink(url);
 	};
 
