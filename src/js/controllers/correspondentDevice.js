@@ -75,7 +75,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         }
 	};
 
-	if (correspondent.device_address) {
+	if (correspondent && correspondent.device_address) {
 		$scope.$watch("newMessagesCount['" + correspondent.device_address + "']", function (counter) {
 			if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
 				$scope.newMessagesCount[$scope.correspondent.device_address] = 0;
