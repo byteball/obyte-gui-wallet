@@ -108,7 +108,7 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
-	cordova plugin add cordova-plugin-device-name@1.3.2
+	cordova plugin add cordova-plugin-device-name
 	checkOK
 	cordova plugin add https://github.com/havesource/cordova-plugin-push
 	checkOK
