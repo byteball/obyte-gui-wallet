@@ -1588,6 +1588,27 @@ input.ng-invalid-match, input.ng-invalid-match:focus {
   border-radius: 3px;
 }
 
+.copiedToClipboardBar {
+  left: 0;
+  width: 100%;
+  bottom: 300px;
+  position: absolute;
+  z-index: 1020;
+}
+
+.copiedToClipboardBar-content {
+  background: #213140;
+  text-align: center;
+  max-width: 16.5rem;
+  max-height: 3.5rem;
+  margin: auto;
+  color: #fff;
+  padding: 0.5rem;
+  font-size: 13px;
+  opacity: 0.8;
+  border-radius: 1000px;
+}
+
 /*/////////////////// SPINNER ////////////////////*/
 
 #history .spinner, #receive .spinner, #send .spinner {
@@ -2244,4 +2265,42 @@ not screen and (min-resolution: 192dpi) {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+.c-tooltip {
+	display: block;
+	position: relative;
+}
+
+.c-tooltip .tooltiptext {
+	display: none;
+	width: 100px;
+	background-color: #343434;
+	color: #fff;
+	text-align: center;
+	border-radius: 100px;
+	padding: 5px 0;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	top: -30px;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	font-size: 13px;
+}
+
+.c-tooltip .tooltiptext::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #343434 transparent transparent transparent;
+}
+
+.c-tooltip:hover .tooltiptext {
+	display: block;
 }

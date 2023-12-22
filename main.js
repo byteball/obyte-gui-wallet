@@ -156,8 +156,16 @@ async function createWindow () {
 	mainWindow.on('blur', () => {
 		mainWindow.webContents.send('blur');
 	});
+	let badgeTs = 0;
 	ipcMain.on('update-badge', (event, count) => {
-		app.setBadgeCount(count);
+		if (Date.now() - badgeTs < 100 && process.platform === 'win32')
+			setTimeout(() => {
+				app.setBadgeCount(count);
+				badgeTs = Date.now();
+			}, 100);
+		else
+			app.setBadgeCount(count);
+		badgeTs = Date.now();
 	});
 	ipcMain.on('relaunch', () => {
 		app.relaunch();

@@ -134,6 +134,24 @@
       </div>
       <div translate>Recover with seed words</div>
     </li>
+	<li ng-conf>
+	  <span translate>Last backup date</span>
+	  <span class="right text-gray" translate>
+        {{ prefGlobal.lastBackupDate ? prefGlobal.lastBackupDate : "never backed up yet" }} 
+      </span>
+	</li>
+	<li ng-conf  ng-show="prefGlobal.restoredFromBackupCreatedOn">
+	  <span translate>Restored from backup created on</span>
+	  <span class="right text-gray">
+       {{prefGlobal.restoredFromBackupCreatedOn}}
+    </span>
+	</li>
+	<li ng-conf ng-show="prefGlobal.restoreDate">
+	  <span translate>Restore date</span>
+	  <span class="right text-gray">
+        {{prefGlobal.restoreDate}}
+      </span>
+	</li>
   </ul>
     
   <h4></h4>

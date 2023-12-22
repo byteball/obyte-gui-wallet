@@ -81,7 +81,8 @@ if [ ! -d $PROJECT ]; then
 
 	echo "${OpenColor}${Green}* Installing plugins... ${CloseColor}"
 
-	cordova plugin add phonegap-plugin-barcodescanner --variable ANDROID_SUPPORT_V4_VERSION="27.1.1"
+#	cordova plugin add phonegap-plugin-barcodescanner --variable ANDROID_SUPPORT_V4_VERSION="27.1.1"
+	cordova plugin add https://github.com/StarleyDev/barcodescanner-sdk31#73e4aa96e2c0bad93ca08eb809d25ed68fd7203b
 	checkOK
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
@@ -107,14 +108,14 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add https://github.com/byteball/cordova-sqlite-plugin.git
 	checkOK
-	cordova plugin add cordova-plugin-device-name@1.3.2
+	cordova plugin add cordova-plugin-device-name
 	checkOK
 	cordova plugin add https://github.com/havesource/cordova-plugin-push
 	checkOK
 	cordova plugin add cordova-android-referrer
 	checkOK
-	cordova plugin add cordova-plugin-mfilechooser
-	checkOK
+#	cordova plugin add cordova-plugin-mfilechooser
+#	checkOK
 	cordova plugin add https://github.com/brodybits/me.apla.cordova.app-preferences#test1 #for cordova-android 8
 	#cordova plugin add cordova-plugin-app-preferences #for cordova-android < 8
 	checkOK
@@ -122,12 +123,16 @@ if [ ! -d $PROJECT ]; then
 	checkOK
 	cordova plugin add cordova-plugin-android-permissions
 	checkOK
-	cordova plugin add cordova-plugin-splashscreen
-	checkOK
-	if [ $CURRENT_OS == "ANDROID" ]; then # fixes androidx errors
-		cordova plugin add cordova-plugin-androidx-adapter
+	
+	if [ $CURRENT_OS == "IOS" ]; then
+		cordova plugin add cordova-plugin-splashscreen
 		checkOK
 	fi
+
+#	if [ $CURRENT_OS == "ANDROID" ]; then # fixes androidx errors
+#		cordova plugin add cordova-plugin-androidx-adapter
+#		checkOK
+#	fi
 
 	if [ $CURRENT_OS == "IOS" ]; then # fixes weird keyboard webview resizing bug https://github.com/apache/cordova-ios/issues/417
 		cordova plugin add cordova-plugin-ionic-webview
@@ -186,6 +191,9 @@ if [ $CURRENT_OS == "ANDROID" ]; then
 	checkOK	
 
 	cp android/google-services-testnet.json $PROJECT/google-services.json
+	checkOK
+
+	cp "splashscreen@2x~universal~anyany.png" "$PROJECT/platforms/android/splashscreen@2x~universal~anyany.png"
 	checkOK
 fi
 

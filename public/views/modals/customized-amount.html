@@ -71,7 +71,7 @@
           <label for="asset">
             <span translate>Asset</span>
           </label>
-          <select class="m10t" ng-model="index.assetIndex" id="asset" name="asset" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? 'bytes' : (balance.asset === index.BLACKBYTES_ASSET ? 'blackbytes' : (balance.name || balance.asset))) for balance in index.arrBalances"></select>
+          <select class="m10t" ng-model="index.assetIndex" id="asset" name="asset" ng-options="index.arrBalances.indexOf(balance) as (balance.asset === 'base' ? 'bytes' : (balance.name || balance.asset)) for balance in arrPublicBalances"></select>
         </div>
         <button type="submit" class="button black round expand" ng-disabled="amountForm.$invalid" ng-style="{'background-color':color}">
           {{buttonLabel}}

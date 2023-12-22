@@ -75,11 +75,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
         }
 	};
 
-	$scope.$watch("newMessagesCount['" + correspondent.device_address +"']", function(counter) {
-		if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
-			$scope.newMessagesCount[$scope.correspondent.device_address] = 0;			
-		}
-	});
+	if (correspondent && correspondent.device_address) {
+		$scope.$watch("newMessagesCount['" + correspondent.device_address + "']", function (counter) {
+			if (!$scope.newMsgCounterEnabled && $state.is('correspondentDevices.correspondentDevice')) {
+				$scope.newMessagesCount[$scope.correspondent.device_address] = 0;
+			}
+		});
+	}
 
 	$scope.$on('$stateChangeStart', function(evt, toState, toParams, fromState) {
 	    if (toState.name === 'correspondentDevices.correspondentDevice') {
@@ -209,7 +211,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.bWorking = false;
 			$scope.arrRelations = ["=", ">", "<", ">=", "<=", "!="];
-			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the peer"}];
+			$scope.arrParties = [{value: 'me', display_value: "I"}, {value: 'peer', display_value: "the counterparty"}];
 			$scope.arrPeerPaysTos = [];
 			if (!fc.isSingleAddress)
 				$scope.arrPeerPaysTos.push({value: 'me', display_value: "to me"});
@@ -301,12 +303,13 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					peer_amount = Math.round(peer_amount);
 					
 					if (my_amount === peer_amount && contract.myAsset === contract.peerAsset && contract.peer_pays_to === 'contract'){
-						$scope.error = "The amounts are equal, you cannot require the peer to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the peer to pay his half to you.";
+						$scope.error = "The amounts are equal, you cannot require the counterparty to pay to the contract.  Please either change the amounts slightly or fund the entire contract yourself and require the counterparty to pay their half to you.";
 						$timeout(function() {
 							$scope.$digest();
 						}, 1);
 						return;
 					}
+					$scope.bWorking = true;
 					
 					var fnReadMyAddress = (contract.peer_pays_to === 'contract') ? readMyPaymentAddress : issueNextAddress;
 					fnReadMyAddress(fc, function(my_address){
@@ -322,6 +325,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								$timeout(function() {
 									$scope.$digest();
 								}, 1);
+								$scope.bWorking = false;
 								return;
 							}
 							if (contract.oracle_address === configService.TIMESTAMPER_ADDRESS)
@@ -513,6 +517,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					console.log('offerProsaicContract');
 					$scope.error = '';
 
+					if ($scope.bWorking)
+						return console.log("already working");
+					$scope.bWorking = true;
+
 					var contract_text = $scope.form.contractText;
 					var contract_title = $scope.form.contractTitle;
 					var ttl = $scope.form.ttl;
@@ -534,6 +542,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							device.readCorrespondent(correspondent.device_address, function(correspondent) {
 								if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(correspondent.device_address, chat_message, 0);
 							});
+							$scope.bWorking = false;
 							$modalInstance.dismiss('sent');
 						});
 					});
@@ -576,23 +585,37 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		var ModalInstanceCtrl = function($scope, $modalInstance) {
 			$scope.form = {
 				ttl: 24*7,
-				me_is_payer: true,
+				me_is_payer: false,
 				amount: null,
 				asset: 'base'
 			};
 			$scope.requestArbiterInfo = () => {
 				$scope.loading = true;
 				$scope.ArbStoreCut = null;
+				$scope.terms_url = null;
+				$scope.arbiterName = null;
 				$scope.error = null;
-				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, info) => {
+				arbiters.getArbstoreInfo($scope.form.arbiterAddress, (err, arbstoreInfo) => {
 					$scope.loading = false;
 					if (err) {
 						$scope.error = err;
-					} else {
-						$scope.ArbStoreCut = info.cut;
+						$timeout(function () {
+							$rootScope.$apply();
+						});
+						return;
 					}
-					$timeout(function() {
-						$rootScope.$apply();
+					$scope.ArbStoreCut = arbstoreInfo.cut;
+					$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';
+					arbiters.getInfo($scope.form.arbiterAddress, (err, arbiterInfo) => {
+						if (err) {
+							$scope.error = err;
+						}
+						else {
+							$scope.arbiterName = arbiterInfo.real_name;
+						}
+						$timeout(function() {
+							$rootScope.$apply();
+						});
 					});
 				});
 			};
@@ -616,6 +639,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					info.displayName = 'of '+b.asset.substr(0, 4);
 				return info;
 			});
+			if ($scope.arrAssetInfos.find(info => info.asset == configService.USDC_ASSET)) // USDC as default asset
+				$scope.form.asset = configService.USDC_ASSET;
 
 			readMyPaymentAddress(fc, function(my_address) {
 				$scope.my_address = my_address;
@@ -650,6 +675,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					var ttl = $scope.form.ttl;
 					var arbiter_address = $scope.form.arbiterAddress;
 					var me_is_payer = $scope.form.me_is_payer;
+					var my_party_name = $scope.form.myPartyName;
+					var peer_party_name = $scope.form.peerPartyName;
 					var amount = $scope.form.amount;
 					var asset = $scope.form.asset;
 					if (asset === 'base')
@@ -664,6 +691,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						return;
 					}
 					if (asset == 'base') asset = null;
+
+					if ($scope.bWorking)
+						return console.log("already working");
+					$scope.bWorking = true;
 
 					var contactInfo = $scope.form.contactInfo;
 					if (contactInfo) {
@@ -684,6 +715,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							my_address: my_address,
 							arbiter_address: arbiter_address,
 							me_is_payer: me_is_payer,
+							my_party_name,
+							peer_party_name,
 							amount: amount,
 							asset: asset,
 							ttl: ttl,
@@ -693,6 +726,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							my_contact_info: contactInfo
 						}, function(objContract) {
 							correspondentService.addContractEventIntoChat(objContract, 'offer', false);
+							$scope.bWorking = false;
 							$modalInstance.dismiss('sent');
 						});
 						arbiters.getInfo(arbiter_address);

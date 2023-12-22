@@ -16,9 +16,9 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
 		var privateProfile = require("ocore/private_profile.js");
-		scope.my_name = "NAME UNKNOWN";
+		scope.my_name = "NAME NOT VERIFIED";
 		scope.my_attestor = {};
-		scope.peer_name = "NAME UNKNOWN";
+		scope.peer_name = "NAME NOT VERIFIED";
 		scope.peer_attestor = {};
 		async.series([function(cb2) {
 			privateProfile.getFieldsForAddress(peer_address, ["first_name", "last_name"], lodash.map(configService.getSync().realNameAttestorAddresses, function(a){return a.address;}), function(profile) {
@@ -217,7 +217,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		};
 
 		if (profileService.focusedClient.isPrivKeyEncrypted()) {
-			profileService.unlockFC({message: "Peer accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
+			profileService.unlockFC({message: "Counterparty accepted your contract offer: \""+contract.title+"\". Unlock your wallet to sign this contract.", type: 'info'}, function(err) {
 				if (err){
 					showError(err.message);
 					return;
@@ -267,7 +267,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				addContractEventIntoChat(objContract, "event", true);	
 			}
 			if (value === 'in_dispute') {
-				addContractEventIntoChat(objContract, 'event', true, 'Contract is in dispute now. Arbiter is notified. Wait for them to get online and pair with both contract parties.');
+				addContractEventIntoChat(objContract, 'event', true, 'A dispute has just been opened by your counterparty. The arbiter has been notified. Wait for them to get online and pair with both contract parties.');
 			}
 			if (value === 'in_appeal') {
 				addContractEventIntoChat(objContract, "event", true, "Moderator is notified. Wait for them to get online and pair with both contract parties and the arbiter.");	
@@ -285,7 +285,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					addContractEventIntoChat(objContract, 'event', true, 'Contract was '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nYou can now claim your funds from the contract.');
 			}
 			if (value === 'dispute_resolved') {
-				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your peer."); 
+				var text = "Arbiter resolved the contract dispute " + (winner == objContract.my_address ? "in your favor." : "in favor of your counterparty."); 
 				text += " Unit with the resolution was posted into DAG: https://"+testnet+"explorer.obyte.org/#" + unit + "\n\n" + 
 					(winner === objContract.my_address ? "Please wait for this unit to be confirmed and claim your funds from the contract." :
 						"You can appeal to arbiter's decision from the contract view.");
@@ -548,11 +548,16 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.status = objContract.status;
 					$scope.creation_date = objContract.creation_date;
 					$scope.hash = objContract.hash;
+					$scope.shared_address = objContract.shared_address;
 					$scope.calculated_hash = arbiter_contract.getHash(objContract);
 					$scope.my_address = objContract.my_address;
 					$scope.peer_address = objContract.peer_address;
 					$scope.peer_device_address = objContract.peer_device_address;
 					$scope.me_is_payer = objContract.me_is_payer;
+					$scope.my_party_name = objContract.my_party_name;
+					$scope.peer_party_name = objContract.peer_party_name;
+					$scope.payer_name = (objContract.me_is_payer ? objContract.my_party_name : objContract.peer_party_name) || '';
+					$scope.payee_name = (objContract.me_is_payer ? objContract.peer_party_name : objContract.my_party_name) || '';
 					$scope.amount = objContract.amount;
 					$scope.asset = objContract.asset;
 					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
@@ -560,6 +565,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_contact_info = objContract.peer_contact_info;
 					$scope.form.my_contact_info = configService.getSync().my_contact_info;
 					$scope.testnet = constants.version.match(/t$/);
+					$scope.form.arbiterApproved = false;
 					arbiters.getArbstoreInfo(objContract.arbiter_address, (err, info) => {
 						if (err) {
 							$scope.error = err;
@@ -654,9 +660,14 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								$rootScope.$apply();
 							});
 						});
-						device.requestFromHub("hub/get_arbstore_url", objContract.arbiter_address, function(err, url){
-							if (url)
-								$scope.arbstore_url = url;
+						arbiters.getArbstoreInfo(objContract.arbiter_address, (err, arbstoreInfo) => {
+							if (err) {
+								$scope.error = err;
+							}
+							else {
+								$scope.arbstore_url = arbstoreInfo.url;
+								$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';;
+							}
 							$timeout(function() {
 								$rootScope.$apply();
 							});
@@ -816,7 +827,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									}
 									$rootScope.$emit("NewOutgoingTx");
 									var testnet = constants.version.match(/t$/) ? "testnet" : "";
-									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the peer.');
+									addContractEventIntoChat(objContract, 'event', false, 'Contract has been '+objContract.status+', unit: ' + 'https://'+testnet+'explorer.obyte.org/#' + unit + '.\n\nFunds were sent to the counterparty.');
 									$modalInstance.dismiss();
 							});
 						});
@@ -889,7 +900,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								if (err) {
 									return setError(err);
 								} else {
-									addContractEventIntoChat(objContract, 'event', false, 'Contract is in dispute now. Arbiter ' + objArbiter.real_name + ' is notified. Wait for them to get online and pair with both contract parties.');
+									addContractEventIntoChat(objContract, 'event', false, "You have just opened a dispute in this contract. Arbiter " + objArbiter.real_name + " has been notified. Wait for them to get online and pair with both contract parties. After the arbiter takes a look at the contract and makes sure it is within their areas of expertise, you'll get a message from the ArbStore bot asking to pay for the arbiter's work.");
 									$modalInstance.dismiss();
 								}
 							});	
@@ -1083,12 +1094,26 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				$scope.arbiter_address = objDispute.arbiter_address;
 				$scope.contract_hash = objDispute.contract_hash;
 				$scope.plaintiff_is_payer = objDispute.plaintiff_is_payer;
+				$scope.plaintiff_party_name = objDispute.contract_content.plaintiff_party_name;
+				$scope.respondent_party_name = objDispute.contract_content.respondent_party_name;
+				$scope.payer_name = (objDispute.plaintiff_is_payer ? objDispute.contract_content.plaintiff_party_name : objDispute.contract_content.respondent_party_name) || '';
+				$scope.payee_name = (objDispute.plaintiff_is_payer ? objDispute.contract_content.respondent_party_name : objDispute.contract_content.plaintiff_party_name) || '';
 				$scope.unit = objDispute.contract_unit;
 				$scope.isMobile = isMobile.any();
 				$scope.amount = objDispute.amount;
 				$scope.asset = objDispute.asset;
 				$scope.status = objDispute.status;
-				$scope.calculated_hash = arbiter_contract.getHash($scope);
+				$scope.calculated_hash = arbiter_contract.getHash({
+					title: objDispute.contract_content.title,
+					text: objDispute.contract_content.text,
+					creation_date: objDispute.contract_content.creation_date,
+					arbiter_address: objDispute.arbiter_address,
+					amount: objDispute.amount,
+					asset: objDispute.asset,
+					me_is_payer: objDispute.plaintiff_is_payer,
+					my_party_name: objDispute.contract_content.plaintiff_party_name,
+					peer_party_name: objDispute.contract_content.respondent_party_name,
+				});
 				$scope.amountStr = objDispute.amount ? txFormatService.formatAmountStr(objDispute.amount, objDispute.asset || "base") : 'private asset';
 				$scope.plaintiff_contact_info = objDispute.plaintiff_contact_info;
 				$scope.respondent_contact_info = objDispute.respondent_contact_info;
@@ -1109,6 +1134,18 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				}
 
 				if (objDispute.contract_unit) {
+					storage.readUnit(objDispute.contract_unit, objUnit => {
+						if (!objUnit)
+							return console.log("contract unit " + objDispute.contract_unit + ' not found');
+						const addresses = objUnit.authors.map(author => author.address);
+						const non_party_authors = addresses.filter(a => a !== objDispute.plaintiff_address && a !== objDispute.respondent_address);
+						if (non_party_authors.length !== 1)
+							return console.log("unexpected non-party authors", non_party_authors);
+						$scope.shared_address = non_party_authors[0];
+						$timeout(function() {
+							$rootScope.$apply();
+						});
+					});
 					db.query("SELECT payload FROM messages WHERE app='data' AND unit=?", [objDispute.contract_unit], function(rows) {
 						if (!rows.length)
 							return;
@@ -1167,7 +1204,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 				};
 
 				$scope.resolve = function(address) {
-					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as a winner?', {
+					$scope.index.requestApproval('Do you want to resolve this dispute with '+address+' as winner?', {
 						ifYes: function ifYes(){
 							if (profileService.focusedClient.isPrivKeyEncrypted()) {
 								profileService.unlockFC(null, function(err) {

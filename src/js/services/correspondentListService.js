@@ -658,7 +658,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (arrMyAddresses.indexOf(address) >= 0)
 				return '<span title="your address: '+address+'">you</span>';
 			if (assocPeerNamesByAddress[address])
-				return '<span title="peer address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
+				return '<span title="counterparty address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
 			return address;
 		}
 		function parse(arrSubdefinition){
@@ -862,9 +862,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 
-	function openInExplorer(unit) {
+	function openInExplorer(unit, type) {
 		var testnet = constants.version.match(/t$/) ? 'testnet' : '';
-		var url = 'https://' + testnet + 'explorer.obyte.org/#' + unit;
+		const path = type ? (type + '/') : '#';
+		var url = 'https://' + testnet + 'explorer.obyte.org/' + path + unit;
 		go.openExternalLink(url);
 	};
 
@@ -1092,8 +1093,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return cb("cannot pair with myself");
 		if (!device.isValidPubKey(device_pubkey))
 			return cb("invalid peer public key");
-		// the correspondent will be initially called 'New', we'll rename it as soon as we receive the reverse pairing secret back
-		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, 'New', function(device_address){
+		// the correspondent will be initially called '[New]', we'll rename it as soon as we receive the reverse pairing secret back
+		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, '[New]', function(device_address){
 			device.startWaitingForPairing(function(reversePairingInfo){
 				device.sendPairingMessage(hub_host, device_pubkey, pairing_secret, reversePairingInfo.pairing_secret, {
 					ifOk: cb,

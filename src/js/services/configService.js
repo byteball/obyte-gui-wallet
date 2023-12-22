@@ -22,6 +22,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var isTestnet = constants.version.match(/t$/);
   var isDevnet = constants.version.match(/dev$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
+  root.USDC_ASSET = isTestnet ? 'lwvZjepKoGSiMIDalxi2GB8Pd+nK86Qsnsn1Ng7TAJE=' : 'S/oCESzEO8G2hvQuI6HsyPr0foLfKwzs+GU73nO9H40=';
+  constants.USDC_ASSET = root.USDC_ASSET;
 	root.backupExceedingAmountUSD = 10;
 	
 	if (isTestnet) {
@@ -157,6 +159,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		alternativeIsoCode: 'USD',
 		},
 	},
+	 
+  hideZeroBalanceAssets: false,
 
 	// hidden assets: key = wallet id, value = set of assets (string: boolean)
 	hiddenAssets: {},
@@ -184,7 +188,12 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  }
 	},
 
-  autoUpdateWitnessesList: true
+  autoUpdateWitnessesList: true,
+	  
+  restoredFromBackup: false,
+  lastBackupDate: null,
+  restoredFromBackupCreatedOn: null,	  
+  restoreDate: null
   };
 	
 	if (isDevnet) {
@@ -295,6 +304,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		}
 		if (!_config.hiddenAssets) {
 			_config.hiddenAssets = defaultConfig.hiddenAssets;
+		}
+		if (!_config.hideZeroBalanceAssets) {
+			_config.hideZeroBalanceAssets = defaultConfig.hideZeroBalanceAssets;
 		}
 		if (!_config.hiddenSubWallets) {
 			_config.hiddenSubWallets = defaultConfig.hiddenSubWallets;

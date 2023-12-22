@@ -111,10 +111,12 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 	<form name="arbiterContractForm">
 		<span class="person title" translate>Me</span>
 		<div class="name p10l">
+			<input type="text" name="myPartyName" ng-model="form.myPartyName" placeholder="Your company name" style="margin-bottom: 0px;" />
+			<div class="help-text" translate>Your company name or whoever you represent. Leave empty if acting in your personal capacity.</div>
 			<span class="first_name">{{my_first_name}}</span>
 			<span class="last_name">{{my_last_name}}</span>
-			<div class="attestor"><span translate>address</span>: {{my_address}}</div>
-			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="attestor m10t"><span translate>signer address</span>: {{my_address}}</div>
+			<div class="attestor" ng-show="my_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(my_attestor.attestation_unit)">{{my_attestor.address}}</a> <i class="validation-icon icon-checkmark-circle size-14 text-primary" ng-show="my_attestor.trusted" title="{{'attested by a trusted attestor' | translate}}"></i><span class="mobile" ng-show="my_attestor.trusted && isMobile" translate>trusted</span><i class="validation-icon icon-close-circle size-14 has-error" ng-show="!my_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!my_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 			<li class="tumbler m15t">
 				<span translate class="m10r side" ng-class="{active: !form.me_is_payer}">Seller</span>
 		        <switch ng-model="form.me_is_payer" class="blue"></switch>
@@ -123,16 +125,18 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		    <span class="description center" ng-show="form.me_is_payer" translate>You will pay {{peer_device_name}} for their services.</span>
 		    <span class="description center" ng-show="!form.me_is_payer" translate>{{peer_device_name}} will pay for your services.</span>
 		</div>
-		<span class="person title" translate>Peer</span>
+		<span class="person title" translate>Counterparty</span>
 		<div class="name p10l">
+			<input type="text" name="peerPartyName" ng-model="form.peerPartyName" placeholder="Counterparty company name" style="margin-bottom: 0px;" />
+			<div class="help-text" translate>Counterparty company name or whoever {{peer_device_name}} represents. Leave empty if they are acting in their personal capacity.</div>
 			<span class="first_name">{{peer_first_name}}</span>
 			<span class="last_name">{{peer_last_name}}</span>
-			<div class="attestor"><span translate>address</span>: {{peer_address}}</div>
-			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
+			<div class="attestor m10t"><span translate>signer address</span>: {{peer_address}}</div>
+			<div class="attestor" ng-show="peer_attestor.address"><span translate>attested by:</span> <a ng-click="openInExplorer(peer_attestor.attestation_unit)">{{peer_attestor.address}}</a> <i class="icon-checkmark-circle size-14 text-primary" ng-show="peer_attestor.trusted" title="{{'attested by a trusted attestor' | translate}}"></i><span class="mobile" ng-show="peer_attestor.trusted && isMobile" translate>trusted</span><i class="icon-close-circle size-14 has-error" ng-show="!peer_attestor.trusted" title="{{'attestor is not trusted by you' | translate}}"></i><span class="mobile" ng-show="!peer_attestor.trusted && isMobile" translate>attestor is not trusted by you</span></div>
 		</div>
 		<br>
 		<div class="person title" translate>Amount:</div><br>
-		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="{{form.asset == 'base' ? (10000 / unitValue) : 0}}" ng-attr-placeholder="{{'10000'|translate}}" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
+		<input type="{{index.isMobile.iOS() ? 'text' : 'number'}}" inputmode="numeric" min="{{form.asset == 'base' ? (10000 / unitValue) : 0}}" ng-attr-placeholder="10000" ng-minlength="0.00000001" ng-maxlength="10000000000" ng-model="form.amount" name="amount" valid-amount="{{form.asset}}" required autocomplete="off" style="text-align: right" class="inline w80">
 		<span selectable="#myasset" dropdown-toggle="#myasset" data-model="form" data-prop="asset"></span>
 		<ul id="myasset" class="f-dropdown pos-at-cursor" data-dropdown-content>
 		  <li ng-repeat="info in arrAssetInfos" class="dropup-item" data-value="{{info.asset}}">
@@ -142,21 +146,23 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		<div class="help-text">Amount the buyer is paying to the seller for their services, the money will be locked on the contract until the buyer releases it. Can be in any asset.</div>
 
 		<div class="title" translate>Arbiter address</div>
-		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/')" translate>Where to get arbiter address?</a></div>
-		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()"/>
+		<div class="help-text"><a class="help-link" ng-click="$root.openExternalLink('https://'+(testnet ? 'testnet' : '')+'arbstore.org/arbiters')" translate>Where to get arbiter address?</a></div>
+		<input type="text" name="arbiterAddress" required ng-model="form.arbiterAddress" ng-change="requestArbiterInfo()" style="margin-bottom: 0px;" />
+		<div class="help-text" ng-if="terms_url" style="margin-bottom: 5px;">{{arbiterName || "Anonymous arbiter"}}</div>
+		<div class="help-text"><span translate>By selecting the arbiter you agree to their pricing and terms specified in their listing and to the terms of the ArbStore they are listed on</span> <a class="help-link" ng-if="terms_url" ng-click="$root.openExternalLink(terms_url)" translate>{{terms_url}}</a></div>
 
 		<span class="title" translate>Title of contract</span>
 		<input type="text" name="title" required ng-model="form.contractTitle"/>
 		
 		<div class="title" translate>Text</div>
-		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n" class="textarea-with-info"></textarea>
+		<textarea id="contract_text" name="contractText" required ng-model="form.contractText" rows=8 msd-elastic="\n" class="textarea-with-info" placeholder="{{'Write the full contract text here or copy/paste it from Word, Google docs, or another word processing program. The text should name the parties and spell out all the terms and conditions of the contract.' | translate}}"></textarea>
 		<div class="help-text"><span translate>Markdown supported:</span> <a class="help-link" ng-click="$root.openExternalLink('https://guides.github.com/features/mastering-markdown/')" translate>markdown cheatsheet</a></div>
 		<br>
 		<span translate>Offer is valid for</span> <input type="number" name="ttl" required ng-model="form.ttl" style="text-align: right" class="inline w40"> <span translate>hours</span>
 		<br>
 		<div class="contact_info title" translate>My contacts: <span class="description" translate>(optional)</span></div>
 		<textarea id="contact_info" name="contactInfo" class="textarea-with-info" ng-model="form.contactInfo" rows=2 msd-elastic="\n" placeholder="email, whatsapp, telegram, phone number, etc."></textarea>
-		<div class="help-text" translate>They will be shared with peer and arbiter as a backup method to reach you.</div>
+		<div class="help-text" translate>They will be shared with the counterparty and arbiter as a backup method to reach you.</div>
 
 		<div ng-if="index.m < index.n && index.m > 1">
 			<h3 class="title" translate>Cosigners</h3>

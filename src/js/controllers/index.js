@@ -30,6 +30,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.totalUSDBalance = 0;
   self.addressUSDBalance = 0;
   self.isBackupReminderShown = false;
+  
+  self.hideZeroBalanceAssets = false;
 
   self.recalculateUsdBalances = function () {
 	var exchangeRates = require('ocore/network.js').exchangeRates;
@@ -203,7 +205,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	  var timestamp = rows[0].timestamp;
 	  if (timestamp)
 		return cb(timestamp*1000);
-	  data_feeds.readDataFeedValue([configService.TIMESTAMPER_ADDRESS], 'timestamp', null, 0, 1e15, false, 'last', function (objResult) {
+	  data_feeds.readDataFeedValue([configService.TIMESTAMPER_ADDRESS], 'timestamp', null, 0, 1e15, false, 'last', 0, function (objResult) {
 		cb(objResult.value ? parseInt(objResult.value) : 0);
 	  });
 	});
@@ -1405,6 +1407,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     console.log('setBalance hiddenAssets:', hiddenAssets);
     var exchangeRates = require('ocore/network.js').exchangeRates;
 
+	const hideZeroBalanceAssets = configService.getSync().hideZeroBalanceAssets;
+
     // Selected unit
     self.unitValue = config.unitValue;
     self.unitName = config.unitName;
@@ -1454,6 +1458,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
           }
 		}
         self.assetsSet[asset] = balanceInfo;
+		if (hideZeroBalanceAssets && asset !== 'base' && balanceInfo.total === 0) {
+			continue;
+		}
         if (self.isAssetHidden(asset, hiddenAssets)) {
           continue;
         }
@@ -1646,10 +1653,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.updateLocalTxHistory = function(client, cb) {
 	var walletId = client.credentials.walletId;
 	if (self.arrBalances.length === 0)
-		return console.log('updateLocalTxHistory: no balances yet');
+		return console.log('updateLocalTxHistory: no balances yet'), cb();
 	breadcrumbs.add('index: '+self.assetIndex+'; balances: '+JSON.stringify(self.arrBalances));
 	if (!client.isComplete())
-		return console.log('fc incomplete yet');
+		return console.log('fc incomplete yet'), cb();
 	client.getTxHistory(self.arrBalances[self.assetIndex].asset, self.shared_address, function onGotTxHistory(txs) {
 		$timeout(function(){
 			var newHistory = self.processNewTxs(txs);

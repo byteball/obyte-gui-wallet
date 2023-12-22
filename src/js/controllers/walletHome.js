@@ -72,11 +72,30 @@ angular.module('copayApp.controllers')
 				asset: 'Text'
 			},
 		]
+		this.isShownCopiedMessage = false;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 		self.android = isMobile.Android() && window.cordova;
 		self.androidVersion = isMobile.Android() ? parseFloat(navigator.userAgent.slice(navigator.userAgent.indexOf("Android")+8)) : null;
 		self.oldAndroidFilePath = null;
 		self.oldAndroidFileName = '';
+		
+		function checkIsWalletRestored() {
+			const restoreDate = $filter('date')(Date.now(), 'yyyy-MM-dd HH:mm:ss');
+
+			if(config.restoredFromBackup) {
+				configService.set({
+					restoredFromBackup: false,
+					restoredFromBackupCreatedOn: config.lastBackupDate,
+					restoreDate,
+				}, (err) => {
+					if (err) {
+						return $scope.$emit('Local/DeviceError', err);
+					}
+				})
+			}
+		}
+
+		checkIsWalletRestored();
 
 		// donut chart
 		var drawDonutChart = function() {
@@ -800,6 +819,12 @@ angular.module('copayApp.controllers')
 			}
 			else if (electron.isDefined()) {
 				electron.writeToClipboard(addr);
+				self.isShownCopiedMessage = true;
+				
+				setTimeout(() => {
+					self.isShownCopiedMessage = false;
+					$rootScope.$apply();
+				}, 1250);
 			}
 		};
 
@@ -827,6 +852,7 @@ angular.module('copayApp.controllers')
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
 				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
+				$scope.arrPublicBalances = indexScope.arrBalances.filter(b => !b.is_private);
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
@@ -2498,7 +2524,7 @@ angular.module('copayApp.controllers')
 						if (paymentData) {
 							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
-								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], readonly: true});
+								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], isObject: typeof paymentData[key] === 'object', readonly: true});
 							}
 						}
 					}

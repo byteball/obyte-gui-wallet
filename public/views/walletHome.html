@@ -86,6 +86,12 @@ input.datafeed_input {
     </div>
   </div>
 
+  <div class="copiedToClipboardBar" ng-show="home.isShownCopiedMessage">
+	<div class="copiedToClipboardBar-content" ng-style="{'background-color':'#343434'}">
+	  <span translate>Copied to clipboard</span>
+	</div>
+  </div>
+
   <div class="onGoingProcess" ng-show="index.anyOnGoingProcess && !index.isOffline">
     <div class="onGoingProcess-content" ng-style="{'background-color':index.backgroundColor}">
       <div class="spinner">
@@ -272,7 +278,7 @@ input.datafeed_input {
                 </span>
               </div>
 
-              <div class="text-center" ng-click="home.copyAddress(index.shared_address || home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress">
+              <div class="text-center" ng-click="home.copyAddress(index.shared_address || home.addr[index.walletId])" ng-show="home.addr[index.walletId] || home.generatingAddress" style="cursor: pointer">
                 <qrcode size="220" data="{{home.protocol}}:{{index.shared_address || home.addr[index.walletId]}}"></qrcode>
                 <div  ng-show="home.generatingAddress" style="position:relative; top:-226px; height:0px">
                   <div style="height:220px; width:220px; margin:auto; background: url(img/qr.png) white">
@@ -285,10 +291,10 @@ input.datafeed_input {
                     </div>
                   </div>
                 </div>
-                <div class="m10t" >
+                <div class="m10t c-tooltip">
+				  <div class="tooltiptext" translate>Click to copy</div>
                   <h4 ng-class="{'enable_text_select': !index.isCordova}" class="size-14 bold">
                     {{index.shared_address || (home.generatingAddress ? '...' : home.addr[index.walletId])}}
-
                   </h4>
                 </div>
               </div>
@@ -428,8 +434,8 @@ input.datafeed_input {
                     </div>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === 'base'">{{home.unitName}}</a>
                       <a class="postfix" ng-click="$root.go('walletHome.preferencesBbUnit')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset === index.BLACKBYTES_ASSET">{{home.bbUnitName}}</a>
-                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
-                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset)" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
+                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset, 'asset')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && index.arrBalances[index.assetIndex].name">{{index.arrBalances[index.assetIndex].name | limitTo:16}}{{index.arrBalances[index.assetIndex].name.length>16 ? '...' : ''}}</a>
+                      <a class="postfix" ng-click="home.openInExplorer(index.arrBalances[index.assetIndex].asset, 'asset')" ng-if="index.arrBalances.length > 0 && index.arrBalances[index.assetIndex].asset !== 'base' && index.arrBalances[index.assetIndex].asset !== index.BLACKBYTES_ASSET && !index.arrBalances[index.assetIndex].name">of {{index.arrBalances[index.assetIndex].asset.substr(0,4)}}</a>
                   </div>
                 </div>
               </div>
@@ -572,7 +578,8 @@ input.datafeed_input {
                         </div>
                       </div>
                       <div class="datafeed_input">
-                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" maxlength="256" ng-change="home.onChanged()">
+                        <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" maxlength="256" ng-change="home.onChanged()" ng-if="!pair.isObject">
+                        <textarea ng-if="pair.isObject" rows="1" ng-readonly="pair.readonly" class="m0" style="margin-bottom: -13px; min-height: 35px; padding-top: 10px;">{{pair.value}}</textarea>
                       </div>
                       <a ng-if="!pair.readonly" ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
                     </div>

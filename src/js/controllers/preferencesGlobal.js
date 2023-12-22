@@ -16,6 +16,10 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.hub = config.hub;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
       this.torEnabled = conf.socksHost && conf.socksPort;
+	  this.lastBackupDate = config.lastBackupDate;
+	  this.restoredFromBackupCreatedOn = config.restoredFromBackupCreatedOn;
+	  this.restoreDate = config.restoreDate;
+
       $scope.pushNotifications = config.pushNotifications.enabled;
 	  $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
     };
