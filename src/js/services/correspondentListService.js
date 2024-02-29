@@ -759,6 +759,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	var historyEndForCorrespondent = {};
 	function loadMoreHistory(correspondent, cb) {
+		if (!correspondent)
+			return cb ? cb() : null;
 		if (historyEndForCorrespondent[correspondent.device_address]) {
 			if (cb) cb();
 			return;
