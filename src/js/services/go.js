@@ -348,7 +348,8 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 			removeListenerForOnopen();
 			electron.ipcRenderer.on('open', (event, message) => {
 				console.log("Open url: " + message);
-				if (message){
+				console.log("Open event: ", event);
+				if (message) {
 					var file = extractObyteArgFromCommandLine(message);
 					if (!file)
 						return console.log("no protocol for this app instance / network was found in url");

@@ -2781,20 +2781,32 @@ angular.module('copayApp.controllers')
 		this.getPrivatePayloadSavePath = function(cb) {
 			var fileName = 'ObytePayment-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.' + configService.privateTextcoinExt;
 			if (!isCordova) {
-				var inputFile = document.createElement("input");
-				inputFile.type = "file";
-				inputFile.setAttribute("nwsaveas", fileName);
-				inputFile.click();
-				var wasCalled = false;
-				inputFile.onchange = function() {
-					if (wasCalled) return;
-					wasCalled = true;
-					$timeout(function() {
-						cb(inputFile.value ? inputFile.value : null);
-						window.removeEventListener('focus', inputFile.onchange, true);
-					}, 1000);
-				};
-				window.addEventListener('focus', inputFile.onchange, true);
+				console.log('!!!!!!HERE 1 2 3', fileName);
+				
+				electron.once('save-dialog-done', (evt, path) => {
+					console.log('done', evt)
+					console.log('path', path)
+					if (!path)
+						return;
+					cb(path);
+				});
+				electron.emit('open-save-dialog', { defaultPath: fileName });
+				
+				// var inputFile = document.createElement("input");
+				// inputFile.type = "file";
+				// inputFile.setAttribute("nwsaveas", fileName);
+				// inputFile.click();
+				// var wasCalled = false;
+				
+				// inputFile.onchange = function() {
+				// 	if (wasCalled) return;
+				// 	wasCalled = true;
+				// 	$timeout(function() {
+				// 		cb(inputFile.value ? inputFile.value : null);
+				// 		window.removeEventListener('focus', inputFile.onchange, true);
+				// 	}, 1000);
+				// };
+				// window.addEventListener('focus', inputFile.onchange, true);
 			}
 			else {
 				var root = window.cordova.file.cacheDirectory;//isMobile.iOS() ? window.cordova.file.documentsDirectory : window.cordova.file.externalRootDirectory;
