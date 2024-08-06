@@ -147,8 +147,6 @@ async function createWindow () {
 	});
 	if (urlToLoad) {
 		ipcMain.on('done-loading', () => {
-			console.log('urlToLoad', urlToLoad)
-			
 			mainWindow.webContents.send('open', urlToLoad);
 		});
 	}
@@ -214,10 +212,25 @@ app.on('second-instance', (event, commandLine, workingDirectory, additionalData)
 			mainWindow.restore();
 		mainWindow.focus();
 		
-		console.log('cl', commandLine);
-		
 		mainWindow.webContents.send('open', commandLine.at(-1));
 	}
+});
+
+app.on('open-file', (event, file) => {
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
+		}
+		
+		mainWindow.focus();
+
+		event.preventDefault();
+
+		mainWindow.webContents.send('open', file);
+		return;
+	}
+
+	urlToLoad = file;
 });
 
 app.whenReady().then(() => {
@@ -259,10 +272,9 @@ if (process.argv.length >= 2) {
 		urlToLoad = lastArg;
 	}
 }
+
 app.on('open-url', (event, url) => {
 	if (mainWindow != null) {
-		console.log('urlToLoad111', url)
-		
 		mainWindow.webContents.send('open', url);
 		return;
 	}

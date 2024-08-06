@@ -347,8 +347,6 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 		var removeListenerForOnopen = $rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', function(){
 			removeListenerForOnopen();
 			electron.ipcRenderer.on('open', (event, message) => {
-				console.log("Open url: " + message);
-				console.log("Open event: ", event);
 				if (message) {
 					var file = extractObyteArgFromCommandLine(message);
 					if (!file)
