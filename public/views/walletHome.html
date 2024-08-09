@@ -53,6 +53,21 @@ input.datafeed_input {
 	max-width: 500px;
 	margin: 0 auto;
 }
+
+#send span[selectable] {
+	display: inline-block;
+    cursor: pointer;
+    color: #000000;
+    font-size: 16px;
+    background: #FFF;
+    text-transform: none;
+    border-radius: 0px;
+    border: 1px solid transparent;
+    border-bottom: 1px dashed #000;
+    padding: 0px 3px;
+    line-height: 25px;
+    transition: all .3s;
+}
 </style>
 
 
@@ -692,6 +707,9 @@ input.datafeed_input {
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -4" translate>
 					Post arbitrary key-value pairs of data into Obyte network.
 				</div>
+				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -10" translate>
+					Temporarily store arbitrary key-value pairs of data into Obyte network. The data will be purged after 1 day but a hash of the data will stay forever.
+				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -5" translate>
 					Post a poll into Obyte network that users can vote on with Poll bot.
 				</div>
@@ -732,7 +750,41 @@ input.datafeed_input {
           <div ng-if="sendDataForm.content.$invalid && home.content" class="text-warning size-12" translate>Too long text</div>
           <div ng-if="sendDataForm.content.$valid || !home.content" class="size-12">{{home.content.length || 0}} <span translate>character(s)</span></div>
         </div>
-				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7">
+				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -8">
+          <div translate>
+            Vote for a system variable. The weight of your vote is proportional to the balance of your voting address.
+          </div>
+					<label style="float: left;">
+						<span translate>Variable:</span>
+					</label>
+          <span selectable="#votesubject" dropdown-toggle="#votesubject" data-model="home" data-prop="subject"></span>
+          <ul id="votesubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
+            <li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
+              <a><span>{{sysvar.label}}</span></a>
+            </li>
+          </ul>
+					<label style="float: left;">
+						<span translate>Value:</span>
+					</label>
+          <textarea ng-if="home.subject === 'op_list'" name="op_list" ng-model="home.sysvar_value" placeholder="OP addresses, one address per line" required rows="12" ng-change="home.validateOPList()" style="margin-bottom: 0px"></textarea>
+					<input ng-if="home.subject !== 'op_list'" type="text" name="numeric_var" ng-model="home.sysvar_value" placeholder="numeric value" ng-required="true" maxlength="6">
+				</div>
+				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -9">
+          <div translate>
+            Trigger a vote count for a system variable. The variable can change as a result if the balance of votes changed since the previous count. The request costs 1 GB.
+          </div>
+					<label style="float: left;">
+						<span translate>Variable:</span>
+					</label>
+          <!--select class="m10t" ng-model="home.subject" ng-options="sysvar.subject as sysvar.label for sysvar in arrSysVars"></select-->
+          <span selectable="#countsubject" dropdown-toggle="#countsubject" data-model="home" data-prop="subject"></span>
+          <ul id="countsubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
+            <li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
+              <a><span>{{sysvar.label}}</span></a>
+            </li>
+          </ul>
+				</div>
+				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7 && assetIndexSelectorValue !== -8 && assetIndexSelectorValue !== -9">
 					<label>
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
