@@ -211,8 +211,26 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 		if (mainWindow.isMinimized())
 			mainWindow.restore();
 		mainWindow.focus();
+		
 		mainWindow.webContents.send('open', commandLine.at(-1));
 	}
+});
+
+app.on('open-file', (event, file) => {
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
+		}
+		
+		mainWindow.focus();
+
+		event.preventDefault();
+
+		mainWindow.webContents.send('open', file);
+		return;
+	}
+
+	urlToLoad = file;
 });
 
 app.whenReady().then(() => {
@@ -250,10 +268,11 @@ app.on('window-all-closed', function () {
 let urlToLoad;
 if (process.argv.length >= 2) {
 	let lastArg = process.argv.at(-1);
-	if (lastArg.includes('obyte') || lastArg.includes('byteball')) {
+	if (lastArg.includes('obyte') || lastArg.includes('byteball') || lastArg.includes('.coin')) {
 		urlToLoad = lastArg;
 	}
 }
+
 app.on('open-url', (event, url) => {
 	if (mainWindow != null) {
 		mainWindow.webContents.send('open', url);
