@@ -268,7 +268,7 @@ app.on('window-all-closed', function () {
 let urlToLoad;
 if (process.argv.length >= 2) {
 	let lastArg = process.argv.at(-1);
-	if (lastArg.includes('obyte') || lastArg.includes('byteball')) {
+	if (lastArg.includes('obyte') || lastArg.includes('byteball') || lastArg.includes('.coin')) {
 		urlToLoad = lastArg;
 	}
 }
