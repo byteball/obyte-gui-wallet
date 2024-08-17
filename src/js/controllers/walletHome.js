@@ -1300,10 +1300,15 @@ angular.module('copayApp.controllers')
 		}
 
 		this.validateOPList = function () {
-			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
-			const valid = arrOPs.every(ValidationUtils.isValidAddress) && arrOPs.length === constants.COUNT_WITNESSES;
 			const form = $scope.sendDataForm;
-			form.content.$setValidity('validOPs', valid);
+			let valid = false;
+
+			if (self.sysvar_value) {
+				const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
+				valid = arrOPs.every(ValidationUtils.isValidAddress) && arrOPs.length === constants.COUNT_WITNESSES;
+			}
+
+			form.op_list.$setValidity('validOPs', valid);
 		}
 
 		this.onAddressChanged = function () {

@@ -68,6 +68,16 @@ input.datafeed_input {
     line-height: 25px;
     transition: all .3s;
 }
+
+.vote-label {
+	font-size: 11px;
+	display: inline-block;
+}
+
+.subject {
+	font-size: 11px !important;
+	line-height: 16px !important;
+}
 </style>
 
 
@@ -687,13 +697,14 @@ input.datafeed_input {
       </div>
       <div ng-show="home.shownForm=='data' && index.isSingleAddress">
       	<div class="large-12 large-centered columns">
-          <form name="sendDataForm" ng-submit="home.submitData()" ng-disabled="home.blockUx || home.onGoingProcess" novalidate dont-ng-init="home.feedvaluespairs=[{}]">
-            <div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
+			<form name="sendDataForm" ng-submit="home.submitData()" ng-disabled="home.blockUx || home.onGoingProcess"
+				  novalidate dont-ng-init="home.feedvaluespairs=[{}]">
+				<div class="box-notification" ng-show="home.error" ng-click="home.resetError()">
               <span class="text-warning">
                 {{home.error|translate}}
               </span>
-              <a class="close-notification text-warning">&#215;</a>
-            </div>
+					<a class="close-notification text-warning">&#215;</a>
+				</div>
 
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -1" translate>
 					Post values into datafeeds manually, be an oracle.
@@ -708,7 +719,8 @@ input.datafeed_input {
 					Post arbitrary key-value pairs of data into Obyte network.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -10" translate>
-					Temporarily store arbitrary key-value pairs of data into Obyte network. The data will be purged after 1 day but a hash of the data will stay forever.
+					Temporarily store arbitrary key-value pairs of data into Obyte network. The data will be purged
+					after 1 day but a hash of the data will stay forever.
 				</div>
 				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -5" translate>
 					Post a poll into Obyte network that users can vote on with Poll bot.
@@ -718,7 +730,8 @@ input.datafeed_input {
 						<span translate>Address to attest</span>
 					</label>
 					<span ng-hide="sendDataForm.address.$pristine">
-                  <span class="has-error right size-12" ng-show="sendDataForm.address.$invalid && home.attested_address">
+                  <span class="has-error right size-12"
+						ng-show="sendDataForm.address.$invalid && home.attested_address">
                     <i class="icon-close-circle size-14"></i>
                     <span class="vm" translate>Not valid</span>
                   </span>
@@ -726,110 +739,167 @@ input.datafeed_input {
                     <i class="icon-checkmark-circle size-14"></i>
                   </small>
                 </span>
-					<input type="text" name="address" ng-model="home.attested_address" placeholder="Obyte address" valid-address ng-required="true">
+					<input type="text" name="address" ng-model="home.attested_address" placeholder="Obyte address"
+						   valid-address ng-required="true">
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -5">
 					<label style="float: left;">
 						<span translate>Question to be voted on</span>
 					</label>
-					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question" ng-required="true" ng-maxlength="256" maxlength="256">
+					<input type="text" name="poll_question" ng-model="home.poll_question" placeholder="Poll question"
+						   ng-required="true" ng-maxlength="256" maxlength="256">
 				</div>
 				<div class="row m20t" ng-if="assetIndexSelectorValue == -6">
 					<label style="float: left;">
 						<span translate>Definition of autonomous agent:</span>
 					</label>
-          <textarea name="definition" ng-model="home.definition" placeholder="JSON of autonomous agent definition" required rows="10" ng-change="home.validateAADefinition()" style="margin-bottom: 0px"></textarea>
-          <span ng-if="home.aa_validation_error" class="text-warning size-12">{{home.aa_validation_error}}</span>
-          <span ng-if="sendDataForm.definition.$valid" class="text-success size-12" translate>Looks OK</span>
+					<textarea name="definition" ng-model="home.definition"
+							  placeholder="JSON of autonomous agent definition" required rows="10"
+							  ng-change="home.validateAADefinition()" style="margin-bottom: 0px"></textarea>
+					<span ng-if="home.aa_validation_error"
+						  class="text-warning size-12">{{home.aa_validation_error}}</span>
+					<span ng-if="sendDataForm.definition.$valid" class="text-success size-12" translate>Looks OK</span>
 				</div>
-        <div class="row m20t" ng-if="assetIndexSelectorValue == -7">
-          <label style="float: left;">
-            <span translate>Text to be forever saved on the DAG:</span>
-          </label>
-          <textarea name="content" ng-model="home.content" placeholder="Text" required rows="4" ng-change="home.validateTextLength()" style="margin-bottom: 0px;/*font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;*/" ng-trim="false"></textarea>
-          <div ng-if="sendDataForm.content.$invalid && home.content" class="text-warning size-12" translate>Too long text</div>
-          <div ng-if="sendDataForm.content.$valid || !home.content" class="size-12">{{home.content.length || 0}} <span translate>character(s)</span></div>
-        </div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -8">
-          <div translate>
-            Vote for a system variable. The weight of your vote is proportional to the balance of your voting address.
-          </div>
+				<div class="row m20t" ng-if="assetIndexSelectorValue == -7">
 					<label style="float: left;">
-						<span translate>Variable:</span>
+						<span translate>Text to be forever saved on the DAG:</span>
 					</label>
-          <span selectable="#votesubject" dropdown-toggle="#votesubject" data-model="home" data-prop="subject"></span>
-          <ul id="votesubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
-            <li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
-              <a><span>{{sysvar.label}}</span></a>
-            </li>
-          </ul>
-					<label style="float: left;">
-						<span translate>Value:</span>
-					</label>
-          <textarea ng-if="home.subject === 'op_list'" name="op_list" ng-model="home.sysvar_value" placeholder="OP addresses, one address per line" required rows="12" ng-change="home.validateOPList()" style="margin-bottom: 0px"></textarea>
-					<input ng-if="home.subject !== 'op_list'" type="text" name="numeric_var" ng-model="home.sysvar_value" placeholder="numeric value" ng-required="true" maxlength="6">
+					<textarea name="content" ng-model="home.content" placeholder="Text" required rows="4"
+							  ng-change="home.validateTextLength()"
+							  style="margin-bottom: 0px;/*font-family:SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;*/"
+							  ng-trim="false"></textarea>
+					<div ng-if="sendDataForm.content.$invalid && home.content" class="text-warning size-12" translate>
+						Too
+						long text
+					</div>
+					<div ng-if="sendDataForm.content.$valid || !home.content" class="size-12">{{home.content.length ||
+						0}}
+						<span translate>character(s)</span></div>
 				</div>
-				<div class="row m20t text-gray size-12" ng-show="assetIndexSelectorValue == -9">
-          <div translate>
-            Trigger a vote count for a system variable. The variable can change as a result if the balance of votes changed since the previous count. The request costs 1 GB.
-          </div>
-					<label style="float: left;">
-						<span translate>Variable:</span>
-					</label>
-          <!--select class="m10t" ng-model="home.subject" ng-options="sysvar.subject as sysvar.label for sysvar in arrSysVars"></select-->
-          <span selectable="#countsubject" dropdown-toggle="#countsubject" data-model="home" data-prop="subject"></span>
-          <ul id="countsubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
-            <li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
-              <a><span>{{sysvar.label}}</span></a>
-            </li>
-          </ul>
+				<div class="row m20t text-gray size-12" ng-if="assetIndexSelectorValue == -8">
+					<div style="display: inline-block; font-size: 11px;">
+				  <span translate>
+					  Vote for a system variable. The weight of your vote is proportional to the balance of your voting
+					  address.
+				  </span>
+					</div>
+					<div style="margin-top: 4px">
+						<label translate class="vote-label">
+							Variable:
+						</label>
+						<span selectable="#votesubject" dropdown-toggle="#votesubject" data-model="home"
+							  data-prop="subject" class="subject"></span>
+						<ul id="votesubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
+							<li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
+								<a><span>{{sysvar.label}}</span></a>
+							</li>
+						</ul>
+						<textarea ng-if="home.subject === 'op_list'" name="op_list" ng-model="home.sysvar_value"
+								  placeholder="OP addresses, one address per line" required rows="12"
+								  ng-change="home.validateOPList()"
+								  style="margin-bottom: 0px; font-size: 12px; margin-top: 4px"></textarea>
+						<input ng-if="home.subject !== 'op_list'" type="text" name="numeric_var"
+							   ng-model="home.sysvar_value"
+							   placeholder="numeric value" ng-required="true" maxlength="6">
+
+						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list'" class="text-warning size-12" translate>
+							Invalid addresses in OP List
+						</div>
+					</div>
 				</div>
-				<div class="row m20t" ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7 && assetIndexSelectorValue !== -8 && assetIndexSelectorValue !== -9">
+				<div class="row m20t text-gray size-12" ng-if="assetIndexSelectorValue == -9">
+					<div translate>
+						Trigger a vote count for a system variable. The variable can change as a result if the balance
+						of
+						votes changed since the previous count. The request costs 1 GB.
+					</div>
+					<div style="margin-top: 4px">
+						<label translate class="vote-label">
+							Variable:
+						</label>
+						<!--select class="m10t" ng-model="home.subject" ng-options="sysvar.subject as sysvar.label for sysvar in arrSysVars"></select-->
+						<span selectable="#countsubject" dropdown-toggle="#countsubject" data-model="home"
+							  class="subject" data-prop="subject"></span>
+						<ul id="countsubject" class="f-dropdown pos-at-cursor" data-dropdown-content>
+							<li ng-repeat="sysvar in arrSysVars" class="dropup-item" data-value="{{sysvar.subject}}">
+								<a><span>{{sysvar.label}}</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="row m20t"
+					 ng-if="assetIndexSelectorValue !== -6 && assetIndexSelectorValue !== -7 && assetIndexSelectorValue !== -8 && assetIndexSelectorValue !== -9">
 					<label>
 						<span>{{(assetIndexSelectorValue == -5 ? 'Options for answering' : 'Values')|translate}}</span>
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
-						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}" maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}" ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
-						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}" class="datafeed_input" ng-required="true" ng-maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}" maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}">
-						<a ng-if="!pair.readonly" ng-show="$last && !$first" ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
+						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly"
+							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}"
+							   class="datafeed_input" ng-required="true"
+							   ng-maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}"
+							   maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}"
+							   ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
+						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value"
+							   ng-readonly="pair.readonly"
+							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}"
+							   class="datafeed_input" ng-required="true"
+							   ng-maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}"
+							   maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}">
+						<a ng-if="!pair.readonly" ng-show="$last && !$first"
+						   ng-click="home.feedvaluespairs.splice(home.feedvaluespairs.length-1)"><i
+							class="fi-minus size-18 m10r" style="vertical-align: middle;"></i></a>
 					</span>
-					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}" data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}" data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}" data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}" data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}" data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}" data-trans="{{'available' | translate}}" ></i>
+					<i data-trans="{{'Add answer' | translate}}" data-trans="{{'Add fields' | translate}}"
+					   data-trans="{{'Options for answering' | translate}}" data-trans="{{'Values' | translate}}"
+					   data-trans="{{'Answer' | translate}}" data-trans="{{'Field' | translate}}"
+					   data-trans="{{'Profile field' | translate}}" data-trans="{{'Datafeed name' | translate}}"
+					   data-trans="{{'Profile field value' | translate}}" data-trans="{{'Value' | translate}}"
+					   data-trans="{{'Datafeed value' | translate}}" data-trans="{{'confirmed' | translate}}"
+					   data-trans="{{'available' | translate}}"></i>
 					<div class="clear"></div>
-					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;" ng-show="home.feedvaluespairs.length < 20">
-						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i> 
-						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span> 
-          </a>
+					<a ng-click="home.feedvaluespairs.push({})" style="padding:10px 0;"
+					   ng-show="home.feedvaluespairs.length < 20">
+						<i class="fi-plus size-18 m10r" style="vertical-align: middle;"></i>
+						<span class="text-close size-12">{{(assetIndexSelectorValue == -5 ? 'Add answer' : 'Add fields')|translate}}</span>
+					</a>
 
-          <div ng-if="assetIndexSelectorValue == -4">
-            <div ng-show="home.android && home.androidVersion < 5">
-              <button ng-click="home.oldAndroidInputFileClick()" class="button small black round" translate>Choose File</button>
-              {{home.oldAndroidFileName}}
-            </div>
-            <input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file" id="post-hash-file" type="file" onchange="angular.element(this).scope().home.sendAttachedFile(event)">
-            <label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file" ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile ? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
-          </div>
+					<div ng-if="assetIndexSelectorValue == -4">
+						<div ng-show="home.android && home.androidVersion < 5">
+							<button ng-click="home.oldAndroidInputFileClick()" class="button small black round"
+									translate>Choose File
+							</button>
+							{{home.oldAndroidFileName}}
+						</div>
+						<input ng-show="!home.android || home.androidVersion >= 5" class="post-hash-file"
+							   id="post-hash-file" type="file"
+							   onchange="angular.element(this).scope().home.sendAttachedFile(event)">
+						<label ng-show="!home.android || home.androidVersion >= 5" for="post-hash-file"
+							   ng-class="{'active': home.attachedFile}"><i class="fi-upload size-18 m10r"></i>{{home.attachedFile
+							? "Posting hash of file " + home.attachedFile.name : "Post hash of a file"}}</label>
+					</div>
 
 				</div>
 
-            <div class="" ng-show="index.m < index.n && index.m > 1">
-                <div class="large-12 medium-12">
-                    <label>
-                        <span translate>Who signs:</span>
-                    </label>
-            			<cosigners></cosigners>
-            		</div>
-            </div>
+				<div class="" ng-show="index.m < index.n && index.m > 1">
+					<div class="large-12 medium-12">
+						<label>
+							<span translate>Who signs:</span>
+						</label>
+						<cosigners></cosigners>
+					</div>
+				</div>
 
-            <div class="row m20t" ng-show="!home.onGoingProcess">
-              <div class="columns">
-                <button type="submit" class="button black round expand" ng-disabled="sendDataForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
-                  ng-style="{'background-color':index.backgroundColor}"  translate>
-                  Send
-                </button>
-              </div>
+				<div class="row m20t" ng-show="!home.onGoingProcess">
+					<div class="columns">
+						<button type="submit" class="button black round expand"
+								ng-disabled="sendDataForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+								ng-style="{'background-color':index.backgroundColor}" translate>
+							Send
+						</button>
+					</div>
 
-            </div>
-          </form>
+				</div>
+			</form>
         </div>
       </div>
       <div ng-show="home.shownForm=='data' && !index.isSingleAddress">
