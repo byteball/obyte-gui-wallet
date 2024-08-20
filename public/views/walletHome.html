@@ -70,12 +70,12 @@ input.datafeed_input {
 }
 
 .vote-label {
-	font-size: 11px;
+	font-size: 12px;
 	display: inline-block;
 }
 
 .subject {
-	font-size: 11px !important;
+	font-size: 13px !important;
 	line-height: 16px !important;
 }
 </style>
@@ -777,11 +777,11 @@ input.datafeed_input {
 						<span translate>character(s)</span></div>
 				</div>
 				<div class="row m20t text-gray size-12" ng-if="assetIndexSelectorValue == -8">
-					<div style="display: inline-block; font-size: 11px;">
-				  <span translate>
-					  Vote for a system variable. The weight of your vote is proportional to the balance of your voting
-					  address.
-				  </span>
+					<div style="display: inline-block; font-size: 12px;">
+					  <span translate>
+						  Vote for a system variable. The weight of your vote is proportional to the balance of your voting
+						  address.
+					  </span>
 					</div>
 					<div style="margin-top: 4px">
 						<label translate class="vote-label">
@@ -797,13 +797,17 @@ input.datafeed_input {
 						<textarea ng-if="home.subject === 'op_list'" name="op_list" ng-model="home.sysvar_value"
 								  placeholder="OP addresses, one address per line" required rows="12"
 								  ng-change="home.validateOPList()"
-								  style="margin-bottom: 0px; font-size: 12px; margin-top: 4px"></textarea>
+								  style="margin-bottom: 0px; font-size: 13px; margin-top: 1px"></textarea>
 						<input ng-if="home.subject !== 'op_list'" type="text" name="numeric_var"
-							   ng-model="home.sysvar_value"
+							   ng-model="home.sysvar_value" ng-change="home.validateSysVarNumericValue()"
 							   placeholder="numeric value" ng-required="true" maxlength="6">
 
 						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list'" class="text-warning size-12" translate>
 							Invalid addresses in OP List
+						</div>
+
+						<div ng-if="sendDataForm.numeric_var.$invalid && home.subject !== 'op_list'" class="text-warning size-12" translate>
+							Value should be numeric
 						</div>
 					</div>
 				</div>
