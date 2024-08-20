@@ -533,13 +533,15 @@ angular.module('copayApp.directives')
 
         if (scope.targetProp) {
           scope.$watch(function(scope){return scope.bindObj[scope.targetProp]}, function(newValue, oldValue) {
-            angular.forEach(dropdown.find('li'), function(element){
-              var li = angular.element(element);
-              if (li.attr('data-value') != newValue) {
-                li[0].click();
-                scope.bindObj[scope.bindProp] = li.attr('data-value');
-              }
-            });
+			$timeout(function () {  
+			  angular.forEach(dropdown.find('li'), function(element){
+			    var li = angular.element(element);
+			    if (li.attr('data-value') != newValue) {
+			  	  li[0].click();
+			      scope.bindObj[scope.bindProp] = li.attr('data-value');
+				}
+			  });
+			});
           });
         }
       });
