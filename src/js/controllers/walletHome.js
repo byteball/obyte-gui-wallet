@@ -1316,10 +1316,10 @@ angular.module('copayApp.controllers')
 			let valid = false;
 			
 			if (self.sysvar_value) {
-				valid = isNaN(self.sysvar_value)
+				valid = !isNaN(self.sysvar_value)
 			}
 
-			form.numeric_var.$setValidity('validOPs', valid);
+			form.numeric_var.$setValidity('validNumericVar', valid);
 		}
 
 		this.onAddressChanged = function () {
