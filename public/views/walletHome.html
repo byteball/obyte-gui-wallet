@@ -797,16 +797,18 @@ input.datafeed_input {
 						<textarea ng-if="home.subject === 'op_list'" name="op_list" ng-model="home.sysvar_value"
 								  placeholder="OP addresses, one address per line" required rows="12"
 								  ng-change="home.validateOPList()"
-								  style="margin-bottom: 0px; font-size: 13px; margin-top: 1px"></textarea>
+								  style="margin-bottom: 4px; font-size: 13px; margin-top: 1px"></textarea>
 						<input ng-if="home.subject !== 'op_list'" type="text" name="numeric_var"
 							   ng-model="home.sysvar_value" ng-change="home.validateSysVarNumericValue()"
-							   placeholder="numeric value" ng-required="true" maxlength="6">
+							   placeholder="numeric value" ng-required="true" maxlength="6"
+							   style="margin-bottom: 4px"
+						>
 
-						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list'" class="text-warning size-12" translate>
+						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
 							Invalid addresses in OP List
 						</div>
 
-						<div ng-if="sendDataForm.numeric_var.$invalid && home.subject !== 'op_list'" class="text-warning size-12" translate>
+						<div ng-if="sendDataForm.numeric_var.$invalid && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
 							Value should be numeric
 						</div>
 					</div>
