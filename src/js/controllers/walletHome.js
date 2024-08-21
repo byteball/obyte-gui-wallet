@@ -1311,6 +1311,17 @@ angular.module('copayApp.controllers')
 			form.op_list.$setValidity('validOPs', valid);
 		}
 
+		this.validateSysVarNumericValue = function () {
+			const form = $scope.sendDataForm;
+			let valid = false;
+			
+			if (self.sysvar_value) {
+				valid = !isNaN(self.sysvar_value)
+			}
+
+			form.numeric_var.$setValidity('validNumericVar', valid);
+		}
+
 		this.onAddressChanged = function () {
 			console.log('onAddressChanged');
 			resetAAFields();

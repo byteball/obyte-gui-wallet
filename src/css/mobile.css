@@ -1105,11 +1105,6 @@ i.validation-icon {
   border-radius: 50%;
 }
 
-li.dropup-item {
-  display: flex;
-  flex-direction: row;
-}
-
 li.dropup-item a {
   /*width: 100%;*/
 }
