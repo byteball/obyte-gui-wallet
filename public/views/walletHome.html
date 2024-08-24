@@ -840,14 +840,14 @@ input.datafeed_input {
 					</label>
 					<span ng-repeat="pair in home.feedvaluespairs">
 						<input type="text" ng-model="pair.name" ng-readonly="pair.readonly"
-							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -4 ? 'Field' : 'Answer') : 'Datafeed name'))|translate}}"
+							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field' : ([-4, -5, -10].includes(assetIndexSelectorValue) ? (assetIndexSelectorValue == -5 ? 'Answer' : 'Field') : 'Datafeed name'))|translate}}"
 							   class="datafeed_input" ng-required="true"
 							   ng-maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}"
 							   maxlength="{{([-2, -3].includes(assetIndexSelectorValue) ? '50' : '64')}}"
 							   ng-style="(assetIndexSelectorValue == -5 ? {'width':'90%'} : {})">
 						<input ng-if="assetIndexSelectorValue != -5" type="text" ng-model="pair.value"
 							   ng-readonly="pair.readonly"
-							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -4 ? 'Value' : 'Datafeed value'))|translate}}"
+							   placeholder="{{([-2, -3].includes(assetIndexSelectorValue) ? 'Profile field value' : (assetIndexSelectorValue == -1 ? 'Datafeed value' : 'Value'))|translate}}"
 							   class="datafeed_input" ng-required="true"
 							   ng-maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}"
 							   maxlength="{{(assetIndexSelectorValue == -1 ? '64' : ([-2, -3].includes(assetIndexSelectorValue) ? '100' : '256'))}}">
