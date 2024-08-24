@@ -60,6 +60,10 @@ angular.module('copayApp.controllers')
 				asset: 'Raw data'
 			},
 			{
+				index: -10,
+				asset: 'Temporary data'
+			},
+			{
 				index: -5,
 				asset: 'Poll'
 			},
@@ -79,11 +83,8 @@ angular.module('copayApp.controllers')
 				index: -9,
 				asset: 'Count votes for a system variable'
 			},
-			{
-				index: -10,
-				asset: 'Temporary data'
-			},
 		]
+		this.findDataAssetByIndex = index => this.dataAssets.find(da => da.index === index).asset;
 		$scope.arrSysVars = [
 			{ subject: 'op_list', label: 'OP list' },
 			{ subject: 'threshold_size', label: 'Threshold size' },

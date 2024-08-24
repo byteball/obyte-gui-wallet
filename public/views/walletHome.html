@@ -386,7 +386,7 @@ input.datafeed_input {
                               ? 'Blackbytes'
                               : (index.arrBalances[assetIndexSelectorValue].name || index.arrBalances[assetIndexSelectorValue].asset))) + ' (' + (index.arrBalances[assetIndexSelectorValue].totalStr ? index.arrBalances[assetIndexSelectorValue].totalStr : (index.arrBalances[assetIndexSelectorValue].total.toLocaleString())) + (index.arrBalances[assetIndexSelectorValue].pending && 0 ? ' ' + ('confirmed' | translate) : ' '
                             + ('available' | translate) ) + ')'
-                          : home.dataAssets[assetIndexSelectorValue * -1 - 1].asset
+                          : home.findDataAssetByIndex(assetIndexSelectorValue)
                         }}
                       </div>
                     </button>
