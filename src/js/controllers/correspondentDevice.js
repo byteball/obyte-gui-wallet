@@ -1376,6 +1376,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.loadMoreHistory = function(cb) {
+		if (!correspondent)
+			return cb();
 		correspondentListService.loadMoreHistory(correspondent, function() {
 			cb();
 		});
