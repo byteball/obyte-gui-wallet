@@ -60,6 +60,10 @@ angular.module('copayApp.controllers')
 				asset: 'Raw data'
 			},
 			{
+				index: -10,
+				asset: 'Temporary data'
+			},
+			{
 				index: -5,
 				asset: 'Poll'
 			},
@@ -71,7 +75,23 @@ angular.module('copayApp.controllers')
 				index: -7,
 				asset: 'Text'
 			},
+			{
+				index: -8,
+				asset: 'Vote for a system variable'
+			},
+			{
+				index: -9,
+				asset: 'Count votes for a system variable'
+			},
 		]
+		this.findDataAssetByIndex = index => this.dataAssets.find(da => da.index === index).asset;
+		$scope.arrSysVars = [
+			{ subject: 'op_list', label: 'OP list' },
+			{ subject: 'threshold_size', label: 'Threshold size' },
+			{ subject: 'base_tps_fee', label: 'Base TPS fee' },
+			{ subject: 'tps_interval', label: 'TPS interval' },
+			{ subject: 'tps_fee_multiplier', label: 'TPS fee multiplier' },
+		];
 		this.isShownCopiedMessage = false;
 		$scope.index.tab = 'walletHome'; // for some reason, current tab state is tracked in index and survives re-instatiations of walletHome.js
 		self.android = isMobile.Android() && window.cordova;
@@ -1280,6 +1300,29 @@ angular.module('copayApp.controllers')
 			form.content.$setValidity('validLength', !(self.content && self.content.length > 140));
 		}
 
+		this.validateOPList = function () {
+			const form = $scope.sendDataForm;
+			let valid = false;
+
+			if (self.sysvar_value) {
+				const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
+				valid = arrOPs.every(ValidationUtils.isValidAddress) && arrOPs.length === constants.COUNT_WITNESSES;
+			}
+
+			form.op_list.$setValidity('validOPs', valid);
+		}
+
+		this.validateSysVarNumericValue = function () {
+			const form = $scope.sendDataForm;
+			let valid = false;
+			
+			if (self.sysvar_value) {
+				valid = !isNaN(self.sysvar_value)
+			}
+
+			form.numeric_var.$setValidity('validNumericVar', valid);
+		}
+
 		this.onAddressChanged = function () {
 			console.log('onAddressChanged');
 			resetAAFields();
@@ -2211,6 +2254,7 @@ angular.module('copayApp.controllers')
 
 		this.submitData = function() {
 			var objectHash = require('ocore/object_hash.js');
+			var objectLength = require('ocore/object_length.js');
 			var storage = require('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
@@ -2237,6 +2281,15 @@ angular.module('copayApp.controllers')
 				case -7:
 					app = "text";
 					break;
+				case -8:
+					app = "system_vote";
+					break;
+				case -9:
+					app = "system_vote_count";
+					break;
+				case -10:
+					app = "temp_data";
+					break;
 				default:
 					throw new Error("invalid app selected");
 			}
@@ -2251,7 +2304,7 @@ angular.module('copayApp.controllers')
 				value[pair.name] = pair.value;
 			});
 			if (errored) return;
-			if ($scope.assetIndexSelectorValue !== -6 && $scope.assetIndexSelectorValue !== -7) {
+			if (![-6, -7, -8, -9].includes($scope.assetIndexSelectorValue)) {
 				if (Object.keys(value).length === 0) {
 					self.setSendError("Provide at least one value");
 					return;
@@ -2310,6 +2363,30 @@ angular.module('copayApp.controllers')
 				}
 				if (app == "text") {
 					value = $scope.home.content;
+				}
+				if (app == "system_vote") {
+					const subject = $scope.home.subject;
+					let sysvar_value = $scope.home.sysvar_value;
+					if (subject === 'op_list') {
+						sysvar_value = sysvar_value.replace(/[^\w\n]/, '').trim().split('\n').sort();
+					}
+					else {
+						sysvar_value = +sysvar_value;
+					}
+					value = {
+						subject,
+						value: sysvar_value,
+					};
+				}
+				if (app == "system_vote_count") {
+					value = $scope.home.subject;
+				}
+				if (app == "temp_data") {
+					value = {
+						data_length: objectLength.getLength(value, true),
+						data_hash: objectHash.getBase64Hash(value, true),
+						data: value,
+					};
 				}
 
 				sendData(value);
@@ -2640,6 +2717,21 @@ angular.module('copayApp.controllers')
 						$scope.assetIndexSelectorValue = -7;
 						$scope.home.content = dataPrompt.content;
 						delete dataPrompt.content;
+						break;
+					case 'system_vote':
+						$scope.assetIndexSelectorValue = -8;
+						$scope.home.subject = dataPrompt.subject || 'op_list';
+						$scope.home.value = dataPrompt.value;
+						delete dataPrompt.subject;
+						delete dataPrompt.value;
+						break;
+					case 'system_vote_count':
+						$scope.assetIndexSelectorValue = -9;
+						$scope.home.subject = dataPrompt.subject || 'op_list';
+						delete dataPrompt.subject;
+						break;
+					case 'temp_data':
+						$scope.assetIndexSelectorValue = -10;
 						break;
 				}
 				$scope.home.feedvaluespairs = [];
@@ -3268,6 +3360,21 @@ angular.module('copayApp.controllers')
 								$scope.assetIndexSelectorValue = -7;
 								$scope.home.content = payload;
 								data = {};
+								break;
+							case 'system_vote':
+								$scope.assetIndexSelectorValue = -8;
+								$scope.home.subject = payload.subject;
+								$scope.home.value = payload.value;
+								data = {};
+								break;
+							case 'system_vote_count':
+								$scope.assetIndexSelectorValue = -9;
+								$scope.home.subject = payload;
+								data = {};
+								break;
+							case 'temp_data':
+								$scope.assetIndexSelectorValue = -10;
+								data = payload.data;
 								break;
 						}
 						$scope.home.feedvaluespairs = [];
