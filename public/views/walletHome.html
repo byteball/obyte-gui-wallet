@@ -665,6 +665,12 @@ input.datafeed_input {
             		</div>
 	            </div>
 
+	            <div class="row" ng-if="home.estimatedFee">
+                <div class="large-12 medium-12 columns m10b size-12">
+                  <span translate>Estimated fee</span>: {{home.estimatedFee}} Bytes (≈ ${{home.estimatedFeeUSD}})
+                </div>
+	            </div>
+
 	            <div class="row" ng-show="!home.onGoingProcess">
 	              <div class="large-6 medium-6 small-6 columns" ng-show="!home.blockUx && !home.send_multiple && (home.lockAsset || home.lockAddress || home.lockAmount || home.bSendAll)">
 	                <a ng-click="home.resetForm()" class="button expand outline dark-gray round" translate>Cancel</a>
@@ -690,6 +696,13 @@ input.datafeed_input {
 	            </div>
 	            <p translate ng-show="!index.arrBalances[index.assetIndex].is_private">Click this button to create payment and share it via private message in chat apps or to create a paper wallet.</p>
 	            <p translate ng-show="index.arrBalances[index.assetIndex].is_private">Click this button to create a payment file and send it to a recipient.</p>
+              
+	            <div class="row" ng-if="home.estimatedFee">
+                <div class="large-12 medium-12 columns m10b size-12">
+                  <span translate>Estimated fee</span>: {{home.estimatedFee}} Bytes (≈ ${{home.estimatedFeeUSD}})
+                </div>
+	            </div>
+
         		<button type="submit" class="button black round expand" ng-disabled="home.current_payment_key || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || sendPaymentForm.amount.$invalid" translate ng-style="{'background-color':index.backgroundColor}">Share via message</button>
         	</div>
           </form>
@@ -894,6 +907,12 @@ input.datafeed_input {
 						<cosigners></cosigners>
 					</div>
 				</div>
+
+        <div class="row" ng-if="home.estimatedFee">
+          <div class="large-12 medium-12 columns m10t size-12">
+            <span translate>Estimated fee</span>: {{home.estimatedFee}} Bytes (≈ ${{home.estimatedFeeUSD}})
+          </div>
+        </div>
 
 				<div class="row m20t" ng-show="!home.onGoingProcess">
 					<div class="columns">

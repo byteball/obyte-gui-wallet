@@ -42,6 +42,7 @@ angular.module('copayApp.controllers')
 		this.isTestnet = constants.version.match(/t$/);
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		this.exchangeRates = network.exchangeRates;
+		this.estimatedFee = null;
 		this.dataAssets = [
 			{
 				index: -1,
@@ -1287,6 +1288,8 @@ angular.module('copayApp.controllers')
 						self.aa_validation_error = err;
 						if (form.definition)
 							form.definition.$setValidity('aaDef', !err);
+						if (!err)
+							self.estimateFee();
 						$timeout(function() {
 							$scope.$digest();
 						});
@@ -1298,6 +1301,7 @@ angular.module('copayApp.controllers')
 		this.validateTextLength = function () {
 			var form = $scope.sendDataForm;
 			form.content.$setValidity('validLength', !(self.content && self.content.length > 140));
+			self.estimateFee();
 		}
 
 		this.validateOPList = function () {
@@ -1310,6 +1314,8 @@ angular.module('copayApp.controllers')
 			}
 
 			form.op_list.$setValidity('validOPs', valid);
+			if (valid)
+				self.estimateFee();
 		}
 
 		this.validateSysVarNumericValue = function () {
@@ -1726,6 +1732,94 @@ angular.module('copayApp.controllers')
 			});
 			return outputs;
 		}
+
+		let cachedTpsFees = {};
+		async function estimateTpsFee(from_address, to_address) {
+			for (let k in cachedTpsFees)
+				if (cachedTpsFees[k].ts < Date.now() - 30_000)
+					delete cachedTpsFees[k];
+			const key = from_address + '_' + to_address;
+			const cached = cachedTpsFees[key];
+			if (cached)
+				return cached.value;
+			const composer = require('ocore/composer.js');
+			const tps_fee = await composer.estimateTpsFee([from_address], [to_address]);
+			cachedTpsFees[key] = { ts: Date.now(), value: tps_fee };
+			return tps_fee;
+		}
+
+		this.estimateFee = async function () {
+			const setEstimatedFee = (fee, msg) => {
+				console.log('---- fee', fee)
+				self.estimatedFee = fee;
+				if (fee !== null)
+					self.estimatedFeeUSD = (fee * self.exchangeRates.GBYTE_USD / 1e9).toPrecision(3);
+				if (msg)
+					console.log(msg);
+				$timeout(function () {
+					$scope.$digest();
+				});
+			};
+			const bData = ($scope.assetIndexSelectorValue < 0);
+			const form = bData ? $scope.sendDataForm : $scope.sendPaymentForm;
+			if (!form)
+				return console.log('estimateFee: no form');
+			let valid = form.$valid;
+			if (!valid && $scope.mtab === 2 && !bData && $scope.sendPaymentForm.amount.$valid)
+				valid = true;
+			if (!valid)
+				return setEstimatedFee(null, 'estimateFee: the form is not valid');
+			const fc = profileService.focusedClient;
+			const from_address = self.from_address || indexScope.shared_address || self.addr[fc.credentials.walletId];
+			if (!from_address)
+				return setEstimatedFee(null, 'estimateFee: no from address');
+			let to_address = bData ? from_address : (form.address ? form.address.$modelValue : null);
+			if (!to_address || !ValidationUtils.isValidAddress(to_address)) { // username, email, textcoin
+				console.log('estimateFee: using from address as to address');
+				to_address = from_address; // any address will do as long as it is not an AA
+			}
+			const storage = require('ocore/storage.js');
+			try {
+				let size = 763; // plain payment with a single input and a single external output
+				for (let { name, value } of self.feedvaluespairs)
+					if (name && value)
+						size += name.length + value.length;
+				if ($scope.assetIndexSelectorValue === -6)
+					size += self.definition.length;
+				else if ($scope.assetIndexSelectorValue === -6)
+					size += self.content.length;
+				else if ($scope.assetIndexSelectorValue === -8)
+					size += self.sysvar_value.length;
+				else if ($scope.assetIndexSelectorValue < 0)
+					size += 200; // additional fields
+				const oversize_fee = storage.getOversizeFee(size, Infinity);
+				const tps_fee = await estimateTpsFee(from_address, to_address);
+				setEstimatedFee(size + oversize_fee + tps_fee);
+			}
+			catch (e) {
+				console.log('estimateFee failed', e);
+				setEstimatedFee(null);
+			}
+		}
+
+		$scope.$watch('sendPaymentForm.$valid', (newVal, oldVal) => {
+			self.estimateFee();
+		});
+		$scope.$watch('sendPaymentForm.amount.$valid', (newVal, oldVal) => {
+			self.estimateFee();
+		});
+		$scope.$watch('sendDataForm.$valid', (newVal, oldVal) => {
+			self.estimateFee();
+		});
+		$scope.$watch('assetIndexSelectorValue', (newVal, oldVal) => {
+			self.estimateFee();
+		});
+		$scope.$watch('mtab', (newVal, oldVal) => {
+			self.estimateFee();
+		});
+		$scope.$watchCollection('home.aa_destinations', (newVal, oldVal) => {
+			self.estimateFee();
+		});
 
 		this.submitPayment = function() {
 			if ($scope.index.arrBalances.length === 0)
