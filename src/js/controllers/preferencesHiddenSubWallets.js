@@ -18,7 +18,7 @@ function PreferencesHiddenSubWalletsCtrl($scope, $timeout, configService) {
   self.isChanged = false;
   self.arrSubWalletsData = [];
   
-  if (indexScope.arrBalances[0].assocSharedByAddress) {
+  if (indexScope.arrBalances[0] && indexScope.arrBalances[0].assocSharedByAddress) {
     Object.keys(indexScope.arrBalances[0].assocSharedByAddress).forEach(function (address) {
       self.arrSubWalletsData.push({
         address: address, value: assocHiddenSubWallets[address] || false
