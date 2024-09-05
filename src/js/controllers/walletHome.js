@@ -985,7 +985,8 @@ angular.module('copayApp.controllers')
 		function claimTextCoin(mnemonic, addr) {
 			var wallet = require('ocore/wallet.js');
 			$rootScope.$emit('process_status_change', 'claiming', true);
-			wallet.receiveTextCoin(mnemonic, addr, function(err, unit, asset) {
+			const fc = profileService.focusedClient;
+			wallet.receiveTextCoin(mnemonic, addr, fc.getSignerWithLocalPrivateKey(), function(err, unit, asset) {
 				$timeout(function() {
 					$rootScope.$emit('closeModal');
 					if (err) {
