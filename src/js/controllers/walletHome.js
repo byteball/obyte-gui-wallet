@@ -2823,7 +2823,7 @@ angular.module('copayApp.controllers')
 					case 'system_vote':
 						$scope.assetIndexSelectorValue = -8;
 						$scope.home.subject = dataPrompt.subject || 'op_list';
-						$scope.home.sysvar_value = dataPrompt.value;
+						$scope.home.sysvar_value = $scope.home.subject === 'op_list' ? dataPrompt.value : dataPrompt.value.substr(0, 6);
 						delete dataPrompt.subject;
 						delete dataPrompt.value;
 						break;
