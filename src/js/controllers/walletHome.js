@@ -1328,6 +1328,8 @@ angular.module('copayApp.controllers')
 			}
 
 			form.numeric_var.$setValidity('validNumericVar', valid);
+			if (valid)
+				self.estimateFee();
 		}
 
 		this.onAddressChanged = function () {
@@ -2336,6 +2338,11 @@ angular.module('copayApp.controllers')
 					$timeout(function () {
 						if (self.content && self.content.length > 0)
 							self.validateTextLength();
+					});
+				if ($scope.assetIndexSelectorValue === -8)
+					$timeout(function () {
+						if (self.sysvar_value && self.sysvar_value.length > 0)
+							self.subject === 'op_list' ? self.validateOPList() : self.validateSysVarNumericValue();
 					});
 			}
 			else {
