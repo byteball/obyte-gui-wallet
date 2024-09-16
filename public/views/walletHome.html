@@ -817,12 +817,20 @@ input.datafeed_input {
 							   style="margin-bottom: 4px"
 						>
 
-						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
+						<div ng-if="sendDataForm.op_list.$error.address && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
 							Invalid addresses in OP List
 						</div>
 
-						<div ng-if="sendDataForm.numeric_var.$invalid && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
-							Value should be numeric
+						<div ng-if="sendDataForm.op_list.$error.length && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
+							Incorrect length of OP List (need 12 addresses)
+						</div>
+
+						<div ng-if="sendDataForm.numeric_var.$error.validInteger && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
+							{{ home.subject }} must be a positive integer
+						</div>
+
+						<div ng-if="sendDataForm.numeric_var.$error.validNumber && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
+                            {{ home.subject }} must be a positive number
 						</div>
 					</div>
 				</div>

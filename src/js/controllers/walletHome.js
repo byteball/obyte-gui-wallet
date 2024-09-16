@@ -1306,28 +1306,58 @@ angular.module('copayApp.controllers')
 		}
 
 		this.validateOPList = function () {
+			if (!self.sysvar_value) return;
+			
 			const form = $scope.sendDataForm;
-			let valid = false;
+			
+			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
+			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
+			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
+            
+            form.op_list.$setValidity('address', true);
+            form.op_list.$setValidity('length', true);
+			
+            if (!allAddressesValid) {
+                form.op_list.$setValidity('address', false);
+                return;
+            }
 
-			if (self.sysvar_value) {
-				const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
-				valid = arrOPs.every(ValidationUtils.isValidAddress) && arrOPs.length === constants.COUNT_WITNESSES;
-			}
-
-			form.op_list.$setValidity('validOPs', valid);
-			if (valid)
+            if (!lengthIsValid) {
+                form.op_list.$setValidity('length', false);
+                return;
+            }
+			
+			if (allAddressesValid && lengthIsValid)
 				self.estimateFee();
 		}
 
 		this.validateSysVarNumericValue = function () {
+            if (!self.sysvar_value) return;
+            
 			const form = $scope.sendDataForm;
 			let valid = false;
-			
-			if (self.sysvar_value) {
-				valid = !isNaN(self.sysvar_value)
-			}
+            const value = +self.sysvar_value;
+            
+            form.numeric_var.$setValidity('validInteger', true);
+            form.numeric_var.$setValidity('validNumber', true);
+            
+            switch (self.subject) {
+                case "threshold_size":
+                    if (!ValidationUtils.isPositiveInteger(value)){
+                        form.numeric_var.$setValidity('validInteger', false);
+                    }
+                    valid = true;
+                    break;
+                case "base_tps_fee":
+                case "tps_interval":
+                case "tps_fee_multiplier":
+                    if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
+                        form.numeric_var.$setValidity('validNumber', false);
+                    }
+                    valid = true;
+                    break;
+            }
 
-			form.numeric_var.$setValidity('validNumericVar', valid);
 			if (valid)
 				self.estimateFee();
 		}
@@ -2320,6 +2350,12 @@ angular.module('copayApp.controllers')
 		//	self.additional_assets = null; // would execute after we set additional_assets
 			self.switchForms();
 		});
+		
+		$scope.$watch('home.subject', function (oldVal, newVal) {
+            self.sysvar_value = '';
+			self.switchForms();
+		});
+		
 		this.switchForms = function() {
 			 this.bSendAll = false;
 			 if (this.send_multiple && $scope.index.arrBalances[$scope.index.assetIndex] && $scope.index.arrBalances[$scope.index.assetIndex].is_private)
@@ -3031,6 +3067,15 @@ angular.module('copayApp.controllers')
 				$scope.$apply();
 			});
 		};
+        
+        async function setV4Fees(btx) {
+            const db = require('ocore/db.js');
+            const [row] = await db.query("SELECT tps_fee,actual_tps_fee,burn_fee,oversize_fee FROM units WHERE unit=?", [btx.unit]);
+            btx.tpsFee = row.tps_fee;
+            btx.actualTpsFee = row.actual_tps_fee;
+            btx.burnFee = row.burn_fee;
+            btx.oversizeFee = row.oversize_fee;
+        }
 
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
@@ -3055,15 +3100,18 @@ angular.module('copayApp.controllers')
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
 				var storage = require('ocore/storage.js');
-				storage.readUnit(btx.unit, function (objUnit) {
+				storage.readUnit(btx.unit, async function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
+					await setV4Fees(btx);
 					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && m.payload && (m.payload.asset || 'base') !== btx.asset);
 					var dataMessage = objUnit.messages.find(m => m.app === 'data');
 					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
 					var attestationMessage = objUnit.messages.find(m => m.app === 'attestation');
 					var profileMessage = objUnit.messages.find(m => m.app === 'profile');
 					var definitionMessage = objUnit.messages.find(m => m.app === 'definition');
+					const systemVoteMessage = objUnit.messages.find(m => m.app === 'system_vote');
+					const systemVoteCountMessage = objUnit.messages.find(m => m.app === 'system_vote_count');
 					if (additionalPaymentMessages.length > 0 && btx.action === 'sent') {
 						var additional_assets = {};
 						additionalPaymentMessages.forEach(m => {
@@ -3085,6 +3133,12 @@ angular.module('copayApp.controllers')
 						btx.profileJson = JSON.stringify(profileMessage.payload, null, 2);
 					if (definitionMessage)
 						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
+					if (systemVoteMessage) {
+						btx.systemVoteObj = JSON.stringify(systemVoteMessage.payload, null, 2);
+					}
+					if (systemVoteCountMessage) {
+						btx.systemVoteCount = systemVoteCountMessage.payload;
+					}
 					$timeout(function () {
 						$scope.$apply();
 					});
