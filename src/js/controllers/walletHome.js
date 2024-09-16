@@ -1309,7 +1309,6 @@ angular.module('copayApp.controllers')
 			if (!self.sysvar_value) return;
 			
 			const form = $scope.sendDataForm;
-			
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
@@ -1327,15 +1326,13 @@ angular.module('copayApp.controllers')
                 return;
             }
 			
-			if (allAddressesValid && lengthIsValid)
-				self.estimateFee();
+			self.estimateFee();
 		}
 
 		this.validateSysVarNumericValue = function () {
             if (!self.sysvar_value) return;
             
 			const form = $scope.sendDataForm;
-			let valid = false;
             const value = +self.sysvar_value;
             
             form.numeric_var.$setValidity('validInteger', true);
@@ -1345,21 +1342,20 @@ angular.module('copayApp.controllers')
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
                         form.numeric_var.$setValidity('validInteger', false);
+                        return;
                     }
-                    valid = true;
                     break;
                 case "base_tps_fee":
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
                         form.numeric_var.$setValidity('validNumber', false);
+                        return;
                     }
-                    valid = true;
                     break;
             }
 
-			if (valid)
-				self.estimateFee();
+            self.estimateFee();
 		}
 
 		this.onAddressChanged = function () {
