@@ -825,6 +825,10 @@ input.datafeed_input {
 							Incorrect length of OP List (need 12 addresses)
 						</div>
 
+						<div ng-if="sendDataForm.op_list.$error.double && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
+                            All addresses must be unique
+						</div>
+
 						<div ng-if="sendDataForm.numeric_var.$error.validInteger && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
 							{{ home.subject }} must be a positive integer
 						</div>

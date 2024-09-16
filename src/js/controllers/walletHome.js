@@ -1312,9 +1312,11 @@ angular.module('copayApp.controllers')
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
+            const doubleValid = [...new Set(arrOPs)].length === arrOPs.length;
             
             form.op_list.$setValidity('address', true);
             form.op_list.$setValidity('length', true);
+            form.op_list.$setValidity('double', true);
 			
             if (!allAddressesValid) {
                 form.op_list.$setValidity('address', false);
@@ -1323,6 +1325,11 @@ angular.module('copayApp.controllers')
 
             if (!lengthIsValid) {
                 form.op_list.$setValidity('length', false);
+                return;
+            }
+            
+            if (!doubleValid) {
+                form.op_list.$setValidity('double', false);
                 return;
             }
 			
@@ -3072,6 +3079,13 @@ angular.module('copayApp.controllers')
             btx.burnFee = row.burn_fee;
             btx.oversizeFee = row.oversize_fee;
         }
+        
+        function setNullV4Fees(btx) {
+            btx.tpsFee = null;
+            btx.actualTpsFee = null;
+            btx.burnFee = null;
+            btx.oversizeFee = null;
+        }
 
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
@@ -3099,7 +3113,7 @@ angular.module('copayApp.controllers')
 				storage.readUnit(btx.unit, async function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
-					await setV4Fees(btx);
+                    
 					var additionalPaymentMessages = objUnit.messages.filter(m => m.app === 'payment' && m.payload && (m.payload.asset || 'base') !== btx.asset);
 					var dataMessage = objUnit.messages.find(m => m.app === 'data');
 					var dataFeedMessage = objUnit.messages.find(m => m.app === 'data_feed');
@@ -3135,6 +3149,13 @@ angular.module('copayApp.controllers')
 					if (systemVoteCountMessage) {
 						btx.systemVoteCount = systemVoteCountMessage.payload;
 					}
+                    
+                    if (parseInt(objUnit.version) >= 4) {
+                        await setV4Fees(btx);
+                    } else {
+                        setNullV4Fees();
+                    }
+                    
 					$timeout(function () {
 						$scope.$apply();
 					});

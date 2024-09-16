@@ -108,7 +108,7 @@
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{btx.feeStr + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.fee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 5})+')' : '') }}</span>
     </li>
-    <li class="line-b p10" ng-show="btx.action != 'received'">
+    <li class="line-b p10" ng-show="btx.action != 'received' && btx.tpsFee !== null">
       <span class="text-gray" translate>TPS fee</span>:
       <span class="right">{{btx.tpsFee + ' bytes' + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.tpsFee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumSignificantDigits: 2})+')' : '') }}</span>
     </li>
