@@ -817,12 +817,8 @@ input.datafeed_input {
 							   style="margin-bottom: 4px"
 						>
 
-						<div ng-if="sendDataForm.op_list.$invalid && home.subject === 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
-							Invalid addresses in OP List
-						</div>
-
-						<div ng-if="sendDataForm.numeric_var.$invalid && home.subject !== 'op_list' && home.sysvar_value" class="text-warning size-12" translate>
-							Value should be numeric
+						<div ng-if="home.vote_error && home.sysvar_value" class="text-warning size-12">
+							{{ home.vote_error }}
 						</div>
 					</div>
 				</div>
