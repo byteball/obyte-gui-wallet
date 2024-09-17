@@ -1307,29 +1307,25 @@ angular.module('copayApp.controllers')
 
 		this.validateOPList = function () {
 			if (!self.sysvar_value) return;
-			
-			const form = $scope.sendDataForm;
+			self.vote_error = '';
+            
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
-            const doubleValid = [...new Set(arrOPs)].length === arrOPs.length;
+            const unique = [...new Set(arrOPs)].length === arrOPs.length;
             
-            form.op_list.$setValidity('address', true);
-            form.op_list.$setValidity('length', true);
-            form.op_list.$setValidity('double', true);
-			
             if (!allAddressesValid) {
-                form.op_list.$setValidity('address', false);
+                self.vote_error = 'Invalid addresses in OP List';
                 return;
             }
 
             if (!lengthIsValid) {
-                form.op_list.$setValidity('length', false);
+                self.vote_error = 'Incorrect length of OP List (need 12 addresses)';
                 return;
             }
             
-            if (!doubleValid) {
-                form.op_list.$setValidity('double', false);
+            if (!unique) {
+                self.vote_error = 'All addresses must be unique';
                 return;
             }
 			
@@ -1339,16 +1335,13 @@ angular.module('copayApp.controllers')
 		this.validateSysVarNumericValue = function () {
             if (!self.sysvar_value) return;
             
-			const form = $scope.sendDataForm;
+            self.vote_error = '';
             const value = +self.sysvar_value;
-            
-            form.numeric_var.$setValidity('validInteger', true);
-            form.numeric_var.$setValidity('validNumber', true);
             
             switch (self.subject) {
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
-                        form.numeric_var.$setValidity('validInteger', false);
+                        self.vote_error = `${self.subject} must be a positive integer`;
                         return;
                     }
                     break;
@@ -1356,7 +1349,7 @@ angular.module('copayApp.controllers')
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
-                        form.numeric_var.$setValidity('validNumber', false);
+                        self.vote_error = `${self.subject} must be a positive number`;
                         return;
                     }
                     break;
