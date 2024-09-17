@@ -2347,7 +2347,12 @@ angular.module('copayApp.controllers')
 			self.switchForms();
 		});
 		
-		$scope.$watch('home.subject', function (oldVal, newVal) {
+		$scope.$watch('home.subject', function () {
+			if ($scope.home.is_resend) {
+				$scope.home.is_resend = false;
+				return;
+			}
+			
             self.sysvar_value = '';
 			self.switchForms();
 		});
@@ -3538,7 +3543,8 @@ angular.module('copayApp.controllers')
 							case 'system_vote':
 								$scope.assetIndexSelectorValue = -8;
 								$scope.home.subject = payload.subject;
-								$scope.home.value = payload.value;
+								$scope.home.sysvar_value = payload.subject === 'op_list' ? payload.value.join('\n') : payload.value;
+								$scope.home.is_resend = true;
 								data = {};
 								break;
 							case 'system_vote_count':

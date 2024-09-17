@@ -913,7 +913,7 @@ input.datafeed_input {
 				<div class="row m20t" ng-show="!home.onGoingProcess">
 					<div class="columns">
 						<button type="submit" class="button black round expand"
-								ng-disabled="sendDataForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected()"
+								ng-disabled="sendDataForm.$invalid || home.blockUx || index.isOffline || !index.isEnoughSignersSelected() || home.vote_error"
 								ng-style="{'background-color':index.backgroundColor}" translate>
 							Send
 						</button>
