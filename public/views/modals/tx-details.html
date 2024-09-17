@@ -108,6 +108,22 @@
       <span class="text-gray" translate>Fee</span>:
       <span class="right">{{btx.feeStr + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.fee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumFractionDigits: 5})+')' : '') }}</span>
     </li>
+    <li class="line-b p10" ng-show="btx.action != 'received' && btx.tpsFee !== null">
+      <span class="text-gray" translate>TPS fee</span>:
+      <span class="right">{{btx.tpsFee + ' bytes' + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.tpsFee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumSignificantDigits: 2})+')' : '') }}</span>
+    </li>
+    <li class="line-b p10" ng-show="btx.action != 'received' && btx.actualTpsFee !== null">
+      <span class="text-gray" translate>Actual TPS fee</span>:
+      <span class="right">{{btx.actualTpsFee + ' bytes' + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.actualTpsFee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumSignificantDigits: 2})+')' : '') }}</span>
+    </li>
+    <li class="line-b p10" ng-show="btx.action != 'received' && btx.burnFee !== null">
+      <span class="text-gray" translate>Burn fee</span>:
+      <span class="right">{{btx.burnFee + ' bytes' + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.burnFee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumSignificantDigits: 2})+')' : '') }}</span>
+    </li>
+    <li class="line-b p10" ng-show="btx.action != 'received' && btx.oversizeFee !== null">
+      <span class="text-gray" translate>Oversize fee</span>:
+      <span class="right">{{btx.oversizeFee + ' bytes' + (exchangeRates.GBYTE_USD ? ' (≈ $'+(btx.oversizeFee * exchangeRates.GBYTE_USD / 1e9).toLocaleString([], {maximumSignificantDigits: 2})+')' : '') }}</span>
+    </li>
     <li class="line-b p10 row collapse">
       <div class="text-gray small-2 columns"><span>ID</span>:</div>
       <div class="right small-10 columns text-right enable_text_select ellipsis external-link"><a ng-click="openInExplorer(btx.unit)" class=" ">{{btx.unit}}</a></div>
@@ -139,6 +155,14 @@
     <li class="line-b p10 oh row collapse" ng-if="btx.aaDefinitionPreview">
       <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span donttranslate>AA def</span>:</div>
       <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.aaDefinitionPreview}}</div>
+    </li>
+    <li class="line-b p10 oh row collapse" ng-if="btx.systemVoteObj">
+      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>System vote</span>:</div>
+      <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.systemVoteObj}}</div>
+    </li>
+    <li class="line-b p10" ng-show="btx.systemVoteCount">
+        <span class="text-gray" translate>System vote count</span>:
+        <span class="right">{{btx.systemVoteCount}}</span>
     </li>
     <li class="line-b p10 oh" ng-if="btx.message && btx.action != 'received'">
       <span class="text-gray" translate>Note</span>:
