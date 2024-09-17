@@ -1315,17 +1315,17 @@ angular.module('copayApp.controllers')
             const unique = [...new Set(arrOPs)].length === arrOPs.length;
             
             if (!allAddressesValid) {
-                self.vote_error = 'Invalid addresses in OP List';
+                self.vote_error = gettext('Invalid addresses in OP List');
                 return;
             }
 
             if (!lengthIsValid) {
-                self.vote_error = 'Incorrect length of OP List (need 12 addresses)';
+                self.vote_error = gettext('Incorrect length of OP List (need 12 addresses)');
                 return;
             }
             
             if (!unique) {
-                self.vote_error = 'All addresses must be unique';
+                self.vote_error = gettext('All addresses must be unique');
                 return;
             }
 			
@@ -1341,7 +1341,7 @@ angular.module('copayApp.controllers')
             switch (self.subject) {
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
-                        self.vote_error = `${self.subject} must be a positive integer`;
+                        self.vote_error = `${self.subject} ${gettext('must be a positive integer')}`;
                         return;
                     }
                     break;
@@ -1349,7 +1349,7 @@ angular.module('copayApp.controllers')
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
-                        self.vote_error = `${self.subject} must be a positive number`;
+                        self.vote_error = `${self.subject} ${gettext('must be a positive number')}`;
                         return;
                     }
                     break;
