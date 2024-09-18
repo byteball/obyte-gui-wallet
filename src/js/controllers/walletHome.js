@@ -1307,53 +1307,65 @@ angular.module('copayApp.controllers')
 
 		this.validateOPList = function () {
 			if (!self.sysvar_value) return;
-			self.vote_error = '';
-            
+			
+			let errorMsg;
+			
+			const form = $scope.sendDataForm;
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
             const unique = [...new Set(arrOPs)].length === arrOPs.length;
             
             if (!allAddressesValid) {
-                self.vote_error = gettext('Invalid addresses in OP List');
-                return;
+                errorMsg = gettext('Invalid addresses in OP List');
+            } else if (!lengthIsValid) {
+                errorMsg = gettext('Incorrect length of OP List (need 12 addresses)');
+            } else if (!unique) {
+                errorMsg = gettext('All addresses must be unique');
             }
-
-            if (!lengthIsValid) {
-                self.vote_error = gettext('Incorrect length of OP List (need 12 addresses)');
-                return;
-            }
-            
-            if (!unique) {
-                self.vote_error = gettext('All addresses must be unique');
-                return;
-            }
+			
+			if (errorMsg) {
+				self.vote_error = errorMsg;
+				form.op_list.$setValidity('validOPs', false);
+				return;
+			}
+			
+			self.vote_error = '';
+			form.op_list.$setValidity('validOPs', true);
 			
 			self.estimateFee();
 		}
 
 		this.validateSysVarNumericValue = function () {
             if (!self.sysvar_value) return;
-            
-            self.vote_error = '';
+			
+			const form = $scope.sendDataForm;
             const value = +self.sysvar_value;
+			let errorMsg;
             
             switch (self.subject) {
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
-                        self.vote_error = `${self.subject} ${gettext('must be a positive integer')}`;
-                        return;
+                        errorMsg = `${self.subject} ${gettext('must be a positive integer')}`;
                     }
                     break;
                 case "base_tps_fee":
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
-                        self.vote_error = `${self.subject} ${gettext('must be a positive number')}`;
-                        return;
+                        errorMsg = `${self.subject} ${gettext('must be a positive number')}`;
                     }
                     break;
             }
+			
+			if (errorMsg) {
+				self.vote_error = errorMsg;
+				form.numeric_var.$setValidity('validNumericVar', false);
+				return;
+			}
+			
+			self.vote_error = '';
+			form.numeric_var.$setValidity('validNumericVar', true);
 
             self.estimateFee();
 		}
@@ -1841,7 +1853,9 @@ angular.module('copayApp.controllers')
 			self.estimateFee();
 		});
 		$scope.$watch('assetIndexSelectorValue', (newVal, oldVal) => {
-			self.estimateFee();
+			$timeout(function (){
+				self.estimateFee();
+			});
 		});
 		$scope.$watch('mtab', (newVal, oldVal) => {
 			self.estimateFee();
@@ -2347,8 +2361,11 @@ angular.module('copayApp.controllers')
 			self.switchForms();
 		});
 		
-		$scope.$watch('home.subject', function (oldVal, newVal) {
-            self.sysvar_value = '';
+		$scope.$watchGroup(['home.subject', 'home.sysvar_value'], function (newV, oldV) {
+			if (oldV[0] !== newV[0] && oldV[1] === newV[1]) {
+				self.sysvar_value = '';
+			}
+			
 			self.switchForms();
 		});
 		
@@ -3530,7 +3547,7 @@ angular.module('copayApp.controllers')
 							case 'system_vote':
 								$scope.assetIndexSelectorValue = -8;
 								$scope.home.subject = payload.subject;
-								$scope.home.value = payload.value;
+								$scope.home.sysvar_value = payload.subject === 'op_list' ? payload.value.join('\n') : payload.value;
 								data = {};
 								break;
 							case 'system_vote_count':
