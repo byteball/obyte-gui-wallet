@@ -1308,7 +1308,7 @@ angular.module('copayApp.controllers')
 		this.validateOPList = function () {
 			if (!self.sysvar_value) return;
 			
-			let error;
+			let errorMsg;
 			
 			const form = $scope.sendDataForm;
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
@@ -1317,15 +1317,15 @@ angular.module('copayApp.controllers')
             const unique = [...new Set(arrOPs)].length === arrOPs.length;
             
             if (!allAddressesValid) {
-                error = 'Invalid addresses in OP List';
+                errorMsg = gettext('Invalid addresses in OP List');
             } else if (!lengthIsValid) {
-                error = 'Incorrect length of OP List (need 12 addresses)';
+                errorMsg = gettext('Incorrect length of OP List (need 12 addresses)');
             } else if (!unique) {
-                error = 'All addresses must be unique';
+                errorMsg = gettext('All addresses must be unique');
             }
 			
-			if (error) {
-				self.vote_error = gettext(error);
+			if (errorMsg) {
+				self.vote_error = errorMsg;
 				form.op_list.$setValidity('validOPs', false);
 				return;
 			}
@@ -1341,25 +1341,25 @@ angular.module('copayApp.controllers')
 			
 			const form = $scope.sendDataForm;
             const value = +self.sysvar_value;
-			let error;
+			let errorMsg;
             
             switch (self.subject) {
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
-                        error = `${self.subject} ${gettext('must be a positive integer')}`;
+                        errorMsg = `${self.subject} ${gettext('must be a positive integer')}`;
                     }
                     break;
                 case "base_tps_fee":
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
-                        error = `${self.subject} ${gettext('must be a positive number')}`;
+                        errorMsg = `${self.subject} ${gettext('must be a positive number')}`;
                     }
                     break;
             }
 			
-			if (error) {
-				self.vote_error = error;
+			if (errorMsg) {
+				self.vote_error = errorMsg;
 				form.numeric_var.$setValidity('validNumericVar', false);
 				return;
 			}
@@ -2362,7 +2362,7 @@ angular.module('copayApp.controllers')
 		});
 		
 		$scope.$watchGroup(['home.subject', 'home.sysvar_value'], function (newV, oldV) {
-			if (oldV[0] !== newV[1] && oldV[1] === newV[1]) {
+			if (oldV[0] !== newV[0] && oldV[1] === newV[1]) {
 				self.sysvar_value = '';
 			}
 			
