@@ -1307,53 +1307,65 @@ angular.module('copayApp.controllers')
 
 		this.validateOPList = function () {
 			if (!self.sysvar_value) return;
-			self.vote_error = '';
-            
+			
+			let error;
+			
+			const form = $scope.sendDataForm;
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
             const unique = [...new Set(arrOPs)].length === arrOPs.length;
             
             if (!allAddressesValid) {
-                self.vote_error = gettext('Invalid addresses in OP List');
-                return;
+                error = 'Invalid addresses in OP List';
+            } else if (!lengthIsValid) {
+                error = 'Incorrect length of OP List (need 12 addresses)';
+            } else if (!unique) {
+                error = 'All addresses must be unique';
             }
-
-            if (!lengthIsValid) {
-                self.vote_error = gettext('Incorrect length of OP List (need 12 addresses)');
-                return;
-            }
-            
-            if (!unique) {
-                self.vote_error = gettext('All addresses must be unique');
-                return;
-            }
+			
+			if (error) {
+				self.vote_error = gettext(error);
+				form.op_list.$setValidity('validOPs', false);
+				return;
+			}
+			
+			self.vote_error = '';
+			form.op_list.$setValidity('validOPs', true);
 			
 			self.estimateFee();
 		}
 
 		this.validateSysVarNumericValue = function () {
             if (!self.sysvar_value) return;
-            
-            self.vote_error = '';
+			
+			const form = $scope.sendDataForm;
             const value = +self.sysvar_value;
+			let error;
             
             switch (self.subject) {
                 case "threshold_size":
                     if (!ValidationUtils.isPositiveInteger(value)){
-                        self.vote_error = `${self.subject} ${gettext('must be a positive integer')}`;
-                        return;
+                        error = `${self.subject} ${gettext('must be a positive integer')}`;
                     }
                     break;
                 case "base_tps_fee":
                 case "tps_interval":
                 case "tps_fee_multiplier":
                     if (!(typeof value === 'number' && isFinite(value) && value > 0)) {
-                        self.vote_error = `${self.subject} ${gettext('must be a positive number')}`;
-                        return;
+                        error = `${self.subject} ${gettext('must be a positive number')}`;
                     }
                     break;
             }
+			
+			if (error) {
+				self.vote_error = error;
+				form.numeric_var.$setValidity('validNumericVar', false);
+				return;
+			}
+			
+			self.vote_error = '';
+			form.numeric_var.$setValidity('validNumericVar', true);
 
             self.estimateFee();
 		}
@@ -1841,7 +1853,9 @@ angular.module('copayApp.controllers')
 			self.estimateFee();
 		});
 		$scope.$watch('assetIndexSelectorValue', (newVal, oldVal) => {
-			self.estimateFee();
+			$timeout(function (){
+				self.estimateFee();
+			});
 		});
 		$scope.$watch('mtab', (newVal, oldVal) => {
 			self.estimateFee();
@@ -2347,13 +2361,11 @@ angular.module('copayApp.controllers')
 			self.switchForms();
 		});
 		
-		$scope.$watch('home.subject', function () {
-			if ($scope.home.is_resend) {
-				$scope.home.is_resend = false;
-				return;
+		$scope.$watchGroup(['home.subject', 'home.sysvar_value'], function (newV, oldV) {
+			if (oldV[0] !== newV[1] && oldV[1] === newV[1]) {
+				self.sysvar_value = '';
 			}
 			
-            self.sysvar_value = '';
 			self.switchForms();
 		});
 		
@@ -3544,7 +3556,6 @@ angular.module('copayApp.controllers')
 								$scope.assetIndexSelectorValue = -8;
 								$scope.home.subject = payload.subject;
 								$scope.home.sysvar_value = payload.subject === 'op_list' ? payload.value.join('\n') : payload.value;
-								$scope.home.is_resend = true;
 								data = {};
 								break;
 							case 'system_vote_count':
