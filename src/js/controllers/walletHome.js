@@ -2542,7 +2542,7 @@ angular.module('copayApp.controllers')
 
 				sendData(value);
 
-				function sendData (value) {
+				async function sendData (value) {
 					var objMessage = {
 						app: app,
 						payload_location: "inline",
@@ -2562,12 +2562,31 @@ angular.module('copayApp.controllers')
 
 					indexScope.setOngoingProcess(gettext('sending'), true);
 
-					fc.sendMultiPayment({
+					let opts = {
 						spend_unconfirmed: configWallet.spendUnconfirmed ? 'all' : 'own',
 						arrSigningDeviceAddresses: arrSigningDeviceAddresses,
 						shared_address: indexScope.shared_address,
 						messages: [objMessage]
-					}, function (err, unit) { // can take long if multisig
+					};
+					if (app === 'system_vote' && !fc.isSingleAddress) {
+						async function readVotingAddresses() {
+							if (indexScope.shared_address)
+								return [indexScope.shared_address];
+							const db = require('ocore/db.js');
+							const rows = await db.query(
+								"SELECT address, SUM(amount) AS total FROM my_addresses JOIN outputs USING(address) \n\
+								WHERE wallet=? AND is_spent=0 AND asset IS NULL GROUP BY address ORDER BY total DESC LIMIT 16",
+								[fc.credentials.walletId]);
+							return rows.map(row => row.address);
+						}
+						const votingAddresses = await readVotingAddresses();
+						if (votingAddresses.length > 0) {
+							opts.paying_addresses = votingAddresses;
+							opts.signing_addresses = votingAddresses;
+							opts.change_address = votingAddresses[0];
+						}
+					}
+					fc.sendMultiPayment(opts, function (err, unit) { // can take long if multisig
 						$rootScope.sentUnit = unit;
 						indexScope.setOngoingProcess(gettext('sending'), false);
 						if (err) {
