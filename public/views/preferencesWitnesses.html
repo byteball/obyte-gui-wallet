@@ -1,14 +1,18 @@
 <div
   class="topbar-container"
   ng-include="'views/includes/topbar.html'"
-  ng-init="titleSection='Order Providers'; goBackToState = true">
+  ng-init="titleSection='Witnesses'; goBackToState = true">
 </div>
 
 <div class="content preferences" ng-controller="preferencesWitnessesController as wc">
+	<div class="m10t row">
+			<p class="columns size-14" translate>Witnesses are addresses whose presence in the DAG can be used to prove the existence of an earlier transaction. They are expected to post frequently enough.</p>
+      <p class="columns size-14" translate>Light nodes use them to verify that certain transactions do exist in the DAG. Full nodes use them for initial syncing but still fully verify every transaction.</p>
+  </div>
 	<ul class="no-bullet m0">
 		<li>
 			<switch name="autoUpdWitnessesList" ng-model="autoUpdWitnessesList" class="green right"></switch>
-			<div style="white-space: normal;" translate>Auto-update the Order Provider (witness) list from the hub</div>
+			<div style="white-space: normal;" translate>Auto-update the witness list from the hub</div>
 		</li>
 	</ul>
   <ul class="no-bullet m0" ng-class="{'autoUpdatingWitnessesList' : autoUpdWitnessesList}">
