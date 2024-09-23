@@ -14,6 +14,8 @@ angular.module('copayApp.services').factory('aaDocService', function() {
 			return handleDoc();
 		// allow other protocols, e.g. ipfs
 		doc_url = doc_url.replace(/{{aa_address}}/g, aa_address);
+		if (doc_url.startsWith('ipfs://')) // use http gateway (not verifying that the retrieved content matches the cid)
+			doc_url = doc_url.replace('ipfs://', 'https://ipfs.io/ipfs/');
 		if (docsByUrl[doc_url])
 			return handleDoc(docsByUrl[doc_url]);
 		require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
