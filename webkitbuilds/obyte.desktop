@@ -2,7 +2,7 @@
 Type=Application
 Version=1.0
 Name=Obyte
-Comment=Smart payments made simple
+Comment=Unstoppable money
 Exec=bash -c 'cd $(dirname %k) && ./Obyte-TN %u'
 Icon=logo-circle-256.png
 Terminal=false

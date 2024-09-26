@@ -1777,7 +1777,7 @@ angular.module('copayApp.controllers')
 		let cachedTpsFees = {};
 		async function estimateTpsFee(from_address, to_address) {
 			for (let k in cachedTpsFees)
-				if (cachedTpsFees[k].ts < Date.now() - 30_000)
+				if (cachedTpsFees[k].ts < Date.now() - 30 * 1000)
 					delete cachedTpsFees[k];
 			const key = from_address + '_' + to_address;
 			const cached = cachedTpsFees[key];
