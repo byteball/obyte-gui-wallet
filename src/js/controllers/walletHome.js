@@ -1277,7 +1277,7 @@ angular.module('copayApp.controllers')
 
 		this.validateTextLength = function () {
 			var form = $scope.sendDataForm;
-			form.content.$setValidity('validLength', !(self.content && self.content.length > 140));
+			form.content.$setValidity('validLength', !(self.content && self.content.length > 280));
 		}
 
 		this.onAddressChanged = function () {
