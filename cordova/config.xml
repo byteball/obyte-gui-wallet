@@ -31,7 +31,7 @@
     <preference name="Orientation" value="portrait" />
 	<preference name="KeepRunning" value="false"/>
 	<preference name="android-minSdkVersion" value="21" />
-	<preference name="android-targetSdkVersion" value="33" />
+	<preference name="android-targetSdkVersion" value="35" />
 	<preference name="deployment-target" value="13.0" />
 	<preference name="AndroidLaunchMode" value="singleTask" />
 	<preference name="hostname" value="localhost" />
