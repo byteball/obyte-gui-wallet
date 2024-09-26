@@ -7,7 +7,7 @@ O<sub>byte</sub> is a wallet for storage and transfer of decentralized value.  S
 
 ## Installation
 
-1. Install [Node.js](https://nodejs.org/download/release/v16.10.0/), preferrably somewhat latest version. If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Install [Yarn](https://classic.yarnpkg.com/lang/en/).
+1. Install [Node.js](https://nodejs.org/en/download), preferrably somewhat latest version. If you already have another version of Node.js installed, you can use [NVM](https://github.com/creationix/nvm) to keep both. Install [Yarn](https://classic.yarnpkg.com/lang/en/).
 ```bash
 nvm install 16
 nvm use 16
@@ -67,11 +67,11 @@ All app bundles will be placed at `../obytebuilds` dir.
 
 
 ### Android
-- Install jdk1.8 (9 and higher won't work)
-- Install Android SDK (install Android Studio and use its setup wizard to install latest SDK), then put `export ANDROID_HOME=~/Library/Android/sdk` inside your `~/.zshrc` or `~/.bash_profile`, then `yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses`
+- Install java 21 (openjdk 21). Other versions might also work but they were not tested.
+- Install Android SDK (install Android Studio and use its setup wizard to install the latest SDK), then put `export ANDROID_HOME=~/Library/Android/sdk` inside your `~/.zshrc` or `~/.bash_profile`, then `yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses`
 - Install Cordova `yarn global add cordova`
 - Install [Gradle](https://gradle.org/install/) (macOS: `brew install gradle`)
-- Run `make android-debug`
+- Run `make android-debug` (`make android-prod` for the release version)
 
 ### iOS
 
@@ -79,7 +79,7 @@ All app bundles will be placed at `../obytebuilds` dir.
 - Install Cordova `yarn global add cordova`
 - Install ios-deploy `yarn global add ios-deploy`
 - Install [CocoaPods](https://cocoapods.org) `brew install cocoapods`, then `pod setup`
-- Run `make ios-debug`
+- Run `make ios-debug` (`make ios-prod` for the release version)
   * In case of `DeviceSupport` missing error, run `cd /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/DeviceSupport/ && sudo ln -s 10.3.1\ \(14E8301\)/ 10.3`
   * If you encounter 'bitcore' not found after app launch, install it `yarn add bitcore-lib`, then rerun make again.
   * On code signing error, open Xcode project `../obytebuilds/project-IOS/platforms/ios` in Xcode, open project properties, select Obyte target and set your AppleID account as a team. Xcode may also ask you to change bundle identifier to be unique, just append any random string to 'org.byteball.wallet' bundle identifier.
@@ -102,9 +102,9 @@ All app bundles will be placed at `../obytebuilds` dir.
 
 O<sub>byte</sub> uses a single extended private key for all wallets, BIP44 is used for wallet address derivation.  There is a BIP39 mnemonic for backing up the wallet key, but it is not enough.  Private payments and co-signers of multisig wallets are stored only in the app's data directory, which you have to back up manually:
 
-* macOS: `~/Library/Application Support/obyte-gui-wallet`
-* Linux: `~/.config/obyte-gui-wallet`
-* Windows: `%APPDATA%\obyte-gui-wallet`
+* macOS: `~/Library/Application Support/obyte`
+* Linux: `~/.config/obyte`
+* Windows: `%APPDATA%\obyte`
 
 
 ## Translations
