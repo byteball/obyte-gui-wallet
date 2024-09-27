@@ -114,9 +114,13 @@ angular.module('copayApp.controllers').controller('exportController',
 			}, 1000);
 		}
 
+		function capitalizeFirstLetter(s) {
+			return s.charAt(0).toUpperCase() + s.slice(1);
+		}
 
 		function saveFile(file, cb) {
-			var backupFilename = 'ObyteBackup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
+			const Program = capitalizeFirstLetter(conf.program);
+			var backupFilename = Program + 'Backup-' + $filter('date')(Date.now(), 'yyyy-MM-dd-HH-mm-ss') + '.encrypted';
 			if (!isCordova) {
 				electron.once('save-dialog-done', (evt, path) => {
 					if (!path)
@@ -126,13 +130,31 @@ angular.module('copayApp.controllers').controller('exportController',
 				electron.emit('open-save-dialog', {defaultPath: backupFilename});
 			}
 			else {
-				fileSystemService.cordovaWriteFile((isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalApplicationStorageDirectory), 'Obyte', backupFilename, file, function(err) {
-					var text = isMobile.iOS() ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to '+window.cordova.file.externalApplicationStorageDirectory+'Obyte/'+backupFilename+'. You can now also send it somewhere using chat apps or email to have more copies of the backup');
-					navigator.notification.alert(text, function(){
-						window.plugins.socialsharing.shareWithOptions({files: [(isMobile.iOS() ? window.cordova.file.cacheDirectory : window.cordova.file.externalApplicationStorageDirectory) + 'Obyte/'+ backupFilename]}, function(){}, function(){});
-					}, 'Backup done');
-					cb(err);
-				});
+				const isIos = isMobile.iOS();
+				const location1 = isIos ? window.cordova.file.cacheDirectory : window.cordova.file.externalRootDirectory;
+				const location2 = isIos ? window.cordova.file.cacheDirectory : window.cordova.file.externalApplicationStorageDirectory;
+				const path = Program;
+
+				function save(location) {
+					fileSystemService.cordovaWriteFile(location, path, backupFilename, file, function (err) {
+						if (err) {
+							console.log(`saving to ${location} failed`, err);
+							if (!isIos && location === location1) {
+								console.log(`will try ${location2}`);
+								return save(location2);
+							}
+							return cb(err);
+						}
+						const fullPath = location + path + '/' + backupFilename;
+						var text = isIos ? gettextCatalog.getString('Now you have to send this file somewhere to restore from it later ("Save to Files", send to yourself using chat apps, etc.)') : gettextCatalog.getString('File saved to ' + fullPath + '. You can now also send it somewhere using chat apps or email to have more copies of the backup');
+						navigator.notification.alert(text, function () {
+							window.plugins.socialsharing.shareWithOptions({ files: [fullPath] }, function () { }, function () { });
+						}, 'Backup done');
+						cb(err);
+					});
+				}
+
+				save(location1);
 			}
 		}
 
