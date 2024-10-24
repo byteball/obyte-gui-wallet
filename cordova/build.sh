@@ -83,6 +83,7 @@ if [ ! -d $PROJECT ]; then
 
 #	cordova plugin add phonegap-plugin-barcodescanner --variable ANDROID_SUPPORT_V4_VERSION="27.1.1"
 	cordova plugin add https://github.com/StarleyDev/barcodescanner-sdk31#73e4aa96e2c0bad93ca08eb809d25ed68fd7203b
+#	cordova plugin add @red-mobile/cordova-plugin-barcodescanner
 	checkOK
 	cordova plugin add cordova-plugin-statusbar
 	checkOK
