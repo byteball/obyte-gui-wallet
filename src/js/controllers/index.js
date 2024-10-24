@@ -1740,9 +1740,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}, 5000);
 
   self.showPopup = function(msg, msg_icon, cb) {
-	$log.warn('Showing '+msg_icon+' popup:' + msg);
+	$log.warn('Showing '+msg_icon+' popup:', msg);
 	self.showAlert = {
-	  msg: msg.toString(),
+	  msg: typeof msg === 'object' ? JSON.stringify(msg) : msg.toString(),
 	  msg_icon: msg_icon,
 	  close: function(err) {
 		self.showAlert = null;
@@ -1755,7 +1755,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   };
 
   self.showErrorPopup = function(msg, cb) {
-	$log.warn('Showing err popup:' + msg);
+	$log.warn('Showing err popup:', msg);
 	self.showPopup(msg, 'fi-alert', cb);
   };
 

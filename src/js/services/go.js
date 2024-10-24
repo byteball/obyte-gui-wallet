@@ -203,6 +203,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var cb = function(err, data) {
 			breadcrumbs.add("callback from handlePrivatePaymentFile");
 			if (err) {
+				console.log('claiming error', err);
 				$rootScope.$emit('process_status_change', 'claiming', false);
 				return $rootScope.$emit('Local/ShowErrorAlert', err);
 			}
