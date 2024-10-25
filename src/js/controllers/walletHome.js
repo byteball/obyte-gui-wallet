@@ -3174,7 +3174,7 @@ angular.module('copayApp.controllers')
                     if (parseInt(objUnit.version) >= 4) {
                         await setV4Fees(btx);
                     } else {
-                        setNullV4Fees();
+                        setNullV4Fees(btx);
                     }
                     
 					$timeout(function () {
