@@ -33,6 +33,7 @@ angular.module('copayApp.services')
 	
 	root.readFileFromForm = function(file, cb) {
 		if (isCordova) {
+			console.log('readFileFromForm', file, JSON.stringify(file))
 			var reader = new FileReader();
 			reader.onloadend = function() {
 				var fileBuffer = Buffer.from(new Uint8Array(this.result));
