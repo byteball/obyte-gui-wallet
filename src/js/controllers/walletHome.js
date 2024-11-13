@@ -3045,8 +3045,10 @@ angular.module('copayApp.controllers')
 			if (!isCordova) {
 				electron.once('save-dialog-done', (evt, path) => {
 					if (!path) {
+						cb(null);
 						return;
 					}
+
 					cb(path);
 				});
 				electron.emit('open-save-dialog', { defaultPath: fileName });
