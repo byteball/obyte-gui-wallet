@@ -157,12 +157,15 @@
       <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{btx.aaDefinitionPreview}}</div>
     </li>
     <li class="line-b p10 oh row collapse" ng-if="btx.systemVoteObj">
-      <div class="text-gray small-2 columns" style="word-wrap: break-word; padding-right: 5px;"><span translate>System vote</span>:</div>
-		<div ng-class="{'op-list-vote-object-block': btx.systemVoteObjSubject === 'op_list', 'vote-object-block': btx.systemVoteObjSubject !== 'op_list'}"
-			 class="right small-12 columns enable_text_select op-list-vote-object-block">
-			{{btx.systemVoteObj}}
+		<div class="text-gray columns"
+			 ng-class="{'small-3': btx.systemVoteObjSubject === 'op_list', 'small-2': btx.systemVoteObjSubject !== 'op_list'}"
+			 style="word-wrap: break-word; padding-right: 5px;">
+			<span translate>System vote</span>:
 		</div>
-    </li>
+		<div class="right columns enable_text_select"
+			 ng-class="{'small-12': btx.systemVoteObjSubject === 'op_list', 'small-10': btx.systemVoteObjSubject !== 'op_list'}"
+			 style="word-wrap: break-word; white-space: pre-wrap;">{{btx.systemVoteObj}}</div> 
+	</li>
     <li class="line-b p10" ng-show="btx.systemVoteCount">
         <span class="text-gray" translate>System vote count</span>:
         <span class="right">{{btx.systemVoteCount}}</span>
