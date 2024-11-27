@@ -2304,3 +2304,14 @@ not screen and (min-resolution: 192dpi) {
 .c-tooltip:hover .tooltiptext {
 	display: block;
 }
+
+.op-list-vote-object-block {
+	float: none !important;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+vote-object-block {
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}

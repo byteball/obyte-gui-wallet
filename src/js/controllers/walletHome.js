@@ -3168,6 +3168,7 @@ angular.module('copayApp.controllers')
 						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
 					if (systemVoteMessage) {
 						btx.systemVoteObj = JSON.stringify(systemVoteMessage.payload, null, 2);
+						btx.systemVoteObjSubject = systemVoteMessage.payload.subject;
 					}
 					if (systemVoteCountMessage) {
 						btx.systemVoteCount = systemVoteCountMessage.payload;
