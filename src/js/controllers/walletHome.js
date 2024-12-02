@@ -873,7 +873,8 @@ angular.module('copayApp.controllers')
 				$scope.isCordova = isCordova;
 				$scope.buttonLabel = gettextCatalog.getString('Generate QR Code');
 				$scope.protocol = conf.program.replace(/byteball/i, 'obyte');
-				$scope.arrPublicBalances = indexScope.arrBalances.filter(b => !b.is_private);
+				$scope.availableBalances = indexScope.arrBalances.filter(b => !b.is_private);
+				$scope.index.assetIndex = 0;
 
 				Object.defineProperty($scope, "_customAmount", {
 					get: function() {
