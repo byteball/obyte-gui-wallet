@@ -96,7 +96,7 @@
 			</array>
 		</config-file>
 		<config-file target="*-Info.plist" parent="LSSupportsOpeningDocumentsInPlace">
-			<false/>
+			<true/>
 		</config-file>
 		<config-file target="*-Info.plist" parent="NSCameraUsageDescription">
 			<string>This app uses camera to scan qr-codes</string>

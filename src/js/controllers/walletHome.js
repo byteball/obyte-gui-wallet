@@ -3045,8 +3045,10 @@ angular.module('copayApp.controllers')
 			if (!isCordova) {
 				electron.once('save-dialog-done', (evt, path) => {
 					if (!path) {
+						cb(null);
 						return;
 					}
+
 					cb(path);
 				});
 				electron.emit('open-save-dialog', { defaultPath: fileName });
@@ -3166,6 +3168,7 @@ angular.module('copayApp.controllers')
 						btx.aaDefinitionPreview = definitionMessage.payload.address + '\n' + JSON.stringify(definitionMessage.payload.definition).substr(0, 200) + '...';
 					if (systemVoteMessage) {
 						btx.systemVoteObj = JSON.stringify(systemVoteMessage.payload, null, 2);
+						btx.systemVoteObjSubject = systemVoteMessage.payload.subject;
 					}
 					if (systemVoteCountMessage) {
 						btx.systemVoteCount = systemVoteCountMessage.payload;
@@ -3174,7 +3177,7 @@ angular.module('copayApp.controllers')
                     if (parseInt(objUnit.version) >= 4) {
                         await setV4Fees(btx);
                     } else {
-                        setNullV4Fees();
+                        setNullV4Fees(btx);
                     }
                     
 					$timeout(function () {
