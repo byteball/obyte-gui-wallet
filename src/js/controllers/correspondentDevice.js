@@ -1478,6 +1478,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.color = fc.backgroundColor;
 			$scope.isCordova = isCordova;
 			$scope.buttonLabel = 'Request payment';
+			$scope.availableBalances = indexScope.arrBalances;
 			//$scope.selectedAsset = $scope.index.arrBalances[$scope.index.assetIndex];
 			//console.log($scope.index.arrBalances.length+" assets, current: "+$scope.asset);
 
