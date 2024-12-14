@@ -1312,6 +1312,7 @@ angular.module('copayApp.controllers')
 			let errorMsg;
 			
 			const form = $scope.sendDataForm;
+			if (!form || !form.op_list) return;
 			const arrOPs = self.sysvar_value.replace(/[^\w\n]/, '').trim().split('\n');
 			const allAddressesValid = arrOPs.every(ValidationUtils.isValidAddress);
 			const lengthIsValid = arrOPs.length === constants.COUNT_WITNESSES;
@@ -1341,6 +1342,7 @@ angular.module('copayApp.controllers')
             if (!self.sysvar_value) return;
 			
 			const form = $scope.sendDataForm;
+			if (!form || !form.numeric_var) return;
             const value = +self.sysvar_value;
 			let errorMsg;
             
