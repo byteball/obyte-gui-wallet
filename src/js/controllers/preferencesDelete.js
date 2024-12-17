@@ -74,7 +74,9 @@ angular.module('copayApp.controllers').controller('preferencesDeleteWalletContro
           confirm_msg, [accept_msg, cancel_msg]
         );
       } else {
-        _modalDeleteWallet();
+        $timeout(function (){
+          _modalDeleteWallet();
+        })
       }
     };
   });

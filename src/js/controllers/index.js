@@ -878,7 +878,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		  confirm_msg, [accept_msg, cancel_msg]
 		);
 	  } else {
-		_modalRequestApproval(question, callbacks);
+		$timeout(function () {
+		  _modalRequestApproval(question, callbacks);
+		});
 	  }
 	};
 	self.requestApproval = requestApproval;
