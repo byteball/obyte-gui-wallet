@@ -3112,6 +3112,22 @@ angular.module('copayApp.controllers')
             btx.burnFee = null;
             btx.oversizeFee = null;
         }
+		
+		function formatResponseVars(vars) {
+			const _vars = structuredClone(vars);
+			for (let key in _vars) {
+				try {
+					const v = JSON.parse(_vars[key]);
+					if (v && typeof v === 'object') {
+						_vars[key] = JSON.stringify(v, null, 2);
+					}
+				} catch (e) {
+					// nothing
+				}
+			}	
+			
+			return _vars;
+		}
 
 		this.openTxModal = function(btx) {
 			$rootScope.modalOpened = true;
@@ -3125,6 +3141,11 @@ angular.module('copayApp.controllers')
 				var assetIndex = lodash.findIndex(indexScope.arrBalances, {
 					asset: btx.asset
 				});
+				
+				if ($scope.btx.response && $scope.btx.response.responseVars) {
+					$scope.btx.formattedResponseVars = formatResponseVars($scope.btx.response.responseVars);
+				}
+				
 				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
