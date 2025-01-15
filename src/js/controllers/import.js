@@ -15,7 +15,7 @@ angular.module('copayApp.controllers').controller('importController',
 		if(isCordova) {
 			var zip = new JSZip();
 		}else{
-			var unzip = require('unzip' + '');
+			var unzip = require('unzipper' + '');
 		}
 		var fc = profileService.focusedClient;
 
