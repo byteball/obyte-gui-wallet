@@ -83,7 +83,7 @@
     "secp256k1": "^4",
     "shelljs": "^0.3.0",
     "sjcl": "^1.0.2",
-    "unzip": "https://github.com/byteball/unzip.git",
+    "unzipper": "^0.12.3",
     "zip": "https://github.com/xJeneKx/zip.git"
   },
   "optionalDependencies": {},
