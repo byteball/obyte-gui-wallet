@@ -43,6 +43,7 @@ angular.module('copayApp.controllers')
 		this.testnetName = (constants.alt === '2') ? '[NEW TESTNET]' : '[TESTNET]';
 		this.exchangeRates = network.exchangeRates;
 		this.estimatedFee = null;
+		this.current_payment_key = {};
 		this.dataAssets = [
 			{
 				index: -1,
@@ -1993,9 +1994,9 @@ angular.module('copayApp.controllers')
 			if (form.merkle_proof && form.merkle_proof.$modelValue)
 				merkle_proof = form.merkle_proof.$modelValue.trim();
 
-			if (current_payment_key === self.current_payment_key)
+			if (current_payment_key === self.current_payment_key[fc.credentials.walletId])
 				return $rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
-			self.current_payment_key = current_payment_key;
+			self.current_payment_key[fc.credentials.walletId] = current_payment_key;
 
 			indexScope.setOngoingProcess(gettext('sending'), true);
 			$timeout(function() {
@@ -2015,7 +2016,7 @@ angular.module('copayApp.controllers')
 							account,
 							function () {
 								// assocBbAddresses in aliasValidationService is now filled
-								delete self.current_payment_key;
+								delete self.current_payment_key[fc.credentials.walletId];
 								self.submitPayment();
 							}
 						);
@@ -2031,7 +2032,7 @@ angular.module('copayApp.controllers')
 								);
 							}
 
-							delete self.current_payment_key;
+							delete self.current_payment_key[fc.credentials.walletId];
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							return self.setSendError('Attested account not found');
 						} else if (ValidationUtils.isValidAddress(bb_address)) {
@@ -2070,7 +2071,7 @@ angular.module('copayApp.controllers')
 						indexScope.setOngoingProcess(gettext('sending'), false);
 						self.error = err;
 						$timeout(function() {
-							delete self.current_payment_key;
+							delete self.current_payment_key[fc.credentials.walletId];
 							$scope.$digest();
 						}, 1);
 						return;
@@ -2079,7 +2080,7 @@ angular.module('copayApp.controllers')
 					var device = require('ocore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
-							delete self.current_payment_key;
+							delete self.current_payment_key[fc.credentials.walletId];
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							return self.setSendError("you can send bound payments to Obyte adresses only");
 						}
@@ -2177,7 +2178,7 @@ angular.module('copayApp.controllers')
 							}
 							walletDefinedByAddresses.createNewSharedAddress(arrDefinition, assocSignersByPath, {
 								ifError: function(err) {
-									delete self.current_payment_key;
+									delete self.current_payment_key[fc.credentials.walletId];
 									indexScope.setOngoingProcess(gettext('sending'), false);
 									self.setSendError(err);
 								},
@@ -2240,7 +2241,7 @@ angular.module('copayApp.controllers')
 						if (self.added_bounce_fees && self.added_bounce_fees.length > 0) {
 							var other_asset_added_bounce_fees = self.added_bounce_fees.filter(function (feeInfo) { return feeInfo.asset !== 'base' && feeInfo.asset !== asset; });
 							if (other_asset_added_bounce_fees.length > 0) {
-								delete self.current_payment_key;
+								delete self.current_payment_key[fc.credentials.walletId];
 								indexScope.setOngoingProcess(gettext('sending'), false);
 								return self.setSendError("cannot add bounce fees in asset " + other_asset_added_bounce_fees[0].asset);
 							}
@@ -2278,7 +2279,7 @@ angular.module('copayApp.controllers')
 							$rootScope.sentUnit = unit;
 							indexScope.setOngoingProcess(gettext('sending'), false);
 							breadcrumbs.add('done payment in ' + asset + ', err=' + err);
-							delete self.current_payment_key;
+							delete self.current_payment_key[fc.credentials.walletId];
 							resetAddressValidation();
 							profileService.bKeepUnlocked = false;
 							if (err) {
