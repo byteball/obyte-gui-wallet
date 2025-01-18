@@ -257,11 +257,11 @@
       </li>
     </ul>
 
-    <h4 ng-show="btx.response.responseVars" class="title m0" translate>Response variables</h4>
-    <ul ng-show="btx.response.responseVars" class="no-bullet size-14 m0 tx-details">
-      <li ng-repeat="(key,value) in btx.response.responseVars" class="line-b p10 row collapse" style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:flex-end;">
-        <div class="text-gray enable_text_select" style="word-wrap: break-word; flex: 1; width: 100%"><span>{{key}}</span></div>
-        <div class="right text-right enable_text_select" style="word-wrap: break-word">{{value}}</div>
+    <h4 ng-show="btx.formattedResponseVars" class="title m0" translate>Response variables</h4>
+    <ul ng-show="btx.formattedResponseVars" class="no-bullet size-14 m0 tx-details">
+      <li ng-repeat="(key,value) in btx.formattedResponseVars" class="line-b p10 oh row collapse" style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:flex-end;">
+        <div class="text-gray small-2 columns enable_text_select" style="word-wrap: break-word; padding-right: 5px;"><span>{{key}}</span></div>
+        <div class="right small-10 columns enable_text_select" style="word-wrap: break-word; white-space: pre-wrap;">{{value}}</div>
       </li>
     </ul>
   </div>

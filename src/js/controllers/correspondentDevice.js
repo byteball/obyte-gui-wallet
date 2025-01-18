@@ -1395,6 +1395,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				return;
 			}
 		}
+		if (!correspondent)
+			return console.log("no correspondent in loadMoreHistory");
 		breadcrumbs.add("correspondent with empty chat opened: " + correspondent.device_address);
 		var message = {
 			type: 'system',
