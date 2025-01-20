@@ -3115,11 +3115,11 @@ angular.module('copayApp.controllers')
         }
 		
 		function formatResponseVars(vars) {
-			const _vars = [];
+			const _vars = {};
 			
 			for (let key in vars) {
 				let _key = key;
-				let value = vars[key];
+				let value = { isJson: false, v: vars[key] };
 				if (key.length > 14) {
 					// _key = key.split('_').join('\n_');
 				}
@@ -3127,14 +3127,13 @@ angular.module('copayApp.controllers')
 				try {
 					const v = JSON.parse(vars[key]);
 					if (v && typeof v === 'object') {
-						value = JSON.stringify(v, null, 2);
+						value = { isJson: true, v: JSON.stringify(v, null, 2) };
 					}
 				} catch (e) {
 					// nothing
 				}
 				
-				_vars.push(_key);
-				_vars.push(value);
+				_vars[_key] = value;
 			}	
 			
 			return _vars;
