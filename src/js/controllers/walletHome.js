@@ -3115,16 +3115,26 @@ angular.module('copayApp.controllers')
         }
 		
 		function formatResponseVars(vars) {
-			const _vars = structuredClone(vars);
-			for (let key in _vars) {
+			const _vars = [];
+			
+			for (let key in vars) {
+				let _key = key;
+				let value = vars[key];
+				if (key.length > 14) {
+					// _key = key.split('_').join('\n_');
+				}
+				
 				try {
-					const v = JSON.parse(_vars[key]);
+					const v = JSON.parse(vars[key]);
 					if (v && typeof v === 'object') {
-						_vars[key] = JSON.stringify(v, null, 2);
+						value = JSON.stringify(v, null, 2);
 					}
 				} catch (e) {
 					// nothing
 				}
+				
+				_vars.push(_key);
+				_vars.push(value);
 			}	
 			
 			return _vars;

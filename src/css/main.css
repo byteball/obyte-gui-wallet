@@ -2304,3 +2304,13 @@ not screen and (min-resolution: 192dpi) {
 .c-tooltip:hover .tooltiptext {
 	display: block;
 }
+
+.tx-grid {
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.tx-grid:nth-child(odd) {
+	max-width: 144px;
+	width: 100%;
+}
