@@ -2305,12 +2305,7 @@ not screen and (min-resolution: 192dpi) {
 	display: block;
 }
 
-.tx-grid {
-	word-wrap: break-word;
+.tx-grid_json {
 	white-space: pre-wrap;
-}
-
-.tx-grid:nth-child(odd) {
-	max-width: 144px;
 	width: 100%;
 }

@@ -257,12 +257,13 @@
       </li>
     </ul>
 
-    <h4 ng-show="btx.formattedResponseVars" class="title m0" translate>Response variables</h4>
-    <div ng-show="btx.formattedResponseVars" class="size-14 m0 tx-details">
-		<div style="display: grid;grid-template-columns: auto 1fr;">
-			<div ng-repeat="(_key,value) in btx.formattedResponseVars" class="line-b p10 tx-grid">{{ value }}</div>
-		</div>
-    </div>
+	  <h4 ng-show="btx.formattedResponseVars" class="title m0" translate>Response variables</h4>
+	  <ul ng-show="btx.formattedResponseVars" class="no-bullet size-14 m0 tx-details">
+		  <li ng-repeat="(key,value) in btx.formattedResponseVars" class="line-b p10 row collapse" style="display:flex;flex-wrap:wrap;flex-direction:row;justify-content:flex-end;">
+			  <div class="text-gray enable_text_select" style="word-wrap: break-word; flex: 1; width: 100%"><span>{{key}}</span></div>
+			  <div class="enable_text_select" ng-class="[value.isJson ? 'tx-grid_json' : 'right text-right']" style="word-wrap: break-word">{{value.v}}</div>
+		  </li>
+	  </ul>
   </div>
 
 </div>
