@@ -13,8 +13,9 @@ angular.module('copayApp.controllers').controller('splashController',
 		configService.set(opts, function(err) {
 			$timeout(function(){
 				if (err)
-					self.$emit('Local/DeviceError', err);
-				self.bDeviceNameSet = true;
+					$scope.$emit('Local/DeviceError', err);
+				else
+					self.bDeviceNameSet = true;
 			});
 		});
 	};
