@@ -35,6 +35,26 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return value.replace(/^github\//i, '').toLowerCase();
 			}
 		},
+		telegram: {
+			dbKey: 'username',
+			title: 'telegram account',
+			isValid: function (value) {
+				return /^tg\/[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^tg\//i, '').toLowerCase();
+			}
+		},
+		discord: {
+			dbKey: 'username',
+			title: 'discord account',
+			isValid: function (value) {
+				return /^discord\/[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.replace(/^discord\//i, '').toLowerCase();
+			}
+		},
 		phone: {
 			dbKey: 'phone',
 			title: 'phone number',

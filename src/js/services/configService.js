@@ -122,6 +122,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		// reddit: '',
 		// phone: '',
 		github: 'OYW2XTDKSNKGSEZ27LMGNOPJSYIXHBHC',
+		telegram: 'JBW7HT5CRBSF7J7RD26AYLQG6GZDPFPS',
+		discord: '5KM36CFPBD2QJLVD65PHZG34WEM4RPY2',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
 	},
