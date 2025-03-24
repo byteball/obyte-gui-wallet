@@ -1624,7 +1624,7 @@ angular.module('copayApp.controllers')
 				trigger.data = {};
 			$scope.home.feedvaluespairs.forEach(function(pair) {
 				trigger.data[pair.name] = pair.value;
-				trigger.data[pair.suggestionsShown] = false;
+			//	trigger.data[pair.suggestionsShown] = false;
 			});
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
