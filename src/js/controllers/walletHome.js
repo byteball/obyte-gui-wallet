@@ -2775,7 +2775,10 @@ angular.module('copayApp.controllers')
 						if (paymentData) {
 							$scope.home.feedvaluespairs = [];
 							for (var key in paymentData) {
-								$scope.home.feedvaluespairs.push({name: key, value: paymentData[key], isObject: typeof paymentData[key] === 'object', readonly: true});
+								const value = paymentData[key];
+								if (value === null)
+									throw Error(`null value for ${key}`);
+								$scope.home.feedvaluespairs.push({name: key, value, isObject: typeof value === 'object', readonly: true});
 							}
 						}
 					}
