@@ -604,7 +604,7 @@ input.datafeed_input {
                       </div>
                       <div class="datafeed_input">
                         <input type="text" ng-model="pair.value" ng-readonly="pair.readonly" placeholder="{{'Value'|translate}}" ng-required="true" maxlength="256" ng-change="home.onChanged()" ng-if="!pair.isObject">
-                        <textarea ng-if="pair.isObject" rows="1" ng-readonly="pair.readonly" class="m0" style="margin-bottom: -13px; min-height: 35px; padding-top: 10px;">{{pair.value}}</textarea>
+                        <textarea ng-if="pair.isObject" rows="1" ng-readonly="pair.readonly" class="m0" style="margin-bottom: -13px; min-height: 35px; min-width: 100%; padding-top: 10px;">{{pair.value}}</textarea>
                       </div>
                       <a ng-if="!pair.readonly" ng-click="home.feedvaluespairs.splice($index, 1); home.onChanged()"><i class="fi-minus size-18 m10r"></i></a>
                     </div>
