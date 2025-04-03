@@ -2304,3 +2304,8 @@ not screen and (min-resolution: 192dpi) {
 .c-tooltip:hover .tooltiptext {
 	display: block;
 }
+
+.tx-grid_json {
+	white-space: pre-wrap;
+	width: 100%;
+}
