@@ -3622,7 +3622,7 @@ angular.module('copayApp.controllers')
 						$scope.home.feedvaluespairs = [];
 						for (var key in data) {
 							var value = data[key];
-							$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, readonly: false});
+							$scope.home.feedvaluespairs.push(dataMessages[0].app === 'poll' ? {name: value, value: 'anything', readonly: false} : {name: key, value: value, isObject: typeof value === 'object', readonly: typeof value === 'object'});
 						}
 					}
 					if ($scope.assetIndexSelectorValue >= 0) {
