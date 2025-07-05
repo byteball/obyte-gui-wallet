@@ -342,10 +342,10 @@ angular.module('copayApp.services')
             }, function(err) {
                 if (err)
                     return cb(gettext('Error creating wallet')+": "+err);
-                console.log("created wallet, client: ", JSON.stringify(walletClient));
+                //console.log("created wallet, client: ", JSON.stringify(walletClient));
                 var xPrivKey = walletClient.credentials.xPrivKey;
                 var mnemonic = walletClient.credentials.mnemonic;
-                console.log("mnemonic: "+mnemonic+', xPrivKey: '+xPrivKey);
+                //console.log("mnemonic: "+mnemonic+', xPrivKey: '+xPrivKey);
                 var p = Profile.create({
                     credentials: [JSON.parse(walletClient.export())],
                     xPrivKey: xPrivKey,
@@ -695,7 +695,7 @@ angular.module('copayApp.services')
 			  $timeout(autolock, 30*1000);
 			  return;
 		  }
-          console.log('time to auto-lock wallet', fc.credentials);
+          console.log('time to auto-lock wallet', fc.credentials.walletId);
           if (fc.hasPrivKeyEncrypted()) {
             $log.debug('Locking wallet automatically');
 			try {

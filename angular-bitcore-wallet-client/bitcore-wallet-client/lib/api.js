@@ -463,7 +463,7 @@ API.prototype.createWallet = function(walletName, m, n, opts, cb) {
 	var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
     walletDefinedByKeys.createWalletByDevices(self.credentials.xPubKey, opts.account || 0, m, opts.cosigners || [], walletName, opts.isSingleAddress, function(wallet){
         self.credentials.walletId = wallet;
-        console.log("wallet created: " + JSON.stringify(self.credentials));
+        //console.log("wallet created: " + JSON.stringify(self.credentials));
         if (network != self.credentials.network)
             return cb(new Error('Existing keys were created for a different network'));
 

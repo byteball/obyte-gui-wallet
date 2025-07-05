@@ -95,7 +95,7 @@ var set = function(k, v, cb) {
 					v = v.toString();
 				}
 
-				console.log('Writing: '+k+'='+v);
+				console.log('Writing: ' + k); //+'='+v);
 				fileWriter.write(v);
 
 			}, cb);

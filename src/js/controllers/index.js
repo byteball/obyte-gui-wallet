@@ -473,10 +473,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				}
 				var xPrivKey = new Bitcore.HDPrivateKey.fromString(profileService.focusedClient.credentials.xPrivKey);
 				var privateKey = xPrivKey.derive(path).privateKey;
-				console.log("priv key:", privateKey);
+			//	console.log("priv key:", privateKey);
 				//var privKeyBuf = privateKey.toBuffer();
 				var privKeyBuf = privateKey.bn.toBuffer({size:32}); // https://github.com/bitpay/bitcore-lib/issues/47
-				console.log("priv key buf:", privKeyBuf);
+			//	console.log("priv key buf:", privKeyBuf);
 				var buf_to_sign = objectHash.getUnitHashToSign(objUnit);
 				var signature = ecdsaSig.sign(buf_to_sign, privKeyBuf);
 				bbWallet.sendSignature(from_address, buf_to_sign.toString("base64"), signature, signing_path, top_address);
