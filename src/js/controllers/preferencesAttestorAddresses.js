@@ -18,6 +18,7 @@ function PreferencesAttestorAddressesCtrl(
 	this.arrAttestorAddresses = [];
 	for (var attestorKey in configAttestorAddresses) {
 		if (!configAttestorAddresses.hasOwnProperty(attestorKey)) continue;
+		if (attestorKey === 'username') continue; // not editable, City based
 
 		var value = configAttestorAddresses[attestorKey];
 		var obj = aliasValidationService.getAliasObj(attestorKey);

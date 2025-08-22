@@ -125,7 +125,8 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		telegram: 'JBW7HT5CRBSF7J7RD26AYLQG6GZDPFPS',
 		discord: '5KM36CFPBD2QJLVD65PHZG34WEM4RPY2',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
-		username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ'
+		old_username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ',
+		username: 'CITYC3WWO5DD2UM6HQR3H333RRTD253Q', // AA rather than an attestor
 	},
 	realNameAttestorAddresses: [
 		{ address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot (Jumio Netverify)' },
@@ -301,7 +302,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			_config.realNameAttestorAddresses = defaultConfig.realNameAttestorAddresses;
 		}
 		for (var attestorKey in defaultConfig.attestorAddresses){
-			if (!(attestorKey in _config.attestorAddresses))
+			if (!(attestorKey in _config.attestorAddresses) || attestorKey === 'username')
 				_config.attestorAddresses[attestorKey] = defaultConfig.attestorAddresses[attestorKey];
 		}
 		if (!_config.hiddenAssets) {

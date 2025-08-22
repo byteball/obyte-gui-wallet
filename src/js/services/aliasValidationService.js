@@ -85,11 +85,21 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				return value.replace(/^steem\//i, '').toLowerCase();
 			}
 		},
-		username: {
+		old_username: {
 			dbKey: 'username',
+			title: 'old username',
+			isValid: function (value) {
+				return /^@@([a-z\d\-_]){1,32}$/i.test(value);
+			},
+			transformToAccount: function (value) {
+				return value.substr(2).toLowerCase();
+			}
+		},
+		username: { // City based
+			dbKey: 'shortcode',
 			title: 'username',
 			isValid: function (value) {
-				return /^@([a-z\d\-_]){1,32}$/i.test(value);
+				return /^@([a-z\d\-_.]){1,32}$/i.test(value);
 			},
 			transformToAccount: function (value) {
 				return value.substr(1).toLowerCase();
@@ -162,6 +172,28 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 
 		var conf = require('ocore/conf.js');
 		var db = require('ocore/db.js');
+		if (attestorKey === 'username') { // not an attestation, get from City state
+			const var_name = 'shortcode_' + value;
+			if (conf.bLight) {
+				const network = require('ocore/network.js');
+				const params = { address: attestorAddress, var_prefix: var_name };
+				network.requestFromLightVendor('light/get_aa_state_vars', params, function (ws, request, response) {
+					if (response.error) {
+						return setResult('unknown');
+					}
+					const assocVars = response;
+					const address = assocVars[var_name];
+					setResult(address || "none");
+				});
+			}
+			else {
+				const storage = require('ocore/storage.js');
+				storage.readAAStateVar(attestorAddress, var_name, address => {
+					setResult(address || "none");
+				})
+			}
+			return;
+		}
 		db.query(
 			"SELECT \n\
 				address, is_stable \n\
