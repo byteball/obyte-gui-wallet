@@ -15,6 +15,10 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 		var fc = profileService.focusedClient;
 
+		const TITLE_BYTES = Buffer.from([0x4F, 0x42, 0x59, 0x02]); // OBY2
+		const SALT_LENGTH = 16;
+		const IV_LENGTH = 16;
+
 		var self = this;
 		self.error = null;
 		self.success = null;
@@ -96,24 +100,6 @@ angular.module('copayApp.controllers').controller('exportController',
 			});
 		}
 
-		function checkValueFileAndChangeStatusExported() {
-			$timeout(function() {
-				var inputFile = document.getElementById('nwExportInputFile');
-				var value = inputFile ? inputFile.value : null;
-				if(!value && self.exporting){
-					self.exporting = false;
-					$timeout(function() {
-						$rootScope.$apply();
-					});
-				}
-				if(!value && self.connection){
-					self.connection.release();
-					self.connection = false;
-				}
-				window.removeEventListener('focus', checkValueFileAndChangeStatusExported, true);
-			}, 1000);
-		}
-
 		function capitalizeFirstLetter(s) {
 			return s.charAt(0).toUpperCase() + s.slice(1);
 		}
@@ -160,14 +146,29 @@ angular.module('copayApp.controllers').controller('exportController',
 
 		function encrypt(buffer, password) {
 			password = Buffer.from(password);
-			var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
+			const salt = crypto.randomBytes(SALT_LENGTH);
+			const iv = crypto.randomBytes(IV_LENGTH);
+			const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
+			const cipher = crypto.createCipheriv('aes-256-ctr', key, iv);
 			var arrChunks = [];
 			var CHUNK_LENGTH = 2003;
 			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
 				arrChunks.push(cipher.update(buffer.slice(offset, Math.min(offset + CHUNK_LENGTH, buffer.length)), 'utf8'));
 			}
 			arrChunks.push(cipher.final());
-			return Buffer.concat(arrChunks);
+			
+			const encryptedData = Buffer.concat(arrChunks);
+			return Buffer.concat([TITLE_BYTES, salt, iv, encryptedData]);
+		}
+
+		function createCipherWithHeader(password) {
+			password = Buffer.from(password);
+			const salt = crypto.randomBytes(SALT_LENGTH);
+			const iv = crypto.randomBytes(IV_LENGTH);
+			const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
+			const cipher = crypto.createCipheriv('aes-256-ctr', key, iv);
+			const header = Buffer.concat([TITLE_BYTES, salt, iv]);
+			return { cipher: cipher, header: header };
 		}
 
 		function showError(text) {
@@ -208,11 +209,11 @@ angular.module('copayApp.controllers').controller('exportController',
 			self.connection = connection;
 			saveFile(null, function(path) {
 				if(!path) return;
-				var password = Buffer.from(self.password);
-				var cipher = crypto.createCipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
+				const cipherData = createCipherWithHeader(self.password);
 				zip = new _zip(path, {
 					compressed: self.bCompression ? 6 : 0,
-					cipher: cipher
+					cipher: cipherData.cipher,
+					header: cipherData.header
 				});
 				storageService.getProfile(function(err, profile) {
 					storageService.getConfig(function(err, config) {
