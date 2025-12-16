@@ -145,20 +145,16 @@ angular.module('copayApp.controllers').controller('exportController',
 		}
 
 		function encrypt(buffer, password) {
-			password = Buffer.from(password);
-			const salt = crypto.randomBytes(SALT_LENGTH);
-			const iv = crypto.randomBytes(IV_LENGTH);
-			const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
-			const cipher = crypto.createCipheriv('aes-256-ctr', key, iv);
-			var arrChunks = [];
-			var CHUNK_LENGTH = 2003;
-			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
+			const { cipher, header } = createCipherWithHeader(password);
+			const arrChunks = [];
+			const CHUNK_LENGTH = 2048;
+			for (let offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
 				arrChunks.push(cipher.update(buffer.slice(offset, Math.min(offset + CHUNK_LENGTH, buffer.length)), 'utf8'));
 			}
-			arrChunks.push(cipher.final());
 			
-			const encryptedData = Buffer.concat(arrChunks);
-			return Buffer.concat([TITLE_BYTES, salt, iv, encryptedData]);
+			arrChunks.push(cipher.final());
+
+			return Buffer.concat([header, Buffer.concat(arrChunks)]);
 		}
 
 		function createCipherWithHeader(password) {
