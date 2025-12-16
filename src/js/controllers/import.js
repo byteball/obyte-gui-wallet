@@ -19,6 +19,11 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		var fc = profileService.focusedClient;
 
+		const TITLE_BYTES = Buffer.from([0x4F, 0x42, 0x59, 0x02]); // OBY2
+		const SALT_LENGTH = 16;
+		const IV_LENGTH = 16;
+		const HEADER_LENGTH = TITLE_BYTES.length + SALT_LENGTH + IV_LENGTH;
+
 		var self = this;
 		self.importing = false;
 		self.password = '';
@@ -233,16 +238,61 @@ angular.module('copayApp.controllers').controller('importController',
 			], cb);
 		}
 
-		function decrypt(buffer, password) {
+		function isV2Format(buffer) {
+			if (buffer.length < HEADER_LENGTH) return false;
+			return buffer.slice(0, TITLE_BYTES.length).equals(TITLE_BYTES);
+		}
+
+		function decryptV1(buffer, password) {
 			password = Buffer.from(password);
-			var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
+			const key = crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512');
+			const iv = crypto.createHash('sha1').update(password).digest().slice(0, 16);
+			const decipher = crypto.createDecipheriv('aes-256-ctr', key, iv);
 			var arrChunks = [];
-			var CHUNK_LENGTH = 2003;
+			const CHUNK_LENGTH = 2048;
 			for (var offset = 0; offset < buffer.length; offset += CHUNK_LENGTH) {
 				arrChunks.push(decipher.update(buffer.slice(offset, Math.min(offset + CHUNK_LENGTH, buffer.length)), 'utf8'));
 			}
 			arrChunks.push(decipher.final());
 			return Buffer.concat(arrChunks);
+		}
+
+		function decryptV2(buffer, password) {
+			password = Buffer.from(password);
+			const salt = buffer.slice(TITLE_BYTES.length, TITLE_BYTES.length + SALT_LENGTH);
+			const iv = buffer.slice(TITLE_BYTES.length + SALT_LENGTH, HEADER_LENGTH);
+			const encryptedData = buffer.slice(HEADER_LENGTH);
+			const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
+			const decipher = crypto.createDecipheriv('aes-256-ctr', key, iv);
+			const arrChunks = [];
+			const CHUNK_LENGTH = 2048;
+			for (let offset = 0; offset < encryptedData.length; offset += CHUNK_LENGTH) {
+				arrChunks.push(decipher.update(encryptedData.slice(offset, Math.min(offset + CHUNK_LENGTH, encryptedData.length)), 'utf8'));
+			}
+			arrChunks.push(decipher.final());
+			return Buffer.concat(arrChunks);
+		}
+
+		function decrypt(buffer, password) {
+			if (isV2Format(buffer)) {
+				return decryptV2(buffer, password);
+			}
+			return decryptV1(buffer, password);
+		}
+
+		function createDecipherFromHeader(header, password) {
+			password = Buffer.from(password);
+			const salt = header.slice(TITLE_BYTES.length, TITLE_BYTES.length + SALT_LENGTH);
+			const iv = header.slice(TITLE_BYTES.length + SALT_LENGTH, HEADER_LENGTH);
+			const key = crypto.pbkdf2Sync(password, salt, 100000, 32, 'sha512');
+			return crypto.createDecipheriv('aes-256-ctr', key, iv);
+		}
+
+		function createV1Decipher(password) {
+			password = Buffer.from(password);
+			const key = crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512');
+			const iv = crypto.createHash('sha1').update(password).digest().slice(0, 16);
+			return crypto.createDecipheriv('aes-256-ctr', key, iv);
 		}
 		
 		function showError(text) {
@@ -254,6 +304,31 @@ angular.module('copayApp.controllers').controller('importController',
 			return false;
 		}
 		
+		function handlePCImportSuccess() {
+			setTimeout(function() {
+				writeDBAndFileStoragePC(function(err) {
+					if (err) return showError(err);
+					self.importing = false;
+					$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
+						if (navigator && navigator.app)
+							navigator.app.exitApp();
+						else if (electron.isDefined())
+							electron.relaunch();
+						else if (process.exit)
+							process.exit();
+					});
+				});
+			}, 100);
+		}
+
+		function handlePCImportError(err) {
+			if (err.message === "Invalid signature in zip file") {
+				showError('Incorrect password or file');
+			} else {
+				showError(err);
+			}
+		}
+
 		function unzipAndWriteFiles(data, password) {
 			if(isCordova) {
 				zip.loadAsync(decrypt(data, password)).then(function(zip) {
@@ -276,34 +351,56 @@ angular.module('copayApp.controllers').controller('importController',
 							});
 						});
 					}
-				}, function(err) {
+				}, function() {
 					showError('Incorrect password or file');
 				})
-			}else {
-				password = Buffer.from(password);
-				var decipher = crypto.createDecipheriv('aes-256-ctr', crypto.pbkdf2Sync(password, '', 100000, 32, 'sha512'), crypto.createHash('sha1').update(password).digest().slice(0, 16));
-				data.pipe(decipher).pipe(unzip.Extract({ path: fileSystemService.getDatabaseDirPath() + '/temp/' })).on('error', function(err) {
-					if(err.message === "Invalid signature in zip file"){
-						showError('Incorrect password or file');
-					}else{
-						showError(err);
+			} else {
+				const { PassThrough } = require('stream' + '');
+				const passThrough = new PassThrough();
+				const headerChunks = [];
+				const extractPath = fileSystemService.getDatabaseDirPath() + '/temp/';
+				let headerBytesRead = 0;
+				let headerProcessed = false;
+				let decipherStream = null;
+
+				data.on('data', function(chunk) {
+					if (headerProcessed) {
+						passThrough.write(chunk);
+						return;
 					}
-				}).on('finish', function() {
-					setTimeout(function() {
-						writeDBAndFileStoragePC(function(err) {
-							if (err) return showError(err);
-							self.importing = false;
-							$rootScope.$emit('Local/ShowAlert', "Import successfully completed, please restart the application.", 'fi-check', function() {
-								if (navigator && navigator.app)
-									navigator.app.exitApp();
-								else if (electron.isDefined())
-									electron.relaunch();
-								else if (process.exit)
-									process.exit();
-							});
-						});
-					}, 100);
+
+					headerChunks.push(chunk);
+					headerBytesRead += chunk.length;
+
+					if (headerBytesRead >= HEADER_LENGTH) {
+						headerProcessed = true;
+						const headerBuffer = Buffer.concat(headerChunks);
+						const isV2 = headerBuffer.slice(0, TITLE_BYTES.length).equals(TITLE_BYTES);
+
+						if (isV2) {
+							decipherStream = createDecipherFromHeader(headerBuffer.slice(0, HEADER_LENGTH), password);
+							const remaining = headerBuffer.slice(HEADER_LENGTH);
+							if (remaining.length > 0) {
+								passThrough.write(remaining);
+							}
+						} else {
+							decipherStream = createV1Decipher(password);
+							passThrough.write(headerBuffer);
+						}
+
+						passThrough
+							.pipe(decipherStream)
+							.pipe(unzip.Extract({ path: extractPath }))
+							.on('error', handlePCImportError)
+							.on('finish', handlePCImportSuccess);
+					}
 				});
+
+				data.on('end', function() {
+					passThrough.end();
+				});
+
+				data.on('error', handlePCImportError);
 			}
 		}
 		
