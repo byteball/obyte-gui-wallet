@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService) {
 
 		var self = this;
 		var home = this;
@@ -1689,8 +1689,16 @@ angular.module('copayApp.controllers')
 				// the array includes the primary AA address too but it doesn't matter
 				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
 				arrResponses.forEach(function (objResponse) {
-					if (objResponse.bounced)
-						results.push(gettext("Bounce the request") + (objResponse.response.error ? ': ' + objResponse.response.error : ''));
+					if (objResponse.bounced) {
+						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
+						if (objResponse.response && objResponse.response.error) {
+							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
+							if (bounceResult.errorData.details && bounceResult.errorData.details.raw) {
+								bounceResult.errorData.rawJson = aaErrorService.prettifyJson(bounceResult.errorData.details.raw);
+							}
+						}
+						results.push(bounceResult);
+					}
 					if (objResponse.updatedStateVars && objResponse.updatedStateVars[aa_address]) {
 						for (var variable in objResponse.updatedStateVars[aa_address]) {
 							var state_change = { variable: variable };
@@ -3159,6 +3167,15 @@ angular.module('copayApp.controllers')
 					$scope.btx.formattedResponseVars = formatResponseVars($scope.btx.response.responseVars);
 				}
 				
+				if ($scope.btx.response && $scope.btx.response.error) {
+					$scope.errorData = aaErrorService.parseAAResponse($scope.btx.response);
+					if ($scope.errorData.details && $scope.errorData.details.raw) {
+						$scope.errorData.rawJson = aaErrorService.prettifyJson($scope.errorData.details.raw);
+					}
+				} else {
+					$scope.errorData = { hasError: false };
+				}
+				
 				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
@@ -3315,8 +3332,8 @@ angular.module('copayApp.controllers')
 					return self.getUnitName();
 				};
 
-				$scope.openInExplorer = function(unit) {
-					return self.openInExplorer(unit);
+				$scope.openInExplorer = function(unit, type) {
+					return self.openInExplorer(unit, type);
 				};
 
 				$scope.copyAddress = function(addr) {
