@@ -126,9 +126,27 @@ angular.module('copayApp.services').factory('aaErrorService', function() {
 		}
 	}
 
+	function getAddressForTrace(trace, traceIndex) {
+		if (!trace || !trace.length || traceIndex < 0) return null;
+		
+		for (var i = traceIndex; i >= 0; i--) {
+			if (trace[i].aa) {
+				return trace[i].aa;
+			}
+		}
+		return null;
+	}
+
+	function getLastTrace(trace) {
+		if (!trace || !trace.length) return null;
+		return trace[trace.length - 1];
+	}
+
 	root.ERROR_TYPES = ERROR_TYPES;
 	root.parseAAResponse = parseAAResponse;
 	root.prettifyJson = prettifyJson;
+	root.getAddressForTrace = getAddressForTrace;
+	root.getLastTrace = getLastTrace;
 
 	return root;
 });

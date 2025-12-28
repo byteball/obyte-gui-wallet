@@ -1693,6 +1693,7 @@ angular.module('copayApp.controllers')
 						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
 						if (objResponse.response && objResponse.response.error) {
 							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
+							bounceResult.errorData.isDryRun = true;
 							if (bounceResult.errorData.details && bounceResult.errorData.details.raw) {
 								bounceResult.errorData.rawJson = aaErrorService.prettifyJson(bounceResult.errorData.details.raw);
 							}
@@ -3172,6 +3173,60 @@ angular.module('copayApp.controllers')
 					if ($scope.errorData.details && $scope.errorData.details.raw) {
 						$scope.errorData.rawJson = aaErrorService.prettifyJson($scope.errorData.details.raw);
 					}
+					
+					function buildAddressUrl(address, xpath, line, error) {
+						if (!address) return null;
+						
+						var params = [];
+						if (xpath) params.push('xpath=' + encodeURIComponent(xpath));
+						if (line) params.push('line=' + line);
+						if (error) params.push('error=' + encodeURIComponent(error));
+						
+						return address + (params.length ? '?' + params.join('&') : '');
+					}
+					
+					$scope.getTraceUrl = function(traceIndex) {
+						var trace = $scope.errorData.details.trace;
+						if (!trace || !trace[traceIndex]) return null;
+						
+						var address = trace[traceIndex].aa || aaErrorService.getAddressForTrace(trace, traceIndex);
+						var isLast = traceIndex === trace.length - 1;
+						
+						return buildAddressUrl(
+							address,
+							trace[traceIndex].xpath,
+							trace[traceIndex].line,
+							isLast ? $scope.errorData.message : null
+						);
+					};
+					
+					$scope.getXpathUrl = function() {
+						var lastTrace = aaErrorService.getLastTrace($scope.errorData.details.trace);
+						if (!lastTrace) return null;
+						
+						var address = lastTrace.aa || aaErrorService.getAddressForTrace($scope.errorData.details.trace, $scope.errorData.details.trace.length - 1);
+						
+						return buildAddressUrl(
+							address,
+							lastTrace.xpath,
+							lastTrace.line,
+							$scope.errorData.message
+						);
+					};
+					
+					$scope.getCodeLineUrl = function(lineNumber) {
+						var lastTrace = aaErrorService.getLastTrace($scope.errorData.details.trace);
+						if (!lastTrace) return null;
+						
+						var address = lastTrace.aa || aaErrorService.getAddressForTrace($scope.errorData.details.trace, $scope.errorData.details.trace.length - 1);
+						
+						return buildAddressUrl(
+							address,
+							lastTrace.xpath,
+							lineNumber,
+							$scope.errorData.message
+						);
+					};
 				} else {
 					$scope.errorData = { hasError: false };
 				}

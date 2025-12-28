@@ -5,7 +5,12 @@
 
 <li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b p10 row collapse">
   <div class="text-gray small-2 columns"><span>XPath</span></div>
-  <div class="small-10 columns enable_text_select aa-error-xpath" style="word-wrap: break-word"><span class="right">{{errorData.details.xpath}}</span></div>
+  <div class="small-10 columns enable_text_select">
+    <a ng-if="!errorData.isDryRun && getXpathUrl()" ng-click="openInExplorer(getXpathUrl(), 'address')" class="aa-error-xpath aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
+      <span class="right">{{errorData.details.xpath}}</span>
+    </a>
+    <span ng-if="errorData.isDryRun || !getXpathUrl()" class="aa-error-xpath right" style="word-wrap: break-word">{{errorData.details.xpath}}</span>
+  </div>
 </li>
 
 <li ng-if="errorData.hasError && errorData.errorType === 'callChain' && errorData.details.addresses.length > 0" class="line-b p10 row collapse">
@@ -14,7 +19,8 @@
     <div class="aa-chain-container">
       <span ng-repeat="addr in errorData.details.addresses track by $index">
         <span ng-if="$index > 0" class="aa-chain-arrow">-></span>
-        <a ng-click="openInExplorer(addr, 'address')" class="aa-chain-addr">{{addr}}</a>
+        <a ng-if="!errorData.isDryRun" ng-click="openInExplorer(addr, 'address')" class="aa-chain-addr">{{addr}}</a>
+        <span ng-if="errorData.isDryRun" class="aa-chain-addr">{{addr}}</span>
       </span>
     </div>
   </div>
@@ -29,7 +35,11 @@
   <div class="text-gray small-2 columns"><span translate>Code</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-code-block">
-      <div ng-repeat="line in errorData.details.codeLines" class="aa-code-line">
+      <a ng-if="!errorData.isDryRun" ng-repeat="line in errorData.details.codeLines" ng-click="openInExplorer(getCodeLineUrl(line.lineNumber), 'address')" class="aa-code-line aa-code-line-clickable">
+        <span class="aa-line-num">{{line.lineNumber}}</span>
+        <span class="aa-line-code">{{line.formula}}</span>
+      </a>
+      <div ng-if="errorData.isDryRun" ng-repeat="line in errorData.details.codeLines" class="aa-code-line">
         <span class="aa-line-num">{{line.lineNumber}}</span>
         <span class="aa-line-code">{{line.formula}}</span>
       </div>
@@ -41,9 +51,16 @@
   <div class="text-gray small-2 columns"><span translate>Trace</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-trace-list">
-      <div ng-repeat="t in errorData.details.trace" class="aa-trace-item">
+      <a ng-if="!errorData.isDryRun" ng-repeat="t in errorData.details.trace track by $index" ng-click="openInExplorer(getTraceUrl($index), 'address')" class="aa-trace-item aa-trace-clickable">
         <span class="aa-trace-type" ng-class="{'aa-trace-fn': t.type === 'function'}">{{t.type}}</span>
-        <a ng-if="t.aa" ng-click="openInExplorer(t.aa, 'address')" class="aa-trace-aa">{{t.aa}}</a>
+        <span ng-if="t.aa" class="aa-trace-aa">{{t.aa}}</span>
+        <span class="aa-trace-xpath">{{t.xpath}}</span>
+        <span ng-if="t.name" class="aa-trace-name">{{t.name}}</span>
+        <span ng-if="t.line" class="aa-trace-line">line {{t.line}}</span>
+      </a>
+      <div ng-if="errorData.isDryRun" ng-repeat="t in errorData.details.trace track by $index" class="aa-trace-item">
+        <span class="aa-trace-type" ng-class="{'aa-trace-fn': t.type === 'function'}">{{t.type}}</span>
+        <span ng-if="t.aa" class="aa-trace-aa">{{t.aa}}</span>
         <span class="aa-trace-xpath">{{t.xpath}}</span>
         <span ng-if="t.name" class="aa-trace-name">{{t.name}}</span>
         <span ng-if="t.line" class="aa-trace-line">line {{t.line}}</span>

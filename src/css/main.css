@@ -2322,6 +2322,10 @@ not screen and (min-resolution: 192dpi) {
 	word-break: break-all;
 }
 
+.aa-error-xpath-link {
+	cursor: pointer;
+}
+
 .aa-error-context {
 	color: #6f42c1;
 	font-family: monospace;
@@ -2372,6 +2376,16 @@ not screen and (min-resolution: 192dpi) {
 	line-height: 1.5;
 }
 
+.aa-code-line-clickable {
+	cursor: pointer;
+	transition: background-color 0.2s;
+	color: #333;
+}
+
+.aa-code-line-clickable:hover {
+	background: #e9ecef;
+}
+
 .aa-line-num {
 	color: #999;
 	min-width: 24px;
@@ -2406,6 +2420,16 @@ not screen and (min-resolution: 192dpi) {
 	margin-bottom: 0;
 }
 
+.aa-trace-clickable {
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.aa-trace-clickable:hover {
+	background: #e3f2fd;
+	border-color: #90caf9;
+}
+
 .aa-trace-type {
 	background: #cce5ff;
 	color: #004085;
@@ -2421,15 +2445,9 @@ not screen and (min-resolution: 192dpi) {
 }
 
 .aa-trace-aa {
-	color: #007bff;
 	font-family: monospace;
 	font-size: 11px;
 	word-break: break-all;
-	cursor: pointer;
-}
-
-.aa-trace-aa:hover {
-	text-decoration: underline;
 }
 
 .aa-trace-xpath {
