@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService) {
 
 		var self = this;
 		var home = this;
@@ -1689,8 +1689,17 @@ angular.module('copayApp.controllers')
 				// the array includes the primary AA address too but it doesn't matter
 				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
 				arrResponses.forEach(function (objResponse) {
-					if (objResponse.bounced)
-						results.push(gettext("Bounce the request") + (objResponse.response.error ? ': ' + objResponse.response.error : ''));
+					if (objResponse.bounced) {
+						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
+						if (objResponse.response && objResponse.response.error) {
+							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
+							bounceResult.errorData.isDryRun = true;
+							if (bounceResult.errorData.details && bounceResult.errorData.details.raw) {
+								bounceResult.errorData.rawJson = aaErrorService.prettifyJson(bounceResult.errorData.details.raw);
+							}
+						}
+						results.push(bounceResult);
+					}
 					if (objResponse.updatedStateVars && objResponse.updatedStateVars[aa_address]) {
 						for (var variable in objResponse.updatedStateVars[aa_address]) {
 							var state_change = { variable: variable };
@@ -3159,6 +3168,69 @@ angular.module('copayApp.controllers')
 					$scope.btx.formattedResponseVars = formatResponseVars($scope.btx.response.responseVars);
 				}
 				
+				if ($scope.btx.response && $scope.btx.response.error) {
+					$scope.errorData = aaErrorService.parseAAResponse($scope.btx.response);
+					if ($scope.errorData.details && $scope.errorData.details.raw) {
+						$scope.errorData.rawJson = aaErrorService.prettifyJson($scope.errorData.details.raw);
+					}
+					
+					function buildAddressUrl(address, xpath, line, error) {
+						if (!address) return null;
+						
+						var params = [];
+						if (xpath) params.push('xpath=' + encodeURIComponent(xpath));
+						if (line) params.push('line=' + line);
+						if (error) params.push('error=' + encodeURIComponent(error));
+						
+						return address + (params.length ? '?' + params.join('&') : '');
+					}
+					
+					$scope.getTraceUrl = function(traceIndex) {
+						var trace = $scope.errorData.details.trace;
+						if (!trace || !trace[traceIndex]) return null;
+						
+						var address = trace[traceIndex].aa || aaErrorService.getAddressForTrace(trace, traceIndex);
+						var isLast = traceIndex === trace.length - 1;
+						
+						return buildAddressUrl(
+							address,
+							trace[traceIndex].xpath,
+							trace[traceIndex].line,
+							isLast ? $scope.errorData.message : null
+						);
+					};
+					
+					$scope.getXpathUrl = function() {
+						var lastTrace = aaErrorService.getLastTrace($scope.errorData.details.trace);
+						if (!lastTrace) return null;
+						
+						var address = lastTrace.aa || aaErrorService.getAddressForTrace($scope.errorData.details.trace, $scope.errorData.details.trace.length - 1);
+						
+						return buildAddressUrl(
+							address,
+							lastTrace.xpath,
+							lastTrace.line,
+							$scope.errorData.message
+						);
+					};
+					
+					$scope.getCodeLineUrl = function(lineNumber) {
+						var lastTrace = aaErrorService.getLastTrace($scope.errorData.details.trace);
+						if (!lastTrace) return null;
+						
+						var address = lastTrace.aa || aaErrorService.getAddressForTrace($scope.errorData.details.trace, $scope.errorData.details.trace.length - 1);
+						
+						return buildAddressUrl(
+							address,
+							lastTrace.xpath,
+							lineNumber,
+							$scope.errorData.message
+						);
+					};
+				} else {
+					$scope.errorData = { hasError: false };
+				}
+				
 				$scope.addressbook = indexScope.addressbook;
 				$scope.isPrivate = indexScope.arrBalances[assetIndex].is_private;
 				$scope.Math = window.Math;
@@ -3315,8 +3387,8 @@ angular.module('copayApp.controllers')
 					return self.getUnitName();
 				};
 
-				$scope.openInExplorer = function(unit) {
-					return self.openInExplorer(unit);
+				$scope.openInExplorer = function(unit, type) {
+					return self.openInExplorer(unit, type);
 				};
 
 				$scope.copyAddress = function(addr) {

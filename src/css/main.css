@@ -2309,3 +2309,170 @@ not screen and (min-resolution: 192dpi) {
 	white-space: pre-wrap;
 	width: 100%;
 }
+
+.aa-error-message {
+	color: #dc3545;
+	font-weight: 500;
+}
+
+.aa-error-xpath {
+	color: #28a745;
+	font-family: monospace;
+	font-size: 12px;
+	word-break: break-all;
+}
+
+.aa-error-xpath-link {
+	cursor: pointer;
+}
+
+.aa-error-context {
+	color: #6f42c1;
+	font-family: monospace;
+	font-size: 12px;
+	white-space: pre-wrap;
+}
+
+.aa-chain-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+	font-family: monospace;
+	font-size: 11px;
+}
+
+.aa-chain-addr {
+	color: #007bff;
+	background: #e7f1ff;
+	padding: 2px 8px;
+	border-radius: 4px;
+	word-break: break-all;
+	cursor: pointer;
+}
+
+.aa-chain-addr:hover {
+	text-decoration: underline;
+}
+
+.aa-chain-arrow {
+	color: #999;
+}
+
+.aa-code-block {
+	background: #f8f9fa;
+	border: 1px solid #e5e5e5;
+	border-radius: 4px;
+	padding: 8px;
+	overflow-x: auto;
+	margin-top: 4px;
+}
+
+.aa-code-line {
+	display: flex;
+	gap: 12px;
+	font-family: monospace;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.aa-code-line-clickable {
+	cursor: pointer;
+	transition: background-color 0.2s;
+	color: #333;
+}
+
+.aa-code-line-clickable:hover {
+	background: #e9ecef;
+}
+
+.aa-line-num {
+	color: #999;
+	min-width: 24px;
+	text-align: right;
+	user-select: none;
+}
+
+.aa-line-code {
+	color: #333;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.aa-trace-list {
+	margin-top: 4px;
+}
+
+.aa-trace-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 6px 8px;
+	background: #f8f9fa;
+	border: 1px solid #e5e5e5;
+	border-radius: 4px;
+	font-size: 11px;
+	flex-wrap: wrap;
+	margin-bottom: 4px;
+}
+
+.aa-trace-item:last-child {
+	margin-bottom: 0;
+}
+
+.aa-trace-clickable {
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.aa-trace-clickable:hover {
+	background: #e3f2fd;
+	border-color: #90caf9;
+}
+
+.aa-trace-type {
+	background: #cce5ff;
+	color: #004085;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 10px;
+	font-weight: 500;
+}
+
+.aa-trace-type.aa-trace-fn {
+	background: #e2d5f1;
+	color: #5a2d82;
+}
+
+.aa-trace-aa {
+	font-family: monospace;
+	font-size: 11px;
+	word-break: break-all;
+}
+
+.aa-trace-xpath {
+	color: #28a745;
+	font-family: monospace;
+	font-size: 11px;
+	word-break: break-all;
+}
+
+.aa-trace-name {
+	color: #6f42c1;
+	font-family: monospace;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.aa-trace-line {
+	color: #666;
+	font-size: 11px;
+}
+
+.aa-error-raw {
+	font-family: monospace;
+	font-size: 12px;
+	color: #555;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
