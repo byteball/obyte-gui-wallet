@@ -637,12 +637,12 @@ input.datafeed_input {
                     {{home.aa_dry_run_error}}<br>
                     <a ng-click="home.onChanged()" translate>Try again</a>
                   </div>
-	                <ul class="enable_text_select no-bullet size-14 m0 tx-details">
+	                <ul class="enable_text_select size-14 tx-details" ng-class="{'no-bullet': home.aa_message_results[0].type === 'bounce'}">
                     <li ng-repeat="result in home.aa_message_results track by $index" style="word-wrap: break-word">
                       <span ng-if="!result.type">{{result}}</span>
                       <div ng-if="result.type === 'bounce'">
                         <span class="text-warning">{{result.text}}</span>
-                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer" ng-include="'views/includes/aa-error.html'"></div>
+                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer; compactMode = true" ng-include="'views/includes/aa-error.html'"></div>
                       </div>
                     </li>
                     <li ng-repeat="state_change in home.aa_state_changes">

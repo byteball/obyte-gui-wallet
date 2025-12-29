@@ -596,6 +596,7 @@ ul.manage li {
 .m15h {margin: 0 15px;}
 .p10t {padding-top: 10px;}
 .p10h {padding-right: 10px; padding-left: 10px;}
+.p10v {padding-top: 10px; padding-bottom: 10px;}
 .p0r {padding-right: 0;}
 .p70r {padding-right: 70px;}
 .p70l {padding-left: 70px;}
@@ -2310,13 +2311,7 @@ not screen and (min-resolution: 192dpi) {
 	width: 100%;
 }
 
-.aa-error-message {
-	color: #dc3545;
-	font-weight: 500;
-}
-
 .aa-error-xpath {
-	color: #28a745;
 	font-family: monospace;
 	font-size: 12px;
 	word-break: break-all;
@@ -2327,7 +2322,6 @@ not screen and (min-resolution: 192dpi) {
 }
 
 .aa-error-context {
-	color: #6f42c1;
 	font-family: monospace;
 	font-size: 12px;
 	white-space: pre-wrap;
