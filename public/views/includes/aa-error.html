@@ -1,19 +1,19 @@
-<li ng-if="errorData.hasError && errorData.message" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Message</span></div>
-  <div class="small-10 columns enable_text_select aa-error-message" style="word-wrap: break-word"><span class="right">{{errorData.message}}</span></div>
+  <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{errorData.message}}</span></div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>XPath</span></div>
   <div class="small-10 columns enable_text_select">
-    <a ng-if="!errorData.isDryRun && getXpathUrl()" ng-click="openInExplorer(getXpathUrl(), 'address')" class="aa-error-xpath aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
+    <a ng-if="!errorData.isDryRun && getXpathUrl()" ng-click="openInExplorer(getXpathUrl(), 'address')" class="aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
       <span class="right">{{errorData.details.xpath}}</span>
     </a>
     <span ng-if="errorData.isDryRun || !getXpathUrl()" class="aa-error-xpath right" style="word-wrap: break-word">{{errorData.details.xpath}}</span>
   </div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.errorType === 'callChain' && errorData.details.addresses.length > 0" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.errorType === 'callChain' && errorData.details.addresses.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Call Chain</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-chain-container">
@@ -26,12 +26,12 @@
   </div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.details.formattedContext" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.details.formattedContext" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Context</span></div>
   <div class="small-10 columns enable_text_select aa-error-context" style="word-wrap: break-word">{{errorData.details.formattedContext}}</div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.details.codeLines.length > 0" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.details.codeLines.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Code</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-code-block">
@@ -47,7 +47,7 @@
   </div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.details.trace.length > 0" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.details.trace.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Trace</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-trace-list">
@@ -69,7 +69,7 @@
   </div>
 </li>
 
-<li ng-if="errorData.hasError && errorData.errorType === 'object'" class="line-b p10 row collapse">
+<li ng-if="errorData.hasError && errorData.errorType === 'object'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>Raw</span></div>
   <div class="small-10 columns enable_text_select aa-error-raw" style="word-wrap: break-word">{{errorData.rawJson}}</div>
 </li>
