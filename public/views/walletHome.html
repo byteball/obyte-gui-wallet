@@ -597,7 +597,7 @@ input.datafeed_input {
                         <div class="suggest-list" ng-if="home.aa_data_fields_defined.length && pair.suggestionsShown">
                           <div class="option"
                                ng-repeat="dataKey in home.aa_data_fields_defined | filter:pair.name"
-                               ng-click="pair.name = dataKey; pair.suggestionsShown = false">
+                               ng-click="pair.name = dataKey; pair.suggestionsShown = false; home.onChanged()">
                                <span style="font-weight: bold;">{{dataKey}}</span><span ng-if="home.aa_field_descriptions[dataKey]">: {{home.aa_field_descriptions[dataKey]}}</span>
                           </div>
                         </div>
@@ -642,7 +642,7 @@ input.datafeed_input {
                       <span ng-if="!result.type">{{result}}</span>
                       <div ng-if="result.type === 'bounce'">
                         <span class="text-warning">{{result.text}}</span>
-                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer; compactMode = true" ng-include="'views/includes/aa-error.html'"></div>
+                        <div ng-if="result.errorData" ng-init="errorContainer = result; openInExplorer = home.openInExplorer; compactMode = true; getXpathUrl = home.getXpathUrl; getTraceUrl = home.getTraceUrl; getCodeLineUrl = home.getCodeLineUrl" ng-include="'views/includes/aa-error.html'"></div>
                       </div>
                     </li>
                     <li ng-repeat="state_change in home.aa_state_changes">
