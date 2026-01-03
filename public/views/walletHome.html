@@ -638,7 +638,7 @@ input.datafeed_input {
                     <a ng-click="home.onChanged()" translate>Try again</a>
                   </div>
 	                <ul class="enable_text_select tx-details" ng-class="home.aa_message_results[0].type === 'bounce' ? 'no-bullet size-14' : ''">
-                    <li ng-repeat="result in home.aa_message_results" style="word-wrap: break-word">
+                    <li ng-repeat="result in home.aa_message_results track by result.id" style="word-wrap: break-word">
                       <span ng-if="!result.type">{{result}}</span>
                       <div ng-if="result.type === 'bounce'">
                         <span class="text-warning">{{result.text}}</span>

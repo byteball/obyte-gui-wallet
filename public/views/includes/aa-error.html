@@ -1,23 +1,23 @@
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Message</span></div>
-  <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{getEd(errorContainer, errorData).message}}</span></div>
+  <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{errorData.message}}</span></div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).errorType === 'xpath'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>XPath</span></div>
   <div class="small-10 columns enable_text_select">
-    <a ng-if="getXpathUrl(getEd(errorContainer, errorData))" ng-click="openInExplorer(getXpathUrl(getEd(errorContainer, errorData)), 'address')" class="aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
-      <span class="right">{{getEd(errorContainer, errorData).details.xpath}}</span>
+    <a ng-if="getXpathUrl(errorData)" ng-click="openInExplorer(getXpathUrl(errorData), 'address')" class="aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
+      <span class="right">{{errorData.details.xpath}}</span>
     </a>
-    <span ng-if="!getXpathUrl(getEd(errorContainer, errorData))" class="aa-error-xpath right" style="word-wrap: break-word">{{getEd(errorContainer, errorData).details.xpath}}</span>
+    <span ng-if="!getXpathUrl(errorData)" class="aa-error-xpath right" style="word-wrap: break-word">{{errorData.details.xpath}}</span>
   </div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).errorType === 'callChain' && getEd(errorContainer, errorData).details.addresses.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.errorType === 'callChain' && errorData.details.addresses.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Call Chain</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-chain-container">
-      <span ng-repeat="addr in getEd(errorContainer, errorData).details.addresses track by $index">
+      <span ng-repeat="addr in errorData.details.addresses track by $index">
         <span ng-if="$index > 0" class="aa-chain-arrow">-></span>
         <a ng-click="openInExplorer(addr, 'address')" class="aa-chain-addr">{{addr}}</a>
       </span>
@@ -25,16 +25,16 @@
   </div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).details.formattedContext" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.details.formattedContext" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Context</span></div>
-  <div class="small-10 columns enable_text_select aa-error-context" style="word-wrap: break-word">{{getEd(errorContainer, errorData).details.formattedContext}}</div>
+  <div class="small-10 columns enable_text_select aa-error-context" style="word-wrap: break-word">{{errorData.details.formattedContext}}</div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).details.codeLines.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.details.codeLines.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Code</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-code-block">
-      <a ng-repeat="line in getEd(errorContainer, errorData).details.codeLines" ng-click="openInExplorer(getCodeLineUrl(getEd(errorContainer, errorData), line.lineNumber), 'address')" class="aa-code-line aa-code-line-clickable">
+      <a ng-repeat="line in errorData.details.codeLines" ng-click="openInExplorer(getCodeLineUrl(errorData, line.lineNumber), 'address')" class="aa-code-line aa-code-line-clickable">
         <span class="aa-line-num">{{line.lineNumber}}</span>
         <span class="aa-line-code">{{line.formula}}</span>
       </a>
@@ -42,11 +42,11 @@
   </div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).details.trace.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.details.trace.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Trace</span></div>
   <div class="small-10 columns enable_text_select">
     <div class="aa-trace-list">
-      <a ng-repeat="t in getEd(errorContainer, errorData).details.trace track by $index" ng-click="openInExplorer(getTraceUrl(getEd(errorContainer, errorData), $index), 'address')" class="aa-trace-item aa-trace-clickable">
+      <a ng-repeat="t in errorData.details.trace track by $index" ng-click="openInExplorer(getTraceUrl(errorData, $index), 'address')" class="aa-trace-item aa-trace-clickable">
         <span class="aa-trace-type" ng-class="{'aa-trace-fn': t.type === 'function'}">{{t.type}}</span>
         <span ng-if="t.aa" class="aa-trace-aa">{{t.aa}}</span>
         <span class="aa-trace-xpath">{{t.xpath}}</span>
@@ -57,7 +57,7 @@
   </div>
 </li>
 
-<li ng-if="getEd(errorContainer, errorData).hasError && getEd(errorContainer, errorData).errorType === 'object'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
+<li ng-if="errorData.hasError && errorData.errorType === 'object'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>Raw</span></div>
-  <div class="small-10 columns enable_text_select aa-error-raw" style="word-wrap: break-word">{{getEd(errorContainer, errorData).rawJson}}</div>
+  <div class="small-10 columns enable_text_select aa-error-raw" style="word-wrap: break-word">{{errorData.rawJson}}</div>
 </li>

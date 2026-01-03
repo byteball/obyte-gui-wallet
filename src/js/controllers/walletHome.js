@@ -1690,7 +1690,7 @@ angular.module('copayApp.controllers')
 				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
 				arrResponses.forEach(function (objResponse) {
 					if (objResponse.bounced) {
-						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
+						var bounceResult = { id: objResponse.aa_address + '_' + Date.now(), type: 'bounce', text: gettext("Bounce the request") };
 						if (objResponse.response && objResponse.response.error) {
 							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
 							bounceResult.errorData.aaAddress = objResponse.aa_address;
@@ -3077,10 +3077,6 @@ angular.module('copayApp.controllers')
 
 		this.openInExplorer = correspondentListService.openInExplorer;
 
-		this.getEd = function(errorContainer, errorData) {
-			return errorContainer ? errorContainer.errorData : errorData;
-		};
-
 		function buildAddressUrl(address, xpath, line, error) {
 			if (!address) return null;
 			var params = [];
@@ -3225,10 +3221,6 @@ angular.module('copayApp.controllers')
 					if ($scope.errorData.details && $scope.errorData.details.raw) {
 						$scope.errorData.rawJson = aaErrorService.prettifyJson($scope.errorData.details.raw);
 					}
-					
-					$scope.getEd = function(errorContainer, errorData) {
-						return errorContainer ? errorContainer.errorData : errorData;
-					};
 					
 					function buildAddressUrl(address, xpath, line, error) {
 						if (!address) return null;
