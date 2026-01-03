@@ -1693,6 +1693,7 @@ angular.module('copayApp.controllers')
 						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
 						if (objResponse.response && objResponse.response.error) {
 							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
+							console.log(bounceResult);
 							bounceResult.errorData.aaAddress = objResponse.aa_address;
 							if (bounceResult.errorData.details && bounceResult.errorData.details.raw) {
 								bounceResult.errorData.rawJson = aaErrorService.prettifyJson(bounceResult.errorData.details.raw);
@@ -3077,6 +3078,10 @@ angular.module('copayApp.controllers')
 
 		this.openInExplorer = correspondentListService.openInExplorer;
 
+		this.getEd = function(errorContainer, errorData) {
+			return errorContainer ? errorContainer.errorData : errorData;
+		};
+
 		function buildAddressUrl(address, xpath, line, error) {
 			if (!address) return null;
 			var params = [];
@@ -3221,6 +3226,10 @@ angular.module('copayApp.controllers')
 					if ($scope.errorData.details && $scope.errorData.details.raw) {
 						$scope.errorData.rawJson = aaErrorService.prettifyJson($scope.errorData.details.raw);
 					}
+					
+					$scope.getEd = function(errorContainer, errorData) {
+						return errorContainer ? errorContainer.errorData : errorData;
+					};
 					
 					function buildAddressUrl(address, xpath, line, error) {
 						if (!address) return null;
