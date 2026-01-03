@@ -1693,7 +1693,6 @@ angular.module('copayApp.controllers')
 						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
 						if (objResponse.response && objResponse.response.error) {
 							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
-							console.log(bounceResult);
 							bounceResult.errorData.aaAddress = objResponse.aa_address;
 							if (bounceResult.errorData.details && bounceResult.errorData.details.raw) {
 								bounceResult.errorData.rawJson = aaErrorService.prettifyJson(bounceResult.errorData.details.raw);
