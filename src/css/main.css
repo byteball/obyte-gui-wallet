@@ -2469,3 +2469,21 @@ not screen and (min-resolution: 192dpi) {
 	white-space: pre-wrap;
 	word-break: break-all;
 }
+
+.aa-bounce-li {
+	font-size: 14px;
+	list-style-type: none;
+	margin-left: 0;
+}
+
+
+.aa-info-li {
+	margin-left: 1rem;
+}
+
+.aa-info-li > span {
+	font-size: 16px;
+	display: block;
+	padding: 9px 0;
+}
+

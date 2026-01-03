@@ -1,5 +1,5 @@
 <li ng-if="errorData.hasError && errorData.message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
-  <div class="text-gray small-2 columns"><span translate>Message</span></div>
+  <div class="text-gray small-2 columns"><span translate>Error</span></div>
   <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{errorData.message}}</span></div>
 </li>
 
@@ -18,8 +18,8 @@
   <div class="small-10 columns enable_text_select">
     <div class="aa-chain-container">
       <span ng-repeat="addr in errorData.details.addresses track by $index">
-        <span ng-if="$index > 0" class="aa-chain-arrow">-></span>
         <a ng-click="openInExplorer(addr, 'address')" class="aa-chain-addr">{{addr}}</a>
+		<span ng-if="errorData.details.addresses.length > 1 && !$last" class="aa-chain-arrow">-></span>
       </span>
     </div>
   </div>
@@ -27,7 +27,7 @@
 
 <li ng-if="errorData.hasError && errorData.details.formattedContext" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Context</span></div>
-  <div class="small-10 columns enable_text_select aa-error-context" style="word-wrap: break-word">{{errorData.details.formattedContext}}</div>
+  <div class="small-10 columns enable_text_select aa-error-context" style="word-wrap: break-word;padding-top:2px">{{errorData.details.formattedContext}}</div>
 </li>
 
 <li ng-if="errorData.hasError && errorData.details.codeLines.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">

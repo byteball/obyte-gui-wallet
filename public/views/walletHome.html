@@ -637,57 +637,18 @@ input.datafeed_input {
                     {{home.aa_dry_run_error}}<br>
                     <a ng-click="home.onChanged()" translate>Try again</a>
                   </div>
-	                <ul class="enable_text_select tx-details" ng-class="home.aa_message_results[0].type === 'bounce' ? 'no-bullet size-14' : ''">
-                    <li ng-repeat="result in home.aa_message_results track by result.id" style="word-wrap: break-word">
+	                <ul class="enable_text_select tx-details" style="margin-left: 0">
+                    <li ng-repeat="result in home.aa_message_results track by (result.id || $index)" ng-class="result.type && result.type === 'bounce' ? 'aa-bounce-li' : 'aa-info-li'" style="word-wrap: break-word">
                       <span ng-if="!result.type">{{result}}</span>
                       <div ng-if="result.type === 'bounce'">
                         <span class="text-warning">{{result.text}}</span>
-                        <div ng-if="result.errorData" ng-init="openInExplorer = home.openInExplorer; getXpathUrl = home.getXpathUrl; getTraceUrl = home.getTraceUrl; getCodeLineUrl = home.getCodeLineUrl">
-                          <div ng-if="result.errorData.hasError && result.errorData.message" class="line-b row collapse p10v">
-                            <div class="text-gray small-2 columns"><span translate>Message</span></div>
-                            <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{result.errorData.message}}</span></div>
-                          </div>
-                          <div ng-if="result.errorData.hasError && result.errorData.errorType === 'xpath'" class="line-b row collapse p10v">
-                            <div class="text-gray small-2 columns"><span>XPath</span></div>
-                            <div class="small-10 columns enable_text_select">
-                              <a ng-if="getXpathUrl(result.errorData)" ng-click="openInExplorer(getXpathUrl(result.errorData), 'address')" class="aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
-                                <span class="right">{{result.errorData.details.xpath}}</span>
-                              </a>
-                              <span ng-if="!getXpathUrl(result.errorData)" class="aa-error-xpath right" style="word-wrap: break-word">{{result.errorData.details.xpath}}</span>
-                            </div>
-                          </div>
-                          <div ng-if="result.errorData.hasError && result.errorData.details.codeLines.length > 0" class="line-b row collapse p10v">
-                            <div class="text-gray small-2 columns"><span translate>Code</span></div>
-                            <div class="small-10 columns enable_text_select">
-                              <div class="aa-code-block">
-                                <a ng-repeat="line in result.errorData.details.codeLines" ng-click="openInExplorer(getCodeLineUrl(result.errorData, line.lineNumber), 'address')" class="aa-code-line aa-code-line-clickable">
-                                  <span class="aa-line-num">{{line.lineNumber}}</span>
-                                  <span class="aa-line-code">{{line.formula}}</span>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                          <div ng-if="result.errorData.hasError && result.errorData.details.trace.length > 0" class="line-b row collapse p10v">
-                            <div class="text-gray small-2 columns"><span translate>Trace</span></div>
-                            <div class="small-10 columns enable_text_select">
-                              <div class="aa-trace-list">
-                                <a ng-repeat="t in result.errorData.details.trace track by $index" ng-click="openInExplorer(getTraceUrl(result.errorData, $index), 'address')" class="aa-trace-item aa-trace-clickable">
-                                  <span class="aa-trace-type" ng-class="{'aa-trace-fn': t.type === 'function'}">{{t.type}}</span>
-                                  <span ng-if="t.aa" class="aa-trace-aa">{{t.aa}}</span>
-                                  <span class="aa-trace-xpath">{{t.xpath}}</span>
-                                  <span ng-if="t.name" class="aa-trace-name">{{t.name}}</span>
-                                  <span ng-if="t.line" class="aa-trace-line">line {{t.line}}</span>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer; compactMode = true; getXpathUrl = home.getXpathUrl; getTraceUrl = home.getTraceUrl; getCodeLineUrl = home.getCodeLineUrl" ng-include="'views/includes/aa-error.html'"></div>
                       </div>
                     </li>
-                    <li ng-repeat="state_change in home.aa_state_changes">
+                    <li ng-repeat="state_change in home.aa_state_changes" style="margin-left: 1rem;">
                       <span translate>Variable</span> <i>{{state_change.variable}}</i> {{state_change.action}} <b>{{state_change.value}}</b><br>
                     </li>
-                    <li ng-repeat="responseVar in home.responseVars">
+                    <li ng-repeat="responseVar in home.responseVars" style="margin-left: 1rem;">
                       <span translate>Response</span> <i>{{responseVar.variable}}</i>: <b style="word-wrap: break-word; white-space: pre-line">{{responseVar.value}}</b><br>
                     </li>
                   </ul>
