@@ -2314,6 +2314,8 @@ not screen and (min-resolution: 192dpi) {
 	font-family: monospace;
 	font-size: 12px;
 	word-break: break-all;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .aa-error-xpath-link {
@@ -2324,6 +2326,8 @@ not screen and (min-resolution: 192dpi) {
 	font-family: monospace;
 	font-size: 12px;
 	white-space: pre-wrap;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .aa-chain-container {
@@ -2352,21 +2356,23 @@ not screen and (min-resolution: 192dpi) {
 	color: #999;
 }
 
+.aa-error-message { 
+	padding-left: 8px;
+}
+
 .aa-code-block {
-	background: #f8f9fa;
-	border: 1px solid #e5e5e5;
-	border-radius: 4px;
-	padding: 8px;
 	overflow-x: auto;
-	margin-top: 4px;
+	margin-top: 2px;
 }
 
 .aa-code-line {
 	display: flex;
-	gap: 12px;
+	gap: 8px;
 	font-family: monospace;
 	font-size: 12px;
 	line-height: 1.5;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .aa-code-line-clickable {
@@ -2391,22 +2397,13 @@ not screen and (min-resolution: 192dpi) {
 	white-space: pre-wrap;
 	word-break: break-all;
 }
-
-.aa-trace-list {
-	margin-top: 4px;
-}
-
 .aa-trace-item {
 	display: flex;
 	align-items: flex-start;
-	gap: 8px;
+	gap: 4px;
 	padding: 6px 8px;
-	background: #f8f9fa;
-	border: 1px solid #e5e5e5;
-	border-radius: 4px;
 	font-size: 11px;
 	flex-wrap: wrap;
-	margin-bottom: 4px;
 }
 
 .aa-trace-item:last-child {
@@ -2468,6 +2465,8 @@ not screen and (min-resolution: 192dpi) {
 	color: #555;
 	white-space: pre-wrap;
 	word-break: break-all;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .aa-bounce-li {

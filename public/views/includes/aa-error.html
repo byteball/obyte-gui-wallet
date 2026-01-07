@@ -1,7 +1,9 @@
 <li ng-if="errorData.hasError && errorData.message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Error</span></div>
-  <div class="small-10 columns enable_text_select" style="word-wrap: break-word"><span class="right">{{errorData.message}}</span></div>
-</li>
+  <div class="small-10 columns enable_text_select" style="word-wrap: break-word">
+	<span class="right aa-error-message">{{errorData.message}}</span>
+  </div>
+</li> 
 
 <li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>XPath</span></div>
@@ -35,7 +37,6 @@
   <div class="small-10 columns enable_text_select">
     <div class="aa-code-block">
       <a ng-repeat="line in errorData.details.codeLines" ng-click="openInExplorer(getCodeLineUrl(errorData, line.lineNumber), 'address')" class="aa-code-line aa-code-line-clickable">
-        <span class="aa-line-num">{{line.lineNumber}}</span>
         <span class="aa-line-code">{{line.formula}}</span>
       </a>
     </div>
@@ -43,9 +44,9 @@
 </li>
 
 <li ng-if="errorData.hasError && errorData.details.trace.length > 0" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
-  <div class="text-gray small-2 columns"><span translate>Trace</span></div>
+  <div class="text-gray small-2 columns" style="margin-top:4px"><span translate>Trace</span></div>
   <div class="small-10 columns enable_text_select">
-    <div class="aa-trace-list">
+    <div>
       <a ng-repeat="t in errorData.details.trace track by $index" ng-click="openInExplorer(getTraceUrl(errorData, $index), 'address')" class="aa-trace-item aa-trace-clickable">
         <span class="aa-trace-type" ng-class="{'aa-trace-fn': t.type === 'function'}">{{t.type}}</span>
         <span ng-if="t.aa" class="aa-trace-aa">{{t.aa}}</span>
