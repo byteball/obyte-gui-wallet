@@ -2356,7 +2356,7 @@ not screen and (min-resolution: 192dpi) {
 	color: #999;
 }
 
-.aa-error-message { 
+.aa-error-message {
 	padding-left: 8px;
 }
 
@@ -2476,7 +2476,7 @@ not screen and (min-resolution: 192dpi) {
 }
 
 
-.aa-info-li {
+.ml1rem {
 	margin-left: 1rem;
 }
 
@@ -2485,4 +2485,3 @@ not screen and (min-resolution: 192dpi) {
 	display: block;
 	padding: 9px 0;
 }
-

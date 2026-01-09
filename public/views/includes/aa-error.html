@@ -3,7 +3,7 @@
   <div class="small-10 columns enable_text_select" style="word-wrap: break-word">
 	<span class="right aa-error-message">{{errorData.message}}</span>
   </div>
-</li> 
+</li>
 
 <li ng-if="errorData.hasError && errorData.errorType === 'xpath'" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span>XPath</span></div>
@@ -21,7 +21,7 @@
     <div class="aa-chain-container">
       <span ng-repeat="addr in errorData.details.addresses track by $index">
         <a ng-click="openInExplorer(addr, 'address')" class="aa-chain-addr">{{addr}}</a>
-		<span ng-if="errorData.details.addresses.length > 1 && !$last" class="aa-chain-arrow">-></span>
+		<span ng-if="!$last" class="aa-chain-arrow">-></span>
       </span>
     </div>
   </div>
