@@ -1690,7 +1690,7 @@ angular.module('copayApp.controllers')
 				var arrSecondaryAAAdresses = arrResponses.map(function (objResponse) { return objResponse.aa_address; });
 				arrResponses.forEach(function (objResponse) {
 					if (objResponse.bounced) {
-						var bounceResult = { type: 'bounce', text: gettext("Bounce the request") };
+						var bounceResult = { id: objResponse.aa_address + '_' + Date.now(), type: 'bounce', text: gettext("Bounce the request") };
 						if (objResponse.response && objResponse.response.error) {
 							bounceResult.errorData = aaErrorService.parseAAResponse(objResponse.response);
 							bounceResult.errorData.aaAddress = objResponse.aa_address;
