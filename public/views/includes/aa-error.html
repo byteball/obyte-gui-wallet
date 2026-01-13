@@ -1,7 +1,7 @@
 <li ng-if="errorData.hasError && errorData.message" class="line-b row collapse" ng-class="compactMode ? 'p10v' : 'p10'">
   <div class="text-gray small-2 columns"><span translate>Error</span></div>
   <div class="small-10 columns enable_text_select" style="word-wrap: break-word">
-	<span class="right aa-error-message">{{errorData.message}}</span>
+	<span class="aa-error-message" ng-class="isDryRun ? '' : 'right'" style="display: block; word-break: break-word;">{{errorData.message}}</span>
   </div>
 </li>
 
@@ -9,9 +9,9 @@
   <div class="text-gray small-2 columns"><span>XPath</span></div>
   <div class="small-10 columns enable_text_select">
     <a ng-if="getXpathUrl(errorData)" ng-click="openInExplorer(getXpathUrl(errorData), 'address')" class="aa-error-xpath-link" style="word-wrap: break-word; cursor: pointer;">
-      <span class="right">{{errorData.details.xpath}}</span>
+      <span ng-class="isDryRun ? '' : 'right'">{{errorData.details.xpath}}</span>
     </a>
-    <span ng-if="!getXpathUrl(errorData)" class="aa-error-xpath right" style="word-wrap: break-word">{{errorData.details.xpath}}</span>
+    <span ng-if="!getXpathUrl(errorData)" class="aa-error-xpath" ng-class="isDryRun ? '' : 'right'" style="word-wrap: break-word">{{errorData.details.xpath}}</span>
   </div>
 </li>
 
