@@ -642,7 +642,7 @@ input.datafeed_input {
                       <span ng-if="!result.type">{{result}}</span>
                       <div ng-if="result.type === 'bounce'">
                         <span class="text-warning">{{result.text}}</span>
-                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer; compactMode = true; getXpathUrl = home.getXpathUrl; getTraceUrl = home.getTraceUrl; getCodeLineUrl = home.getCodeLineUrl" ng-include="'views/includes/aa-error.html'"></div>
+                        <div ng-if="result.errorData" ng-init="errorData = result.errorData; openInExplorer = home.openInExplorer; compactMode = true; getXpathUrl = home.getXpathUrl; getTraceUrl = home.getTraceUrl; getCodeLineUrl = home.getCodeLineUrl; isDryRun = true" ng-include="'views/includes/aa-error.html'"></div>
                       </div>
                     </li>
                     <li ng-repeat="state_change in home.aa_state_changes" class="ml1rem">
