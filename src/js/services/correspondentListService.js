@@ -514,6 +514,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!info)
 				return '<i>[invalid signed message]</i>';
 			var objSignedMessage = info.objSignedMessage;
+			if (!ValidationUtils.isValidAddress(objSignedMessage.authors[0].address))
+				return '<i>[invalid signer address]</i>';
 			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
 			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
 			if (info.bValid)
