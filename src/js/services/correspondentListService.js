@@ -579,10 +579,12 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (from_address && !ValidationUtils.isValidAddress(from_address))
 			return null;
 		var single_address = assocParams['single_address'] || 0;
-		if (single_address)
+		if (single_address === '0')
+			single_address = 0;
+		if (single_address) {
 			single_address = single_address.replace(/^single/, ''); // backward compatibility
-		if (single_address && ValidationUtils.isValidAddress(single_address)) {
-			from_address = String(single_address);
+			if (ValidationUtils.isValidAddress(single_address))
+				from_address = String(single_address);
 			single_address = 1;
 		}
 		var amountStr = 'Payment request'+(from_address ? ' for '+from_address: (single_address ? ' for single-address account': ''))+(base64data ? ' with data': '')+': ' + getAmountText(amount, asset);
