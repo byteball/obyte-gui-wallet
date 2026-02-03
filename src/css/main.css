@@ -2107,11 +2107,6 @@ form#contacts-order {
   border-bottom: 1px solid #DADADA;
 }
 
-.f-dropdown li:hover {
-  background: #E8F3FF;
-  padding-left: 0px;
-}
-
 .f-dropdown li:last-child {
   border-bottom: 1px solid transparent;
 }
