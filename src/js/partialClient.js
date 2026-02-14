@@ -129,11 +129,12 @@ function initWallet() {
 
 		for (var key in root.walletClients) {
 			var credentials = root.walletClients[key].credentials;
-			var walletId = credentials.walletId;
+			var walletId = credentials.walletId.replace(/['"]/g, '');
+			var walletName = credentials.walletName.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 			html += '<li onclick="wallet.selectWallet(\'' + walletId + '\')" id="w' + walletId + '" class="nav-item ' + (walletId === selectedWalletId ? 'selected' : '') + '">' +
-				'<a class="oh"><div class="avatar-wallet " style="background-color: ' + (colors && colors[walletId] ? colors[walletId] : '#4A90E2') + '">' + credentials.walletName.substr(0, 1) + ' </div>' +
-				'<div class="name-wallet m8t">' + credentials.walletName + '</div></a></li>';
+				'<a class="oh"><div class="avatar-wallet " style="background-color: ' + (colors && colors[walletId] ? colors[walletId] : '#4A90E2') + '">' + walletName.substr(0, 1) + ' </div>' +
+				'<div class="name-wallet m8t">' + walletName + '</div></a></li>';
 		}
 
 		getFromId('walletList').innerHTML = html;
