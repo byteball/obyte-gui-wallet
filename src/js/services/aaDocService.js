@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.services').factory('aaDocService', function() {
 
 	var root = {};
@@ -18,7 +19,7 @@ angular.module('copayApp.services').factory('aaDocService', function() {
 			doc_url = doc_url.replace('ipfs://', 'https://ipfs.io/ipfs/');
 		if (docsByUrl[doc_url])
 			return handleDoc(docsByUrl[doc_url]);
-		require('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
+		safeRequire('ocore/uri.js').fetchUrl(doc_url, function (err, response) {
 			if (err) {
 				console.log("fetching doc_url failed: " + err);
 				return handleDoc();

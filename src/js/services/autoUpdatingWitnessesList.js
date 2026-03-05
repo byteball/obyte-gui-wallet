@@ -1,6 +1,7 @@
 'use strict';
 
 
+
 angular.module('copayApp.services')
 .factory('autoUpdatingWitnessesList', function($timeout, $modal, $rootScope, configService){
   var root = {};
@@ -11,8 +12,8 @@ angular.module('copayApp.services')
   root.checkChangeWitnesses = function(){
     if (!root.autoUpdate) return;
 
-	var device = require('ocore/device.js');
-	var myWitnesses = require('ocore/my_witnesses.js');
+	var device = safeRequire('ocore/device.js');
+	var myWitnesses = safeRequire('ocore/my_witnesses.js');
     device.getWitnessesFromHub(function(err, arrWitnessesFromHub){
       if (arrWitnessesFromHub) {
         myWitnesses.readMyWitnesses(function(arrWitnesses){

@@ -1,6 +1,7 @@
 'use strict';
 
-var eventBus = require('ocore/event_bus.js');
+
+var eventBus = safeRequire('ocore/event_bus.js');
 
 angular.module('copayApp.services')
 .factory('newVersion', function($modal, $timeout, $rootScope){

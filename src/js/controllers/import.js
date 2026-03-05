@@ -1,12 +1,13 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('importController',
 	function($scope, $rootScope, $location, $timeout, $log, storageService, fileSystemService, isCordova, isMobile, electron, profileService) {
 		
-		var JSZip = require("jszip");
-		var async = require('async');
-		var crypto = require('crypto');
-		var conf = require('ocore/conf');
+		var JSZip = safeRequire("jszip");
+		var async = safeRequire('async');
+		var crypto = safeRequire('crypto');
+		var conf = safeRequire('ocore/conf');
 		var userAgent = navigator.userAgent;
 		var files = [conf.database.filename, conf.database.filename+"-shm", conf.database.filename+"-wal",
 			'conf.json'
@@ -15,7 +16,7 @@ angular.module('copayApp.controllers').controller('importController',
 		if(isCordova) {
 			var zip = new JSZip();
 		}else{
-			var unzip = require('unzipper' + '');
+			var unzip = safeRequire('unzipper' + '');
 		}
 		var fc = profileService.focusedClient;
 
@@ -36,17 +37,17 @@ angular.module('copayApp.controllers').controller('importController',
 		self.oldAndroidFileName = '';
 
 		function migrateJoints(callback) {
-			conf = require('ocore/conf');
+			conf = safeRequire('ocore/conf');
 			if (!conf.bLight || conf.storage !== 'sqlite' || isCordova) return callback();
 			// re-open SQLite
-			var sqlite3 = require('sqlite3');
-			var path = require('ocore/desktop_app').getAppDataDir() + '/';
+			var sqlite3 = safeRequire('sqlite3');
+			var path = safeRequire('ocore/desktop_app').getAppDataDir() + '/';
 			var db = new sqlite3.Database(path + conf.database.filename, sqlite3.OPEN_READONLY);
 			db.get("PRAGMA user_version", function(err, row) {
 				// old backups will be migrated on next launch
 				if (row.user_version < 30) return callback();
 				// re-open RocksDB
-				var kvstore = require('ocore/kvstore');
+				var kvstore = safeRequire('ocore/kvstore');
 				kvstore.open(function(err){
 					if(err) return callback(err);
 					var batch = kvstore.batch();
@@ -88,7 +89,7 @@ angular.module('copayApp.controllers').controller('importController',
 		if (self.iOs) generateListFilesForIos();
 		
 		function writeDBAndFileStorageMobile(zip, cb) {
-			var db = require('ocore/db');
+			var db = safeRequire('ocore/db');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			async.series([
 				function(next) {
@@ -138,8 +139,8 @@ angular.module('copayApp.controllers').controller('importController',
 		}
 		
 		function writeDBAndFileStoragePC(cb) {
-			var db = require('ocore/db');
-			var kvstore = require('ocore/kvstore');
+			var db = safeRequire('ocore/db');
+			var kvstore = safeRequire('ocore/kvstore');
 			var dbDirPath = fileSystemService.getDatabaseDirPath() + '/';
 			async.series([
 				function(next) {
@@ -201,7 +202,7 @@ angular.module('copayApp.controllers').controller('importController',
 					}else if(existsLight && !existsConfJson){
 						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify({bLight: true}, null, '\t'), next);
 					}else if(!existsLight && conf.bLight){
-						var _conf = require(dbDirPath + 'conf.json');
+						var _conf = safeRequire(dbDirPath + 'conf.json');
 						_conf.bLight = false;
 						fileSystemService.nwWriteFile(dbDirPath + 'conf.json', JSON.stringify(_conf, null, '\t'), next);
 					}else{
@@ -355,7 +356,7 @@ angular.module('copayApp.controllers').controller('importController',
 					showError('Incorrect password or file');
 				})
 			} else {
-				const { PassThrough } = require('stream' + '');
+				const { PassThrough } = safeRequire('stream' + '');
 				const passThrough = new PassThrough();
 				const headerChunks = [];
 				const extractPath = fileSystemService.getDatabaseDirPath() + '/temp/';

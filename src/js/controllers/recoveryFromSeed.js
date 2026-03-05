@@ -1,23 +1,24 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('recoveryFromSeed',
 	function ($rootScope, $scope, $log, $timeout, profileService, electron) {
 
-		var async = require('async');
-		var conf = require('ocore/conf.js');
-		var wallet_defined_by_keys = require('ocore/wallet_defined_by_keys.js');
-		var objectHash = require('ocore/object_hash.js');
+		var async = safeRequire('async');
+		var conf = safeRequire('ocore/conf.js');
+		var wallet_defined_by_keys = safeRequire('ocore/wallet_defined_by_keys.js');
+		var objectHash = safeRequire('ocore/object_hash.js');
 		try{
-			var ecdsa = require('secp256k1');
+			var ecdsa = safeRequire('secp256k1');
 		}
 		catch(e){
-			var ecdsa = require('ocore/node_modules/secp256k1' + '');
+			var ecdsa = safeRequire('ocore/node_modules/secp256k1' + '');
 		}
-		var Mnemonic = require('bitcore-mnemonic');
-		var Bitcore = require('bitcore-lib');
-		var db = require('ocore/db.js');
-		var network = require('ocore/network');
-		var myWitnesses = require('ocore/my_witnesses');
+		var Mnemonic = safeRequire('bitcore-mnemonic');
+		var Bitcore = safeRequire('bitcore-lib');
+		var db = safeRequire('ocore/db.js');
+		var network = safeRequire('ocore/network');
+		var myWitnesses = safeRequire('ocore/my_witnesses');
 
 		var self = this;
 
@@ -214,7 +215,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 						witnesses: arrWitnesses
 					}, function (ws, request, response) {
 						if(response && response.error){
-							var breadcrumbs = require('ocore/breadcrumbs.js');
+							var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
 							breadcrumbs.add('Error scanForAddressesAndWalletsInLightClient: ' + response.error);
 							self.error = 'When scanning an error occurred, please try again later.';
 							self.scanning = false;
@@ -256,7 +257,7 @@ angular.module('copayApp.controllers').controller('recoveryFromSeed',
 		}
 
 		function cleanAndAddWalletsAndAddresses(assocMaxAddressIndexes) {
-			var device = require('ocore/device');
+			var device = safeRequire('ocore/device');
 			var arrWalletIndexes = Object.keys(assocMaxAddressIndexes);
 			if (arrWalletIndexes.length) {
 				removeAddressesAndWallets(function () {

@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers')
 	.controller('preferencesController',
 		function($scope, $rootScope, $filter, $timeout, $modal, $log, lodash, configService, profileService, uxLanguage, $q) {
@@ -23,8 +24,8 @@ angular.module('copayApp.controllers')
 				this.externalSource = null;
 
 				$scope.numCosigners = fc.credentials.n;
-				var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
-				var db = require('ocore/db.js');
+				var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
+				var db = safeRequire('ocore/db.js');
 				walletDefinedByKeys.readAddresses(fc.credentials.walletId, {}, function (addressInfos) {
 					$scope.numAddresses = addressInfos.length;
 					db.query(

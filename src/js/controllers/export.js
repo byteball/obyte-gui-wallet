@@ -1,16 +1,17 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('exportController',
 	function($rootScope, $scope, $timeout, $log, $filter, backupService, storageService, fileSystemService, isCordova, isMobile, gettextCatalog, notification, electron, profileService, configService) {
-		var async = require('async');
-		var crypto = require('crypto');
-		var conf = require('ocore/conf');
+		var async = safeRequire('async');
+		var crypto = safeRequire('crypto');
+		var conf = safeRequire('ocore/conf');
 		var zip;
 		if (isCordova) {
-			var JSZip = require("jszip");
+			var JSZip = safeRequire("jszip");
 			zip = new JSZip();
 		} else {
-			var _zip = require('zip' + '');
+			var _zip = safeRequire('zip' + '');
 			zip = null;
 		}
 		var fc = profileService.focusedClient;
@@ -29,15 +30,15 @@ angular.module('copayApp.controllers').controller('exportController',
 		self.bCompression = false;
 		self.connection = null;
 		if (!isCordova)
-			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + require('path').sep +'Downloads';
+			$scope.downloadsDir = (process.env.HOME || process.env.USERPROFILE || '~') + safeRequire('path').sep +'Downloads';
 
 		function migrateJoints(callback) {
 			if (!conf.bLight || isCordova) return callback();
 			var options = {};
 			options.gte = "j\n";
 			options.lte = "j\n\uFFFF";
-			var db = require('ocore/db');
-			var kvstore = require('ocore/kvstore');
+			var db = safeRequire('ocore/db');
+			var kvstore = safeRequire('ocore/kvstore');
 			var stream = kvstore.createReadStream(options);
 			var arrQueries = [];
 			stream.on('data', function (data) {
@@ -295,7 +296,7 @@ angular.module('copayApp.controllers').controller('exportController',
 				// move joints on light wallet from RocksDB to SQLite (so they could be imported on mobile)
 					migrateJoints(function(err) {
 						if (err) return showError(err);
-						var db = require('ocore/db');
+						var db = safeRequire('ocore/db');
 						db.takeConnectionFromPool(function(connection) {
 							if (isCordova) {
 								self.walletExportCordova(connection);

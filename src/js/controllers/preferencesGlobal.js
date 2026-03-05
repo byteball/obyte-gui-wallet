@@ -1,9 +1,10 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
   function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
 	
-		var conf = require('ocore/conf.js');
+		var conf = safeRequire('ocore/conf.js');
   
     $scope.encrypt = !!profileService.profile.xPrivKeyEncrypted;
     
@@ -12,7 +13,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
       this.unitName = config.wallet.settings.unitName;
       this.bbUnitName = config.wallet.settings.bbUnitName;
       this.deviceName = config.deviceName;
-      this.myDeviceAddress = require('ocore/device.js').getMyDeviceAddress();
+      this.myDeviceAddress = safeRequire('ocore/device.js').getMyDeviceAddress();
       this.hub = config.hub;
       this.currentLanguageName = uxLanguage.getCurrentLanguageName();
       this.torEnabled = conf.socksHost && conf.socksPort;

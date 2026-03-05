@@ -1,21 +1,21 @@
 "use strict";
 
-var constants = require("ocore/constants.js");
-var eventBus = require("ocore/event_bus.js");
-var ValidationUtils = require("ocore/validation_utils.js");
-var objectHash = require("ocore/object_hash.js");
+var constants = safeRequire("ocore/constants.js");
+var eventBus = safeRequire("ocore/event_bus.js");
+var ValidationUtils = safeRequire("ocore/validation_utils.js");
+var objectHash = safeRequire("ocore/object_hash.js");
 
 angular.module("copayApp.services").factory("correspondentService", function($rootScope, $modal, $timeout, go, animationService, configService, profileService, lodash, txFormatService, correspondentListService, notification, gettext, isCordova, electron) {
 	var root = {};
-	var device = require("ocore/device.js");
-	var chatStorage = require("ocore/chat_storage.js");
-	var wallet_general = require('ocore/wallet_general.js');
-	var arbiter_contract = require("ocore/arbiter_contract.js");
-	var arbiters = require("ocore/arbiters.js");
-	var storage = require("ocore/storage.js");
+	var device = safeRequire("ocore/device.js");
+	var chatStorage = safeRequire("ocore/chat_storage.js");
+	var wallet_general = safeRequire('ocore/wallet_general.js');
+	var arbiter_contract = safeRequire("ocore/arbiter_contract.js");
+	var arbiters = safeRequire("ocore/arbiters.js");
+	var storage = safeRequire("ocore/storage.js");
 
 	function populateScopeWithAttestedFields(scope, my_address, peer_address, cb) {
-		var privateProfile = require("ocore/private_profile.js");
+		var privateProfile = safeRequire("ocore/private_profile.js");
 		scope.my_name = "NAME NOT VERIFIED";
 		scope.my_attestor = {};
 		scope.peer_name = "NAME NOT VERIFIED";
@@ -64,7 +64,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 	}
 
 	function listenForProsaicContractResponse(contracts) {
-		var prosaic_contract = require("ocore/prosaic_contract.js");
+		var prosaic_contract = safeRequire("ocore/prosaic_contract.js");
 
 		var showError = function(msg) {
 			$rootScope.$emit("Local/ShowErrorAlert", msg);
@@ -112,7 +112,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 								device_address: contract.peer_device_address
 							}
 						};
-						require("ocore/wallet_defined_by_addresses.js").createNewSharedAddress(arrDefinition, assocSignersByPath, {
+						safeRequire("ocore/wallet_defined_by_addresses.js").createNewSharedAddress(arrDefinition, assocSignersByPath, {
 							ifError: function(err){
 								showError(err);
 							},
@@ -297,11 +297,11 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 		}
 	});
 
-	var db = require("ocore/db.js");
+	var db = safeRequire("ocore/db.js");
 	
 	function readLastMainChainIndex(cb){
-		if (require("ocore/conf.js").bLight){
-			require("ocore/network.js").requestFromLightVendor("get_last_mci", null, function(ws, request, response){
+		if (safeRequire("ocore/conf.js").bLight){
+			safeRequire("ocore/network.js").requestFromLightVendor("get_last_mci", null, function(ws, request, response){
 				response.error ? cb(response.error) : cb(null, response);
 			});
 		}
@@ -313,7 +313,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 
 	function showProsaicContractOfferModal($scope, hash, isIncoming, getSigningDeviceAddresses){
 		$rootScope.modalOpened = true;
-		var prosaic_contract = require("ocore/prosaic_contract.js");
+		var prosaic_contract = safeRequire("ocore/prosaic_contract.js");
 		prosaic_contract.getByHash(hash, function(objContract){
 			if (!objContract)
 				throw Error("no contract found in database for already received offer message");
@@ -374,7 +374,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							if (objContract.status !== "pending")
 								return setError("contract status has changed, reopen it");
 							prosaic_contract.setField(objContract.hash, "status", status);
-							prosaic_contract.respond(objContract, status, signedMessageBase64, require("ocore/wallet.js").getSigner());
+							prosaic_contract.respond(objContract, status, signedMessageBase64, safeRequire("ocore/wallet.js").getSigner());
 							objContract.status = status;
 							var chat_message = "(prosaic-contract:" + Buffer.from(JSON.stringify(objContract), "utf8").toString("base64") + ")";
 							var body = correspondentListService.formatOutgoingMessage(chat_message);
@@ -594,7 +594,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 									});
 								});
 							};
-							require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+							safeRequire("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
 								if (bUpdated)
 									applyNewAssetMetadata(assetMetadata);
 							});
@@ -636,7 +636,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 						});
 					}
 					// hide "claim funds" button if not enough balance on the contract (already claimed)
-					require("ocore/wallet.js").readBalance(objContract.shared_address, function(balances) {
+					safeRequire("ocore/wallet.js").readBalance(objContract.shared_address, function(balances) {
 						var asset = objContract.asset || 'base';
 						if (!balances[asset] || balances[asset].total < objContract.amount)
 							$scope.funds_claimed = true;
@@ -702,7 +702,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					var respond = function(status, signedMessageBase64) {
-						arbiter_contract.respond(objContract.hash, status, signedMessageBase64, require("ocore/wallet.js").getSigner(), function(err, objContract) {
+						arbiter_contract.respond(objContract.hash, status, signedMessageBase64, safeRequire("ocore/wallet.js").getSigner(), function(err, objContract) {
 							if (err)
 								return setError(err);
 							addContractEventIntoChat(objContract, 'event', false);
@@ -895,7 +895,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							if (err)
 								return setError(err);
 							
-							require("ocore/arbiters").getInfo(objContract.arbiter_address, function(err, objArbiter) {
+							safeRequire("ocore/arbiters").getInfo(objContract.arbiter_address, function(err, objArbiter) {
 								stop_loading();
 								if (err) {
 									return setError(err);
@@ -1127,7 +1127,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							});
 						}
 					};
-					require("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
+					safeRequire("ocore/wallet.js").readAssetMetadata([$scope.asset], applyNewAssetMetadata, function (bUpdated, assetMetadata) {
 						if (bUpdated)
 							applyNewAssetMetadata(assetMetadata);
 					});

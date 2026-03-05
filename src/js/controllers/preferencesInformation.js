@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesInformation',
   function($scope, $rootScope, $log, $timeout, $modal, isMobile, gettextCatalog, lodash, profileService, storageService, animationService, go, configService, correspondentListService) {
     var fc = profileService.focusedClient;
@@ -86,7 +87,7 @@ angular.module('copayApp.controllers').controller('preferencesInformation',
         $scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
         $scope.address = objSignedMessage.authors[0].address;
         $scope.signature = signedMessageBase64;
-        var validation = require('ocore/validation.js');
+        var validation = safeRequire('ocore/validation.js');
         validation.validateSignedMessage(objSignedMessage, function(err){
           $scope.bValid = !err;
           if (err)

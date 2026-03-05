@@ -2,25 +2,25 @@
 'use strict';
 
 
-var constants = require('ocore/constants.js');
+var constants = safeRequire('ocore/constants.js');
 
 angular.module('copayApp.controllers').controller('correspondentDeviceController',
   function($scope, $rootScope, $timeout, $sce, $modal, configService, profileService, animationService, isCordova, go, correspondentListService, correspondentService, addressService, lodash, txFormatService, $deepStateRedirect, $state, backButton, gettext, notification) {
 	
-	var async = require('async');
-	var chatStorage = require('ocore/chat_storage.js');
+	var async = safeRequire('async');
+	var chatStorage = safeRequire('ocore/chat_storage.js');
 	var self = this;
 	console.log("correspondentDeviceController");
-	var privateProfile = require('ocore/private_profile.js');
-	var objectHash = require('ocore/object_hash.js');
-	var db = require('ocore/db.js');
-	var network = require('ocore/network.js');
-	var device = require('ocore/device.js');
-	var eventBus = require('ocore/event_bus.js');
-	var conf = require('ocore/conf.js');
-	var storage = require('ocore/storage.js');
-	var breadcrumbs = require('ocore/breadcrumbs.js');
-	var ValidationUtils = require('ocore/validation_utils.js');
+	var privateProfile = safeRequire('ocore/private_profile.js');
+	var objectHash = safeRequire('ocore/object_hash.js');
+	var db = safeRequire('ocore/db.js');
+	var network = safeRequire('ocore/network.js');
+	var device = safeRequire('ocore/device.js');
+	var eventBus = safeRequire('ocore/event_bus.js');
+	var conf = safeRequire('ocore/conf.js');
+	var storage = safeRequire('ocore/storage.js');
+	var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
+	var ValidationUtils = safeRequire('ocore/validation_utils.js');
 	
 	var fc = profileService.focusedClient;
 	var chatScope = $scope;
@@ -37,7 +37,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 
 	$scope.$watch("correspondent.my_record_pref", function(pref, old_pref) {
 		if (pref == old_pref) return;
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.sendMessageToDevice(correspondent.device_address, "chat_recording_pref", pref, {
 			ifOk: function(){
 				device.updateCorrespondentProps(correspondent);
@@ -140,6 +140,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	//	issueNextAddressIfNecessary(showRequestPaymentModal);
 	};
 	
+	$scope.sendPaymentFromParams = function(params){
+		$scope.sendPayment(params.address, params.amount, params.asset, params.device_address, params.base64data, params.from_address, params.single_address, params.additional_assets);
+	};
 	$scope.sendPayment = function(address, amount, asset, device_address, base64data, from_address, single_address, additional_assets){
 		console.log("will send payment to "+address);
 		if (asset && $scope.index.arrBalances.filter(function(balance){ return (balance.asset === asset); }).length === 0){
@@ -197,7 +200,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.offerContract = function(address){
-		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		$scope.oracles = configService.oracles;
@@ -482,8 +485,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.offerProsaicContract = function(address){
-		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-		var prosaic_contract = require('ocore/prosaic_contract.js');
+		var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
+		var prosaic_contract = safeRequire('ocore/prosaic_contract.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
@@ -577,8 +580,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.offerArbiterContract = function(address){
-		var arbiter_contract = require('ocore/arbiter_contract.js');
-		var arbiters = require('ocore/arbiters.js');
+		var arbiter_contract = safeRequire('ocore/arbiter_contract.js');
+		var arbiters = safeRequire('ocore/arbiters.js');
 		$rootScope.modalOpened = true;
 		var fc = profileService.focusedClient;
 		
@@ -762,7 +765,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	};
 
 	$scope.sendMultiPayment = function(paymentJsonBase64){
-		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
 		var paymentJson = Buffer.from(paymentJsonBase64, 'base64').toString('utf8');
 		console.log("multi "+paymentJson);
 		var objMultiPaymentRequest = JSON.parse(paymentJson);
@@ -941,7 +944,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								assocOutputsByAsset[asset] = [];
 							assocOutputsByAsset[asset].push({address: objPayment.address, amount: objPayment.amount});
 						});
-						var current_multi_payment_key = require('crypto').createHash("sha256").update(paymentJson).digest('base64');
+						var current_multi_payment_key = safeRequire('crypto').createHash("sha256").update(paymentJson).digest('base64');
 						if (current_multi_payment_key === indexScope.current_multi_payment_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This payment is already under way");
 							$modalInstance.dismiss('cancel');
@@ -1127,7 +1130,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							payload: payload
 						};
 
-						var current_vote_key = require('crypto').createHash("sha256").update(voteJson).digest('base64');
+						var current_vote_key = safeRequire('crypto').createHash("sha256").update(voteJson).digest('base64');
 						if (current_vote_key === indexScope.current_vote_key){
 							$rootScope.$emit('Local/ShowErrorAlert', "This vote is already under way");
 							$modalInstance.dismiss('cancel');
@@ -1314,7 +1317,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 			$scope.signed_message = correspondentListService.escapeHtmlAndInsertBr(typeof objSignedMessage.signed_message === 'string' ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t'));
 			$scope.address = objSignedMessage.authors[0].address;
 			$scope.signature = signedMessageBase64;
-			var validation = require('ocore/validation.js');
+			var validation = safeRequire('ocore/validation.js');
 			validation.validateSignedMessage(objSignedMessage, function(err){
 				$scope.bValid = !err;
 				if (err)
@@ -1425,7 +1428,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddress(fc, cb){
 		if (fc.isSingleAddress)
 			throw Error("trying to issue a new address on a single-address account");
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			if (cb)
 				cb(addressInfo.address);
@@ -1436,7 +1439,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 	function issueNextAddressIfNecessary(onDone){
 		if (myPaymentAddress) // do not issue new address
 			return onDone();
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextAddress(fc.credentials.walletId, 0, function(addressInfo){
 			myPaymentAddress = addressInfo.address; // cache it in case we need to insert again
 			onDone();
@@ -1875,17 +1878,50 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 		}
 	};
 }).directive('dynamic', function ($compile) {
+	var SAFE_NG_CLICK = /^(sendPayment|sendPaymentFromParams|handleUri|sendCommand|suggestCommand|sendMultiPayment|sendVote|acceptPrivateProfile|sendPairingCode|choosePrivateProfile|showSignMessageModal|verifySignedMessage|\$root\.openExternalLink|showProsaicContractOffer|showArbiterContractOffer|showDisputeRequest|offerContract|offerProsaicContract|offerArbiterContract)\s*\(/;
+	var SAFE_ATTRS = ['ng-click', 'ng-non-bindable', 'dropdown-toggle', 'class', 'style', 'data-dropdown-content', 'id', 'translate'];
+
+	function sanitizeHtml(html) {
+		var container = document.createElement('div');
+		container.innerHTML = html || '';
+		var elements = container.querySelectorAll('*');
+		for (var i = 0; i < elements.length; i++) {
+			var el = elements[i];
+			var attrs = Array.prototype.slice.call(el.attributes);
+			for (var j = 0; j < attrs.length; j++) {
+				var name = attrs[j].name.toLowerCase();
+				if (attrs[j].value && attrs[j].value.indexOf('{{') !== -1 && SAFE_ATTRS.indexOf(name) === -1) {
+					el.removeAttribute(attrs[j].name);
+					continue;
+				}
+				if (name.indexOf('ng-') === 0) {
+					if (name === 'ng-click') {
+						if (!SAFE_NG_CLICK.test(attrs[j].value.replace(/messageEvent\.message\.params\[[\d]+\]/g, '').trim())) {
+							el.removeAttribute(attrs[j].name);
+						}
+					} else if (SAFE_ATTRS.indexOf(name) === -1) {
+						el.removeAttribute(attrs[j].name);
+					}
+				}
+				if (name.indexOf('on') === 0) {
+					el.removeAttribute(attrs[j].name);
+				}
+			}
+		}
+		return container.innerHTML.replace(/\{\{.*?\}\}/g, '');
+	}
+
 	return {
 		restrict: 'A',
 		replace: true,
 		link: function (scope, ele, attrs) {
 			scope.$watch(attrs.dynamic, function(html) {
-				ele.html((html || '').replace(/(^|>)(.*?)(<|$)/g, function (str, closing_bracket, between, opening_bracket) {
+				var sanitized = sanitizeHtml(html);
+				ele.html(sanitized.replace(/(^|>)(.*?)(<|$)/g, function (str, closing_bracket, between, opening_bracket) {
 					if (!between.match(/\W/))
 						return str;
 					return closing_bracket + '<span ng-non-bindable>' + between + '</span>' + opening_bracket;
 				}));
-			//	ele.html(html);
 				$compile(ele.contents())(scope);
 			});
 		}

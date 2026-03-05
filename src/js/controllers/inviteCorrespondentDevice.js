@@ -1,6 +1,7 @@
 'use strict';
 
-var eventBus = require('ocore/event_bus.js');
+
+var eventBus = safeRequire('ocore/event_bus.js');
 
 angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceController',
   function($scope, $rootScope, $timeout, profileService, go, isCordova, correspondentListService, gettextCatalog, electron) {	
@@ -15,7 +16,7 @@ angular.module('copayApp.controllers').controller('inviteCorrespondentDeviceCont
         });
     }
     
-    var conf = require('ocore/conf.js');
+    var conf = safeRequire('ocore/conf.js');
     $scope.protocol = conf.program;
     $scope.isCordova = isCordova;
     var fc = profileService.focusedClient;

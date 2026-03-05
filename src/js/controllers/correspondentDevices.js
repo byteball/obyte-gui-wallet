@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular
 	.module('copayApp.controllers')
 	.controller('correspondentDevicesController', function(
@@ -12,10 +13,10 @@ angular
 		$state,
 		$rootScope
 	) {
-		var wallet = require('ocore/wallet.js');
-		var bots = require('ocore/bots.js');
-		var mutex = require('ocore/mutex.js');
-		var db = require('ocore/db.js');
+		var wallet = safeRequire('ocore/wallet.js');
+		var bots = safeRequire('ocore/bots.js');
+		var mutex = safeRequire('ocore/mutex.js');
+		var db = safeRequire('ocore/db.js');
 	
 		var bFirstLoad = true;
 		
@@ -180,7 +181,7 @@ angular
 							'device ' + device_address + ' is not removable'
 						);
 					}
-					var device = require('ocore/device.js');
+					var device = safeRequire('ocore/device.js');
 
 					// send message to paired device
 					// this must be done before removing the device

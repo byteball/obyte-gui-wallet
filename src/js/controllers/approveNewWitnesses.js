@@ -1,9 +1,10 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('approveNewWitnesses', function($scope, $modalInstance, $document, autoUpdatingWitnessesList){
   $scope.addWitnesses = autoUpdatingWitnessesList.addWitnesses;
   $scope.delWitnesses = autoUpdatingWitnessesList.delWitnesses;
-  $scope.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
+  $scope.witnessesAddInfo = safeRequire('ocore/network.js').knownWitnesses;
 
   $scope.replace = function(){
     var oldWitnesses = $scope.delWitnesses;
@@ -12,7 +13,7 @@ angular.module('copayApp.controllers').controller('approveNewWitnesses', functio
     var l = newWitnesses.length;
 
     function replaceWitness(n, oldWitnesses, newWitnesses){
-      var myWitnesses = require('ocore/my_witnesses.js');
+      var myWitnesses = safeRequire('ocore/my_witnesses.js');
       myWitnesses.replaceWitness(oldWitnesses[n], newWitnesses[n], function (err) {
         n++;
         if (n < l) {

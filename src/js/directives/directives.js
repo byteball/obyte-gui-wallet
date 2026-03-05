@@ -1,5 +1,6 @@
 'use strict';
 
+
 function selectText(element) {
   var doc = document;
   if (doc.body.createTextRange) { // ms
@@ -17,13 +18,13 @@ function selectText(element) {
 }
 
 function isValidAddress(value) {
-  var ValidationUtils = require('ocore/validation_utils.js');
+  var ValidationUtils = safeRequire('ocore/validation_utils.js');
   if (!value) {
     return false;
   }
 
   // byteball uri
-  var conf = require('ocore/conf.js');
+  var conf = safeRequire('ocore/conf.js');
   var re = new RegExp('^'+conf.program+':([A-Z2-7]{32})\b', 'i');
   var arrMatches = value.match(re);
   if (arrMatches) {
@@ -167,7 +168,7 @@ angular.module('copayApp.directives')
       return {
         require: 'ngModel',
         link: function(scope, elem, attrs, ctrl) {
-          var Mnemonic = require('bitcore-mnemonic');
+          var Mnemonic = safeRequire('bitcore-mnemonic');
          var validator = function(value) {
            try {
              value = value.split('-').join(' ');
@@ -203,7 +204,7 @@ angular.module('copayApp.directives')
         return value;
       }*/
       //console.log('-- amount');
-      var constants = require('ocore/constants.js');
+      var constants = safeRequire('ocore/constants.js');
       var asset = attrs.validAmount;
       var settings = configService.getSync().wallet.settings;
       var unitValue = 1;
@@ -572,15 +573,7 @@ angular.module('copayApp.directives')
 	    	elem.html(html);
 	    	elem.find('a').on('click', function(e) {
 	    		e.preventDefault();
-	    		var url = angular.element(this).attr('href');
-	    		let electron;
-	    		try {
-	    			electron = require('electron');
-	    		} catch(e) {}
-	    		if (electron)
-					electron.shell.openExternal(url);
-				else if (isCordova)
-					cordova.InAppBrowser.open(url, '_system');
+	    		$rootScope.openExternalLink(angular.element(this).attr('href'));
 	    	})
 	    });
   	}

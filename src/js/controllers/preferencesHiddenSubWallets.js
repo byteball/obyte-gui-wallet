@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers')
 .controller('preferencesHiddenSubWalletsCtrl', PreferencesHiddenSubWalletsCtrl);
 
@@ -26,7 +27,7 @@ function PreferencesHiddenSubWalletsCtrl($scope, $timeout, configService) {
     });
   }
   
-  var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+  var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
   async.eachSeries(self.arrSubWalletsData, function (objSharedWallet, cb) {
     walletDefinedByAddresses.readSharedAddressCosigners(objSharedWallet.address, function (cosigners) {
       objSharedWallet.shared_address_cosigners = cosigners.map(function (cosigner) {

@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.services').factory('configService', function(storageService, lodash, $log, isCordova) {
   var root = {};
 
@@ -18,7 +19,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  '#7A8C9E',
 	];
 
-  var constants = require('ocore/constants.js');
+  var constants = safeRequire('ocore/constants.js');
   var isTestnet = constants.version.match(/t$/);
   var isDevnet = constants.version.match(/dev$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
@@ -135,10 +136,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	],
 
 	// requires bluetooth permission on android
-	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */require('os').hostname(),
+	//deviceName: /*isCordova ? cordova.plugins.deviceName.name : */safeRequire('os').hostname(),
 
 	getDeviceName: function(){
-		return isCordova ? cordova.plugins.deviceName.name : require('os').hostname();
+		return isCordova ? cordova.plugins.deviceName.name : safeRequire('os').hostname();
 	},
 
 	// wallet default config

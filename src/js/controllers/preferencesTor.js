@@ -1,10 +1,11 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesTorController',
 	function($scope, $log, $timeout, go, configService) {
 		
-		var conf = require('ocore/conf.js');
-		var network = require('ocore/network.js');
+		var conf = safeRequire('ocore/conf.js');
+		var network = safeRequire('ocore/network.js');
 		
 		var bInitialized = false;
 		
@@ -30,12 +31,12 @@ angular.module('copayApp.controllers').controller('preferencesTorController',
 		}
 		
 		function saveConfToFile(cb) {
-			var fs = require('fs' + '');
-			var desktopApp = require('ocore/desktop_app.js');
+			var fs = safeRequire('fs' + '');
+			var desktopApp = safeRequire('ocore/desktop_app.js');
 			var appDataDir = desktopApp.getAppDataDir();
 			var confJson;
 			try {
-				confJson = require(appDataDir + '/conf.json');
+				confJson = safeRequire(appDataDir + '/conf.json');
 			} catch (e) {
 				confJson = {};
 			}

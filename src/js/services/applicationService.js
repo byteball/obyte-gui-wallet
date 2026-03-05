@@ -1,4 +1,5 @@
 'use strict';
+
 angular.module('copayApp.services')
   .factory('applicationService', function($rootScope, $timeout, isCordova, electron, go) {
     var root = {};
@@ -16,7 +17,7 @@ angular.module('copayApp.services')
         if (electron.isDefined()) {
           go.walletHome();
           $timeout(function() {
-            require('electron').remote.getCurrentWindow.reload();
+            safeRequire('electron').remote.getCurrentWindow.reload();
           }, 100);
         } else {
           window.location = window.location.href.substr(0, hashIndex);

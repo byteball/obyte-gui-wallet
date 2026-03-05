@@ -1,10 +1,11 @@
 'use strict';
 
+
 angular.module('copayApp.services').factory('electron', function electronFactory() {
 	var root = {};
 	let electron;
 	try {
-		electron = require('electron');
+		electron = safeRequire('electron');
 	}
 	catch(e){}
 

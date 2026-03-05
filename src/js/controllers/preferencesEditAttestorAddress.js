@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular
 	.module('copayApp.controllers')
 	.controller('preferencesEditAttestorAddressCtrl', PreferencesEditAttestorAddressCtrl);
@@ -9,7 +10,7 @@ function PreferencesEditAttestorAddressCtrl(
 	go, configService,
 	attestorAddressListService, aliasValidationService
 ) {
-	var ValidationUtils = require("ocore/validation_utils.js");
+	var ValidationUtils = safeRequire("ocore/validation_utils.js");
 	var currAttestorAddressKey = attestorAddressListService.currentAttestorKey;
 	var objAttestorAddress = aliasValidationService.getAliasObj(currAttestorAddressKey);
 	var configAttestorAddresses = configService.getSync().attestorAddresses;

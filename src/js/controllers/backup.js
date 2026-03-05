@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('wordsController',
   function($rootScope, $scope, $timeout, profileService, go, gettext, confirmDialog, notification, $log, isCordova) {
 
@@ -10,7 +11,7 @@ angular.module('copayApp.controllers').controller('wordsController',
     var fc = profileService.focusedClient;
 	
 	if (!isCordova){
-		var desktopApp = require('ocore/desktop_app.js'+'');
+		var desktopApp = safeRequire('ocore/desktop_app.js'+'');
 		self.appDataDir = desktopApp.getAppDataDir();
 	}
 	self.isCordova = isCordova;

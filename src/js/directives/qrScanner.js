@@ -1,6 +1,7 @@
 'use strict';
 
-var breadcrumbs = require('ocore/breadcrumbs.js');
+
+var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
 
 angular.module('copayApp.directives')
     .directive('qrScanner', ['$rootScope', '$timeout', '$modal', 'isCordova', 'gettextCatalog',

@@ -1,6 +1,7 @@
 'use strict';
 
-var ValidationUtils = require('ocore/validation_utils.js');
+
+var ValidationUtils = safeRequire('ocore/validation_utils.js');
 
 angular.module('copayApp.services').factory('aliasValidationService', function($timeout, configService, gettextCatalog) {
 
@@ -170,12 +171,12 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 			return setResult('none');
 		}
 
-		var conf = require('ocore/conf.js');
-		var db = require('ocore/db.js');
+		var conf = safeRequire('ocore/conf.js');
+		var db = safeRequire('ocore/db.js');
 		if (attestorKey === 'username') { // not an attestation, get from City state
 			const var_name = 'shortcode_' + value;
 			if (conf.bLight) {
-				const network = require('ocore/network.js');
+				const network = safeRequire('ocore/network.js');
 				const params = { address: attestorAddress, var_prefix: var_name };
 				network.requestFromLightVendor('light/get_aa_state_vars', params, function (ws, request, response) {
 					if (response.error) {
@@ -187,7 +188,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 				});
 			}
 			else {
-				const storage = require('ocore/storage.js');
+				const storage = safeRequire('ocore/storage.js');
 				storage.readAAStateVar(attestorAddress, var_name, address => {
 					setResult(address || "none");
 				})
@@ -214,7 +215,7 @@ angular.module('copayApp.services').factory('aliasValidationService', function($
 					return setResult('none');
 				}
 				// light
-				var network = require('ocore/network.js');
+				var network = safeRequire('ocore/network.js');
 				var params = {attestor_address: attestorAddress, field: obj.dbKey, value: value};
 				network.requestFromLightVendor('light/get_attestation', params, function (ws, request, response) {
 					if (response.error) {

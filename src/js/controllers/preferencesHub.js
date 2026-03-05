@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesHubController',
   function($scope, $timeout, configService, go, autoUpdatingWitnessesList){
     var config = configService.getSync();
@@ -11,8 +12,8 @@ angular.module('copayApp.controllers').controller('preferencesHubController',
 
     this.save = function() {
       var self = this;
-	  var device = require('ocore/device.js');
-	  var lightWallet = require('ocore/light_wallet.js');
+	  var device = safeRequire('ocore/device.js');
+	  var lightWallet = safeRequire('ocore/light_wallet.js');
 	  self.hub = self.hub.replace(/^wss?:\/\//i, '').replace(/^https?:\/\//i, '');
       device.setDeviceHub(self.hub);
       lightWallet.setLightVendorHost(self.hub);

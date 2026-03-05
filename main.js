@@ -136,8 +136,8 @@ async function createWindow () {
 		icon: path.join(__dirname, '/public/img/icons/logo-circle-256.png'),
 		webPreferences: {
 			contextIsolation: false,
-			nodeIntegration: true
-			//preload: path.join(__dirname, 'preload.js')
+			nodeIntegration: true,
+			preload: path.join(__dirname, 'preload.js')
 		}
 	});
 	new Badge(mainWindow, {});
@@ -184,6 +184,18 @@ async function createWindow () {
 		}
 	});
 }
+
+ipcMain.handle('desktop:exec', (event, command) => {
+	var ALLOWED_COMMANDS = ['update-desktop-database', 'update-mime-database', 'xdg-icon-resource'];
+	var isAllowed = ALLOWED_COMMANDS.some(function(allowed) { return command.indexOf(allowed) === 0; });
+	if (!isAllowed)
+		return { error: 'Command not allowed' };
+	return new Promise(function(resolve) {
+		require('child_process').exec(command, function(err, stdout, stderr) {
+			resolve({ err: err ? err.message : null, stdout: stdout, stderr: stderr });
+		});
+	});
+});
 
 let protocols = isTestnet ? ["obyte-tn", "byteball-tn"] : ["obyte", "byteball"];
 if (process.defaultApp) {
