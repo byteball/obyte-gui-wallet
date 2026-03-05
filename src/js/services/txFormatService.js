@@ -1,6 +1,7 @@
 'use strict';
 
-var constants = require('ocore/constants.js');
+
+var constants = safeRequire('ocore/constants.js');
 
 angular.module('copayApp.services').factory('txFormatService', function(profileService, configService, lodash) {
   var root = {};

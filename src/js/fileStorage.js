@@ -1,4 +1,5 @@
-var lodash = require('lodash');
+var safeRequire = require('./safeRequire');
+var lodash = safeRequire('lodash');
 var _dir, _fs;
 
 var init = function(cb) {

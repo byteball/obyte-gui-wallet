@@ -1,14 +1,15 @@
 'use strict';
 
+
 angular.module('copayApp.services')
 .factory('fileSystemService', function($log, isCordova) {
-	var async = require('async');
+	var async = safeRequire('async');
 	var root = {},
 		bFsInitialized = false;
 	
 	try {
-		var fs = require('fs');
-		var desktopApp = require('ocore/desktop_app.js' + '');
+		var fs = safeRequire('fs');
+		var desktopApp = safeRequire('ocore/desktop_app.js' + '');
 	} catch (e) {
 		
 	}
@@ -290,7 +291,7 @@ angular.module('copayApp.services')
 	};
 
 	root.recursiveMkdir = function(path, mode, callback) {
-		var parentDir = require('path' + '').dirname(path);
+		var parentDir = safeRequire('path' + '').dirname(path);
 		
 		fs.stat(parentDir, function(err, stats) {
 			if (err && err.code !== 'ENOENT')

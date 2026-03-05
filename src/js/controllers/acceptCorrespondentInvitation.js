@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('acceptCorrespondentInvitationController',
   function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService) {
 	
@@ -26,7 +27,7 @@ angular.module('copayApp.controllers').controller('acceptCorrespondentInvitation
 	};
 
 	function handleCode(code){
-		var conf = require('ocore/conf.js');
+		var conf = safeRequire('ocore/conf.js');
 		var re = new RegExp('^'+conf.program+':', 'i');
 		code = code.replace(re, '');
 		re = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');

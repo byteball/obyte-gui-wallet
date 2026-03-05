@@ -1,8 +1,9 @@
 'use strict';
 
+
 angular.module('copayApp.services')
   .factory('fileStorageService', function() {
-    var fileStorage = require('./fileStorage.js');
+    var fileStorage = safeRequire('./fileStorage.js');
     var root = {};
     
     root.get = function(k, cb) {

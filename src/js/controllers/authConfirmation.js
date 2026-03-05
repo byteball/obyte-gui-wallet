@@ -1,5 +1,6 @@
 'use strict';
 
+
 /*
 
 This is incomplete!
@@ -15,7 +16,7 @@ To do:
 
 */
 
-var ecdsaSig = require('ocore/signature.js');
+var ecdsaSig = safeRequire('ocore/signature.js');
 
 angular.module('copayApp.controllers').controller('authConfirmationController',
   function($scope, $timeout, configService, lodash, profileService, go, authService) {
@@ -28,7 +29,7 @@ angular.module('copayApp.controllers').controller('authConfirmationController',
     }
     
     var self = this;
-	var bbWallet = require('ocore/wallet.js');
+	var bbWallet = safeRequire('ocore/wallet.js');
     
     // the wallet to sign with
     $scope.walletId = profileService.focusedClient.credentials.walletId;

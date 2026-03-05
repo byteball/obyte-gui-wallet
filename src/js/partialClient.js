@@ -1,7 +1,8 @@
-var BLACKBYTES_ASSET = require('ocore/constants').BLACKBYTES_ASSET;
-var balances = require('ocore/balances');
-var utils = require('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
-var fileSystem = require('./fileStorage');
+var safeRequire = require('./safeRequire');
+var BLACKBYTES_ASSET = safeRequire('ocore/constants').BLACKBYTES_ASSET;
+var balances = safeRequire('ocore/balances');
+var utils = safeRequire('../../angular-bitcore-wallet-client/bitcore-wallet-client/lib/common/utils');
+var fileSystem = safeRequire('./fileStorage');
 var completeClientLoaded = false;
 
 window.onerror = function (message) {

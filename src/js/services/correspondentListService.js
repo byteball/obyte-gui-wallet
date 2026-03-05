@@ -1,16 +1,17 @@
 'use strict';
 
-var constants = require('ocore/constants.js');
-var eventBus = require('ocore/event_bus.js');
-var ValidationUtils = require('ocore/validation_utils.js');
-var objectHash = require('ocore/object_hash.js');
+
+var constants = safeRequire('ocore/constants.js');
+var eventBus = safeRequire('ocore/event_bus.js');
+var ValidationUtils = safeRequire('ocore/validation_utils.js');
+var objectHash = safeRequire('ocore/object_hash.js');
 
 angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService, electron) {
 	var root = {};
-	var crypto = require('crypto');
-	var device = require('ocore/device.js');
-	var wallet = require('ocore/wallet.js');
-	var chatStorage = require('ocore/chat_storage.js');
+	var crypto = safeRequire('crypto');
+	var device = safeRequire('ocore/device.js');
+	var wallet = safeRequire('ocore/wallet.js');
+	var chatStorage = safeRequire('ocore/chat_storage.js');
 
 	$rootScope.newMessagesCount = {};
 	$rootScope.newMsgCounterEnabled = false;
@@ -18,7 +19,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	$rootScope.newPaymentsDetails = {};
 
 	if (electron.isDefined()) {
-		const electron = require('electron');
+		const electron = safeRequire('electron');
 		var messagesCount = 0;
 		var paymentsCount = 0;
 		electron.ipcRenderer.on('focus', function() {
@@ -58,7 +59,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 
 	
 	function addIncomingMessageEvent(from_address, in_body, message_counter){
-		var walletGeneral = require('ocore/wallet_general.js');
+		var walletGeneral = safeRequire('ocore/wallet_general.js');
 		walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 			var body = highlightActions(escapeHtml(in_body), arrMyAddresses);
 			body.text = text2html(body.text);
@@ -169,7 +170,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 
 	function highlightActions(text, arrMyAddresses){
-		var URI = require('ocore/uri.js');
+		var URI = safeRequire('ocore/uri.js');
 	//	return text.replace(/\b[2-7A-Z]{32}\b(?!(\?(amount|asset|device_address|base64data|from_address|single_address)|"))/g, function(address){
 		var params = [];
 		var param_index = -1;
@@ -208,7 +209,9 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!objPaymentRequest) {
 				return toDelayedReplacement(paymentDropdown(address));
 			}
-			return toDelayedReplacement('<a ng-click="sendPayment(\''+address+'\', '+objPaymentRequest.amount+', \''+objPaymentRequest.asset+'\', \''+objPaymentRequest.device_address+'\', \''+objPaymentRequest.base64data+'\', \''+objPaymentRequest.from_address+'\', \''+objPaymentRequest.single_address+'\''+(objPaymentRequest.additional_assets ? ', '+escapeQuotes(JSON.stringify(objPaymentRequest.additional_assets)) : '')+')">'+objPaymentRequest.amountStr+'</a>');
+			param_index++;
+			params[param_index] = {address: address, amount: objPaymentRequest.amount, asset: objPaymentRequest.asset, device_address: objPaymentRequest.device_address, base64data: objPaymentRequest.base64data, from_address: objPaymentRequest.from_address, single_address: objPaymentRequest.single_address, additional_assets: objPaymentRequest.additional_assets};
+			return toDelayedReplacement('<a ng-click="sendPaymentFromParams(messageEvent.message.params[' + param_index + '])">'+escapeHtml(objPaymentRequest.amountStr)+'</a>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			param_index++;
 			params[param_index] = uri;
@@ -380,7 +383,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function getPrivateProfileFromJsonBase64(privateProfileJsonBase64){
 		if (!ValidationUtils.isValidBase64(privateProfileJsonBase64))
 			return null;
-		var privateProfile = require('ocore/private_profile.js');
+		var privateProfile = safeRequire('ocore/private_profile.js');
 		var objPrivateProfile = privateProfile.getPrivateProfileFromJsonBase64(privateProfileJsonBase64);
 		if (!objPrivateProfile)
 			return null;
@@ -425,7 +428,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			objSignedMessage: objSignedMessage,
 			bValid: undefined
 		};
-		var validation = require('ocore/validation.js');
+		var validation = safeRequire('ocore/validation.js');
 		validation.validateSignedMessage(objSignedMessage, function(err){
 			info.bValid = !err;
 			if (err)
@@ -463,7 +466,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function formatOutgoingMessage(text){
-		var URI = require('ocore/uri.js');
+		var URI = safeRequire('ocore/uri.js');
 		var assocReplacements = {};
 		var index = crypto.randomBytes(4).readUInt32BE(0);
 		var params = [];
@@ -551,7 +554,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	function parsePaymentRequestQueryString(query_string){
 		if (!query_string)
 			return null;
-		var URI = require('ocore/uri.js');
+		var URI = safeRequire('ocore/uri.js');
 		var assocParams = URI.parseQueryString(query_string, '&amp;');
 		var strAmount = assocParams['amount'];
 		if (!strAmount)
@@ -609,7 +612,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeHtml(text){
-		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 	}
 	
 	function escapeHtmlAndInsertBr(text){
@@ -783,7 +786,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			for (var i in messages) {
 				messages[i] = parseMessage(messages[i]);
 			}
-			var walletGeneral = require('ocore/wallet_general.js');
+			var walletGeneral = safeRequire('ocore/wallet_general.js');
 			walletGeneral.readMyPersonalAddresses(function(arrMyAddresses){
 				if (messages.length < limit)
 					historyEndForCorrespondent[correspondent.device_address] = true;
@@ -943,8 +946,8 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
-		var storage = require('ocore/storage.js');
-		var db = require('ocore/db.js');
+		var storage = safeRequire('ocore/storage.js');
+		var db = safeRequire('ocore/db.js');
 			
 		arrNewUnits.forEach((unit) => {
 			if (unit === $rootScope.sentUnit)

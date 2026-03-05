@@ -1,7 +1,8 @@
 'use strict';
 
-var breadcrumbs = require('ocore/breadcrumbs.js');
-var constants = require('ocore/constants.js');
+
+var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
+var constants = safeRequire('ocore/constants.js');
 
 angular.module('copayApp.services')
   .factory('profileService', function profileServiceFactory($rootScope, $location, $timeout, $filter, $log, lodash, storageService, bwcService, configService, pushNotificationsService, isCordova, gettext, gettextCatalog, uxLanguage) {
@@ -191,12 +192,12 @@ angular.module('copayApp.services')
                     return cb(err);
                 root._setFocus(focusedWalletId, function() {
                     console.log("focusedWalletId", focusedWalletId);
-					var Wallet = require('ocore/wallet.js');
-					var device = require('ocore/device.js');
+					var Wallet = safeRequire('ocore/wallet.js');
+					var device = safeRequire('ocore/device.js');
                     var config = configService.getSync();
                     var firstWc = root.walletClients[lodash.keys(root.walletClients)[0]];
                     // set light_vendor_url here as we may request new assets history at startup during balances update
-                    require('ocore/light_wallet.js').setLightVendorHost(config.hub);
+                    safeRequire('ocore/light_wallet.js').setLightVendorHost(config.hub);
                     if (root.profile.xPrivKeyEncrypted){
                         console.log('priv key is encrypted, will wait for UI and request password');
                         // assuming bindProfile is called on encrypted keys only at program startup
@@ -329,10 +330,10 @@ angular.module('copayApp.services')
             if (err)
                 return cb(err);
             var config = configService.getSync();
-			require('ocore/wallet.js'); // load hub/ message handlers
-			var device = require('ocore/device.js');
+			safeRequire('ocore/wallet.js'); // load hub/ message handlers
+			var device = safeRequire('ocore/device.js');
             var tempDeviceKey = device.genPrivKey();
-            require('ocore/light_wallet.js').setLightVendorHost(config.hub);
+            safeRequire('ocore/light_wallet.js').setLightVendorHost(config.hub);
 			// initDeviceProperties sets my_device_address needed by walletClient.createWallet
 			walletClient.initDeviceProperties(walletClient.credentials.xPrivKey, null, config.hub, config.deviceName);
             var walletName = gettextCatalog.getString('Small Expenses Account');
@@ -370,7 +371,7 @@ angular.module('copayApp.services')
 			});
 			return console.log('need password to create new wallet');
 		}
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
         walletDefinedByKeys.readNextAccount(function(account){
             console.log("next account = "+account);
             if (!opts.extendedPrivateKey && !opts.mnemonic){
@@ -756,7 +757,7 @@ angular.module('copayApp.services')
 	};
 		
 	root.replaceProfile = function (xPrivKey, mnemonic, myDeviceAddress, cb) {
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		
 		root.profile.credentials = [];
 		root.profile.xPrivKey = xPrivKey;

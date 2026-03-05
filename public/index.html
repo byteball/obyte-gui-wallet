@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-csp>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src *;">
   <link rel="stylesheet" type="text/css" href="css/foundation.css">
   <link rel="stylesheet" type="text/css" href="icons/foundation-icons.css">
   <link rel="stylesheet" type="text/css" href="css/obyte.css">
@@ -46,7 +47,6 @@
 
   <!-- DO NOT DELETE THIS COMMET  -->
   <!-- PLACEHOLDER: PARTIAL CLIENT HTML -->
-  
   <script>console.log("starting scripts...");</script>
   <script src="angular.js"></script>
 

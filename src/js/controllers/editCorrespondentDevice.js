@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('editCorrespondentDeviceController',
   function($scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService, correspondentService, $modal, animationService, gettext, notification) {
 	
@@ -13,7 +14,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	$scope.hub = correspondent.hub;
 
 	var indexScope = $scope.index;
-	var db = require('ocore/db.js');
+	var db = safeRequire('ocore/db.js');
 	
 	function readAndSetPushNotificationsSetting(delay){
 		db.query("SELECT push_enabled FROM correspondent_devices WHERE device_address=?", [correspondent.device_address], function(rows){
@@ -30,7 +31,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	$scope.updatePush = function(){
 		console.log("push "+$scope.pushNotifications);
 		var push_enabled = $scope.pushNotifications ? 1 : 0;
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.updateCorrespondentSettings(correspondent.device_address, {push_enabled: push_enabled}, function(err){
 			setError(err);
 			if (err)
@@ -42,8 +43,8 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 	if (indexScope.usePushNotifications)
 		readAndSetPushNotificationsSetting();
 	
-	var prosaic_contract = require('ocore/prosaic_contract.js');
-	var db = require('ocore/db.js');
+	var prosaic_contract = safeRequire('ocore/prosaic_contract.js');
+	var db = safeRequire('ocore/db.js');
 	prosaic_contract.getAllByStatus("accepted", function(contracts){
 		$scope.prosaicContracts = [];
 		contracts.forEach(function(contract){
@@ -55,8 +56,8 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		});
 	});
 
-	var arbiter_contract = require('ocore/arbiter_contract.js');
-	var db = require('ocore/db.js');
+	var arbiter_contract = safeRequire('ocore/arbiter_contract.js');
+	var db = safeRequire('ocore/db.js');
 	arbiter_contract.getAllByStatus(["accepted", "signed", "paid", "in_dispute", "dispute_resolved", "in_appeal", "appeal_approved", "completed", "cancelled", "appeal_declined"], function(contracts){
 		$scope.arbiterContracts = [];
 		contracts.forEach(function(contract){
@@ -90,7 +91,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 		$scope.error = null;
 		correspondent.name = $scope.name;
 		correspondent.hub = $scope.hub;
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.updateCorrespondentProps(correspondent, function(){
 			go.path('correspondentDevices.correspondentDevice');
 		});
@@ -124,7 +125,7 @@ angular.module('copayApp.controllers').controller('editCorrespondentDeviceContro
 
       modalInstance.result.then(function(ok) {
         if (ok) {
-          	var chatStorage = require('ocore/chat_storage.js');
+          	var chatStorage = safeRequire('ocore/chat_storage.js');
 			chatStorage.purge(correspondent.device_address);
 			correspondentListService.messageEventsByCorrespondent[correspondent.device_address] = [];
         }

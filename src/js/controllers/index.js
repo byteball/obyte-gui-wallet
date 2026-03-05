@@ -1,14 +1,15 @@
 'use strict';
 
-var async = require('async');
-var constants = require('ocore/constants.js');
-var mutex = require('ocore/mutex.js');
-var eventBus = require('ocore/event_bus.js');
-var objectHash = require('ocore/object_hash.js');
-var ecdsaSig = require('ocore/signature.js');
-var breadcrumbs = require('ocore/breadcrumbs.js');
-var Bitcore = require('bitcore-lib');
-var EventEmitter = require('events').EventEmitter;
+
+var async = safeRequire('async');
+var constants = safeRequire('ocore/constants.js');
+var mutex = safeRequire('ocore/mutex.js');
+var eventBus = safeRequire('ocore/event_bus.js');
+var objectHash = safeRequire('ocore/object_hash.js');
+var ecdsaSig = safeRequire('ocore/signature.js');
+var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
+var Bitcore = safeRequire('bitcore-lib');
+var EventEmitter = safeRequire('events').EventEmitter;
 
 angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
   breadcrumbs.add('index.js');
@@ -34,7 +35,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   self.hideZeroBalanceAssets = false;
 
   self.recalculateUsdBalances = function () {
-	var exchangeRates = require('ocore/network.js').exchangeRates;
+	var exchangeRates = safeRequire('ocore/network.js').exchangeRates;
 	var totalUSDBalance = 0;
 	var addressUSDBalance = 0;
 	
@@ -91,7 +92,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	/*
 	console.log("process", process.env);
-	var os = require('os');
+	var os = safeRequire('os');
 	console.log("os", os);
 	//console.log("os homedir="+os.homedir());
 	console.log("release="+os.release());
@@ -101,7 +102,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	
 	function updatePublicKeyRing(walletClient, onDone){
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.readCosigners(walletClient.credentials.walletId, function(arrCosigners){
 			var arrApprovedDevices = arrCosigners.
 				filter(function(cosigner){ return cosigner.approval_date; }).
@@ -122,8 +123,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 	
 	function sendBugReport(error_message, error_object){
-		var conf = require('ocore/conf.js');
-		var network = require('ocore/network.js');
+		var conf = safeRequire('ocore/conf.js');
+		var network = safeRequire('ocore/network.js');
 		var bug_sink_url = conf.WS_PROTOCOL + (conf.bug_sink_url || configService.getSync().hub);
 		network.findOutboundPeerOrConnect(bug_sink_url, function(err, ws){
 			if (err)
@@ -143,7 +144,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	self.sendBugReport = sendBugReport;
 	
 	if (isCordova && constants.version === '1.0'){
-		var db = require('ocore/db.js');
+		var db = safeRequire('ocore/db.js');
 		db.query("SELECT 1 FROM units WHERE version!=? LIMIT 1", [constants.version], function(rows){
 			if (rows.length > 0){
 				self.showErrorPopup("Looks like you have testnet data.  Please remove the app and reinstall.", function() {
@@ -179,7 +180,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (error_object && error_object.bIgnore)
 			return;
 		self.showErrorPopup(error_message, function() {
-			var db = require('ocore/db.js');
+			var db = safeRequire('ocore/db.js');
 			db.close();
 			if (self.isCordova && navigator && navigator.app) // android
 				navigator.app.exitApp();
@@ -197,8 +198,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	});
 	
   function readLastTimestamp(cb) {
-	var db = require('ocore/db.js');
-	var data_feeds = require('ocore/data_feeds.js');
+	var db = safeRequire('ocore/db.js');
+	var data_feeds = safeRequire('ocore/data_feeds.js');
 	db.query("SELECT timestamp FROM units WHERE is_free=1 AND is_on_main_chain=1 ORDER BY timestamp DESC LIMIT 1", function (rows) {
 	  if (rows.length === 0)
 		return cb(0);
@@ -212,7 +213,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
 	function readLastDateString(cb){
-		var conf = require('ocore/conf.js');
+		var conf = safeRequire('ocore/conf.js');
 	//	if (conf.storage !== 'sqlite')
 	//		return cb();
 		readLastTimestamp(function(ts){
@@ -223,7 +224,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	}
 	
 	function readSyncPercent(cb){
-		var db = require('ocore/db.js');
+		var db = safeRequire('ocore/db.js');
 		db.query("SELECT COUNT(1) AS count_left FROM catchup_chain_balls", function(rows){
 			var count_left = rows[0].count_left;
 			if (count_left === 0)
@@ -321,7 +322,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	});
 
 	eventBus.on("refused_to_sign", function(device_address){
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.readCorrespondent(device_address, function(correspondent){
 			notification.success(gettextCatalog.getString('Refused'), correspondent.name + " refused to sign the transaction");
 		});
@@ -358,7 +359,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			return;
 		var walletName = client.credentials.walletName;
 		updatePublicKeyRing(client);
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.readCorrespondent(device_address, function(correspondent){
 			notification.success(gettextCatalog.getString('Success'), "Account "+walletName+" approved by "+correspondent.name);
 		});
@@ -369,7 +370,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		if (!client) // already deleted (maybe declined by another device)
 			return;
 		var walletName = client.credentials.walletName;
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.readCorrespondent(device_address, function(correspondent){
 			notification.info(gettextCatalog.getString('Declined'), "Account "+walletName+" declined by "+(correspondent ? correspondent.name : 'peer'));
 		});
@@ -399,8 +400,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	
 	// in arrOtherCosigners, 'other' is relative to the initiator
 	eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
-		var device = require('ocore/device.js');
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var device = safeRequire('ocore/device.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
 			// my own address is not included in arrCorrespondentInfos because I'm not my correspondent
 			var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -455,8 +456,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	// objAddress is local wallet address, top_address is the address that requested the signature, 
 	// it may be different from objAddress if it is a shared address
 	eventBus.on("signing_request", function(objAddress, top_address, objUnit, assocPrivatePayloads, from_address, signing_path){		
-		var bbWallet = require('ocore/wallet.js');
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var bbWallet = safeRequire('ocore/wallet.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		var unit = objUnit.unit;
 		var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
 
@@ -604,9 +605,9 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							});
 						}
 						// prosaic/arbiter contracts related requests
-						var db = require('ocore/db.js');
-						var prosaic_contract = require('ocore/prosaic_contract.js');
-						var arbiter_contract = require('ocore/arbiter_contract.js');
+						var db = safeRequire('ocore/db.js');
+						var prosaic_contract = safeRequire('ocore/prosaic_contract.js');
+						var arbiter_contract = safeRequire('ocore/arbiter_contract.js');
 						function isContractSignRequest(cb) {
 							var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "data");});
 							if (arrDataMessages.length > 0 && arrDataMessages[0].payload["contract_text_hash"]){
@@ -910,7 +911,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			arrSharedWallets.push(objSharedWallet);
 		}
 		$scope.arrSharedWallets = arrSharedWallets;
-		var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+		var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
 		async.eachSeries(
 			arrSharedWallets,
 			function(objSharedWallet, cb){
@@ -1132,7 +1133,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		self.setAddressbook();
 
 		console.log("reading cosigners");
-		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 		walletDefinedByKeys.readCosigners(self.walletId, function(arrCosignerInfos){
 			self.copayers = arrCosignerInfos;
 			$timeout(function(){
@@ -1246,7 +1247,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		return breadcrumbs.add('updateAll not complete yet');
 	  
 	// reconnect if lost connection
-	var device = require('ocore/device.js');
+	var device = safeRequire('ocore/device.js');
 	device.loginToHub();
 
 	$timeout(function() {
@@ -1405,7 +1406,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
     var hiddenAssets = self.getCurrentWalletHiddenAssets();
     var hiddenSubWallets = self.getCurrentWalletHiddenSubWallets();
     console.log('setBalance hiddenAssets:', hiddenAssets);
-    var exchangeRates = require('ocore/network.js').exchangeRates;
+    var exchangeRates = safeRequire('ocore/network.js').exchangeRates;
 
 	const hideZeroBalanceAssets = configService.getSync().hideZeroBalanceAssets;
 
@@ -1549,7 +1550,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		electron.once('save-dialog-done', (evt, path) => {
 			if (!path)
 				return;
-			var fs = require('fs');
+			var fs = safeRequire('fs');
 			fs.writeFile(path, data, function(err) {
 				if (err) {
 					$log.debug(err);
@@ -1734,7 +1735,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			if (self.assetIndex !== self.oldAssetIndex) // it was a swipe
 				return console.log("== swipe");
 			console.log('== updateHistoryFromNetwork');
-			var lightWallet = require('ocore/light_wallet.js');
+			var lightWallet = safeRequire('ocore/light_wallet.js');
 			lightWallet.refreshLightClientHistory();
 		}, 500);
 	}, 5000);
@@ -1964,7 +1965,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
   $rootScope.$on('Local/Resume', function(event) {
 	$log.debug('### Resume event');
-	var lightWallet = require('ocore/light_wallet.js');
+	var lightWallet = safeRequire('ocore/light_wallet.js');
 	lightWallet.refreshLightClientHistory();
 	//self.debouncedUpdate();
   });

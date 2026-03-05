@@ -1,13 +1,14 @@
 'use strict';
 
-var eventBus = require('ocore/event_bus.js');
+
+var eventBus = safeRequire('ocore/event_bus.js');
 
 angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
 	var root = {};
 
 	let electron;
 	try {
-		electron = require('electron');
+		electron = safeRequire('electron');
 	}
 	catch(e){}
 
@@ -39,6 +40,16 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	root.openExternalLink = function(url) {
 		url = url.replace(/&amp;/g, '&');
+		try {
+			var parsed = new URL(url);
+			if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+				console.warn('Blocked non-http URL:', url);
+				return;
+			}
+		} catch(e) {
+			console.warn('Blocked invalid URL:', url);
+			return;
+		}
 		if (electron)
 			electron.shell.openExternal(url);
 		else if (isCordova)
@@ -119,7 +130,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 
 	function handleUri(uri){
-		var conf = require('ocore/conf.js');
+		var conf = safeRequire('ocore/conf.js');
 		var bb_program_url = new RegExp('^'+conf.program+':', 'i');
 		var ob_program_url = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
 		var ob_url = new RegExp('^obyte:', 'i');
@@ -127,7 +138,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 		console.log("handleUri "+uri);
 
-		require('ocore/uri.js').parseUri(uri, {
+		safeRequire('ocore/uri.js').parseUri(uri, {
 			ifError: function (err) {
 				console.log(err);
 				$rootScope.$emit('Local/ShowErrorAlert', err);
@@ -143,7 +154,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 						}
 						if (!objRequest.from_address)
 							return emitPaymentRequest();
-						var db = require('ocore/db.js');
+						var db = safeRequire('ocore/db.js');
 						db.query("SELECT address, wallet FROM my_addresses WHERE address=?", [objRequest.from_address], function (rows) {
 							$timeout(function () {
 								if (rows.length === 0)
@@ -196,7 +207,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			return;
 		}
 		last_handle_file_ts = Date.now();
-		var breadcrumbs = require('ocore/breadcrumbs.js');
+		var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
 		console.log("handleFile "+uri);
 		root.walletHome();
 		$rootScope.$emit('process_status_change', 'claiming', true);
@@ -212,20 +223,20 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		if (uri.indexOf("content:") !== -1) {
 			window.plugins.intent.readFileFromContentUrl(uri.replace(/#/g,'%23'), function (content) {
 				breadcrumbs.add("handleFile - content url");
-				require('ocore/wallet.js').handlePrivatePaymentFile(null, content, cb);
+				safeRequire('ocore/wallet.js').handlePrivatePaymentFile(null, content, cb);
 			}, function (err) {throw err});
 			return checkDoubleClaim();
 		}
 		if (uri.indexOf("." + configService.privateTextcoinExt) != -1) {
 			breadcrumbs.add("handleFile - file path url");
-			require('ocore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
+			safeRequire('ocore/wallet.js').handlePrivatePaymentFile(uri, null, cb);
 			return checkDoubleClaim();
 		}
 		$rootScope.$emit('process_status_change', 'claiming', false);
 	}
 	
 	function extractObyteArgFromCommandLine(commandLine){
-		var conf = require('ocore/conf.js');
+		var conf = safeRequire('ocore/conf.js');
 		var bb_url = new RegExp('^'+conf.program+':', 'i');
 		var ob_url = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
 		var file = new RegExp("\\."+configService.privateTextcoinExt+'$', 'i');
@@ -267,7 +278,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 	}
 
 	function createLinuxDesktopFile(){
-		var path = require('path'+'');
+		var path = safeRequire('path'+'');
 		if (process.env.APPIMAGE){
 			console.log("run from appimage " + process.env.APPIMAGE);
 			var execPath = process.env.APPIMAGE;
@@ -288,10 +299,10 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 			var iconPath = path.dirname(execPath)+"/public/img/icons/logo-circle-256.png";
 		}
 		console.log("will write .desktop file");
-		var fs = require('fs'+'');
-		var child_process = require('child_process'+'');
-		var package_json = require('../package.json'+''); // relative to html root
-		var conf = require('ocore/conf.js');
+		var fs = safeRequire('fs');
+		var package_json = safeRequire('../package.json');
+		var conf = safeRequire('ocore/conf.js');
+		var ipcRenderer = safeRequire('electron').ipcRenderer;
 		var applicationsDir = process.env.HOME + '/.local/share/applications';
 		var mimeDir = process.env.HOME + '/.local/share/mime';
 		fileSystemService.recursiveMkdir(applicationsDir, parseInt('700', 8), function(err){
@@ -310,9 +321,7 @@ X-Ubuntu-Touch=true\n\
 X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 				if (err)
 					throw Error("failed to write desktop file: "+err);
-				child_process.exec('update-desktop-database '+applicationsDir, function(err){
-					if (err)
-						throw Error("failed to exec update-desktop-database: "+err);
+				ipcRenderer.invoke('desktop:exec', 'update-desktop-database '+applicationsDir).then(function(){
 					var writeXml = function() {
 						fs.writeFile(mimeDir + '/packages/' + conf.program+'.xml', "<?xml version=\"1.0\"?>\n\
 	 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n\
@@ -323,10 +332,8 @@ X-Ubuntu-StageHint=SideStage\n", {mode: parseInt('755', 8)}, function(err){
 	 </mime-info>\n", {mode: parseInt('755', 8)}, function(err) {
 	 						if (err)
 								throw Error("failed to write MIME config file: "+err);
-							child_process.exec('update-mime-database '+mimeDir, function(err){
-								if (err)
-									throw Error("failed to exec update-mime-database: "+err);
-								child_process.exec('xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+conf.program, function(err){});
+							ipcRenderer.invoke('desktop:exec', 'update-mime-database '+mimeDir).then(function(){
+								ipcRenderer.invoke('desktop:exec', 'xdg-icon-resource install --context mimetypes --size 64 '+path.dirname(execPath)+'/public/img/icons/logo-circle-64.png application-x-'+conf.program);
 							});
 	 						console.log(".desktop done");
 	 					});

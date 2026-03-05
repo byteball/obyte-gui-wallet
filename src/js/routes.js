@@ -1,7 +1,8 @@
 'use strict';
 
+
 var unsupported, isaosp;
-var breadcrumbs = require('ocore/breadcrumbs.js');
+var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
 
 if (window && window.navigator) {
   var rxaosp = window.navigator.userAgent.match(/Android.*AppleWebKit\/([\d.]+)/);

@@ -1,10 +1,11 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('botController',
   function($stateParams, $scope, $rootScope, $timeout, configService, profileService, isCordova, go, correspondentListService) {
 	
 	var self = this;
-	var bots = require('ocore/bots.js');
+	var bots = safeRequire('ocore/bots.js');
 	var fc = profileService.focusedClient;
 	$scope.backgroundColor = fc.backgroundColor;
 	$scope.$root = $rootScope;

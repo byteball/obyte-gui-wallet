@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesEditWitnessController',
   function ($scope, $timeout, go, witnessListService, lodash) {
 
@@ -7,10 +8,10 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
     this.witness = witnessListService.currentWitness;
     this.witnesses = [];
     this.suggestToggle = false;
-    this.witnessesAddInfo = require('ocore/network.js').knownWitnesses;
+    this.witnessesAddInfo = safeRequire('ocore/network.js').knownWitnesses;
     this.witnessesKnown = Object.keys(this.witnessesAddInfo);
 
-    var witnessList = require('ocore/my_witnesses.js');
+    var witnessList = safeRequire('ocore/my_witnesses.js');
 
     witnessList.readMyWitnesses(function (arrWitnesses) {
       self.witnesses = arrWitnesses;
@@ -25,7 +26,7 @@ angular.module('copayApp.controllers').controller('preferencesEditWitnessControl
       if (new_address === witnessListService.currentWitness)
         return goBack();
 
-      var myWitnesses = require('ocore/my_witnesses.js');
+      var myWitnesses = safeRequire('ocore/my_witnesses.js');
       myWitnesses.replaceWitness(witnessListService.currentWitness, new_address, function (err) {
         console.log(err);
         if (err)

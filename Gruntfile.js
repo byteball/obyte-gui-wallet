@@ -24,6 +24,7 @@ module.exports = function(grunt) {
       main: {
         files: [
           'src/js/polyfills.js',
+          'src/js/safeRequire.js',
           'src/js/init.js',
           'src/js/app.js',
           'src/js/directives/*.js',
@@ -68,6 +69,7 @@ module.exports = function(grunt) {
       js: {
         src: [
           'src/js/polyfills.js',
+          'src/js/safeRequire.js',
           'angular-bitcore-wallet-client/index.js',
           'src/js/app.js',
           'src/js/routes.js',
@@ -168,7 +170,7 @@ module.exports = function(grunt) {
         expand: true,
         flatten: true,
         options: {timestamp: true, mode: true},
-        src: ['src/js/fileStorage.js'],
+        src: ['src/js/fileStorage.js', 'src/js/safeRequire.js'],
         dest: 'public/'
       }
     },

@@ -1,10 +1,11 @@
 'use strict';
 
-var constants = require('ocore/constants.js');
-var eventBus = require('ocore/event_bus.js');
-var breadcrumbs = require('ocore/breadcrumbs.js');
-var ValidationUtils = require('ocore/validation_utils.js');
-var parse_ojson = require('ocore/formula/parse_ojson');
+
+var constants = safeRequire('ocore/constants.js');
+var eventBus = safeRequire('ocore/event_bus.js');
+var breadcrumbs = safeRequire('ocore/breadcrumbs.js');
+var ValidationUtils = safeRequire('ocore/validation_utils.js');
+var parse_ojson = safeRequire('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
 	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService) {
@@ -12,8 +13,8 @@ angular.module('copayApp.controllers')
 		var self = this;
 		var home = this;
 		$scope.Math = window.Math;
-		var conf = require('ocore/conf.js');
-		var chatStorage = require('ocore/chat_storage.js');
+		var conf = safeRequire('ocore/conf.js');
+		var chatStorage = safeRequire('ocore/chat_storage.js');
 		this.bb_protocol = conf.program;
 		this.protocol = conf.program.replace(/byteball/i, 'obyte');
 		$rootScope.hideMenuBar = false;
@@ -22,7 +23,7 @@ angular.module('copayApp.controllers')
 		var config = configService.getSync();
 		var configWallet = config.wallet;
 		var indexScope = $scope.index;
-		var network = require('ocore/network.js');
+		var network = safeRequire('ocore/network.js');
 
 		// INIT
 		var walletSettings = configWallet.settings;
@@ -402,7 +403,7 @@ angular.module('copayApp.controllers')
 							self.setSendError("cannot read the file whose hash is going to be posted");
 							return;
 						}
-						const hash = require("crypto")
+						const hash = safeRequire("crypto")
 							.createHash("sha256")
 							.update(data)
 							.digest("hex");
@@ -699,8 +700,8 @@ angular.module('copayApp.controllers')
 				$scope.address = address;
 				$scope.shared_address_cosigners = indexScope.shared_address_cosigners;
 
-				var walletGeneral = require('ocore/wallet_general.js');
-				var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
+				var walletGeneral = safeRequire('ocore/wallet_general.js');
+				var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
 				walletGeneral.readMyPersonalAndSharedAddresses(function(arrMyAddresses) {
 					walletDefinedByAddresses.readSharedAddressDefinition(address, function(arrDefinition, creation_ts) {
 						walletDefinedByAddresses.readSharedAddressPeers(address, function(assocPeerNamesByAddress) {
@@ -985,7 +986,7 @@ angular.module('copayApp.controllers')
 		};
 
 		function claimTextCoin(mnemonic, addr) {
-			var wallet = require('ocore/wallet.js');
+			var wallet = safeRequire('ocore/wallet.js');
 			$rootScope.$emit('process_status_change', 'claiming', true);
 			const fc = profileService.focusedClient;
 			wallet.receiveTextCoin(mnemonic, addr, fc.getSignerWithLocalPrivateKey(), function(err, unit, asset) {
@@ -1286,7 +1287,7 @@ angular.module('copayApp.controllers')
 						return;
 					}
 
-					var aa_validation = require('ocore/aa_validation.js');
+					var aa_validation = safeRequire('ocore/aa_validation.js');
 					aa_validation.validateAADefinition(arrDefinition, function (err) {
 						self.aa_validation_error = err;
 						if (form.definition)
@@ -1438,7 +1439,7 @@ angular.module('copayApp.controllers')
 		}
 
 		function readAADefinitionsWithBaseDefinitions(address, handleResult) {
-			var aa_addresses = require('ocore/aa_addresses.js');
+			var aa_addresses = safeRequire('ocore/aa_addresses.js');
 			aa_addresses.readAADefinitions([address], function (rows) {
 				if (rows.length === 0)
 					return handleResult([]);
@@ -1533,7 +1534,7 @@ angular.module('copayApp.controllers')
 			if (errors.validAddresses) // not valid yet
 				return;
 			var arrAddresses = getOutputsForMultiSend().map(function (output) { return output.address; });
-			var aa_addresses = require('ocore/aa_addresses.js');
+			var aa_addresses = safeRequire('ocore/aa_addresses.js');
 			aa_addresses.readAADefinitions(arrAddresses, function (rows) {
 				form.addresses.$setValidity('noAA', rows.length === 0);
 				$timeout(function() {
@@ -1558,11 +1559,11 @@ angular.module('copayApp.controllers')
 
 		function dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, handleResponses) {
 			if (!conf.bLight) {
-				var aa_composer = require('ocore/aa_composer.js');
+				var aa_composer = safeRequire('ocore/aa_composer.js');
 				return aa_composer.dryRunPrimaryAATrigger(trigger, aa_address, arrDefinition, function (arrResponses) {
 					if (constants.COUNT_WITNESSES === 1) { // the temp unit might rebuild the MC
-						var storage = require('ocore/storage.js');
-						var db = require('ocore/db.js');
+						var storage = safeRequire('ocore/storage.js');
+						var db = safeRequire('ocore/db.js');
 						db.executeInTransaction(function (conn, onDone) {
 							storage.resetMemory(conn, onDone);
 						});
@@ -1796,7 +1797,7 @@ angular.module('copayApp.controllers')
 			const cached = cachedTpsFees[key];
 			if (cached)
 				return cached.value;
-			const composer = require('ocore/composer.js');
+			const composer = safeRequire('ocore/composer.js');
 			const tps_fee = await composer.estimateTpsFee([from_address], [to_address]);
 			cachedTpsFees[key] = { ts: Date.now(), value: tps_fee };
 			return tps_fee;
@@ -1832,7 +1833,7 @@ angular.module('copayApp.controllers')
 				console.log('estimateFee: using from address as to address');
 				to_address = from_address; // any address will do as long as it is not an AA
 			}
-			const storage = require('ocore/storage.js');
+			const storage = safeRequire('ocore/storage.js');
 			try {
 				let size = 763; // plain payment with a single input and a single external output
 				for (let { name, value } of self.feedvaluespairs)
@@ -1930,8 +1931,8 @@ angular.module('copayApp.controllers')
 				return;
 			var objDataMessage;
 			if (Object.keys(data_payload).length > 0) {
-				var objectHash = require('ocore/object_hash.js');
-				var storage = require('ocore/storage.js');
+				var objectHash = safeRequire('ocore/object_hash.js');
+				var storage = safeRequire('ocore/storage.js');
 				objDataMessage = {
 					app: 'data',
 					payload_location: "inline",
@@ -1958,7 +1959,7 @@ angular.module('copayApp.controllers')
 				return self.setSendError(gettext(msg));
 			}
 
-			var wallet = require('ocore/wallet.js');
+			var wallet = safeRequire('ocore/wallet.js');
 			var assetInfo = $scope.index.arrBalances[$scope.index.assetIndex];
 			var asset = assetInfo.asset;
 			console.log("asset " + asset);
@@ -2086,7 +2087,7 @@ angular.module('copayApp.controllers')
 						return;
 					}
 
-					var device = require('ocore/device.js');
+					var device = safeRequire('ocore/device.js');
 					if (self.binding) {
 						if (isTextcoin) {
 							delete self.current_payment_key[fc.credentials.walletId];
@@ -2095,8 +2096,8 @@ angular.module('copayApp.controllers')
 						}
 						if (!recipient_device_address)
 							throw Error('recipient device address not known');
-						var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses.js');
-						var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+						var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses.js');
+						var walletDefinedByKeys = safeRequire('ocore/wallet_defined_by_keys.js');
 						var my_address;
 						// never reuse addresses as the required output could be already present
 						useOrIssueNextAddress(fc.credentials.walletId, 0, function(addressInfo) {
@@ -2317,7 +2318,7 @@ angular.module('copayApp.controllers')
 							self.resetForm();
 						//	$rootScope.$emit("NewOutgoingTx"); // we are already updating UI in response to new_my_transactions event which is triggered by broadcast
 							if (original_address){
-								var db = require('ocore/db.js');
+								var db = safeRequire('ocore/db.js');
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)",
 									[unit, to_address, original_address]);
 							}
@@ -2417,9 +2418,9 @@ angular.module('copayApp.controllers')
 		}
 
 		this.submitData = function() {
-			var objectHash = require('ocore/object_hash.js');
-			var objectLength = require('ocore/object_length.js');
-			var storage = require('ocore/storage.js');
+			var objectHash = safeRequire('ocore/object_hash.js');
+			var objectLength = safeRequire('ocore/object_length.js');
+			var storage = safeRequire('ocore/storage.js');
 			var fc = profileService.focusedClient;
 			var value = {};
 			var app;
@@ -2585,7 +2586,7 @@ angular.module('copayApp.controllers')
 						async function readVotingAddresses() {
 							if (indexScope.shared_address)
 								return [indexScope.shared_address];
-							const db = require('ocore/db.js');
+							const db = safeRequire('ocore/db.js');
 							const rows = await db.query(
 								"SELECT address, SUM(amount) AS total FROM my_addresses JOIN outputs USING(address) \n\
 								WHERE wallet=? AND is_spent=0 AND asset IS NULL GROUP BY address ORDER BY total DESC LIMIT 16",
@@ -3018,7 +3019,7 @@ angular.module('copayApp.controllers')
 
 		this.setFromUri = function(uri) {
 			var objRequest;
-			require('ocore/uri.js')
+			safeRequire('ocore/uri.js')
 				.parseUri(uri, {
 					ifError: function(err) {},
 					ifOk: function(_objRequest) {
@@ -3139,7 +3140,7 @@ angular.module('copayApp.controllers')
 					self.setSendError("cannot read the file whose hash is going to be posted");
 					return;
 				}
-				const hash = require("crypto")
+				const hash = safeRequire("crypto")
 					.createHash("sha256")
 					.update(data)
 					.digest("hex");
@@ -3158,7 +3159,7 @@ angular.module('copayApp.controllers')
 		};
         
         async function setV4Fees(btx) {
-            const db = require('ocore/db.js');
+            const db = safeRequire('ocore/db.js');
             const [row] = await db.query("SELECT tps_fee,actual_tps_fee,burn_fee,oversize_fee FROM units WHERE unit=?", [btx.unit]);
             btx.tpsFee = row.tps_fee;
             btx.actualTpsFee = row.actual_tps_fee;
@@ -3285,7 +3286,7 @@ angular.module('copayApp.controllers')
 				$scope.exchangeRates = network.exchangeRates;
 				$scope.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
 
-				var storage = require('ocore/storage.js');
+				var storage = safeRequire('ocore/storage.js');
 				storage.readUnit(btx.unit, async function (objUnit) {
 					if (!objUnit)
 						throw Error("unit " + btx.unit + " not found");
@@ -3363,8 +3364,8 @@ angular.module('copayApp.controllers')
 				
 				$scope.shareAgain = function() {
 					if ($scope.isPrivate) {
-						var indivisible_asset = require('ocore/indivisible_asset');
-						var wallet = require('ocore/wallet.js');
+						var indivisible_asset = safeRequire('ocore/indivisible_asset');
+						var wallet = safeRequire('ocore/wallet.js');
 						indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains){
 							self.getPrivatePayloadSavePath(function(fullPath, cordovaPathObj){
 								if (!fullPath && !cordovaPathObj)
@@ -3383,7 +3384,7 @@ angular.module('copayApp.controllers')
 
 				$scope.eraseTextcoin = function() {
 					(function(){
-						var wallet = require('ocore/wallet.js');
+						var wallet = safeRequire('ocore/wallet.js');
 						var ModalInstanceCtrl = function($scope, $modalInstance, $sce) {
 							$scope.title = gettextCatalog.getString('Deleting the textcoin will remove the ability to claim it back or resend');
 							$scope.cancel_button_class = 'light-gray outline';
@@ -3452,9 +3453,9 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.reSendPrivateMultiSigPayment = function() {
-					var indivisible_asset = require('ocore/indivisible_asset');
-					var wallet_defined_by_keys = require('ocore/wallet_defined_by_keys');
-					var walletDefinedByAddresses = require('ocore/wallet_defined_by_addresses');
+					var indivisible_asset = safeRequire('ocore/indivisible_asset');
+					var wallet_defined_by_keys = safeRequire('ocore/wallet_defined_by_keys');
+					var walletDefinedByAddresses = safeRequire('ocore/wallet_defined_by_addresses');
 					var fc = profileService.focusedClient;
 
 					function success() {
@@ -3528,8 +3529,8 @@ angular.module('copayApp.controllers')
 				};
 
 				$scope.sendPrivatePayments = function(correspondent) {
-					var indivisible_asset = require('ocore/indivisible_asset');
-					var wallet_general = require('ocore/wallet_general');
+					var indivisible_asset = safeRequire('ocore/indivisible_asset');
+					var wallet_general = safeRequire('ocore/wallet_general');
 					indivisible_asset.restorePrivateChains(btx.asset, btx.unit, btx.addressTo, function(arrRecipientChains, arrCosignerChains) {
 						wallet_general.sendPrivatePayments(correspondent.device_address, arrRecipientChains, true, null, function() {
 							modalInstance.dismiss('cancel');
@@ -3653,8 +3654,8 @@ angular.module('copayApp.controllers')
 				form.comment.$setViewValue('');
 				form.comment.$render();
 			}
-			var storage = require('ocore/storage.js');
-			var db = require('ocore/db.js');
+			var storage = safeRequire('ocore/storage.js');
+			var db = safeRequire('ocore/db.js');
 			function ifFound(objJoint) {
 				$timeout(function() {
 					var dataMessages = objJoint.unit.messages.filter(message => message.app !== 'payment');
@@ -3708,7 +3709,7 @@ angular.module('copayApp.controllers')
 								$rootScope.$emit('Local/ShowErrorAlert', 'voting not yet supported via uri');
 								return self.resetForm();
 							case 'definition':
-								var stringUtils = require('ocore/string_utils.js');
+								var stringUtils = safeRequire('ocore/string_utils.js');
 								$scope.assetIndexSelectorValue = -6;
 								var jsonDefinition = stringUtils.getJsonSourceString(payload.definition[1], false);
 								$scope.home.definition = jsonDefinition.replace(/\\n/g, '\n').replace(/\\t/g, '\t');

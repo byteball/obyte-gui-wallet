@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('preferencesDeviceNameController',
   function($scope, $timeout, configService, go) {
     var config = configService.getSync();
@@ -7,7 +8,7 @@ angular.module('copayApp.controllers').controller('preferencesDeviceNameControll
 
     this.save = function() {
       var self = this;
-	  var device = require('ocore/device.js');
+	  var device = safeRequire('ocore/device.js');
       device.setDeviceName(self.deviceName);
       var opts = {deviceName: self.deviceName};
 

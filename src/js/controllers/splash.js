@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('copayApp.controllers').controller('splashController',
   function($scope, $timeout, $log, configService, profileService, storageService, go, isCordova) {
 	
@@ -7,7 +8,7 @@ angular.module('copayApp.controllers').controller('splashController',
 	
 	this.saveDeviceName = function(){
 		console.log('saveDeviceName: '+self.deviceName);
-		var device = require('ocore/device.js');
+		var device = safeRequire('ocore/device.js');
 		device.setDeviceName(self.deviceName);
 		var opts = {deviceName: self.deviceName};
 		configService.set(opts, function(err) {
@@ -35,14 +36,14 @@ angular.module('copayApp.controllers').controller('splashController',
 			self.step = 'device_name';
 			return;
 		}
-		var fs = require('fs'+'');
-		var desktopApp = require('ocore/desktop_app.js');
+		var fs = safeRequire('fs'+'');
+		var desktopApp = safeRequire('ocore/desktop_app.js');
 		var appDataDir = desktopApp.getAppDataDir();
 		var userConfFile = appDataDir + '/conf.json';
 		fs.writeFile(userConfFile, JSON.stringify({bLight: bLight}, null, '\t'), 'utf8', function(err){
 			if (err)
 				throw Error('failed to write conf.json: '+err);
-			var conf = require('ocore/conf.js');
+			var conf = safeRequire('ocore/conf.js');
 			if (!conf.bLight)
 				throw Error("Failed to switch to light, please restart the app");
 			self.step = 'device_name';
