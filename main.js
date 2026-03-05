@@ -136,8 +136,8 @@ async function createWindow () {
 		icon: path.join(__dirname, '/public/img/icons/logo-circle-256.png'),
 		webPreferences: {
 			contextIsolation: false,
-			nodeIntegration: true
-			//preload: path.join(__dirname, 'preload.js')
+			nodeIntegration: true,
+			preload: path.join(__dirname, 'preload.js')
 		}
 	});
 	new Badge(mainWindow, {});
