@@ -519,13 +519,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddressInfos){
 				var arrAuthorAddresses = objUnit.authors.map(function(author){ return author.address; });
 				var arrChangeAddresses = arrChangeAddressInfos.map(function(info){ return info.address; });
-				arrChangeAddresses = arrChangeAddresses.concat(arrAuthorAddresses);
-				arrChangeAddresses.push(top_address);
+				const arrOwnAddresses = [...arrChangeAddresses, top_address, objAddress.address];
 				var arrPaymentMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "payment"); });
 				if (arrPaymentMessages.length === 0)
 					throw Error("no payment message found");
 				var assocAmountByAssetAndAddress = {};
-				// exclude outputs paying to my change addresses
+				// exclude outputs paying to my own addresses
 				async.eachSeries(
 					arrPaymentMessages,
 					function(objMessage, cb){
@@ -540,7 +539,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						if (!assocAmountByAssetAndAddress[asset])
 							assocAmountByAssetAndAddress[asset] = {};
 						payload.outputs.forEach(function(output){
-							if (arrChangeAddresses.indexOf(output.address) === -1){
+							if (arrOwnAddresses.indexOf(output.address) === -1){
 								if (!assocAmountByAssetAndAddress[asset][output.address])
 									assocAmountByAssetAndAddress[asset][output.address] = 0;
 								assocAmountByAssetAndAddress[asset][output.address] += output.amount;
@@ -585,7 +584,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from account '+credentials.walletName+'?';
 								}
 							}
-							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to myself";
+							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to unknown";
 							return 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
 						}
 						var question = getQuestion();
