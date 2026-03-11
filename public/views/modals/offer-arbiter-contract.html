@@ -111,7 +111,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 	<form name="arbiterContractForm">
 		<span class="person title" translate>Me</span>
 		<div class="name p10l">
-			<input type="text" name="myPartyName" ng-model="form.myPartyName" placeholder="Your company name" style="margin-bottom: 0px;" />
+			<input type="text" name="myPartyName" ng-model="form.myPartyName" placeholder="Your company name (optional)" style="margin-bottom: 0px;" />
 			<div class="help-text" translate>Your company name or whoever you represent. Leave empty if acting in your personal capacity.</div>
 			<span class="first_name">{{my_first_name}}</span>
 			<span class="last_name">{{my_last_name}}</span>
@@ -127,7 +127,7 @@ form[name="arbiterContractForm"] .f-dropdown li a {
 		</div>
 		<span class="person title" translate>Counterparty</span>
 		<div class="name p10l">
-			<input type="text" name="peerPartyName" ng-model="form.peerPartyName" placeholder="Counterparty company name" style="margin-bottom: 0px;" />
+			<input type="text" name="peerPartyName" ng-model="form.peerPartyName" placeholder="Counterparty company name (optional)" style="margin-bottom: 0px;" />
 			<div class="help-text" translate>Counterparty company name or whoever {{peer_device_name}} represents. Leave empty if they are acting in their personal capacity.</div>
 			<span class="first_name">{{peer_first_name}}</span>
 			<span class="last_name">{{peer_last_name}}</span>
