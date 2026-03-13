@@ -609,7 +609,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	}
 	
 	function escapeHtml(text){
-		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		return text.toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;').replaceAll('`', '&#96;'); // replace quotes too to break them in potential XSS exploits
 	}
 	
 	function escapeHtmlAndInsertBr(text){
