@@ -234,7 +234,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64, true);
 			if (!arrMovements)
 				return '[invalid payment request]';
-			description = 'Payment request: '+arrMovements.join(', ');
+			description = 'Payment request: '+escapeHtml(arrMovements.join(', '));
 			return toDelayedReplacement('<a ng-click="sendMultiPayment(\''+paymentJsonBase64+'\')">'+description+'</a>');
 		}).replace(/\[(.+?)\]\(vote:([\w\/+=]+?)\)/g, function(str, description, voteJsonBase64){
 			var objVote = getVoteFromJsonBase64(voteJsonBase64);
@@ -356,7 +356,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				arrMovements.push(getAmountText(assocPaymentsByAsset[asset], asset));
 		else
 			arrMovements = objMultiPaymentRequest.payments.map(function(objPayment){
-				return getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + objPayment.address;
+				return getAmountText(objPayment.amount, objPayment.asset || 'base') + ' to ' + escapeHtml(objPayment.address);
 			});
 		return arrMovements;
 	}
@@ -485,7 +485,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			var arrMovements = getMovementsFromJsonBase64PaymentRequest(paymentJsonBase64);
 			if (!arrMovements)
 				return '[invalid payment request]';
-			return toDelayedReplacement('<i>Payment request: '+arrMovements.join(', ')+'</i>');
+			return toDelayedReplacement('<i>Payment request: '+escapeHtml(arrMovements.join(', '))+'</i>');
 		}).replace(pairing_regexp, function(str, uri, device_pubkey, hub, pairing_code){
 			return toDelayedReplacement('<i>Sent pairing code: '+ device_pubkey+'@'+hub+'#'+pairing_code+'</i>');
 		}).replace(textcoin_regexp, function(str, uri, mnemonic){
@@ -517,7 +517,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			if (!ValidationUtils.isValidAddress(objSignedMessage.authors[0].address))
 				return '<i>[invalid signer address]</i>';
 			var displayed_signed_message = (typeof objSignedMessage.signed_message === 'string') ? objSignedMessage.signed_message : JSON.stringify(objSignedMessage.signed_message, null, '\t');
-			var text = 'Message signed by '+objSignedMessage.authors[0].address+': '+escapeHtmlAndInsertBr(displayed_signed_message);
+			var text = 'Message signed by '+escapeHtml(objSignedMessage.authors[0].address)+': '+escapeHtmlAndInsertBr(displayed_signed_message);
 			if (info.bValid)
 				text += " (valid)";
 			else if (info.bValid === false)
@@ -652,8 +652,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return amount + ' ' + escapeHtml(profileService.assetMetadata[asset].name);
 		}
 		else{
+			if (typeof amount !== 'number')
+				return '[bad amount]';
 			wallet.readAssetMetadata([asset], function(){});
-			return amount + ' of ' + asset;
+			return amount + ' of ' + escapeHtml(asset);
 		}
 	}
 		
@@ -663,7 +665,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				return '<span title="your address: '+address+'">you</span>';
 			if (assocPeerNamesByAddress[address])
 				return '<span title="counterparty address: '+address+'">'+escapeHtml(assocPeerNamesByAddress[address])+'</span>';
-			return address;
+			return escapeHtml(address);
 		}
 		function parse(arrSubdefinition){
 			var op = arrSubdefinition[0];
@@ -684,10 +686,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				case 'and':
 					return args.map(parseAndIndent).join('<span class="size-18">'+op+'</span>');
 				case 'r of set':
-					return 'at least '+args.required+' of the following is true:<br>'+args.set.map(parseAndIndent).join(',');
+					return 'at least '+escapeHtml(args.required)+' of the following is true:<br>'+args.set.map(parseAndIndent).join(',');
 				case 'weighted and':
-					return 'the total weight of the true conditions below is at least '+args.required+':<br>'+args.set.map(function(arg){
-						return arg.weight+': '+parseAndIndent(arg.value);
+					return 'the total weight of the true conditions below is at least '+escapeHtml(args.required)+':<br>'+args.set.map(function(arg){
+						return escapeHtml(arg.weight)+': '+parseAndIndent(arg.value);
 					}).join(',');
 				case 'timestamp':
 					var relation = args[0];
@@ -710,19 +712,19 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					var min_mci = args[4];
 					if (feed_name === 'timestamp' && relation === '>' && (typeof value === 'number' || parseInt(value).toString() === value))
 						return 'after ' + ((typeof value === 'number') ? new Date(value).toString() : new Date(parseInt(value)).toString());
-					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+escapeHtml(feed_name)+' '+relation+' '+escapeHtml(value);
+					var str = 'Oracle '+arrAddresses.join(', ')+' posted '+feed_name+' '+relation+' '+value;
 					if (min_mci)
 						str += ' after MCI '+min_mci;
-					return str;
+					return escapeHtml(str);
 				case 'in merkle':
 					var arrAddresses = args[0];
 					var feed_name = args[1];
 					var value = args[2];
 					var min_mci = args[3];
-					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+escapeHtml(value)+' in '+escapeHtml(feed_name);
+					var str = 'A proof is provided that oracle '+arrAddresses.join(', ')+' posted '+value+' in '+feed_name;
 					if (min_mci)
 						str += ' after MCI '+min_mci;
-					return str;
+					return escapeHtml(str);
 				case 'has':
 					if (args.what === 'output' && args.asset && args.address) {
 						if (args.amount_at_least)
@@ -740,14 +742,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'seen':
 					if (args.what === 'output' && args.asset && args.amount && args.address){
-						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : args.address);
+						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : escapeHtml(args.address));
 						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
 						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+(+args.amount)+', \''+escapeHtml(args.asset)+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
 					else if (args.what === 'input' && (args.asset && args.amount || !args.asset && !args.amount) && args.address){
 						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
-						return 'there was a transaction that spends '+how_much+' from '+args.address;
+						return 'there was a transaction that spends '+how_much+' from '+escapeHtml(args.address);
 					}
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 
@@ -920,7 +922,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
 		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-			var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
+			var body = '<a ng-click="showPayment(\''+escapeHtml(asset)+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 			addMessageEvent(false, peer_address, body);
 			device.readCorrespondent(peer_address, function(correspondent){
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
@@ -935,7 +937,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		if (type=="watched")
 			return;
 		var title = type=="shared" ? 'Payment to smart address' : 'Payment';
-		var body = '<a ng-click="showPayment(\''+asset+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
+		var body = '<a ng-click="showPayment(\''+escapeHtml(asset)+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
 		addMessageEvent(true, peer_address, body, message_counter);
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
@@ -1073,6 +1075,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	root.loadMoreHistory = loadMoreHistory;
 	root.checkAndInsertDate = checkAndInsertDate;
 	root.parseMessage = parseMessage;
+	root.escapeHtml = escapeHtml;
 	root.escapeHtmlAndInsertBr = escapeHtmlAndInsertBr;
 	root.addMessageEvent = addMessageEvent;
 	root.getProsaicContractFromJsonBase64 = getProsaicContractFromJsonBase64;
