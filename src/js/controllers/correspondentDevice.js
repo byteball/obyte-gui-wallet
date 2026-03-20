@@ -790,9 +790,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				var arrAllMemberAddresses = [];
 				var arrFuncs = [];
 				var assocMemberAddressesByDestAddress = {};
-				for (var destinationAddress in objMultiPaymentRequest.definitions) {
-					var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-					var arrMemberAddresses = extractAddressesFromDefinition(arrDefinition);
+				for (let destinationAddress in objMultiPaymentRequest.definitions) {
+					const arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+					const arrMemberAddresses = extractAddressesFromDefinition(arrDefinition);
 					assocMemberAddressesByDestAddress[destinationAddress] = arrMemberAddresses;
 					arrAllMemberAddresses = arrAllMemberAddresses.concat(arrMemberAddresses);
 					arrFuncs.push(function (cb) {
@@ -826,15 +826,15 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 							}
 							createMovementLines();
 							$scope.arrHumanReadableDefinitions = [];
-							for (var destinationAddress in objMultiPaymentRequest.definitions) {
-								var arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
-								var assocSignersByPath = objMultiPaymentRequest.definitions[destinationAddress].signers;
-								var arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
+							for (let destinationAddress in objMultiPaymentRequest.definitions) {
+								const arrDefinition = objMultiPaymentRequest.definitions[destinationAddress].definition;
+								const assocSignersByPath = objMultiPaymentRequest.definitions[destinationAddress].signers;
+								const arrPeerAddresses = walletDefinedByAddresses.getPeerAddressesFromSigners(assocSignersByPath);
 								if (lodash.difference(arrPeerAddresses, arrAllMemberAddresses).length !== 0)
 									throw Error("inconsistent peer addresses");
-								var assocPeerNamesByAddress = {};
-								for (var path in assocSignersByPath) {
-									var signerInfo = assocSignersByPath[path];
+								let assocPeerNamesByAddress = {};
+								for (let path in assocSignersByPath) {
+									const signerInfo = assocSignersByPath[path];
 									if (signerInfo.device_address !== device.getMyDeviceAddress())
 										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
 								}
