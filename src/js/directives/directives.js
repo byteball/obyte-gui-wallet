@@ -573,6 +573,8 @@ angular.module('copayApp.directives')
 	    	elem.find('a').on('click', function(e) {
 	    		e.preventDefault();
 	    		var url = angular.element(this).attr('href');
+          if (!url.startsWith('http://') && !url.startsWith('https://'))
+            return console.log("markdown invalid url: " + url);
 	    		let electron;
 	    		try {
 	    			electron = require('electron');

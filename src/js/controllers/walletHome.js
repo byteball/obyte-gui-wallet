@@ -1460,8 +1460,10 @@ angular.module('copayApp.controllers')
 				if (!doc)
 					return;
 				self.aa_description = doc.description;
-				self.aa_homepage_url = doc.homepage_url;
-				self.aa_source_url = doc.source_url;
+				if (typeof doc.homepage_url === 'string' && doc.homepage_url.startsWith('https://'))
+					self.aa_homepage_url = doc.homepage_url;
+				if (typeof doc.source_url === 'string' && doc.source_url.startsWith('https://'))
+					self.aa_source_url = doc.source_url;
 				self.aa_field_descriptions = doc.field_descriptions;
 				if (self.aa_description.length > 200)
 					self.aa_truncated_description = self.aa_description.substr(0, 180) + '...';

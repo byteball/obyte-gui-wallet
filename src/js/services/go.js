@@ -39,6 +39,8 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 
 	root.openExternalLink = function(url) {
 		url = url.replace(/&amp;/g, '&');
+		if (!url.startsWith('http://') && !url.startsWith('https://'))
+			return console.log("openExternalLink invalid url: " + url);
 		if (electron)
 			electron.shell.openExternal(url);
 		else if (isCordova)

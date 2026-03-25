@@ -606,6 +606,10 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					}
 					$scope.ArbStoreCut = arbstoreInfo.cut;
 					$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';
+					if (!$scope.terms_url.toString().startsWith('https://')) {
+						console.log('hiding arbiter terms url: ' + $scope.terms_url);
+						$scope.terms_url = null;
+					}
 					arbiters.getInfo($scope.form.arbiterAddress, (err, arbiterInfo) => {
 						if (err) {
 							$scope.error = err;

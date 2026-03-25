@@ -667,6 +667,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							else {
 								$scope.arbstore_url = arbstoreInfo.url;
 								$scope.terms_url = arbstoreInfo.terms_url || arbstoreInfo.url + '/terms';;
+								if (!$scope.terms_url.toString().startsWith('https://')) {
+									console.log('hiding arbiter terms url: ' + $scope.terms_url);
+									$scope.terms_url = null;
+								}
 							}
 							$timeout(function() {
 								$rootScope.$apply();
