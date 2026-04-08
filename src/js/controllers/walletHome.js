@@ -1021,7 +1021,7 @@ angular.module('copayApp.controllers')
 		}
 
 		var disableClaimTextcoinListener = $rootScope.$on('claimTextcoin', function(event, mnemonic) {
-			breadcrumbs.add("received claimTextcoin event with mnemonic: " + mnemonic.substr(0, 10) + "...");
+			breadcrumbs.add("received claimTextcoin event with mnemonic");
 			var addr = self.addr[profileService.focusedClient.credentials.walletId];
 			if (addr) {
 				claimTextCoin(mnemonic, addr);
