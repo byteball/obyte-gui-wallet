@@ -372,7 +372,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		catch(e){
 			return null;
 		}
-		if (!ValidationUtils.isStringOfLength(objVote.poll_unit, 44) || typeof objVote.choice !== 'string')
+		if (!ValidationUtils.isValidBase64(objVote.poll_unit, 44) || typeof objVote.choice !== 'string')
 			return null;
 		return objVote;
 	}
