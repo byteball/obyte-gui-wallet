@@ -502,16 +502,22 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			}
 			
 			if (objUnit.signed_message){
-				var question = gettextCatalog.getString('Sign message') + ' ' + objUnit.signed_message + ' ' + gettextCatalog.getString('by address') + ' ' + objAddress.address+'?';
-				requestApproval(question, {
-					ifYes: function(){
-						createAndSendSignature();
-					},
-					ifNo: function(){
-						// do nothing
-						console.log("===== NO CLICKED");
-						refuseSignature();
-					}
+				const device = require('ocore/device.js');
+				device.readCorrespondent(from_address, correspondent => {
+					if (!correspondent)
+						return console.log("Correspondent not found for address " + from_address);
+					const msg = typeof objUnit.signed_message === 'string' ? objUnit.signed_message : JSON.stringify(objUnit.signed_message);
+					const question = gettextCatalog.getString('Sign message') + ' "' + msg + '" ' + gettextCatalog.getString('by address') + ' ' + objAddress.address + '? ' + gettextCatalog.getString('Requested by') + ' ' + correspondent.name + '.';
+					requestApproval(question, {
+						ifYes: function(){
+							createAndSendSignature();
+						},
+						ifNo: function(){
+							// do nothing
+							console.log("===== NO CLICKED");
+							refuseSignature();
+						}
+					});
 				});
 				return;
 			}
@@ -587,7 +593,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to unknown";
 							return 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
 						}
-						var question = getQuestion();
+						let question = getQuestion();
 						var ask = function() {
 							requestApproval(question, {
 								ifYes: function(){
