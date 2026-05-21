@@ -95,23 +95,7 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 							showError(err);
 							return;
 						}
-						var arrDefinition = 
-							["and", [
-								["address", contract.my_address],
-								["address", contract.peer_address]
-							]];
-						var assocSignersByPath = {
-							"r.0": {
-								address: contract.my_address,
-								member_signing_path: "r",
-								device_address: device.getMyDeviceAddress()
-							},
-							"r.1": {
-								address: contract.peer_address,
-								member_signing_path: "r",
-								device_address: contract.peer_device_address
-							}
-						};
+						const { arrDefinition, assocSignersByPath } = prosaic_contract.deriveSharedAddress(contract, true);
 						require("ocore/wallet_defined_by_addresses.js").createNewSharedAddress(arrDefinition, assocSignersByPath, {
 							ifError: function(err){
 								showError(err);
