@@ -155,10 +155,12 @@ form[name="prosaicContractForm"] {
 	
 	<div ng-show="proofBlockExpanded" class="description p10l"><br>
 		<span class="text-bold" translate>unit in DAG:</span> <a ng-click="openInExplorer(unit)">{{unit}}</a><br><br>
-		<span class="description" translate>To verify contract integrity, SHA256 hash is calculated from 8 concatenated components: sha256(title + text + creation_date + payer_name + arbiter_address + payee_name + amount + asset) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span><br><br>
+		<span class="description" ng-if="creation_date < NEW_HASH_DATE" translate>To verify contract integrity, SHA256 hash is calculated from 8 concatenated components: sha256(title + text + creation_date + payer_name + arbiter_address + payee_name + amount + asset) and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span>
+		<span class="description" ng-if="creation_date > NEW_HASH_DATE" translate>To verify contract integrity, SHA256 hash is calculated from 10 components: title, text, creation_date, payer_address, payer_name, arbiter_address, payee_address, payee_name, amount, asset, concatenated with delimiter {{DELIMITER}} and encoded in BASE64 format. After the contract was accepted, a unit with its hash was posted into the DAG. You can check that contract text was not modified by comparing the hashes in the DAG and calculated from this contract.</span>
+		<br><br>
 		<span class="text-bold" translate>creation date:</span> {{creation_date}}<br><br>
 		<span class="text-bold" translate>hash source string:</span> <a class="copy_button" ng-click="copyToClipboard()">copy text</a>
-		<textarea readonly="readonly" id="sourcetext">{{title}}{{text}}{{creation_date}}{{payer_name}}{{arbiter_address}}{{payee_name}}{{amount}}{{asset}}</textarea>
+		<textarea readonly="readonly" id="sourcetext">{{hash_src}}</textarea>
 		
 		<span ng-click="checkValidity()" translate class="validation_check" ng-show="!validity_checked">validate contract integrity</span>
 		<span ng-show="validity_checked">integrity check: 

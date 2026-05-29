@@ -695,6 +695,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 						return;
 					}
 					if (asset == 'base') asset = null;
+					if (contract_title.includes(arbiter_contract.DELIMITER))
+						return setError('Contract title cannot contain "'+arbiter_contract.DELIMITER+'"');
 
 					if ($scope.bWorking)
 						return console.log("already working");
