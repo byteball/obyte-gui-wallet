@@ -706,6 +706,8 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					};
 
 					$scope.accept = function() {
+						if ($scope.creation_date < arbiter_contract.NEW_HASH_DATE && new Date().toISOString().substring(0, 10) >= arbiter_contract.NEW_HASH_DATE)
+							return setError("Contract created before " + arbiter_contract.NEW_HASH_DATE);
 						if ($scope.bWorking)
 							return;
 						$scope.bWorking = true;
