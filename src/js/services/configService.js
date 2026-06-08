@@ -126,7 +126,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		discord: '5KM36CFPBD2QJLVD65PHZG34WEM4RPY2',
 		steem: 'JEDZYC2HMGDBIDQKG3XSTXUSHMCBK725',
 		old_username: 'UENJPVZ7HVHM6QGVGT6MWOJGGRTUTJXQ',
-		username: 'CITYC3WWO5DD2UM6HQR3H333RRTD253Q', // AA rather than an attestor
+		username: 'CITY22RWZTXX3UDPVQEDJLXM7BQNXCGP', // AA rather than an attestor
 	},
 	realNameAttestorAddresses: [
 		{ address: 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT', name: 'Real name attestation bot (Jumio Netverify)' },
