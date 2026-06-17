@@ -54,7 +54,7 @@ var get = function(k, cb) {
 
 				reader.onloadend = function(e) {
 					if (this.result)
-						console.log("Read: " + this.result);
+						console.log("Read: " + this.result.length + " bytes");
 					return cb(null, this.result)
 				};
 
