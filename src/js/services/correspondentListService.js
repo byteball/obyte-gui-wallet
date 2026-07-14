@@ -1102,6 +1102,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return cb("cannot pair with myself");
 		if (!device.isValidPubKey(device_pubkey))
 			return cb("invalid peer public key");
+		const network = require('ocore/network.js');
+		const conf = require('ocore/conf.js');
+		if (!network.isValidWsUrl(conf.WS_PROTOCOL + hub_host))
+			return cb("invalid hub URL");
 		// the correspondent will be initially called '[New]', we'll rename it as soon as we receive the reverse pairing secret back
 		device.addUnconfirmedCorrespondent(device_pubkey, hub_host, '[New]', function(device_address){
 			device.startWaitingForPairing(function(reversePairingInfo){
