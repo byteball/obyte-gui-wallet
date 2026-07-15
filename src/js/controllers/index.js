@@ -457,6 +457,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	eventBus.on("signing_request", function(objAddress, top_address, objUnit, assocPrivatePayloads, from_address, signing_path){		
 		var bbWallet = require('ocore/wallet.js');
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		if (objUnit.messages && objUnit.messages.find(m => !["payment", "profile", "attestation", "data", "data_feed"].includes(m.app)))
+			return console.log("signing request includes forbidden message types, ignoring", objUnit.messages.map(m => m.app));
 		var unit = objUnit.unit;
 		var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
 
