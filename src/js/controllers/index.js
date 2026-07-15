@@ -619,7 +619,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						var arbiter_contract = require('ocore/arbiter_contract.js');
 						function isContractSignRequest(cb) {
 							var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "data");});
-							if (arrDataMessages.length > 0 && arrDataMessages[0].payload["contract_text_hash"]){
+							if (arrDataMessages.length === 1 && arrDataMessages[0].payload["contract_text_hash"]){
+								if (objUnit.messages.find(m => !["payment", "data"].includes(m.app))) // any other messages not allowed
+									return cb(false);
+								if (arrPaymentMessages.length !== 1) // only base asset allowed
+									return cb(false);
 								var contract_hash = arrDataMessages[0].payload["contract_text_hash"];
 								var contract;
 								async.series([function(cb){
@@ -658,7 +662,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												}
 											});
 										}], function() {
-											if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address))
+											if (!shared_address || shared_address !== arrPaymentMessages[0].payload.outputs[0].address || !lodash.includes(arrAuthorAddresses, shared_address) || shared_address !== contract.shared_address)
 												return cb();
 											return cb('prosaic', contract);
 										});
@@ -669,7 +673,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											return cb();
 										contract = objContract;
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
-										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || Object.keys(arrDataMessages[0].payload).length > 2)
+										// expecting data with 3 fields {"contract_text_hash": xxx, "arbiter": yyy, "contacts_hash": zzz} and a payment with 2 outputs: one to the shared address for CHARGE_AMOUNT and one change output to one of the parties
+										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || !lodash.isEqual(Object.keys(arrDataMessages[0].payload).sort(), ["arbiter", "contacts_hash", "contract_text_hash"]))
+											return cb();
+										if (arrDataMessages[0].payload.arbiter !== contract.arbiter)
+											return cb();
+										if (arrDataMessages[0].payload.contacts_hash !== arbiter_contract.getContactsHash(contract))
 											return cb();
 										var shared_address;
 										async.series([function(cb){
@@ -702,7 +711,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											var possible_contract_output = lodash.find(arrPaymentMessages[0].payload.outputs, function(o){return o.amount==arbiter_contract.CHARGE_AMOUNT});
 											if (!possible_contract_output) 
 												return cb();
-											if (!shared_address || shared_address !== possible_contract_output.address || !lodash.includes(arrAuthorAddresses, shared_address))
+											if (!shared_address || shared_address !== possible_contract_output.address || !lodash.includes(arrAuthorAddresses, shared_address) || shared_address !== contract.shared_address)
 												return cb();
 											return cb('arbiter', contract);
 										});
@@ -722,8 +731,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
 							if (!payment_msg)
 								return cb(false);
-							var possible_contract_output = lodash.find(payment_msg.payload.outputs, function(o){return o.amount==prosaic_contract.CHARGE_AMOUNT || o.amount==arbiter_contract.CHARGE_AMOUNT});
-							if (!possible_contract_output) 
+							if (arrPaymentMessages.length > 1 || objUnit.messages.find(m => m.app !== "payment"))
+								return cb(false);
+							const external_outputs = payment_msg.payload.outputs.filter(o => !arrOwnAddresses.includes(o.address));
+							if (external_outputs.length !== 1)
+								return cb(false);
+							const possible_contract_output = external_outputs[0];
+							if (possible_contract_output.amount !== prosaic_contract.CHARGE_AMOUNT && possible_contract_output.amount !== arbiter_contract.CHARGE_AMOUNT)
 								return cb(false);
 							db.query("SELECT hash FROM prosaic_contracts WHERE prosaic_contracts.shared_address=? AND prosaic_contracts.status='accepted'\n\
 								UNION SELECT hash FROM wallet_arbiter_contracts WHERE wallet_arbiter_contracts.shared_address=? AND wallet_arbiter_contracts.status='accepted'", [possible_contract_output.address, possible_contract_output.address], function(rows) {
@@ -746,62 +760,53 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							});
 						}
 						function isContractDepositRequest(cb) {
-							async.each(objUnit.messages, 
-								function(message, cb) {
-									if (message.app !== "payment")
-										return cb();
-									var payload = message.payload;
-									if (!payload)
-										payload = assocPrivatePayloads[message.payload_hash];
-									async.each(payload.outputs, function(o, cb){
-										db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=? AND status='signed'", [o.address], function(rows) {
-												if (!rows.length)
-													return cb();
-												arbiter_contract.getByHash(rows[0].hash, function(objContract) {
-													var asset = objContract.asset || 'base';
-													if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.shared_address])
-														return cb(objContract);
-													cb();
-												});
-											});
-									}, cb);
-								}, function(objContract) {
-									if (objContract)
-										return cb(true, objContract)
+							if (objUnit.messages.find(m => m.app !== "payment"))
+								return cb(false);
+							const assets = Object.keys(assocAmountByAssetAndAddress);
+							if (assets.length !== 1) // external outputs in more than one asset, not a contract deposit
+								return cb(false);
+							const payment_asset = assets[0];
+							const addresses = Object.keys(assocAmountByAssetAndAddress[payment_asset]);
+							if (addresses.length > 1) // external outputs to more than one address, not a contract deposit
+								return cb(false);
+							const address = addresses[0];
+							const amount = assocAmountByAssetAndAddress[payment_asset][address];
+							db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=? AND status='signed'", [address], function(rows) {
+								if (!rows.length)
+									return cb(false);
+								arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+									var asset = objContract.asset || 'base';
+									if (asset === payment_asset && objContract.amount == amount)
+										return cb(true, objContract);
 									cb(false);
-								}
-							);
+								});
+							});
 						}
 						function isContractClaimOrReleaseRequest(cb) {
-							async.each(objUnit.messages, 
-								function(message, cb) {
-									if (message.app!="payment")
-										return cb();
-									var payload = message.payload;
-									if (!payload)
-										payload = assocPrivatePayloads[message.payload_hash];
-									if (!payload)
-										return cb();
-									arbiter_contract.getBySharedAddress(objUnit.authors[0].address, function(objContract) {
-										if (!objContract)
-											return cb();
-										var asset = objContract.asset || 'base';
-										if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.my_address])
-											cb({objContract: objContract, isClaim: true});
-										else if (assocAmountByAssetAndAddress[asset] && objContract.amount == assocAmountByAssetAndAddress[asset][objContract.peer_address])
-											cb({objContract: objContract, isClaim: false});
-										else {
-											cb();
-										}
-									});
-								},
-								function(result) {
-									if (result) {
-										return cb(true, result.objContract, result.isClaim);
-									}
-									cb(false);
-								}
-							);
+							if (objUnit.messages.find(m => m.app !== "payment"))
+								return cb(false);
+							const assets = Object.keys(assocAmountByAssetAndAddress);
+							if (assets.length !== 1) // external outputs in more than one asset, not a claim/release
+								return cb(false);
+							const payment_asset = assets[0];
+							const addresses = Object.keys(assocAmountByAssetAndAddress[payment_asset]);
+							if (addresses.length > 1) // external outputs to more than one address, not a claim/release
+								return cb(false);
+							const address = addresses[0];
+							const amount = assocAmountByAssetAndAddress[payment_asset][address];
+							arbiter_contract.getBySharedAddress(objUnit.authors[0].address, function(objContract) {
+								if (!objContract)
+									return cb(false);
+								var asset = objContract.asset || 'base';
+								if (asset !== payment_asset)
+									return cb(false);
+								// we don't check the amount as it may differ by the fee, but the contract won't allow an incorrect amount anyway
+								if (address === objContract.my_address) // claim
+									return cb(true, objContract, true);
+								if (address === objContract.peer_address) // release
+									return cb(true, objContract, false);
+								cb(false);
+							});
 						}
 						isContractSignRequest(function(isContract, type, objContract){
 							if (isContract) {
