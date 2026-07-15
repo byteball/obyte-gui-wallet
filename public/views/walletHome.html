@@ -394,7 +394,7 @@ input.datafeed_input {
                       <li class="search-bar"><input type="text" name="search" ng-model="assetSubstring" placeholder="{{'search assets' | translate}}" /></li>
                       <li
                         class="custom-option"
-                        ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
+                        ng-repeat="balance in home.getBadgeSortedBalances() | balancesFilter:assetSubstring"
                         ng-click="home.changeAssetIndexSelectorValue(index.arrBalances.indexOf(balance))">
                         {{
                           (balance.asset === 'base'
@@ -956,7 +956,7 @@ input.datafeed_input {
            		<li class="search-bar"><input type="text" name="search" ng-model="assetSubstring" placeholder="{{'search assets' | translate}}" /></li>
               <li
                 class="custom-option"
-                ng-repeat="balance in index.arrBalances | balancesFilter:assetSubstring"
+                ng-repeat="balance in home.getBadgeSortedBalances() | balancesFilter:assetSubstring"
                 ng-click="index.changeWalletAssetIndex(index.arrBalances.indexOf(balance)); home.toggleAssetDropdown(); home.additional_assets = null;"
               >
                 {{balance.totalStr ? balance.totalStr : balance.total.toLocaleString() + ' of ' + balance.asset}}
