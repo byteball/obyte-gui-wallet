@@ -1512,6 +1512,20 @@ angular.module('copayApp.controllers')
 			return totalCounts;
 		};
 
+		this.getBadgeSortedBalances = function() {
+			var balancesWithBadges = [];
+			var balancesWithoutBadges = [];
+
+			indexScope.arrBalances.forEach(function(balance) {
+				var target = self.getAssetBadge(balance.asset) > 0
+					? balancesWithBadges
+					: balancesWithoutBadges;
+				target.push(balance);
+			});
+
+			return balancesWithBadges.concat(balancesWithoutBadges);
+		};
+
 		this.onChanged = function () {
 			console.log('onChanged');
 			if ($scope.assetIndexSelectorValue >= 0)
