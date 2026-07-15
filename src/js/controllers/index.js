@@ -575,25 +575,28 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							}
 						}
 						function getQuestion(){
-							if (arrDestinations.length === 0){
-								var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "profile" || objMessage.app === "attestation" || objMessage.app === "data" || objMessage.app === 'data_feed'); });
-								if (arrDataMessages.length > 0){
-									var message = arrDataMessages[0]; // can be only one
-									var payload = message.payload;
-									var obj = (message.app === 'attestation') ? payload.profile : payload;
-									var arrPairs = [];
-									for (var field in obj)
-										arrPairs.push(field+": "+obj[field]);
-									var nl = "\n";
-									var list = arrPairs.join(nl)+nl;
-									if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
-										return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from account '+credentials.walletName+'?';
-									if (message.app === 'attestation')
-										return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from account '+credentials.walletName+'?';
-								}
-							}
+							var arrDataMessages = objUnit.messages.filter(function(objMessage){ return (objMessage.app === "profile" || objMessage.app === "attestation" || objMessage.app === "data" || objMessage.app === 'data_feed'); });
+							let arrQuestions = arrDataMessages.map(message => {
+								var payload = message.payload;
+								var obj = (message.app === 'attestation') ? payload.profile : payload;
+								var arrPairs = [];
+								for (var field in obj)
+									arrPairs.push(field+": "+obj[field]);
+								var nl = "\n";
+								var list = arrPairs.join(nl)+nl;
+								if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
+									return 'Sign '+message.app.replace('_', ' ')+' '+nl+list+'from account '+credentials.walletName+'?';
+								if (message.app === 'attestation')
+									return 'Sign transaction attesting '+payload.address+' as '+nl+list+'from account '+credentials.walletName+'?';
+								throw Error("unknown message type " + message.app + " in unit " + unit);
+							});
 							var dest = (arrDestinations.length > 0) ? arrDestinations.join(", ") : "to unknown";
-							return 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
+							const paymentQuestion = 'Sign transaction spending '+dest+' from account '+credentials.walletName+'?';
+							if (arrQuestions.length === 0) // no data messages, only payment
+								return paymentQuestion;
+							if (arrDestinations.length > 0)
+								arrQuestions.unshift(paymentQuestion);
+							return arrQuestions.join("\n");
 						}
 						let question = getQuestion();
 						var ask = function() {
