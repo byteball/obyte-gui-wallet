@@ -396,11 +396,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	$rootScope.$on('process_status_change', function(event, process_name, isEnabled){
 		self.setOngoingProcess(process_name, isEnabled);
 	});
+
+	function is_valid_r_of_set_definition(arrDefinitionTemplate) {
+		try {
+			return arrDefinitionTemplate[0] === 'r of set' && arrDefinitionTemplate[1].required && arrDefinitionTemplate[1].set.length > 0 && arrDefinitionTemplate[1].set.every(member => member[0] === 'sig');
+		}
+		catch (e) {
+			return false;
+		}
+	}
 	
 	// in arrOtherCosigners, 'other' is relative to the initiator
 	eventBus.on("create_new_wallet", function(walletId, arrWalletDefinitionTemplate, arrDeviceAddresses, walletName, arrOtherCosigners, isSingleAddress){
 		var device = require('ocore/device.js');
 		var walletDefinedByKeys = require('ocore/wallet_defined_by_keys.js');
+		if (!is_valid_r_of_set_definition(arrWalletDefinitionTemplate)) {
+			console.log("unsupported definition formula", arrWalletDefinitionTemplate);
+			walletDefinedByKeys.cancelWallet(walletId, arrDeviceAddresses, arrOtherCosigners);
+			return;
+		}
 		device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
 			// my own address is not included in arrCorrespondentInfos because I'm not my correspondent
 			var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -422,7 +436,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									walletClient.credentials.walletId = walletId;
 									walletClient.credentials.network = 'livenet';
 									var n = arrDeviceAddresses.length;
-									var m = arrWalletDefinitionTemplate[1].required || n;
+									var m = arrWalletDefinitionTemplate[1].required;
 									walletClient.credentials.addWalletInfo(walletName, m, n);
 									updatePublicKeyRing(walletClient);
 									profileService._addWalletClient(walletClient, {}, function(){
