@@ -415,6 +415,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			walletDefinedByKeys.cancelWallet(walletId, arrDeviceAddresses, arrOtherCosigners);
 			return;
 		}
+		if (arrDeviceAddresses.length !== arrWalletDefinitionTemplate[1].set.length) {
+			console.log("number of devices does not match the number of keys in the wallet definition template", arrWalletDefinitionTemplate, arrDeviceAddresses);
+			walletDefinedByKeys.cancelWallet(walletId, arrDeviceAddresses, arrOtherCosigners);
+			return;
+		}
 		device.readCorrespondentsByDeviceAddresses(arrDeviceAddresses, function(arrCorrespondentInfos){
 			// my own address is not included in arrCorrespondentInfos because I'm not my correspondent
 			var arrNames = arrCorrespondentInfos.map(function(correspondent){ return correspondent.name; });
@@ -435,7 +440,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								function(){
 									walletClient.credentials.walletId = walletId;
 									walletClient.credentials.network = 'livenet';
-									var n = arrDeviceAddresses.length;
+									var n = arrWalletDefinitionTemplate[1].set.length;
 									var m = arrWalletDefinitionTemplate[1].required;
 									walletClient.credentials.addWalletInfo(walletName, m, n);
 									updatePublicKeyRing(walletClient);
