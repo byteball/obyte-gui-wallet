@@ -694,6 +694,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 											return cb();
 										if (arrDataMessages[0].payload.contacts_hash !== arbiter_contract.getContactsHash(contract))
 											return cb();
+										const expected_count_external_outputs = objContract.is_incoming ? 2 : 1;
+										if (!assocAmountByAssetAndAddress.base || Object.keys(assocAmountByAssetAndAddress.base).length !== expected_count_external_outputs)
+											return cb();
+										let bConsumesAcceptorsOutputs = false;
 										var shared_address;
 										async.series([function(cb){
 											var shared_author = lodash.find(objUnit.authors, function(author){
@@ -709,8 +713,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										}, function(cb){
 											if (shared_address)
 												return cb();
-											db.query("SELECT definition FROM shared_addresses WHERE shared_address=?", [arrPaymentMessages[0].payload.outputs[0].address], function(rows){
-												if (!rows || !rows.length)
+											const output_addresses = Object.keys(assocAmountByAssetAndAddress.base);
+											// contract address must pay to self
+											const possible_contract_addresses = lodash.intersection(arrAuthorAddresses, output_addresses);
+											if (possible_contract_addresses.length === 0)
+												return cb();
+											db.query("SELECT definition FROM shared_addresses WHERE shared_address IN(?)", [possible_contract_addresses], function(rows){
+												if (rows.length !== 1)
 													return cb();
 												var definition = JSON.parse(rows[0].definition);
 												try {
@@ -721,7 +730,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 													cb();
 												}
 											});
+										}, async function(cb){ // check that the payment doesn't consume the acceptor's outputs (only the offeror's outputs can be consumed)
+											if (!objContract.is_incoming)
+												return cb();
+											for (const input of arrPaymentMessages[0].payload.inputs) {
+												const rows = await db.query(`SELECT address 
+													FROM outputs
+													CROSS JOIN my_addresses USING(address)
+													WHERE unit=? AND message_index=? AND output_index=?`, [input.unit, input.message_index, input.output_index]);
+												if (rows.length > 0) {
+													bConsumesAcceptorsOutputs = true;
+													break;
+												}
+											}
+											cb();
 										}], function() {
+											if (bConsumesAcceptorsOutputs)
+												return cb();
 											var possible_contract_output = lodash.find(arrPaymentMessages[0].payload.outputs, function(o){return o.amount==arbiter_contract.CHARGE_AMOUNT});
 											if (!possible_contract_output) 
 												return cb();
