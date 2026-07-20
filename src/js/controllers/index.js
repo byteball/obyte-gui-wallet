@@ -790,12 +790,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										prosaic_contract.getByHash(rows[0].hash, function(objContract) {
 											if (!objContract)
 												return cb2();
+											if (objContract.peer_device_address === from_address)
+												return cb2(); // don't expect this from the peer
 											cb2(true, objContract);
 										});
 									}, function(cb2) {
 										arbiter_contract.getByHash(rows[0].hash, function(objContract) {
 											if (!objContract)
 												return cb2();
+											if (!objContract.me_is_cosigner)
+												return cb2();
+											if (objContract.peer_device_address === from_address)
+												return cb2(); // don't expect this from the peer
 											cb2(true, objContract);
 										});
 									}], cb);
@@ -819,6 +825,10 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								if (!rows.length)
 									return cb(false);
 								arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+									if (!objContract.me_is_cosigner)
+										return cb(false);
+									if (objContract.peer_device_address === from_address)
+										return cb(false); // don't expect this from the peer
 									var asset = objContract.asset || 'base';
 									if (asset === payment_asset && objContract.amount == amount)
 										return cb(true, objContract);
@@ -836,11 +846,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							const addresses = Object.keys(assocAmountByAssetAndAddress[payment_asset]);
 							if (addresses.length > 1) // external outputs to more than one address, not a claim/release
 								return cb(false);
+							if (objUnit.authors.length !== 1) // only one author allowed: the contract address
+								return cb(false);
 							const address = addresses[0];
 							const amount = assocAmountByAssetAndAddress[payment_asset][address];
 							arbiter_contract.getBySharedAddress(objUnit.authors[0].address, function(objContract) {
 								if (!objContract)
 									return cb(false);
+								if (!objContract.me_is_cosigner)
+									return cb(false);
+								if (objContract.peer_device_address === from_address)
+									return cb(false); // don't expect this from the peer
 								var asset = objContract.asset || 'base';
 								if (asset !== payment_asset)
 									return cb(false);
@@ -874,7 +890,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									}
 									isContractClaimOrReleaseRequest(function(isContract, objContract, isClaim){
 										if (isContract) {
-											question = 'Approve funds ' + (isClaim ? 'claim' : 'release') + ' from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
+											question = 'Approve funds ' + (isClaim ? 'claim' : 'release') + ' of ' + arrDestinations[0] + ' from the contract '+(objContract ? '"' + objContract.title + '" ' : '')+'?';
 											return ask();
 										}
 										ask();
