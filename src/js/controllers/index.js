@@ -574,7 +574,96 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						});
 						cb();
 					},
-					function(){
+					async function(){
+						// check for unrelated authors, i.e. my authors that are not my own addresses on the same wallet and not the top address (peer's additional authors are ok)
+						const arrOtherAuthorAddresses = arrAuthorAddresses.filter(address => !arrOwnAddresses.includes(address));
+						if (arrOtherAuthorAddresses.length > 0) {
+							const rows = await db.query(
+								`SELECT 1 FROM my_addresses WHERE wallet!=? AND address IN (?)
+								UNION
+								SELECT 1 FROM shared_addresses WHERE shared_address IN (?)`,
+								[objAddress.wallet, arrOtherAuthorAddresses, arrOtherAuthorAddresses]);
+							if (rows.length > 0) {
+								console.log("some of the other authors belong to my other wallets or shared addresses, refusing signature");
+								return refuseSignature();
+							}
+						}
+
+						// check that the signing request comes from a device that is allowed to sign for this wallet or shared address
+						if (top_address === objAddress.address) { // multisig
+							const rows = await db.query(
+								`SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
+								[objAddress.wallet, from_address]);
+							if (rows.length === 0) {
+								console.log("the signing request comes from a device that is not allowed to sign for this wallet, refusing signature");
+								return refuseSignature();
+							}
+						}
+						else { // shared address
+							// the request can come directly from the shared address peer or through a cosigner on my multisig
+							const rows = await db.query(
+								`SELECT 1 FROM shared_address_signing_paths WHERE shared_address=? AND device_address=?
+								UNION
+								SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
+								[top_address, from_address, objAddress.wallet, from_address]);
+							if (rows.length === 0) {
+								console.log("the signing request comes from a device that is not allowed to sign for this shared address, refusing signature");
+								return refuseSignature();
+							}
+						}
+
+						// add movements between shared and personal addresses to assocAmountByAssetAndAddress, so that the user sees them in the confirmation dialog
+						if (top_address !== objAddress.address) {
+							for (let m of arrPaymentMessages) {
+								let payload = m.payload;
+								if (!payload)
+									payload = assocPrivatePayloads[m.payload_hash];
+								const asset = payload.asset || "base";
+								const internalOutputs = { [objAddress.address]: 0, [top_address]: 0 };
+								const internalInputs = { [objAddress.address]: 0, [top_address]: 0 };
+								for (let output of payload.outputs) {
+									if (internalOutputs.hasOwnProperty(output.address))
+										internalOutputs[output.address] += output.amount;
+								}
+								for (let input of payload.inputs) {
+									const [row] = await db.query(`SELECT outputs.address, wallet 
+										FROM outputs
+										LEFT JOIN my_addresses USING(address)
+										LEFT JOIN shared_addresses ON shared_addresses.shared_address=outputs.address
+										WHERE unit=? AND message_index=? AND output_index=? AND (my_addresses.address IS NOT NULL OR shared_addresses.shared_address IS NOT NULL)`,
+										[input.unit, input.message_index, input.output_index]);
+									if (row) {
+										if (row.wallet) {
+											if (row.wallet !== objAddress.wallet) {
+												console.log("input from another wallet, unit=" + input.unit + ", message_index=" + input.message_index + ", output_index=" + input.output_index);
+												return refuseSignature();
+											}
+											// the input might be from another address of our wallet but we account for it under our main wallet address
+											internalInputs[objAddress.address] += input.amount;
+										}
+										else if (row.address === top_address)
+											internalInputs[top_address] += input.amount;
+									}
+								}
+								const net_to_top_address = internalOutputs[top_address] - internalInputs[top_address];
+								const net_to_wallet_address = internalOutputs[objAddress.address] - internalInputs[objAddress.address];
+								if (net_to_top_address > 0) {
+									if (!assocAmountByAssetAndAddress[asset])
+										assocAmountByAssetAndAddress[asset] = {};
+									if (!assocAmountByAssetAndAddress[asset][top_address])
+										assocAmountByAssetAndAddress[asset][top_address] = 0;
+									assocAmountByAssetAndAddress[asset][top_address] += net_to_top_address;
+								}
+								if (net_to_wallet_address > 0) {
+									if (!assocAmountByAssetAndAddress[asset])
+										assocAmountByAssetAndAddress[asset] = {};
+									if (!assocAmountByAssetAndAddress[asset][objAddress.address])
+										assocAmountByAssetAndAddress[asset][objAddress.address] = 0;
+									assocAmountByAssetAndAddress[asset][objAddress.address] += net_to_wallet_address;
+								}
+							}
+						}
+
 						var config = configService.getSync().wallet.settings;
 						
 						var arrDestinations = [];
