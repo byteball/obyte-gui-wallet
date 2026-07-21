@@ -945,79 +945,51 @@ angular.module('copayApp.services').factory('correspondentListService', function
 	});
 
 	eventBus.on('new_my_transactions', (arrNewUnits) => {
-		var storage = require('ocore/storage.js');
-		var db = require('ocore/db.js');
+		const db = require('ocore/db.js');
 			
 		arrNewUnits.forEach((unit) => {
 			if (unit === $rootScope.sentUnit)
 				return;
-			if (!$rootScope.newPaymentsCount[unit]) {
-				function ifFound(objJoint) {
-					$timeout(function(){
-						
-						const author_addresses = objJoint.unit.authors.map(author => author.address);
-						var allAddressWithAssets = [];
-						var paymentMessages = objJoint.unit.messages.filter(message => message.app === 'payment' && message.payload); // public payments only
-						paymentMessages.forEach(message => {
-							var outputs = message.payload.outputs;
-							outputs.forEach(output =>
-								allAddressWithAssets.findIndex(awa => awa.address === output.address) < 0
-								&& author_addresses.findIndex(addr => addr === output.address) < 0 // exclude change outputs
-								&& allAddressWithAssets.push({ address: output.address, asset: message.payload.asset || 'base' })
-							);
-						});
-						if (allAddressWithAssets.length === 0)
-							return console.log("no external outputs");
-						var addresses = allAddressWithAssets.map(awa => awa.address);
-						var getAssetByAddress = address => allAddressWithAssets.find(awa => awa.address === address).asset;
-						db.query(`SELECT address, wallet FROM my_addresses WHERE address IN(?)`, [addresses], rows => {
-							var row = rows[0];
-							if (row) {
-								$rootScope.newPaymentsDetails[unit] = {
-									receivedAddress: row.address,
-									walletAddress: row.address,
-									walletId: row.wallet,
-									asset: getAssetByAddress(row.address),
-								};
-								$rootScope.newPaymentsCount[unit] = 1;
-								return $rootScope.$emit('Local/BadgeUpdated');
-							}
-							// else received payment to a shared address
-							db.query(
-								`SELECT shared_address, address, wallet 
-								FROM shared_addresses
-								CROSS JOIN shared_address_signing_paths USING(shared_address)
-								CROSS JOIN my_addresses USING(address) 
-								WHERE shared_address IN(?)`,
-								[addresses],
-								rows => {
-									var row = rows[0];
-									if (!row) {
-										delete $rootScope.newPaymentsCount[unit];
-										return console.log("failed to find our wallet for payment in unit " + unit);
-									}
-									$rootScope.newPaymentsDetails[unit] = {
-										receivedAddress: row.shared_address,
-										walletAddress: row.address,
-										walletId: row.wallet,
-										asset: getAssetByAddress(row.shared_address),
-									};
-									$rootScope.newPaymentsCount[unit] = 1;
-									$rootScope.$emit('Local/BadgeUpdated');
-								}
-							);
-						});
+
+			db.query(
+				`SELECT outputs.address AS received_address, outputs.asset,
+					my_addresses.address AS wallet_address, my_addresses.wallet AS wallet_id
+				FROM outputs
+				JOIN my_addresses ON my_addresses.address = outputs.address
+				WHERE outputs.unit = ?
+					AND outputs.address NOT IN(SELECT address FROM unit_authors WHERE unit = ?)
+				UNION
+				SELECT outputs.address AS received_address, outputs.asset,
+					my_addresses.address AS wallet_address, my_addresses.wallet AS wallet_id
+				FROM outputs
+				JOIN shared_addresses ON shared_addresses.shared_address = outputs.address
+				JOIN shared_address_signing_paths
+					ON shared_address_signing_paths.shared_address = shared_addresses.shared_address
+				JOIN my_addresses ON my_addresses.address = shared_address_signing_paths.address
+				WHERE outputs.unit = ?
+					AND outputs.address NOT IN(SELECT address FROM unit_authors WHERE unit = ?)`,
+				[unit, unit, unit, unit],
+				rows => {
+					if (rows.length === 0) {
+						delete $rootScope.newPaymentsCount[unit];
+						delete $rootScope.newPaymentsDetails[unit];
+						return console.log("failed to find our wallet for payment in unit " + unit);
+					}
+					$timeout(function() {
+						$rootScope.newPaymentsDetails[unit] = rows.map(row => ({
+							receivedAddress: row.received_address,
+							walletAddress: row.wallet_address,
+							walletId: row.wallet_id,
+							asset: row.asset || 'base',
+						}));
+						$rootScope.newPaymentsCount[unit] = 1;
+						$rootScope.$emit('Local/BadgeUpdated');
 					});
-				};
-				function ifNotFound() {
-					throw Error("failed to load unit " + unit + " where a payment was received");
 				}
-				storage.readJoint(db, unit, { ifFound: ifFound, ifNotFound: ifNotFound });
-			}
-			else
-				$rootScope.newPaymentsCount[unit]++;
+			);
 		});
 		delete $rootScope.newPaymentsCount[$rootScope.sentUnit];
+		delete $rootScope.newPaymentsDetails[$rootScope.sentUnit];
 	});
 	
 	eventBus.on('paired', function(device_address){

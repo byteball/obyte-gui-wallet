@@ -11,6 +11,32 @@
   height: 45px;
   line-height: 45px;
   max-width: 160px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.topbar-title-group {
+  height: 45px;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.topbar-multisig-badge {
+  flex: 0 0 auto;
+  margin-left: 8px;
+  padding: 0 6px;
+  border: 1px solid #D9E0E6;
+  border-radius: 9px;
+  background: #F5F7F9;
+  color: #6A7D90;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 17px;
+  white-space: nowrap;
 }
 
 @media only screen and (max-width: 320px) {
@@ -22,6 +48,12 @@
     height: 45px;
     line-height: 45px;
     max-width: 120px;
+  }
+
+  .topbar-multisig-badge {
+    margin-left: 6px;
+    padding: 0 5px;
+    font-size: 11px;
   }
 }
 </style>
@@ -48,7 +80,10 @@
   <section class="middle tab-bar-section">
     <h1 class="title ellipsis" style="color: #4E4E4E !important; line-height: 45px; display: flex;align-items: center;justify-content: center;">
       <span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address && !titleSection && index.tab !== 'walletHome') || topbar.showableWalletAvatar()" class="topbar-avatar" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>
-		<span ng-if="index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address || titleSection" style="color: #4E4E4E !important;" class="ellipsis topbar-title-maxwidth">{{(titleSection|translate) || (index.shared_address || index.alias || index.walletName)}}</span>
+		<span ng-if="(index.arrBalances[index.assetIndex].shared === undefined && !index.shared_address) || titleSection" class="topbar-title-group">
+			<span style="color: #4E4E4E !important;" class="ellipsis topbar-title-maxwidth">{{(titleSection|translate) || (index.alias || index.walletName)}}</span>
+			<span ng-if="!titleSection && index.n > 1" class="topbar-multisig-badge">{{index.m}}-<span translate>of</span>-{{index.n}}</span>
+		</span>
 		<span ng-if="(index.arrBalances[index.assetIndex].shared !== undefined || index.shared_address) && !titleSection">
 			<a ng-click="index.openSubwalletModal()" class="topbar-wrapper" style="color: #4E4E4E !important">
         <span class="topbar-avatar" ng-if="index.tab !== 'walletHome'" ng-style="{'background-color':noColor ? '#4A90E2': index.backgroundColor}">{{(index.alias || index.walletName) | limitTo: 1}}</span>

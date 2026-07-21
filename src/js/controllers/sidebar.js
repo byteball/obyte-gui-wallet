@@ -30,9 +30,10 @@ angular.module('copayApp.controllers').controller('sidebarController',
     };
 
     self.getBadgeCount = function(wallet) {
-      var totalCounts = 0;
-      for(var unit in $rootScope.newPaymentsDetails) {
-        if ($rootScope.newPaymentsDetails[unit].walletId === wallet.id) {
+      let totalCounts = 0;
+      for(const unit in $rootScope.newPaymentsDetails) {
+        const details = $rootScope.newPaymentsDetails[unit];
+        if (details.some(detail => detail.walletId === wallet.id)) {
           totalCounts += $rootScope.newPaymentsCount[unit] || 0;
         }
       }

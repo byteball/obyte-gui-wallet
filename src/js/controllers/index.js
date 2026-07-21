@@ -1098,17 +1098,18 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	};
 	
 	$scope.getSubwalletBadge = function(shared_address) {
-	  var totalCounts = 0;
+	  let totalCounts = 0;
 	  if (shared_address) {
-		for(var unit in $rootScope.newPaymentsDetails) {
-		  if ($rootScope.newPaymentsDetails[unit].receivedAddress === shared_address) {
+		for(const unit in $rootScope.newPaymentsDetails) {
+		  const details = $rootScope.newPaymentsDetails[unit];
+		  if (details.some(detail => detail.receivedAddress === shared_address)) {
 			totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 		  }
 		}
 	  } else {
-		for (var unit in $rootScope.newPaymentsDetails) {
-		  var details = $rootScope.newPaymentsDetails[unit];
-		  if (details.walletId === self.walletId && details.walletAddress === details.receivedAddress) {
+		for (const unit in $rootScope.newPaymentsDetails) {
+		  const details = $rootScope.newPaymentsDetails[unit];
+		  if (details.some(detail => detail.walletId === self.walletId && detail.walletAddress === detail.receivedAddress)) {
 			totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 		  }
 		}
