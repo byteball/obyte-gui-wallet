@@ -1491,20 +1491,20 @@ angular.module('copayApp.controllers')
 		};
 
 		this.getAssetBadge = function(asset) {
-			var totalCounts = 0;
+			let totalCounts = 0;
 			if (indexScope.shared_address) {
-				for (var unit in $rootScope.newPaymentsDetails) {
-					var details = $rootScope.newPaymentsDetails[unit];
-					if (details.receivedAddress === indexScope.shared_address && details.asset === asset) {
+				for (const unit in $rootScope.newPaymentsDetails) {
+					const details = $rootScope.newPaymentsDetails[unit];
+					if (details.some(detail => detail.receivedAddress === indexScope.shared_address && detail.asset === asset)) {
 						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
 				}
 			} else {
-				for(var unit in $rootScope.newPaymentsDetails) {
-					var details = $rootScope.newPaymentsDetails[unit];
-					if (details.walletId === indexScope.walletId
-						&& details.walletAddress === details.receivedAddress
-						&& details.asset === asset) {
+				for(const unit in $rootScope.newPaymentsDetails) {
+					const details = $rootScope.newPaymentsDetails[unit];
+					if (details.some(detail => detail.walletId === indexScope.walletId
+						&& detail.walletAddress === detail.receivedAddress
+						&& detail.asset === asset)) {
 						totalCounts += $rootScope.newPaymentsCount[unit] || 0;
 					}
 				}
@@ -1513,11 +1513,11 @@ angular.module('copayApp.controllers')
 		};
 
 		this.getBadgeSortedBalances = function() {
-			var balancesWithBadges = [];
-			var balancesWithoutBadges = [];
+			const balancesWithBadges = [];
+			const balancesWithoutBadges = [];
 
 			indexScope.arrBalances.forEach(function(balance) {
-				var target = self.getAssetBadge(balance.asset) > 0
+				const target = self.getAssetBadge(balance.asset) > 0
 					? balancesWithBadges
 					: balancesWithoutBadges;
 				target.push(balance);
