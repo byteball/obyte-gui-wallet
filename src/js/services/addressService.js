@@ -19,7 +19,7 @@ angular.module('copayApp.services')
 
       client.createAddress(0, function(err, addr) {
         if (err)
-            throw "impossible err creating address";
+            throw new Error('impossible err creating address');
         return cb(null, addr.address);
       });
     };
