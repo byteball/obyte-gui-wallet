@@ -1,0 +1,67 @@
+<section class="post-send-dag-screen" ng-click="continue()">
+  <article class="post-send-dag-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="post-send-dag-title"
+    ng-click="$event.stopPropagation()">
+    <a class="close-reveal-modal post-send-dag-close"
+      ng-click="continue()"
+      role="button"
+      tabindex="0"
+      aria-label="{{'Close'|translate}}">
+      <span aria-hidden="true">&times;</span>
+    </a>
+
+    <header class="post-send-dag-heading">
+      <h1 id="post-send-dag-title" translate>You added a transaction</h1>
+    </header>
+
+    <div class="post-send-dag-viewport">
+      <svg class="post-send-dag-graph"
+        ng-class="{'post-send-dag-graph-scrollable': graph.scrollable}"
+        ng-attr-width="{{graph.width}}"
+        ng-attr-height="{{graph.height}}"
+        viewBox="0 0 {{graph.width}} {{graph.height}}">
+
+        <path class="post-send-dag-context-edge"
+          ng-repeat="edge in graph.contextEdges track by $index"
+          ng-attr-d="{{edge.path}}"></path>
+
+        <g ng-repeat="edge in graph.edges track by $index">
+          <path class="post-send-dag-edge"
+            ng-attr-d="{{edge.path}}"
+            pathLength="1"
+            ng-style="{'animation-delay': ((animation.edgeStart + $index * animation.edgeStep) + 's')}"></path>
+          <path class="post-send-dag-edge"
+            ng-attr-d="{{edge.arrowPath}}"
+            pathLength="1"
+            ng-style="{'animation-delay': ((animation.edgeStart + 0.04 + $index * animation.edgeStep) + 's')}"></path>
+        </g>
+
+        <g ng-attr-transform="translate({{graph.sent.x}}, {{graph.sent.y}})">
+          <g class="post-send-dag-node-motion"
+            ng-style="{'animation-delay': (animation.sentDelay + 's')}">
+            <circle class="post-send-dag-node-circle post-send-dag-node-circle-sent" r="18"></circle>
+            <rect class="post-send-dag-unit-label-backdrop" x="-33" y="23" width="66" height="20" rx="2"></rect>
+            <text class="post-send-dag-unit-label post-send-dag-sent-unit-label" text-anchor="middle" y="38">{{graph.sent.shortUnit}}</text>
+          </g>
+        </g>
+
+        <g ng-repeat="parent in graph.parents track by parent.unit"
+          ng-attr-transform="translate({{parent.x}}, {{parent.y}})">
+          <circle class="post-send-dag-node-circle" r="14"></circle>
+          <rect class="post-send-dag-unit-label-backdrop" x="-33" y="19" width="66" height="20" rx="2"></rect>
+          <text class="post-send-dag-unit-label" text-anchor="middle" y="34">{{parent.shortUnit}}</text>
+        </g>
+      </svg>
+    </div>
+
+    <footer class="post-send-dag-footer">
+      <a class="post-send-dag-explorer-link"
+        ng-href="{{explorerUrl}}"
+        ng-click="openInExplorer($event)">
+        <span translate>View in explorer</span>
+      </a>
+    </footer>
+  </article>
+</section>

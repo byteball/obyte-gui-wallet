@@ -1,0 +1,291 @@
+.reveal-modal.post-send-dag-modal {
+  position: fixed;
+  top: 0 !important;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: none;
+  min-height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: rgba(24, 37, 51, 0.48);
+  box-shadow: none;
+  z-index: 1035;
+}
+
+.post-send-dag-screen,
+.post-send-dag-screen * {
+  box-sizing: border-box;
+}
+
+.post-send-dag-screen {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow: hidden;
+  color: #2c3e50;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.post-send-dag-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+  border: 1px solid #dfe5eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(22, 36, 50, 0.22);
+  animation: post-send-dag-dialog-in 0.16s ease-out both;
+}
+
+.reveal-modal.post-send-dag-modal .post-send-dag-close {
+  top: 12px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+  text-decoration: none;
+  outline: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.reveal-modal.post-send-dag-modal .post-send-dag-close:hover,
+.reveal-modal.post-send-dag-modal .post-send-dag-close:focus,
+.reveal-modal.post-send-dag-modal .post-send-dag-close:active {
+  background: transparent;
+  color: #aaa;
+  text-decoration: none;
+  outline: 0;
+}
+
+.post-send-dag-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+  padding: 0 56px;
+  text-align: center;
+}
+
+.post-send-dag-heading h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.post-send-dag-viewport {
+  width: 100%;
+  height: 214px;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-top: 1px solid #edf0f3;
+  border-bottom: 1px solid #edf0f3;
+  background: #fff;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-send-dag-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.post-send-dag-graph {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 214px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.post-send-dag-graph-scrollable {
+  width: auto;
+}
+
+.post-send-dag-context-edge {
+  fill: none;
+  stroke: #2b82c5;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.post-send-dag-edge {
+  fill: none;
+  stroke: #2b82c5;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: post-send-dag-draw 0.24s ease-out forwards;
+}
+
+.post-send-dag-node-motion {
+  opacity: 0;
+  transform: scale(0.72);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: post-send-dag-pop-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.post-send-dag-node-circle {
+  fill: #90badc;
+  stroke: #4a90e2;
+  stroke-width: 1.5;
+}
+
+.post-send-dag-node-circle-sent {
+  stroke: #2b82c5;
+  stroke-width: 4;
+}
+
+.post-send-dag-unit-label-backdrop {
+  fill: #fff;
+}
+
+.post-send-dag-unit-label {
+  fill: #4e4e4e;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.post-send-dag-sent-unit-label {
+  fill: #2c3e50;
+  font-weight: 700;
+}
+
+.post-send-dag-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+  padding: 0 20px;
+  background: #fff;
+}
+
+.post-send-dag-explorer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 10px;
+  color: #2b82c5;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.post-send-dag-explorer-link:hover,
+.post-send-dag-explorer-link:active {
+  color: #1d6fae;
+  text-decoration: underline;
+}
+
+.post-send-dag-explorer-link:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+@keyframes post-send-dag-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes post-send-dag-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes post-send-dag-pop-in {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-height: 480px) {
+  .post-send-dag-screen {
+    padding: 8px;
+  }
+
+  .post-send-dag-dialog {
+    max-height: calc(100vh - 16px);
+  }
+
+  .post-send-dag-heading {
+    min-height: 56px;
+  }
+
+  .reveal-modal.post-send-dag-modal .post-send-dag-close {
+    top: 6px;
+  }
+
+  .post-send-dag-viewport,
+  .post-send-dag-graph {
+    height: 190px;
+  }
+
+  .post-send-dag-graph {
+    transform: translateY(-7px);
+  }
+
+  .post-send-dag-footer {
+    min-height: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-send-dag-dialog,
+  .post-send-dag-edge,
+  .post-send-dag-node-motion {
+    animation: none;
+  }
+
+  .post-send-dag-node-motion {
+    opacity: 1;
+    transform: none;
+  }
+
+  .post-send-dag-edge {
+    stroke-dashoffset: 0;
+  }
+}

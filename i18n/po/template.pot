@@ -2558,3 +2558,11 @@ msgstr ""
 #: public/views/walletHome.html:423
 msgid "{{home.custom_amount_error}}"
 msgstr ""
+
+#: public/views/modals/post-send-dag.html:16
+msgid "You added a transaction"
+msgstr ""
+
+#: public/views/modals/post-send-dag.html:63
+msgid "View in explorer"
+msgstr ""

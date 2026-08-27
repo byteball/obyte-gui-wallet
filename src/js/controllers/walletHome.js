@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService, postSendDagService) {
 
 		var self = this;
 		var home = this;
@@ -2299,7 +2299,7 @@ angular.module('copayApp.controllers')
 						}
 						if (objDataMessage)
 							opts.messages = [objDataMessage];
-						fc.sendMultiPayment(opts, function(err, unit, mnemonics) {
+						fc.sendMultiPayment(opts, async function(err, unit, mnemonics, objUnit) {
 							// if multisig, it might take very long before the callback is called
 							$rootScope.sentUnit = unit;
 							indexScope.setOngoingProcess(gettext('sending'), false);
@@ -2337,6 +2337,17 @@ angular.module('copayApp.controllers')
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)",
 									[unit, to_address, original_address]);
 							}
+							const parentUnits = objUnit && Array.isArray(objUnit.parent_units) ? objUnit.parent_units : [];
+							const canShowPostSendDag = unit && parentUnits.length;
+							if (canShowPostSendDag) {
+								await new Promise(function(resolve) {
+									postSendDagService.open({
+										unit: unit,
+										parentUnits: parentUnits
+									}, resolve);
+								});
+							}
+
 							if (recipient_device_address) { // show payment in chat window
 								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
 								if (binding && binding.reverseAmount) { // create a request for reverse payment
