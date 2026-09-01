@@ -213,8 +213,7 @@
 }
 
 .post-send-dag-explorer-link:focus {
-  outline: 2px solid #4a90e2;
-  outline-offset: 2px;
+  outline: none;
 }
 
 @keyframes post-send-dag-dialog-in {
