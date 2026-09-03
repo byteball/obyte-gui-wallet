@@ -22,7 +22,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
   var isTestnet = constants.version.match(/t$/);
   var isDevnet = constants.version.match(/dev$/);
   root.TIMESTAMPER_ADDRESS = isTestnet ? 'OPNUXBRSSQQGHKQNEPD2GLWQYEUY5XLD' : 'I2ADHGP4HL6J37NQAD73J7E5SKFIXJOT';
-  root.USDC_ASSET = isTestnet ? 'lwvZjepKoGSiMIDalxi2GB8Pd+nK86Qsnsn1Ng7TAJE=' : 'S/oCESzEO8G2hvQuI6HsyPr0foLfKwzs+GU73nO9H40=';
+  root.USDC_ASSET = isTestnet ? 'lwvZjepKoGSiMIDalxi2GB8Pd+nK86Qsnsn1Ng7TAJE=' : 'qcR0LTnT8+z9iCmpKzyfSfcUrS+zi2677+fprTBs0As=';
   constants.USDC_ASSET = root.USDC_ASSET;
 	root.backupExceedingAmountUSD = 10;
 	
