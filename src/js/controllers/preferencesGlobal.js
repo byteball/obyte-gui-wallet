@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService) {
+  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService, electron) {
 	
 		var conf = require('ocore/conf.js');
   
     $scope.encrypt = !!profileService.profile.xPrivKeyEncrypted;
+    this.isElectron = electron.isDefined();
     
     this.init = function() {
       var config = configService.getSync();
@@ -21,6 +22,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
 	  this.restoreDate = config.restoreDate;
 
       $scope.pushNotifications = config.pushNotifications.enabled;
+      this.desktopNotifications = !config.desktopNotifications || config.desktopNotifications.enabled !== false;
 	  $scope.spendUnconfirmed = config.wallet.spendUnconfirmed;
     };
 
@@ -51,6 +53,13 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
         else
           pushNotificationsService.pushNotificationsUnregister();
         if (err) $log.debug(err);
+      });
+    });
+
+    const unwatchDesktopNotifications = $scope.$watch('prefGlobal.desktopNotifications', function(newVal, oldVal) {
+      if (!electron.isDefined() || newVal === oldVal || typeof newVal !== 'boolean') return;
+      configService.set({desktopNotifications: {enabled: newVal}}, function(err) {
+        if (err) $log.error(err);
       });
     });
 
@@ -94,6 +103,7 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
     $scope.$on('$destroy', function() {
         unwatchSpendUnconfirmed();
         unwatchPushNotifications();
+        unwatchDesktopNotifications();
         unwatchEncrypt();
     });
   });

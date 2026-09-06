@@ -1465,7 +1465,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 			$log.debug('updateAll Wallet Balance');
 			self.setBalance(assocBalances, assocSharedBalances);
 			// Notify external addons or plugins
-			$rootScope.$emit('Local/BalanceUpdated', assocBalances);
+			$rootScope.$emit('Local/BalanceUpdated', assocBalances, fc.credentials.walletId);
 			if (!self.isPrivKeyEncrypted)
 				$rootScope.$emit('Local/BalanceUpdatedAndWalletUnlocked');
 		});

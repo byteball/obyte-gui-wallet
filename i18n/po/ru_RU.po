@@ -2576,3 +2576,19 @@ msgstr "Вы добавили транзакцию"
 #: public/views/modals/post-send-dag.html:63
 msgid "View on explorer"
 msgstr "Посмотреть в эксплорере"
+
+#: src/js/services/correspondentListService.js
+msgid "New message"
+msgstr "Новое сообщение"
+
+#: src/js/services/correspondentListService.js
+msgid "You have received a new message."
+msgstr "Вам пришло новое сообщение."
+
+#: src/js/services/correspondentListService.js
+msgid "New payment"
+msgstr "Новый платёж"
+
+#: src/js/services/correspondentListService.js
+msgid "You have received a new payment."
+msgstr "Вам поступил новый платёж."
