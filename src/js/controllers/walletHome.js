@@ -1423,7 +1423,11 @@ angular.module('copayApp.controllers')
 
 		function checkIfAAAndUpdateResults(address) {
 			self.bEstimatingAAResults = true;
-			readAADefinitionsWithBaseDefinitions(address, function (rows) {
+			readAADefinitionsWithBaseDefinitions(address, function (err, rows) {
+				if (err) {
+					self.bEstimatingAAResults = false;
+					return self.setSendError(err);
+				}
 				self.aa_destinations = rows;
 				if (rows.length > 0) {
 					updateAADocs();
@@ -1439,17 +1443,21 @@ angular.module('copayApp.controllers')
 
 		function readAADefinitionsWithBaseDefinitions(address, handleResult) {
 			var aa_addresses = require('ocore/aa_addresses.js');
-			aa_addresses.readAADefinitions([address], function (rows) {
+			aa_addresses.readAADefinitions([address], function (err, rows) {
+				if (err)
+					return handleResult(err);
 				if (rows.length === 0)
-					return handleResult([]);
+					return handleResult(null, []);
 				if (!rows[0].base_aa) // regular AA
-					return handleResult(rows);
+					return handleResult(null, rows);
 				// else, parameterized AA
-				aa_addresses.readAADefinitions([rows[0].base_aa], function (base_rows) {
+				aa_addresses.readAADefinitions([rows[0].base_aa], function (err, base_rows) {
+					if (err)
+						return handleResult(err);
 					if (base_rows.length === 0) // should never happen
-						return handleResult(rows);
+						return handleResult(null, rows);
 					rows[0].base_definition = base_rows[0].definition;
-					handleResult(rows);
+					handleResult(null, rows);
 				});
 			});
 		}
@@ -1550,7 +1558,9 @@ angular.module('copayApp.controllers')
 				return;
 			var arrAddresses = getOutputsForMultiSend().map(function (output) { return output.address; });
 			var aa_addresses = require('ocore/aa_addresses.js');
-			aa_addresses.readAADefinitions(arrAddresses, function (rows) {
+			aa_addresses.readAADefinitions(arrAddresses, function (err, rows) {
+				if (err)
+					return console.log('Error reading AA definitions:', err);
 				form.addresses.$setValidity('noAA', rows.length === 0);
 				$timeout(function() {
 					$scope.$digest();
@@ -3366,7 +3376,9 @@ angular.module('copayApp.controllers')
 				});
 
 				var setAADescription = function (aa_address, field) {
-					readAADefinitionsWithBaseDefinitions(aa_address, rows => {
+					readAADefinitionsWithBaseDefinitions(aa_address, (err, rows) => {
+						if (err)
+							return console.log('setAADescription error:', err);
 						var row = rows[0];
 						if (!row)
 							return;
