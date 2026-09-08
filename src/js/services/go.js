@@ -92,6 +92,54 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		});
 	};
 
+	if (electron) {
+		let notificationClickId = 0;
+		let balanceWalletId, pendingHistory;
+		$rootScope.$on('Local/NewFocusedWallet', function() {
+			balanceWalletId = pendingHistory = null;
+		});
+		$rootScope.$on('Local/BalanceUpdated', function(event, balances, walletId) {
+			if (!profileService.focusedClient || profileService.focusedClient.credentials.walletId !== walletId) return;
+			balanceWalletId = walletId;
+			if (pendingHistory) pendingHistory();
+		});
+		electron.ipcRenderer.on('notification-clicked', function(event, target, walletId) {
+			const clickId = ++notificationClickId;
+			pendingHistory = null;
+			$timeout(function() {
+				if (clickId !== notificationClickId) return;
+				if (target === 'history') {
+					if (!walletId) return root.history();
+					const client = profileService.walletClients && profileService.walletClients[walletId];
+					if (!client || !client.credentials || client.credentials.walletId !== walletId) return;
+					const openHistory = function() {
+						if (clickId === notificationClickId && profileService.focusedClient === client) root.history();
+					};
+					const afterTransition = function() {
+						if ($state.transition)
+							$state.transition.then(openHistory, angular.noop);
+						else
+							openHistory();
+					};
+					const afterBalance = function() {
+						if (clickId !== notificationClickId || profileService.focusedClient !== client) return;
+						if (balanceWalletId !== walletId) {
+							pendingHistory = afterBalance;
+							return;
+						}
+						pendingHistory = null;
+						$timeout(afterTransition);
+					};
+					if (profileService.focusedClient === client) return afterBalance();
+					profileService.setAndStoreFocus(walletId, function(err) {
+						if (err) return $rootScope.$emit('Local/ShowErrorAlert', err);
+						afterBalance();
+					});
+				}
+			});
+		});
+	}
+
 	root.addWallet = function() {
 		$state.go('add');
 	};

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('copayApp.services').
-factory('notification', ['$timeout',
-  function($timeout) {
+factory('notification', ['$timeout', 'electron', 'desktopNotificationService',
+  function($timeout, electron, desktopNotificationService) {
 
     var notifications = [];
 
@@ -226,10 +226,14 @@ factory('notification', ['$timeout',
         };
 
         if (document.hidden && (type == 'info' || type == 'funds')) {
-          new window.Notification(title, {
-            body: content,
-            icon: 'img/notification.png'
-          });
+          if (electron.isDefined()) {
+            desktopNotificationService.show(title, content);
+          } else {
+            new window.Notification(title, {
+              body: content,
+              icon: 'img/icons/logo-circle-256.png'
+            });
+          }
         }
 
         this.save();

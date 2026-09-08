@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, Notification } = require('electron');
 const path = require('path');
 const package = require('./package.json');
 const sqlite3 = require('sqlite3').verbose();
@@ -7,6 +7,7 @@ const fs = require('fs');
 const Badge = require('electron-windows-badge');
 
 if (process.platform === 'win32') { // fix for Electron not working when UTF-8 symbols in path
+	app.setAppUserModelId('org.obyte.wallet');
 	app.commandLine.appendSwitch('no-sandbox')
 	app.commandLine.appendSwitch('disable-gpu')
 	app.commandLine.appendSwitch('disable-software-rasterizer')
@@ -126,6 +127,30 @@ async function upgradeLS() {
 }
 
 let mainWindow;
+ipcMain.on('show-notification', (event, options) => {
+	if (!mainWindow || mainWindow.isDestroyed() || event.sender !== mainWindow.webContents) return;
+	if (!options || typeof options.title !== 'string' || !Notification.isSupported()) return;
+	try {
+		const notification = new Notification({
+			title: options.title,
+			body: typeof options.body === 'string' ? options.body : '',
+			icon: path.join(__dirname, 'public/img/icons/logo-circle-256.png')
+		});
+		notification.on('click', () => {
+			if (!mainWindow || mainWindow.isDestroyed()) return;
+			if (mainWindow.isMinimized()) mainWindow.restore();
+			mainWindow.show();
+			mainWindow.focus();
+			if (options.target === 'history' || options.target === 'messages')
+				mainWindow.webContents.send('notification-clicked', options.target, typeof options.walletId === 'string' ? options.walletId : undefined);
+		});
+		notification.on('failed', (event, error) => console.warn('Desktop notification failed:', error));
+		notification.show();
+	} catch (err) {
+		console.warn('Desktop notification failed:', err);
+	}
+});
+
 async function createWindow () {
 	await upgradeLS();
 

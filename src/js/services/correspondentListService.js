@@ -5,7 +5,7 @@ var eventBus = require('ocore/event_bus.js');
 var ValidationUtils = require('ocore/validation_utils.js');
 var objectHash = require('ocore/object_hash.js');
 
-angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService, electron) {
+angular.module('copayApp.services').factory('correspondentListService', function($state, $rootScope, $sce, $compile, configService, storageService, profileService, go, lodash, $stickyState, $deepStateRedirect, $timeout, gettext, isCordova, pushNotificationsService, electron, desktopNotificationService, gettextCatalog) {
 	var root = {};
 	var crypto = require('crypto');
 	var device = require('ocore/device.js');
@@ -67,10 +67,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type){
+	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type, isPayment){
 		if (!root.messageEventsByCorrespondent[peer_address] && !skip_history_load) {
 			return loadMoreHistory({device_address: peer_address}, function() {
-				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type);
+				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type, isPayment);
 			});
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -80,6 +80,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 				$rootScope.newMessagesCount[peer_address]++;
 			else {
 				$rootScope.newMessagesCount[peer_address] = 1;
+			}
+			if (!isPayment) {
+				desktopNotificationService.show(
+					gettextCatalog.getString('New message'),
+					gettextCatalog.getString('You have received a new message.'),
+					message_counter == null ? null : 'message:' + peer_address + ':' + message_counter,
+					'messages'
+				);
 			}
 			if ($rootScope.newMessagesCount[peer_address] == 1 && (!$state.is('correspondentDevices.correspondentDevice') || root.currentCorrespondent.device_address != peer_address)) {
 				root.messageEventsByCorrespondent[peer_address].push({
@@ -938,7 +946,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 			return;
 		var title = type=="shared" ? 'Payment to smart address' : 'Payment';
 		var body = '<a ng-click="showPayment(\''+escapeHtml(asset)+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
-		addMessageEvent(true, peer_address, body, message_counter);
+		addMessageEvent(true, peer_address, body, message_counter, false, undefined, true);
 		device.readCorrespondent(peer_address, function(correspondent){
 			if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 1, 'html');
 		});
@@ -984,6 +992,14 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						}));
 						$rootScope.newPaymentsCount[unit] = 1;
 						$rootScope.$emit('Local/BadgeUpdated');
+						if (!electron.isDefined()) return;
+						desktopNotificationService.show(
+							gettextCatalog.getString('New payment'),
+							gettextCatalog.getString('You have received a new payment.'),
+							'payment:' + unit,
+							'history',
+							rows[0].wallet_id
+						);
 					});
 				}
 			);
