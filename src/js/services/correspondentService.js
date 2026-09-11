@@ -547,6 +547,10 @@ angular.module("copayApp.services").factory("correspondentService", function($ro
 					$scope.peer_party_name = objContract.peer_party_name;
 					$scope.payer_name = (objContract.me_is_payer ? objContract.my_party_name : objContract.peer_party_name) || '';
 					$scope.payee_name = (objContract.me_is_payer ? objContract.peer_party_name : objContract.my_party_name) || '';
+					if ($scope.payer_name.includes(arbiter_contract.DELIMITER))
+						$scope.error = "Invalid payer name";
+					if ($scope.payee_name.includes(arbiter_contract.DELIMITER))
+						$scope.error = "Invalid payee name";
 					$scope.amount = objContract.amount;
 					$scope.asset = objContract.asset;
 					$scope.amountStr = txFormatService.formatAmountStr(objContract.amount, objContract.asset || "base");
