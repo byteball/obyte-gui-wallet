@@ -175,6 +175,10 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	  url: 'https://insight.bitpay.com:443/api/rates',
 	},
 
+	desktopNotifications: {
+	  enabled: true
+	},
+
 	pushNotifications: {
 	  enabled: true,
 	  config: {
@@ -292,6 +296,9 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 		}
 		if (!_config.pushNotifications) {
 			_config.pushNotifications = defaultConfig.pushNotifications;
+		}
+		if (!_config.desktopNotifications) {
+			_config.desktopNotifications = {enabled: true};
 		}
 		if (!_config.hub)
 			_config.hub = defaultConfig.hub;

@@ -54,11 +54,12 @@
     </li>
   </ul>
 
-  <div ng-show="index.usePushNotifications">
+  <div ng-show="prefGlobal.isElectron || index.usePushNotifications">
     <h4></h4>
     <ul class="no-bullet m0">
       <li>
-        <switch id="push-notifications" name="pushNotifications" ng-model="pushNotifications" class="green right"></switch>
+        <switch ng-show="prefGlobal.isElectron" id="desktop-notifications" name="desktopNotifications" ng-model="prefGlobal.desktopNotifications" class="green right"></switch>
+        <switch ng-show="!prefGlobal.isElectron" id="push-notifications" name="pushNotifications" ng-model="pushNotifications" class="green right"></switch>
         <div translate>Enable push notifications</div>
       </li>
     </ul>
