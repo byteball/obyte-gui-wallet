@@ -697,9 +697,9 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 					if (asset == 'base') asset = null;
 					if (contract_title.includes(arbiter_contract.DELIMITER))
 						return setError('Contract title cannot contain "'+arbiter_contract.DELIMITER+'"');
-					if (my_party_name.includes(arbiter_contract.DELIMITER))
+					if (my_party_name && my_party_name.includes(arbiter_contract.DELIMITER))
 						return setError('My party name cannot contain "'+arbiter_contract.DELIMITER+'"');
-					if (peer_party_name.includes(arbiter_contract.DELIMITER))
+					if (peer_party_name && peer_party_name.includes(arbiter_contract.DELIMITER))
 						return setError('Peer party name cannot contain "'+arbiter_contract.DELIMITER+'"');
 
 					if ($scope.bWorking)
