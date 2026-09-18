@@ -823,10 +823,8 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 				};
 				var findMyAddresses = function (cb) {
 					db.query(
-						"SELECT address FROM my_addresses WHERE address IN(?) \n\
-						UNION \n\
-						SELECT shared_address AS address FROM shared_addresses WHERE shared_address IN(?)",
-						[arrAllMemberAddresses, arrAllMemberAddresses],
+						"SELECT address FROM my_addresses WHERE address IN(?)",
+						[arrAllMemberAddresses],
 						function (rows) {
 							var arrMyAddresses = rows.map(function (row) { return row.address; });
 							for (var destinationAddress in assocMemberAddressesByDestAddress) {
