@@ -85,8 +85,6 @@ if [ ! -d $PROJECT ]; then
 	cordova plugin add https://github.com/StarleyDev/barcodescanner-sdk31#73e4aa96e2c0bad93ca08eb809d25ed68fd7203b
 #	cordova plugin add @red-mobile/cordova-plugin-barcodescanner
 	checkOK
-	cordova plugin add cordova-plugin-statusbar
-	checkOK
 	cordova plugin add https://github.com/bytelabsco/Custom-URL-scheme --variable URL_SCHEME=obyte
 	checkOK
 	cordova plugin add cordova-plugin-inappbrowser
@@ -140,7 +138,7 @@ if [ ! -d $PROJECT ]; then
 		checkOK
 	fi
 
-	cordova plugin add cordova-plugin-ionic-keyboard
+	cordova plugin add @moodlehq/cordova-plugin-ionic-keyboard@2.2.0-moodle.4 --save-exact
 	checkOK
 fi
 

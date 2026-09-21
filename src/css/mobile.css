@@ -7,6 +7,7 @@
 
 /* disabling text selection */
 body {
+  padding-top: env(safe-area-inset-top, 0px);
   -webkit-user-select: none;
   -khtml-user-select: none;
   -ms-user-select: none;
