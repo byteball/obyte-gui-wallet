@@ -720,6 +720,11 @@ to prevent collapsing during animation*/
 
 .reveal-modal.full {
   top: 0 !important;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.reveal-modal.full .tab-bar {
+  position: relative;
 }
 
 .modal-content {
@@ -728,6 +733,7 @@ to prevent collapsing during animation*/
   bottom: 0;
   width: 100%;
   top: 45px;
+  top: calc(45px + env(safe-area-inset-top, 0px));
   padding-bottom: 33px;
   -webkit-transform: translate3d(0,0,0);
   background: #fff;
@@ -1094,6 +1100,9 @@ i.validation-icon {
 
 .keyboard-open .bottom-bar {
 	display: none;
+}
+.keyboard-open .tab-view {
+	bottom: 0;
 }
 .keyboard-open .send-form {
 	padding-bottom: 0px;
