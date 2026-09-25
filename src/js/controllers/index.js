@@ -702,7 +702,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								var obj = (message.app === 'attestation') ? payload.profile : payload;
 								var arrPairs = [];
 								for (var field in obj)
-									arrPairs.push(field+": "+obj[field]);
+									arrPairs.push(field + ": " + (typeof obj[field] === 'object' ? JSON.stringify(obj[field]) : obj[field]));
 								var nl = "\n";
 								var list = arrPairs.join(nl)+nl;
 								if (message.app === 'profile' || message.app === 'data' || message.app === 'data_feed')
