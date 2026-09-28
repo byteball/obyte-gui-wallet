@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('copayApp.controllers').controller('preferencesGlobalController',
-  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService, electron) {
+  function($scope, $rootScope, $log, configService, uxLanguage, pushNotificationsService, profileService, electron, desktopNotificationService, gettextCatalog) {
 	
 		var conf = require('ocore/conf.js');
   
@@ -58,8 +58,9 @@ angular.module('copayApp.controllers').controller('preferencesGlobalController',
 
     const unwatchDesktopNotifications = $scope.$watch('prefGlobal.desktopNotifications', function(newVal, oldVal) {
       if (!electron.isDefined() || newVal === oldVal || typeof newVal !== 'boolean') return;
-      configService.set({desktopNotifications: {enabled: newVal}}, function(err) {
-        if (err) $log.error(err);
+      configService.set({desktopNotifications: {enabled: newVal, asked: true}}, function(err) {
+        if (err) return $log.error(err);
+        if (newVal) desktopNotificationService.show('Obyte', gettextCatalog.getString('Desktop notifications are enabled.'));
       });
     });
 

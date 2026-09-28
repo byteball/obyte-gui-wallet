@@ -176,7 +176,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 	},
 
 	desktopNotifications: {
-	  enabled: true
+	  enabled: false
 	},
 
 	pushNotifications: {
@@ -298,7 +298,7 @@ angular.module('copayApp.services').factory('configService', function(storageSer
 			_config.pushNotifications = defaultConfig.pushNotifications;
 		}
 		if (!_config.desktopNotifications) {
-			_config.desktopNotifications = {enabled: true};
+			_config.desktopNotifications = {enabled: false};
 		}
 		if (!_config.hub)
 			_config.hub = defaultConfig.hub;
