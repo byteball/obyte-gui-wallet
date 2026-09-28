@@ -19,11 +19,16 @@ angular.module('copayApp.services').factory('postSendDagService', function($moda
 		});
 	}
 
+	function graphPoint(x, y) {
+		return (Math.round(x * 10) / 10) + ' ' + (Math.round(y * 10) / 10);
+	}
+
 	function buildGraph(unit, parentUnits) {
 		let parents = uniqueParentUnits(unit, parentUnits);
-		const parentSpacing = parents.length <= 4 ? 88 : (parents.length % 2 ? 88 : 120);
+		const parentSpacing = parents.length === 2 ? 112 : (parents.length > 4 && parents.length % 2 === 0 ? 120 : 88);
 		const width = Math.max(320, (parents.length - 1) * parentSpacing + 96);
 		const rootX = width / 2;
+		const sentY = 52;
 		const parentY = 164;
 		const firstParentX = (width - (parents.length - 1) * parentSpacing) / 2;
 
@@ -44,22 +49,36 @@ angular.module('copayApp.services').factory('postSendDagService', function($moda
 			sent: {
 				shortUnit: shortenUnit(unit),
 				x: rootX,
-				y: 42
+				y: sentY
 			},
 			parents: parents,
 			contextEdges: parents.reduce(function(edges, parent) {
 				edges.push({
-					path: 'M ' + (parent.x - 10) + ' 174 L ' + (parent.x - 34) + ' 216'
+					path: 'M ' + (parent.x - 10) + ' 174 L ' + (parent.x - 24) + ' 216'
 				});
 				edges.push({
-					path: 'M ' + (parent.x + 10) + ' 174 L ' + (parent.x + 34) + ' 216'
+					path: 'M ' + (parent.x + 10) + ' 174 L ' + (parent.x + 24) + ' 216'
 				});
 				return edges;
 			}, []),
-			edges: parents.map(function(parent) {
+			edges: parents.map(function(parent, index) {
+				const startX = rootX + (parents.length === 1 ? 0 : -10 + index * 20 / (parents.length - 1));
+				const startY = sentY + 14;
+				const dx = parent.x - startX;
+				const dy = parent.y - startY;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+				const directionX = dx / distance;
+				const directionY = dy / distance;
+				const tipX = parent.x - directionX * 16;
+				const tipY = parent.y - directionY * 16;
+				const baseX = tipX - directionX * 10;
+				const baseY = tipY - directionY * 10;
+				const sideX = directionY * 6;
+				const sideY = -directionX * 6;
+
 				return {
-					path: 'M ' + rootX + ' 90 C ' + rootX + ' 112, ' + parent.x + ' 122, ' + parent.x + ' 145',
-					arrowPath: 'M ' + (parent.x - 6) + ' 135 L ' + parent.x + ' 145 L ' + (parent.x + 6) + ' 135'
+					path: 'M ' + graphPoint(startX, startY) + ' L ' + graphPoint(baseX, baseY),
+					arrowPath: 'M ' + graphPoint(baseX + sideX, baseY + sideY) + ' L ' + graphPoint(tipX, tipY) + ' L ' + graphPoint(baseX - sideX, baseY - sideY) + ' Z'
 				};
 			})
 		};
