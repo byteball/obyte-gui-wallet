@@ -32,10 +32,9 @@
             ng-attr-d="{{edge.path}}"
             pathLength="1"
             ng-style="{'animation-delay': ((animation.edgeStart + $index * animation.edgeStep) + 's')}"></path>
-          <path class="post-send-dag-edge"
+          <path class="post-send-dag-arrowhead"
             ng-attr-d="{{edge.arrowPath}}"
-            pathLength="1"
-            ng-style="{'animation-delay': ((animation.edgeStart + 0.04 + $index * animation.edgeStep) + 's')}"></path>
+            ng-style="{'animation-delay': ((animation.edgeStart + 0.24 + $index * animation.edgeStep) + 's')}"></path>
         </g>
 
         <g ng-attr-transform="translate({{graph.sent.x}}, {{graph.sent.y}})">

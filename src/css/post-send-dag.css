@@ -104,7 +104,7 @@
   width: 100%;
   height: 214px;
   margin: 0;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   border-top: 1px solid #edf0f3;
   border-bottom: 1px solid #edf0f3;
@@ -146,6 +146,12 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: post-send-dag-draw 0.24s ease-out forwards;
+}
+
+.post-send-dag-arrowhead {
+  fill: #2b82c5;
+  opacity: 0;
+  animation: post-send-dag-arrowhead-in 0.08s ease-out forwards;
 }
 
 .post-send-dag-node-motion {
@@ -234,6 +240,12 @@
   }
 }
 
+@keyframes post-send-dag-arrowhead-in {
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes post-send-dag-pop-in {
   to {
     opacity: 1;
@@ -275,6 +287,7 @@
 @media (prefers-reduced-motion: reduce) {
   .post-send-dag-dialog,
   .post-send-dag-edge,
+  .post-send-dag-arrowhead,
   .post-send-dag-node-motion {
     animation: none;
   }
@@ -286,5 +299,9 @@
 
   .post-send-dag-edge {
     stroke-dashoffset: 0;
+  }
+
+  .post-send-dag-arrowhead {
+    opacity: 1;
   }
 }
