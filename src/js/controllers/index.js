@@ -1093,6 +1093,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	    templateUrl: 'views/modals/desktop-notification-prompt.html',
 	    windowClass: 'post-send-dag-modal desktop-notification-modal',
 	    controller: function($scope, $modalInstance) {
+	      $scope.color = self.backgroundColor;
 	      $scope.enable = function() { $modalInstance.close(); };
 	      $scope.decline = function() { $modalInstance.dismiss(); };
 	    }
