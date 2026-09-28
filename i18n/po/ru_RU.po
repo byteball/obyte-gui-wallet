@@ -687,6 +687,10 @@ msgstr "Стратегия деривации"
 msgid "Details"
 msgstr "Подробности"
 
+#: src/js/controllers/preferencesGlobal.js
+msgid "Desktop notifications are enabled."
+msgstr "Уведомления на компьютере включены."
+
 #: public/views/preferencesGlobal.html:79
 msgid "Device address"
 msgstr "Адрес устройства"
@@ -732,6 +736,14 @@ msgstr "Ред."
 #: public/views/correspondentDevice.html:378
 msgid "Either you or {{correspondent.name}} have chat history recording disabled. History is not saved for anyone now."
 msgstr "Или вы, или {{correspondent.name}} отключили запись истории чата. История не сохраняется ни для кого."
+
+#: public/views/modals/desktop-notification-prompt.html:12
+msgid "Enable notifications about incoming payments and new messages?"
+msgstr "Включить уведомления о входящих платежах и новых сообщениях?"
+
+#: public/views/modals/desktop-notification-prompt.html:15
+msgid "Enable"
+msgstr "Включить"
 
 #: public/views/editCorrespondentDevice.html:35
 #: public/views/preferencesGlobal.html:62
@@ -1012,6 +1024,7 @@ msgstr "Ярлык"
 msgid "Language"
 msgstr "Язык"
 
+#: public/views/modals/desktop-notification-prompt.html:18
 #: public/views/modals/newVersionIsAvailable.html:12
 msgid "Later"
 msgstr "Позже"

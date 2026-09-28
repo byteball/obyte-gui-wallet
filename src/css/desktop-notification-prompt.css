@@ -1,0 +1,78 @@
+.reveal-modal.post-send-dag-modal.desktop-notification-modal {
+  background: rgba(24, 37, 51, 0.55);
+}
+
+.desktop-notification-dialog.desktop-notification-confirmation {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  padding: 34px 28px 26px;
+  border-radius: 6px;
+  border: 1px solid #dbe2e8;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(18, 30, 42, 0.28);
+  overflow-y: auto;
+  text-align: center;
+}
+
+.desktop-notification-dialog .desktop-notification-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a5b2bf;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  text-decoration: none;
+  outline: 0;
+}
+
+.desktop-notification-dialog .desktop-notification-close:hover {
+  color: #2c3e50;
+}
+
+.desktop-notification-dialog.desktop-notification-confirmation h2 {
+  margin: 0 0 26px;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.45;
+  padding: 0 6px;
+}
+
+.desktop-notification-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.desktop-notification-actions .button {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  line-height: 1;
+}
+
+.desktop-notification-actions .button i {
+  margin-right: 6px;
+  font-size: 14px;
+  line-height: 1;
+}

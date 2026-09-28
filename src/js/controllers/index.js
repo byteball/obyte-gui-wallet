@@ -10,7 +10,7 @@ var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService, desktopNotificationService) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -1080,9 +1080,42 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	  }
 	};
 	self.requestApproval = requestApproval;
-	
 
-	
+	let desktopNotificationPromptShown = false;
+	function maybeAskDesktopNotifications() {
+	  if (!electron.isDefined() || !$state.is('walletHome') || desktopNotificationPromptShown) return;
+	  if (profileService.profile && profileService.profile.xPrivKeyEncrypted &&
+	      (!profileService.focusedClient || !profileService.focusedClient.credentials.xPrivKey)) return;
+	  const desktopNotifications = configService.getSync().desktopNotifications;
+	  if (!desktopNotifications || desktopNotifications.enabled !== false || desktopNotifications.asked) return;
+	  desktopNotificationPromptShown = true;
+	  const modalInstance = $modal.open({
+	    templateUrl: 'views/modals/desktop-notification-prompt.html',
+	    windowClass: 'post-send-dag-modal desktop-notification-modal',
+	    controller: function($scope, $modalInstance) {
+	      $scope.enable = function() { $modalInstance.close(); };
+	      $scope.decline = function() { $modalInstance.dismiss(); };
+	    }
+	  });
+	  modalInstance.result.then(
+	    function() {
+	      configService.set({desktopNotifications: {enabled: true, asked: true}}, function(err) {
+	        if (err) return $log.error(err);
+	        desktopNotificationService.show('Obyte', gettextCatalog.getString('Desktop notifications are enabled.'));
+	      });
+	    },
+	    function() {
+	      configService.set({desktopNotifications: {asked: true}}, function(err) {
+	        if (err) $log.error(err);
+	      });
+	    }
+	  );
+	}
+	$rootScope.$on('$stateChangeSuccess', function(event, toState) {
+	  if (toState.name === 'walletHome') $timeout(maybeAskDesktopNotifications);
+	});
+	$rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', maybeAskDesktopNotifications);
+
   self.openSubwalletModal = function() {
 	$rootScope.modalOpened = true;
 	var fc = profileService.focusedClient;

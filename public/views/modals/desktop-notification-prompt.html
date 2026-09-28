@@ -1,0 +1,22 @@
+<section class="post-send-dag-screen" ng-click="decline()">
+  <article class="post-send-dag-dialog desktop-notification-dialog desktop-notification-confirmation"
+    role="dialog" aria-modal="true" aria-labelledby="desktop-notification-title"
+    ng-click="$event.stopPropagation()">
+    <a class="close-reveal-modal desktop-notification-close"
+      ng-click="decline()"
+      role="button"
+      tabindex="0"
+      aria-label="{{'Close'|translate}}">
+      <span aria-hidden="true">&times;</span>
+    </a>
+    <h2 id="desktop-notification-title" class="text-center" translate>Enable notifications about incoming payments and new messages?</h2>
+    <div class="desktop-notification-actions">
+      <button type="button" class="button round primary" ng-click="enable()">
+        <i class="fi-check"></i> <span translate>Enable</span>
+      </button>
+      <button type="button" class="button round outline light-gray" ng-click="decline()">
+        <i class="fi-x"></i> <span class="tu" translate>Later</span>
+      </button>
+    </div>
+  </article>
+</section>
