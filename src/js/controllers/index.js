@@ -1082,14 +1082,32 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	self.requestApproval = requestApproval;
 
 	let desktopNotificationPromptShown = false;
+	let desktopNotificationStartupChecked = false;
+	let desktopNotificationExternalOpen = false;
+	let desktopNotificationModal;
+	if (electron.isDefined()) electron.on('open', function(event, message) {
+	  desktopNotificationStartupChecked = true;
+	  if (message) {
+	    desktopNotificationExternalOpen = true;
+	    if (desktopNotificationModal) desktopNotificationModal.dismiss('external-open');
+	  } else {
+	    $timeout(maybeAskDesktopNotifications);
+	  }
+	});
+	function askDesktopNotificationsOnHome() {
+	  if (!electron.isDefined()) return;
+	  desktopNotificationExternalOpen = false;
+	  $timeout(maybeAskDesktopNotifications);
+	}
 	function maybeAskDesktopNotifications() {
-	  if (!electron.isDefined() || !$state.is('walletHome') || desktopNotificationPromptShown) return;
+	  if (!electron.isDefined() || !desktopNotificationStartupChecked || desktopNotificationExternalOpen ||
+	      !$state.is('walletHome') || self.tab !== 'walletHome' || desktopNotificationPromptShown) return;
 	  if (profileService.profile && profileService.profile.xPrivKeyEncrypted &&
 	      (!profileService.focusedClient || !profileService.focusedClient.credentials.xPrivKey)) return;
 	  const desktopNotifications = configService.getSync().desktopNotifications;
 	  if (!desktopNotifications || desktopNotifications.enabled !== false || desktopNotifications.asked) return;
 	  desktopNotificationPromptShown = true;
-	  const modalInstance = $modal.open({
+	  const modalInstance = desktopNotificationModal = $modal.open({
 	    templateUrl: 'views/modals/desktop-notification-prompt.html',
 	    windowClass: 'post-send-dag-modal desktop-notification-modal',
 	    controller: function($scope, $modalInstance) {
@@ -1100,20 +1118,33 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	  });
 	  modalInstance.result.then(
 	    function() {
+	      desktopNotificationModal = null;
 	      configService.set({desktopNotifications: {enabled: true, asked: true}}, function(err) {
 	        if (err) return $log.error(err);
 	        desktopNotificationService.show('Obyte', gettextCatalog.getString('Desktop notifications are enabled.'));
 	      });
 	    },
-	    function() {
+	    function(reason) {
+	      desktopNotificationModal = null;
+	      if (reason === 'external-open') {
+	        desktopNotificationPromptShown = false;
+	        return;
+	      }
 	      configService.set({desktopNotifications: {asked: true}}, function(err) {
 	        if (err) $log.error(err);
 	      });
 	    }
 	  );
+	  modalInstance.opened.then(function() {
+	    if (desktopNotificationExternalOpen) modalInstance.dismiss('external-open');
+	  }, angular.noop);
 	}
 	$rootScope.$on('$stateChangeSuccess', function(event, toState) {
 	  if (toState.name === 'walletHome') $timeout(maybeAskDesktopNotifications);
+	});
+	$rootScope.$on('Local/HomeClicked', askDesktopNotificationsOnHome);
+	$rootScope.$on('Local/TabChanged', function(event, tab) {
+	  if (electron.isDefined() && tab === 'walletHome') $timeout(maybeAskDesktopNotifications);
 	});
 	$rootScope.$on('Local/BalanceUpdatedAndWalletUnlocked', maybeAskDesktopNotifications);
 
@@ -1255,6 +1286,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
   }
 
   self.goHome = function() {
+	askDesktopNotificationsOnHome();
 	go.walletHome();
   };
 
@@ -1418,6 +1450,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	// check if the whole menu item passed
 	if (typeof tab == 'object') {
+	  if (tab.link === 'walletHome') askDesktopNotificationsOnHome();
 		if(!tab.new_state) backButton.clearHistory();
 	  if (tab.open) {
 		if (tab.link) {

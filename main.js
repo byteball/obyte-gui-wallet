@@ -127,6 +127,22 @@ async function upgradeLS() {
 }
 
 let mainWindow;
+let rendererReady = false;
+let urlToLoad;
+function openExternalRequest(message) {
+	if (typeof message !== 'string' ||
+		(!protocols.some(protocol => message.toLowerCase().startsWith(protocol + ':')) && !message.toLowerCase().endsWith('.coin'))) return;
+	if (mainWindow && !mainWindow.isDestroyed() && rendererReady)
+		mainWindow.webContents.send('open', message);
+	else
+		urlToLoad = message;
+}
+ipcMain.on('done-loading', (event) => {
+	if (!mainWindow || mainWindow.isDestroyed() || event.sender !== mainWindow.webContents) return;
+	rendererReady = true;
+	mainWindow.webContents.send('open', urlToLoad);
+	urlToLoad = undefined;
+});
 ipcMain.on('show-notification', (event, options) => {
 	if (!mainWindow || mainWindow.isDestroyed() || event.sender !== mainWindow.webContents) return;
 	if (!options || typeof options.title !== 'string' || !Notification.isSupported()) return;
@@ -153,6 +169,7 @@ ipcMain.on('show-notification', (event, options) => {
 
 async function createWindow () {
 	await upgradeLS();
+	rendererReady = false;
 
 	mainWindow = new BrowserWindow({
 		width: 400,
@@ -170,11 +187,6 @@ async function createWindow () {
 	mainWindow.webContents.on('devtools-opened', () => {
 		mainWindow.resizable = true;
 	});
-	if (urlToLoad) {
-		ipcMain.on('done-loading', () => {
-			mainWindow.webContents.send('open', urlToLoad);
-		});
-	}
 	mainWindow.on('focus', () => {
 		mainWindow.webContents.send('focus');
 	});
@@ -236,8 +248,8 @@ app.on('second-instance', (event, commandLine, workingDirectory) => {
 		if (mainWindow.isMinimized())
 			mainWindow.restore();
 		mainWindow.focus();
-		mainWindow.webContents.send('open', commandLine.at(-1));
 	}
+	openExternalRequest(commandLine.at(-1));
 });
 
 app.on('open-file', (event, file) => {
@@ -249,12 +261,8 @@ app.on('open-file', (event, file) => {
 		mainWindow.focus();
 
 		event.preventDefault();
-
-		mainWindow.webContents.send('open', file);
-		return;
 	}
-
-	urlToLoad = file;
+	openExternalRequest(file);
 });
 
 app.whenReady().then(() => {
@@ -289,18 +297,10 @@ app.on('window-all-closed', function () {
 	app.quit();
 });
 
-let urlToLoad;
 if (process.argv.length >= 2) {
-	let lastArg = process.argv.at(-1);
-	if (lastArg.includes('obyte') || lastArg.includes('byteball') || lastArg.includes('.coin')) {
-		urlToLoad = lastArg;
-	}
+	openExternalRequest(process.argv.at(-1));
 }
 
 app.on('open-url', (event, url) => {
-	if (mainWindow != null) {
-		mainWindow.webContents.send('open', url);
-		return;
-	}
-	urlToLoad = url;
+	openExternalRequest(url);
 });

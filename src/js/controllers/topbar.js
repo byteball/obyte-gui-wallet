@@ -21,6 +21,7 @@ angular.module('copayApp.controllers').controller('topbarController', function($
     };
 
     this.goHome = function() {
+        $rootScope.$emit('Local/HomeClicked');
         go.walletHome();
     };
 
