@@ -2,7 +2,7 @@
 
 const postSendDagConstants = require('ocore/constants.js');
 
-angular.module('copayApp.services').factory('postSendDagService', function($modal, $rootScope, $timeout, animationService, go) {
+angular.module('copayApp.services').factory('postSendDagService', function($modal, $rootScope, $timeout, animationService, go, modalManager) {
 	let activeModalInstance = null;
 
 	function shortenUnit(unit) {
@@ -94,12 +94,12 @@ angular.module('copayApp.services').factory('postSendDagService', function($moda
 
 	function runOnce(callback) {
 		let called = false;
-		return function() {
+		return function(reason) {
 			if (called)
 				return;
 			called = true;
 			if (callback)
-				callback();
+				callback(reason);
 		};
 	}
 
@@ -151,13 +151,14 @@ angular.module('copayApp.services').factory('postSendDagService', function($moda
 		$rootScope.modalOpened = true;
 		try {
 			activeModalInstance = $modal.open({
+				transient: true,
 				templateUrl: 'views/modals/post-send-dag.html',
 				windowClass: 'post-send-dag-modal',
 				controller: ModalInstanceCtrl
 			});
 		}
 		catch (e) {
-			$rootScope.modalOpened = false;
+			$rootScope.modalOpened = modalManager.hasOpenModals();
 			activeModalInstance = null;
 			continueOnce();
 			return false;
@@ -168,15 +169,15 @@ angular.module('copayApp.services').factory('postSendDagService', function($moda
 			modalInstance.dismiss('back');
 		});
 
-		modalInstance.result.finally(function() {
+		function finish(reason) {
 			disableCloseModal();
-			$rootScope.modalOpened = false;
+			$rootScope.modalOpened = modalManager.hasOpenModals();
 			if (activeModalInstance === modalInstance)
 				activeModalInstance = null;
-			const modalElements = angular.element(document.getElementsByClassName('reveal-modal'));
-			modalElements.addClass(animationService.modalAnimated.slideOutDown);
-			$timeout(continueOnce, 0);
-		});
+			modalManager.animateClose(modalInstance, animationService.modalAnimated.slideOutDown);
+			$timeout(function() { continueOnce(reason); }, 0);
+		}
+		modalInstance.result.then(function() { finish(); }, finish);
 
 		return true;
 	};

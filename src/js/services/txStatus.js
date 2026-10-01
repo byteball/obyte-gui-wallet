@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout) {
+angular.module('copayApp.services').factory('txStatus', function($modal, lodash, profileService, $timeout, modalManager) {
   var root = {};
 
   root.notify = function(txp, cb) {
@@ -44,23 +44,27 @@ angular.module('copayApp.services').factory('txStatus', function($modal, lodash,
   };
 
   var openModal = function(type, txp, cb) {
+    let callbackTimer;
     var ModalInstanceCtrl = function($scope, $modalInstance) {
       $scope.type = type;
       $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
       };
-      if (cb) $timeout(cb, 100);
+      if (cb) callbackTimer = $timeout(cb, 100);
     };
     var modalInstance = $modal.open({
+      transient: true,
       templateUrl: root._templateUrl(type, txp),
       windowClass: 'popup-tx-status full',
       controller: ModalInstanceCtrl,
     });
 
-    modalInstance.result.finally(function() {
-      var m = angular.element(document.getElementsByClassName('reveal-modal'));
-      m.addClass('hideModal');
-    });
+    function finish(reason) {
+      if (modalManager.isManagerClose(reason) && callbackTimer)
+        $timeout.cancel(callbackTimer);
+      modalManager.animateClose(modalInstance, 'hideModal');
+    }
+    modalInstance.result.then(function() { finish(); }, finish);
   };
 
   return root;

@@ -67,10 +67,10 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	}
 	
-	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type, isPayment){
+	function addMessageEvent(bIncoming, peer_address, body, message_counter, skip_history_load, type, isPayment, bSkipNavigation){
 		if (!root.messageEventsByCorrespondent[peer_address] && !skip_history_load) {
 			return loadMoreHistory({device_address: peer_address}, function() {
-				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type, isPayment);
+				addMessageEvent(bIncoming, peer_address, body, message_counter, true, type, isPayment, bSkipNavigation);
 			});
 		}
 		//root.messageEventsByCorrespondent[peer_address].push({bIncoming: true, message: $sce.trustAsHtml(body)});
@@ -108,7 +108,7 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		checkAndInsertDate(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		insertMsg(root.messageEventsByCorrespondent[peer_address], msg_obj);
 		root.assocLastMessageDateByCorrespondent[peer_address] = new Date().toISOString().substr(0, 19).replace('T', ' ');
-		if ($state.is('walletHome') && $rootScope.tab == 'walletHome') {
+		if (!bSkipNavigation && $state.is('walletHome') && $rootScope.tab == 'walletHome') {
 			setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
 				$timeout(function(){
 					$stickyState.reset('correspondentDevices.correspondentDevice');
@@ -927,18 +927,24 @@ angular.module('copayApp.services').factory('correspondentListService', function
 		});
 	});
 
-	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress){
+	eventBus.on("sent_payment", function(peer_address, amount, asset, bToSharedAddress, bSkipNavigation){
 		var title = bToSharedAddress ? 'Payment to smart address' : 'Payment';
-		setCurrentCorrespondent(peer_address, function(bAnotherCorrespondent){
-			var body = '<a ng-click="showPayment(\''+escapeHtml(asset)+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
-			addMessageEvent(false, peer_address, body);
+		function recordPayment() {
+			const body = '<a ng-click="showPayment(\''+escapeHtml(asset)+'\')" class="payment">'+title+': '+getAmountText(amount, asset)+'</a>';
+			addMessageEvent(false, peer_address, body, undefined, undefined, undefined, undefined, bSkipNavigation);
 			device.readCorrespondent(peer_address, function(correspondent){
 				if (correspondent.my_record_pref && correspondent.peer_record_pref) chatStorage.store(peer_address, body, 0, 'html');
 			});
+			if (bSkipNavigation)
+				return;
 			$timeout(function(){
 				go.path('correspondentDevices.correspondentDevice');
 			});
-		});
+		}
+		if (bSkipNavigation)
+			recordPayment();
+		else
+			setCurrentCorrespondent(peer_address, recordPayment);
 	});
 
 	eventBus.on("received_payment", function(peer_address, amount, asset, message_counter, type){

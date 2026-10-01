@@ -7,7 +7,7 @@ var ValidationUtils = require('ocore/validation_utils.js');
 var parse_ojson = require('ocore/formula/parse_ojson');
 
 angular.module('copayApp.controllers')
-	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService, postSendDagService) {
+	.controller('walletHomeController', function($scope, $rootScope, $timeout, $filter, $modal, $log, notification, isCordova, profileService, lodash, configService, storageService, gettext, gettextCatalog, electron, addressService, confirmDialog, animationService, addressbookService, correspondentListService, correspondentService, newVersion, autoUpdatingWitnessesList, go, aliasValidationService, fileSystemService, aaDocService, aaErrorService, postSendDagService, modalManager) {
 
 		var self = this;
 		var home = this;
@@ -2349,17 +2349,19 @@ angular.module('copayApp.controllers')
 							}
 							const parentUnits = objUnit && Array.isArray(objUnit.parent_units) ? objUnit.parent_units : [];
 							const canShowPostSendDag = unit && parentUnits.length;
+							let postSendDagClosedByManager = false;
 							if (canShowPostSendDag) {
-								await new Promise(function(resolve) {
+								const closeReason = await new Promise(function(resolve) {
 									postSendDagService.open({
 										unit: unit,
 										parentUnits: parentUnits
 									}, resolve);
 								});
+								postSendDagClosedByManager = modalManager.isManagerClose(closeReason);
 							}
 
 							if (recipient_device_address) { // show payment in chat window
-								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding);
+								eventBus.emit('sent_payment', recipient_device_address, amount || 'all', asset, !!binding, postSendDagClosedByManager);
 								if (binding && binding.reverseAmount) { // create a request for reverse payment
 									if (!my_address)
 										throw Error('my address not known');
@@ -2382,9 +2384,10 @@ angular.module('copayApp.controllers')
 									amount = assetInfo.stable;
 
 								self.openShareTextcoinModal(isEmail ? address.slice("textcoin:".length) : null, mnemonic, amount, asset, false, filePath);
-								$rootScope.$emit('Local/SetTab', 'history');
+								if (!postSendDagClosedByManager)
+									$rootScope.$emit('Local/SetTab', 'history');
 							}
-							else // redirect to history
+							else if (!postSendDagClosedByManager) // redirect to history
 								$rootScope.$emit('Local/SetTab', 'history');
 						});
 

@@ -2,7 +2,7 @@
 
 var eventBus = require('ocore/event_bus.js');
 
-angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova) {
+angular.module('copayApp.services').factory('go', function($window, $rootScope, $timeout, $location, $state, profileService, fileSystemService, notification, gettextCatalog, authService, $deepStateRedirect, $stickyState, configService, isCordova, modalManager) {
 	var root = {};
 
 	let electron;
@@ -174,6 +174,7 @@ angular.module('copayApp.services').factory('go', function($window, $rootScope, 
 		var ob_program_url = new RegExp('^'+conf.program.replace(/byteball/i, 'obyte')+':', 'i');
 		var ob_url = new RegExp('^obyte:', 'i');
 		if (!uri.match(bb_program_url) && !uri.match(ob_program_url) && !uri.match(ob_url)) return handleFile(uri);
+		modalManager.closeTransient();
 
 		console.log("handleUri "+uri);
 
