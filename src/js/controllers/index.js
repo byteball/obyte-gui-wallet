@@ -10,7 +10,7 @@ var breadcrumbs = require('ocore/breadcrumbs.js');
 var Bitcore = require('bitcore-lib');
 var EventEmitter = require('events').EventEmitter;
 
-angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService, desktopNotificationService) {
+angular.module('copayApp.controllers').controller('indexController', function($rootScope, $scope, $log, $filter, $timeout, lodash, go, profileService, configService, isCordova, storageService, addressService, gettext, gettextCatalog, amMoment, electron, addonManager, txFormatService, uxLanguage, $state, isMobile, addressbookService, notification, animationService, $modal, bwcService, backButton, pushNotificationsService, aliasValidationService, bottomBarService, desktopNotificationService, modalManager) {
   breadcrumbs.add('index.js');
   var self = this;
   self.BLACKBYTES_ASSET = constants.BLACKBYTES_ASSET;
@@ -1083,13 +1083,14 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 
 	let desktopNotificationPromptShown = false;
 	function maybeAskDesktopNotifications() {
-	  if (!electron.isDefined() || !$state.is('walletHome') || desktopNotificationPromptShown) return;
+	  if (!electron.isDefined() || !$state.is('walletHome') || self.tab !== 'walletHome' || desktopNotificationPromptShown) return;
 	  if (profileService.profile && profileService.profile.xPrivKeyEncrypted &&
 	      (!profileService.focusedClient || !profileService.focusedClient.credentials.xPrivKey)) return;
 	  const desktopNotifications = configService.getSync().desktopNotifications;
 	  if (!desktopNotifications || desktopNotifications.enabled !== false || desktopNotifications.asked) return;
 	  desktopNotificationPromptShown = true;
 	  const modalInstance = $modal.open({
+	    transient: true,
 	    templateUrl: 'views/modals/desktop-notification-prompt.html',
 	    windowClass: 'post-send-dag-modal desktop-notification-modal',
 	    controller: function($scope, $modalInstance) {
@@ -1105,7 +1106,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	        desktopNotificationService.show('Obyte', gettextCatalog.getString('Desktop notifications are enabled.'));
 	      });
 	    },
-	    function() {
+	    function(reason) {
+	      if (reason === 'modal-manager-close') {
+	        desktopNotificationPromptShown = false;
+	        return;
+	      }
 	      configService.set({desktopNotifications: {asked: true}}, function(err) {
 	        if (err) $log.error(err);
 	      });
@@ -1991,6 +1996,23 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	$log.warn('Showing err popup:', msg);
 	self.showPopup(msg, 'fi-alert', cb);
   };
+
+  const unregisterAlert = modalManager.register({
+	transient: true,
+	isOpen: function() { return !!self.showAlert; },
+	dismiss: function() { self.showAlert = null; }
+  });
+  const unregisterBackupReminder = modalManager.register({
+	transient: true,
+	isOpen: function() {
+	  return self.isBackupReminderShown && self.totalUSDBalance > self.backupExceedingAmountUSD;
+	},
+	dismiss: function() { self.dismissBackupReminder(); }
+  });
+  $scope.$on('$destroy', function() {
+	unregisterAlert();
+	unregisterBackupReminder();
+  });
 
   /*
   self.recreate = function(cb) {

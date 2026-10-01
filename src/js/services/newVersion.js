@@ -12,12 +12,14 @@ angular.module('copayApp.services')
     root.version = data.version;
     if(!root.shown) {
       var modalInstance = $modal.open({
+          transient: true,
           templateUrl: 'views/modals/newVersionIsAvailable.html',
           controller: 'newVersionIsAvailable'
       });
-      $rootScope.$on('closeModal', function() {
+      const disableCloseModal = $rootScope.$on('closeModal', function() {
       	  modalInstance.dismiss('cancel');
       });
+      modalInstance.result.then(disableCloseModal, disableCloseModal);
       root.shown = true;
       startTimerNextShow();
     }

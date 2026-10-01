@@ -49,8 +49,12 @@ angular.module('copayApp.directives')
               var context;
               var localMediaStream;
               var prevResult;
+              let closed = false;
+              let scanTimer;
+              let initTimer;
 
               var _scan = function(evt) {
+                if (closed) return;
                 if (localMediaStream) {
                   context.drawImage(video, 0, 0, 300, 225);
                   try {
@@ -59,10 +63,15 @@ angular.module('copayApp.directives')
                     //qrcodeError(e);
                   }
                 }
-                $timeout(_scan, 800);
+                if (!closed)
+                  scanTimer = $timeout(_scan, 800);
               };
 
               var _scanStop = function() {
+                if (closed) return;
+                closed = true;
+                $timeout.cancel(scanTimer);
+                $timeout.cancel(initTimer);
                 if (localMediaStream && localMediaStream.active) {
                   var localMediaStreamTrack = localMediaStream.getTracks();
                   for (var i = 0; i < localMediaStreamTrack.length; i++) {
@@ -76,27 +85,39 @@ angular.module('copayApp.directives')
                   };
                 }
                 localMediaStream = null;
-				if (video)
+				if (video) {
+					video.srcObject = null;
 					video.src = '';
+				}
+                if (qrcode.callback === onDecode)
+                  qrcode.callback = angular.noop;
               };
 
-              qrcode.callback = function(data) {
+              function onDecode(data) {
+                if (closed) return;
                 if (prevResult != data) {
                   prevResult = data;
                   return;
                 }
                 _scanStop();
                 $modalInstance.close(data);
-              };
+              }
+              qrcode.callback = onDecode;
+              $scope.$on('$destroy', _scanStop);
+              $modalInstance.result.then(_scanStop, _scanStop);
 
               var _successCallback = function(stream) {
+                if (closed) {
+                  stream.getTracks().forEach(function(track) { track.stop(); });
+                  return;
+                }
 				if (process.versions['node-webkit'] === '0.14.7')
                 	video.src = (window.URL && window.URL.createObjectURL(stream)) || stream;
 				else // newer versions of chrome
 					video.srcObject = stream;
                 localMediaStream = stream;
                 video.play();
-                $timeout(_scan, 1000);
+                scanTimer = $timeout(_scan, 1000);
               };
 
               var _videoError = function(err) {
@@ -114,7 +135,8 @@ angular.module('copayApp.directives')
 
               $scope.init = function() {
                 setScanner();
-                $timeout(function() {
+                initTimer = $timeout(function() {
+                  if (closed) return;
                   if (parentScope.beforeScan) {
                     parentScope.beforeScan();
                   }
@@ -150,6 +172,7 @@ angular.module('copayApp.directives')
             };
 
             var modalInstance = $modal.open({
+              transient: true,
               templateUrl: 'views/modals/scanner.html',
               windowClass: 'full',
               controller: ModalInstanceCtrl,
@@ -158,7 +181,7 @@ angular.module('copayApp.directives')
             });
             modalInstance.result.then(function(data) {
               parentScope.onScan({ data: data });
-            });
+            }, angular.noop);
 
           };
 
