@@ -143,7 +143,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 	self.sendBugReport = sendBugReport;
 	
 	if (isCordova && constants.version === '1.0'){
-		var db = require('ocore/db.js');
+		const db = require('ocore/db.js');
 		db.query("SELECT 1 FROM units WHERE version!=? LIMIT 1", [constants.version], function(rows){
 			if (rows.length > 0){
 				self.showErrorPopup("Looks like you have testnet data.  Please remove the app and reinstall.", function() {
@@ -588,6 +588,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						cb();
 					},
 					async function(){
+						const db = require('ocore/db.js');
 						// check for unrelated authors, i.e. my authors that are not my own addresses on the same wallet and not the top address (peer's additional authors are ok)
 						const arrOtherAuthorAddresses = arrAuthorAddresses.filter(address => !arrOwnAddresses.includes(address));
 						if (arrOtherAuthorAddresses.length > 0) {
@@ -742,7 +743,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							});
 						}
 						// prosaic/arbiter contracts related requests
-						var db = require('ocore/db.js');
 						var prosaic_contract = require('ocore/prosaic_contract.js');
 						var arbiter_contract = require('ocore/arbiter_contract.js');
 						function isContractSignRequest(cb) {
