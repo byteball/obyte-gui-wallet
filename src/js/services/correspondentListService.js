@@ -743,6 +743,18 @@ angular.module('copayApp.services').factory('correspondentListService', function
 							return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
 						return 'sends ' + escapeHtml(profileService.getUnitName(args.asset)) + ' to ' + getDisplayAddress(args.address);
 					}
+					else if (args.what === 'input' && args.asset && args.address) {
+						const bIssue = (args.type === 'issue');
+						const verb = bIssue ? 'issues ' : 'spends ';
+						const prep = bIssue ? ' by ' : ' from ';
+						if (args.amount_at_least)
+							return verb + 'at least ' + getAmountText(args.amount_at_least, args.asset) + prep + getDisplayAddress(args.address);
+						if (args.amount_at_most)
+							return verb + 'at most ' + getAmountText(args.amount_at_most, args.asset) + prep + getDisplayAddress(args.address);
+						if (args.amount)
+							return verb + getAmountText(args.amount, args.asset) + prep + getDisplayAddress(args.address);
+						return verb + escapeHtml(profileService.getUnitName(args.asset)) + prep + getDisplayAddress(args.address);
+					}
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'has one':
 					if (args.what === 'output' && Object.keys(args).length === 1)
