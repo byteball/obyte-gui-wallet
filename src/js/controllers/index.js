@@ -529,7 +529,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				const device = require('ocore/device.js');
 				device.readCorrespondent(from_address, correspondent => {
 					if (!correspondent)
-						return console.log("Correspondent not found for address " + from_address);
+						return unlock("Correspondent not found for address " + from_address);
 					const msg = typeof objUnit.signed_message === 'string' ? objUnit.signed_message : JSON.stringify(objUnit.signed_message);
 					const question = gettextCatalog.getString('Sign message') + ' "' + msg + '" ' + gettextCatalog.getString('by address') + ' ' + objAddress.address + '? ' + gettextCatalog.getString('Requested by') + ' ' + correspondent.name + '.';
 					requestApproval(question, {
