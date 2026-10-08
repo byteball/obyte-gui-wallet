@@ -813,7 +813,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										// expecting data with 3 fields {"contract_text_hash": xxx, "arbiter": yyy, "contacts_hash": zzz} and a payment with 2 outputs: one to the shared address for CHARGE_AMOUNT and one change output to one of the parties
 										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || !lodash.isEqual(Object.keys(arrDataMessages[0].payload).sort(), ["arbiter", "contacts_hash", "contract_text_hash"]))
 											return cb();
-										if (arrDataMessages[0].payload.arbiter !== contract.arbiter)
+										if (arrDataMessages[0].payload.arbiter !== contract.arbiter_address)
 											return cb();
 										if (arrDataMessages[0].payload.contacts_hash !== arbiter_contract.getContactsHash(contract))
 											return cb();
