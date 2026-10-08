@@ -734,26 +734,23 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						str += ' after MCI '+min_mci;
 					return escapeHtml(str);
 				case 'has':
-					if (args.what === 'output' && args.asset && args.address) {
-						if (args.amount_at_least)
-							return 'sends at least ' + getAmountText(args.amount_at_least, args.asset) + ' to ' + getDisplayAddress(args.address);
-						if (args.amount_at_most)
-							return 'sends at most ' + getAmountText(args.amount_at_most, args.asset) + ' to ' + getDisplayAddress(args.address);
-						if (args.amount)
-							return 'sends ' + getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
-						return 'sends ' + escapeHtml(profileService.getUnitName(args.asset)) + ' to ' + getDisplayAddress(args.address);
-					}
-					else if (args.what === 'input' && args.asset && args.address) {
+					if ((args.what === 'output' || args.what === 'input') && args.asset && args.address) {
+						const bInput = (args.what === 'input');
 						const bIssue = (args.type === 'issue');
-						const verb = bIssue ? 'issues ' : 'spends ';
-						const prep = bIssue ? ' by ' : ' from ';
-						if (args.amount_at_least)
-							return verb + 'at least ' + getAmountText(args.amount_at_least, args.asset) + prep + getDisplayAddress(args.address);
-						if (args.amount_at_most)
-							return verb + 'at most ' + getAmountText(args.amount_at_most, args.asset) + prep + getDisplayAddress(args.address);
-						if (args.amount)
-							return verb + getAmountText(args.amount, args.asset) + prep + getDisplayAddress(args.address);
-						return verb + escapeHtml(profileService.getUnitName(args.asset)) + prep + getDisplayAddress(args.address);
+						const verb = bInput ? (bIssue ? 'issues ' : 'spends ') : 'sends ';
+						const prep = bInput ? (bIssue ? ' by ' : ' from ') : ' to ';
+						let amount_text;
+						if (args.amount_at_least && args.amount_at_most)
+							amount_text = 'between ' + getAmountText(args.amount_at_least, args.asset) + ' and ' + getAmountText(args.amount_at_most, args.asset);
+						else if (args.amount_at_least)
+							amount_text = 'at least ' + getAmountText(args.amount_at_least, args.asset);
+						else if (args.amount_at_most)
+							amount_text = 'at most ' + getAmountText(args.amount_at_most, args.asset);
+						else if (args.amount)
+							amount_text = getAmountText(args.amount, args.asset);
+						else
+							amount_text = escapeHtml(profileService.getUnitName(args.asset));
+						return verb + amount_text + prep + getDisplayAddress(args.address);
 					}
 					return escapeHtml(JSON.stringify(arrSubdefinition));
 				case 'has one':
