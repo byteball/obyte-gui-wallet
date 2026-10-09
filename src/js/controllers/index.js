@@ -484,7 +484,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 		const arrAuthorAddresses = objUnit.authors.map(function(author){ return author.address; });
 		var credentials = lodash.find(profileService.profile.credentials, {walletId: objAddress.wallet});
 
-		mutex.lock(["signing_request-"+unit], function(unlock){
+		mutex.lock(["signing_request-"+unit], async function(unlock){
 			function createAndSendSignature(){
 				var path = "m/44'/0'/" + objAddress.account + "'/"+objAddress.is_change+"/"+objAddress.address_index;
 				console.log("path "+path);
@@ -523,6 +523,31 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				else if (assocChoicesByUnit[unit] === "refuse")
 					refuseSignature();
 				return;
+			}
+			
+			const db = require('ocore/db.js');
+			
+			// check that the signing request comes from a device that is allowed to sign for this wallet or shared address
+			if (top_address === objAddress.address) { // multisig
+				const rows = await db.query(
+					`SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
+					[objAddress.wallet, from_address]);
+				if (rows.length === 0) {
+					console.log("the signing request comes from a device that is not allowed to sign for this wallet, refusing signature");
+					return refuseSignature();
+				}
+			}
+			else { // shared address
+				// the request can come directly from the shared address peer or through a cosigner on my multisig
+				const rows = await db.query(
+					`SELECT 1 FROM shared_address_signing_paths WHERE shared_address=? AND device_address=?
+					UNION
+					SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
+					[top_address, from_address, objAddress.wallet, from_address]);
+				if (rows.length === 0) {
+					console.log("the signing request comes from a device that is not allowed to sign for this shared address, refusing signature");
+					return refuseSignature();
+				}
 			}
 			
 			if (objUnit.signed_message){
@@ -588,7 +613,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 						cb();
 					},
 					async function(){
-						const db = require('ocore/db.js');
 						// check for unrelated authors, i.e. my authors that are not my own addresses on the same wallet and not the top address (peer's additional authors are ok)
 						const arrOtherAuthorAddresses = arrAuthorAddresses.filter(address => !arrOwnAddresses.includes(address));
 						if (arrOtherAuthorAddresses.length > 0) {
@@ -599,29 +623,6 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								[objAddress.wallet, arrOtherAuthorAddresses, arrOtherAuthorAddresses]);
 							if (rows.length > 0) {
 								console.log("some of the other authors belong to my other wallets or shared addresses, refusing signature");
-								return refuseSignature();
-							}
-						}
-
-						// check that the signing request comes from a device that is allowed to sign for this wallet or shared address
-						if (top_address === objAddress.address) { // multisig
-							const rows = await db.query(
-								`SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
-								[objAddress.wallet, from_address]);
-							if (rows.length === 0) {
-								console.log("the signing request comes from a device that is not allowed to sign for this wallet, refusing signature");
-								return refuseSignature();
-							}
-						}
-						else { // shared address
-							// the request can come directly from the shared address peer or through a cosigner on my multisig
-							const rows = await db.query(
-								`SELECT 1 FROM shared_address_signing_paths WHERE shared_address=? AND device_address=?
-								UNION
-								SELECT 1 FROM wallet_signing_paths WHERE wallet=? AND device_address=?`,
-								[top_address, from_address, objAddress.wallet, from_address]);
-							if (rows.length === 0) {
-								console.log("the signing request comes from a device that is not allowed to sign for this shared address, refusing signature");
 								return refuseSignature();
 							}
 						}
