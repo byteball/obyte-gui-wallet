@@ -891,6 +891,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							}
 						}
 						function isContractFeeDepositRequest(cb) {
+							if (top_address !== objAddress.address)
+								return cb(false);
 							var payment_msg = lodash.find(objUnit.messages, function(m){return m.app=="payment"});
 							if (!payment_msg)
 								return cb(false);
@@ -913,7 +915,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												return cb2();
 											if (objContract.peer_device_address === from_address)
 												return cb2(); // don't expect this from the peer
-											cb2(objContract);
+											db.query("SELECT 1 FROM my_addresses WHERE address=? AND wallet=?", [objContract.my_address, objAddress.wallet], own_rows => {
+												if (!own_rows.length)
+													return cb2(); // the contract belongs to another wallet
+												cb2(objContract);
+											});
 										});
 									}, function(cb2) {
 										arbiter_contract.getByHash(rows[0].hash, function(objContract) {
