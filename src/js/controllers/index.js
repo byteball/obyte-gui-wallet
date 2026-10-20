@@ -810,6 +810,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										if (!objContract)
 											return cb();
 										contract = objContract;
+										if (!(objContract.is_incoming || objContract.me_is_cosigner))
+											return cb();
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
 										// expecting data with 3 fields {"contract_text_hash": xxx, "arbiter": yyy, "contacts_hash": zzz} and a payment with 2 outputs: one to the shared address for CHARGE_AMOUNT and one change output to one of the parties
 										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || !lodash.isEqual(Object.keys(arrDataMessages[0].payload).sort(), ["arbiter", "contacts_hash", "contract_text_hash"]))
