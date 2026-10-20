@@ -876,6 +876,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												return cb();
 											if (!shared_address || shared_address !== possible_contract_output.address || !lodash.includes(arrAuthorAddresses, shared_address) || shared_address !== contract.shared_address)
 												return cb();
+											if (assocAmountByAssetAndAddress.base[shared_address] !== arbiter_contract.CHARGE_AMOUNT)
+												return cb();
 											return cb('arbiter', contract);
 										});
 									});
