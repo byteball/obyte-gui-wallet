@@ -760,7 +760,11 @@ angular.module('copayApp.services').factory('correspondentListService', function
 						var dest_address = ((args.address === 'this address') ? objectHash.getChash160(arrDefinition) : escapeHtml(args.address));
 						var bOwnAddress = (arrMyAddresses.indexOf(args.address) >= 0);
 						var expected_payment = getAmountText(args.amount, args.asset) + ' to ' + getDisplayAddress(args.address);
-						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+(+args.amount)+', \''+escapeHtml(args.asset)+'\')">'+expected_payment+'</a>') : expected_payment);
+						// the values end up inside an ng-click expression, where HTML escaping is not enough: the browser decodes &#39; back to a quote
+						const bSafeForLink = ValidationUtils.isValidAddress(dest_address)
+							&& ValidationUtils.isPositiveInteger(args.amount)
+							&& (args.asset === 'base' || ValidationUtils.isValidBase64(args.asset, constants.HASH_LENGTH));
+						return 'there was a transaction that sends ' + ((bWithLinks && !bOwnAddress && bSafeForLink) ? ('<a ng-click="sendPayment(\''+dest_address+'\', '+args.amount+', \''+args.asset+'\')">'+expected_payment+'</a>') : expected_payment);
 					}
 					else if (args.what === 'input' && (args.asset && args.amount || !args.asset && !args.amount) && args.address){
 						var how_much = (args.asset && args.amount) ? getAmountText(args.amount, args.asset) : '';
