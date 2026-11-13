@@ -581,6 +581,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				console.log(`refusing tx with excessive tps fee ${objUnit.tps_fee} (size fees ${size_fees}, max ratio ${max_fee_ratio}) from ${from_address}`, objUnit);
 				return refuseSignature();
 			}
+			if (objUnit.oversize_fee) {
+				const expected_oversize_fee = require('ocore/storage.js').getOversizeFee(objUnit, Infinity);
+				if (objUnit.oversize_fee !== expected_oversize_fee) {
+					console.log(`refusing tx with mismatched oversize fee`, objUnit);
+					return refuseSignature();
+				}
+				if (objUnit.oversize_fee > max_fee_ratio * size_fees) {
+					console.log(`refusing tx with excessive oversize fee`, objUnit);
+					return refuseSignature();
+				}
+			}
 			
 			walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddressInfos){
 				var arrChangeAddresses = arrChangeAddressInfos.map(function(info){ return info.address; });
