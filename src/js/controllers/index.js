@@ -1030,7 +1030,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								}
 								isContractDepositRequest(function(isContract, objContract){
 									if (isContract) {
-										question = 'Approve contract '+(objContract ? '"' + objContract.title + '" ' : '')+'deposit from account '+credentials.walletName+'?';
+										question = `Approve deposit of ${arrDestinations[0]} to contract `+(objContract ? '"' + objContract.title + '" ' : '')+ 'from account '+credentials.walletName+'?';
 										return ask();
 									}
 									isContractClaimOrReleaseRequest(function(isContract, objContract, isClaim){
