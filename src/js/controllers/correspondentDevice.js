@@ -843,7 +843,7 @@ angular.module('copayApp.controllers').controller('correspondentDeviceController
 								let assocPeerNamesByAddress = {};
 								for (let path in assocSignersByPath) {
 									const signerInfo = assocSignersByPath[path];
-									if (signerInfo.device_address !== device.getMyDeviceAddress())
+									if (signerInfo.device_address === correspondent.device_address && !arrMyAddresses.includes(signerInfo.address)) // signerInfo.device_address is supplied by the peer and is not trusted => skip all third-party device addresses
 										assocPeerNamesByAddress[signerInfo.address] = assocPeerNamesByDeviceAddress[signerInfo.device_address] || 'unknown peer';
 								}
 								$scope.arrHumanReadableDefinitions.push({

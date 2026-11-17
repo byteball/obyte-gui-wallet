@@ -581,6 +581,17 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 				console.log(`refusing tx with excessive tps fee ${objUnit.tps_fee} (size fees ${size_fees}, max ratio ${max_fee_ratio}) from ${from_address}`, objUnit);
 				return refuseSignature();
 			}
+			if (objUnit.oversize_fee) {
+				const expected_oversize_fee = require('ocore/storage.js').getOversizeFee(objUnit, Infinity);
+				if (objUnit.oversize_fee !== expected_oversize_fee) {
+					console.log(`refusing tx with mismatched oversize fee`, objUnit);
+					return refuseSignature();
+				}
+				if (objUnit.oversize_fee > max_fee_ratio * size_fees) {
+					console.log(`refusing tx with excessive oversize fee`, objUnit);
+					return refuseSignature();
+				}
+			}
 			
 			walletDefinedByKeys.readChangeAddresses(objAddress.wallet, function(arrChangeAddressInfos){
 				var arrChangeAddresses = arrChangeAddressInfos.map(function(info){ return info.address; });
@@ -810,6 +821,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 										if (!objContract)
 											return cb();
 										contract = objContract;
+										if (!(objContract.is_incoming || objContract.me_is_cosigner))
+											return cb();
 										var arrDataMessages = objUnit.messages.filter(function(objMessage){ return objMessage.app === "data"});
 										// expecting data with 3 fields {"contract_text_hash": xxx, "arbiter": yyy, "contacts_hash": zzz} and a payment with 2 outputs: one to the shared address for CHARGE_AMOUNT and one change output to one of the parties
 										if (!objContract || objContract.status !== "accepted" || objContract.unit || arrDataMessages.length !== 1 || arrPaymentMessages.length !== 1 || arrPaymentMessages[0].payload.outputs.length !== 2 || !lodash.isEqual(Object.keys(arrDataMessages[0].payload).sort(), ["arbiter", "contacts_hash", "contract_text_hash"]))
@@ -876,6 +889,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 												return cb();
 											if (!shared_address || shared_address !== possible_contract_output.address || !lodash.includes(arrAuthorAddresses, shared_address) || shared_address !== contract.shared_address)
 												return cb();
+											if (assocAmountByAssetAndAddress.base[shared_address] !== arbiter_contract.CHARGE_AMOUNT)
+												return cb();
 											return cb('arbiter', contract);
 										});
 									});
@@ -910,25 +925,25 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 									if (arrAuthorAddresses.includes(possible_contract_output.address))
 										return cb(false); // the contract must not sign a fee deposit
 									async.series([function(cb2) {
-										prosaic_contract.getByHash(rows[0].hash, function(objContract) {
+										prosaic_contract.getByHash(rows[0].hash, async function(objContract) {
 											if (!objContract)
 												return cb2();
 											if (objContract.peer_device_address === from_address)
 												return cb2(); // don't expect this from the peer
-											db.query("SELECT 1 FROM my_addresses WHERE address=? AND wallet=?", [objContract.my_address, objAddress.wallet], own_rows => {
-												if (!own_rows.length)
-													return cb2(); // the contract belongs to another wallet
-												cb2(objContract);
-											});
+											if (!await isSameWallet(objContract))
+												return cb2(); // the contract belongs to another wallet
+											cb2(objContract);
 										});
 									}, function(cb2) {
-										arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+										arbiter_contract.getByHash(rows[0].hash, async function(objContract) {
 											if (!objContract)
 												return cb2();
 											if (!objContract.me_is_cosigner)
 												return cb2();
 											if (objContract.peer_device_address === from_address)
 												return cb2(); // don't expect this from the peer
+											if (!await isSameWallet(objContract))
+												return cb2(); // the contract belongs to another wallet
 											cb2(objContract);
 										});
 									}], objContract => cb(!!objContract, objContract));
@@ -937,6 +952,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							});
 						}
 						function isContractDepositRequest(cb) {
+							if (top_address !== objAddress.address)
+								return cb(false);
 							if (objUnit.messages.find(m => m.app !== "payment"))
 								return cb(false);
 							const assets = Object.keys(assocAmountByAssetAndAddress);
@@ -951,9 +968,11 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							db.query("SELECT hash FROM wallet_arbiter_contracts WHERE shared_address=? AND status='signed'", [address], function(rows) {
 								if (!rows.length)
 									return cb(false);
-								arbiter_contract.getByHash(rows[0].hash, function(objContract) {
+								arbiter_contract.getByHash(rows[0].hash, async function(objContract) {
 									if (!objContract.me_is_cosigner)
 										return cb(false);
+									if (!await isSameWallet(objContract))
+										return cb(false); // signing from a different wallet
 									if (objContract.peer_device_address === from_address)
 										return cb(false); // don't expect this from the peer
 									if (arrAuthorAddresses.includes(address))
@@ -979,11 +998,13 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								return cb(false);
 							const address = addresses[0];
 							const amount = assocAmountByAssetAndAddress[payment_asset][address];
-							arbiter_contract.getBySharedAddress(objUnit.authors[0].address, function(objContract) {
+							arbiter_contract.getBySharedAddress(objUnit.authors[0].address, async function(objContract) {
 								if (!objContract)
 									return cb(false);
 								if (!objContract.me_is_cosigner)
 									return cb(false);
+								if (!await isSameWallet(objContract))
+									return cb(false); // signing from a different wallet
 								if (objContract.peer_device_address === from_address)
 									return cb(false); // don't expect this from the peer
 								var asset = objContract.asset || 'base';
@@ -997,6 +1018,12 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								cb(false);
 							});
 						}
+
+						async function isSameWallet(objContract) {
+							const own_rows = await db.query("SELECT 1 FROM my_addresses WHERE address=? AND wallet=?", [objContract.my_address, objAddress.wallet]);
+							return own_rows.length > 0;
+						}
+
 						isContractSignRequest(function(isContract, type, objContract){
 							if (isContract) {
 								if (type === 'prosaic') {
@@ -1015,7 +1042,7 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 								}
 								isContractDepositRequest(function(isContract, objContract){
 									if (isContract) {
-										question = 'Approve contract '+(objContract ? '"' + objContract.title + '" ' : '')+'deposit from account '+credentials.walletName+'?';
+										question = `Approve deposit of ${arrDestinations[0]} to contract `+(objContract ? '"' + objContract.title + '" ' : '')+ 'from account '+credentials.walletName+'?';
 										return ask();
 									}
 									isContractClaimOrReleaseRequest(function(isContract, objContract, isClaim){

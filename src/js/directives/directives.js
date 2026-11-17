@@ -340,9 +340,9 @@ angular.module('copayApp.directives')
         var addr = attrs.address;
         addressbookService.getLabel(addr, function(label) {
           if (label) {
-            element.append(label);
+            element.text(label);
           } else {
-            element.append(addr);
+            element.text(addr);
           }
         });
       }
