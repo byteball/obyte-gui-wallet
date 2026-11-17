@@ -2347,8 +2347,9 @@ angular.module('copayApp.controllers')
 								db.query("INSERT INTO original_addresses (unit, address, original_address) VALUES(?,?,?)",
 									[unit, to_address, original_address]);
 							}
+							const hasTextcoins = Boolean(mnemonics && Object.keys(mnemonics).length);
 							const parentUnits = objUnit && Array.isArray(objUnit.parent_units) ? objUnit.parent_units : [];
-							const canShowPostSendDag = unit && parentUnits.length;
+							const canShowPostSendDag = unit && parentUnits.length && !hasTextcoins;
 							let postSendDagClosedByManager = false;
 							if (canShowPostSendDag) {
 								const closeReason = await new Promise(function(resolve) {
@@ -2378,14 +2379,13 @@ angular.module('copayApp.controllers')
 									if (!fc.isSingleAddress) walletDefinedByKeys.issueNextAddress(fc.credentials.walletId, 0, function() {});
 								}
 							}
-							else if (Object.keys(mnemonics).length) {
+							else if (hasTextcoins) {
 								var mnemonic = mnemonics[to_address];
 								if (opts.send_all && asset === "base")
 									amount = assetInfo.stable;
 
 								self.openShareTextcoinModal(isEmail ? address.slice("textcoin:".length) : null, mnemonic, amount, asset, false, filePath);
-								if (!postSendDagClosedByManager)
-									$rootScope.$emit('Local/SetTab', 'history');
+								$rootScope.$emit('Local/SetTab', 'history');
 							}
 							else if (!postSendDagClosedByManager) // redirect to history
 								$rootScope.$emit('Local/SetTab', 'history');
