@@ -952,6 +952,8 @@ angular.module('copayApp.controllers').controller('indexController', function($r
 							});
 						}
 						function isContractDepositRequest(cb) {
+							if (top_address !== objAddress.address)
+								return cb(false);
 							if (objUnit.messages.find(m => m.app !== "payment"))
 								return cb(false);
 							const assets = Object.keys(assocAmountByAssetAndAddress);
