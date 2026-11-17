@@ -2,9 +2,11 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, Notification } = require('ele
 const path = require('path');
 const package = require('./package.json');
 const sqlite3 = require('sqlite3').verbose();
-const level = require('level-rocksdb');
+const { RocksDatabase } = require('@harperfast/rocksdb-js');
 const fs = require('fs');
 const Badge = require('electron-windows-badge');
+
+app.commandLine.appendSwitch('enable-features', 'SharedArrayBuffer'); // rocksdb-js needs it in the renderer, which isn't cross-origin isolated
 
 if (process.platform === 'win32') { // fix for Electron not working when UTF-8 symbols in path
 	app.setAppUserModelId('org.obyte.wallet');
@@ -58,6 +60,8 @@ const lsSqliteFile = `${oldLSDir}/chrome-extension_${extensionId}_0.localstorage
 const lsLevelDBDir = `${oldLSDir}/leveldb`;
 const walletDataDir = `walletdata`;
 let walletDataPath = `${app.getPath('userData')}/${walletDataDir}`;
+// raw utf8 keys and values
+const rocksdbOptions = { keyEncoding: 'binary', encoding: 'binary' };
 let lsUpgrader1, lsUpgrader2;
 if (!fs.existsSync(lsUpgradedFlagFile) && fs.existsSync(oldLSDir)) {
 	lsUpgrader1 = new Promise((resolve, reject) => {
@@ -78,19 +82,24 @@ if (!fs.existsSync(lsUpgradedFlagFile) && fs.existsSync(oldLSDir)) {
 		});
 	});
 	lsUpgrader2 = new Promise((resolve, reject) => {
-		const leveldb = level(lsLevelDBDir, { createIfMissing: false }, function (err, db) {
-			if (err) {
-				console.log(`failed to open leveldb ${lsLevelDBDir}`, err);
-				return resolve();
-			}
+		if (!fs.existsSync(lsLevelDBDir)) {
+			console.log(`no leveldb ${lsLevelDBDir}`);
+			return resolve();
+		}
+		let leveldb;
+		try {
+			leveldb = RocksDatabase.open(lsLevelDBDir, rocksdbOptions);
 			console.log(`Upgrading Local Storage from LevelDB database...`);
-			leveldb.createReadStream().on('data', function (data) {
-				const key = data.key.replace('_chrome-extension://' + extensionId + '\0\1', '');
-				handleRow(key, data.value.substring(1))
-			}).on('end', function () {
-				resolve();
-			});
-		});
+			for (const entry of leveldb.getRange()) {
+				const key = entry.key.toString('utf8').replace('_chrome-extension://' + extensionId + '\0\1', '');
+				handleRow(key, entry.value.toString('utf8').substring(1));
+			}
+		} catch (err) {
+			console.log(`failed to read leveldb ${lsLevelDBDir}`, err);
+		} finally {
+			try { leveldb && leveldb.close(); } catch (e) {}
+		}
+		resolve();
 	});
 }
 function handleRow(key, value) {
@@ -113,17 +122,20 @@ async function upgradeLS() {
 		process.chdir(app.getPath('userData')); // workaround non-latin characters in path
 		walletDataPath = walletDataDir;
 	}
-	level(walletDataPath, { createIfMissing: true }, async (err, db) => {
-		if (err)
-			return console.error(`can't create ${walletDataPath} database`);
+	let db;
+	try {
+		db = RocksDatabase.open(walletDataPath, rocksdbOptions);
 		for (const key in upgradeKeys) {
 			console.log(`storing ${key}...`);
 			await db.put(key, upgradeKeys[key]);
 		}
 		fs.writeFileSync(lsUpgradedFlagFile, "true");
 		fs.rmSync(oldLSDir, {recursive: true, force: true});
-		db.close()
-	});
+	} catch (err) {
+		console.error(`can't create ${walletDataPath} database`, err);
+	} finally {
+		try { db && db.close(); } catch (e) {}
+	}
 }
 
 let mainWindow;

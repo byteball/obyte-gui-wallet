@@ -10,17 +10,20 @@ angular.module('copayApp.services')
     var root = {};
     var walletDataDir = 'walletdata';
     var path = desktopApp.getAppDataDir() + '/' + walletDataDir;
-    var level = require('level-rocksdb');
+    var RocksDatabase = require('@harperfast/rocksdb-js').RocksDatabase;
     if (process.platform === 'win32') {
 		process.chdir(desktopApp.getAppDataDir()); // workaround non-latin characters in path
 		path = walletDataDir;
 	}
-	var db = level(path, { createIfMissing: true });
+	// raw utf8 keys and values, byte-compatible with the data written by level-rocksdb
+	var db = RocksDatabase.open(path, { keyEncoding: 'binary', encoding: 'binary' });
 
     root.get = function(k, cb) {
-        return db.get(k, function(err, v) {
-        	cb(null, v); // ignoring error
-        });
+        var v;
+        try {
+            v = db.getSync(k);
+        } catch (e) {} // ignoring error
+        cb(null, Buffer.isBuffer(v) ? v.toString('utf8') : undefined);
     };
 
     /**
@@ -37,18 +40,26 @@ angular.module('copayApp.services')
         });
     };
 
+    // compact to erase prev key versions from logs (remove unencrypted xPrivKey)
+    function compact() {
+        db.compact({ bottommost: true }).catch(function(err) {
+            console.log('compact failed', err);
+        });
+    }
+
     root.set = function(k, v, cb) {
-		db.put(k, v, (err) => {
-			cb(err);
-			db.compactRange('', '~', () => {}); // compact to erase prev key versions from logs (remove unencrypted xPrivKey)
-		});
+        // level-rocksdb stringified non-string values
+        db.put(k, Buffer.isBuffer(v) ? v : String(v)).then(function() {
+            cb();
+            compact();
+        }, cb);
     };
 
     root.remove = function(k, cb) {
-        db.del(k, (err) => {
-			cb(err);
-			db.compactRange('', '~', () => {}); // compact to erase prev key versions from logs (remove unencrypted xPrivKey)
-		});
+        db.remove(k).then(function() {
+            cb();
+            compact();
+        }, cb);
     };
 
     return root;

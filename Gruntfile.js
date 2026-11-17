@@ -196,23 +196,20 @@ module.exports = function(grunt) {
     	},
     	mac: {
     		src: [
-		    	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/app/node_modules/rocksdb/prebuilds/!(darwin)-*/**",
-	        	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/app/node_modules/rocksdb/build/**",
+		    	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/app/node_modules/@harperfast/rocksdb-js-!(darwin)*/**",
 		    	"../obytebuilds/mac*/Obyte*.app/Contents/Frameworks/Electron Framework.framework/Resources/!(en)*.lproj/**",
 		    	"../obytebuilds/mac*/Obyte*.app/Contents/Resources/!(en)*.lproj/**"
 	    	]
 		},
 	    win: {
 			src: [
-				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/prebuilds/!(win*)-*/**",
-				"../obytebuilds/*win-*/resources/app/node_modules/rocksdb/build/deps/**",
+				"../obytebuilds/*win-*/resources/app/node_modules/@harperfast/rocksdb-js-!(win32)*/**",
 				"../obytebuilds/*win-*/locales/!(en)*.pak*"
 			]
 		},
 	    linux: {
 	    	src: [
-		    	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/prebuilds/!(linux)-*/**",
-	        	"../obytebuilds/*linux-*/resources/app/node_modules/rocksdb/build/deps/**",
+		    	"../obytebuilds/*linux-*/resources/app/node_modules/@harperfast/rocksdb-js-!(linux)*/**",
 		    	"../obytebuilds/*linux-*/locales/!(en)*.pak*"
 		    ]
 	    }
